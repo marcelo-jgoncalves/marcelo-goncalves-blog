@@ -24,7 +24,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           # 👇 COLOQUE O ARN DA SUA ROLE GERADO PELO CLOUDFORMATION AQUI
-          role-to-assume: COLE_SEU_ROLE_ARN_AQUI
+          role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
           aws-region: us-east-1 # Mude para a sua região principal
 
       - name: 3. Testar Autenticação (Verificar Identidade)
