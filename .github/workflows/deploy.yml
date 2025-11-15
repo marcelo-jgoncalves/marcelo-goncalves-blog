@@ -1,90 +1,38 @@
-name: Deploy para AWS (Dev e Prod)
+name: Teste Limpo de Deploy (Dev)
 
 on:
   push:
     branches:
-      - main
       - develop
   workflow_dispatch:
 
+# Esta é a permissão que estava falhando
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  #--- JOB DE DESENVOLVIMENTO ---
-  deploy-dev:
-    if: github.ref == 'refs/heads/develop'
+  teste-dev-oidc:
     runs-on: ubuntu-latest
+    
+    # Esta é a tag de ambiente que estava causando a
+    # incompatibilidade com a política do IAM
     environment:
       name: development
     
     steps:
-      - name: 1. Checkout do código
+      - name: 1. Checkout
         uses: actions/checkout@v4
 
-      # --- PASSO DE DEBUG ---
-      - name: 2. DEBUG - Decodificar o Token OIDC
-        id: debug_token
-        uses: actions/github-script@v7
-        with:
-          script: |
-            let token = await core.getIDToken('sts.amazonaws.com')
-            core.setOutput('token_for_log', token)
-      - run: |
-          echo "Decodificando o Token OIDC deste job..."
-          TOKEN_PAYLOAD=$(echo "${{ steps.debug_token.outputs.token_for_log }}" | cut -d. -f2 | base64 --decode)
-          SUBJECT_CLAIM=$(echo $TOKEN_PAYLOAD | jq -r .sub)
-          REF_CLAIM=$(echo $TOKEN_PAYLOAD | jq -r .ref)
-          echo "==> O 'subject' (sub) é: $SUBJECT_CLAIM"
-          echo "==> O 'ref' é: $REF_CLAIM"
-      # --- FIM DO PASSO DE DEBUG ---
-
-      - name: 3. Configurar Credenciais AWS (Dev)
+      - name: 2. Configurar Credenciais AWS (Dev)
         id: aws-creds-dev
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # 👇 COLOQUE SEU ARN DE DEV AQUI
+          # Sua role de DEV
           role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
           aws-region: us-east-1
 
-      - name: 4. Testar Autenticação (Dev)
+      - name: 3. Testar Autenticação (Dev)
         run: |
-          echo "Estou autenticado como (DEV):"
+          echo "Autenticado com sucesso como:"
           aws sts get-caller-identity
-          
-      - name: 5. Testar Criação de Bucket (Dev)
-        run: |
-          NOME_BUCKET="meu-teste-dev-${{ github.run_id }}"
-          REGIAO="${{ steps.aws-creds-dev.outputs.aws-region }}"
-          aws s3 mb s3://$NOME_BUCKET --region $REGIAO
-          aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
-          echo "Limpeza concluída. Teste de DEV OK."
-
-  #--- JOB DE PRODUÇÃO ---
-  deploy-prod:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-    steps:
-      - name: 1. Checkout do código
-        uses: actions/checkout@v4
-      - name: 2. Configurar Credenciais AWS (Prod)
-        id: aws-creds-prod
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          # 👇 COLOQUE SEU ARN DE PROD AQUI
-          role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
-          aws-region: us-east-1 
-      - name: 3. Testar Autenticação (Prod)
-        run: |
-          echo "Estou autenticado como (PROD):"
-          aws sts get-caller-identity
-      - name: 4. Testar Criação de Bucket (Prod)
-        run: |
-          NOME_BUCKET="meu-teste-prod-${{ github.run_id }}"
-          REGIAO="${{ steps.aws-creds-prod.outputs.aws-region }}"
-          aws s3 mb s3://$NOME_BUCKET --region $REGIAO
-          aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
-          echo "Limpeza concluída. Teste de PROD OK."
