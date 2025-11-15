@@ -1,14 +1,12 @@
 name: Deploy para AWS (Dev e Prod)
 
-# Gatilhos: Roda em push para 'main' ou 'develop'
 on:
   push:
     branches:
       - main
       - develop
-  workflow_dispatch: # Permite rodar manualmente também
+  workflow_dispatch:
 
-# Permissões globais de OIDC
 permissions:
   id-token: write
   contents: read
@@ -16,24 +14,21 @@ permissions:
 jobs:
   #--- JOB DE DESENVOLVIMENTO ---
   deploy-dev:
-    # Condição: Só roda se o push foi na branch 'develop'
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-    
-    # Define o ambiente (para organização)
     environment:
       name: development
-      
+    
     steps:
       - name: 1. Checkout do código
         uses: actions/checkout@v4
 
       - name: 2. Configurar Credenciais AWS (Dev)
+        id: aws-creds-dev
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # 👇 SUBSTITUA PELO ARN DA ROLE DE DESENVOLVIMENTO
+          # 👇 COLOQUE SEU ARN DE DEV AQUI
           role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
-          # 👇 SUBSTITUA PELA REGIÃO DA CONTA DE DEV
           aws-region: us-east-1
 
       - name: 3. Testar Autenticação (Dev)
@@ -43,42 +38,27 @@ jobs:
           
       - name: 4. Testar Criação de Bucket (Dev)
         run: |
-          # Gera um nome de bucket único usando o ID da execução do workflow
           NOME_BUCKET="meu-teste-dev-${{ github.run_id }}"
-          REGIAO="${{ steps.aws-creds.outputs.aws-region }}" # Pega a região do passo anterior
+          REGIAO="${{ steps.aws-creds-dev.outputs.aws-region }}"
 
           echo "Tentando criar o bucket: $NOME_BUCKET na região $REGIAO"
-          
-          # 1. Comando para CRIAR o bucket
           aws s3 mb s3://$NOME_BUCKET --region $REGIAO
 
           if [ $? -eq 0 ]; then
             echo "SUCESSO: Bucket $NOME_BUCKET criado."
           else
             echo "FALHA: Não foi possível criar o bucket."
-            exit 1 # Falha o workflow
+            exit 1
           fi
 
           echo "Teste bem-sucedido. Limpando..."
-
-          # 2. Comando para DELETAR o bucket (limpeza)
           aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
           echo "Limpeza concluída. Teste de DEV OK."
 
-      - name: 5. (Opcional) Executar Terraform (Dev)
-        run: |
-          echo "Pronto para executar o Terraform (Dev) aqui."
-          # cd terraform/dev
-          # terraform init
-          # terraform apply -auto-approve
-
   #--- JOB DE PRODUÇÃO ---
   deploy-prod:
-    # Condição: Só roda se o push foi na branch 'main'
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    
-    # Define o ambiente (PARA ATIVAR A APROVAÇÃO MANUAL)
     environment:
       name: production
       
@@ -87,12 +67,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 2. Configurar Credenciais AWS (Prod)
-        id: aws-creds # Adiciona um ID para referenciar a região
+        id: aws-creds-prod
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # 👇 SUBSTITUA PELO ARN DA ROLE DE PRODUÇÃO
+          # 👇 COLOQUE SEU ARN DE PROD AQUI
           role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
-          # 👇 SUBSTITUA PELA REGIÃO DA CONTA DE PROD
           aws-region: us-east-1 
 
       - name: 3. Testar Autenticação (Prod)
@@ -102,31 +81,19 @@ jobs:
           
       - name: 4. Testar Criação de Bucket (Prod)
         run: |
-          # Gera um nome de bucket único usando o ID da execução do workflow
           NOME_BUCKET="meu-teste-prod-${{ github.run_id }}"
-          REGIAO="${{ steps.aws-creds.outputs.aws-region }}" # Pega a região do passo 2
+          REGIAO="${{ steps.aws-creds-prod.outputs.aws-region }}"
 
           echo "Tentando criar o bucket: $NOME_BUCKET na região $REGIAO"
-          
-          # 1. Comando para CRIAR o bucket
           aws s3 mb s3://$NOME_BUCKET --region $REGIAO
 
           if [ $? -eq 0 ]; then
             echo "SUCESSO: Bucket $NOME_BUCKET criado."
           else
             echo "FALHA: Não foi possível criar o bucket."
-            exit 1 # Falha o workflow
+            exit 1
           fi
 
           echo "Teste bem-sucedido. Limpando..."
-
-          # 2. Comando para DELETAR o bucket (limpeza)
           aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
           echo "Limpeza concluída. Teste de PROD OK."
-
-      - name: 5. (Opcional) Executar Terraform (Prod)
-        run: |
-          echo "Pronto para executar o Terraform (Prod) aqui."
-          # cd terraform/prod
-          # terraform init
-          # terraform apply -auto-approve
