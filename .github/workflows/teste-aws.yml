@@ -1,39 +1,132 @@
-name: Teste de Autenticação AWS OIDC
+name: Deploy para AWS (Dev e Prod)
 
-# Gatilho: Este workflow roda manualmente (na aba Actions)
-# ou quando houver um push na branch 'main'
+# Gatilhos: Roda em push para 'main' ou 'develop'
 on:
-  workflow_dispatch: # Permite que você clique em "Run" na UI do GitHub
   push:
     branches:
-      - main # Mude isso se a sua branch principal tiver outro nome
+      - main
+      - develop
+  workflow_dispatch: # Permite rodar manualmente também
 
-# Permissões essenciais para o OIDC
+# Permissões globais de OIDC
 permissions:
-  id-token: write  # Necessário para obter o token OIDC
-  contents: read   # Necessário para o checkout do código
+  id-token: write
+  contents: read
 
 jobs:
-  aws-test:
+  #--- JOB DE DESENVOLVIMENTO ---
+  deploy-dev:
+    # Condição: Só roda se o push foi na branch 'develop'
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+    
+    # Define o ambiente (para organização)
+    environment:
+      name: development
+      
     steps:
       - name: 1. Checkout do código
         uses: actions/checkout@v4
 
-      - name: 2. Configurar Credenciais AWS
+      - name: 2. Configurar Credenciais AWS (Dev)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # 👇 COLOQUE O ARN DA SUA ROLE GERADO PELO CLOUDFORMATION AQUI
+          # 👇 SUBSTITUA PELO ARN DA ROLE DE DESENVOLVIMENTO
           role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
-          aws-region: us-east-1 # Mude para a sua região principal
+          # 👇 SUBSTITUA PELA REGIÃO DA CONTA DE DEV
+          aws-region: us-east-1
 
-      - name: 3. Testar Autenticação (Verificar Identidade)
+      - name: 3. Testar Autenticação (Dev)
         run: |
-          echo "Verificando quem eu sou na AWS..."
+          echo "Estou autenticado como (DEV):"
           aws sts get-caller-identity
-
-      - name: 4. Testar Permissões (Listar Buckets S3)
-        # Este comando só funcionará se a sua role tiver permissão (você usou Admin, então vai funcionar)
+          
+      - name: 4. Testar Criação de Bucket (Dev)
         run: |
-          echo "Testando permissões de Admin (Listando buckets S3)..."
-          aws s3 ls
+          # Gera um nome de bucket único usando o ID da execução do workflow
+          NOME_BUCKET="meu-teste-dev-${{ github.run_id }}"
+          REGIAO="${{ steps.aws-creds.outputs.aws-region }}" # Pega a região do passo anterior
+
+          echo "Tentando criar o bucket: $NOME_BUCKET na região $REGIAO"
+          
+          # 1. Comando para CRIAR o bucket
+          aws s3 mb s3://$NOME_BUCKET --region $REGIAO
+
+          if [ $? -eq 0 ]; then
+            echo "SUCESSO: Bucket $NOME_BUCKET criado."
+          else
+            echo "FALHA: Não foi possível criar o bucket."
+            exit 1 # Falha o workflow
+          fi
+
+          echo "Teste bem-sucedido. Limpando..."
+
+          # 2. Comando para DELETAR o bucket (limpeza)
+          aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
+          echo "Limpeza concluída. Teste de DEV OK."
+
+      - name: 5. (Opcional) Executar Terraform (Dev)
+        run: |
+          echo "Pronto para executar o Terraform (Dev) aqui."
+          # cd terraform/dev
+          # terraform init
+          # terraform apply -auto-approve
+
+  #--- JOB DE PRODUÇÃO ---
+  deploy-prod:
+    # Condição: Só roda se o push foi na branch 'main'
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    # Define o ambiente (PARA ATIVAR A APROVAÇÃO MANUAL)
+    environment:
+      name: production
+      
+    steps:
+      - name: 1. Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Credenciais AWS (Prod)
+        id: aws-creds # Adiciona um ID para referenciar a região
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # 👇 SUBSTITUA PELO ARN DA ROLE DE PRODUÇÃO
+          role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
+          # 👇 SUBSTITUA PELA REGIÃO DA CONTA DE PROD
+          aws-region: us-east-1 
+
+      - name: 3. Testar Autenticação (Prod)
+        run: |
+          echo "Estou autenticado como (PROD):"
+          aws sts get-caller-identity
+          
+      - name: 4. Testar Criação de Bucket (Prod)
+        run: |
+          # Gera um nome de bucket único usando o ID da execução do workflow
+          NOME_BUCKET="meu-teste-prod-${{ github.run_id }}"
+          REGIAO="${{ steps.aws-creds.outputs.aws-region }}" # Pega a região do passo 2
+
+          echo "Tentando criar o bucket: $NOME_BUCKET na região $REGIAO"
+          
+          # 1. Comando para CRIAR o bucket
+          aws s3 mb s3://$NOME_BUCKET --region $REGIAO
+
+          if [ $? -eq 0 ]; then
+            echo "SUCESSO: Bucket $NOME_BUCKET criado."
+          else
+            echo "FALHA: Não foi possível criar o bucket."
+            exit 1 # Falha o workflow
+          fi
+
+          echo "Teste bem-sucedido. Limpando..."
+
+          # 2. Comando para DELETAR o bucket (limpeza)
+          aws s3 rb s3://$NOME_BUCKET --region $REGIAO --force
+          echo "Limpeza concluída. Teste de PROD OK."
+
+      - name: 5. (Opcional) Executar Terraform (Prod)
+        run: |
+          echo "Pronto para executar o Terraform (Prod) aqui."
+          # cd terraform/prod
+          # terraform init
+          # terraform apply -auto-approve
