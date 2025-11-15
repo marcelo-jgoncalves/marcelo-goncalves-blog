@@ -23,7 +23,7 @@ jobs:
       - name: 1. Checkout do código
         uses: actions/checkout@v4
 
-      # --- NOVO PASSO DE DEBUG ---
+      # --- PASSO DE DEBUG ---
       - name: 2. DEBUG - Decodificar o Token OIDC
         id: debug_token
         uses: actions/github-script@v7
@@ -44,10 +44,10 @@ jobs:
         id: aws-creds-dev
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          # 👇 COLOQUE SEU ARN DE DEV AQUI
           role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
           aws-region: us-east-1
 
-      # (O resto do workflow continua... ele vai falhar no passo 3)
       - name: 4. Testar Autenticação (Dev)
         run: |
           echo "Estou autenticado como (DEV):"
@@ -64,7 +64,6 @@ jobs:
   #--- JOB DE PRODUÇÃO ---
   deploy-prod:
     if: github.ref == 'refs/heads/main'
-    # (O job de produção permanece o mesmo)
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -75,6 +74,7 @@ jobs:
         id: aws-creds-prod
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          # 👇 COLOQUE SEU ARN DE PROD AQUI
           role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
           aws-region: us-east-1 
       - name: 3. Testar Autenticação (Prod)
