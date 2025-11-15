@@ -1,0 +1,41 @@
+name: Debug OIDC Token
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  id-token: write # Apenas para poder solicitar o token
+  contents: read
+
+jobs:
+  get-token-subject:
+    runs-on: ubuntu-latest
+    environment:
+      name: development # Usamos o mesmo ambiente do job que falha
+      
+    steps:
+      - name: 1. Get OIDC Token
+        id: get_token
+        uses: actions/github-script@v7
+        with:
+          # A audiência 'sts.amazonaws.com' é o padrão,
+          # mas vamos ser explícitos.
+          script: |
+            let token = await core.getIDToken('sts.amazonaws.com')
+            core.setOutput('token', token)
+            
+      - name: 2. Decode Token and Print Subject
+        run: |
+          echo "Decodificando o Token OIDC..."
+          TOKEN_PAYLOAD=$(echo "${{ steps.get_token.outputs.token }}" | cut -d. -f2 | base64 --decode)
+          
+          echo "--- PAYLOAD DO TOKEN ---"
+          echo $TOKEN_PAYLOAD | jq .
+          echo "------------------------"
+
+          SUBJECT_CLAIM=$(echo $TOKEN_PAYLOAD | jq -r .sub)
+          echo "O 'subject' (sub) que o GitHub está enviando é:"
+          echo "==> $SUBJECT_CLAIM"
