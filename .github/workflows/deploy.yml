@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     name: 1. Validar Aplicacao (JS)
     
-    # Define outputs para sabermos se os arquivos existem
     outputs:
       js_files_found: ${{ steps.files.outputs.pkg }}
       
@@ -25,8 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verificar existencia do package.json
-        id: files # Da um ID a este passo
-        # Verifica se o 'package.json' existe
+        id: files 
         run: |
           if [ -f "package.json" ]; then
             echo "pkg=true" >> $GITHUB_OUTPUT
@@ -38,7 +36,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-        # So roda este passo se o package.json existir
         if: steps.files.outputs.pkg == 'true'
 
       - name: Instalar Dependencias (npm ci)
@@ -50,19 +47,37 @@ jobs:
         if: steps.files.outputs.pkg == 'true'
 
       - name: Lint de Codigo (Qualidade)
-        # O 'continue-on-error' permite que o job continue mesmo se o lint falhar
-        # Mas o 'if' garante que so rode se o script 'lint' existir no package.json
-        run: npm run lint
-        continue-on-error: true # Recomendado no inicio
-        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.lint != null)
+        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        run: |
+          if grep -q "\"lint\"" package.json; then
+            echo "Script 'lint' encontrado, executando..."
+            npm run lint
+          else
+            echo "Script 'lint' nao encontrado, pulando."
+          fi
+        if: steps.files.outputs.pkg == 'true'
 
       - name: Testes Unitarios/Integracao
-        run: npm test -- --passWithNoTests
-        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.test != null)
+        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        run: |
+          if grep -q "\"test\"" package.json; then
+            echo "Script 'test' encontrado, executando..."
+            npm test -- --passWithNoTests
+          else
+            echo "Script 'test' nao encontrado, pulando."
+          fi
+        if: steps.files.outputs.pkg == 'true'
 
       - name: Build da Aplicacao (Next.js)
-        run: npm run build
-        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.build != null)
+        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        run: |
+          if grep -q "\"build\"" package.json; then
+            echo "Script 'build' encontrado, executando..."
+            npm run build
+          else
+            echo "Script 'build' nao encontrado, pulando."
+          fi
+        if: steps.files.outputs.pkg == 'true'
 
       - name: Pular passos de JS
         run: echo "Nenhum package.json encontrado, pulando checks de JS."
@@ -82,7 +97,6 @@ jobs:
 
       - name: Verificar existencia de arquivos .tf
         id: files
-        # Verifica se algum arquivo .tf existe
         run: |
           if [ -n "$(find . -maxdepth 2 -type f -name '*.tf' -print -quit)" ]; then
             echo "tf=true" >> $GITHUB_OUTPUT
