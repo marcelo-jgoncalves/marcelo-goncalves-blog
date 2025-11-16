@@ -47,7 +47,7 @@ jobs:
         if: steps.files.outputs.pkg == 'true'
 
       - name: Lint de Codigo (Qualidade)
-        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        # CORRECAO: Logica movida para dentro do 'run'
         run: |
           if grep -q "\"lint\"" package.json; then
             echo "Script 'lint' encontrado, executando..."
@@ -58,7 +58,7 @@ jobs:
         if: steps.files.outputs.pkg == 'true'
 
       - name: Testes Unitarios/Integracao
-        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        # CORRECAO: Logica movida para dentro do 'run'
         run: |
           if grep -q "\"test\"" package.json; then
             echo "Script 'test' encontrado, executando..."
@@ -69,7 +69,7 @@ jobs:
         if: steps.files.outputs.pkg == 'true'
 
       - name: Build da Aplicacao (Next.js)
-        # CORRECAO AQUI: Movemos a logica para dentro do 'run'
+        # CORRECAO: Logica movida para dentro do 'run'
         run: |
           if grep -q "\"build\"" package.json; then
             echo "Script 'build' encontrado, executando..."
@@ -97,6 +97,7 @@ jobs:
 
       - name: Verificar existencia de arquivos .tf
         id: files
+        # Verifica se algum arquivo .tf existe
         run: |
           if [ -n "$(find . -maxdepth 2 -type f -name '*.tf' -print -quit)" ]; then
             echo "tf=true" >> $GITHUB_OUTPUT
