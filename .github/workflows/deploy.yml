@@ -1,55 +1,121 @@
-name: Validate AWS OIDC Authentication
+name: Validacao de Pull Request (CI)
 
 on:
-  push:
+  pull_request:
     branches:
-      - main     # Trigger para validar a Role de PRD
-      - develop  # Trigger para validar a Role de DEV
-  workflow_dispatch: # Permite rodar manualmente
+      - main
+      - develop
+  workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
-  # --- JOB 1: Validar Conta de Produção ---
-  validate-prd-account:
+  # --- JOB 1: Validar a Aplicacao (Next.js) ---
+  validate-application:
     runs-on: ubuntu-latest
+    name: 1. Validar Aplicacao (JS)
     
-    # Esta linha foi REMOVIDA: environment: production 
-    
-    # Roda este job APENAS se o trigger for da branch 'main'
-    if: github.ref == 'refs/heads/main' 
-    
-    steps:
-      - name: 1. Configure AWS Credentials (PRD Account)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
-          aws-region: us-east-1 
+    # Define outputs para sabermos se os arquivos existem
+    outputs:
+      js_files_found: ${{ steps.files.outputs.pkg }}
       
-      - name: 2. Validate Identity (PRD Account)
-        run: |
-          echo "Validando conta de Produção (PRD)..."
-          aws sts get-caller-identity
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
 
-  # --- JOB 2: Validar Conta de Desenvolvimento ---
-  validate-dev-account:
+      - name: Verificar existencia do package.json
+        id: files # Da um ID a este passo
+        # Verifica se o 'package.json' existe
+        run: |
+          if [ -f "package.json" ]; then
+            echo "pkg=true" >> $GITHUB_OUTPUT
+          else
+            echo "pkg=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        # So roda este passo se o package.json existir
+        if: steps.files.outputs.pkg == 'true'
+
+      - name: Instalar Dependencias (npm ci)
+        run: npm ci
+        if: steps.files.outputs.pkg == 'true'
+
+      - name: Scan de Dependencias (Seguranca)
+        run: npm audit --audit-level=high
+        if: steps.files.outputs.pkg == 'true'
+
+      - name: Lint de Codigo (Qualidade)
+        # O 'continue-on-error' permite que o job continue mesmo se o lint falhar
+        # Mas o 'if' garante que so rode se o script 'lint' existir no package.json
+        run: npm run lint
+        continue-on-error: true # Recomendado no inicio
+        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.lint != null)
+
+      - name: Testes Unitarios/Integracao
+        run: npm test -- --passWithNoTests
+        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.test != null)
+
+      - name: Build da Aplicacao (Next.js)
+        run: npm run build
+        if: steps.files.outputs.pkg == 'true' && (fromJson(file('package.json')).scripts.build != null)
+
+      - name: Pular passos de JS
+        run: echo "Nenhum package.json encontrado, pulando checks de JS."
+        if: steps.files.outputs.pkg == 'false'
+
+  # --- JOB 2: Validar a Infraestrutura (Terraform) ---
+  validate-infrastructure:
     runs-on: ubuntu-latest
+    name: 2. Validar Infra (Terraform)
     
-    # Esta linha foi REMOVIDA: environment: development 
-    
-    # Roda este job APENAS se o trigger for da branch 'develop'
-    if: github.ref == 'refs/heads/develop'
-
-    steps:
-      - name: 1. Configure AWS Credentials (DEV Account)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
-          aws-region: us-east-1 
+    outputs:
+      tf_files_found: ${{ steps.files.outputs.tf }}
       
-      - name: 2. Validate Identity (DEV Account)
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Verificar existencia de arquivos .tf
+        id: files
+        # Verifica se algum arquivo .tf existe
         run: |
-          echo "Validando conta de Desenvolvimento (DEV)..."
-          aws sts get-caller-identity
+          if [ -n "$(find . -maxdepth 2 -type f -name '*.tf' -print -quit)" ]; then
+            echo "tf=true" >> $GITHUB_OUTPUT
+          else
+            echo "tf=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Instalar Scanner de Seguranca (tfsec)
+        uses: aquasecurity/tfsec-action@v1
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Lint de Infra (Formato)
+        run: terraform fmt --check
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Validacao de Sintaxe
+        run: terraform validate
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Scan de Seguranca (SAST)
+        run: tfsec .
+        if: steps.files.outputs.tf == 'true'
+        
+      - name: Pular passos de Terraform
+        run: echo "Nenhum arquivo .tf encontrado, pulando checks de Infra."
+        if: steps.files.outputs.tf == 'false'
