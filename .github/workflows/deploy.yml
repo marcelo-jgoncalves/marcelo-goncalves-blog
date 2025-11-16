@@ -1,0 +1,55 @@
+name: Validate AWS OIDC Authentication
+
+on:
+  push:
+    branches:
+      - main     # Trigger para validar a Role de PRD
+      - develop  # Trigger para validar a Role de DEV
+  workflow_dispatch: # Permite rodar manualmente
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # --- JOB 1: Validar Conta de Produção ---
+  validate-prd-account:
+    runs-on: ubuntu-latest
+    
+    # Esta linha foi REMOVIDA: environment: production 
+    
+    # Roda este job APENAS se o trigger for da branch 'main'
+    if: github.ref == 'refs/heads/main' 
+    
+    steps:
+      - name: 1. Configure AWS Credentials (PRD Account)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
+          aws-region: us-east-1 
+      
+      - name: 2. Validate Identity (PRD Account)
+        run: |
+          echo "Validando conta de Produção (PRD)..."
+          aws sts get-caller-identity
+
+  # --- JOB 2: Validar Conta de Desenvolvimento ---
+  validate-dev-account:
+    runs-on: ubuntu-latest
+    
+    # Esta linha foi REMOVIDA: environment: development 
+    
+    # Roda este job APENAS se o trigger for da branch 'develop'
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: 1. Configure AWS Credentials (DEV Account)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
+          aws-region: us-east-1 
+      
+      - name: 2. Validate Identity (DEV Account)
+        run: |
+          echo "Validando conta de Desenvolvimento (DEV)..."
+          aws sts get-caller-identity
