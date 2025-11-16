@@ -7,7 +7,6 @@ on:
       - develop  # Trigger para validar a Role de DEV
   workflow_dispatch: # Permite rodar manualmente
 
-# Permissões essenciais para o OIDC
 permissions:
   id-token: write
   contents: read
@@ -16,7 +15,8 @@ jobs:
   # --- JOB 1: Validar Conta de Produção ---
   validate-prd-account:
     runs-on: ubuntu-latest
-    environment: production # Exigido pela Trust Policy de PRD
+    
+    # Esta linha foi REMOVIDA: environment: production 
     
     # Roda este job APENAS se o trigger for da branch 'main'
     if: github.ref == 'refs/heads/main' 
@@ -26,7 +26,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
-          aws-region: us-east-1 # Pode alterar
+          aws-region: us-east-1 
       
       - name: 2. Validate Identity (PRD Account)
         run: |
@@ -37,34 +37,17 @@ jobs:
   validate-dev-account:
     runs-on: ubuntu-latest
     
-    # Exigido pela sua nova Trust Policy de DEV
-    environment: development 
+    # Esta linha foi REMOVIDA: environment: development 
     
     # Roda este job APENAS se o trigger for da branch 'develop'
     if: github.ref == 'refs/heads/develop'
 
     steps:
-      # --- PASSO DE DEBUG ADICIONADO ---
-      # Este passo irá imprimir os valores exatos que o GitHub está a usar
-      - name: 0. DEBUG - Mostrar valores do GitHub Context
-        env:
-          # Expor os valores do contexto para o script
-          GITHUB_REPO: ${{ github.repository }}
-          GITHUB_ENV: ${{ github.environment }}
-          GITHUB_REF: ${{ github.ref }}
-        run: |
-          echo "--- DEBUG INFO ---"
-          echo "Verificando os valores enviados para a AWS:"
-          echo "Repo: $GITHUB_REPO"
-          echo "Environment: $GITHUB_ENV"
-          echo "Ref: $GITHUB_REF"
-          echo "--------------------"
-
       - name: 1. Configure AWS Credentials (DEV Account)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
-          aws-region: us-east-1 # Pode alterar
+          aws-region: us-east-1 
       
       - name: 2. Validate Identity (DEV Account)
         run: |
