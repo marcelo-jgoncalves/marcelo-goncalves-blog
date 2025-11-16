@@ -1,39 +1,55 @@
-#testew
-name: Teste Limpo de Deploy (Dev)
+name: Validate AWS OIDC Authentication
 
 on:
   push:
     branches:
-      - develop
-  workflow_dispatch:
+      - main     # Trigger para validar a Role de PRD
+      - develop  # Trigger para validar a Role de DEV
+  workflow_dispatch: # Permite rodar manualmente
 
-# Esta é a permissão que estava falhando
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  teste-dev-oidc:
+  # --- JOB 1: Validar Conta de Produção ---
+  validate-prd-account:
     runs-on: ubuntu-latest
+    environment: production # Exigido pela Trust Policy de PRD
     
-    # Esta é a tag de ambiente que estava causando a
-    # incompatibilidade com a política do IAM
-    environment:
-      name: development
+    # Roda este job APENAS se o trigger for da branch 'main'
+    if: github.ref == 'refs/heads/main' 
     
     steps:
-      - name: 1. Checkout
-        uses: actions/checkout@v4
-
-      - name: 2. Configurar Credenciais AWS (Dev)
-        id: aws-creds-dev
+      - name: 1. Configure AWS Credentials (PRD Account)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # Sua role de DEV
-          role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
-          aws-region: us-east-1
-
-      - name: 3. Testar Autenticação (Dev)
+          role-to-assume: arn:aws:iam::502987719862:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG-PRD
+          aws-region: us-east-1 # Pode alterar
+      
+      - name: 2. Validate Identity (PRD Account)
         run: |
-          echo "Autenticado com sucesso como:"
+          echo "Validando conta de Produção (PRD)..."
+          aws sts get-caller-identity
+
+  # --- JOB 2: Validar Conta de Desenvolvimento ---
+  validate-dev-account:
+    runs-on: ubuntu-latest
+    
+    # MUDANÇA AQUI: Define o environment de 'development'
+    environment: development # Exigido pela sua nova Trust Policy de DEV
+    
+    # Roda este job APENAS se o trigger for da branch 'develop'
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: 1. Configure AWS Credentials (DEV Account)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::975707451904:role/GITHUB-ROLE-FOR-MARCELO-TECH-BLOG
+          aws-region: us-east-1 # Pode alterar
+      
+      - name: 2. Validate Identity (DEV Account)
+        run: |
+          echo "Validando conta de Desenvolvimento (DEV)..."
           aws sts get-caller-identity
