@@ -7,6 +7,7 @@ on:
       - develop  # Trigger para validar a Role de DEV
   workflow_dispatch: # Permite rodar manualmente
 
+# Permissões essenciais para o OIDC
 permissions:
   id-token: write
   contents: read
@@ -36,13 +37,29 @@ jobs:
   validate-dev-account:
     runs-on: ubuntu-latest
     
-    # MUDANÇA AQUI: Define o environment de 'development'
-    environment: development # Exigido pela sua nova Trust Policy de DEV
+    # Exigido pela sua nova Trust Policy de DEV
+    environment: development 
     
     # Roda este job APENAS se o trigger for da branch 'develop'
     if: github.ref == 'refs/heads/develop'
 
     steps:
+      # --- PASSO DE DEBUG ADICIONADO ---
+      # Este passo irá imprimir os valores exatos que o GitHub está a usar
+      - name: 0. DEBUG - Mostrar valores do GitHub Context
+        env:
+          # Expor os valores do contexto para o script
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_ENV: ${{ github.environment }}
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          echo "--- DEBUG INFO ---"
+          echo "Verificando os valores enviados para a AWS:"
+          echo "Repo: $GITHUB_REPO"
+          echo "Environment: $GITHUB_ENV"
+          echo "Ref: $GITHUB_REF"
+          echo "--------------------"
+
       - name: 1. Configure AWS Credentials (DEV Account)
         uses: aws-actions/configure-aws-credentials@v4
         with:
