@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter | Marcelo Gonçalves</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Identidade Visual (CORRIGIDA) --- */
+        :root {
+            --aws-dark: #232F3E;
+            --aws-orange: #FF9900;
+            --gray-100: #f5f5ff;
+            --gray-800: #2D3748;
+            --blue-600: #3182CE;
+            --gray-light: #f8fafc;
+            --gray-border: #e0e0e0;
+            --gray-text: #555;
+        }
+        
+        /* --- Reset e Globais (Mobile-First) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+            background-color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+
+        /* --- CORREÇÃO: Acessibilidade (Skip Link) --- */
+        .skip-link {
+            position: absolute;
+            left: 20px; 
+            top: -60px; 
+            background: var(--aws-orange);
+            color: var(--aws-dark);
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transition: top 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .skip-link:focus {
+            top: 20px; 
+            opacity: 1;
+        }
+
+        /* --- CORREÇÃO: Header (Mobile-First) --- */
+        header { background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; padding: 0 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; max-width: 1200px; margin: 0 auto; position: relative; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--aws-dark); text-decoration: none; }
+        .logo span { color: var(--aws-orange); }
+        .nav-links { display: none; } /* Oculto no mobile */
+        
+        .mobile-menu-btn { 
+            display: block; /* Visível no mobile */
+            background: none; 
+            border: none; 
+            color: var(--aws-dark); 
+            font-size: 24px; 
+            cursor: pointer; 
+        }
+        
+        .mobile-menu { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            right: -20px; 
+            left: -20px;
+            background: white; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--gray-border);
+            z-index: 1000;
+        }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; padding: 15px 20px; text-decoration: none; color: var(--gray-dark); font-weight: 500; border-bottom: 1px solid var(--gray-border); }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { background: var(--gray-light); color: var(--aws-orange); }
+        
+
+        /* --- 1. "Hero" da Newsletter (Mobile-First) --- */
+        .page-hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .page-header-content {
+            max-width: 700px; /* Mais estreito para focar */
+            margin: 0 auto;
+        }
+        
+        .page-hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            color: var(--aws-dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .page-hero h1 .highlight {
+            color: var(--aws-orange);
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-800);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* --- 2. Formulário de Inscrição (Mobile-First) --- */
+        .newsletter-form-container {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column; /* Mobile-First: empilhado */
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+        .email-input {
+            flex-grow: 1;
+            border: none;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+            text-align: center; /* Centralizado no mobile */
+        }
+        .email-input:focus {
+            outline: 2px solid var(--aws-orange);
+            outline-offset: -2px;
+        }
+        .subscribe-button {
+            border: none;
+            background-color: var(--aws-orange);
+            color: white;
+            padding: 18px 25px; /* Padding mobile */
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .subscribe-button:hover {
+            background-color: #e68a00;
+        }
+        
+        .trust-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        /* --- 3. Prova Social (Populares) (Mobile-First) --- */
+        .blog-section {
+            padding: 60px 20px;
+            background-color: #fdfdfd;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            color: var(--aws-dark);
+            margin-bottom: 15px;
+        }
+        
+        .posts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .post-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .post-image { height: 200px; background-color: #eee; background-size: cover; background-position: center; }
+        .post-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .post-tag { display: inline-block; padding: 5px 10px; background-color: var(--aws-orange); color: white; border-radius: 4px; font-size: 0.8rem; margin-bottom: 10px; align-self: flex-start; }
+        .post-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--aws-dark); }
+        .post-card p { color: #666; margin-bottom: 15px; flex-grow: 1; display: none; } /* Oculto no mobile */
+        .read-more { color: var(--aws-orange); text-decoration: none; font-weight: 500; }
+        
+
+        /* --- CORREÇÃO: Footer (Mobile-First) --- */
+        footer { 
+            background-color: var(--gray-800); 
+            color: white; 
+            padding: 60px 20px 30px; 
+        }
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: 1fr; /* Coluna única */
+            gap: 40px; 
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .footer-column h3 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 15px; font-size: 1.2rem; color: white; }
+        .footer-column p { color: #cbd5e0; }
+        .footer-links { list-style: none; padding-left: 0; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: #cbd5e0; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--aws-orange); }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; padding-left: 0; justify-content: center; }
+        .social-links a { width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s; }
+        .social-links a:hover { background-color: var(--aws-orange); transform: translateY(-3px); }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); color: #a0aec0; }
+        
+        
+        /* --- ========================== --- */
+        /* --- ==== MEDIA QUERIES (DESKTOP) ==== --- */
+        /* --- ========================== --- */
+        
+        @media (min-width: 768px) {
+            /* Header Desktop */
+            header { padding: 0 25px; }
+            .navbar { padding: 20px 0; }
+            .logo { font-size: 1.8rem; }
+            .nav-links { display: flex; gap: 30px; }
+            .nav-links a { text-decoration: none; color: var(--gray-800); font-weight: 500; transition: color 0.3s; }
+            .nav-links a:hover { color: var(--aws-orange); }
+            .mobile-menu-btn { display: none; }
+            .mobile-menu { display: none !important; }
+
+            /* Hero Desktop */
+            .page-hero { padding: 80px 20px; }
+            .page-hero h1 { font-size: 3.2rem; }
+            .page-subtitle { font-size: 1.2rem; }
+            
+            /* Form Desktop */
+            .newsletter-form-container { padding: 60px 20px; }
+            .newsletter-form { flex-direction: row; }
+            .email-input { text-align: left; }
+            .subscribe-button { padding: 0 30px; }
+            
+            /* Blog Desktop */
+            .blog-section { padding: 80px 20px; }
+            .section-title { margin-bottom: 60px; }
+            .section-title h2 { font-size: 2.5rem; }
+            .posts-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .post-card p { display: block; } /* Mostra resumo no desktop */
+            
+            /* Footer Desktop */
+            footer { padding: 60px 20px 30px; }
+            .footer-content { 
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+                text-align: left;
+            }
+            .social-links { justify-content: flex-start; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Pular para o Conteúdo Principal</a>
+
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">Marcelo<span>Gonçalves</span></a>
+            
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/servicos" style="color: var(--aws-orange); font-weight: 600;">Serviços</a>
+                <a href="/sobre">Sobre</a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mobileMenu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/servicos" style="color: var(--aws-orange); font-weight: 600;">Serviços</a>
+                <a href="/sobre">Sobre</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content">
+
+        <section class="page-hero">
+            <div class="page-header-content">
+                <h1>Junte-se à nossa <span class="highlight">Comunidade</span></h1>
+                <p class="page-subtitle">Receba análises exclusivas, os melhores artigos da semana e insights que não compartilhamos em outro lugar. Direto no seu e-mail.</p>
+            </div>
+        </section>
+
+        <section class="newsletter-form-container">
+            <div class="container" style="max-width: 500px;"> <form class="newsletter-form" action="#" method="post">
+                    <input type="email" name="email" class="email-input" placeholder="Seu melhor e-mail" aria-label="Seu melhor e-mail" required>
+                    <button type="submit" class="subscribe-button">
+                        Inscrever-se
+                    </button>
+                </form>
+                <p class="trust-note">Sem spam. Apenas conteúdo de alta qualidade sobre IA e AWS. Cancele a qualquer momento.</p>
+            </div>
+        </section>
+
+
+        <section class="blog-section" id="populares">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Veja o que você está perdendo</h2>
+                    <p>O tipo de conteúdo que você receberá</p>
+                </div>
+                <div class="posts-grid">
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https://source.unsplash.com/random/600x400/?security,cloud')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Segurança</span>
+                            <h3>Melhores práticas de IAM na AWS</h3>
+                            <p>Como configurar políticas de acesso seguras sem comprometer a produtividade...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https://source.unsplash.com/random/600x400/?cost,cloud')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">AWS</span>
+                            <h3>Como reduzir custos na AWS em 5 passos</h3>
+                            <p>Estratégias comprovadas para otimizar seus gastos com serviços de nuvem...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https://source.unsplash.com/random/600x400/?api,code')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Engenharia</span>
+                            <h3>API Gateway vs. Lambda URLs: Qual usar?</h3>
+                            <p>Uma decisão crucial para arquiteturas serverless que impacta custo, performance...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                 <div class="footer-column">
+                    <h3>Marcelo Gonçalves</h3>
+                    <p>Análises, tutoriais e as últimas notícias sobre IA, AWS, Serverless e DevOps.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">IA Generativa</a></li>
+                        <li><a href="#">Tutoriais AWS</a></li>
+                        <li><a href="#">Engenharia & MLOps</a></li>
+                        <li><a href="#">Terraform & IaC</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="/artigos">Todos os Artigos</a></li>
+                        <li><a href="/o-projeto">O Projeto</a></li>
+                        <li><a href="/sobre">Sobre</a></li>
+                        <li><a href="/newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@marcelogoncalves.tech</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Marcelo Gonçalves. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileMenu.classList.toggle('active');
+                    mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+                    mobileMenuBtn.setAttribute('aria-label', isExpanded ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+                });
+                
+                // Opcional: Fechar menu ao clicar em um link
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('active');
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                        mobileMenuBtn.setAttribute('aria-label', 'Abrir menu de navegação');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

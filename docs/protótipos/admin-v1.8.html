@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Admin | IA Decifrada</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Identidade Visual (Funcional) --- */
+        :root {
+            --aws-dark: #232F3E;
+            --aws-orange: #FF9900;
+            --aws-orange-hover: #e68a00;
+            --gray-light: #f8fafc;
+            --gray-border: #e0e0e0;
+            --gray-text: #555;
+            --gray-dark: #2D3748;
+            --blue-link: #3182CE;
+        }
+
+        /* --- Reset e Layout Base --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Menu Lateral (Sidebar) --- */
+        .sidebar {
+            width: 240px;
+            background-color: var(--aws-dark);
+            color: white;
+            padding: 20px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar-logo {
+            font-family: "Space Grotesk", sans-serif; /* A única exceção de fonte */
+            font-weight: 700;
+            font-size: 22px;
+            color: white;
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #4a5568;
+        }
+        .sidebar-logo span {
+            color: var(--aws-orange);
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #cbd5e0;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .sidebar-nav li a:hover {
+            background-color: #4a5568;
+            color: white;
+        }
+        .sidebar-nav li a.active {
+            background-color: var(--aws-orange);
+            color: var(--aws-dark);
+            font-weight: 600;
+        }
+        .sidebar-nav li a i {
+            width: 20px; /* Alinha os ícones */
+        }
+        
+        /* --- Área de Conteúdo Principal --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .view-section {
+            display: none; /* O JS vai controlar a visibilidade */
+        }
+        .view-section.active {
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--aws-dark);
+            margin-bottom: 30px;
+        }
+        
+        /* --- Botões Padrão --- */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: var(--aws-orange);
+            color: var(--aws-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--aws-orange-hover);
+        }
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: var(--gray-dark);
+        }
+        .btn-secondary:hover {
+            background-color: #ccc;
+        }
+        .btn-danger {
+            background-color: #fce8e6;
+            color: #c53030;
+        }
+        .btn-danger:hover {
+            background-color: #fed7d7;
+        }
+
+
+        /* --- Tabelas (Reutilizável) --- */
+        .table-container {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table-container th, .table-container td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .table-container th {
+            background-color: #f9fafb;
+        }
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-publicado {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .status-rascunho {
+            background-color: #feebc8;
+            color: #92400e;
+        }
+        .status-programado {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .action-link {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        /* --- Formulários (Reutilizável) --- */
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 900px) { /* Aumentei o breakpoint para o sidebar */
+            .form-grid {
+                grid-template-columns: 2fr 1fr; /* Coluna principal + coluna lateral */
+            }
+        }
+        
+        .form-main { display: flex; flex-direction: column; gap: 20px; }
+        .form-sidebar { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-group label {
+            font-weight: 600;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="datetime-local"],
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 15px;
+            border: 1px solid var(--gray-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 120px;
+        }
+        
+        /* Simulação do Rich Text Editor */
+        .richtext-toolbar {
+            background: #f1f1f1;
+            padding: 8px;
+            border-radius: 6px 6px 0 0;
+            border: 1px solid var(--gray-border);
+            border-bottom: none;
+            color: var(--gray-text);
+        }
+        .richtext-editor {
+            border: 1px solid var(--gray-border);
+            min-height: 300px;
+            padding: 15px;
+            border-radius: 0 0 6px 6px;
+        }
+        .richtext-editor:focus {
+            outline: 2px solid var(--aws-orange);
+        }
+        
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* --- Painel de Publicação (Sidebar) --- */
+        .publish-panel {
+            background-color: #f9fafb; 
+            border: 1px solid var(--gray-border); 
+            padding: 20px; 
+            border-radius: 6px;
+        }
+        .publish-panel h3 {
+            font-size: 1.2rem;
+            color: var(--aws-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .publish-meta {
+            font-size: 0.9rem;
+            color: var(--gray-text);
+        }
+        .publish-meta strong {
+            color: var(--gray-dark);
+        }
+        .schedule-link {
+            color: var(--blue-link);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .schedule-link:hover {
+            text-decoration: underline;
+        }
+        
+        #schedule-fields {
+            display: none; /* JS controla */
+            margin-top: 15px;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .publish-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .publish-actions .btn {
+            width: 100%;
+        }
+
+
+        /* --- Modais (Reutilizável) --- */
+        .modal-overlay {
+            display: none; /* JS controla */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--aws-dark);
+            margin-bottom: 0;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--gray-text);
+            cursor: pointer;
+        }
+        .modal-body .form-group {
+            margin-bottom: 20px;
+        }
+        .modal-body input[type="file"] {
+            padding: 10px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            IA<span>Decifrada</span> (Admin)
+        </div>
+        
+        <nav>
+            <ul class="sidebar-nav">
+                <li>
+                    <a class="nav-link active" data-view="view-dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-view="view-editor">
+                        <i class="fas fa-plus"></i> Novo Post
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-view="view-categories">
+                        <i class="fas fa-tags"></i> Gerenciar Categorias
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-view="view-author-edit">
+                        <i class="fas fa-user-edit"></i> Editar Perfil
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <section class="view-section active" id="view-dashboard">
+            <h1>Dashboard de Posts</h1>
+            
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Como construir um RAG 100% Serverless</td>
+                        <td><span class="status-badge status-publicado">Publicado</span></td>
+                        <td>09/11/2025</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-post">Editar</a></td>
+                    </tr>
+                     <tr>
+                        <td>O que são "Mixture of Experts"?</td>
+                        <td><span class="status-badge status-programado">Programado</span></td>
+                        <td>12/11/2025</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-post">Editar</a></td>
+                    </tr>
+                    <tr>
+                        <td>Análise: O que esperar do GPT-5?</td>
+                        <td><span class="status-badge status-publicado">Publicado</span></td>
+                        <td>08/11/2025</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-post">Editar</a></td>
+                    </tr>
+                    <tr>
+                        <td>Ideias Iniciais sobre MLOps</td>
+                        <td><span class="status-badge status-rascunho">Rascunho</span></td>
+                        <td>07/11/2025</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-post">Editar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="view-section" id="view-editor">
+            <h1 id="editor-title">Novo Post</h1> <form class="form-container">
+                <div class="form-grid">
+                    
+                    <div class="form-main">
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            <input type="text" id="titulo" name="titulo" placeholder="Como construir um RAG...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="slug">Slug (URL)</label>
+                            <input type="text" id="slug" name="slug" placeholder="como-construir-um-rag">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Conteúdo Principal</label>
+                            <div class="richtext-toolbar">
+                                <i class="fas fa-bold"></i> <i class="fas fa-italic"></i> <i class="fas fa-list-ul"></i> <i class="fas fa-code"></i>
+                            </div>
+                            <div class="richtext-editor" contenteditable="true">
+                                <p>Escreva seu artigo aqui...</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resumo">Resumo (para os cards)</label>
+                            <textarea id="resumo" name="resumo" rows="3" placeholder="Um breve resumo que aparecerá..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-sidebar">
+                        
+                        <div class="publish-panel">
+                            <h3>Publicação</h3>
+                            <div class="form-group">
+                                <p class="publish-meta"><strong>Status:</strong> <span id="post-status">Rascunho</span></p>
+                                <p class="publish-meta"><strong>Visibilidade:</strong> Pública</p>
+                            </div>
+                            <div class="form-group">
+                                <p class="publish-meta"><strong>Data:</strong> <span id="post-date-display">Imediata</span> 
+                                    <a href="#" class="schedule-link" id="btn-toggle-schedule">(Programar)</a>
+                                </p>
+                                <div id="schedule-fields">
+                                    <input type="datetime-local" id="data_programada" name="data_programada">
+                                    <a href="#" class="schedule-link" id="btn-cancel-schedule">(Cancelar Agendamento)</a>
+                                </div>
+                            </div>
+                            <div class="publish-actions">
+                                <button type="button" class="btn btn-secondary">Salvar Rascunho</button>
+                                <button type="submit" class="btn btn-primary">Publicar</button>
+                            </div>
+                        </div>
+
+                        <div class="form-container" style="padding: 20px;"> <div class="form-group">
+                                <label for="categoria">Categoria</label>
+                                <select id="categoria" name="categoria">
+                                    <option value="tutoriais-aws">Tutoriais AWS</option>
+                                    <option value="ia-generativa">IA Generativa</option>
+                                    <option value="engenharia-mlops">Engenharia & MLOps</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Opções</label>
+                                <div class="form-group-checkbox">
+                                    <input type="checkbox" id="e_popular" name="e_popular">
+                                    <label for="e_popular">É Popular?</label>
+                                </div>
+                                <div class="form-group-checkbox">
+                                    <input type="checkbox" id="e_projeto" name="e_projeto">
+                                    <label for="e_projeto">Faz parte de "O Projeto"?</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-container" style="padding: 20px;"> <div class="form-group">
+                                <label>Imagem de Destaque</label>
+                                <button type="button" class="btn btn-secondary" data-modal="modal-upload">
+                                    <i class="fas fa-upload"></i> Upload de Imagem
+                                </button>
+                                <input type="text" id="imagem_destaque_url" name="imagem_destaque_url" placeholder="https://cdn.iadecifrada.com/...">
+                            </div>
+                            
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="imagem_alt_text">Texto Alternativo (Acessibilidade)</label>
+                                <input type="text" id="imagem_alt_text" name="imagem_alt_text" placeholder="Ex: Diagrama da arquitetura RAG">
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-danger" data-view="view-dashboard" style="width: 100%;">Mover para Lixeira</button>
+
+                    </div>
+
+                </div>
+            </form>
+        </section>
+
+        <section class="view-section" id="view-categories">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h1>Gerenciar Categorias</h1>
+                <button class="btn btn-primary" data-modal="modal-category">
+                    <i class="fas fa-plus"></i> Nova Categoria
+                </button>
+            </div>
+            
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th>Nome da Categoria</th>
+                        <th>Slug</th>
+                        <th>Ícone (FontAwesome)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tutoriais AWS</td>
+                        <td>tutoriais-aws</td>
+                        <td>fa-solid fa-cloud</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-category" data-modal="modal-category">Editar</a></td>
+                    </tr>
+                    <tr>
+                        <td>IA Generativa</td>
+                        <td>ia-generativa</td>
+                        <td>fa-solid fa-brain</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-category" data-modal="modal-category">Editar</a></td>
+                    </tr>
+                    <tr>
+                        <td>Engenharia & MLOps</td>
+                        <td>engenharia-mlops</td>
+                        <td>fa-solid fa-gears</td>
+                        <td><a href="#" class="btn-secondary action-link btn-edit-category" data-modal="modal-category">Editar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section class="view-section" id="view-author-edit">
+            <h1>Editar Perfil</h1>
+
+            <form class="form-container">
+                <div class="form-group">
+                    <label for="autor-nome">Nome de Exibição</label>
+                    <input type="text" id="autor-nome" name="autor-nome" placeholder="Marcelo Gonçalves">
+                </div>
+                
+                <div class="form-group">
+                    <label for="autor-id">ID do Autor</label>
+                    <input type="text" id="autor-id" name="autor-id" placeholder="(Preenchido automaticamente pelo login)" readonly style="background: #f1f1f1;">
+                </div>
+
+                <div class="form-group">
+                    <label>Biografia (Para a Página "Sobre" e "Caixa do Autor")</label>
+                    <div class="richtext-toolbar">
+                        <i class="fas fa-bold"></i> <i class="fas fa-italic"></i> <i class="fas fa-link"></i>
+                    </div>
+                    <div class="richtext-editor" contenteditable="true">
+                        <p>Escreva sua biografia aqui...</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="autor-foto">URL da Foto de Avatar</label>
+                    <input type="text" id="autor-foto" name="autor-foto" placeholder="https://cdn.iadecifrada.com/marcelo.webp">
+                </div>
+                
+                <div class="form-group">
+                    <label for="autor-foto-alt">Texto Alternativo da Foto</label>
+                    <input type="text" id="autor-foto-alt" name="autor-foto-alt" placeholder="Ex: Foto de Marcelo Gonçalves sorrindo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="autor-linkedin">URL do LinkedIn</label>
+                    <input type="text" id="autor-linkedin" name="autor-linkedin" placeholder="https://linkedin.com/in/...">
+                </div>
+
+                <div class="form-group">
+                    <label for="autor-github">URL do GitHub</label>
+                    <input type="text" id="autor-github" name="autor-github" placeholder="https://github.com/...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="autor-instagram">URL do Instagram</label>
+                    <input type="text" id="autor-instagram" name="autor-instagram" placeholder="https://instagram.com/...">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-view="view-dashboard">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Perfil</button> 
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <div class="modal-overlay" id="modal-upload">
+        <div class="modal-box">
+            <header class="modal-header">
+                <h2>Upload de Imagem</h2>
+                <button class="modal-close-btn" data-close="modal-upload">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="file-upload">Selecionar arquivo</label>
+                    <input type="file" id="file-upload" name="file-upload" accept="image/png, image/jpeg, image/webp">
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close="modal-upload">Cancelar</button>
+                <button type="button" class="btn btn-primary">Fazer Upload</button>
+            </footer>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="modal-category">
+        <div class="modal-box">
+            <header class="modal-header">
+                <h2 id="modal-category-title">Nova Categoria</h2>
+                <button class="modal-close-btn" data-close="modal-category">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cat-nome">Nome da Categoria</label>
+                    <input type="text" id="cat-nome" name="cat-nome" placeholder="Ex: Tutoriais AWS">
+                </div>
+                <div class="form-group">
+                    <label for="cat-slug">Slug</label>
+                    <input type="text" id="cat-slug" name="cat-slug" placeholder="Ex: tutoriais-aws">
+                </div>
+                <div class="form-group">
+                    <label for="cat-icon">Ícone (FontAwesome)</label>
+                    <input type="text" id="cat-icon" name="cat-icon" placeholder="Ex: fa-solid fa-cloud">
+                </div>
+                 <div class="form-group">
+                    <label for="cat-desc">Descrição (SEO)</label>
+                    <textarea id="cat-desc" name="cat-desc" rows="3" placeholder="Uma breve descrição para a página da categoria..."></textarea>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close="modal-category">Cancelar</button>
+                <button type="button" class="btn btn-primary">Salvar</button>
+            </footer>
+        </div>
+    </div>
+
+
+    <script>
+        // JavaScript embutido para simulação de SPA (v1.7)
+        document.addEventListener('DOMContentLoaded', () => {
+            const views = document.querySelectorAll('.view-section');
+            const navLinks = document.querySelectorAll('.sidebar-nav a.nav-link');
+            const editorTitle = document.getElementById('editor-title');
+            
+            // Função para mostrar a view correta e ativar o link do menu
+            function showView(viewId) {
+                views.forEach(view => view.classList.remove('active'));
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                const targetView = document.getElementById(viewId);
+                if (targetView) targetView.classList.add('active');
+                
+                const targetLink = document.querySelector(`.sidebar-nav a[data-view="${viewId}"]`);
+                if (targetLink) targetLink.classList.add('active');
+            }
+
+            // --- Navegação Principal ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const viewId = e.currentTarget.getAttribute('data-view');
+                    
+                    if(viewId === 'view-editor') {
+                        editorTitle.textContent = "Novo Post";
+                        // Limpar formulário (simulação)
+                        document.getElementById('titulo').value = ""; 
+                        document.getElementById('post-status').textContent = "Rascunho";
+                        document.getElementById('post-date-display').textContent = "Imediata";
+                        document.getElementById('schedule-fields').style.display = 'none';
+                    }
+                    
+                    showView(viewId);
+                });
+            });
+            
+            // --- Navegação Secundária (Botões) ---
+            
+            // Botões "Cancelar" ou que voltam ao Dashboard
+            document.querySelectorAll('[data-view="view-dashboard"]').forEach(btn => {
+                 btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showView('view-dashboard');
+                });
+            });
+
+            // Botões "Editar Post"
+            document.querySelectorAll('.btn-edit-post').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    editorTitle.textContent = "Editar Post";
+                    showView('view-editor');
+                    // Simula o carregamento dos dados
+                    document.getElementById('titulo').value = "Como construir um RAG 100% Serverless";
+                    document.getElementById('post-status').textContent = "Publicado";
+                });
+            });
+
+            // --- Lógica dos Modais ---
+            
+            // Abrir modais
+            document.querySelectorAll('[data-modal]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modalId = e.currentTarget.getAttribute('data-modal');
+                    document.getElementById(modalId).classList.add('active');
+                });
+            });
+            
+            // Fechar modais
+            document.querySelectorAll('.modal-close-btn, [data-close]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modalId = e.currentTarget.closest('.modal-overlay').id;
+                    document.getElementById(modalId).classList.remove('active');
+                });
+            });
+            
+            // Lógica Específica do Modal de Categoria
+            document.querySelectorAll('.btn-edit-category').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.getElementById('modal-category-title').textContent = "Editar Categoria";
+                    document.getElementById('cat-nome').value = "Tutoriais AWS"; // Simula dados
+                    document.getElementById('cat-slug').value = "tutoriais-aws";
+                    document.getElementById('cat-icon').value = "fa-solid fa-cloud";
+                });
+            });
+            
+             document.querySelector('[data-modal="modal-category"]:not(.btn-edit-category)').addEventListener('click', (e) => {
+                document.getElementById('modal-category-title').textContent = "Nova Categoria";
+                document.getElementById('cat-nome').value = ""; // Limpa campos
+                document.getElementById('cat-slug').value = "";
+                document.getElementById('cat-icon').value = "";
+            });
+
+            // --- Lógica de Agendamento ---
+            const btnToggleSchedule = document.getElementById('btn-toggle-schedule');
+            const btnCancelSchedule = document.getElementById('btn-cancel-schedule');
+            const scheduleFields = document.getElementById('schedule-fields');
+            const dateDisplay = document.getElementById('post-date-display');
+            const postStatus = document.getElementById('post-status');
+
+            btnToggleSchedule.addEventListener('click', (e) => {
+                e.preventDefault();
+                scheduleFields.style.display = 'block';
+                dateDisplay.textContent = 'Programada: ';
+                postStatus.textContent = "Programado";
+            });
+            
+            btnCancelSchedule.addEventListener('click', (e) => {
+                e.preventDefault();
+                scheduleFields.style.display = 'none';
+                document.getElementById('data_programada').value = '';
+                dateDisplay.textContent = 'Imediata';
+                postStatus.textContent = "Rascunho";
+            });
+
+        });
+    </script>
+</body>
+</html>

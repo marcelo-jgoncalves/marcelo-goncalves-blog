@@ -60,13 +60,21 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 4. Super Destaque: "O Projeto" (Fonte corrigida) */}
+      {/* 4. Super Destaque: "O Projeto" (Atualizado) */}
       <section className="super-destaque">
         <div className="container">
           <h2>
-            Um Blog construído <span className="highlight">quase</span> 100% com IA.
+            Um Blog sobre as tecnologias do futuro, construído <span className="highlight">quase</span> 100% com IA.
           </h2>
-          <p style={{ fontSize: '1.1rem', opacity: 0.9, maxWidth: '700px', margin: '0 auto 30px', fontFamily: 'var(--font-inter)' }}>
+          {/* Ajuste: Removida a opacidade e definida a cor branca pura */}
+          <p style={{ 
+            fontSize: '1.1rem', 
+            color: '#ffffff', 
+            opacity: 1, 
+            maxWidth: '900px', 
+            margin: '0 auto 30px', 
+            fontFamily: 'var(--font-inter)' 
+          }}>
             Acompanhe a jornada, os desafios e os custos reais de construir este site do zero na AWS.
           </p>
           <Link href="/o-projeto" className="btn btn-primary">
@@ -75,23 +83,38 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 5. Populares & Mais Lidos (A SEÇÃO QUE FALTAVA) */}
-      {popularPosts.length > 0 && (
-        <section style={{ padding: '60px 20px', backgroundColor: '#fdfdfd' }}>
-          <div className="container">
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <h2 style={{ fontSize: '2rem', marginBottom: '10px', color: 'var(--aws-dark)' }}>Populares & Mais Lidos</h2>
-              <p style={{ color: '#666' }}>O conteúdo que a comunidade mais acessou</p>
-            </div>
+      {/* --- INSERIR APÓS O FECHAMENTO DA SECTION .super-destaque --- */}
 
-            <div className="posts-grid">
-              {popularPosts.map((post: any) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
+      {/* 5. Populares & Mais Lidos */}
+      <section style={{ padding: '80px 20px', backgroundColor: '#fdfdfd' }}>
+        <div className="container">
+          
+          {/* Cabeçalho da Seção */}
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h2 style={{ fontSize: '2rem', marginBottom: '10px', color: 'var(--aws-dark)' }}>
+              Populares & Mais Lidos
+            </h2>
+            <p style={{ color: '#666', fontFamily: 'var(--font-inter)' }}>
+              O conteúdo que a comunidade mais acessou
+            </p>
           </div>
-        </section>
-      )}
+
+          {/* Grid de Posts */}
+          <div className="posts-grid">
+            {popularPosts.length > 0 ? (
+              popularPosts.map((post: any) => (
+                <PostCard key={post.slug} post={post} />
+              ))
+            ) : (
+              /* Fallback para visualização enquanto não há dados na API */
+              <p className="text-center col-span-full" style={{ color: '#999', textAlign: 'center', width: '100%' }}>
+                Carregando destaques ou sem dados disponíveis...
+              </p>
+            )}
+          </div>
+
+        </div>
+      </section>
 
       {/* 6. Categorias (Layout atualizado) */}
       <section className="container" style={{ padding: '60px 20px' }}>

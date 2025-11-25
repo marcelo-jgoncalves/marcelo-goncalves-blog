@@ -133,8 +133,21 @@ header {
 .post-card h3 a { border-bottom: none !important; color: inherit; }
 .post-card h3 a:hover { color: var(--aws-orange); }
 
+/* frontend/app/globals.css */
+
 .post-card p {
-  color: #666; font-family: var(--font-inter), sans-serif; font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; flex-grow: 1;
+  color: #666; 
+  font-family: var(--font-inter), sans-serif; 
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  margin-bottom: 15px; 
+  flex-grow: 1;
+
+  /* --- NOVO CÓDIGO: Limite de 2 linhas com '...' --- */
+  display: -webkit-box;       /* Necessário para o line-clamp funcionar */
+  -webkit-line-clamp: 2;      /* Define o máximo de 2 linhas */
+  -webkit-box-orient: vertical; /* Define a orientação da caixa */
+  overflow: hidden;           /* Esconde o texto que exceder o limite */
 }
 
 /* Ler Mais Laranja */
@@ -199,5 +212,11 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   /* Grid Desktop: Força 3 colunas iguais */
   .posts-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* CORREÇÃO: Adicionado o ponto antes do nome da classe */
+  .super-destaque {
+    border-radius: 10px;
+    margin: 80px 0; /* Ajuste fino de margem para o desktop */
   }
 }
