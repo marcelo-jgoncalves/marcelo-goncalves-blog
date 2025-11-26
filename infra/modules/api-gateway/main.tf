@@ -1,13 +1,3 @@
-variable "project_name" {}
-variable "environment" {}
-variable "aws_region" {}
-
-# Recebe os dados das Lambdas do módulo anterior
-variable "get_post_invoke_arn" {}
-variable "get_post_function_name" {}
-variable "get_author_invoke_arn" {}
-variable "get_author_function_name" {}
-
 # --- 1. A API REST ---
 resource "aws_api_gateway_rest_api" "main" {
   name        = "${var.project_name}-${var.environment}-api"
@@ -119,6 +109,31 @@ resource "aws_api_gateway_method" "admin_post_slug_options" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_post_slug.id
   http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+# Integração com a Lambda getPosts (reutilizando a mesma lambda)
+resource "aws_api_gateway_integration" "get_populares_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.posts_populares.id
+  http_method             = aws_api_gateway_method.get_populares.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.get_posts_invoke_arn
+}
+
+# --- NOVO RECURSO: /posts/populares ---
+resource "aws_api_gateway_resource" "posts_populares" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.posts.id
+  path_part   = "populares"
+}
+
+# Método GET para /posts/populares
+resource "aws_api_gateway_method" "get_populares" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.posts_populares.id
+  http_method   = "GET"
   authorization = "NONE"
 }
 
@@ -499,22 +514,18 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_resource.autor_id,
       aws_api_gateway_method.get_author,
       aws_api_gateway_integration.get_author_integration,
-
       # --- Recursos Admin Plural (Antigos - /admin/posts) ---
       aws_api_gateway_resource.admin_posts,
       aws_api_gateway_method.admin_posts_any,
       aws_api_gateway_integration.admin_posts_integration,
       aws_api_gateway_method.admin_posts_options,
       aws_api_gateway_integration.admin_posts_options_integration,
-
       # --- Recursos Admin Singular (NOVOS - /admin/post/{slug}) ---
       aws_api_gateway_resource.admin_post_singular,
       aws_api_gateway_resource.admin_post_slug,
-      
       # Método ANY (Protegido)
       aws_api_gateway_method.admin_post_slug_any,
       aws_api_gateway_integration.admin_post_slug_integration,
-      
       # Método OPTIONS (CORS)
       aws_api_gateway_method.admin_post_slug_options,
       aws_api_gateway_integration.admin_post_slug_options_integration,
@@ -528,14 +539,16 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_resource.posts_recentes,
       aws_api_gateway_method.get_recentes,
       aws_api_gateway_integration.get_recentes_integration,
-      
       aws_api_gateway_resource.artigos,
       aws_api_gateway_method.get_artigos,
       aws_api_gateway_integration.get_artigos_integration,
-      
       aws_api_gateway_resource.categoria_slug,
       aws_api_gateway_method.get_categoria,
-      aws_api_gateway_integration.get_categoria_integration
+      aws_api_gateway_integration.get_categoria_integration,
+      aws_api_gateway_resource.posts_populares,
+      aws_api_gateway_method.get_populares,
+      aws_api_gateway_integration.get_populares_integration
+      
       ]))
   }
 
