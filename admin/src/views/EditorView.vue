@@ -183,9 +183,12 @@ function generateSlug() {
           <div class="form-group">
             <label>Categoria</label>
             <select v-model="form.categoria_slug">
-              <option value="tutoriais-aws">Tutoriais AWS</option>
-              <option value="ia-generativa">IA Generativa</option>
-              <option value="engenharia-mlops">Engenharia & MLOps</option>
+              <option value="inteligencia-artificial">Inteligência Artificial</option>
+              <option value="cloud-computing">Cloud Computing</option>
+              <option value="devops-automacao">DevOps e Automação</option>
+              <option value="seguranca-na-nuvem">Segurança na Nuvem</option>
+              <option value="engenharia-de-software">Engenharia de Software</option>
+              <option value="noticias-e-mercado">Notícias e Mercado</option>
             </select>
           </div>
           <div class="checkbox-group">

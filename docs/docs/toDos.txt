@@ -34,3 +34,16 @@ Qto às Imagens:
 No admim
 
 - Uma vez logado, eu fico logado pra sempre na minha máquina a menos que entre em uma aba anônima
+
+No header
+
+- corrigir cor da borda do skip button
+
+No seção do adsense
+
+- retirar fundo cinza e linha
+
+No admin
+
+- corrigir layout de "e_popular"
+- corrigir problema de preview de Imagens

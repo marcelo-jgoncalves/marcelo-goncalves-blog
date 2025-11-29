@@ -20,9 +20,12 @@ export default function Footer() {
           <div className="footer-column">
             <h3>Categorias</h3>
             <div className="footer-links">
-              <Link href="/categoria/ia-generativa">IA Generativa</Link>
-              <Link href="/categoria/tutoriais-aws">Tutoriais AWS</Link>
-              <Link href="/categoria/engenharia-mlops">Engenharia & MLOps</Link>
+              <Link href="/categoria/inteligencia-artificial">Inteligência Artificial</Link>
+              <Link href="/categoria/cloud-computing">Cloud Computing</Link>
+              <Link href="/categoria/devops-automacao">DevOps e Automação</Link>
+              <Link href="/categoria/seguranca-na-nuvem">Segurança na Nuvem</Link>
+              <Link href="/categoria/engenharia-de-software">Engenharia de Software</Link>
+              <Link href="/categoria/noticias-e-mercado">Notícias e Mercado</Link>
             </div>
           </div>
 

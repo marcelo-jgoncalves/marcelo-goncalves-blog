@@ -103,32 +103,42 @@ export default async function Home() {
               </div>
 
               <div className="categories-grid">
-                  <Link href="/categoria/ia-generativa" className="category-card">
+                  <Link href="/categoria/inteligencia-artificial" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-brain"></i></div>
                       <h3>Inteligência Artificial</h3>
                       <p>Análises de modelos como GPT-4, Llama 3 e o futuro da IA generativa.</p>
                   </Link>
-                  <Link href="/categoria/tutoriais-aws" className="category-card">
+
+                  {/* 2. Cloud Computing */}
+                  <Link href="/categoria/cloud-computing" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-cloud"></i></div>
                       <h3>Cloud Computing</h3>
                       <p>Arquitetura serverless, serviços gerenciados e otimização de custos na AWS.</p>
                   </Link>
+
+                  {/* 3. DevOps e Automação */}
                   <Link href="/categoria/devops-automacao" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-gears"></i></div>
                       <h3>DevOps e Automação</h3>
                       <p>Pipelines de CI/CD, Terraform e infraestrutura como código (IaC).</p>
                   </Link>
-                  <Link href="/categoria/seguranca" className="category-card">
+
+                  {/* 4. Segurança na Nuvem */}
+                  <Link href="/categoria/seguranca-na-nuvem" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-shield-halved"></i></div>
                       <h3>Segurança na Nuvem</h3>
                       <p>Melhores práticas de IAM, redes e proteção de dados em ambientes cloud.</p>
                   </Link>
-                  <Link href="/categoria/engenharia-software" className="category-card">
+
+                  {/* 5. Engenharia de Software */}
+                  <Link href="/categoria/engenharia-de-software" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-code"></i></div>
                       <h3>Engenharia de Software</h3>
                       <p>Design patterns, arquitetura limpa e boas práticas de desenvolvimento.</p>
                   </Link>
-                  <Link href="/categoria/noticias" className="category-card">
+
+                  {/* 6. Notícias e Mercado */}
+                  <Link href="/categoria/noticias-e-mercado" className="category-card">
                       <div className="category-icon"><i className="fa-solid fa-newspaper"></i></div>
                       <h3>Notícias & Mercado</h3>
                       <p>As últimas atualizações e o impacto da inteligência artificial nos negócios.</p>

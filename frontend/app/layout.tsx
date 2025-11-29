@@ -5,6 +5,7 @@ import "./globals.css";
 // Importa os componentes
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import SkipLink from "../components/ui/SkipLink";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -30,15 +31,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        {/* Solução CDN para FontAwesome: Estável e Rápida para Dev */}
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        />
+      </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        {/* Elementos Persistentes */}
+        <SkipLink />
         <Header />
-        
-        {/* O conteúdo da página muda aqui */}
-        <main style={{ minHeight: '80vh' }}>
+        <main id="main-content" style={{ minHeight: '80vh' }}>
             {children}
         </main>
-
         <Footer />
       </body>
     </html>
