@@ -80,3 +80,27 @@ export async function getPopularPosts() {
 
   return res.json();
 }
+
+// 5. Buscar Posts por Termo (Search)
+export async function searchPosts(term: string, nextToken?: string) {
+  // Constrói a Query String: ?q=termo&nextToken=...
+  const params = new URLSearchParams();
+  params.set('q', term);
+  if (nextToken) {
+    params.set('nextToken', nextToken);
+  }
+
+  // Busca na API (Endpoint definido no Blueprint seção 6.1)
+  const res = await fetch(`${API_URL}/busca?${params.toString()}`, {
+    // Busca geralmente não deve ser cacheada por muito tempo, 
+    // mas 60s evita DDoS se alguém spammar F5
+    next: { revalidate: 60 }, 
+  });
+
+  if (!res.ok) {
+    // Se a busca falhar ou não retornar nada, retornamos array vazio para não quebrar a UI
+    return { posts: [], nextToken: undefined };
+  }
+
+  return res.json(); // Retorna { termo_busca: "...", posts: [...], nextToken: "..." }
+}

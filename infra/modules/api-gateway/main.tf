@@ -498,6 +498,30 @@ resource "aws_lambda_permission" "apigw_get_posts" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
+# Recurso /busca
+resource "aws_api_gateway_resource" "busca" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_rest_api.main.root_resource_id
+  path_part   = "busca"
+}
+
+# Método GET /busca
+resource "aws_api_gateway_method" "get_busca" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.busca.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+# Integração GET /busca -> Lambda getPosts
+resource "aws_api_gateway_integration" "get_busca_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.busca.id
+  http_method             = aws_api_gateway_method.get_busca.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.get_posts_invoke_arn
+}
 
 # Triggers
 
@@ -547,7 +571,10 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_integration.get_categoria_integration,
       aws_api_gateway_resource.posts_populares,
       aws_api_gateway_method.get_populares,
-      aws_api_gateway_integration.get_populares_integration
+      aws_api_gateway_integration.get_populares_integration,
+      aws_api_gateway_resource.busca,
+      aws_api_gateway_method.get_busca,
+      aws_api_gateway_integration.get_busca_integration
       
       ]))
   }

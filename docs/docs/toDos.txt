@@ -47,3 +47,7 @@ No admin
 
 - corrigir layout de "e_popular"
 - corrigir problema de preview de Imagens
+
+Na página de Artigos
+
+- melhorar botões de "próximo"

@@ -1,11 +1,9 @@
-// backend/src/functions/getPosts/index.ts
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
-// Headers CORS para acesso público
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*", 
@@ -16,7 +14,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   const { queryStringParameters, pathParameters, resource } = event;
   
   try {
-    // Roteamento interno baseado no Resource do API Gateway
     // 1. GET /posts/recentes
     if (resource.includes("/posts/recentes")) {
       return await getRecentPosts();
@@ -27,7 +24,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       return await getPostsByCategory(pathParameters.slug, queryStringParameters);
     }
 
-    // 3. GET /artigos (Todos)
+    // 3. GET /busca (Com lógica Case-Insensitive)
+    if (resource.includes("/busca") || queryStringParameters?.q) {
+      const term = queryStringParameters?.q || "";
+      return await searchPosts(term, queryStringParameters);
+    }
+
+    // 4. GET /artigos (Todos)
     return await getAllPosts(queryStringParameters);
 
   } catch (error: any) {
@@ -42,32 +45,78 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 // --- Funções Auxiliares ---
 
+// Função simples para converter primeira letra em maiúscula (ex: "aws" -> "Aws")
+function toTitleCase(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+async function searchPosts(term: string, queryParams: any) {
+  if (!term || term.trim() === "") {
+    return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
+  }
+
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
+  const nextToken = queryParams?.nextToken;
+
+  // Estratégia Case-Insensitive para DynamoDB Scan:
+  // Como Scan não suporta lower(), buscamos pelas 3 variações mais comuns.
+  const tLower = term.toLowerCase();
+  const tUpper = term.toUpperCase();
+  const tTitle = toTitleCase(term);
+
+  const command = new ScanCommand({
+    TableName: TABLE_NAME,
+    // Busca: (Titulo contém variação 1 OU 2 OU 3) OU (Resumo contém variação 1 OU 2 OU 3)
+    FilterExpression: `
+      (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3)) 
+      OR 
+      (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+    `,
+    ExpressionAttributeValues: { 
+      ":t1": tLower,
+      ":t2": tUpper,
+      ":t3": tTitle
+    },
+    Limit: limit,
+    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+  });
+
+  const result = await dynamo.send(command);
+  
+  const newNextToken = result.LastEvaluatedKey 
+    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
+    : null;
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ 
+      termo_busca: term,
+      posts: result.Items || [],
+      nextToken: newNextToken
+    }),
+    headers
+  };
+}
+
 async function getRecentPosts() {
-  // Usa o GSI StatusPorData para pegar os últimos publicados
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
     KeyConditionExpression: "#status = :status",
     ExpressionAttributeNames: { "#status": "status" },
     ExpressionAttributeValues: { ":status": "Publicado" },
-    ScanIndexForward: false, // Decrescente (mais novos primeiro)
+    ScanIndexForward: false,
     Limit: 3
   });
 
   const result = await dynamo.send(command);
-  
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [] }),
-    headers
-  };
+  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
 }
 
 async function getAllPosts(queryParams: any) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
-  // Paginação com GSI StatusPorData
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
@@ -80,20 +129,9 @@ async function getAllPosts(queryParams: any) {
   });
 
   const result = await dynamo.send(command);
-  
-  // Codifica o nextToken para enviar ao front
-  const newNextToken = result.LastEvaluatedKey 
-    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
-    : null;
+  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ 
-      posts: result.Items || [],
-      nextToken: newNextToken
-    }),
-    headers
-  };
+  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
 async function getPostsByCategory(categorySlug: string, queryParams: any) {
@@ -102,7 +140,7 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
-    IndexName: "CategoriaPorData", // Blueprint Seção 3.2
+    IndexName: "CategoriaPorData",
     KeyConditionExpression: "categoria_slug = :cat",
     ExpressionAttributeValues: { ":cat": categorySlug },
     ScanIndexForward: false,
@@ -111,17 +149,14 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
   });
 
   const result = await dynamo.send(command);
-  
-  const newNextToken = result.LastEvaluatedKey 
-    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
-    : null;
+  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
 
   return {
     statusCode: 200,
     body: JSON.stringify({ 
       posts: result.Items || [],
       nextToken: newNextToken,
-      category: { slug: categorySlug, nome: categorySlug } // Idealmente buscaria o nome bonito na tabela Categorias
+      category: { slug: categorySlug, nome: categorySlug }
     }),
     headers
   };
