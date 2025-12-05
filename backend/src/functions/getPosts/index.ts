@@ -24,13 +24,18 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       return await getPostsByCategory(pathParameters.slug, queryStringParameters);
     }
 
-    // 3. GET /busca (Com lógica Case-Insensitive)
+    // 3. GET /busca
     if (resource.includes("/busca") || queryStringParameters?.q) {
       const term = queryStringParameters?.q || "";
       return await searchPosts(term, queryStringParameters);
     }
 
-    // 4. GET /artigos (Todos)
+    // 4. GET /projeto (NOVO - Timeline Cronológica)
+    if (resource.includes("/projeto")) {
+      return await getProjectPosts(queryStringParameters);
+    }
+
+    // 5. GET /artigos (Default)
     return await getAllPosts(queryStringParameters);
 
   } catch (error: any) {
@@ -45,38 +50,22 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 // --- Funções Auxiliares ---
 
-// Função simples para converter primeira letra em maiúscula (ex: "aws" -> "Aws")
+// Converte para Title Case (ajuda na busca)
 function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-async function searchPosts(term: string, queryParams: any) {
-  if (!term || term.trim() === "") {
-    return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
-  }
-
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
+// Lógica Específica para "O Projeto"
+async function getProjectPosts(queryParams: any) {
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20; // Timeline pode carregar mais itens
   const nextToken = queryParams?.nextToken;
 
-  // Estratégia Case-Insensitive para DynamoDB Scan:
-  // Como Scan não suporta lower(), buscamos pelas 3 variações mais comuns.
-  const tLower = term.toLowerCase();
-  const tUpper = term.toUpperCase();
-  const tTitle = toTitleCase(term);
-
-  const command = new ScanCommand({
+  const command = new QueryCommand({
     TableName: TABLE_NAME,
-    // Busca: (Titulo contém variação 1 OU 2 OU 3) OU (Resumo contém variação 1 OU 2 OU 3)
-    FilterExpression: `
-      (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3)) 
-      OR 
-      (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
-    `,
-    ExpressionAttributeValues: { 
-      ":t1": tLower,
-      ":t2": tUpper,
-      ":t3": tTitle
-    },
+    IndexName: "ProjetoPorData", // GSI específico definido no Blueprint
+    KeyConditionExpression: "e_projeto = :val",
+    ExpressionAttributeValues: { ":val": 1 }, // 1 = true (post faz parte do projeto)
+    ScanIndexForward: true, // TRUE = Ascendente (Mais antigos primeiro -> Cronologia)
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
@@ -90,12 +79,43 @@ async function searchPosts(term: string, queryParams: any) {
   return {
     statusCode: 200,
     body: JSON.stringify({ 
-      termo_busca: term,
       posts: result.Items || [],
       nextToken: newNextToken
     }),
     headers
   };
+}
+
+async function searchPosts(term: string, queryParams: any) {
+  if (!term || term.trim() === "") {
+    return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
+  }
+
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
+  const nextToken = queryParams?.nextToken;
+
+  const tLower = term.toLowerCase();
+  const tUpper = term.toUpperCase();
+  const tTitle = toTitleCase(term);
+
+  const command = new ScanCommand({
+    TableName: TABLE_NAME,
+    FilterExpression: `
+      (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3)) 
+      OR 
+      (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+    `,
+    ExpressionAttributeValues: { 
+      ":t1": tLower, ":t2": tUpper, ":t3": tTitle
+    },
+    Limit: limit,
+    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+  });
+
+  const result = await dynamo.send(command);
+  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+
+  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
 async function getRecentPosts() {
@@ -108,7 +128,6 @@ async function getRecentPosts() {
     ScanIndexForward: false,
     Limit: 3
   });
-
   const result = await dynamo.send(command);
   return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
 }
@@ -151,13 +170,13 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
 
-  return {
-    statusCode: 200,
+  return { 
+    statusCode: 200, 
     body: JSON.stringify({ 
-      posts: result.Items || [],
-      nextToken: newNextToken,
-      category: { slug: categorySlug, nome: categorySlug }
-    }),
-    headers
+      posts: result.Items || [], 
+      nextToken: newNextToken, 
+      category: { slug: categorySlug, nome: categorySlug } 
+    }), 
+    headers 
   };
 }

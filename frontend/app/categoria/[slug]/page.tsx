@@ -1,137 +1,144 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getPostsByCategory } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
+import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 
-// Revalidação a cada 1 hora
-export const revalidate = 3600;
+// 1. Configuração de Cache (ISR)
+export const revalidate = 60;
 
-// Interface para tipar a resposta da API
-interface CategoryPageData {
-  categoria: {
-    nome_exibicao: string;
-    descricao_seo: string;
-    icone_fa: string; // Ex: "fa-solid fa-cloud"
-  };
-  posts: any[];
+// 2. Mapa de Metadados (Fallback visual)
+const CATEGORY_META: Record<string, { title: string; description: string }> = {
+  'tutoriais-aws': {
+    title: 'Tutoriais AWS',
+    description: 'Guias práticos e tutoriais passo a passo para construir e implantar soluções de IA 100% serverless na nuvem da AWS.'
+  },
+  'inteligencia-artificial': {
+    title: 'Inteligência Artificial',
+    description: 'Análises de modelos como GPT-4, Llama 3 e o futuro da IA generativa.'
+  },
+  'cloud-computing': {
+    title: 'Cloud Computing',
+    description: 'Arquitetura serverless, serviços gerenciados e otimização de custos.'
+  },
+  'devops-automacao': {
+    title: 'DevOps & Automação',
+    description: 'Pipelines de CI/CD, Terraform e infraestrutura como código (IaC).'
+  },
+  'seguranca-na-nuvem': {
+    title: 'Segurança',
+    description: 'Melhores práticas de IAM, redes e proteção de dados em ambientes cloud.'
+  },
+  'engenharia-de-software': {
+    title: 'Engenharia',
+    description: 'Design patterns, arquitetura limpa e boas práticas de desenvolvimento.'
+  },
+  'noticias-e-mercado': {
+    title: 'Notícias & Mercado',
+    description: 'As últimas atualizações e o impacto da tecnologia nos negócios.'
+  }
+};
+
+// 3. Tipagem das Props
+interface CategoryPageProps {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// Busca os dados da categoria e dos posts
-async function getCategoryData(slug: string): Promise<CategoryPageData | null> {
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/categoria/${slug}`;
-  
-  try {
-    const res = await fetch(endpoint);
-    if (!res.ok) return null;
-    return res.json();
-  } catch (error) {
-    console.error(`Erro ao buscar categoria ${slug}:`, error);
-    return null;
-  }
-}
-
-// Gera o Metadata (Título e Descrição) dinâmico para SEO
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  // Await params necessário no Next.js 15
-  const { slug } = await params;
-  const data = await getCategoryData(slug);
-
-  if (!data) {
-    return { title: 'Categoria não encontrada | IA Decifrada' };
-  }
-
+// 4. Metadados SEO
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const resolvedParams = await params;
+  const meta = CATEGORY_META[resolvedParams.slug];
+  if (!meta) return { title: 'Categoria Não Encontrada | IA Decifrada' };
   return {
-    title: `${data.categoria.nome_exibicao} | IA Decifrada`,
-    description: data.categoria.descricao_seo,
+    title: `Artigos sobre ${meta.title} | IA Decifrada`,
+    description: meta.description,
   };
 }
 
-// Componente da Página
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
-  const data = await getCategoryData(slug);
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  
+  const { slug } = resolvedParams;
+  const nextToken = typeof resolvedSearchParams.nextToken === 'string' ? resolvedSearchParams.nextToken : undefined;
 
-  // Se a categoria não existir na API, retorna 404
-  if (!data) {
-    notFound();
+  let posts = [];
+  let nextPageToken = undefined;
+  
+  // Busca na API
+  try {
+    const data = await getPostsByCategory(slug, nextToken);
+    if (data) {
+      posts = data.posts || [];
+      nextPageToken = data.nextToken;
+    }
+  } catch (error) {
+    console.error("Erro ao buscar categoria:", error);
+    // Se der erro grave, não faz notFound() direto, deixa renderizar vazio para debug
   }
 
-  const { categoria, posts } = data;
+  // Se não tem no mapa, usa fallback genérico formatado
+  const meta = CATEGORY_META[slug] || {
+    title: slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+    description: `Artigos e tutoriais sobre ${slug.replace(/-/g, ' ')}.`
+  };
 
   return (
     <>
-      {/* 1. Category Hero */}
-      <section className="hero-section"> {/* Reutilizando a classe do globals.css */}
-        <div className="container">
-          {/* Ícone da Categoria (Destaque visual) */}
-          <div style={{ 
-            fontSize: '3rem', 
-            color: 'var(--aws-orange)', 
-            marginBottom: '20px' 
-          }}>
-            <i className={categoria.icone_fa}></i>
-          </div>
-
-          <h1 className="hero-title">
-            Artigos sobre: <span className="highlight">{categoria.nome_exibicao}</span>
+      {/* Hero da Categoria (Fiel ao Protótipo pgn-categoria-v1.0.html) */}
+      <section className="search-hero"> {/* Reutilizando classe do globals.css que bate com o estilo */}
+        <div className="search-header-content">
+          <h1 style={{ marginBottom: '20px' }}>
+            Artigos na Categoria: <span className="highlight">{meta.title}</span>
           </h1>
-          
-          <p className="hero-subtitle">
-            {categoria.descricao_seo}
+          <p className="search-results-subtitle">
+            {meta.description}
           </p>
         </div>
       </section>
 
-      {/* 2. Grid de Posts */}
-      <section className="container" style={{ padding: '80px 20px' }}>
-        
-        {/* Banner Superior */}
-        <div style={{ marginBottom: '60px' }}>
-            <AdSenseBanner />
-        </div>
-
-        {posts.length > 0 ? (
-          <div className="posts-grid">
-            {posts.map((post: any) => (
-              <PostCard key={post.slug} post={post} />
-            ))}
-          </div>
-        ) : (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>
-            <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
-              Ainda não há artigos nesta categoria.
-            </p>
-            <Link href="/artigos" className="btn btn-outline" style={{ color: 'var(--aws-dark)', borderColor: 'var(--aws-dark)' }}>
-              Ver todos os artigos
-            </Link>
-          </div>
-        )}
-
-        {/* Paginação (Estática por enquanto, igual à página /artigos) */}
-        {posts.length > 0 && (
-          <nav className="pagination">
-              <span className="page-numbers current">1</span>
-              <Link href={`/categoria/${slug}/pagina/2`} className="page-numbers">2</Link>
-              <Link href={`/categoria/${slug}/pagina/2`} className="page-numbers">Próxima &rarr;</Link>
-          </nav>
-        )}
-
-        {/* Banner Inferior */}
-        <div style={{ paddingTop: '40px' }}>
-            <AdSenseBanner />
-        </div>
-
-      </section>
-
-      {/* 3. CTA Newsletter */}
-      <section className="cta">
+      {/* Grid de Posts */}
+      <section className="post-grid-container">
         <div className="container">
-            <h2>Quer dominar {categoria.nome_exibicao}?</h2>
-            <p>Inscreva-se na nossa newsletter e receba os melhores guias e tutoriais diretamente no seu email.</p>
-            <Link href="/newsletter" className="btn-outline">Inscrever-se agora</Link>
+          
+          <div className="adsense-banner">
+             <AdSenseBanner />
+          </div>
+
+          <div className="posts-grid">
+            {posts.length > 0 ? (
+              posts.map((post: any) => (
+                <PostCard key={post.slug} post={post} />
+              ))
+            ) : (
+              // Estado Vazio (Centralizado)
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 0' }}>
+                <p style={{ color: '#666', fontSize: '1.2rem', marginBottom: '20px' }}>
+                  Ainda não publicamos artigos nesta categoria.
+                </p>
+                <Link href="/artigos" style={{ color: 'var(--aws-orange)', fontWeight: 600, fontSize: '1.1rem' }}>
+                  Ver todos os artigos &rarr;
+                </Link>
+              </div>
+            )}
+          </div>
+          
+          <Pagination 
+            nextToken={nextPageToken} 
+            basePath={`/categoria/${slug}`} 
+          />
+
+          <div style={{ paddingTop: '40px', paddingBottom: 0 }}>
+             <AdSenseBanner />
+          </div>
+
         </div>
       </section>
+
+      <NewsletterCTA />
     </>
   );
 }

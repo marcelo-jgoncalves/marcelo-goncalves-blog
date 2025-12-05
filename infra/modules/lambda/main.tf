@@ -98,8 +98,8 @@ resource "aws_lambda_function" "get_post" {
   handler       = "index.handler"
   runtime       = "nodejs20.x"
 
-  filename         = "${path.root}/builds/nextjs.zip"
-  source_code_hash = filebase64sha256("${path.root}/builds/nextjs.zip")
+  filename         = "${path.root}/builds/getPost.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/getPost.zip")
 
   environment {
     variables = {

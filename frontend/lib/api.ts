@@ -104,3 +104,18 @@ export async function searchPosts(term: string, nextToken?: string) {
 
   return res.json(); // Retorna { termo_busca: "...", posts: [...], nextToken: "..." }
 }
+
+// 6. Buscar Posts do Projeto (Timeline)
+export async function getProjectPosts(nextToken?: string) {
+  const params = new URLSearchParams();
+  if (nextToken) params.set('nextToken', nextToken);
+
+  // Endpoint definido no Blueprint v1.7
+  const res = await fetch(`${API_URL}/projeto?${params.toString()}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) return { posts: [], nextToken: undefined };
+
+  return res.json();
+}

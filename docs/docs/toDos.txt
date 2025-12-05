@@ -51,3 +51,11 @@ No admin
 Na página de Artigos
 
 - melhorar botões de "próximo"
+
+Na página d'O Projeto
+
+- melhorar espaçamento do banner adsense
+
+Todas as Páginas:
+
+- Padronizar a altura do hero
