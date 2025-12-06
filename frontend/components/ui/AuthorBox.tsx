@@ -1,31 +1,48 @@
 import Link from 'next/link';
 
-// Definimos uma interface para as props que o componente recebe
 interface AuthorBoxProps {
   author: {
     nome_exibicao: string;
-    bio: string; // HTML string
-    foto_avatar_url: string;
+    bio: string;
+    foto_avatar_url?: string; // Pode ser undefined/null
     linkedin_url?: string;
     github_url?: string;
   };
 }
 
 export default function AuthorBox({ author }: AuthorBoxProps) {
+  // Verifica se a URL é válida (não nula e não vazia)
+  const hasAvatar = author.foto_avatar_url && author.foto_avatar_url.trim() !== '';
+
   return (
     <section className="author-box">
       <div className="author-avatar">
-        {/* Usamos img simples por enquanto para não complicar com Next/Image domains */}
-        <img src={author.foto_avatar_url} alt={author.nome_exibicao} style={{width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover'}} />
+        {hasAvatar ? (
+          <img 
+            src={author.foto_avatar_url} 
+            alt={author.nome_exibicao} 
+            // As classes CSS agora controlam o tamanho e radius
+          />
+        ) : (
+          /* Fallback visual: Ícone centralizado */
+          <div className="author-avatar-placeholder">
+            <i className="fas fa-user"></i>
+          </div>
+        )}
       </div>
+
       <div className="author-info">
         <h4>{author.nome_exibicao}</h4>
-        {/* Renderiza o HTML da bio (cuidado com XSS em apps reais, aqui confiamos na API admin) */}
+        
+        {/* Bio HTML */}
         <div dangerouslySetInnerHTML={{ __html: author.bio }} />
         
-        {/* Link CTA de Serviços injetado manualmente se não vier na bio */}
-        <p className="cta-servicos" style={{ fontSize: '0.9rem', marginTop: '10px' }}>
-            Precisa de um especialista? <Link href="/servicos" style={{ color: 'var(--blue-600)', textDecoration: 'underline' }}>Clique aqui para saber como posso ajudar</Link>.
+        {/* Link CTA de Serviços (Com classes CSS em vez de style inline) */}
+        <p className="cta-servicos">
+            Precisa de um especialista?{' '}
+            <Link href="/servicos" className="cta-link">
+              Clique aqui para saber como posso ajudar
+            </Link>.
         </p>
 
         <div className="author-social">

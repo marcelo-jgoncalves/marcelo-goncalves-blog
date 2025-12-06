@@ -1,7 +1,7 @@
 # Relatório Técnico de Handover: Blog Marcelo Gonçalves
-**Versão:** 3.1 (Consolidada)
-**Data:** 29 de Novembro de 2025
-**Status:** Fase 3 em Andamento (Homepage Finalizada).
+**Versão:** 4.0 (Frontend Público Finalizado)
+**Data:** 05 de Dezembro de 2025
+**Status:** Finalizar fase 3 (Frontend). Foco atual: Finalizar Página de Padrão de Post,Refinamento Visual e Finalização do Admin.
 **Arquitetura:** Serverless AWS (Headless) | **IaC:** Terraform | **Frontend:** Next.js 15 (OpenNext)
 
 ---
@@ -12,7 +12,7 @@ Se você é uma IA ou desenvolvedor assumindo este projeto, **LEIA ESTES ARQUIVO
 
 ### 0.1. Arquivos de Contexto Obrigatório
 1.  **`blueprint-v1.7.md`**: A "Bíblia" do projeto (Schema, Regras de Negócio, Rotas).
-2.  **`frontend/app/globals.css`**: Fonte da verdade visual. Contém variáveis (`--aws-orange`), tipografia (`.hero-title`) e grids.
+2.  **`frontend/app/globals.css`**: A **Fonte da Verdade Visual**. Contém toda a estrutura CSS (Grids, Timeline, Bio, Tipografia) e os estilos de componentes.
 3.  **`frontend/lib/api.ts`**: Cliente HTTP centralizado. Use-o para todos os fetches.
 4.  **`infra/modules/api_gateway/main.tf`**: Definição de rotas e do estágio `v1`.
 5.  **`backend/build.js`**: Script de build crítico para as Lambdas.
@@ -30,94 +30,68 @@ marcelogoncalves-tech/
 ├── backend/                # Lógica de Negócio (Node.js 20 + TypeScript)
 │   └── build.js            # Script customizado (esbuild)
 ├── frontend/               # Blog Público (Next.js 15 + OpenNext v3)
-│   ├── app/                # App Router (globals.css, layout.tsx, page.tsx)
+│   ├── app/                # App Router (globals.css, layout.tsx, page.tsx, etc.)
 │   └── lib/api.ts          # Cliente API
 └── admin/                  # CMS Interno (Vue.js 3 + Vite + Amplify)
 ```
 
 ---
 
-## 1. Status Técnico dos Componentes (Detalhes Críticos)
+## 1. Status Técnico Atual (O Que Está Pronto)
 
-### 1.1. Infraestrutura (Terraform)
-* **Estado:** Local (na máquina do Marcelo).
-* **Módulo Frontend:** Configura S3 + CloudFront + Lambda URL.
-    * **⚠️ Atenção:** O CloudFront foi configurado para **NÃO** repassar o header `Host` para a Lambda (correção de erro 403).
-    * **⚠️ Atenção:** A rota `/media/*` no CloudFront aponta direto para o S3 (imagens), ignorando o Next.js.
-* **Módulo Media:** Bucket S3 com CORS habilitado e Trigger para Lambda `imageProcessor`.
-* **API Gateway:** REST API regional com Authorizer (`CognitoAuthorizer`) nas rotas `/admin/*`. Stage implantado: `v1`.
+### 1.1. Frontend Público (Next.js 15) - **100% IMPLEMENTADO**
+* **Páginas Criadas:**
+    * Home (`/`)
+    * Artigos (`/artigos`)
+    * Busca (`/busca`)
+    * Categoria Dinâmica (`/categoria/[slug]`)
+    * O Projeto (Timeline) (`/o-projeto`)
+    * Sobre (`/sobre`)
+    * Serviços (`/servicos`)
+    * Post Padrão (`/post/[slug]`)
+    * 404 (`/not-found`)
+* **Componentes Chave:**
+    * **`Header.tsx`:** Client Component inteligente (destaque de link ativo + menu mobile).
+    * **`NewsletterCTA.tsx`:** Componente reutilizável de captura de leads.
+    * **`AdSenseBanner.tsx`:** Versão limpa (sólida), sem bordas tracejadas.
+* **Estilização:** CSS Puro padronizado em `globals.css`. Design System completo (Cores, Tipografia, Espaçamentos).
 
-### 1.2. Backend (Lambdas)
-* **Runtime:** Node.js 20.
-* **Build System:** Script customizado (`backend/build.js`) usando `esbuild`. Força `format: 'cjs'` (CommonJS).
-* **Sharp.js:** A função `imageProcessor` instala binários nativos Linux x64 durante o build. **Não alterar essa lógica.**
-* **Endpoints Ativos:**
-    * Públicos: `getPost`, `getPosts`, `getAuthor`.
-    * Admin: `adminPosts` (CRUD + CORS Options), `mediaUpload` (Presigned URLs).
-    * Trigger: `imageProcessor` (Redimensiona para 1280px WebP).
-
-### 1.3. Frontend Público (Next.js)
-* **Versão:** Next.js 15 (App Router).
-* **Engine:** OpenNext v3.
-* **⚠️ Breaking Change Next.js 15:** Em `page.tsx` e `layout.tsx`, `params` agora é uma **Promise**. O código já usa `await params`.
-* **Estilização:** CSS Puro (`globals.css`). Tailwind foi removido.
-* **Layout:** Mobile-First. Grid de 3 colunas e bordas arredondadas aplicadas via `@media (min-width: 768px)`.
-
-### 1.4. Frontend Admin (Vue.js)
-* **Stack:** Vue 3, Vite, Pinia, AWS Amplify.
-* **Auth:** Conectado ao User Pool do Cognito.
-* **Status:** Funcionalidades prontas (Login, Dashboard, Edição, Upload S3).
+### 1.2. Backend & Infraestrutura
+* **Rotas API Gateway:** Todas as rotas públicas configuradas (`/busca`, `/projeto`, `/posts/*`, `/artigos`, `/categoria/*`).
+* **Lambdas:**
+    * **`getPosts`:** Atualizada com lógica de busca (`Scan` case-insensitive), paginação e ordenação ascendente para a Timeline (`/projeto`).
+    * **`getPost`:** Corrigido erro crítico de apontamento de ZIP no Terraform (`main.tf` do módulo lambda).
+* **Correções Críticas:** O CloudFront não repassa o header `Host` (fix 403), e o CORS está configurado para o Admin.
 
 ---
 
-## 2. Backlog e Próximos Passos (Ordem de Execução)
+## 2. Backlog Prioritário (Ordem de Execução)
 
-A Homepage está pronta. A próxima IA deve seguir esta ordem:
+A próxima IA deve focar **exclusivamente** nestes itens para fechar o projeto:
 
-### 2.1. Página de Arquivo (`/artigos`) - **PRIORIDADE 1**
-* **Status:** Código base gerado.
-* **A fazer:** Validar paginação visual e integração com `getAllPosts`.
+### 2.1. Refinamento Visual Global (Polimento) - **PRIORIDADE 1**
+* **Padronização de Espaçamento:** Revisar o `globals.css` para garantir que o ritmo vertical (margens entre seções) seja consistente em todas as páginas (validar margens de 60px/80px).
+* **Responsividade Fina:** Testar o comportamento de quebra de grids (3 colunas -> 1 coluna) em tablets e garantir que o menu mobile feche ao clicar.
 
-### 2.2. Página de Categoria Dinâmica (`/categoria/[slug]`) - **PRIORIDADE 2**
-* **A fazer:** Criar rota dinâmica, consumir endpoint `/categoria/{slug}` e implementar Hero com ícone.
-* **Slugs Oficiais:** `inteligencia-artificial`, `cloud-computing`, `devops-automacao`, `seguranca-na-nuvem`, `engenharia-de-software`, `noticias-e-mercado`.
+### 2.2. Finalização do CMS Admin (`/admin`) - **PRIORIDADE 2**
+O Admin em Vue.js existe, mas o **Editor de Postagens** precisa ser finalizado.
+* **Ferramenta de Escrita:** Integrar uma lib de Rich Text (como **Quill** ou **Tiptap**) no campo `conteudo_html` do Vue.
+* **Metadados:** Conectar os campos de SEO (Título Meta, Descrição Meta, Alt Text) ao formulário de criação/edição e garantir que a Lambda `adminPosts` salve esses dados no DynamoDB.
+* **Categorias:** Atualizar o `<select>` de categorias no `Editor.vue` para usar os **slugs oficiais** definidos no Frontend (`tutoriais-aws`, `ia-generativa`, etc.).
 
-### 2.3. Página "O Projeto" (`/o-projeto`)
-* **Requisitos:** Implementar a timeline vertical (CSS específico).
-
-### 2.4. Ajustes no Admin (CMS)
-* **Ação:** Atualizar o `<select>` de categorias no `admin/src/views/Editor.vue` para usar os **Slugs Oficiais** acima.
-
----
-
-## 3. Procedimentos Operacionais Padrão (SOP)
-
-**Atenção Crítica:** O Turbopack é sensível. Siga estes passos para limpar o ambiente se ocorrerem erros de "panic".
-
-### 3.1. Limpeza de Cache (Panic Fix)
-```bash
-rm -rf frontend/.next
-npm run dev
-```
-
-### 3.2. Deploy Manual do Frontend (Procedimento Crítico)
-```bash
-cd frontend
-npm run build:open
-# O ZIP deve ser criado DENTRO da pasta default, NÃO da raiz:
-cd .open-next/server-function/default
-zip -r ../../../../infra/builds/nextjs.zip .
-cd ../../../..
-# Sync de Assets:
-aws s3 sync frontend/.open-next/assets s3://[BUCKET_ASSETS] --profile dev
-# Atualizar Lambda:
-cd infra
-terraform apply -var-file="env/dev.tfvars" -auto-approve
-```
+### 2.3. Fase 4: Pipeline de Produção (CI/CD)
+* **GitHub Actions:** Configurar o pipeline para deploy automático em `prod` após merge na `main` (com aprovação manual via OIDC).
 
 ---
 
-## 4. Notas Finais para a IA
-* **Estilo Visual:** Sempre consulte `frontend/app/globals.css` antes de criar novos estilos. A consistência com o protótipo (Space Grotesk, Cores) é prioridade.
-* **Imagens:** O CloudFront serve imagens via `/media/*`. Se uma imagem não carregar, verifique se a URL no banco começa com `media/` ou é absoluta. O `PostCard` trata ambos, mas a variável `NEXT_PUBLIC_MEDIA_URL` deve estar correta.
-* **CORS no Admin:** Se tiver problemas de "Network Error" no Admin, verifique se a Lambda `adminPosts` está retornando os headers CORS explicitamente no bloco `catch`.
+## 3. Notas Técnicas para a IA (Decisões de Design)
+
+### 3.1. Arquitetura CSS (Importante)
+* **Timeline Vertical (`/o-projeto`):** Implementada usando **CSS Grid** com 2 colunas e `display: contents` nos itens filhos para alinhamento sem hacks.
+    * **Atenção:** Os banners AdSense dentro desta página usam um wrapper especial (`.timeline-banner-wrapper`) para ficarem fora do grid mas visualmente alinhados com o texto.
+* **Página de Post (`/post/[slug]`):** Utiliza layout centralizado (`text-align: center` no header) com fundo limpo (sem cinza). O corpo do texto (`.article-body`) tem tipografia rica para H2, H3, listas e código.
+* **Página Sobre (`/sobre`):** Utiliza layout flutuante (`float: left` no desktop) para a biografia, garantindo o "abraço" do texto na imagem.
+
+### 3.2. Procedimentos de Deploy
+* **Frontend:** Sempre rodar `npm run build:open` e zipar a pasta `.open-next/server-function/default`.
+* **Backend:** Sempre rodar `node backend/build.js` antes do Terraform.

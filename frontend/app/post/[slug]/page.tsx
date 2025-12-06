@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { getPost, getAuthor } from '@/lib/api';
 import AuthorBox from '@/components/ui/AuthorBox';
 import TOCBox from '@/components/ui/TOCBox';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PopularPostsSection from '@/components/ui/PopularPostsSection'; // 1. Importação
 
 // --- CORREÇÃO PARA NEXT.JS 15 ---
-// Define params como uma Promise
 type Params = Promise<{ slug: string }>;
 
 interface PageProps {
@@ -17,7 +18,6 @@ interface PageProps {
 // 1. Gera Metadados para SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   try {
-    // OBRIGATÓRIO: Aguardar a promise params
     const { slug } = await params;
     
     const data = await getPost(slug);
@@ -35,10 +35,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // 2. Componente da Página
 export default async function PostPage({ params }: PageProps) {
-  // OBRIGATÓRIO: Aguardar a promise params antes de usar o slug
   const { slug } = await params;
 
-  // Agora o slug terá o valor correto ("teste-inicial") em vez de undefined
   const postData = await getPost(slug);
 
   if (!postData || !postData.post) {
@@ -124,13 +122,10 @@ export default async function PostPage({ params }: PageProps) {
         <AuthorBox author={author} />
       </article>
 
-      <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: 'var(--aws-dark)', color: 'white', marginTop: '60px' }}>
-        <div className="container">
-            <h2 style={{ fontFamily: 'var(--font-space-grotesk)', fontSize: '2rem', marginBottom: '20px' }}>Quer se aprofundar em IA, AWS e DevOps?</h2>
-            <p style={{ maxWidth: '600px', margin: '0 auto 30px', opacity: 0.9, fontSize: '1.1rem' }}>Inscreva-se na nossa newsletter e receba análises exclusivas.</p>
-            <Link href="/newsletter" className="btn-outline">Inscrever-se agora</Link>
-        </div>
-      </section>
+      {/* 2. Seção de Populares (Inserida antes do CTA) */}
+      <PopularPostsSection />
+
+      <NewsletterCTA />
     </>
   );
 }

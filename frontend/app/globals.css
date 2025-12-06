@@ -729,3 +729,226 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   .timeline-grid::before, .timeline-cell-dot { display: none !important; }
   .timeline-cell-content { display: block; margin-bottom: 30px; padding-left: 0; }
 }
+
+/* =========================================
+   10. PATCH FINAL: PÁGINA DE POST (Layout Pilha)
+   ========================================= */
+
+/* 1. Container Centralizado */
+.post-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 2. Hero Centralizado */
+.post-hero {
+  background: var(--bg-light-gradient);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.post-header-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* CORREÇÃO DE FONTE: Forçar padrão .hero-title */
+/* Mobile */
+.post-hero h1 {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-dark);
+  font-size: 2.5rem; /* Igual .hero-title mobile */
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+/* 3. Imagem de Destaque (Sem sobreposição) */
+.post-featured-image {
+  width: 100%;
+  height: 250px; /* Mobile */
+  background-color: #eee;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0; /* Borda fina padrão */
+  /* Margens removidas aqui, serão controladas no layout ou classes utilitárias */
+  margin-bottom: 40px; 
+}
+
+/* 4. Tipografia e Elementos */
+.post-tag-header {
+  display: inline-block;
+  background-color: var(--aws-orange);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.post-tag-header:hover { opacity: 0.9; }
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 20px;
+  font-family: var(--font-inter);
+}
+.post-meta .icon { color: var(--aws-orange); margin-right: 6px; }
+
+/* Conteúdo */
+.post-content {
+  max-width: 800px; /* Redundância de segurança */
+  margin: 0 auto;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--gray-800);
+}
+.post-content h2 { font-family: var(--font-space-grotesk); font-size: 1.8rem; margin-top: 2em; margin-bottom: 0.8em; color: var(--aws-dark); font-weight: 700; }
+.post-content h3 { font-family: var(--font-space-grotesk); font-size: 1.4rem; margin-top: 1.5em; margin-bottom: 0.8em; color: var(--aws-dark); font-weight: 700; }
+.post-content p { margin-bottom: 1.5em; }
+.post-content ul, .post-content ol { padding-left: 1.5em; margin-bottom: 1.5em; }
+.post-content li { margin-bottom: 0.5em; }
+.post-content a { color: var(--blue-600); text-decoration: underline; }
+
+/* Desktop Overrides */
+@media (min-width: 768px) {
+  .post-hero { padding: 80px 20px; }
+  
+  /* Padrão Desktop do Design System */
+  .post-hero h1 { font-size: 3.5rem; } 
+  
+  .post-featured-image { height: 400px; }
+}
+
+/* =========================================
+   FIX FINAL: AUTHOR BOX
+   ========================================= */
+
+.author-box { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    gap: 20px; 
+    margin-top: 60px; 
+    padding-top: 40px; 
+    border-top: 1px solid #e0e0e0; 
+}
+
+/* O Container do Avatar (O culpado do erro) */
+.author-avatar { 
+    /* Força bruta nas dimensões */
+    width: 80px !important; 
+    height: 80px !important; 
+    min-width: 80px !important; /* Segurança extra */
+    
+    border-radius: 50%; 
+    background-color: #e0e0e0; 
+    flex-shrink: 0; /* Impede que o flexbox esmague ou estique */
+    overflow: hidden; /* Corta qualquer coisa que passar do círculo */
+    
+    /* Centraliza no mobile */
+    margin: 0 auto;
+    
+    /* Centraliza o conteúdo (ícone ou img) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* A Imagem dentro do avatar */
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* O Placeholder (quando não tem imagem) */
+.author-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e2e8f0;
+    color: #a0aec0;
+}
+
+/* O ícone dentro do placeholder */
+.author-avatar-placeholder i {
+    font-size: 2.5rem; /* Tamanho controlado do ícone */
+}
+
+/* Informações do texto */
+.author-info h4 { 
+    font-family: var(--font-space-grotesk); 
+    font-size: 1.5rem; 
+    color: var(--aws-dark); 
+    margin-top: 0; 
+    margin-bottom: 5px; 
+}
+
+.author-info p { 
+    font-size: 0.95rem; 
+    color: #666; 
+    margin-bottom: 15px; 
+    line-height: 1.5; 
+}
+
+/* Links Sociais */
+.author-social { 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; 
+}
+
+.author-social a { 
+    color: var(--gray-800); 
+    font-size: 1.5rem; 
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+.author-social a:hover { 
+    color: var(--aws-orange); 
+}
+
+/* CTA de Serviços dentro do box */
+.cta-servicos {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    color: var(--gray-text);
+}
+
+.cta-link {
+    color: var(--blue-600);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .author-box { 
+        flex-direction: row; 
+        align-items: flex-start; 
+        text-align: left; 
+        gap: 25px; 
+    }
+    .author-social { 
+        justify-content: flex-start; 
+    }
+    .author-avatar {
+        margin: 0; /* Remove a margem automática do mobile */
+    }
+}
