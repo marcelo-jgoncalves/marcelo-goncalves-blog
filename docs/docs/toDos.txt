@@ -59,3 +59,7 @@ Na página d'O Projeto
 Todas as Páginas:
 
 - Padronizar a altura do hero
+
+adsense
+
+- Padronizar banners adsense do topo e do meio das postagens.

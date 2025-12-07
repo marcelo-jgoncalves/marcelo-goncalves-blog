@@ -6,7 +6,8 @@ import { getPost, getAuthor } from '@/lib/api';
 import AuthorBox from '@/components/ui/AuthorBox';
 import TOCBox from '@/components/ui/TOCBox';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import PopularPostsSection from '@/components/ui/PopularPostsSection'; // 1. Importação
+import PopularPostsSection from '@/components/ui/PopularPostsSection';
+import { injectAdInContent } from '@/lib/injectAd'; // Importação da lógica de injeção
 
 // --- CORREÇÃO PARA NEXT.JS 15 ---
 type Params = Promise<{ slug: string }>;
@@ -35,8 +36,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // 2. Componente da Página
 export default async function PostPage({ params }: PageProps) {
+  // Aguarda os parâmetros (obrigatório no Next 15)
   const { slug } = await params;
 
+  // Busca dados do post
   const postData = await getPost(slug);
 
   if (!postData || !postData.post) {
@@ -45,6 +48,7 @@ export default async function PostPage({ params }: PageProps) {
 
   const { post } = postData;
 
+  // Busca dados do autor
   const authorData = await getAuthor(post.autor_id);
   const author = authorData?.autor || { 
     nome_exibicao: 'Autor Desconhecido', 
@@ -52,17 +56,27 @@ export default async function PostPage({ params }: PageProps) {
     foto_avatar_url: '' 
   };
 
+  // Formata a data
   const formattedDate = new Date(post.data_publicacao).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
   });
 
+  // --- LÓGICA DE INJEÇÃO DE ADSENSE ---
+  // Injeta o banner automaticamente no meio dos parágrafos
+  const contentWithAd = injectAdInContent(post.conteudo_html);
+
   return (
     <>
+      {/* 1. Hero / Cabeçalho */}
       <section className="post-hero">
         <div className="post-header-content container">
-          <Link href={`/categoria/${post.categoria_slug}`} className="btn btn-primary" style={{ padding: '5px 12px', fontSize: '0.8rem', marginBottom: '20px' }}>
+          <Link 
+            href={`/categoria/${post.categoria_slug}`} 
+            className="btn btn-primary" 
+            style={{ padding: '5px 12px', fontSize: '0.8rem', marginBottom: '20px' }}
+          >
             {post.categoria_slug}
           </Link>
           
@@ -85,46 +99,55 @@ export default async function PostPage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* 2. Corpo do Artigo */}
       <article className="post-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
+        
+        {/* AdSense Topo (MANTIDO conforme solicitado) */}
         <section style={{ margin: '30px 0' }}>
           <div className="adsense-placeholder">
             [ADSENSE LEADERBOARD - 728x90]
           </div>
         </section>
 
+        {/* Imagem de Destaque */}
         {post.imagem_destaque_url && (
           <img 
             src={post.imagem_destaque_url} 
             alt={post.imagem_destaque_alt_text || post.titulo} 
+            className="post-featured-image" // Usa a classe do globals.css
             style={{ 
-              width: '100%', 
-              height: 'auto', 
-              maxHeight: '400px', 
-              objectFit: 'cover', 
-              borderRadius: '10px',
-              border: '1px solid var(--gray-border)',
-              marginBottom: '30px'
-            }} 
+                width: '100%',
+                height: 'auto',
+                maxHeight: '400px',
+                objectFit: 'cover',
+                borderRadius: '10px',
+                border: '1px solid var(--gray-border)',
+                marginBottom: '30px'
+            }}
           />
+        )}
+
+        {/* Resumo / Lead (Novo) */}
+        {post.resumo && (
+            <div className="post-lead">
+                {post.resumo}
+            </div>
         )}
 
         <div className="post-content">
             <TOCBox />
-            <div dangerouslySetInnerHTML={{ __html: post.conteudo_html }} />
+            
+            {/* Renderiza o HTML já processado com o anúncio no meio */}
+            <div dangerouslySetInnerHTML={{ __html: contentWithAd }} />
         </div>
-
-        <aside style={{ margin: '40px auto', display: 'flex', justifyContent: 'center' }}>
-            <div className="adsense-placeholder-box">
-                [ADSENSE IN-ARTICLE]
-            </div>
-        </aside>
         
+        {/* Caixa do Autor */}
         <AuthorBox author={author} />
       </article>
 
-      {/* 2. Seção de Populares (Inserida antes do CTA) */}
+      {/* 3. Seções de Recirculação e CTA */}
       <PopularPostsSection />
-
+      
       <NewsletterCTA />
     </>
   );

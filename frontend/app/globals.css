@@ -806,6 +806,28 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 .post-meta .icon { color: var(--aws-orange); margin-right: 6px; }
 
+/* --- Estilo do Resumo (Lead) --- */
+.post-lead {
+    font-family: var(--font-inter); /* Fonte de leitura */
+    font-size: 1.25rem; /* Maior que o texto padrão (1.15rem) */
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--gray-800); /* Cinza escuro para contraste */
+    font-style: italic; /* Diferenciação visual clássica de Leads */
+    margin-bottom: 40px; /* Espaço generoso antes do texto começar */
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee; /* Uma linha sutil separando do corpo */
+}
+
+/* Ajuste Mobile */
+@media (max-width: 768px) {
+    .post-lead {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+}
+
 /* Conteúdo */
 .post-content {
   max-width: 800px; /* Redundância de segurança */
