@@ -12,3 +12,5 @@ variable "media_upload_invoke_arn" {}
 variable "media_upload_function_name" {}
 variable "get_posts_invoke_arn" {}
 variable "get_posts_function_name" {}
+variable "admin_authors_invoke_arn" {}
+variable "admin_authors_function_name" {}

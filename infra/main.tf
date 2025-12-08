@@ -39,6 +39,8 @@ module "api-gateway" {
   media_upload_function_name = module.lambda.media_upload_function_name
   get_posts_invoke_arn     = module.lambda.get_posts_invoke_arn
   get_posts_function_name  = module.lambda.get_posts_function_name
+  admin_authors_invoke_arn    = module.lambda.admin_authors_invoke_arn
+  admin_authors_function_name = module.lambda.admin_authors_function_name
 }
 
 module "frontend" {

@@ -158,3 +158,20 @@ resource "aws_lambda_function" "get_posts" {
     }
   }
 }
+
+# Função: Admin Authors (CRUD de Autores para o CMS)
+resource "aws_lambda_function" "admin_authors" {
+  function_name = "${var.project_name}-${var.environment}-adminAuthors"
+  role          = aws_iam_role.lambda_role.arn # Reutiliza a role com acesso ao DynamoDB
+  handler       = "index.handler"
+  runtime       = "nodejs20.x"
+  
+  filename         = "${path.root}/builds/adminAuthors.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminAuthors.zip")
+
+  environment {
+    variables = {
+      AUTHORS_TABLE = "${var.project_name}-${var.environment}-autores"
+    }
+  }
+}

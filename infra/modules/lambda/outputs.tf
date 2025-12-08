@@ -37,3 +37,11 @@ output "get_posts_invoke_arn" {
 output "get_posts_function_name" {
   value = aws_lambda_function.get_posts.function_name
 }
+
+output "admin_authors_invoke_arn" {
+  value = aws_lambda_function.admin_authors.invoke_arn
+}
+
+output "admin_authors_function_name" {
+  value = aws_lambda_function.admin_authors.function_name
+}

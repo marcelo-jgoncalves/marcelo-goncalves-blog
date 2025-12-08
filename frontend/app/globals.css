@@ -854,7 +854,7 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 
 /* =========================================
-   FIX FINAL: AUTHOR BOX
+   FIX FINAL: AUTHOR BOX (Versão Fluida/Run-in)
    ========================================= */
 
 .author-box { 
@@ -868,36 +868,33 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     border-top: 1px solid #e0e0e0; 
 }
 
-/* O Container do Avatar (O culpado do erro) */
+/* --- 1. O Avatar (Mantendo a correção do tamanho fixo) --- */
 .author-avatar { 
-    /* Força bruta nas dimensões */
+    /* Força bruta nas dimensões para evitar glitches */
     width: 80px !important; 
     height: 80px !important; 
-    min-width: 80px !important; /* Segurança extra */
+    min-width: 80px !important;
     
     border-radius: 50%; 
     background-color: #e0e0e0; 
-    flex-shrink: 0; /* Impede que o flexbox esmague ou estique */
-    overflow: hidden; /* Corta qualquer coisa que passar do círculo */
+    flex-shrink: 0; 
+    overflow: hidden; 
     
-    /* Centraliza no mobile */
+    /* Centralização Mobile */
     margin: 0 auto;
-    
-    /* Centraliza o conteúdo (ícone ou img) */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* A Imagem dentro do avatar */
 .author-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Garante que a foto preencha o círculo sem distorcer */
     display: block;
 }
 
-/* O Placeholder (quando não tem imagem) */
+/* Placeholder (Caso não tenha foto) */
 .author-avatar-placeholder {
     width: 100%;
     height: 100%;
@@ -907,29 +904,61 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     background-color: #e2e8f0;
     color: #a0aec0;
 }
-
-/* O ícone dentro do placeholder */
 .author-avatar-placeholder i {
-    font-size: 2.5rem; /* Tamanho controlado do ícone */
+    font-size: 2.5rem;
 }
 
-/* Informações do texto */
-.author-info h4 { 
-    font-family: var(--font-space-grotesk); 
-    font-size: 1.5rem; 
-    color: var(--aws-dark); 
-    margin-top: 0; 
-    margin-bottom: 5px; 
+/* --- 2. Informações de Texto (Novo Layout Fluido) --- */
+.author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre o texto e os ícones sociais */
+    flex-grow: 1;
+    width: 100%;
 }
 
-.author-info p { 
-    font-size: 0.95rem; 
-    color: #666; 
-    margin-bottom: 15px; 
-    line-height: 1.5; 
+/* Container do Texto (Nome + Bio) */
+.author-text-flow {
+    font-family: var(--font-inter);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--gray-800);
+    text-align: center; /* Mobile: Centralizado */
 }
 
-/* Links Sociais */
+/* Estilo do Nome (Destaque no início da frase) */
+.author-name-runin {
+    font-family: var(--font-space-grotesk);
+    font-weight: 700;
+    color: var(--aws-dark);
+    font-size: 1.1rem;
+}
+
+/* O Conteúdo da Bio (HTML do Quill) */
+.author-bio-content {
+    display: inline; /* ESSENCIAL: Faz o texto fluir na mesma linha */
+}
+
+/* Força os parágrafos gerados pelo editor a serem inline */
+.author-bio-content p {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+/* Links dentro da Bio (Seguindo padrão do projeto) */
+.author-bio-content a {
+    color: var(--blue-600);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+.author-bio-content a:hover {
+    color: var(--aws-orange);
+}
+
+/* --- 3. Redes Sociais --- */
 .author-social { 
     display: flex; 
     justify-content: center; 
@@ -946,20 +975,7 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     color: var(--aws-orange); 
 }
 
-/* CTA de Serviços dentro do box */
-.cta-servicos {
-    font-size: 0.9rem;
-    margin-top: 10px;
-    color: var(--gray-text);
-}
-
-.cta-link {
-    color: var(--blue-600);
-    text-decoration: underline;
-    font-weight: 500;
-}
-
-/* Desktop */
+/* --- 4. Ajustes Desktop --- */
 @media (min-width: 768px) {
     .author-box { 
         flex-direction: row; 
@@ -967,10 +983,16 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
         text-align: left; 
         gap: 25px; 
     }
-    .author-social { 
-        justify-content: flex-start; 
-    }
+    
     .author-avatar {
         margin: 0; /* Remove a margem automática do mobile */
+    }
+
+    .author-text-flow {
+        text-align: left; /* Alinha o texto à esquerda no desktop */
+    }
+
+    .author-social { 
+        justify-content: flex-start; /* Alinha ícones à esquerda */
     }
 }

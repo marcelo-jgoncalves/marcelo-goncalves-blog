@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
 import EditorView from '../views/EditorView.vue'
+import AuthorEditView from '../views/AuthorEditView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
           path: 'post/:slug', // Rota de edição
           name: 'edit-post',
           component: EditorView
+        },
+        {
+          path: 'profile', // Rota será /profile
+          name: 'profile',
+          component: AuthorEditView
         }
         // Futuro: { path: 'posts/new', component: EditorView }
       ]

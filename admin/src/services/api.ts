@@ -68,3 +68,15 @@ export const mediaApi = {
     if (!res.ok) throw new Error('Falha no upload para o S3')
   }
 }
+
+export const authorsApi = {
+  // Busca autor pelo ID
+  get: (id: string) => apiCall(`/admin/autor/${id}`),
+
+  // Salva ou atualiza autor
+  // Usamos PUT na rota /admin/autor/{id} conforme configurado no Terraform
+  save: (data: any) => apiCall(`/admin/autor/${data.autor_id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data)
+  })
+}

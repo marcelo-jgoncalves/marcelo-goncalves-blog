@@ -4,14 +4,13 @@ interface AuthorBoxProps {
   author: {
     nome_exibicao: string;
     bio: string;
-    foto_avatar_url?: string; // Pode ser undefined/null
+    foto_avatar_url?: string;
     linkedin_url?: string;
     github_url?: string;
   };
 }
 
 export default function AuthorBox({ author }: AuthorBoxProps) {
-  // Verifica se a URL é válida (não nula e não vazia)
   const hasAvatar = author.foto_avatar_url && author.foto_avatar_url.trim() !== '';
 
   return (
@@ -21,10 +20,8 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           <img 
             src={author.foto_avatar_url} 
             alt={author.nome_exibicao} 
-            // As classes CSS agora controlam o tamanho e radius
           />
         ) : (
-          /* Fallback visual: Ícone centralizado */
           <div className="author-avatar-placeholder">
             <i className="fas fa-user"></i>
           </div>
@@ -32,19 +29,24 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
       </div>
 
       <div className="author-info">
-        <h4>{author.nome_exibicao}</h4>
-        
-        {/* Bio HTML */}
-        <div dangerouslySetInnerHTML={{ __html: author.bio }} />
-        
-        {/* Link CTA de Serviços (Com classes CSS em vez de style inline) */}
-        <p className="cta-servicos">
-            Precisa de um especialista?{' '}
-            <Link href="/servicos" className="cta-link">
-              Clique aqui para saber como posso ajudar
-            </Link>.
-        </p>
+        {/* Container de Texto Fluido (Run-in) */}
+        <div className="author-text-flow">
+          {/* 1. Nome do Autor (Estilo Destaque) */}
+          <span className="author-name-runin">
+            {author.nome_exibicao}
+          </span>
+          
+          {/* Espaço entre nome e bio */}
+          {' '}
 
+          {/* 2. Bio HTML (Estilo Inline) */}
+          <span 
+            className="author-bio-content" 
+            dangerouslySetInnerHTML={{ __html: author.bio }} 
+          />
+        </div>
+
+        {/* Redes Sociais (Mantidas abaixo do texto) */}
         <div className="author-social">
           {author.linkedin_url && (
             <a href={author.linkedin_url} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
@@ -54,6 +56,12 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           {author.github_url && (
             <a href={author.github_url} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <i className="fab fa-github"></i>
+            </a>
+          )}
+          {/* Adicionando Instagram se houver no futuro, já que criamos o campo */}
+          {(author as any).instagram_url && (
+             <a href={(author as any).instagram_url} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <i className="fab fa-instagram"></i>
             </a>
           )}
         </div>
