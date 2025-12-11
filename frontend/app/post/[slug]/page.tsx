@@ -1,154 +1,171 @@
-// frontend/app/post/[slug]/page.tsx
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getPost, getAuthor } from '@/lib/api';
+
+// Libs e Utils
+import { getPost } from '@/lib/api';
+import { processPostContent, renderPostWithInjections } from '@/lib/postUtils';
+
+// Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
-import TOCBox from '@/components/ui/TOCBox';
-import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import PopularPostsSection from '@/components/ui/PopularPostsSection';
-import { injectAdInContent } from '@/lib/injectAd'; // Importação da lógica de injeção
+import TOC from '@/components/ui/TOC';
+import ServiceCallout from '@/components/ui/ServiceCallout';
+import ShareButtons from '@/components/ui/ShareButtons';
 
-// --- CORREÇÃO PARA NEXT.JS 15 ---
-type Params = Promise<{ slug: string }>;
-
-interface PageProps {
-  params: Params;
+// ATUALIZADO (Next.js 15): params é uma Promise agora
+interface Props {
+  params: Promise<{ slug: string }>;
 }
 
-// 1. Gera Metadados para SEO
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  try {
-    const { slug } = await params;
-    
-    const data = await getPost(slug);
-    if (!data || !data.post) {
-      return { title: 'Post não encontrado | IA Decifrada' };
+// 1. Geração de Metadados SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // ATUALIZADO: Aguardamos os params antes de usar
+  const { slug } = await params;
+  
+  const data = await getPost(slug);
+  if (!data || !data.post) return { title: 'Post não encontrado' };
+
+  return {
+    title: `${data.post.titulo} | Marcelo Gonçalves`,
+    description: data.post.resumo,
+    openGraph: {
+        images: [data.post.imagem_destaque_url]
     }
-    return {
-      title: `${data.post.titulo} | IA Decifrada`,
-      description: data.post.resumo,
-    };
-  } catch (e) {
-    return { title: 'Erro | IA Decifrada' };
-  }
+  };
 }
 
 // 2. Componente da Página
-export default async function PostPage({ params }: PageProps) {
-  // Aguarda os parâmetros (obrigatório no Next 15)
+export default async function PostPage({ params }: Props) {
+  // ATUALIZADO: Aguardamos os params antes de usar
   const { slug } = await params;
 
-  // Busca dados do post
-  const postData = await getPost(slug);
+  // Busca dados na API
+  const data = await getPost(slug);
 
-  if (!postData || !postData.post) {
+  if (!data || !data.post) {
     notFound();
   }
 
-  const { post } = postData;
+  const { post } = data;
 
-  // Busca dados do autor
-  const authorData = await getAuthor(post.autor_id);
-  const author = authorData?.autor || { 
-    nome_exibicao: 'Autor Desconhecido', 
-    bio: '', 
-    foto_avatar_url: '' 
-  };
+  // Processa o HTML para gerar IDs e extrair Títulos
+  const { modifiedHtml, headings } = processPostContent(post.conteudo_html);
 
-  // Formata a data
-  const formattedDate = new Date(post.data_publicacao).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
+  // Prepara os componentes para injeção
+  const renderedContent = renderPostWithInjections(modifiedHtml, {
+    TocComponent: <TOC headings={headings} variant="mobile" />,
+    ServiceComponent: <ServiceCallout />,
+    AdSenseComponent: (
+      <div className="adsense-vertical" style={{ height: '250px', background: '#f1f5f9', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+        <span className="text-sm font-medium">[PUBLICIDADE IN-ARTICLE]</span>
+      </div>
+    ),
   });
-
-  // --- LÓGICA DE INJEÇÃO DE ADSENSE ---
-  // Injeta o banner automaticamente no meio dos parágrafos
-  const contentWithAd = injectAdInContent(post.conteudo_html);
 
   return (
     <>
-      {/* 1. Hero / Cabeçalho */}
-      <section className="post-hero">
-        <div className="post-header-content container">
-          <Link 
-            href={`/categoria/${post.categoria_slug}`} 
-            className="btn btn-primary" 
-            style={{ padding: '5px 12px', fontSize: '0.8rem', marginBottom: '20px' }}
-          >
-            {post.categoria_slug}
-          </Link>
-          
-          <h1>{post.titulo}</h1>
-          
-          <div className="post-meta" style={{ display: 'flex', justifyContent: 'center', gap: '20px', color: '#555', marginTop: '15px' }}>
+      {/* --- HEADER DO ARTIGO (Hero) --- */}
+      <section className="article-header">
+        <div className="container">
+          {/* Tag / Categoria */}
+          <span className="post-tag">
+             {post.categoria_slug || 'Artigo'}
+          </span>
+
+          <h1 className="article-title">{post.titulo}</h1>
+
+          {/* Meta Dados */}
+          <div className="article-meta">
+            <span><i className="fas fa-user-circle"></i> Por Marcelo Gonçalves</span>
             <span>
-              <i className="fas fa-user" style={{ color: 'var(--aws-orange)', marginRight: '5px' }}></i>
-              Por <strong>{author.nome_exibicao}</strong>
+                <i className="far fa-calendar-alt"></i> 
+                {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
             </span>
-            <span>
-              <i className="fas fa-calendar-alt" style={{ color: 'var(--aws-orange)', marginRight: '5px' }}></i>
-              {formattedDate}
-            </span>
-            <span>
-              <i className="fas fa-clock" style={{ color: 'var(--aws-orange)', marginRight: '5px' }}></i>
-              {post.tempo_leitura_min} min de leitura
-            </span>
+            <span><i className="far fa-clock"></i> {post.tempo_leitura_min} min de leitura</span>
           </div>
         </div>
       </section>
 
-      {/* 2. Corpo do Artigo */}
-      <article className="post-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
-        
-        {/* AdSense Topo (MANTIDO conforme solicitado) */}
-        <section style={{ margin: '30px 0' }}>
-          <div className="adsense-placeholder">
-            [ADSENSE LEADERBOARD - 728x90]
-          </div>
-        </section>
-
-        {/* Imagem de Destaque */}
-        {post.imagem_destaque_url && (
+      {/* --- IMAGEM DE DESTAQUE --- */}
+      {post.imagem_destaque_url && (
+        <div className="featured-image-container">
           <img 
             src={post.imagem_destaque_url} 
             alt={post.imagem_destaque_alt_text || post.titulo} 
-            className="post-featured-image" // Usa a classe do globals.css
-            style={{ 
-                width: '100%',
-                height: 'auto',
-                maxHeight: '400px',
-                objectFit: 'cover',
-                borderRadius: '10px',
-                border: '1px solid var(--gray-border)',
-                marginBottom: '30px'
-            }}
+            className="featured-image"
           />
-        )}
-
-        {/* Resumo / Lead (Novo) */}
-        {post.resumo && (
-            <div className="post-lead">
-                {post.resumo}
-            </div>
-        )}
-
-        <div className="post-content">
-            <TOCBox />
-            
-            {/* Renderiza o HTML já processado com o anúncio no meio */}
-            <div dangerouslySetInnerHTML={{ __html: contentWithAd }} />
         </div>
-        
-        {/* Caixa do Autor */}
-        <AuthorBox author={author} />
-      </article>
+      )}
 
-      {/* 3. Seções de Recirculação e CTA */}
-      <PopularPostsSection />
-      
-      <NewsletterCTA />
+      {/* --- GRID PRINCIPAL (Conteúdo + Sidebar) --- */}
+      <div className="article-grid">
+        
+        {/* COLUNA ESQUERDA: Conteúdo do Post */}
+        <article>
+            {/* --- WRAPPER ESTRUTURAL (Garante alinhamento perfeito) --- */}
+            <div className="post-body-wrapper">
+                
+                {post.resumo && (
+                  <p className="post-lead">
+                    {post.resumo}
+                  </p>
+                )}
+
+                <div className="post-content">
+                    {renderedContent}
+                </div>
+
+            </div>
+            {/* --- FIM DO WRAPPER --- */}
+
+            <ShareButtons title={post.titulo} slug={post.slug} />
+            <AuthorBox authorId={post.autor_id} /> 
+        </article>
+
+        {/* COLUNA DIREITA: Sidebar (Desktop Only via CSS) */}
+        <aside className="sidebar">
+            <div className="sticky-wrapper">
+                
+                {/* Widget 1: Índice Desktop */}
+                <TOC headings={headings} variant="desktop" />
+
+                {/* Widget 2: CTA Serviços Desktop */}
+                <ServiceCallout />
+
+                {/* Widget 3: AdSense Vertical */}
+                <div className="sidebar-widget" style={{ padding: 0, border: 'none', boxShadow: 'none' }}>
+                    <div className="adsense-vertical">
+                        [ADSENSE VERTICAL]
+                    </div>
+                </div>
+
+                {/* Widget 4: Newsletter */}
+                <div className="sidebar-widget widget-newsletter">
+                    <div className="card-icon-wrapper">
+                        <i className="far fa-envelope"></i>
+                    </div>
+                    <span className="card-title">Newsletter VIP</span>
+                    <p className="card-desc">Receba análises exclusivas de IA e AWS direto no seu e-mail.</p>
+                    <Link href="/newsletter" className="btn-full btn-primary">
+                        Inscrever-se
+                    </Link>
+                </div>
+
+            </div>
+        </aside>
+
+      </div>
+
+      {/* --- SUPER CTA (Final da Página) --- */}
+      <section className="cta">
+        <div className="container">
+            <h2>Quer se aprofundar em IA, AWS e DevOps?</h2>
+            <p>Inscreva-se na nossa newsletter e receba análises exclusivas e os melhores artigos da semana.</p>
+            <Link href="/newsletter" className="btn btn-outline">
+                Inscrever-se agora
+            </Link>
+        </div>
+      </section>
     </>
   );
 }

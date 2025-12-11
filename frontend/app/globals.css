@@ -483,76 +483,6 @@ header {
 }
 
 /* =========================================
-   6. PÁGINA DE POST (Artigo)
-   ========================================= */
-.article-header {
-  padding: 60px 20px 40px;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center; /* Centraliza Título e Meta */
-}
-
-.article-category {
-  display: inline-block;
-  background-color: var(--aws-orange);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-  text-transform: capitalize;
-}
-
-.article-title {
-  font-family: var(--font-space-grotesk);
-  font-size: 2.5rem;
-  line-height: 1.2;
-  color: var(--aws-dark);
-  margin-bottom: 25px;
-}
-
-.article-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center; /* Centraliza itens */
-  gap: 20px;
-  font-size: 0.95rem;
-  color: #666;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
-}
-
-.meta-item {
-  display: flex; align-items: center; gap: 8px;
-}
-.meta-item i { color: var(--aws-orange); }
-.meta-item strong { color: var(--aws-dark); font-weight: 600; }
-
-.article-body {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: var(--gray-800);
-  padding: 0 20px;
-}
-
-/* Tipografia Rica do Artigo */
-.article-body p { margin-bottom: 1.5em; }
-.article-body h2 { font-size: 2rem; margin-top: 2em; margin-bottom: 0.8em; color: var(--aws-dark); font-family: var(--font-space-grotesk); font-weight: 700; }
-.article-body h3 { font-size: 1.6rem; margin-top: 1.5em; margin-bottom: 0.8em; color: var(--aws-dark); font-family: var(--font-space-grotesk); font-weight: 700; }
-.article-body ul, .article-body ol { margin-bottom: 1.5em; padding-left: 1.5em; }
-.article-body li { margin-bottom: 0.5em; }
-.article-body blockquote { border-left: 5px solid var(--aws-orange); margin: 2em 0; padding: 20px 30px; background-color: var(--gray-light); font-style: italic; }
-.article-body img { max-width: 100%; height: auto; border-radius: 8px; margin: 2em 0; display: block; }
-.article-body code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #d63384; font-family: monospace; }
-.article-body pre { background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5em; }
-.article-body pre code { background: none; padding: 0; color: inherit; }
-
-/* =========================================
    7. PÁGINAS ESPECÍFICAS (Busca, Timeline, Sobre, Serviços, 404)
    ========================================= */
 
@@ -774,7 +704,6 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   background-position: center;
   border-radius: 12px;
   border: 1px solid #e0e0e0; /* Borda fina padrão */
-  /* Margens removidas aqui, serão controladas no layout ou classes utilitárias */
   margin-bottom: 40px; 
 }
 
@@ -806,50 +735,10 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 .post-meta .icon { color: var(--aws-orange); margin-right: 6px; }
 
-/* --- Estilo do Resumo (Lead) --- */
-.post-lead {
-    font-family: var(--font-inter); /* Fonte de leitura */
-    font-size: 1.25rem; /* Maior que o texto padrão (1.15rem) */
-    font-weight: 500;
-    line-height: 1.6;
-    color: var(--gray-800); /* Cinza escuro para contraste */
-    font-style: italic; /* Diferenciação visual clássica de Leads */
-    margin-bottom: 40px; /* Espaço generoso antes do texto começar */
-    padding-bottom: 30px;
-    border-bottom: 1px solid #eee; /* Uma linha sutil separando do corpo */
-}
-
-/* Ajuste Mobile */
-@media (max-width: 768px) {
-    .post-lead {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-    }
-}
-
-/* Conteúdo */
-.post-content {
-  max-width: 800px; /* Redundância de segurança */
-  margin: 0 auto;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: var(--gray-800);
-}
-.post-content h2 { font-family: var(--font-space-grotesk); font-size: 1.8rem; margin-top: 2em; margin-bottom: 0.8em; color: var(--aws-dark); font-weight: 700; }
-.post-content h3 { font-family: var(--font-space-grotesk); font-size: 1.4rem; margin-top: 1.5em; margin-bottom: 0.8em; color: var(--aws-dark); font-weight: 700; }
-.post-content p { margin-bottom: 1.5em; }
-.post-content ul, .post-content ol { padding-left: 1.5em; margin-bottom: 1.5em; }
-.post-content li { margin-bottom: 0.5em; }
-.post-content a { color: var(--blue-600); text-decoration: underline; }
-
 /* Desktop Overrides */
 @media (min-width: 768px) {
   .post-hero { padding: 80px 20px; }
-  
-  /* Padrão Desktop do Design System */
   .post-hero h1 { font-size: 3.5rem; } 
-  
   .post-featured-image { height: 400px; }
 }
 
@@ -868,19 +757,15 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     border-top: 1px solid #e0e0e0; 
 }
 
-/* --- 1. O Avatar (Mantendo a correção do tamanho fixo) --- */
+/* --- 1. O Avatar --- */
 .author-avatar { 
-    /* Força bruta nas dimensões para evitar glitches */
     width: 80px !important; 
     height: 80px !important; 
     min-width: 80px !important;
-    
     border-radius: 50%; 
     background-color: #e0e0e0; 
     flex-shrink: 0; 
     overflow: hidden; 
-    
-    /* Centralização Mobile */
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -890,11 +775,10 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 .author-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Garante que a foto preencha o círculo sem distorcer */
+    object-fit: cover;
     display: block;
 }
 
-/* Placeholder (Caso não tenha foto) */
 .author-avatar-placeholder {
     width: 100%;
     height: 100%;
@@ -904,29 +788,25 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     background-color: #e2e8f0;
     color: #a0aec0;
 }
-.author-avatar-placeholder i {
-    font-size: 2.5rem;
-}
+.author-avatar-placeholder i { font-size: 2.5rem; }
 
-/* --- 2. Informações de Texto (Novo Layout Fluido) --- */
+/* --- 2. Informações de Texto --- */
 .author-info {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaço entre o texto e os ícones sociais */
+    gap: 15px;
     flex-grow: 1;
     width: 100%;
 }
 
-/* Container do Texto (Nome + Bio) */
 .author-text-flow {
     font-family: var(--font-inter);
     font-size: 1rem;
     line-height: 1.6;
     color: var(--gray-800);
-    text-align: center; /* Mobile: Centralizado */
+    text-align: center;
 }
 
-/* Estilo do Nome (Destaque no início da frase) */
 .author-name-runin {
     font-family: var(--font-space-grotesk);
     font-weight: 700;
@@ -934,19 +814,9 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     font-size: 1.1rem;
 }
 
-/* O Conteúdo da Bio (HTML do Quill) */
-.author-bio-content {
-    display: inline; /* ESSENCIAL: Faz o texto fluir na mesma linha */
-}
+.author-bio-content { display: inline; }
+.author-bio-content p { display: inline; margin: 0; padding: 0; }
 
-/* Força os parágrafos gerados pelo editor a serem inline */
-.author-bio-content p {
-    display: inline;
-    margin: 0;
-    padding: 0;
-}
-
-/* Links dentro da Bio (Seguindo padrão do projeto) */
 .author-bio-content a {
     color: var(--blue-600);
     text-decoration: underline;
@@ -954,9 +824,7 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     transition: color 0.2s;
     cursor: pointer;
 }
-.author-bio-content a:hover {
-    color: var(--aws-orange);
-}
+.author-bio-content a:hover { color: var(--aws-orange); }
 
 /* --- 3. Redes Sociais --- */
 .author-social { 
@@ -971,9 +839,7 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
     text-decoration: none; 
     transition: color 0.3s; 
 }
-.author-social a:hover { 
-    color: var(--aws-orange); 
-}
+.author-social a:hover { color: var(--aws-orange); }
 
 /* --- 4. Ajustes Desktop --- */
 @media (min-width: 768px) {
@@ -983,16 +849,287 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
         text-align: left; 
         gap: 25px; 
     }
-    
-    .author-avatar {
-        margin: 0; /* Remove a margem automática do mobile */
-    }
+    .author-avatar { margin: 0; }
+    .author-text-flow { text-align: left; }
+    .author-social { justify-content: flex-start; }
+}
 
-    .author-text-flow {
-        text-align: left; /* Alinha o texto à esquerda no desktop */
-    }
+/* =========================================
+   11. ESTILOS DA PÁGINA DE POST (CORRIGIDO FINAL)
+   ========================================= */
 
-    .author-social { 
-        justify-content: flex-start; /* Alinha ícones à esquerda */
-    }
+/* --- HEADER DO ARTIGO (Hero Full Width) --- */
+.article-header {
+  background-color: var(--gray-light);
+  width: 100vw; 
+  margin-left: calc(-50vw + 50%);
+  padding: 60px 0 100px 0; 
+  text-align: center;
+  border-bottom: 1px solid var(--gray-border);
+  position: relative;
+  z-index: 1;
+}
+
+.article-header .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.article-title {
+  font-family: var(--font-space-grotesk);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  color: var(--aws-dark);
+  margin-bottom: 25px;
+}
+
+.article-meta {
+  display: flex; justify-content: center; gap: 25px;
+  color: var(--gray-text); font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+.article-meta span { display: flex; align-items: center; gap: 8px; }
+.article-meta i { color: var(--aws-orange); }
+
+/* --- IMAGEM DE DESTAQUE (Ajuste Final: 960x500 + Overlap 25px) --- */
+.featured-image-container {
+  width: 100%;
+  max-width: 960px;
+  margin: -40px auto 60px auto; 
+  padding: 0 20px;
+  position: relative; 
+  z-index: 10; 
+}
+
+.featured-image {
+  width: 100%;
+  height: 500px; /* Altura Fixa Desktop */
+  object-fit: cover; 
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  background-color: #fff;
+}
+
+/* Ajuste Responsivo para Mobile */
+@media (max-width: 768px) {
+  .featured-image {
+    height: 300px; 
+  }
+}
+
+/* --- GRID PRINCIPAL --- */
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 80px auto;
+  padding: 0 20px;
+}
+
+/* --- CORREÇÃO DE ALINHAMENTO (WRAPPER) --- */
+/* Centraliza e alinha Lead e Content perfeitamente */
+.post-body-wrapper {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px; /* Padding de segurança mobile */
+}
+
+/* Estilo do Resumo (Lead) */
+.post-lead {
+  font-family: var(--font-inter);
+  font-size: 1.3rem; 
+  font-style: italic; 
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--aws-dark);
+  
+  width: 100%;
+  margin: 0 0 2.5em 0; 
+  padding: 0 0 2em 0; /* Zero padding lateral */
+  
+  border-bottom: 1px solid var(--gray-border);
+}
+
+/* Estilo do Conteúdo */
+.post-content {
+  width: 100%;
+  margin: 0;
+  padding: 0; /* Zero padding lateral */
+  
+  font-size: 1.15rem;
+  color: var(--gray-800);
+  line-height: 1.8;
+}
+.post-content p { margin-bottom: 1.8em; }
+
+/* H2 com Linha Amarela */
+.post-content h2 {
+  font-family: var(--font-space-grotesk);
+  font-size: 2rem;
+  color: var(--aws-dark);
+  margin-top: 2.5em; margin-bottom: 0.8em;
+  position: relative;
+  padding-left: 15px;
+  font-weight: 700;
+}
+.post-content h2::before {
+  content: ''; position: absolute; left: 0; top: 5px; bottom: 5px;
+  width: 4px; background-color: var(--aws-orange); border-radius: 2px;
+}
+
+/* Listas com Bolinha Amarela */
+.post-content ul { padding-left: 20px; margin-bottom: 2em; list-style: none; }
+.post-content li { margin-bottom: 10px; position: relative; }
+.post-content li::before {
+  content: '•'; color: var(--aws-orange); font-weight: bold;
+  display: inline-block; width: 1em; margin-left: -1em;
+}
+
+/* Citações */
+.post-content blockquote {
+  background: #fff;
+  border-left: 4px solid var(--aws-orange);
+  margin: 2.5em 0; padding: 25px 35px;
+  font-family: var(--font-space-grotesk); font-size: 1.3rem; font-style: italic;
+  color: var(--aws-dark);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  border-radius: 0 8px 8px 0;
+}
+
+/* --- WIDGETS E SIDEBAR --- */
+.sidebar { display: none; } /* Mobile: Oculto */
+
+.sticky-wrapper { position: sticky; top: 100px; }
+
+.sidebar-widget {
+  background: white;
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.widget-title {
+  font-family: var(--font-space-grotesk); font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid var(--gray-border); display: block; text-align: left;
+}
+
+/* TOC Widget Desktop */
+.toc-widget { 
+  background-color: var(--gray-light);
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+}
+.toc-widget .widget-title {
+  background-color: transparent; 
+  color: var(--aws-dark);
+  margin: 0;
+  padding: 25px 25px 10px;
+  font-size: 1.2rem; /* Tamanho 1.2rem igual aos cards */
+  border-bottom: none;
+  border-radius: 0;
+}
+
+.toc-widget .widget-title i {
+  color: var(--aws-orange);
+  margin-right: 8px; /* Espaçamento de 8px */
+}
+
+.toc-list { padding: 0 0 25px 0; }
+.toc-list li { margin: 0; list-style: none; }
+.toc-list a { 
+  display: block;
+  padding: 8px 25px; 
+  color: var(--gray-text); 
+  font-size: 0.95rem;
+  border-left: 3px solid transparent; 
+  transition: all 0.2s ease;
+}
+.toc-list a:hover { 
+  background-color: rgba(255,255,255, 0.6); 
+  color: var(--aws-orange); 
+  border-left-color: var(--aws-orange);
+}
+
+/* Card Serviços */
+.widget-services {
+  background-color: var(--aws-dark);
+  color: white;
+  border: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  max-width: 100%; 
+  margin: 3em auto;
+}
+.sidebar .widget-services { margin: 0 0 30px 0; }
+
+.card-icon-wrapper {
+  width: 60px; height: 60px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 1.5rem;
+}
+.widget-services .card-icon-wrapper {
+  background-color: rgba(255,255,255,0.1);
+  color: var(--aws-orange);
+}
+.card-title {
+  font-family: var(--font-space-grotesk); font-size: 1.2rem; font-weight: 700;
+  margin-bottom: 10px; display: block;
+}
+.widget-services .card-title { color: white; }
+.widget-services .card-desc { color: #cbd5e0; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
+
+.btn-full { 
+  display: block; width: 100%; padding: 12px; text-align: center; 
+  border-radius: 6px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; 
+}
+
+/* --- TOC MOBILE ACCORDION --- */
+.toc-mobile-accordion {
+  margin: 2em 0;
+  border: 1px solid var(--gray-border);
+  border-radius: 8px;
+  background-color: var(--gray-light);
+  overflow: hidden;
+}
+.toc-mobile-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 20px;
+  background: white;
+  font-family: var(--font-space-grotesk); font-weight: 700; color: var(--aws-dark);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.toc-mobile-content {
+  display: none;
+  padding: 10px 0;
+  border-top: 1px solid var(--gray-border);
+}
+.toc-mobile-content.open { display: block; }
+
+/* =========================================
+   MEDIA QUERIES FINAIS
+   ========================================= */
+
+@media (min-width: 768px) {
+  .article-title { font-size: 3.5rem; }
+  
+  /* Ajuste no Wrapper Desktop (Remove padding lateral pois o Grid já resolve) */
+  .post-body-wrapper {
+    padding: 0; 
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-grid { grid-template-columns: 2.5fr 1fr; gap: 60px; }
+  .sidebar { display: block; }
+  .toc-mobile-accordion { display: none; }
 }
