@@ -7,13 +7,13 @@ interface AuthorBoxProps {
 }
 
 export default async function AuthorBox({ authorId }: AuthorBoxProps) {
-  // Se não vier ID (ex: post antigo), usa o autor padrão "marcelo-goncalves"
+  // Se não vier ID (ex: post antigo), usa o autor padrão
   const id = authorId || 'marcelo-goncalves';
   
-  // Busca dados do autor (Cacheado por 1h conforme api.ts)
+  // Busca dados do autor
   const data = await getAuthor(id);
   
-  // Se a API falhar, não renderiza nada para não quebrar o layout
+  // Se a API falhar, não renderiza nada
   if (!data || !data.autor) return null;
 
   const { autor } = data;
@@ -35,8 +35,10 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
 
       <div className="author-info">
         <div className="author-text-flow">
-            <span className="author-name-runin">Sobre {autor.nome_exibicao} </span>
-            {/* Renderiza o HTML da bio (que pode conter links) */}
+            {/* CORREÇÃO: Nome em destaque (Run-in) */}
+            <span className="author-name-runin">{autor.nome_exibicao} </span>
+            
+            {/* Renderiza o restante da bio */}
             <span 
               className="author-bio-content" 
               dangerouslySetInnerHTML={{ __html: autor.bio }} 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import React from 'react'; // Adicionado para uso em JSX
 
 // Libs e Utils
 import { getPost } from '@/lib/api';
@@ -8,9 +9,17 @@ import { processPostContent, renderPostWithInjections } from '@/lib/postUtils';
 
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
-import TOC from '@/components/ui/TOC';
+import TOC from '@/components/ui/TOC'; // Importação única e correta
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import ShareButtons from '@/components/ui/ShareButtons';
+// A importação de TOC duplicada foi removida
+
+// Placeholder para o AdSense (necessário para a injeção)
+const AdSensePlaceholder = () => (
+  <div className="adsense-vertical" style={{ height: '250px', background: '#f1f5f9', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+    <span className="text-sm font-medium">[PUBLICIDADE IN-ARTICLE]</span>
+  </div>
+);
 
 // ATUALIZADO (Next.js 15): params é uma Promise agora
 interface Props {
@@ -51,16 +60,14 @@ export default async function PostPage({ params }: Props) {
   // Processa o HTML para gerar IDs e extrair Títulos
   const { modifiedHtml, headings } = processPostContent(post.conteudo_html);
 
-  // Prepara os componentes para injeção
-  const renderedContent = renderPostWithInjections(modifiedHtml, {
-    TocComponent: <TOC headings={headings} variant="mobile" />,
+  // Prepara os componentes para injeção (AGORA SÓ COM INJEÇÕES DE CONTEÚDO)
+  const injections = {
     ServiceComponent: <ServiceCallout />,
-    AdSenseComponent: (
-      <div className="adsense-vertical" style={{ height: '250px', background: '#f1f5f9', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
-        <span className="text-sm font-medium">[PUBLICIDADE IN-ARTICLE]</span>
-      </div>
-    ),
-  });
+    AdSenseComponent: <AdSensePlaceholder />,
+    // O TOC Component foi removido daqui e será renderizado diretamente abaixo do resumo
+  };
+
+  const renderedContent = renderPostWithInjections(modifiedHtml, injections);
 
   return (
     <>
@@ -102,22 +109,27 @@ export default async function PostPage({ params }: Props) {
         
         {/* COLUNA ESQUERDA: Conteúdo do Post */}
         <article>
-            {/* --- WRAPPER ESTRUTURAL (Garante alinhamento perfeito) --- */}
             <div className="post-body-wrapper">
                 
+                {/* 1. RESUMO/LEAD */}
                 {post.resumo && (
                   <p className="post-lead">
                     {post.resumo}
                   </p>
                 )}
+                
+                {/* 2. CORREÇÃO DE POSIÇÃO: TOC MOBILE APARECE AQUI, APÓS O RESUMO */}
+                {headings.length > 0 && (
+                    <TOC headings={headings} variant="mobile" />
+                )}
 
+                {/* 3. CONTEÚDO PRINCIPAL */}
                 <div className="post-content">
                     {renderedContent}
                 </div>
 
             </div>
-            {/* --- FIM DO WRAPPER --- */}
-
+            
             <ShareButtons title={post.titulo} slug={post.slug} />
             <AuthorBox authorId={post.autor_id} /> 
         </article>

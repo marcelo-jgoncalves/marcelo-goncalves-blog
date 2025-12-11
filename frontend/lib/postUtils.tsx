@@ -46,12 +46,12 @@ export const processPostContent = (html: string): ProcessedPost => {
 };
 
 /**
- * 2. Quebra o HTML em partes e injeta componentes React (TOC Mobile, CTA, Ads)
+ * 2. Quebra o HTML em partes e injeta componentes React (CTA, Ads)
  */
 export function renderPostWithInjections(
   html: string, 
   injections: {
-    TocComponent: React.ReactNode;
+    // REMOVIDO: TocComponent não é mais injetado aqui.
     ServiceComponent: React.ReactNode;
     AdSenseComponent: React.ReactNode;
   }
@@ -66,7 +66,7 @@ export function renderPostWithInjections(
   const totalParts = parts.length;
 
   // Lógica de Posição (Hardcoded conforme estratégia)
-  const INSERT_TOC_AFTER = 0; 
+  // REMOVIDO: const INSERT_TOC_AFTER = 0; 
   const INSERT_SERVICE_AFTER = 2; 
   const INSERT_ADS_AFTER = Math.floor(totalParts / 2); 
 
@@ -89,12 +89,9 @@ export function renderPostWithInjections(
 
     // --- INJEÇÕES ---
 
-    // 1. TOC Mobile
-    if (index === INSERT_TOC_AFTER) {
-      contentElements.push(<div key="inject-toc">{injections.TocComponent}</div>);
-    }
+    // REMOVIDO: Bloco if (index === INSERT_TOC_AFTER)
 
-    // 2. CTA Serviços (Mobile Only)
+    // 1. CTA Serviços (Mobile Only)
     if (index === INSERT_SERVICE_AFTER) {
       contentElements.push(
         <div key="inject-service" className="mobile-only-injection"> 
@@ -103,7 +100,7 @@ export function renderPostWithInjections(
       );
     }
     
-    // 3. AdSense (Meio do texto)
+    // 2. AdSense (Meio do texto)
     if (index === INSERT_ADS_AFTER) {
       contentElements.push(
         <div key="inject-ads" className="my-8">
