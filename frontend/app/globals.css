@@ -743,6 +743,53 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 
 /* =========================================
+   SHARE BUTTONS (Estilo do Protótipo)
+   ========================================= */
+
+.share-section {
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    margin-top: 60px; 
+    margin-bottom: 40px;
+    padding-top: 30px; 
+    border-top: 1px solid var(--gray-border); /* Linha separadora superior */
+}
+
+.share-label {
+    font-family: var(--font-space-grotesk); /* Usando a fonte de título do projeto */
+    font-weight: 700; 
+    color: var(--aws-dark); 
+    margin-right: 5px;
+    
+    /* CORREÇÃO: Aumentado para 1.2rem (igual ao widget-title) */
+    font-size: 1.2rem;
+}
+
+.share-btn {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; /* Faz o botão ficar redondo */
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: white; 
+    font-size: 1.1rem; 
+    transition: transform 0.2s ease;
+    text-decoration: none; /* Remove sublinhado de link */
+}
+
+.share-btn:hover { 
+    transform: translateY(-3px); /* Efeito de "pulo" sutil no hover */
+    color: white; /* Garante que o ícone continue branco */
+}
+
+/* Cores Específicas das Marcas */
+.btn-linkedin { background-color: #0077b5; }
+.btn-whatsapp { background-color: #25d366; }
+.btn-twitter  { background-color: #000000; } /* X/Twitter preto */
+
+/* =========================================
    FIX FINAL: AUTHOR BOX (Versão Fluida/Run-in)
    ========================================= */
 
@@ -1122,14 +1169,24 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 @media (min-width: 768px) {
   .article-title { font-size: 3.5rem; }
   
-  /* Ajuste no Wrapper Desktop (Remove padding lateral pois o Grid já resolve) */
-  .post-body-wrapper {
-    padding: 0; 
-  }
+  .post-body-wrapper { padding: 0; }
 }
 
 @media (min-width: 1024px) {
+  /* Layout Grid Desktop */
   .article-grid { grid-template-columns: 2.5fr 1fr; gap: 60px; }
+  
+  /* Mostra a Sidebar */
   .sidebar { display: block; }
+  
+  /* Esconde elementos exclusivos de Mobile */
   .toc-mobile-accordion { display: none; }
+  
+  /* CORREÇÃO: Esconde a injeção de serviços dentro do texto no Desktop */
+  .mobile-only-injection { display: none; }
+}
+
+/* Define a margem padrão para quando ela estiver visível (no Mobile) */
+.mobile-only-injection {
+    margin: 3em 0;
 }

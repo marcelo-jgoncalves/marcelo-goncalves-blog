@@ -15,13 +15,12 @@ export interface ProcessedPost {
 
 /**
  * 1. Processa o HTML bruto para adicionar IDs aos H2 e extrair a lista de títulos para o TOC.
+ * (USADO EM page.tsx)
  */
-export function processPostContent(html: string): ProcessedPost {
+export const processPostContent = (html: string): ProcessedPost => {
   const headings: Heading[] = [];
   
-  // 1. LIMPEZA DE TÍTULO (CRÍTICO): 
-  // Remove qualquer tag <h1>...</h1> para evitar duplicação com o Hero.
-  // O regex garante a remoção mesmo se tiver atributos ou quebras de linha.
+  // LIMPEZA DE TÍTULO 
   let cleanHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '');
 
   // 2. Regex para encontrar H2 e capturar o texto interno
@@ -44,7 +43,7 @@ export function processPostContent(html: string): ProcessedPost {
   });
 
   return { modifiedHtml, headings };
-}
+};
 
 /**
  * 2. Quebra o HTML em partes e injeta componentes React (TOC Mobile, CTA, Ads)
@@ -57,24 +56,32 @@ export function renderPostWithInjections(
     AdSenseComponent: React.ReactNode;
   }
 ) {
-  // Separa o HTML por parágrafos para podermos injetar entre eles
-  // O delimitador é o fechamento de parágrafo </p>
-  const parts = html.split('</p>');
+  // --- PASSO 1: LIMPEZA FINAL DO CONTEÚDO BRUTO (Corrige Hydration Failure) ---
+  // Remove tags globais de fechamento (como </body>, </html>, </article>)
+  let cleanedHtml = html.replace(/<\/?(?:html|body|article)>/gi, '');
+  
+  // Separa o HTML por parágrafos
+  const parts = cleanedHtml.split('</p>');
   const contentElements: React.ReactNode[] = [];
   const totalParts = parts.length;
 
   // Lógica de Posição (Hardcoded conforme estratégia)
-  const INSERT_TOC_AFTER = 0; // Logo após o primeiro parágrafo (Lead)
-  const INSERT_SERVICE_AFTER = 2; // Após o 3º parágrafo
-  const INSERT_ADS_AFTER = Math.floor(totalParts / 2); // No meio exato do texto
+  const INSERT_TOC_AFTER = 0; 
+  const INSERT_SERVICE_AFTER = 2; 
+  const INSERT_ADS_AFTER = Math.floor(totalParts / 2); 
 
   parts.forEach((part, index) => {
-    // Se for o último pedaço vazio (split artifact), ignora
-    if (index === totalParts - 1 && part.trim() === '') return;
-
-    // Adiciona o fechamento </p> que o split removeu
-    const partHtml = part + '</p>';
     
+    let partHtml = part.trim();
+
+    // Adiciona o fechamento </p> apenas se não for o último elemento
+    if (index < totalParts - 1) {
+        partHtml += '</p>';
+    }
+    
+    // Se o bloco estiver vazio após a limpeza, ignora.
+    if (!partHtml) return;
+
     // Adiciona o bloco de texto atual
     contentElements.push(
       <div key={`part-${index}`} dangerouslySetInnerHTML={{ __html: partHtml }} />
@@ -82,27 +89,20 @@ export function renderPostWithInjections(
 
     // --- INJEÇÕES ---
 
-    // 1. TOC Mobile (Apenas Mobile via CSS do componente)
+    // 1. TOC Mobile
     if (index === INSERT_TOC_AFTER) {
       contentElements.push(<div key="inject-toc">{injections.TocComponent}</div>);
     }
 
-    // 2. CTA Serviços (Mobile e Desktop, mas aqui injetamos no fluxo do texto para Mobile)
-    // Usamos uma div wrapper para ocultar no Desktop se quisermos que apareça SÓ no mobile,
-    // mas sua regra dizia "Visualizar no meio do texto". 
-    // Vamos adicionar uma classe helper se precisar esconder no desktop, 
-    // mas o ServiceCallout é útil no desktop também se o artigo for longo.
-    // Pelo protótipo, vamos deixar visível sempre que injetado aqui ou controlar via CSS.
+    // 2. CTA Serviços (Mobile Only)
     if (index === INSERT_SERVICE_AFTER) {
       contentElements.push(
-        <div key="inject-service" className="my-8 md:hidden"> 
-           {/* md:hidden garante que essa injeção só aparece no mobile, 
-               pois no desktop já temos na sidebar */}
+        <div key="inject-service" className="mobile-only-injection"> 
            {injections.ServiceComponent}
         </div>
       );
     }
-
+    
     // 3. AdSense (Meio do texto)
     if (index === INSERT_ADS_AFTER) {
       contentElements.push(
