@@ -4,7 +4,8 @@
   --aws-orange: #FF9900;
   --aws-orange-hover: #e68a00;
   --gray-100: #f5f5f5;
-  --gray-800: #2D3748;
+  --gray-800: #2D3748; /* Cor do Footer */
+  --aws-blue-dark: #1C3041; /* NOVO: Azul mais escuro e vivo para o Super CTA */
   --blue-600: #3182CE;
   --gray-light: #f8fafc;
   --gray-border: #e0e0e0;
@@ -399,26 +400,45 @@ header {
 
 /* Super Destaque (Home/Sobre/Serviços) */
 .super-destaque {
-  background-color: var(--aws-dark);
+  /* CORREÇÃO 1: Usa a cor do Footer (que é var(--gray-800)) */
+  background-color: var(--aws-blue-dark); 
   color: white;
   padding: 80px 20px;
   text-align: center;
-  margin: 60px 0;
+  
+  /* CORREÇÃO 2: Remove a margem externa (o espaço em branco) */
+  margin: 0; 
 }
+
 .super-destaque h2 {
+  font-family: var(--font-space-grotesk);
   font-size: 2.2rem;
   margin-bottom: 20px;
   color: white;
 }
+
+/* NOVO: Estilo para a palavra "quase" (que está no <span> highlight) */
+.super-destaque h2 .highlight {
+    color: var(--aws-orange);
+}
+
 .super-destaque p {
   font-family: var(--font-inter);
   font-size: 1.1rem;
-  color: white;
+  color: var(--gray-light); /* Cor mais suave */
   opacity: 1;
-  margin-bottom: 30px;
+  margin-bottom: 40px; /* Mantém o espaçamento para o botão */
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* NOVO: Estilo para o botão primário dentro deste CTA */
+.super-destaque .btn-primary {
+    background-color: var(--aws-orange);
+    color: var(--aws-dark); 
+    border-radius: 6px; 
+    font-weight: 700;
 }
 
 /* CTA Newsletter */
@@ -577,7 +597,13 @@ header {
 .retention-title { font-family: var(--font-space-grotesk); font-size: 1.5rem; color: var(--aws-dark); text-align: center; margin-bottom: 20px; font-weight: 700; }
 
 /* --- FOOTER --- */
-footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30px; margin-top: auto; }
+footer { 
+    background-color: var(--gray-800); 
+    color: white; 
+    padding: 60px 20px 30px; 
+    /* CORREÇÃO: Remove o margin-top: auto; e zera a margem superior */
+    margin-top: 0; 
+}
 .footer-content { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 40px; text-align: center; }
 .footer-column h3 { margin-bottom: 15px; font-size: 1.2rem; color: white; }
 .footer-column p { color: #cbd5e0; }
@@ -611,10 +637,21 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 30px; }
   
   /* Super Destaque */
-  .super-destaque { border-radius: 10px; margin: 80px 0; }
+  .super-destaque { 
+      /* CORREÇÃO CRÍTICA: Zera margem vertical no Desktop também */
+      margin: 0 auto; 
+      
+      /* Mantendo o resto do estilo se necessário, mas garantindo que o margin não volte */
+      /* Ex: border-radius: 10px; */ 
+  }
   
   /* Footer */
-  footer { padding: 60px 25px 30px; }
+  footer { 
+    background-color: var(--gray-800); 
+    color: white; 
+    padding: 60px 20px 30px; 
+    margin-top: 0; 
+}
   .footer-content { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); text-align: left; }
   .social-links { justify-content: flex-start; }
   
@@ -1257,7 +1294,6 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   box-shadow: 0 5px 20px rgba(0,0,0,0.05);
   border-radius: 0 8px 8px 0;
 }
-
 /* --- WIDGETS E SIDEBAR --- */
 .sidebar { display: none; } /* Mobile: Oculto */
 
@@ -1278,6 +1314,28 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
   margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid var(--gray-border); display: block; text-align: left;
 }
 
+/* --- Estilo do Bloco AdSense Vertical na Sidebar (Novo) --- */
+.sidebar .adsense-vertical {
+    /* Herda o estilo de card do sidebar-widget */
+    background: white;
+    border: 1px solid var(--gray-border);
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    
+    /* Configuração de Layout e Dimensões do Anúncio */
+    min-height: 400px; /* Reserva o espaço vertical */
+    width: 100%;
+    
+    /* Centraliza o texto placeholder */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--gray-text);
+    font-size: 0.9rem;
+    padding: 15px; 
+    margin-bottom: 30px; /* Espaçamento inferior */
+}
 /* TOC Widget Desktop */
 .toc-widget { 
   background-color: var(--gray-light);
@@ -1350,13 +1408,20 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 .sidebar .widget-services { margin: 0 0 30px 0; }
 
+/* CORREÇÃO DE FUNDO DO ÍCONE DA NEWSLETTER */
 .card-icon-wrapper {
   width: 60px; height: 60px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 15px;
   font-size: 1.5rem;
+  
+  /* NOVO FUNDO CLARO (Pêssego, para Newsletter) */
+  background-color: #fff8f0; 
+  color: var(--aws-orange); /* A cor do ícone é o laranja AWS */
 }
+
 .widget-services .card-icon-wrapper {
+  /* Sobrescrita: Mantém o fundo semi-transparente para o Card de Serviços (fundo escuro) */
   background-color: rgba(255,255,255,0.1);
   color: var(--aws-orange);
 }
@@ -1366,6 +1431,10 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 }
 .widget-services .card-title { color: white; }
 .widget-services .card-desc { color: #cbd5e0; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
+.widget-newsletter .card-desc {
+    /* Aumenta a margem inferior para empurrar o botão */
+    margin-bottom: 20px; 
+}
 
 .btn-full { 
   display: block; width: 100%; padding: 12px; text-align: center; 
@@ -1374,16 +1443,10 @@ footer { background-color: var(--gray-800); color: white; padding: 60px 20px 30p
 
 /* --- CORREÇÃO DE CONTRASTE: CTA Link (Texto Dark Blue no Fundo Orange) --- */
 .widget-services .btn-full {
-    /* Fundo Laranja (Conforme solicitado) */
     background-color: var(--aws-orange); 
-    
-    /* Texto Azul Escuro do Projeto (Conforme solicitado) */
     color: var(--aws-dark) !important; 
     text-decoration: none !important;
-    /* Garante que não haja bordas conflitantes */
     border: none; 
-    
-    /* Mantém o peso da fonte */
     font-weight: 700;
 }
 

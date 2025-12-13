@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import React from 'react'; // Adicionado para uso em JSX
+import React from 'react';
 
 // Libs e Utils
 import { getPost } from '@/lib/api';
@@ -9,10 +9,10 @@ import { processPostContent, renderPostWithInjections } from '@/lib/postUtils';
 
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
-import TOC from '@/components/ui/TOC'; // Importação única e correta
+import TOC from '@/components/ui/TOC';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import ShareButtons from '@/components/ui/ShareButtons';
-// A importação de TOC duplicada foi removida
+import SuperDestaque from '@/components/ui/SuperDestaque'; // <-- IMPORTAÇÃO DO NOVO COMPONENTE
 
 // Placeholder para o AdSense (necessário para a injeção)
 const AdSensePlaceholder = () => (
@@ -60,11 +60,11 @@ export default async function PostPage({ params }: Props) {
   // Processa o HTML para gerar IDs e extrair Títulos
   const { modifiedHtml, headings } = processPostContent(post.conteudo_html);
 
-  // Prepara os componentes para injeção (AGORA SÓ COM INJEÇÕES DE CONTEÚDO)
+  // Prepara os componentes para injeção (O TOC foi movido para o JSX abaixo)
   const injections = {
+    // TocComponent removido
     ServiceComponent: <ServiceCallout />,
     AdSenseComponent: <AdSensePlaceholder />,
-    // O TOC Component foi removido daqui e será renderizado diretamente abaixo do resumo
   };
 
   const renderedContent = renderPostWithInjections(modifiedHtml, injections);
@@ -146,6 +146,7 @@ export default async function PostPage({ params }: Props) {
 
                 {/* Widget 3: AdSense Vertical */}
                 <div className="sidebar-widget" style={{ padding: 0, border: 'none', boxShadow: 'none' }}>
+                    {/* Aqui o Adsense é injetado diretamente */}
                     <div className="adsense-vertical">
                         [ADSENSE VERTICAL]
                     </div>
@@ -168,16 +169,8 @@ export default async function PostPage({ params }: Props) {
 
       </div>
 
-      {/* --- SUPER CTA (Final da Página) --- */}
-      <section className="cta">
-        <div className="container">
-            <h2>Quer se aprofundar em IA, AWS e DevOps?</h2>
-            <p>Inscreva-se na nossa newsletter e receba análises exclusivas e os melhores artigos da semana.</p>
-            <Link href="/newsletter" className="btn btn-outline">
-                Inscrever-se agora
-            </Link>
-        </div>
-      </section>
+      {/* --- SUPER CTA: O PROJETO (Final da Página) --- */}
+      <SuperDestaque />
     </>
   );
 }
