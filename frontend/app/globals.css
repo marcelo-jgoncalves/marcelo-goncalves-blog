@@ -5,7 +5,7 @@
   --aws-orange-hover: #e68a00;
   --gray-100: #f5f5f5;
   --gray-800: #2D3748; /* Cor do Footer */
-  --aws-blue-dark: #1C3041; /* NOVO: Azul mais escuro e vivo para o Super CTA */
+  --aws-blue-dark: #232F3E; /* NOVO: Azul mais escuro e vivo para o Super CTA */
   --blue-600: #3182CE;
   --gray-light: #f8fafc;
   --gray-border: #e0e0e0;
@@ -698,8 +698,104 @@ footer {
 }
 
 /* =========================================
-   10. PATCH FINAL: PÁGINA DE POST (Layout Pilha)
+   10. PATCH FINAL: PÁGINA DE POST (Layout Pilha) (Ajustes para injeção)
    ========================================= */
+
+/* [CORREÇÃO] Estilo do Wrapper para Anúncio Injetado (Corrige centralização) */
+.ad-injected-wrapper {
+    /* Mantém a margem vertical */
+    margin: 40px auto; 
+    
+    /* CORREÇÃO CRÍTICA: REMOVE display: flex e justify-content (instáveis para injeção de HTML).
+       A centralização será feita via margin: auto no bloco interno. */
+    
+    /* Garante que o wrapper ocupe toda a largura disponível */
+    width: 100%;
+    
+    /* Fallback para centralizar texto e elementos de bloco */
+    text-align: center; 
+    
+    clear: both; 
+}
+
+/* [CORREÇÃO] Placeholder Injetado no Meio do Conteúdo (In-Article) */
+.adsense-placeholder-box {
+    /* MOBILE-FIRST: Formato Vertical/Retangular (336x280 max) */
+    width: 100%;
+    max-width: 336px; 
+    min-height: 250px; /* Previne CLS em Mobile */
+    
+    /* CORREÇÃO CRÍTICA: Centralização do bloco via margin: auto (Resolve o alinhamento à esquerda) */
+    margin: 0 auto; 
+    
+    /* Estilos de Placeholder (para visualização) */
+    background-color: #f1f5f9;
+    border: 1px dashed var(--gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text);
+    font-family: var(--font-space-grotesk);
+    font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+    /* Desktop: Formato Leaderboard Horizontal (728x90) */
+    .adsense-placeholder-box {
+        width: 728px;
+        min-height: 90px; 
+        max-width: 728px;
+    }
+}
+
+/* CORREÇÃO DE LAYOUT E ADIÇÃO DO BANNER HORIZONTAL */
+
+/* [NOVO] Estilo do Wrapper que conterá o Banner Topo */
+.summary-ads-wrapper {
+    /* Adiciona o margin-top para separar do resumo (post-lead) */
+    margin: 0 0 40px 0;
+}
+
+/* [NOVO] Classe para Linha Divisória de Conteúdo (Anulada) */
+.content-separator {
+    /* Anula totalmente a classe, removendo a linha e qualquer margem adicional */
+    border-top: none; 
+    margin: 0; 
+    padding: 0;
+}
+
+/* [CORREÇÃO] Placeholder para Banner AdSense Horizontal (Top Banner) */
+.adsense-content-banner {
+    /* MOBILE-FIRST: AGORA É RETANGULAR no Mobile, igual ao in-content */
+    width: 100%;
+    max-width: 336px; 
+    min-height: 250px; /* CLS prevention para o formato retangular */
+    
+    /* CORREÇÃO CRÍTICA: Centraliza o bloco Top Banner via margin: auto */
+    margin: 20px auto; 
+    
+    /* Estilos de Placeholder (mantidos) */
+    background-color: #f1f5f9; 
+    border: 1px dashed var(--gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text);
+    font-family: var(--font-space-grotesk);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+    /* Desktop: Mudar para Leaderboard Horizontal (728x90) */
+    .adsense-content-banner {
+        width: 728px;
+        min-height: 90px;
+        max-width: 728px;
+    }
+}
 
 /* 1. Container Centralizado */
 .post-container {
@@ -1136,7 +1232,6 @@ footer {
         align-self: flex-start; /* Desktop: Alinhado à esquerda */
     }
 }
-
 /* =========================================
    11. ESTILOS DA PÁGINA DE POST (COMPLETO E FINAL)
    ========================================= */
@@ -1179,7 +1274,7 @@ footer {
 .featured-image-container {
   width: 100%;
   max-width: 960px;
-  /* AJUSTE FINAL: Overlap de 25px */
+  /* AJUSTE FINAL: Overlap de 40px, pois o header tem 100px de padding inferior */
   margin: -40px auto 60px auto; 
   padding: 0 20px;
   position: relative; 
@@ -1207,10 +1302,10 @@ footer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
-  margin-bottom: 80px;
+  /* CORREÇÃO: Consolidação das margens */
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto 80px auto;
+  margin: 0 auto 80px auto; 
   padding: 0 20px;
 }
 
@@ -1219,36 +1314,52 @@ footer {
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 20px; /* Padding de segurança mobile */
+  /* CORREÇÃO: Remove padding extra, pois o grid já gerencia o padding lateral */
+  padding: 0; 
 }
 
-/* Estilo do Resumo (Lead) */
+/* NOVO/CORRIGIDO: Estilo do Resumo (Lead) */
 .post-lead {
-  font-family: var(--font-inter);
-  font-size: 1.3rem; 
-  font-style: italic; 
-  font-weight: 500;
-  line-height: 1.6;
-  color: var(--aws-dark);
-  
   width: 100%;
-  margin: 0 0 2.5em 0; 
-  padding: 0 0 2em 0; /* Zero padding lateral */
   
-  border-bottom: 1px solid var(--gray-border);
+  /* ESTILIZAÇÃO PARA DESTAQUE (UX) */
+  font-size: 1.27rem; 
+  font-style: italic; 
+  line-height: 1.6;
+  color: var(--gray-700);
+  
+  /* Margens e Borda */
+  padding: 0; 
+  margin: 0 0 40px 0; /* Espaço entre o resumo e o banner */
+  border-bottom: none; 
 }
+@media (min-width: 768px) {
+    .post-lead {
+        font-size: 1.4rem; 
+    }
+}
+
 
 /* Estilo do Conteúdo */
 .post-content {
   width: 100%;
   margin: 0;
-  padding: 0; /* Zero padding lateral */
+  padding: 0; 
   
   font-size: 1.15rem;
   color: var(--gray-800);
   line-height: 1.8;
 }
 .post-content p { margin-bottom: 1.8em; }
+
+/* CORREÇÃO: Adiciona responsividade básica para imagens dentro do conteúdo */
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2em auto; /* Centraliza imagens no fluxo de texto */
+    border-radius: 8px;
+}
 
 /* CORREÇÃO: Padroniza todos os links do corpo do post para Laranja AWS */
 .post-content a { 
@@ -1316,15 +1427,19 @@ footer {
 
 /* --- Estilo do Bloco AdSense Vertical na Sidebar (Novo) --- */
 .sidebar .adsense-vertical {
-    /* Herda o estilo de card do sidebar-widget */
-    background: white;
-    border: 1px solid var(--gray-border);
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    /* CORREÇÃO: Remove o estilo de card (fundo branco, sombra, borda sólida) */
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0; /* Remove padding */
     
     /* Configuração de Layout e Dimensões do Anúncio */
-    min-height: 400px; /* Reserva o espaço vertical */
+    min-height: 600px; /* Mantém o min-height para prevenção de CLS */
     width: 100%;
+    
+    /* ESTILO DE PLACEHOLDER (Para replicar o protótipo: Contorno Tracejado Simples) */
+    border: 1px dashed var(--gray-800);
+    background-color: var(--gray-light); /* Fundo cinza suave */
     
     /* Centraliza o texto placeholder */
     display: flex;
@@ -1333,7 +1448,7 @@ footer {
     text-align: center;
     color: var(--gray-text);
     font-size: 0.9rem;
-    padding: 15px; 
+    
     margin-bottom: 30px; /* Espaçamento inferior */
 }
 /* TOC Widget Desktop */
@@ -1508,4 +1623,89 @@ footer {
 /* Define a margem padrão para quando ela estiver visível (no Mobile) */
 .mobile-only-injection {
     margin: 3em 0;
+} 
+/* =========================================
+   FIX FINAL: SEÇÃO POPULARES E RELACIONADOS (AJUSTE DE ALINHAMENTO FORÇADO)
+   ========================================= */
+
+.popular-articles-section-wrapper {
+    background-color: white; 
+    width: 100%; 
+    margin-top: 60px; 
+    padding: 0; 
+    border-top: none; 
+    
+    /* [ADICIONADO] FORÇA O COMPONENTE A OCUPAR TODA A LARGURA DA COLUNA */
+    max-width: none !important; 
+}
+
+/* NOVO WRAPPER: Aplica o ALINHAMENTO e LIMITAÇÃO DE LARGURA (800px) */
+.popular-section-content-wrapper {
+    /* CORREÇÃO CRÍTICA 1: Limita a largura do conteúdo interno a 800px para alinhar com o artigo */
+    max-width: 800px;
+    
+    /* CORREÇÃO CRÍTICA 2: Centraliza o conteúdo (800px) dentro da coluna (100% de largura) */
+    margin: 0 auto; 
+    
+    /* PADDING: Mantido em 0 para alinhamento. A margem é resolvida pelo .article-grid */
+    padding: 0; 
+    width: 100%;
+}
+
+.popular-section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    
+    /* Aplica o padding lateral apenas ao texto do cabeçalho */
+    padding: 0 20px;
+}
+.popular-section-header h2 {
+    font-family: var(--font-space-grotesk);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--aws-dark);
+    margin-bottom: 5px;
+}
+.popular-section-header p {
+    color: var(--gray-600);
+    font-size: 1.1rem;
+}
+
+
+/* ------------------------------------- */
+/* 1. VARIANT: POST (4 CARDS | 2 COLUNAS) */
+/* ------------------------------------- */
+.popular-posts-grid-post { 
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 coluna */
+    gap: 30px;
+    
+    /* Aplica padding lateral para Mobile/Alinhamento de cards */
+    padding: 0; 
+}
+@media (min-width: 600px) {
+    /* Desktop/Tablet: 2 colunas (Ideal para 4 cards) */
+    .popular-posts-grid-post {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+}
+
+/* ------------------------------------- */
+/* 2. VARIANT: HOME (6 CARDS | 3 COLUNAS) */
+/* ------------------------------------- */
+.popular-posts-grid-home { 
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 coluna */
+    gap: 30px;
+    
+    /* Aplica padding lateral para Mobile/Alinhamento de cards */
+    padding: 0 20px; 
+}
+@media (min-width: 768px) {
+    /* Desktop: 3 colunas (Ideal para 6 cards) */
+    .popular-posts-grid-home {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
 }

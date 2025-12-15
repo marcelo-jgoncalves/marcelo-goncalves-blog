@@ -1,26 +1,33 @@
 // frontend/lib/injectAd.ts
 
+/**
+ * Injeta um placeholder de anúncio no meio do conteúdo HTML de uma postagem.
+ * * O objetivo é usar classes CSS definidas globalmente para estilização,
+ * garantindo boas práticas (separação de responsabilidades) e prevenção de CLS.
+ * * @param htmlContent O conteúdo HTML completo da postagem.
+ * @returns O conteúdo HTML com o placeholder de anúncio injetado.
+ */
 export function injectAdInContent(htmlContent: string): string {
-  // Configuração do Bloco de Anúncio
-  // Usamos as mesmas classes do globals.css para consistência
+  
+  // Usamos as novas classes definidas no globals.css para evitar CSS inline:
+  // - .ad-injected-wrapper: Centraliza o bloco e aplica margens (margin: 40px auto;)
+  // - .adsense-placeholder-box: Garante o tamanho do placeholder (336x280) para prevenção de CLS
   const AD_PLACEHOLDER = `
-    <div class="ad-wrapper-in-article" style="margin: 40px auto; display: flex; justify-content: center; clear: both; width: 100%;">
+    <div class="ad-injected-wrapper">
       <div class="adsense-placeholder-box">
         [ADSENSE IN-ARTICLE]
       </div>
     </div>
   `;
   
-  // Mínimo de parágrafos para justificar a injeção (evita anúncios em textos muito curtos)
+  // Mínimo de parágrafos para justificar a injeção
   const MIN_PARAGRAPHS = 4;
 
-  // Se o conteúdo for vazio ou nulo, retorna vazio
   if (!htmlContent) return '';
 
   // Divide o conteúdo baseando-se no fechamento de parágrafo </p>
   const parts = htmlContent.split('</p>');
 
-  // Se tiver poucos parágrafos, retorna o texto original sem tocar
   if (parts.length < MIN_PARAGRAPHS) {
     return htmlContent;
   }
@@ -30,7 +37,7 @@ export function injectAdInContent(htmlContent: string): string {
 
   // Reconstrói o HTML:
   // 1. Pega a primeira metade
-  // 2. Junta com </p> (pois o split removeu) e adiciona um </p> final para o último item da metade
+  // 2. Junta com </p> e adiciona um </p> final para o último item da metade
   const firstHalf = parts.slice(0, middleIndex).join('</p>') + '</p>';
   
   // 3. Pega a segunda metade

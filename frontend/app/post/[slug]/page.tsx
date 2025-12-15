@@ -12,14 +12,11 @@ import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import ShareButtons from '@/components/ui/ShareButtons';
-import SuperDestaque from '@/components/ui/SuperDestaque'; // <-- IMPORTAÇÃO DO NOVO COMPONENTE
+import SuperDestaque from '@/components/ui/SuperDestaque'; // Componente de CTA Full-Width
+import AdsenseSidebar from '@/components/ui/AdsenseSidebar';
+import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
+import PopularPostsSection from '@/components/ui/PopularPostsSection'; // Componente de Populares
 
-// Placeholder para o AdSense (necessário para a injeção)
-const AdSensePlaceholder = () => (
-  <div className="adsense-vertical" style={{ height: '250px', background: '#f1f5f9', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
-    <span className="text-sm font-medium">[PUBLICIDADE IN-ARTICLE]</span>
-  </div>
-);
 
 // ATUALIZADO (Next.js 15): params é uma Promise agora
 interface Props {
@@ -60,11 +57,12 @@ export default async function PostPage({ params }: Props) {
   // Processa o HTML para gerar IDs e extrair Títulos
   const { modifiedHtml, headings } = processPostContent(post.conteudo_html);
 
-  // Prepara os componentes para injeção (O TOC foi movido para o JSX abaixo)
+  // Prepara os componentes para injeção 
   const injections = {
-    // TocComponent removido
     ServiceComponent: <ServiceCallout />,
-    AdSenseComponent: <AdSensePlaceholder />,
+    
+    // CORREÇÃO DE INJEÇÃO: Passamos o componente AdsenseInArticle (in-content)
+    AdSenseComponent: <AdsenseInArticle blockId="post-in-article-300x250" variant="in-content" />,
   };
 
   const renderedContent = renderPostWithInjections(modifiedHtml, injections);
@@ -112,6 +110,7 @@ export default async function PostPage({ params }: Props) {
             <div className="post-body-wrapper">
                 
                 {/* 1. RESUMO/LEAD */}
+                {/* O .post-lead AGORA NÃO TEM MAIS BORDA INFERIOR NO CSS */}
                 {post.resumo && (
                   <p className="post-lead">
                     {post.resumo}
@@ -123,15 +122,24 @@ export default async function PostPage({ params }: Props) {
                     <TOC headings={headings} variant="mobile" />
                 )}
 
-                {/* 3. CONTEÚDO PRINCIPAL */}
+                {/* 3. INJEÇÃO DO BANNER HORIZONTAL E LINHA DIVISÓRIA */}
+                {/* Usa a variante 'summary-divider' para renderizar o banner 728x90 */}
+                <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
+                
+                {/* 4. CONTEÚDO PRINCIPAL */}
                 <div className="post-content">
                     {renderedContent}
                 </div>
 
             </div>
             
+            {/* 5. SHARE BUTTONS E AUTHOR BOX */}
             <ShareButtons title={post.titulo} slug={post.slug} />
             <AuthorBox authorId={post.autor_id} /> 
+            
+            {/* 6. SEÇÃO POPULARES: Limitado a 4 cards e layout de 2 colunas */}
+            <PopularPostsSection limit={4} variant="post" /> 
+            
         </article>
 
         {/* COLUNA DIREITA: Sidebar (Desktop Only via CSS) */}
@@ -144,13 +152,8 @@ export default async function PostPage({ params }: Props) {
                 {/* Widget 2: CTA Serviços Desktop */}
                 <ServiceCallout />
 
-                {/* Widget 3: AdSense Vertical */}
-                <div className="sidebar-widget" style={{ padding: 0, border: 'none', boxShadow: 'none' }}>
-                    {/* Aqui o Adsense é injetado diretamente */}
-                    <div className="adsense-vertical">
-                        [ADSENSE VERTICAL]
-                    </div>
-                </div>
+                {/* Widget 3: AdSense Vertical (AGORA USANDO O COMPONENTE) */}
+                <AdsenseSidebar blockId="sidebar-300x600" />
 
                 {/* Widget 4: Newsletter */}
                 <div className="sidebar-widget widget-newsletter">
@@ -168,9 +171,11 @@ export default async function PostPage({ params }: Props) {
         </aside>
 
       </div>
-
-      {/* --- SUPER CTA: O PROJETO (Final da Página) --- */}
+      
+      {/* --- CTA DO PROJETO (Super Destaque) --- */}
+      {/* POSIÇÃO CORRIGIDA: FORA DO article-grid para ocupar a largura total (full-width) */}
       <SuperDestaque />
+
     </>
   );
 }
