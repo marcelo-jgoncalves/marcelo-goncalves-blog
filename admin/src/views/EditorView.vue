@@ -4,26 +4,25 @@ import { useRoute, useRouter } from 'vue-router'
 import { postsApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
+import RichTextEditor from '../components/RichTextEditor.vue'
 
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 
-// Variável de ambiente para montar a URL final da imagem (Ex: https://d123.cloudfront.net)
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 
-// Estado do Formulário
 const form = ref({
   titulo: '',
   slug: '',
-  conteudo_html: '', // Idealmente usaríamos um Editor Rich Text (Quill/TinyMCE), aqui é textarea simples
+  conteudo_html: '', 
   resumo: '',
-  categoria_slug: 'tutoriais-aws', // Default
+  categoria_slug: 'tutoriais-aws',
   imagem_destaque_url: '',
   imagem_destaque_alt_text: '',
   meta_titulo_seo: '',
   meta_descricao_seo: '',
-  e_popular: false, // Checkbox usa boolean no front
+  e_popular: false,
   e_projeto: false,
   status: 'Rascunho',
   tempo_leitura_min: 5,
@@ -36,12 +35,8 @@ const showUploadModal = ref(false)
 const loading = ref(false)
 const saving = ref(false)
 
-// Carregar dados (se for edição)
 onMounted(async () => {
-  // Define autor padrão
   if (auth.user?.username) {
-    // Em um cenário real, buscaríamos o ID do autor no perfil. 
-    // Por enquanto, assumimos que o username do login é o ID ou usamos hardcoded 'marcelo-goncalves'
     form.value.autor_id = 'marcelo-goncalves' 
   }
 
@@ -51,7 +46,6 @@ onMounted(async () => {
       const slug = route.params.slug as string
       const data = await postsApi.get(slug)
       
-      // Converte números 0/1 para booleanos e preenche o form
       form.value = {
         ...data,
         e_popular: !!data.e_popular,
@@ -66,11 +60,9 @@ onMounted(async () => {
   }
 })
 
-// Salvar
 async function save() {
   saving.value = true
   try {
-    // Prepara payload (converte booleans para números 0/1 conforme DynamoDB)
     const payload = {
       ...form.value,
       e_popular: form.value.e_popular ? 1 : 0,
@@ -92,18 +84,15 @@ async function save() {
   }
 }
 
-// Callback do Upload
 function onImageUploaded(relativePath: string) {
-  // Monta a URL completa
   form.value.imagem_destaque_url = `${ASSETS_URL}/${relativePath}`
 }
 
-// Auto-gerar slug do título
 function generateSlug() {
   if (!isEditing.value) {
     form.value.slug = form.value.titulo
       .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, "") // Remove acentos
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
   }
@@ -137,9 +126,8 @@ function generateSlug() {
         </div>
 
         <div class="form-group">
-          <label>Conteúdo (HTML)</label>
-          <textarea v-model="form.conteudo_html" class="code-editor" rows="15"></textarea>
-          <small>Escreva HTML puro por enquanto.</small>
+          <label>Conteúdo</label>
+          <RichTextEditor v-model="form.conteudo_html" :key="form.slug" />
         </div>
 
         <div class="form-group">
@@ -161,7 +149,6 @@ function generateSlug() {
       </div>
 
       <aside class="settings-column">
-        
         <div class="panel">
           <h3>Publicação</h3>
           <div class="form-group">
@@ -220,7 +207,6 @@ function generateSlug() {
             <input v-model="form.imagem_destaque_alt_text" type="text" />
           </div>
         </div>
-
       </aside>
     </div>
 
@@ -231,21 +217,15 @@ function generateSlug() {
 <style scoped>
 .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 .editor-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-
 .form-group { margin-bottom: 20px; }
 label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--aws-dark); }
 input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--gray-border); border-radius: 4px; font-family: inherit; }
-.code-editor { font-family: monospace; background: #f9fafb; }
-
 .panel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .panel h3 { font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
-
 .image-preview img { width: 100%; border-radius: 4px; margin-top: 10px; }
 .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-
 .btn-primary { background: var(--aws-orange); border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 .btn-secondary { background: #e0e0e0; border: none; padding: 10px 20px; border-radius: 4px; margin-right: 10px; cursor: pointer; }
 .btn-outline { background: transparent; border: 1px solid var(--aws-dark); padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; }
-
 @media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } }
 </style>

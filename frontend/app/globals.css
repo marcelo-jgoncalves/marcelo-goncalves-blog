@@ -11,6 +11,11 @@
   --gray-border: #e0e0e0;
   --gray-text: #555;
   
+  /* --- CORES DE CALLOUTS (TRANSFERIDAS DO PROTÓTIPO) --- */
+  --blue-light: #ebf8ff; /* Fundo Pro Tip */
+  --orange-light: #fffaf0; /* Fundo Atenção */
+  --font-code: 'JetBrains Mono', monospace; /* Fonte do Code Block */
+  
   /* --- GRADIENTES --- */
   --bg-light-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   
@@ -726,7 +731,7 @@ footer {
     min-height: 250px; /* Previne CLS em Mobile */
     
     /* CORREÇÃO CRÍTICA: Centralização do bloco via margin: auto (Resolve o alinhamento à esquerda) */
-    margin: 0 auto; 
+    margin: 70 auto; 
     
     /* Estilos de Placeholder (para visualização) */
     background-color: #f1f5f9;
@@ -770,9 +775,7 @@ footer {
     width: 100%;
     max-width: 336px; 
     min-height: 250px; /* CLS prevention para o formato retangular */
-    
-    /* CORREÇÃO CRÍTICA: Centraliza o bloco Top Banner via margin: auto */
-    margin: 20px auto; 
+    margin: 70px auto; 
     
     /* Estilos de Placeholder (mantidos) */
     background-color: #f1f5f9; 
@@ -1709,3 +1712,58 @@ footer {
         gap: 25px;
     }
 }
+/* =========================================
+   12. ESTILOS DE BLOCOS DE CONTEÚDO (CALLOUTS)
+   ========================================= */
+
+.content-callout {
+  display: block !important;
+  position: relative;
+  
+  /* PADDING: 25px é o ideal para o respiro das bordas sem criar buracos */
+  padding: 18px 25px !important; 
+  
+  /* MARGIN: 1.5em no topo para afastar do texto anterior, 
+     e apenas 0.2em abaixo para eliminar o vácuo que você viu */
+  margin: 1.5em 0 0.2em 0 !important; 
+  
+  border-radius: 8px;
+  border-left: 5px solid;
+  line-height: 1.6;
+}
+
+/* RÓTULO PROTEGIDO (Ícone + Texto Fixo) */
+.content-callout .callout-label-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+  user-select: none;
+  pointer-events: none;
+  vertical-align: baseline;
+}
+
+/* CURA PARA O VÁCUO: 
+   O Quill injeta <p> e <br> dentro da div. 
+   Forçamos eles a não ocuparem espaço de bloco. */
+.content-callout p, 
+.content-callout br {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* --- ESTILIZAÇÃO VISUAL --- */
+.callout-info {
+  background-color: #ebf8ff !important;
+  border-left-color: #3182ce !important;
+  color: #2c5282 !important;
+}
+.callout-info .callout-label-container { color: #3182ce; }
+
+.callout-warning {
+  background-color: #fffaf0 !important;
+  border-left-color: #ff9900 !important;
+  color: #744210 !important;
+}
+.callout-warning .callout-label-container { color: #ff9900; }

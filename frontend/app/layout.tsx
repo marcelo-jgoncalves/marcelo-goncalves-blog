@@ -38,7 +38,11 @@ export default function RootLayout({
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      {/* ADICIONADO: suppressHydrationWarning para evitar erros de extensões no body */}
+      <body 
+        className={`${inter.variable} ${spaceGrotesk.variable}`}
+        suppressHydrationWarning={true}
+      >
         <SkipLink />
         <Header />
         <main id="main-content" style={{ minHeight: '80vh' }}>
