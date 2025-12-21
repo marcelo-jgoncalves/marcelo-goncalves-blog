@@ -1390,29 +1390,56 @@ footer {
   width: 4px; background-color: var(--aws-orange); border-radius: 2px;
 }
 
-/* Listas com Bolinha Amarela */
+/* =========================================
+   LISTAS COM BOLINHA AMARELA (AWS ORANGE)
+   ========================================= */
+
 .post-content ul { 
   padding-left: 0; 
   margin-bottom: 2em; 
-  list-style: none !important; /* Garante a remoção da bolinha preta nativa */
+  list-style: none !important; /* Remove marcador nativo [cite: 1, 5] */
 }
+
 .post-content li { 
   margin-bottom: 12px; 
   position: relative; 
-  padding-left: 28px; /* Espaço para a bolinha */
-  display: block; /* Garante que o item se comporte como bloco */
+  padding-left: 28px; /* Recuo para acomodar a bolinha  */
   line-height: 1.6;
+  display: block;
 }
+
+/* Força o conteúdo interno a fluir horizontalmente após o marcador  */
+.post-content li p {
+  display: inline !important;
+  margin: 0 !important;
+}
+
 .post-content li::before {
   content: ''; 
   position: absolute;
   left: 0;
-  top: 0.6em; /* Alinhamento vertical centralizado com a primeira linha */
-  width: 10px;
-  height: 10px;
-  background-color: var(--aws-orange); /* Usa o amarelo/laranja do projeto */
-  border-radius: 50%; /* Faz ser uma bolinha perfeita */
+  top: 0.55em; /* Alinhamento refinado com o topo da linha de texto  */
+  width: 9px;
+  height: 9px;
+  background-color: var(--aws-orange); /* #FF9900  */
+  border-radius: 50%;
   display: inline-block;
+}
+
+/* =========================================
+   ESPECÍFICO PARA MOBILE (ATÉ 768px) 
+   ========================================= */
+@media (max-width: 768px) {
+  .post-content li {
+    padding-left: 22px; /* Redução do recuo lateral no mobile  */
+    margin-bottom: 10px; /* Redução leve no respiro entre itens */
+  }
+
+  .post-content li::before {
+    width: 8px;  /* Bolinha levemente menor para telas pequenas  */
+    height: 8px;
+    top: 0.6em;  /* Reajuste sutil de centralização */
+  }
 }
 
 /* Citações */
@@ -1728,8 +1755,7 @@ footer {
         grid-template-columns: repeat(3, 1fr);
         gap: 25px;
     }
-}
-/* =========================================
+}/* =========================================
    12. ESTILOS DE BLOCOS DE CONTEÚDO (CALLOUTS)
    ========================================= */
 
@@ -1740,13 +1766,18 @@ footer {
   /* Ajuste de respiro para fidelidade ao protótipo */
   padding: 20px 25px !important; 
   
-  /* MARGIN: Mantemos o respiro superior e reduzimos o inferior para 0.5em
-     Isso evita o vácuo gigante entre a caixa e o próximo parágrafo. */
+  /* MARGIN: Respiro superior e reduzido no inferior para evitar vácuo */
   margin: 1.5em 0 0.5em 0 !important; 
   
   border-radius: 8px;
   border-left: 5px solid;
   line-height: 1.6;
+  font-size: 1.05rem; /* Conforme protótipo */
+  
+  /* MOBILE-FIRST: Prevenção de quebra de layout */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 /* RÓTULO (ÍCONE + TEXTO) 
@@ -1759,6 +1790,7 @@ footer {
   user-select: none;
   pointer-events: none;
   vertical-align: baseline;
+  font-weight: 700;
 }
 
 /* ÁREA DE CONTEÚDO 
@@ -1767,8 +1799,7 @@ footer {
   display: inline;
 }
 
-/* RESET DE ELEMENTOS INTERNOS */
-   
+/* RESET DE ELEMENTOS INTERNOS PARA FLUXO HORIZONTAL */
 .content-callout p, 
 .content-callout br {
   display: inline !important;
@@ -1776,18 +1807,184 @@ footer {
   padding: 0 !important;
 }
 
-/* --- VARIANTES DE CORES (Sincronizadas com o Corpo do Texto) --- */
+/* --- VARIANTES DE CORES (Sincronizadas com o Protótipo) --- */
 
 /* Dica (Info) */
 .callout-info {
-  background-color: #ebf8ff !important;
-  border-left-color: #3182ce !important;
-  color: #2c5282 !important; /* Cor principal do texto */
+  background-color: #ebf8ff !important; /* var(--blue-light) */
+  border-left-color: #3182ce !important; /* var(--blue-600) */
+  color: #2c5282 !important; 
 }
 
 /* Atenção (Warning) */
 .callout-warning {
-  background-color: #fffaf0 !important;
-  border-left-color: #ff9900 !important;
-  color: #744210 !important; /* Cor principal do texto */
+  background-color: #fffaf0 !important; /* var(--orange-light) */
+  border-left-color: #ff9900 !important; /* var(--aws-orange) */
+  color: #744210 !important; 
+}
+
+/* =========================================
+   ESPECÍFICO PARA MOBILE (ATÉ 768px)
+   ========================================= */
+@media (max-width: 768px) {
+  .content-callout {
+    /* Redução de padding lateral para ganhar espaço no mobile */
+    padding: 15px 18px !important;
+    font-size: 1rem; /* Ajuste leve na densidade do texto */
+  }
+
+  .content-callout .callout-label-container {
+    /* Garante que o ícone e label não fiquem 'esmagados' */
+    gap: 6px;
+  }
+}
+
+/* ==========================================================
+   13. BLOCOS DE CÓDIGO (AWS DARK THEME) - MOBILE FIRST
+   ========================================================== */
+
+/* Container Principal do Código (Usado no Frontend para envolver o pre) */
+.code-wrapper {
+  position: relative;
+  margin: 2em 0;
+  border-radius: 8px;
+  overflow: hidden; /* Garante que o cabeçalho e o código respeitem o arredondamento */
+  background-color: var(--aws-dark); /* #232F3E conforme protótipo */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Cabeçalho do Bloco de Código */
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #19212c; /* Tom mais escuro para o topo */
+  color: #a0aec0;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Bloco de Código (Pre e Code) */
+pre.code-block, 
+.post-content pre {
+  padding: 20px;
+  margin: 0; 
+  overflow-x: auto; /* ESSENCIAL PARA MOBILE: Scroll horizontal */
+  color: #e2e8f0;
+  font-family: var(--font-code); /* JetBrains Mono */
+  font-size: 0.95rem;
+  line-height: 1.6;
+  background-color: var(--aws-dark) !important;
+  border-radius: 8px !important; /* Força o arredondamento do protótipo */
+  -webkit-overflow-scrolling: touch; 
+}
+
+
+/* Botão de copiar no Bloco de Código */
+
+/* Botão de Copiar dentro do bloco de código */
+pre {
+  position: relative;
+  /* Garante que o padding lateral não sobreponha o botão no mobile */
+  padding-top: 2.5rem !important; 
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background: var(--aws-orange);
+  border-color: var(--aws-orange);
+}
+
+.copy-code-btn.copied {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+/* Ajuste fino para o Shiki não esconder o botão */
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+
+/* Customização da Scrollbar para Desktop */
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* =========================================
+   ESPECÍFICO PARA MOBILE (ATÉ 768px)
+   ========================================= */
+@media (max-width: 768px) {
+  pre.code-block, 
+  .post-content pre {
+    padding: 15px;
+    font-size: 0.85rem; 
+    border-radius: 8px !important; /* CORREÇÃO: Mantém quinas arredondadas no mobile */
+  }
+  
+  .code-header {
+    padding: 6px 12px;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * CITAÇÃO (BLOCKQUOTE) - DESIGN COMPLEMENTAR AZUL
+ * ------------------------------------------------------------------ */
+.post-content blockquote {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  background-color: var(--gray-light);
+  background-image: var(--bg-light-gradient); /* Sutil degradê do projeto */
+  border-left: 5px solid var(--blue-600); /* Azul complementar definido na paleta  */
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+/* Efeito de destaque ao passar o mouse */
+.post-content blockquote:hover {
+  transform: translateX(5px);
+}
+
+.post-content blockquote p {
+  font-family: var(--font-inter);
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: var(--aws-dark);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Detalhe visual: Ícone de aspas discreto */
+.post-content blockquote::before {
+  content: "\f10d"; /* quote-left do FontAwesome */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #ffffff;
+  padding: 0 8px;
+  color: var(--blue-600);
+  font-size: 0.85rem;
 }

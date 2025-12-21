@@ -5,29 +5,29 @@ import React from 'react';
 
 // Libs e Utils
 import { getPost } from '@/lib/api';
-import { processPostContent, renderPostWithInjections } from '@/lib/postUtils';
+import { processFullPostContent } from '@/lib/postUtils';
 
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import ShareButtons from '@/components/ui/ShareButtons';
-import SuperDestaque from '@/components/ui/SuperDestaque'; // Componente de CTA Full-Width
+import SuperDestaque from '@/components/ui/SuperDestaque'; 
 import AdsenseSidebar from '@/components/ui/AdsenseSidebar';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
-import PopularPostsSection from '@/components/ui/PopularPostsSection'; // Componente de Populares
+import PopularPostsSection from '@/components/ui/PopularPostsSection';
+import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; // Ativa o JS de cópia no cliente
 
-
-// ATUALIZADO (Next.js 15): params é uma Promise agora
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// 1. Geração de Metadados SEO
+/**
+ * 1. GERAÇÃO DE METADADOS SEO
+ * Executado no servidor para garantir crawlers e redes sociais recebam as tags corretas.
+ */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // ATUALIZADO: Aguardamos os params antes de usar
   const { slug } = await params;
-  
   const data = await getPost(slug);
   if (!data || !data.post) return { title: 'Post não encontrado' };
 
@@ -40,12 +40,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// 2. Componente da Página
+/**
+ * 2. COMPONENTE PRINCIPAL DA PÁGINA (Server Component)
+ */
 export default async function PostPage({ params }: Props) {
-  // ATUALIZADO: Aguardamos os params antes de usar
   const { slug } = await params;
 
-  // Busca dados na API
+  // Busca dados na API (AWS Lambda via API Gateway)
   const data = await getPost(slug);
 
   if (!data || !data.post) {
@@ -54,32 +55,64 @@ export default async function PostPage({ params }: Props) {
 
   const { post } = data;
 
-  // Processa o HTML para gerar IDs e extrair Títulos
-  const { modifiedHtml, headings } = processPostContent(post.conteudo_html);
+  /**
+   * PIPELINE DE PROCESSAMENTO (Server-Side)
+   * Realiza Syntax Highlighting (Shiki), extrai IDs para o TOC
+   * e prepara placeholders para injeção de componentes.
+   */
+  const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
-  // Prepara os componentes para injeção 
-  const injections = {
-    ServiceComponent: <ServiceCallout />,
-    
-    // CORREÇÃO DE INJEÇÃO: Passamos o componente AdsenseInArticle (in-content)
-    AdSenseComponent: <AdsenseInArticle blockId="post-in-article-300x250" variant="in-content" />,
+  /**
+   * FUNÇÃO DE RENDERIZAÇÃO DE CONTEÚDO
+   * Converte a string HTML processada em elementos React,
+   * substituindo marcadores específicos por componentes interativos.
+   */
+  const renderFinalContent = () => {
+    // Divide a string nos pontos onde existem placeholders de injeção
+    const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
+
+    return parts.map((part, index) => {
+      // Injeção dinâmica do Callout de Serviços (Mobile Only via CSS)
+      if (part === '<div id="inject-service-placeholder"></div>') {
+        return (
+          <div key="inject-service" className="mobile-only-injection"> 
+            <ServiceCallout />
+          </div>
+        );
+      }
+
+      // Injeção dinâmica de AdSense no meio do texto
+      if (part === '<div id="inject-ads-placeholder"></div>') {
+        return (
+          <div key="inject-ads" className="my-8">
+            <AdsenseInArticle blockId="post-in-article-300x250" variant="in-content" />
+          </div>
+        );
+      }
+
+      // Ignora partes vazias resultantes do split por Regex
+      if (part.trim() === '') return null;
+
+      // Renderiza o bloco de HTML (incluindo o código colorido pelo Shiki)
+      return <div key={`content-part-${index}`} dangerouslySetInnerHTML={{ __html: part }} />;
+    });
   };
-
-  const renderedContent = renderPostWithInjections(modifiedHtml, injections);
 
   return (
     <>
-      {/* --- HEADER DO ARTIGO (Hero) --- */}
+      {/* Adiciona a lógica de interatividade para os botões "Copiar" nos blocos de código */}
+      <CopyCodeLogic />
+
+      {/* --- HEADER DO ARTIGO (Hero Section) --- */}
       <section className="article-header">
         <div className="container">
-          {/* Tag / Categoria */}
           <span className="post-tag">
              {post.categoria_slug || 'Artigo'}
           </span>
 
           <h1 className="article-title">{post.titulo}</h1>
 
-          {/* Meta Dados */}
+          {/* Meta informações do post */}
           <div className="article-meta">
             <span><i className="fas fa-user-circle"></i> Por Marcelo Gonçalves</span>
             <span>
@@ -105,57 +138,51 @@ export default async function PostPage({ params }: Props) {
       {/* --- GRID PRINCIPAL (Conteúdo + Sidebar) --- */}
       <div className="article-grid">
         
-        {/* COLUNA ESQUERDA: Conteúdo do Post */}
         <article>
             <div className="post-body-wrapper">
                 
-                {/* 1. RESUMO/LEAD */}
-                {/* O .post-lead AGORA NÃO TEM MAIS BORDA INFERIOR NO CSS */}
+                {/* Lead/Resumo do post */}
                 {post.resumo && (
-                  <p className="post-lead">
-                    {post.resumo}
-                  </p>
+                  <p className="post-lead">{post.resumo}</p>
                 )}
                 
-                {/* 2. CORREÇÃO DE POSIÇÃO: TOC MOBILE APARECE AQUI, APÓS O RESUMO */}
+                {/* Sumário para navegação Mobile */}
                 {headings.length > 0 && (
                     <TOC headings={headings} variant="mobile" />
                 )}
 
-                {/* 3. INJEÇÃO DO BANNER HORIZONTAL E LINHA DIVISÓRIA */}
-                {/* Usa a variante 'summary-divider' para renderizar o banner 728x90 */}
+                {/* Banner de Anúncio superior */}
                 <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
                 
-                {/* 4. CONTEÚDO PRINCIPAL */}
+                {/* Renderização do conteúdo principal processado */}
                 <div className="post-content">
-                    {renderedContent}
+                    {renderFinalContent()}
                 </div>
 
             </div>
             
-            {/* 5. SHARE BUTTONS E AUTHOR BOX */}
+            {/* Elementos de rodapé do artigo */}
             <ShareButtons title={post.titulo} slug={post.slug} />
             <AuthorBox authorId={post.autor_id} /> 
             
-            {/* 6. SEÇÃO POPULARES: Limitado a 4 cards e layout de 2 colunas */}
+            {/* Seção de posts sugeridos */}
             <PopularPostsSection limit={4} variant="post" /> 
             
         </article>
 
-        {/* COLUNA DIREITA: Sidebar (Desktop Only via CSS) */}
+        {/* --- SIDEBAR (Desktop) --- */}
         <aside className="sidebar">
             <div className="sticky-wrapper">
-                
-                {/* Widget 1: Índice Desktop */}
+                {/* Sumário para Desktop */}
                 <TOC headings={headings} variant="desktop" />
-
-                {/* Widget 2: CTA Serviços Desktop */}
+                
+                {/* Callout de Serviços */}
                 <ServiceCallout />
-
-                {/* Widget 3: AdSense Vertical (AGORA USANDO O COMPONENTE) */}
+                
+                {/* Anúncio Vertical da Sidebar */}
                 <AdsenseSidebar blockId="sidebar-300x600" />
 
-                {/* Widget 4: Newsletter */}
+                {/* Widget de Newsletter */}
                 <div className="sidebar-widget widget-newsletter">
                     <div className="card-icon-wrapper">
                         <i className="far fa-envelope"></i>
@@ -166,16 +193,13 @@ export default async function PostPage({ params }: Props) {
                         Inscrever-se
                     </Link>
                 </div>
-
             </div>
         </aside>
 
       </div>
       
-      {/* --- CTA DO PROJETO (Super Destaque) --- */}
-      {/* POSIÇÃO CORRIGIDA: FORA DO article-grid para ocupar a largura total (full-width) */}
+      {/* Seção de destaque final (Call to Action global) */}
       <SuperDestaque />
-
     </>
   );
 }

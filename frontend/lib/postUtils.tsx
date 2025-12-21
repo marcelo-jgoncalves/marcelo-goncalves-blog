@@ -1,35 +1,60 @@
-import React from 'react';
+import { createHighlighter } from 'shiki';
 
-/**
- * Interface para os dados extraídos do HTML
- */
 export interface Heading {
   id: string;
   text: string;
 }
 
 export interface ProcessedPost {
-  modifiedHtml: string;
+  contentHtml: string;
   headings: Heading[];
 }
 
 /**
- * 1. Processa o HTML bruto para adicionar IDs aos H2 e extrair a lista de títulos para o TOC.
- * (USADO EM page.tsx)
+ * Pipeline Sênior de Processamento de Post
+ * Resolve: Syntax Highlighting, TOC, e Injeções sem quebrar o HTML.
  */
-export const processPostContent = (html: string): ProcessedPost => {
+export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
-  
-  // LIMPEZA DE TÍTULO 
-  let cleanHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '');
 
-  // 2. Regex para encontrar H2 e capturar o texto interno
-  const regex = /<h2(.*?)>(.*?)<\/h2>/g;
-  
-  // Aplica a lógica de IDs nos H2 sobre o HTML já limpo
-  const modifiedHtml = cleanHtml.replace(regex, (match, attrs, text) => {
+  // 1. Inicializa o Shiki para o Syntax Highlighting
+  const highlighter = await createHighlighter({
+    themes: ['dark-plus'],
+    langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python']
+  });
+
+  // 2. Limpeza de H1 (SEO) e Normalização
+  let processedHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '').trim();
+
+  // 3. Processamento de Blocos de Código (Syntax Highlighting)
+  const codeBlockRegex = /<pre><code class="language-([^">]+)">([\s\S]*?)<\/code><\/pre>/g;
+  const matches = Array.from(processedHtml.matchAll(codeBlockRegex));
+
+  for (const match of matches) {
+    const [fullMatch, lang, code] = match;
+    // Decodifica entidades HTML básicas para o Shiki processar o código puro
+    const rawCode = code
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+
+    try {
+      const highlighted = highlighter.codeToHtml(rawCode, {
+        lang,
+        theme: 'dark-plus'
+      });
+      processedHtml = processedHtml.replace(fullMatch, highlighted);
+    } catch (e) {
+      console.error(`Erro Shiki na linguagem ${lang}:`, e);
+    }
+  }
+
+  // 4. Processamento de H2 para o TOC (Sumário)
+  const h2Regex = /<h2(.*?)>(.*?)<\/h2>/g;
+  processedHtml = processedHtml.replace(h2Regex, (match, attrs, text) => {
     const cleanText = text.replace(/<[^>]*>/g, '');
-    
     const id = cleanText
       .toLowerCase()
       .normalize('NFD')
@@ -38,77 +63,28 @@ export const processPostContent = (html: string): ProcessedPost => {
       .replace(/\s+/g, '-');
 
     headings.push({ id, text: cleanText });
-
     return `<h2 id="${id}"${attrs}>${text}</h2>`;
   });
 
-  return { modifiedHtml, headings };
-};
-
-/**
- * 2. Quebra o HTML em partes e injeta componentes React (CTA, Ads)
- */
-export function renderPostWithInjections(
-  html: string, 
-  injections: {
-    // REMOVIDO: TocComponent não é mais injetado aqui.
-    ServiceComponent: React.ReactNode;
-    AdSenseComponent: React.ReactNode;
-  }
-) {
-  // --- PASSO 1: LIMPEZA FINAL DO CONTEÚDO BRUTO (Corrige Hydration Failure) ---
-  // Remove tags globais de fechamento (como </body>, </html>, </article>)
-  let cleanedHtml = html.replace(/<\/?(?:html|body|article)>/gi, '');
+  // 5. Injeção de Anúncios e Serviços (Sem quebrar a string)
+  // Encontramos os pontos de fechamento </p> para injetar
+  const pCloseTag = '</p>';
+  const pParts = processedHtml.split(pCloseTag);
   
-  // Separa o HTML por parágrafos
-  const parts = cleanedHtml.split('</p>');
-  const contentElements: React.ReactNode[] = [];
-  const totalParts = parts.length;
+  if (pParts.length > 3) {
+    const INSERT_SERVICE_AFTER = 2; // Após 3º parágrafo (index 2)
+    const INSERT_ADS_AFTER = Math.floor(pParts.length / 2);
 
-  // Lógica de Posição (Hardcoded conforme estratégia)
-  // REMOVIDO: const INSERT_TOC_AFTER = 0; 
-  const INSERT_SERVICE_AFTER = 2; 
-  const INSERT_ADS_AFTER = Math.floor(totalParts / 2); 
+    // Injeção de Marcadores que serão substituídos no page.tsx por componentes Reais
+    // Isso evita o erro de passar JSX para dentro de strings
+    pParts[INSERT_SERVICE_AFTER] += `\n<div id="inject-service-placeholder"></div>\n`;
+    pParts[INSERT_ADS_AFTER] += `\n<div id="inject-ads-placeholder"></div>\n`;
+  }
 
-  parts.forEach((part, index) => {
-    
-    let partHtml = part.trim();
+  processedHtml = pParts.join(pCloseTag);
 
-    // Adiciona o fechamento </p> apenas se não for o último elemento
-    if (index < totalParts - 1) {
-        partHtml += '</p>';
-    }
-    
-    // Se o bloco estiver vazio após a limpeza, ignora.
-    if (!partHtml) return;
-
-    // Adiciona o bloco de texto atual
-    contentElements.push(
-      <div key={`part-${index}`} dangerouslySetInnerHTML={{ __html: partHtml }} />
-    );
-
-    // --- INJEÇÕES ---
-
-    // REMOVIDO: Bloco if (index === INSERT_TOC_AFTER)
-
-    // 1. CTA Serviços (Mobile Only)
-    if (index === INSERT_SERVICE_AFTER) {
-      contentElements.push(
-        <div key="inject-service" className="mobile-only-injection"> 
-           {injections.ServiceComponent}
-        </div>
-      );
-    }
-    
-    // 2. AdSense (Meio do texto)
-    if (index === INSERT_ADS_AFTER) {
-      contentElements.push(
-        <div key="inject-ads" className="my-8">
-          {injections.AdSenseComponent}
-        </div>
-      );
-    }
-  });
-
-  return contentElements;
+  return {
+    contentHtml: processedHtml,
+    headings
+  };
 }

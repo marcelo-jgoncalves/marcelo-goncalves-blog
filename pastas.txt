@@ -1,0 +1,144 @@
+.
+├── README.md
+├── admin
+│   ├── README.md
+│   ├── dist
+│   │   ├── assets
+│   │   ├── favicon.ico
+│   │   └── index.html
+│   ├── env.d.ts
+│   ├── eslint.config.ts
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── favicon.ico
+│   ├── src
+│   │   ├── App.vue
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── layouts
+│   │   ├── main.ts
+│   │   ├── router
+│   │   ├── services
+│   │   ├── stores
+│   │   └── views
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+├── backend
+│   ├── build.js
+│   ├── dist
+│   │   ├── adminAuthors
+│   │   ├── adminPosts
+│   │   ├── getAuthor
+│   │   ├── getPost
+│   │   ├── getPosts
+│   │   ├── imageProcessor
+│   │   └── mediaUpload
+│   ├── package-lock.json
+│   ├── package.json
+│   └── src
+│       ├── common
+│       └── functions
+├── docs
+│   ├── docs
+│   │   ├── blueprint-v1.7.md
+│   │   ├── estrutura-pastas.pdf
+│   │   ├── github-role.yaml.txt
+│   │   ├── handover.md
+│   │   ├── infra-architecture.md
+│   │   ├── oidc.yaml.txt
+│   │   ├── sprint-backlogv2.pdf
+│   │   └── toDos.txt
+│   ├── postagens
+│   │   ├── ideias-postagens.pdf
+│   │   ├── memória-poluída-novo-chat.pdf
+│   │   └── prompts-eu-somos-nós.pdf
+│   └── protótipos
+│       ├── 404-v1.1.html
+│       ├── admin-v1.8.html
+│       ├── artigos-v1.1.html
+│       ├── busca-v1.0.html
+│       ├── home-mobile-v1.0.html
+│       ├── newsletter.html
+│       ├── pgn-categoria-v1.0.html
+│       ├── pgn-projeto-v1.2.html
+│       ├── post-v1.9.html
+│       ├── resultado-neg.html
+│       ├── servicos-v1.2.html
+│       ├── servicos.html
+│       └── sobre-v1.3.html
+├── frontend
+│   ├── README.md
+│   ├── app
+│   │   ├── artigos
+│   │   ├── busca
+│   │   ├── categoria
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   ├── not-found.tsx
+│   │   ├── o-projeto
+│   │   ├── page.module.css
+│   │   ├── page.tsx
+│   │   ├── post
+│   │   ├── servicos
+│   │   └── sobre
+│   ├── code.txt
+│   ├── components
+│   │   ├── layout
+│   │   └── ui
+│   ├── eslint.config.mjs
+│   ├── lib
+│   │   ├── api.ts
+│   │   ├── injectAd.ts
+│   │   └── postUtils.tsx
+│   ├── next-env.d.ts
+│   ├── next.config.ts
+│   ├── open-next.config.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── js
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   └── window.svg
+│   └── tsconfig.json
+├── infra
+│   ├── builds
+│   │   ├── adminAuthors.zip
+│   │   ├── adminPosts.zip
+│   │   ├── getAuthor.zip
+│   │   ├── getPost.zip
+│   │   ├── getPosts.zip
+│   │   ├── imageProcessor.zip
+│   │   ├── index.js
+│   │   ├── mediaUpload.zip
+│   │   ├── nextjs.zip
+│   │   └── placeholder.zip
+│   ├── env
+│   │   └── dev.tfvars
+│   ├── main.tf
+│   ├── modules
+│   │   ├── admin
+│   │   ├── api-gateway
+│   │   ├── cognito
+│   │   ├── dynamodb
+│   │   ├── frontend
+│   │   ├── lambda
+│   │   └── media
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   └── variables.tf
+├── package-lock.json
+├── package.json
+├── pastas.txt
+└── tec.md
+
+55 directories, 87 files
