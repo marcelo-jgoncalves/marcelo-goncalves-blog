@@ -1391,11 +1391,28 @@ footer {
 }
 
 /* Listas com Bolinha Amarela */
-.post-content ul { padding-left: 20px; margin-bottom: 2em; list-style: none; }
-.post-content li { margin-bottom: 10px; position: relative; }
+.post-content ul { 
+  padding-left: 0; 
+  margin-bottom: 2em; 
+  list-style: none !important; /* Garante a remoção da bolinha preta nativa */
+}
+.post-content li { 
+  margin-bottom: 12px; 
+  position: relative; 
+  padding-left: 28px; /* Espaço para a bolinha */
+  display: block; /* Garante que o item se comporte como bloco */
+  line-height: 1.6;
+}
 .post-content li::before {
-  content: '•'; color: var(--aws-orange); font-weight: bold;
-  display: inline-block; width: 1em; margin-left: -1em;
+  content: ''; 
+  position: absolute;
+  left: 0;
+  top: 0.6em; /* Alinhamento vertical centralizado com a primeira linha */
+  width: 10px;
+  height: 10px;
+  background-color: var(--aws-orange); /* Usa o amarelo/laranja do projeto */
+  border-radius: 50%; /* Faz ser uma bolinha perfeita */
+  display: inline-block;
 }
 
 /* Citações */
@@ -1720,19 +1737,20 @@ footer {
   display: block !important;
   position: relative;
   
-  /* PADDING: 25px é o ideal para o respiro das bordas sem criar buracos */
-  padding: 18px 25px !important; 
+  /* Ajuste de respiro para fidelidade ao protótipo */
+  padding: 20px 25px !important; 
   
-  /* MARGIN: 1.5em no topo para afastar do texto anterior, 
-     e apenas 0.2em abaixo para eliminar o vácuo que você viu */
-  margin: 1.5em 0 0.2em 0 !important; 
+  /* MARGIN: Mantemos o respiro superior e reduzimos o inferior para 0.5em
+     Isso evita o vácuo gigante entre a caixa e o próximo parágrafo. */
+  margin: 1.5em 0 0.5em 0 !important; 
   
   border-radius: 8px;
   border-left: 5px solid;
   line-height: 1.6;
 }
 
-/* RÓTULO PROTEGIDO (Ícone + Texto Fixo) */
+/* RÓTULO (ÍCONE + TEXTO) 
+   Sincronizado com a estrutura do Tiptap */
 .content-callout .callout-label-container {
   display: inline-flex;
   align-items: center;
@@ -1743,9 +1761,14 @@ footer {
   vertical-align: baseline;
 }
 
-/* CURA PARA O VÁCUO: 
-   O Quill injeta <p> e <br> dentro da div. 
-   Forçamos eles a não ocuparem espaço de bloco. */
+/* ÁREA DE CONTEÚDO 
+   Garante que o texto flua horizontalmente após o rótulo */
+.content-callout .callout-content-area {
+  display: inline;
+}
+
+/* RESET DE ELEMENTOS INTERNOS */
+   
 .content-callout p, 
 .content-callout br {
   display: inline !important;
@@ -1753,17 +1776,18 @@ footer {
   padding: 0 !important;
 }
 
-/* --- ESTILIZAÇÃO VISUAL --- */
+/* --- VARIANTES DE CORES (Sincronizadas com o Corpo do Texto) --- */
+
+/* Dica (Info) */
 .callout-info {
   background-color: #ebf8ff !important;
   border-left-color: #3182ce !important;
-  color: #2c5282 !important;
+  color: #2c5282 !important; /* Cor principal do texto */
 }
-.callout-info .callout-label-container { color: #3182ce; }
 
+/* Atenção (Warning) */
 .callout-warning {
   background-color: #fffaf0 !important;
   border-left-color: #ff9900 !important;
-  color: #744210 !important;
+  color: #744210 !important; /* Cor principal do texto */
 }
-.callout-warning .callout-label-container { color: #ff9900; }
