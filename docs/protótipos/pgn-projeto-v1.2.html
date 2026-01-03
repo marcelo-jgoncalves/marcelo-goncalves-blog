@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Projeto | Construindo um Blog com IA na AWS | Marcelo Gonçalves</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Identidade Visual (Mantida) --- */
+        :root {
+            --aws-dark: #232F3E;
+            --aws-orange: #FF9900;
+            --gray-100: #f5f5ff;
+            --gray-800: #2D3748;
+            --blue-600: #3182CE;
+            --gray-light: #f8fafc;
+            --gray-border: #e0e0e0;
+            --gray-text: #555;
+        }
+        
+        /* --- Reset e Globais (Mobile-First) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+            background-color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+
+        /* --- Acessibilidade (Skip Link) --- */
+        .skip-link {
+            position: absolute;
+            left: 20px; 
+            top: -60px; 
+            background: var(--aws-orange);
+            color: var(--aws-dark);
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transition: top 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .skip-link:focus {
+            top: 20px; 
+            opacity: 1;
+        }
+
+        /* --- Header (Mobile-First - CORRIGIDO) --- */
+        header { background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; padding: 0 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; max-width: 1200px; margin: 0 auto; position: relative; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--aws-dark); text-decoration: none; }
+        .logo span { color: var(--aws-orange); }
+        .nav-links { display: none; } /* Oculto no mobile */
+        
+        .mobile-menu-btn { 
+            display: block; /* Visível no mobile */
+            background: none; 
+            border: none; 
+            color: var(--aws-dark); 
+            font-size: 24px; 
+            cursor: pointer; 
+        }
+        
+        /* Menu Mobile (Full-width) */
+        .mobile-menu { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            right: -20px; 
+            left: -20px;
+            background: white; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--gray-border);
+            z-index: 1000;
+        }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; padding: 15px 20px; text-decoration: none; color: var(--gray-dark); font-weight: 500; border-bottom: 1px solid var(--gray-border); }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { background: var(--gray-light); color: var(--aws-orange); }
+        
+
+        /* --- Post Hero (Padrão de Página) --- */
+        .post-hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .post-header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .post-hero h1 {
+            font-size: 2.2rem;
+            color: var(--aws-dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .post-hero h1 .highlight {
+            color: var(--aws-orange);
+        }
+        
+        .project-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-800);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+
+        /* --- Container da Timeline (Coluna Estreita) --- */
+        .timeline-container {
+            max-width: 800px; /* Largura de leitura confortável */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- AdSense Top --- */
+        .adsense-post-top { margin: 40px 0; }
+        
+        .adsense-placeholder {
+            max-width: 728px;
+            height: 90px;
+            background-color: #e0e0e0;
+            border: 2px dashed var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto; /* Centraliza (Gera 16px de margem) */
+            color: var(--gray-800);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+        }
+        
+        /* --- Lista da Timeline do Projeto --- */
+        .project-timeline {
+            list-style: none;
+            max-width: 728px;
+            margin: 40px auto 0 auto;
+            position: relative;
+            /* Linha e padding são removidos no mobile */
+        }
+        
+        .timeline-entry {
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            background: white;
+            position: relative;
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: box-shadow 0.3s ease;
+        }
+        .timeline-entry:hover {
+            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
+        }
+        
+        .timeline-entry::before {
+            /* Bolinha removida da base (mobile) */
+            display: none; 
+            
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--aws-orange);
+            top: 35px;
+        }
+        
+        .timeline-entry .post-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--aws-orange);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        
+        .timeline-entry h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem; /* Menor no mobile */
+            color: var(--aws-dark);
+            margin-bottom: 10px;
+        }
+        .timeline-entry h2 a {
+            text-decoration: none;
+            color: var(--aws-dark);
+            transition: color 0.3s;
+        }
+        .timeline-entry h2 a:hover {
+            color: var(--aws-orange);
+        }
+
+        .timeline-entry p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        /* --- Paginação --- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            max-width: 728px;
+            margin: 50px auto 0 auto;
+        }
+        .page-numbers {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--gray-800);
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .page-numbers:hover {
+            background-color: #f8fafc;
+            border-color: #ccc;
+        }
+        .page-numbers.current {
+            background-color: var(--aws-orange);
+            color: white;
+            border-color: var(--aws-orange);
+        }
+        .page-numbers.dots {
+            border: none;
+            padding: 10px 5px;
+        }
+        
+        /* --- Estilos de Botão Consistentes --- */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block; /* Garantir que se pareça com botão */
+        }
+        .btn-primary {
+            background-color: var(--aws-orange);
+            color: var(--aws-dark);
+        }
+        .btn-primary:hover {
+            background-color: #e68a00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 153, 0, 0.2);
+        }
+        
+        /* --- ATUALIZADO: CTA de Vendas (Mantido) --- */
+        .sales-cta {
+            padding: 60px 20px;
+            background-color: var(--gray-light);
+            text-align: center;
+            margin-top: 80px; /* Espaçamento */
+        }
+        .sales-cta h2 {
+            font-size: 2rem;
+            color: var(--aws-dark);
+            margin-bottom: 15px;
+        }
+        .sales-cta p {
+            font-size: 1.1rem;
+            color: var(--gray-text);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+        
+        
+        /* --- Footer (Mobile-First) --- */
+        footer { 
+            background-color: var(--gray-800);
+            color: white; 
+            padding: 60px 20px 30px; 
+        }
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: 1fr; /* Coluna única */
+            gap: 40px; 
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .footer-column h3 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 15px; font-size: 1.2rem; color: white; }
+        .footer-column p { color: #cbd5e0; }
+        .footer-links { list-style: none; padding-left: 0; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: #cbd5e0; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--aws-orange); }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; padding-left: 0; justify-content: center; }
+        .social-links a { width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s; }
+        .social-links a:hover { background-color: var(--aws-orange); transform: translateY(-3px); }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); color: #a0aec0; }
+        
+        
+        /* --- ========================== --- */
+        /* --- ==== MEDIA QUERIES (DESKTOP) ==== --- */
+        /* --- ========================== --- */
+        
+        @media (min-width: 768px) {
+            header { padding: 0 25px; }
+            .navbar { padding: 20px 0; }
+            .logo { font-size: 1.8rem; }
+            
+            .nav-links { 
+                display: flex; 
+                gap: 30px; 
+            }
+            .nav-links a {
+                text-decoration: none;
+                color: var(--gray-800);
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+            .nav-links a:hover {
+                color: var(--aws-orange);
+            }
+
+            .mobile-menu-btn { display: none; }
+            .mobile-menu { display: none !important; }
+
+            .post-hero { padding: 80px 25px; }
+            .post-hero h1 { font-size: 3.2rem; }
+            .project-subtitle { font-size: 1.2rem; }
+            
+            .timeline-entry h2 { font-size: 1.8rem; }
+            
+            .sales-cta { padding: 80px 25px; }
+            .sales-cta h2 { font-size: 2.5rem; }
+            .sales-cta p { font-size: 1.2rem; }
+
+            footer { padding: 60px 0 30px; }
+            .footer-content { 
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+                text-align: left;
+            }
+            .social-links { justify-content: flex-start; }
+            
+            /* CORREÇÃO: Ativa a timeline SÓ no desktop */
+            .project-timeline { 
+                border-left: 3px solid var(--aws-orange);
+                /* CORREÇÃO 1: Espaço proporcional de 30px entre linha e card */
+                padding-left: 30px; 
+            }
+            
+            .timeline-entry::before {
+                display: block; 
+                /* CORREÇÃO 2: Centraliza a bolinha (total 21px) sobre a linha (total 3px) */
+                /* (30px padding) + (1.5px meia-linha) - (10.5px meia-bolinha) = -39px */
+                /* Matemática: left = -(padding-left + half-circle-width - half-line-width) */
+                /* left = -(30 + 10.5 - 1.5) = -39px */
+                left: -39px; 
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Pular para o Conteúdo Principal</a>
+
+    <header>
+        <div class="navbar">
+            <a href="/" class="logo">Marcelo<span>Gonçalves</span></a>
+            
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/servicos" style="color: var(--aws-orange); font-weight: 600;">Serviços</a>
+                <a href="/sobre">Sobre</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mobileMenu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/servicos" style="color: var(--aws-orange); font-weight: 600;">Serviços</a>
+                <a href="/sobre">Sobre</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+
+        <section class="post-hero">
+            <div class="post-header-content container">
+                <h1>O Projeto: Construindo um Blog <span class="highlight">quase</span> 100% com IA</h1>
+                <p class="project-subtitle">Acompanhe a jornada, os desafios técnicos, os custos e os aprendizados de construir este blog do zero, usando IA em cada etapa da arquitetura 100% serverless na AWS.</p>
+            </div>
+        </section>
+
+        <div class="timeline-container">
+            
+            <section class="adsense-post-top">
+                <div class="adsense-placeholder">
+                    [ADSENSE LEADERBOARD - 728x90]
+                </div>
+            </section>
+
+            <ol class="project-timeline">
+                
+                <li class="timeline-entry">
+                    <span class="post-tag">Terraform & IaC</span>
+                    <h2><a href="/o-projeto/parte-1-arquitetura-serverless">Parte 1: A Arquitetura Serverless e o Desafio do Terraform</a></h2>
+                    <p>Definindo o stack (Next.js, Lambda, DynamoDB) e por que usar Terraform foi a primeira grande decisão contra a "facilidade" da IA.</p>
+                </li>
+                
+                <li class="timeline-entry">
+                    <span class="post-tag">Design & UX</span>
+                    <h2><a href="/o-projeto/parte-2-design-com-ia">Parte 2: Onde a IA Falhou no Design (e como chegamos neste layout)</a></h2>
+                    <p>Os primeiros 5 layouts gerados por IA eram terríveis. Um estudo de caso sobre a importância da direção humana (e do prompt-engineering) no design.</p>
+                </li>
+                
+                <li class="timeline-entry">
+                    <span class="post-tag">Backend</span>
+                    <h2><a href="/o-projeto/parte-3-cms-serverless">Parte 3: Construindo o CMS Serverless com Lambda e DynamoDB</a></h2>
+                    <p>Codificando o backend para gerenciar posts, autores e tags. Um mergulho profundo no NoSQL e na lógica de API Gateway.</p>
+                </li>
+
+                <li class="timeline-entry">
+                    <span class="post-tag">Frontend & MLOps</span>
+                    <h2><a href="/o-projeto/parte-4-deploy-nextjs">Parte 4: O Desafio de Rodar Next.js "na Mão" sem a Vercel</a></h2>
+                    <p>Implementando o OpenNext e ajustando as permissões de IAM no CloudFront para fazer o SSR e o ISR funcionarem 100% serverless.</p>
+                </li>
+                
+                <li class="timeline-entry">
+                    <span class="post-tag">Monetização & SEO</span>
+                    <h2><a href="/o-projeto/parte-5-seo-e-adsense">Parte 5: A Estratégia de Monetização e SEO</a></h2>
+                    <p>Onde colocar os banners do AdSense sem irritar o Google? A importância do E-A-A-T e dos Core Web Vitals.</p>
+                </li>
+
+            </ol>
+            
+            <nav class="pagination">
+                <span class="page-numbers current">1</span>
+                <a class="page-numbers" href="/o-projeto/pagina/2">2</a>
+                <a class="page-numbers" href="/o-projeto/pagina/3">3</a>
+                <span class="page-numbers dots">...</span>
+                <a class="page-numbers" href="/o-projeto/pagina/2">Próxima &rarr;</a>
+            </nav>
+
+        </div>
+
+        <section class="sales-cta">
+            <div class="container">
+                <h2>Pronto para levar seu projeto para o próximo nível?</h2>
+                <p>Vamos conversar. Agende uma chamada inicial de 30 minutos (sem custo) para discutirmos a sua arquitetura e os seus objetivos de negócio.</p>
+                <a href="/servicos" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 35px;">Agendar Chamada →</a>
+            </div>
+        </section>
+
+    </main> 
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Marcelo Gonçalves</h3>
+                    <p>Análises, tutoriais e as últimas notícias sobre IA, AWS, Serverless e DevOps.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">IA Generativa</a></li>
+                        <li><a href="#">Tutoriais AWS</a></li>
+                        <li><a href="#">Engenharia & MLOps</a></li>
+                        <li><a href="#">Terraform & IaC</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="/artigos">Todos os Artigos</a></li>
+                        <li><a href="/o-projeto">O Projeto</a></li>
+                        <li><a href="/sobre">Sobre</a></li>
+                        <li><a href="/newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul classs="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@marcelogoncalves.tech</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Marcelo Gonçalves. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileMenu.classList.toggle('active');
+                    mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+                    mobileMenuBtn.setAttribute('aria-label', isExpanded ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+                });
+                
+                // Opcional: Fechar menu ao clicar em um link
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('active');
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                        mobileMenuBtn.setAttribute('aria-label', 'Abrir menu de navegação');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

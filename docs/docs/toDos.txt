@@ -1,0 +1,65 @@
+Ajustes a fazer no futuro:
+
+Em frontend/app/layout.tsx:
+
+- ajustar:
+
+	title: "IA Decifrada | Marcelo Gonçalves",
+  	description: "Blog de autoridade sobre IA, AWS e Engenharia de Software."
+
+Em frontend/components/layout
+
+- ajustar:
+
+	contato@iadecifrada.com
+
+No dynamoDB
+
+- ajustar:
+
+	Texto da bio
+
+No Dashboard
+
+- ajustar botão do dash e cores das fontes
+
+Na Página de postagem
+
+- Ajustar "é popular"
+
+Qto às Imagens:
+
+- Gerar versão para mobile
+
+No admim
+
+- Uma vez logado, eu fico logado pra sempre na minha máquina a menos que entre em uma aba anônima
+
+No header
+
+- corrigir cor da borda do skip button
+
+No seção do adsense
+
+- retirar fundo cinza e linha
+
+No admin
+
+- corrigir layout de "e_popular"
+- corrigir problema de preview de Imagens
+
+Na página de Artigos
+
+- melhorar botões de "próximo"
+
+Na página d'O Projeto
+
+- melhorar espaçamento do banner adsense
+
+Todas as Páginas:
+
+- Padronizar a altura do hero
+
+adsense
+
+- Padronizar banners adsense do topo e do meio das postagens.

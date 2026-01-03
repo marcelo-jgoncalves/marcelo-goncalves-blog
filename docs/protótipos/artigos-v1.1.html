@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore os Artigos (Página 1) | IA Decifrada</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Identidade Visual (Mantida) --- */
+        :root {
+            --aws-dark: #232F3E;
+            --aws-orange: #FF9900;
+            --gray-100: #f5f5ff;
+            --gray-800: #2D3748;
+            --blue-600: #3182CE;
+        }
+        
+        /* --- Reset e Globais --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+            background-color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header (Idêntico) --- */
+        header { background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: var(--aws-dark); text-decoration: none; }
+        .logo span { color: var(--aws-orange); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--gray-800); font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--aws-orange); }
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--aws-dark); font-size: 24px; cursor: pointer; }
+        .mobile-menu { display: none; position: absolute; top: 100%; right: 20px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; z-index: 1000; width: 200px; }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; padding: 15px 20px; text-decoration: none; color: var(--gray-800); transition: all 0.3s; }
+        .mobile-menu a:hover { background: rgba(255, 153, 0, 0.1); color: var(--aws-orange); }
+        
+
+        /* --- ATUALIZADO: Search Hero --- */
+        .search-hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .search-header-content {
+            max-width: 700px; /* Mais estreito para focar na busca */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .search-hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            color: var(--aws-dark);
+            line-height: 1.2;
+            margin-bottom: 30px; /* Mais espaço para a barra */
+        }
+        
+        /* Barra de Busca Estilizada */
+        .archive-search-bar {
+            display: flex;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+        .search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+        }
+        .search-input:focus {
+            outline: 2px solid var(--aws-orange);
+            outline-offset: -2px;
+        }
+        .search-button {
+            border: none;
+            background-color: var(--aws-orange);
+            color: white;
+            padding: 0 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-button:hover {
+            background-color: #e68a00;
+        }
+        /* --- Fim do Search Hero --- */
+        
+
+        /* --- Container da Grade de Posts --- */
+        .post-grid-container {
+            padding: 80px 0;
+        }
+        
+        /* --- AdSense Banners --- */
+        .adsense-banner {
+            padding-bottom: 60px;
+        }
+        
+        .adsense-placeholder {
+            max-width: 728px;
+            height: 90px;
+            background-color: #e0e0e0;
+            border: 2px dashed var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--gray-800);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+        }
+        
+        /* --- Grade de Posts (Reutilizada da Home) --- */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .post-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .post-image { height: 200px; background-color: #eee; background-size: cover; background-position: center; }
+        .post-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .post-tag { display: inline-block; padding: 5px 10px; background-color: var(--aws-orange); color: white; border-radius: 4px; font-size: 0.8rem; margin-bottom: 10px; align-self: flex-start; }
+        .post-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--aws-dark); }
+        .post-card p { color: #666; margin-bottom: 15px; flex-grow: 1; }
+        .read-more { color: var(--aws-orange); text-decoration: none; font-weight: 500; }
+        
+
+        /* --- Paginação (Reutilizada) --- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 60px;
+            padding-bottom: 60px;
+        }
+        .page-numbers {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--gray-800);
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .page-numbers:hover {
+            background-color: #f8fafc;
+            border-color: #ccc;
+        }
+        .page-numbers.current {
+            background-color: var(--aws-orange);
+            color: white;
+            border-color: var(--aws-orange);
+        }
+        .page-numbers.dots {
+            border: none;
+            padding: 10px 5px;
+        }
+        
+        /* --- CTA Section (Newsletter) --- */
+        .cta { 
+            padding: 80px 0; 
+            text-align: center; 
+            background-color: var(--aws-dark); 
+            color: white;
+        }
+        .cta h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; margin-bottom: 20px; color: white; }
+        .cta p { max-width: 600px; margin: 0 auto 30px; opacity: 0.9; }
+        .btn-outline { background-color: transparent; border: 2px solid white; color: white; display: inline-block; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .btn-outline:hover { background-color: white; color: var(--aws-dark); box-shadow: none; transform: translateY(-3px); }
+        
+        /* --- Footer (Idêntico ao da Home) --- */
+        footer { background-color: var(--gray-800); color: white; padding: 60px 0 30px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-column h3 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 20px; font-size: 1.2rem; color: white; }
+        .footer-column p { color: #cbd5e0; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: #cbd5e0; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--aws-orange); }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-links a { width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s; }
+        .social-links a:hover { background-color: var(--aws-orange); transform: translateY(-3px); }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); color: #a0aec0; }
+        
+        /* --- Responsividade --- */
+        @media (max-width: 768px) {
+            .navbar { padding: 20px; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .search-hero h1 { font-size: 2.2rem; }
+            .posts-grid { grid-template-columns: 1fr; }
+            .search-button {
+                padding: 0 20px; /* Menor no mobile */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/" class="logo">IA<span>Decifrada</span></a>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/tutoriais">Tutoriais</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/sobre">Sobre</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/tutoriais">Tutoriais</a>
+                <a href="/o-projeto">O Projeto</a>
+                <a href="/sobre">Sobre</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="search-hero">
+            <div class="search-header-content">
+                <h1>Explore Nossos Artigos</h1>
+                <form class="archive-search-bar" action="/busca" method="get">
+                    <input type="search" name="q" class="search-input" placeholder="Buscar por AWS, Terraform, RAG..." aria-label="Buscar artigos">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="post-grid-container">
+            <div class="container">
+                
+                <div class="adsense-banner">
+                    <div class="adsense-placeholder">
+                        [ADSENSE LEADERBOARD - 728x90]
+                    </div>
+                </div>
+
+                <div class="posts-grid">
+                    
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?aws,ai')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">AWS</span>
+                            <h3>Como construir um RAG 100% Serverless</h3>
+                            <p>Usando Lambda, DynamoDB e embeddings da OpenAI para criar um chatbot...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?devops,ai')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Engenharia</span>
+                            <h3>Terraform vs. CDK para MLOps: Guia Prático</h3>
+                            <p>Comparativo detalhado entre as duas principais ferramentas de IaC para...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?machine,learning')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">IA Generativa</span>
+                            <h3>Análise: O que esperar do GPT-5?</h3>
+                            <p>Além do hype: o que os papers e os rumores indicam sobre a arquitetura...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?security,cloud')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Segurança</span>
+                            <h3>Melhores práticas de IAM na AWS</h3>
+                            <p>Como configurar políticas de acesso seguras sem comprometer a produtividade...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?cost,cloud')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">AWS</span>
+                            <h3>Como reduzir custos na AWS em 5 passos</h3>
+                            <p>Estratégias comprovadas para otimizar seus gastos com serviços de nuvem...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?api,code')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Engenharia</span>
+                            <h3>API Gateway vs. Lambda URLs: Qual usar?</h3>
+                            <p>Uma decisão crucial para arquiteturas serverless que impacta custo, performance...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?python,code')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Tutoriais</span>
+                            <h3>Otimizando Python no AWS Lambda</h3>
+                            <p>Dicas de cold start, gerenciamento de dependências e profiling para...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?data,pipeline')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">Engenharia</span>
+                            <h3>Kinesis vs. SQS: Entendendo o Fluxo de Dados</h3>
+                            <p>Quando usar streams e quando usar filas? Uma análise de caso de uso para...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <div class="post-image" style="background-image: url('https.../random/600x400/?brain,ai')"></div>
+                        <div class="post-content">
+                            <span class="post-tag">IA Generativa</span>
+                            <h3>O que são "Mixture of Experts" (MoE)?</h3>
+                            <p>A arquitetura por trás do Mixtral 8x7B e por que ela é o futuro dos LLMs...</p>
+                            <a href="#" class.read-more">Ler mais →</a>
+                        </div>
+                    </article>
+
+                </div>
+                
+                <nav class="pagination">
+                    <span class="page-numbers current">1</span>
+                    <a class="page-numbers" href="/artigos/pagina/2">2</a>
+                    <a class="page-numbers" href="/artigos/pagina/3">3</a>
+                    <span class="page-numbers dots">...</span>
+                    <a class="page-numbers" href="/artigos/pagina/10">10</a>
+                    <a class="page-numbers" href="/artigos/pagina/2">Próxima &rarr;</a>
+                </nav>
+
+                <div class="adsense-banner" style="padding-top: 40px; padding-bottom: 0;">
+                    <div class="adsense-placeholder">
+                        [ADSENSE LEADERBOARD - 728x90]
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <h2>Quer se aprofundar em Inteligência Artificial?</h2>
+                <p>Inscreva-se na nossa newsletter e receba análises exclusivas e os melhores artigos da semana direto no seu email.</p>
+                <a href="/newsletter" class="btn-outline">Inscrever-se agora</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                 <div class="footer-column">
+                    <h3>IA Decifrada</h3>
+                    <p>Análises profundas e tutoriais práticos sobre IA, MLOps e Arquitetura Serverless.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">IA Generativa</a></li>
+                        <li><a href="#">Tutoriais AWS</a></li>
+                        <li><a href="#">Engenharia & MLOps</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="/artigos">Todos os Artigos</a></li>
+                        <li><a href="/o-projeto">O Projeto</a></li>
+                        <li><a href="/sobre">Sobre</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@iadecifrada.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 IA Decifrada. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile (Idêntico ao da Home)
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
