@@ -2,6 +2,7 @@
 import { watch, computed } from 'vue'
 import { useEditor, EditorContent, type Editor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+import Link from '@tiptap/extension-link' // <--- RESOLVE: Cannot find name 'Link'
 import { Callout } from './Callout'
 
 /* BLOCK: Syntax Highlighting Setup */
@@ -23,29 +24,31 @@ const props = defineProps<{ modelValue: string }>()
 const emit = defineEmits<{ (e: 'update:modelValue', v: string): void }>()
 
 /* BLOCK: Editor Initialization */
+// 1. Definimos as extensões
 const editorExtensions = [
   StarterKit.configure({
     heading: { levels: [2, 3] },
     codeBlock: false,
     blockquote: {},
-
-    /* ✅ Link configurado AQUI (sem extensão duplicada) */
-    link: {
-      openOnClick: false,
-      autolink: true,
-      linkOnPaste: true,
-      HTMLAttributes: { class: 'content-link' },
+  }),
+  Link.configure({
+    openOnClick: false,
+    autolink: true,
+    linkOnPaste: true,
+    HTMLAttributes: { 
+      class: 'content-link',
+      rel: 'noopener noreferrer',
+      target: '_blank',
     },
   }),
-
   CodeBlockLowlight.configure({
     lowlight: lowlightInstance,
     defaultLanguage: 'terraform',
   }),
-
   Callout,
 ]
 
+// 2. Criamos o editor (isso define o editorRef)
 const editorRef = useEditor({
   content: props.modelValue,
   extensions: editorExtensions,
@@ -61,6 +64,7 @@ const editorRef = useEditor({
 /* END BLOCK: Editor Initialization */
 
 /* BLOCK: Reactivity Logic */
+// 3. Agora podemos usar o editorRef com segurança
 const editorInstance = computed(() => editorRef.value as Editor | undefined)
 
 watch(
@@ -95,11 +99,14 @@ const setLink = () => {
     return
   }
 
+  // Se o usuário não digitar http, nós adicionamos para evitar que o Tiptap ignore o link
+  const finalUrl = url.startsWith('http') ? url : `https://${url}`
+
   editorInstance.value
     .chain()
     .focus()
     .extendMarkRange('link')
-    .setLink({ href: url })
+    .setLink({ href: finalUrl })
     .run()
 }
 
