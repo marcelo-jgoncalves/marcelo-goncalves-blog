@@ -1,4 +1,7 @@
-import React from 'react';
+/* components/ui/ShareButtons.tsx */
+'use client';
+
+import React, { useEffect, useState } from 'react';
 
 interface ShareButtonsProps {
   title: string;
@@ -6,6 +9,13 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
+  // 2. ESTADO PARA CONTROLAR A RENDERIZAÇÃO
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Em produção, usaríamos a URL real do site
   const siteUrl = 'https://marcelogoncalves.tech'; 
   const postUrl = `${siteUrl}/post/${slug}`;
@@ -15,43 +25,53 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(postUrl)}`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + postUrl)}`;
 
-  // Exemplo de como o JSX deve estar no seu componente ShareButtons.tsx
-return (
-  <div className="share-section">
-      <span className="share-label">Gostou? Compartilhe:</span>
-      
-      {/* Botão LinkedIn */}
-      <a 
-        href={linkedinUrl} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="share-btn btn-linkedin" // <--- CLASSES IMPORTANTES
-        title="Compartilhar no LinkedIn"
-      >
-        <i className="fab fa-linkedin-in"></i>
-      </a>
+  // 3. PLACEHOLDER PARA EVITAR CLS (Layout Shift) E ERRO DE HIDRATAÇÃO
+  // Se ainda não montou no cliente, mostramos uma div vazia com a mesma altura
+  if (!mounted) {
+    return (
+      <div className="share-section" style={{ minHeight: '40px', visibility: 'hidden' }}>
+        <span className="share-label">Gostou? Compartilhe:</span>
+      </div>
+    );
+  }
 
-      {/* Botão WhatsApp */}
-      <a 
-        href={whatsappUrl} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="share-btn btn-whatsapp" // <--- CLASSES IMPORTANTES
-        title="Compartilhar no WhatsApp"
-      >
-        <i className="fab fa-whatsapp"></i>
-      </a>
+  // 4. RENDERIZAÇÃO REAL (Só acontece no navegador)
+  return (
+    <div className="share-section">
+        <span className="share-label">Gostou? Compartilhe:</span>
+        
+        {/* Botão LinkedIn */}
+        <a 
+          href={linkedinUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="share-btn btn-linkedin"
+          title="Compartilhar no LinkedIn"
+        >
+          <i className="fab fa-linkedin-in"></i>
+        </a>
 
-      {/* Botão X (Twitter) */}
-      <a 
-        href={twitterUrl} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="share-btn btn-twitter" // <--- CLASSES IMPORTANTES
-        title="Compartilhar no X"
-      >
-        <i className="fab fa-twitter"></i>
-      </a>
-  </div>
-);
+        {/* Botão WhatsApp */}
+        <a 
+          href={whatsappUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="share-btn btn-whatsapp"
+          title="Compartilhar no WhatsApp"
+        >
+          <i className="fab fa-whatsapp"></i>
+        </a>
+
+        {/* Botão X (Twitter) */}
+        <a 
+          href={twitterUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="share-btn btn-twitter"
+          title="Compartilhar no X"
+        >
+          <i className="fab fa-twitter"></i>
+        </a>
+    </div>
+  );
 }

@@ -1,9 +1,12 @@
+/* RichTextEditor.vue */
+
 <script setup lang="ts">
 import { watch, computed } from 'vue'
 import { useEditor, EditorContent, type Editor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link' // <--- RESOLVE: Cannot find name 'Link'
 import { Callout } from './Callout'
+import { SmartImage } from './tiptap/SmartImage'
 
 /* BLOCK: Syntax Highlighting Setup */
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
@@ -21,7 +24,7 @@ if (bashDef) lowlightInstance.register('bash', bashDef)
 /* END BLOCK: Syntax Highlighting Setup */
 
 const props = defineProps<{ modelValue: string }>()
-const emit = defineEmits<{ (e: 'update:modelValue', v: string): void }>()
+const emit = defineEmits<{(e: 'update:modelValue', v: string): void,(e: 'request-upload'): void }>()
 
 /* BLOCK: Editor Initialization */
 // 1. Definimos as extensões
@@ -46,6 +49,10 @@ const editorExtensions = [
     defaultLanguage: 'terraform',
   }),
   Callout,
+  SmartImage.configure({
+    inline: false, // Força ser bloco para funcionar bem com o NodeView
+    allowBase64: true,
+  }),
 ]
 
 // 2. Criamos o editor (isso define o editorRef)
@@ -121,6 +128,32 @@ const addCallout = (type: 'info' | 'warning') => {
     .run()
 }
 /* END BLOCK: Custom Commands */
+
+// ... (código anterior: const addCallout = ...)
+
+/* BLOCK: Image Upload Logic */
+const triggerImageUpload = () => {
+  // Dispara o evento para o Pai abrir o Modal
+  emit('request-upload')
+}
+
+// Método público que o Pai vai chamar quando o upload terminar
+const insertImage = (url: string, altText: string = '') => {
+  if (!editorInstance.value) return
+
+  // O comando setImage vem da extensão base Image (que o SmartImage estende)
+  editorInstance.value
+    .chain()
+    .focus()
+    .setImage({ src: url, alt: altText })
+    .run()
+}
+
+// Expondo o método para ser acessível via Template Ref no componente Pai
+defineExpose({
+  insertImage
+})
+/* END BLOCK: Image Upload Logic */
 </script>
 
 <template>
@@ -197,6 +230,13 @@ const addCallout = (type: 'info' | 'warning') => {
         title="Inserir Link"
       >
         <i class="fas fa-link"></i>
+      </button>
+      <button 
+        type="button" 
+        @click="triggerImageUpload" 
+        title="Inserir Imagem"
+      >
+        <i class="fas fa-image"></i>
       </button>
 
       <div class="divider"></div>

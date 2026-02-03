@@ -1,3 +1,5 @@
+/*frontend/app/post/[slug]/page.tsx */
+
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -72,7 +74,7 @@ export default async function PostPage({ params }: Props) {
     const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
 
     return parts.map((part, index) => {
-      // Injeção dinâmica do Callout de Serviços (Mobile Only via CSS)
+      // Injeção dinâmica do Callout de Serviços
       if (part === '<div id="inject-service-placeholder"></div>') {
         return (
           <div key="inject-service" className="mobile-only-injection"> 
@@ -81,7 +83,7 @@ export default async function PostPage({ params }: Props) {
         );
       }
 
-      // Injeção dinâmica de AdSense no meio do texto
+      // Injeção dinâmica de AdSense
       if (part === '<div id="inject-ads-placeholder"></div>') {
         return (
           <div key="inject-ads" className="my-8">
@@ -90,10 +92,10 @@ export default async function PostPage({ params }: Props) {
         );
       }
 
-      // Ignora partes vazias resultantes do split por Regex
+      // Ignora partes vazias
       if (part.trim() === '') return null;
 
-      // Renderiza o bloco de HTML (incluindo o código colorido pelo Shiki)
+      // Renderiza o bloco de HTML (SEM o suppressHydrationWarning aqui)
       return <div key={`content-part-${index}`} dangerouslySetInnerHTML={{ __html: part }} />;
     });
   };
@@ -143,7 +145,7 @@ export default async function PostPage({ params }: Props) {
                 
                 {/* Lead/Resumo do post */}
                 {post.resumo && (
-                  <p className="post-lead">{post.resumo}</p>
+                  <div className="post-lead">{post.resumo}</div>
                 )}
                 
                 {/* Sumário para navegação Mobile */}
@@ -155,10 +157,9 @@ export default async function PostPage({ params }: Props) {
                 <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
                 
                 {/* Renderização do conteúdo principal processado */}
-                <div className="post-content">
-                    {renderFinalContent()}
+                <div className="post-content" suppressHydrationWarning={true}>
+                  {renderFinalContent()}
                 </div>
-
             </div>
             
             {/* Elementos de rodapé do artigo */}
@@ -167,7 +168,6 @@ export default async function PostPage({ params }: Props) {
             
             {/* Seção de posts sugeridos */}
             <PopularPostsSection limit={4} variant="post" /> 
-            
         </article>
 
         {/* --- SIDEBAR (Desktop) --- */}

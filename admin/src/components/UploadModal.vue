@@ -1,3 +1,5 @@
+/*admin/src/components/UploadModal.vue */
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { mediaApi } from '../services/api'

@@ -1,3 +1,5 @@
+/* admin/src/views/EditorView.vue */
+
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -6,9 +8,11 @@ import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
 
+const featureImageCacheBuster = ref(Date.now())
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
+const editorRef = ref<any>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 
@@ -34,12 +38,15 @@ const isEditing = computed(() => route.params.slug !== undefined)
 const showUploadModal = ref(false)
 const loading = ref(false)
 const saving = ref(false)
+const uploadContext = ref<'destaque' | 'editor'>('destaque')
 
 onMounted(async () => {
+  // Define autor padrão se logado
   if (auth.user?.username) {
     form.value.autor_id = 'marcelo-goncalves' 
   }
 
+  // Se for edição, busca os dados
   if (isEditing.value) {
     loading.value = true
     try {
@@ -48,11 +55,14 @@ onMounted(async () => {
       
       form.value = {
         ...data,
+        // Se vier null, converte para string vazia
+        conteudo_html: data.conteudo_html || '', 
         e_popular: !!data.e_popular,
         e_projeto: !!data.e_projeto
       }
     } catch (error) {
-      alert('Erro ao carregar post')
+      console.error(error)
+      alert('Erro ao carregar post ou post não encontrado.')
       router.push('/')
     } finally {
       loading.value = false
@@ -84,8 +94,37 @@ async function save() {
   }
 }
 
+/* Lógica de Upload Unificada */
+function handleFeatureImageError() {
+  // Espera 2.5 segundos (tempo médio do Lambda) e tenta de novo
+  setTimeout(() => {
+    featureImageCacheBuster.value = Date.now()
+  }, 2500)
+}
+// O callback único que resolve tudo
 function onImageUploaded(relativePath: string) {
-  form.value.imagem_destaque_url = `${ASSETS_URL}/${relativePath}`
+  const fullUrl = `${ASSETS_URL}/${relativePath}`
+
+  if (uploadContext.value === 'destaque') {
+    // Cenário A: Preenche o campo de destaque
+    form.value.imagem_destaque_url = fullUrl
+  } else {
+    // Cenário B: Insere dentro do texto via método exposto
+    // O segundo parâmetro é o Alt Text (opcional, pode deixar vazio ou pedir num prompt se quiser)
+    editorRef.value?.insertImage(fullUrl, form.value.titulo || 'Imagem do artigo')
+  }
+}
+
+// Chamado pelo botão da lateral (Imagem de Destaque)
+function openFeatureImageUpload() {
+  uploadContext.value = 'destaque'
+  showUploadModal.value = true
+}
+
+// Chamado pelo evento do Editor (Imagem no Texto)
+function openEditorImageUpload() {
+  uploadContext.value = 'editor'
+  showUploadModal.value = true
 }
 
 function generateSlug() {
@@ -127,7 +166,12 @@ function generateSlug() {
 
         <div class="form-group">
           <label>Conteúdo</label>
-          <RichTextEditor v-model="form.conteudo_html" :key="form.slug" />
+          <RichTextEditor 
+            ref="editorRef" 
+            v-model="form.conteudo_html" 
+            :key="form.slug"
+            @request-upload="openEditorImageUpload"
+          />
         </div>
 
         <div class="form-group">
@@ -191,17 +235,24 @@ function generateSlug() {
         <div class="panel">
           <h3>Imagem de Destaque</h3>
           <div class="form-group">
-            <button class="btn-outline" @click="showUploadModal = true">
+            <button class="btn-outline" @click="openFeatureImageUpload">
               <i class="fas fa-upload"></i> Upload Imagem
             </button>
           </div>
+          
           <div class="form-group">
             <label>URL da Imagem</label>
             <input v-model="form.imagem_destaque_url" type="text" />
           </div>
+
           <div v-if="form.imagem_destaque_url" class="image-preview">
-            <img :src="form.imagem_destaque_url" alt="Preview" />
+            <img 
+              :src="`${form.imagem_destaque_url}?t=${featureImageCacheBuster}`" 
+              alt="Preview" 
+              @error="handleFeatureImageError"
+            />
           </div>
+
           <div class="form-group">
             <label>Alt Text (Acessibilidade)</label>
             <input v-model="form.imagem_destaque_alt_text" type="text" />
@@ -210,7 +261,11 @@ function generateSlug() {
       </aside>
     </div>
 
-    <UploadModal v-if="showUploadModal" @close="showUploadModal = false" @uploaded="onImageUploaded" />
+    <UploadModal 
+      v-if="showUploadModal" 
+      @close="showUploadModal = false" 
+      @uploaded="onImageUploaded" 
+    />
   </div>
 </template>
 

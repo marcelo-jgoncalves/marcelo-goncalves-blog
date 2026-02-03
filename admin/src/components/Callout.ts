@@ -1,3 +1,5 @@
+/* Callout.ts */
+
 import { Node, mergeAttributes } from '@tiptap/core'
 
 export const Callout = Node.create({
@@ -13,14 +15,17 @@ export const Callout = Node.create({
   },
 
   parseHTML() {
-    return [
-      {
-        tag: 'div[data-type]',
-        contentElement: '.callout-content-area', // Crucial para evitar duplicação
-        getAttrs: node => ({ type: (node as HTMLElement).getAttribute('data-type') }),
+  return [
+    {
+      tag: 'div[data-type]',
+      getAttrs: node => ({ type: (node as HTMLElement).getAttribute('data-type') }),
+      contentElement: (node) => {
+        const el = (node as HTMLElement).querySelector('.callout-content-area')
+        return (el || node) as HTMLElement
       },
-    ]
-  },
+    },
+  ]
+},
 
   renderHTML({ node, HTMLAttributes }) {
     const type = node.attrs.type
