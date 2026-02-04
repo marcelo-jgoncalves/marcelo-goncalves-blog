@@ -1626,58 +1626,89 @@ footer {
 html {
   scroll-behavior: smooth;
 }
-
 /* =========================================
-   14. LISTAS E CITAÇÕES
+   14. LISTAS E CITAÇÕES (CORRIGIDO v1.0)
    ========================================= */
 
-.post-content ul { 
-  /* Recuo do bloco da lista em relação ao texto principal */
-  padding-left: 2rem; 
+/* --- Configuração Base (Comum a ambos) --- */
+.post-content ul, 
+.post-content ol { 
   margin-bottom: var(--post-block-spacing); 
-  list-style: none !important;
+  padding-left: 2rem; /* Garante o recuo do bloco inteiro */
 }
 
 .post-content li { 
   margin-bottom: 12px; 
-  position: relative; 
-  /* Espaço entre a bolinha amarela e o início do texto */
-  padding-left: 30px; 
   line-height: 1.6;
-  display: block;
+  position: relative;
+  /* REMOVIDO: display: block; -> Deixamos o padrão 'list-item' do navegador */
 }
 
+/* Garante que o texto dentro do li fique na mesma linha */
 .post-content li p {
   display: inline !important;
   margin: 0 !important;
 }
 
-.post-content li::before {
+/* --- LISTA DESORDENADA (UL) - Bolinhas Amarelas --- */
+.post-content ul { 
+  list-style: none !important; /* Remove bolinha nativa preta */
+}
+
+/* Recuo extra apenas na UL para dar espaço à bolinha customizada */
+.post-content ul li { 
+  padding-left: 25px; 
+}
+
+/* A bolinha amarela agora é exclusiva de UL */
+.post-content ul li::before {
   content: ''; 
   position: absolute;
-  /* AJUSTE: Movemos a bolinha para a direita em relação ao início do LI */
-  /* Se o padding-left do UL já recuou o bloco, left: 0 aqui já deve funcionar.
-     Se quiser que ela recue ainda mais individualmente, use valores positivos. */
   left: 0; 
-  top: 0.55em; 
-  width: 9px;
-  height: 9px;
+  top: 0.6em; /* Ajuste fino vertical */
+  width: 8px; /* Reduzi levemente para 8px para ficar mais elegante */
+  height: 8px;
   background-color: var(--aws-orange); 
   border-radius: 50%;
   display: inline-block;
 }
 
+/* --- LISTA ORDENADA (OL) - Números --- */
+.post-content ol { 
+  list-style-type: decimal !important; /* Força números 1, 2, 3 */
+  padding-left: 2.5rem; /* Um pouco mais de espaço para números de 2 dígitos */
+}
+
+.post-content ol li {
+  padding-left: 10px; /* Pequeno respiro entre o número e o texto */
+}
+
+/* BLINDAGEM: Garante que nenhuma bolinha apareça aqui */
+.post-content ol li::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Estilização do Número (Cor Laranja) */
+.post-content ol li::marker {
+  color: var(--aws-orange);
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif; /* Usa sua fonte de títulos */
+}
+
+/* --- Responsividade --- */
 @media (max-width: 768px) {
-  .post-content ul {
+  .post-content ul, 
+  .post-content ol {
     padding-left: 1.5rem;
   }
-
-  .post-content li {
-    padding-left: 25px; 
+  
+  .post-content ul li {
+    padding-left: 20px; 
   }
 }
 
-/* Blockquote (Design unificado) */
+/* --- Blockquote (Mantido igual) --- */
 .post-content blockquote {
   margin: var(--post-block-spacing) 0;
   padding: 1.5rem 2rem;
@@ -1695,7 +1726,6 @@ html {
   font-style: italic;
   margin: 0;
 }
-
 /* =========================================
    15. WIDGETS E SIDEBAR
    ========================================= */
