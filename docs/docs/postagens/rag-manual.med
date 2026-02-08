@@ -1,0 +1,148 @@
+AG Manual (Retrieval-Augmented Generation) não é um termo “oficial” único na literatura, mas normalmente é usado para descrever um uso manual do conceito de RAG. Ou seja: você aplica a ideia de buscar informação externa antes de gerar a resposta, só que sem um pipeline totalmente automatizado.
+Vou quebrar isso em partes para ficar bem claro.
+
+1. O que é RAG (Retrieval-Augmented Generation)
+RAG é uma arquitetura usada em IA generativa que funciona assim:
+
+
+Retrieval (busca)
+O sistema busca informações relevantes em uma base externa
+(PDFs, banco de dados, wiki, S3, Elasticsearch, vetor DB etc.)
+
+
+Augmented (enriquecimento)
+O conteúdo encontrado é adicionado ao contexto da pergunta
+
+
+Generation (geração)
+O modelo de linguagem gera a resposta usando:
+
+
+o conhecimento pré-treinado
+
+
++ os dados recuperados na busca
+
+
+
+
+👉 Isso reduz alucinações e permite respostas baseadas em dados reais e atualizados.
+
+2. O que significa “AG Manual”
+Quando alguém fala em AG Manual, geralmente quer dizer que:
+
+
+A etapa de recuperação (retrieval) é feita manualmente
+
+
+Ou de forma semântica simples, sem embeddings, sem vetorização automática
+
+
+O conteúdo recuperado é explicitamente passado ao modelo
+
+
+Exemplo prático:
+
+
+Você pesquisa um documento
+
+
+Copia trechos relevantes
+
+
+Cola esses trechos no prompt
+
+
+Pede para o modelo responder com base neles
+
+
+Isso é RAG, mas manual.
+
+3. Exemplo simples de AG Manual
+Cenário
+Você tem um documento interno com regras de negócio.
+Passo a passo
+
+
+Você localiza o trecho relevante:
+
+“O sistema deve bloquear usuários após 3 tentativas inválidas.”
+
+
+
+Monta o prompt manualmente:
+Com base no texto abaixo, explique a regra de bloqueio do sistema:
+
+Texto:
+"O sistema deve bloquear usuários após 3 tentativas inválidas."
+
+
+
+O modelo gera a resposta usando somente aquele contexto.
+
+
+➡️ Isso é AG Manual.
+
+4. Diferença entre AG Manual e RAG Automatizado
+AspectoAG ManualRAG AutomatizadoBusca de dadosManualAutomáticaUso de embeddingsNãoSimBanco vetorialNãoSimEscalabilidadeBaixaAltaComplexidadeBaixaMédia/AltaUso em produçãoRaroComum
+
+5. Quando usar AG Manual
+AG Manual faz sentido quando:
+
+
+Você está prototipando
+
+
+Tem poucos documentos
+
+
+Quer validar se RAG resolve seu problema
+
+
+Não quer manter infraestrutura (Vector DB, embeddings, pipelines)
+
+
+Muito comum em:
+
+
+POCs
+
+
+Estudos
+
+
+Documentação técnica
+
+
+Suporte interno simples
+
+
+
+6. Limitações do AG Manual
+
+
+Não escala bem
+
+
+Depende do usuário saber o que buscar
+
+
+Pode esquecer contexto relevante
+
+
+Não funciona bem com grandes volumes de dados
+
+
+
+7. Resumo em uma frase
+AG Manual é a aplicação do conceito de Retrieval-Augmented Generation em que a recuperação da informação é feita manualmente, e o conteúdo recuperado é explicitamente fornecido ao modelo para gerar a resposta.
+Se quiser, posso:
+
+
+Mostrar um exemplo em código
+
+
+Comparar com fine-tuning
+
+
+Explicar como isso vira um RAG completo em AWS (S3 + OpenSearch + Bedrock)
