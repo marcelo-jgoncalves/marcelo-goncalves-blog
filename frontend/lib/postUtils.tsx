@@ -1,6 +1,5 @@
-// frontend/lib/postUtils.tsx
-
 import { createHighlighter } from 'shiki';
+import * as cheerio from 'cheerio';
 
 export interface Heading {
   id: string;
@@ -13,114 +12,113 @@ export interface ProcessedPost {
 }
 
 /**
- * Pipeline Sênior de Processamento de Post
- * Resolve: Syntax Highlighting, TOC, e Injeções BLINDADAS contra quebra de listas.
+ * Pipeline Sênior de Processamento de Post (Híbrido: Shiki + Cheerio)
+ * 1. Processa Syntax Highlighting (Shiki) na string bruta.
+ * 2. Processa Estrutura e Anúncios (Cheerio) no DOM.
+ * Isso garante Highlighting bonito E HTML estruturalmente válido.
  */
 export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
 
-  // 1. Inicializa o Shiki
+  // --- FASE 1: Syntax Highlighting (String Manipulation) ---
+  
+  // Inicializa o Shiki com os temas e linguagens necessárias
   const highlighter = await createHighlighter({
     themes: ['dark-plus'],
-    langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python']
+    langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python', 'typescript', 'go', 'sql', 'docker', 'css', 'html']
   });
 
-  // 2. Limpeza básica
-  let processedHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '').trim();
+  // Limpeza básica inicial (Remove H1 redundante se existir no corpo)
+  let preProcessedHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '').trim();
 
-  // 3. Syntax Highlighting
+  // Regex para encontrar blocos de código vindos do Tiptap
   const codeBlockRegex = /<pre><code class="language-([^">]+)">([\s\S]*?)<\/code><\/pre>/g;
-  const matches = Array.from(processedHtml.matchAll(codeBlockRegex));
+  
+  // Substitui cada bloco de código pela versão colorida do Shiki
+  const matches = Array.from(preProcessedHtml.matchAll(codeBlockRegex));
 
   for (const match of matches) {
     const [fullMatch, lang, code] = match;
+    
+    // Decodifica entidades HTML básicas para que o Shiki leia o código corretamente
+    // Ex: &lt; div &gt; vira < div > antes de ser processado
     const rawCode = code
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'");
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
     try {
       const highlighted = highlighter.codeToHtml(rawCode, { lang, theme: 'dark-plus' });
-      processedHtml = processedHtml.replace(fullMatch, highlighted);
+      preProcessedHtml = preProcessedHtml.replace(fullMatch, highlighted);
     } catch (e) {
-      console.error(`Erro Shiki:`, e);
+      console.error(`Erro Shiki no bloco ${lang}:`, e);
+      // Se der erro, mantém o original
     }
   }
 
-  // 4. Geração do TOC
-  const h2Regex = /<h2(.*?)>(.*?)<\/h2>/g;
-  processedHtml = processedHtml.replace(h2Regex, (match, attrs, text) => {
-    const cleanText = text.replace(/<[^>]*>/g, '');
-    const id = cleanText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-    headings.push({ id, text: cleanText });
-    return `<h2 id="${id}"${attrs}>${text}</h2>`;
+  // --- FASE 2: Sanitização e Injeção (DOM Manipulation) ---
+
+  // Carrega o HTML (já com código colorido) no Cheerio.
+  // xmlMode: false permite que o Cheerio feche tags abertas automaticamente (Auto-fix).
+  // decodeEntities: false impede que ele estrague caracteres especiais dentro do código.
+ const $ = cheerio.load(preProcessedHtml, { 
+    xmlMode: false 
   });
 
-  // 5. Injeção Inteligente (Correção do Problema de Listas)
-  const pCloseTag = '</p>';
-  const parts = processedHtml.split(pCloseTag);
+  // Extração de Headings (TOC) via DOM
+  $('h2').each((_, elem) => {
+    const $el = $(elem);
+    const text = $el.text();
+    // Gera ID amigável para URL (slugify)
+    const id = text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
+    
+    $el.attr('id', id); // Injeta o ID no HTML
+    headings.push({ id, text });
+  });
 
-  // Se o texto for muito curto, não injeta nada para não poluir
-  if (parts.length <= 3) {
-    return { contentHtml: processedHtml, headings };
-  }
+  // Injeção Inteligente de Anúncios
+  const $body = $('body');
+  const directChildren = $body.children(); // Apenas filhos diretos para manter a estrutura
+  const totalChildren = directChildren.length;
 
-  // Definição dos pontos de injeção aproximados
-  const TARGET_SERVICE_INDEX = 2; // Tenta injetar após o 3º pedaço
-  const TARGET_ADS_INDEX = Math.floor(parts.length / 2); // Meio do post
+  // Configuração dos pontos de injeção
+  const TARGET_SERVICE_INDEX = 2; // Após o 3º elemento
+  const TARGET_ADS_INDEX = Math.floor(totalChildren / 2); // Meio do post
 
-  let finalHtml = '';
   let serviceInjected = false;
   let adsInjected = false;
 
-  for (let i = 0; i < parts.length; i++) {
-    const currentPart = parts[i];
-    // Olha para o próximo pedaço para entender o contexto
-    const nextPart = parts[i + 1]; 
+  directChildren.each((index, element) => {
+    // Não injeta após o último elemento
+    if (index >= totalChildren - 1) return;
+
+    const $current = $(element);
     
-    finalHtml += currentPart;
+    // Guardrails: Não injetar após títulos ou imagens para não quebrar fluxo de leitura
+    const isHeading = $current.is('h2, h3, h4, h5, h6');
+    const isImage = $current.is('figure, img') || $current.find('img').length > 0;
 
-    // Se não é o último pedaço, precisamos recolocar o </p> que o split tirou
-    if (i < parts.length - 1) {
-      finalHtml += pCloseTag;
-    }
-
-    // Lógica de Segurança ("Guardrail"):
-    // Só injetamos SE o próximo pedaço NÃO começar com fechamento de containers.
-    // Se começar com </li>, </blockquote> ou </div>, significa que estamos DENTRO de uma estrutura.
-    let isSafeToInject = true;
-    
-    if (nextPart) {
-      const trimmedNext = nextPart.trim();
-      if (
-        trimmedNext.startsWith('</li>') || 
-        trimmedNext.startsWith('</blockquote>') || 
-        trimmedNext.startsWith('</div>') || // Callouts
-        trimmedNext.startsWith('<figcaption')
-      ) {
-        isSafeToInject = false;
-      }
-    }
-
-    // Tenta injetar SERVIÇOS se chegamos no índice ou passamos dele (pending)
-    if (isSafeToInject && !serviceInjected && i >= TARGET_SERVICE_INDEX) {
-      finalHtml += `\n<div id="inject-service-placeholder"></div>\n`;
+    // Injeção do Callout de Serviços
+    if (!serviceInjected && index >= TARGET_SERVICE_INDEX && !isHeading && !isImage) {
+      $current.after('\n<div id="inject-service-placeholder"></div>\n');
       serviceInjected = true;
-      // Impede que injete o Ad logo em seguida no mesmo buraco
-      continue; 
+      return; // Impede injetar ads no mesmo lugar
     }
 
-    // Tenta injetar ADS se chegamos no meio ou passamos dele (pending)
-    if (isSafeToInject && !adsInjected && i >= TARGET_ADS_INDEX) {
-      finalHtml += `\n<div id="inject-ads-placeholder"></div>\n`;
+    // Injeção do AdSense
+    if (!adsInjected && index >= TARGET_ADS_INDEX && !isHeading && !isImage) {
+      $current.after('\n<div id="inject-ads-placeholder"></div>\n');
       adsInjected = true;
     }
-  }
+  });
 
+  // Retorna o HTML final limpo e estruturado
   return {
-    contentHtml: finalHtml,
+    contentHtml: $('body').html() || '',
     headings
   };
 }

@@ -1,3 +1,36 @@
+/* ==========================================================================
+   ÍNDICE DE ESTILIZAÇÃO - GLOBALS.CSS
+   ==========================================================================
+   0. VARIÁVEIS E TOKENS (:root) ........................... :root
+   1. RESET E BASE ......................................... * / body / h1-h6
+   2. UTILITÁRIOS E ACESSIBILIDADE ......................... .container / .skip-link
+   3. COMPONENTES DE UI .................................... .btn / .adsense-placeholder
+   4. HEADER E NAVEGAÇÃO ................................... header / .navbar / .mobile-menu
+   5. SEÇÕES GERAIS (HOME, CARDS, LISTAS) .................. .hero / .post-card / .cta
+   6. PÁGINAS ESPECÍFICAS .................................. Search / Archive / Timeline
+   7. FOOTER ............................................... footer / .social-links
+   8. MEDIA QUERIES (DESKTOP) .............................. @media (min-width: 768px)
+   9. MEDIA QUERIES (MOBILE SPECIFIC) ...................... @media (max-width: 768px)
+   10. PÁGINA DE POST (LAYOUT E INJEÇÃO) ................... .ad-injected / .adsense-box
+   11. SHARE BUTTONS ....................................... .share-section / .share-btn
+   12. AUTHOR BOX .......................................... .author-box / .author-avatar
+   13. PÁGINA DE POST (ESTRUTURA ARTIGO) ................... .article-header / .featured-image
+   14. LISTAS (UL / OL) .................................... .post-content ul / ol
+   15. WIDGETS E SIDEBAR ................................... .sidebar / .toc-widget
+   16. MEDIA QUERIES FINAIS E GRID AVANÇADO ................ @media (min-width: 1024px)
+   17. SEÇÃO POPULARES E RELACIONADOS ...................... .popular-articles-section
+   18. BLOCOS DE CONTEÚDO (CALLOUTS) ....................... .content-callout
+   19. BLOCOS DE CÓDIGO .................................... .code-wrapper / pre.code-block
+   20. MEDIA QUERIES - CÓDIGO (MOBILE) ..................... @media (max-width: 768px) code
+   21. CITAÇÃO (BLOCKQUOTE) ................................ .post-content blockquote
+   ========================================================================== */
+
+/* frontend/app/globals.css */
+
+/* =========================================
+   0. VARIÁVEIS E TOKENS (:root)
+   ========================================= */
+
 :root {
   /* --- PALETA DE CORES --- */
   --aws-dark: #232F3E;
@@ -1986,7 +2019,7 @@ html {
 } 
 
 /* =========================================
-   16. SEÇÃO POPULARES E RELACIONADOS
+   17. SEÇÃO POPULARES E RELACIONADOS
    ========================================= */
 
 .popular-articles-section-wrapper {
@@ -2051,7 +2084,7 @@ html {
 }
 
 /* =========================================
-   17. BLOCOS DE CONTEÚDO (CALLOUTS)
+   18. BLOCOS DE CONTEÚDO (CALLOUTS)
    ========================================= */
 
 .content-callout {
@@ -2114,7 +2147,59 @@ html {
 }
 
 /* =========================================
-   18. BLOCOS DE CÓDIGO
+   18.5. FORMATAÇÃO INLINE (BUBBLE MENU)
+   ========================================= */
+
+/* --- Negrito (Bold) --- */
+/* Restaura o peso da fonte que o reset removeu */
+.post-content strong,
+.post-content b {
+  font-weight: 700;
+  color: var(--aws-dark); /* Garante contraste máximo para leitura */
+}
+
+/* --- Itálico (Italic) --- */
+/* Restaura o estilo inclinado */
+.post-content em,
+.post-content i {
+  font-style: italic;
+}
+
+/* --- Links (.content-link) --- */
+/* Porta o estilo do Vue usando suas variáveis globais */
+.post-content .content-link,
+.post-content a { /* Fallback para links padrão */
+  color: var(--blue-600);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.post-content .content-link:hover,
+.post-content a:hover {
+  color: var(--aws-dark);
+}
+
+/* --- Inline Code (< />) --- */
+/* Cópia visual exata do componente Vue */
+.post-content .inline-code {
+  background-color: #edf2f7; /* Fundo cinza específico do Tiptap */
+  color: #d53f8c;          /* Rosa/Roxo de destaque */
+  font-family: var(--font-code); /* JetBrains Mono */
+  font-size: 0.85em;       /* Levemente menor que o texto corrido */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  
+  /* Garante que o fundo não quebre feio se o código pular de linha */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* =========================================
+   19. BLOCOS DE CÓDIGO
    ========================================= */
 
 .code-wrapper {
@@ -2206,7 +2291,7 @@ pre::-webkit-scrollbar-thumb {
 }
 
 /* =========================================
-   19. MEDIA QUERIES - CÓDIGO (MOBILE)
+   20. MEDIA QUERIES - CÓDIGO (MOBILE)
    ========================================= */
 
 @media (max-width: 768px) {
@@ -2223,7 +2308,7 @@ pre::-webkit-scrollbar-thumb {
 }
 
 /* =========================================
-   20. CITAÇÃO (BLOCKQUOTE)
+   21. CITAÇÃO (BLOCKQUOTE)
    ========================================= */
    
 .post-content blockquote {

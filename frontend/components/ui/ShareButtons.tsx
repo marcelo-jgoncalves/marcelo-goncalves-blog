@@ -1,4 +1,3 @@
-/* components/ui/ShareButtons.tsx */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -9,35 +8,38 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
-  // 2. ESTADO PARA CONTROLAR A RENDERIZAÇÃO
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Em produção, usaríamos a URL real do site
+  // Fase 1: Renderização Server-Side e Hidratação Inicial
+  // Retornamos um placeholder estático e seguro.
+  // Mantemos a altura (52px) para evitar que a página "pule" quando os botões carregarem.
+  if (!mounted) {
+    return (
+      <div 
+        className="share-section-placeholder" 
+        style={{ minHeight: '52px' }}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  // Fase 2: Cliente (Só executa após a hidratação estar completa e segura)
   const siteUrl = 'https://marcelogoncalves.tech'; 
   const postUrl = `${siteUrl}/post/${slug}`;
   
-  // URLs de compartilhamento reais
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(postUrl)}`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + postUrl)}`;
 
-  // 3. PLACEHOLDER PARA EVITAR CLS (Layout Shift) E ERRO DE HIDRATAÇÃO
-  // Se ainda não montou no cliente, mostramos uma div vazia com a mesma altura
-  if (!mounted) {
-    return (
-      <div className="share-section" style={{ minHeight: '40px', visibility: 'hidden' }}>
-        <span className="share-label">Gostou? Compartilhe:</span>
-      </div>
-    );
-  }
-
-  // 4. RENDERIZAÇÃO REAL (Só acontece no navegador)
   return (
-    <div className="share-section">
+    <div 
+      className="share-section fade-in"
+      style={{ minHeight: '52px' }}
+    >
         <span className="share-label">Gostou? Compartilhe:</span>
         
         {/* Botão LinkedIn */}

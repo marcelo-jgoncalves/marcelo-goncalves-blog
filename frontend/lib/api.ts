@@ -7,21 +7,21 @@ if (!API_URL) {
 }
 
 export async function getPost(slug: string) {
-  // O next: { revalidate: 60 } ativa o ISR (Incremental Static Regeneration)
-  // Isso significa que a página será cacheada por 60 segundos na borda.
+  // 🚨 DEBUG MODE: cache: 'no-store'
+  // Isso força o fetch a bater na API real toda vez.
+  // Ignora o cache de dados do Next.js.
   const res = await fetch(`${API_URL}/post/${slug}`, {
-    next: { revalidate: 60 }, 
+    cache: 'no-store', 
+    // next: { revalidate: 60 }, <--- Comentado para Debug
   });
 
   if (!res.ok) {
-    // Retorna null se der 404, para tratarmos na página
     if (res.status === 404) return null;
     throw new Error('Failed to fetch post');
   }
 
   return res.json();
 }
-
 export async function getAuthor(authorId: string) {
   const res = await fetch(`${API_URL}/autor/${authorId}`, {
     next: { revalidate: 3600 }, // Cache de autor por 1 hora (muda pouco)

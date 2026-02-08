@@ -2,11 +2,13 @@
 
 <script setup lang="ts">
 import { watch, computed } from 'vue'
-import { useEditor, EditorContent, type Editor } from '@tiptap/vue-3'
+import { useEditor, EditorContent, BubbleMenu, type Editor } from '@tiptap/vue-3'
+import BubbleMenuExtension from '@tiptap/extension-bubble-menu'
 import StarterKit from '@tiptap/starter-kit'
-import Link from '@tiptap/extension-link' // <--- RESOLVE: Cannot find name 'Link'
+import Link from '@tiptap/extension-link'
 import { Callout } from './Callout'
 import { SmartImage } from './tiptap/SmartImage'
+import Code from '@tiptap/extension-code'
 
 /* BLOCK: Syntax Highlighting Setup */
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
@@ -29,7 +31,9 @@ const emit = defineEmits<{(e: 'update:modelValue', v: string): void,(e: 'request
 /* BLOCK: Editor Initialization */
 // 1. Definimos as extensões
 const editorExtensions = [
+  BubbleMenuExtension,
   StarterKit.configure({
+    code: false,
     heading: { levels: [2, 3] },
     codeBlock: false,
     blockquote: {},
@@ -52,6 +56,11 @@ const editorExtensions = [
   SmartImage.configure({
     inline: false, // Força ser bloco para funcionar bem com o NodeView
     allowBase64: true,
+  }),
+  Code.configure({
+    HTMLAttributes: {
+      class: 'inline-code',
+    },
   }),
 ]
 
@@ -255,7 +264,53 @@ defineExpose({
         Limpar
       </button>
     </div>
+    <bubble-menu
+      v-if="editorInstance"
+      :editor="editorInstance"
+      :tippy-options="{ duration: 100 }"
+      class="bubble-menu"
+    >
+      <button
+        type="button"
+        @click="editorInstance.chain().focus().toggleBold().run()"
+        :class="{ 'is-active': editorInstance.isActive('bold') }"
+      >
+        Bold
+      </button>
 
+      <button
+        type="button"
+        @click="editorInstance.chain().focus().toggleItalic().run()"
+        :class="{ 'is-active': editorInstance.isActive('italic') }"
+      >
+        Italic
+      </button>
+
+      <button
+        type="button"
+        @click="setLink"
+        :class="{ 'is-active': editorInstance.isActive('link') }"
+      >
+        Link
+      </button>
+
+      <button
+        type="button"
+        @click="editorInstance.chain().focus().toggleCode().run()"
+        :class="{ 'is-active': editorInstance.isActive('code') }"
+        title="Código em linha"
+      >
+        &lt;/&gt;
+      </button>
+
+      <button 
+         type="button"
+         @click="editorInstance.chain().focus().unsetAllMarks().run()"
+         class="btn-clear"
+      >
+        Limpar
+      </button>
+    </bubble-menu>
     <EditorContent
       v-if="editorInstance"
       :editor="editorInstance"
@@ -422,5 +477,17 @@ defineExpose({
   background-color: #ebf8ff !important;
   border-left-color: #3182ce !important;
   color: #2c5282 !important;
+}
+/* ===== Inline Code Styling (Limpo) ===== */
+:deep(.inline-code) {
+  background-color: #edf2f7; /* Cinza claro */
+  color: #d53f8c; /* Rosa/Roxo padrão */
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  /* box-decoration-break garante que o fundo siga o texto se quebrar linha */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 </style>
