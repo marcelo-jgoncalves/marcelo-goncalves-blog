@@ -1,3 +1,5 @@
+/* frontend/app/globals.css */
+
 /* ==========================================================================
    ÍNDICE DE ESTILIZAÇÃO - GLOBALS.CSS
    ==========================================================================
@@ -20,12 +22,11 @@
    16. MEDIA QUERIES FINAIS E GRID AVANÇADO ................ @media (min-width: 1024px)
    17. SEÇÃO POPULARES E RELACIONADOS ...................... .popular-articles-section
    18. BLOCOS DE CONTEÚDO (CALLOUTS) ....................... .content-callout
+   18.5. FORMATAÇÃO INLINE (BUBBLE MENU)
    19. BLOCOS DE CÓDIGO .................................... .code-wrapper / pre.code-block
    20. MEDIA QUERIES - CÓDIGO (MOBILE) ..................... @media (max-width: 768px) code
    21. CITAÇÃO (BLOCKQUOTE) ................................ .post-content blockquote
    ========================================================================== */
-
-/* frontend/app/globals.css */
 
 /* =========================================
    0. VARIÁVEIS E TOKENS (:root)

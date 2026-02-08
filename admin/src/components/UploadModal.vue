@@ -22,11 +22,6 @@ async function handleUpload() {
 
     // 2. Enviar para o S3
     await mediaApi.uploadToS3(uploadURL, file)
-
-    // 3. Retornar a URL pública final (Assumindo que o bucket de assets é servido pelo CloudFront do Frontend)
-    // Nota: Precisamos saber o domínio do CloudFront do Frontend.
-    // Por enquanto, vamos retornar o caminho relativo e deixar o Editor montar a URL completa ou usar variável de ambiente.
-    // Para simplificar, vamos assumir que você vai configurar VITE_ASSETS_URL no .env.local
     
     emit('uploaded', finalPath)
     emit('close')

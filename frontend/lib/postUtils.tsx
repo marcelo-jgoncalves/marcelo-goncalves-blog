@@ -1,3 +1,5 @@
+/* frontend/lib/postUtils */
+
 import { createHighlighter } from 'shiki';
 import * as cheerio from 'cheerio';
 
@@ -11,12 +13,7 @@ export interface ProcessedPost {
   headings: Heading[];
 }
 
-/**
- * Pipeline Sênior de Processamento de Post (Híbrido: Shiki + Cheerio)
- * 1. Processa Syntax Highlighting (Shiki) na string bruta.
- * 2. Processa Estrutura e Anúncios (Cheerio) no DOM.
- * Isso garante Highlighting bonito E HTML estruturalmente válido.
- */
+
 export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
 
@@ -55,11 +52,6 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
     }
   }
 
-  // --- FASE 2: Sanitização e Injeção (DOM Manipulation) ---
-
-  // Carrega o HTML (já com código colorido) no Cheerio.
-  // xmlMode: false permite que o Cheerio feche tags abertas automaticamente (Auto-fix).
-  // decodeEntities: false impede que ele estrague caracteres especiais dentro do código.
  const $ = cheerio.load(preProcessedHtml, { 
     xmlMode: false 
   });

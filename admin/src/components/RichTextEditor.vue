@@ -1,4 +1,4 @@
-/* RichTextEditor.vue */
+/* admin/scr/components/RichTextEditor.vue */
 
 <script setup lang="ts">
 import { watch, computed } from 'vue'
