@@ -26,6 +26,11 @@
    19. BLOCOS DE CÓDIGO .................................... .code-wrapper / pre.code-block
    20. MEDIA QUERIES - CÓDIGO (MOBILE) ..................... @media (max-width: 768px) code
    21. CITAÇÃO (BLOCKQUOTE) ................................ .post-content blockquote
+   22. Tabelas do Editor (Post).............................
+   23. VÍDEOS (Centralizar e Responsivo).....................
+
+
+
    ========================================================================== */
 
 /* =========================================
@@ -2345,4 +2350,54 @@ pre::-webkit-scrollbar-thumb {
   padding: 0 8px;
   color: var(--blue-600);
   font-size: 0.85rem;
+}
+/* =========================================
+   22. Tabelas do Editor (Post)
+   ========================================= */
+
+/* Mira apenas nas tabelas dentro da área de conteúdo do post */
+/* Se sua div principal tem uma classe, use .classe-do-post table */
+article table, 
+.conteudo-post table { 
+  width: 100%;
+  border-collapse: collapse; /* Tira o espaço duplo entre bordas */
+  margin: 1.5rem 0;          /* Espaço antes e depois da tabela */
+}
+
+article th, article td,
+.conteudo-post th, .conteudo-post td {
+  border: 1px solid #d1d5db; /* Borda cinza suave */
+  padding: 0.75rem;          /* Espaço interno para o texto não grudar */
+  text-align: left;
+}
+
+article th,
+.conteudo-post th {
+  background-color: #f3f4f6; /* Fundo cinza claro para o cabeçalho */
+  font-weight: 600;          /* Negrito no cabeçalho */
+}
+
+/* ==================================================
+   23. VÍDEOS (Centralizar e Responsivo)
+   ================================================== */
+
+/* Centraliza o iframe (o vídeo em si) */
+.post-content iframe,
+.post-content-part iframe,
+.post-content video,
+.post-content-part video {
+  display: block;       /* Transforma em bloco para aceitar margem */
+  margin: 2rem auto;    /* 'auto' nas laterais centraliza, '2rem' dá espaço vertical */
+  max-width: 100%;      /* Garante que o vídeo nunca seja maior que a tela do celular */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* (Opcional) Uma sombra leve para destaque */
+}
+
+/* Caso o seu editor envolva o vídeo em uma tag <figure> ou <div class="media"> */
+.post-content figure,
+.post-content-part figure,
+.post-content .media {
+  display: flex;        /* Usa Flexbox */
+  justify-content: center; /* Centraliza o conteúdo (o vídeo) dentro da figura */
+  margin: 2rem 0;       /* Espaçamento vertical */
+  width: 100%;
 }

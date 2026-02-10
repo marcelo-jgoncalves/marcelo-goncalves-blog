@@ -9,12 +9,20 @@ import Link from '@tiptap/extension-link'
 import { Callout } from './Callout'
 import { SmartImage } from './tiptap/SmartImage'
 import Code from '@tiptap/extension-code'
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import Youtube from '@tiptap/extension-youtube'
 
 /* BLOCK: Syntax Highlighting Setup */
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { createLowlight, common } from 'lowlight'
 import hljs from 'highlight.js'
 
+const CustomTableCell = TableCell.extend({
+  content: 'inline*', // Define que a célula só aceita texto, img, etc. (sem blocos)
+})
 // Importando definições específicas para o nicho Tech/DevOps/AI
 const terraformDef = hljs.getLanguage('terraform')?.rawDefinition
 const javascriptDef = hljs.getLanguage('javascript')?.rawDefinition
@@ -57,6 +65,22 @@ const editorExtensions = [
         style: 'border: none; border-top: 1px solid #e0e0e0; margin: 2rem 0; height: 0; background: transparent;',
       },
     },
+  }),
+  Table.configure({
+    resizable: true,
+    HTMLAttributes: {
+      class: 'my-custom-table',
+    },
+  }),
+  TableRow,
+  TableHeader,
+  CustomTableCell,,
+  Youtube.configure({
+    controls: true,
+    nocookie: true,
+    // Deixar responsivo via CSS é melhor, mas definimos um default aqui
+    width: 640, 
+    height: 360,
   }),
   Link.configure({
     openOnClick: false,
@@ -147,6 +171,23 @@ const setHorizontalRule = () => {
 }
 /* END BLOCK: Custom Commands */
 
+/* BLOCK: New Media Commands */
+const addYoutubeVideo = () => {
+  const url = window.prompt('Cole a URL do YouTube:')
+  
+  if (url) {
+    // Tiptap valida automaticamente se é link do Youtube
+    editorInstance.value?.commands.setYoutubeVideo({ src: url })
+  }
+}
+
+const insertTable = () => {
+  editorInstance.value?.chain().focus()
+    .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+    .run()
+}
+/* END BLOCK: New Media Commands */
+
 /* BLOCK: Image Upload Logic */
 const triggerImageUpload = () => {
   emit('request-upload')
@@ -231,6 +272,26 @@ defineExpose({
 
       <div class="divider"></div>
 
+      <button 
+        type="button" 
+        @click="insertTable" 
+        title="Inserir Tabela"
+        :class="{ 'is-active': editorInstance.isActive('table') }"
+      >
+        <i class="fas fa-table"></i>
+      </button>
+
+      <button 
+        type="button" 
+        @click="addYoutubeVideo" 
+        title="Inserir Vídeo do YouTube"
+        :class="{ 'is-active': editorInstance.isActive('youtube') }"
+      >
+        <i class="fab fa-youtube"></i>
+      </button>
+
+      <div class="divider"></div>
+
       <button type="button" @click="addCallout('info')" title="Dica">ℹ️</button>
       <button type="button" @click="addCallout('warning')" title="Atenção">⚠️</button>
 
@@ -245,6 +306,7 @@ defineExpose({
       <button
         type="button"
         @click="editorInstance.chain().focus().clearNodes().run()"
+        title="Limpar Formatação do Bloco"
       >Limpar</button>
     </div>
 
@@ -284,6 +346,81 @@ defineExpose({
          @click="editorInstance.chain().focus().unsetAllMarks().run()"
          class="btn-clear"
       >Limpar</button>
+    </bubble-menu>
+    <bubble-menu
+      v-if="editorInstance"
+      :editor="editorInstance"
+      :tippy-options="{ duration: 100, placement: 'top' }"
+      :should-show="({ editor }) => editor.isActive('table')"
+      class="bubble-menu-table"
+    >
+      <div class="btn-group">
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().addColumnAfter().run()" 
+          title="Inserir Coluna (Direita)"
+          class="btn-icon"
+        >
+          <i class="fas fa-columns"></i>
+          <span class="mini-badge">+</span>
+        </button>
+        
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().addRowAfter().run()" 
+          title="Inserir Linha (Abaixo)"
+          class="btn-icon"
+        >
+          <i class="fas fa-bars"></i>
+          <span class="mini-badge">+</span>
+        </button>
+      </div>
+
+      <div class="menu-divider"></div>
+
+      <div class="btn-group">
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().deleteColumn().run()" 
+          title="Remover Coluna"
+          class="btn-icon btn-danger"
+        >
+          <i class="fas fa-columns"></i>
+          <span class="mini-badge">-</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().deleteRow().run()" 
+          title="Remover Linha"
+          class="btn-icon btn-danger"
+        >
+          <i class="fas fa-bars"></i>
+          <span class="mini-badge">-</span>
+        </button>
+      </div>
+
+      <div class="menu-divider"></div>
+
+      <div class="btn-group">
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().mergeCells().run()" 
+          title="Mesclar/Desmesclar Células"
+          class="btn-text"
+        >
+          <i class="fas fa-expand-arrows-alt"></i>
+        </button>
+        
+        <button 
+          type="button"
+          @click="editorInstance.chain().focus().deleteTable().run()" 
+          title="Excluir Tabela Inteira"
+          class="btn-icon btn-danger"
+        >
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
     </bubble-menu>
 
     <floating-menu
@@ -340,6 +477,24 @@ defineExpose({
           title="Inserir Imagem"
         ><i class="fas fa-image"></i></button>
 
+        <button 
+          type="button" 
+          @click="insertTable" 
+          title="Inserir Tabela"
+          :class="{ 'is-active': editorInstance.isActive('table') }"
+        >
+          <i class="fas fa-table"></i>
+        </button>
+
+        <button 
+          type="button" 
+          @click="addYoutubeVideo" 
+          title="Inserir Vídeo"
+          :class="{ 'is-active': editorInstance.isActive('youtube') }"
+        >
+          <i class="fab fa-youtube"></i>
+        </button>
+
         <div class="menu-divider"></div>
 
         <button type="button" @click="addCallout('info')" title="Dica">ℹ️</button>
@@ -364,7 +519,6 @@ defineExpose({
     <div v-else class="tiptap-loading">Iniciando editor...</div>
   </div>
 </template>
-
 <style scoped>
 /* ===== Layout ===== */
 .tiptap-editor-container {
@@ -607,5 +761,198 @@ defineExpose({
   border-radius: 4px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+
+/* ===== TABLES (CRITICAL SETUP) ===== */
+:deep(.ProseMirror table) {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+:deep(.ProseMirror td),
+:deep(.ProseMirror th) {
+  min-width: 1em;
+  border: 2px solid #ced4da;
+  padding: 8px 12px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+:deep(.ProseMirror th) {
+  font-weight: bold;
+  text-align: left;
+  background-color: #f1f3f5;
+}
+
+:deep(.ProseMirror .selectedCell:after) {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(200, 200, 255, 0.4);
+  pointer-events: none;
+}
+
+:deep(.ProseMirror .column-resize-handle) {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: #adf;
+  pointer-events: none;
+}
+
+:deep(.ProseMirror p) {
+  margin: 0; /* Remove margem extra dentro das células */
+}
+
+/* ===== YOUTUBE EMBED ===== */
+:deep(.ProseMirror div[data-youtube-video]) {
+  cursor: move;
+  padding-right: 24px;
+}
+
+:deep(.ProseMirror iframe) {
+  border: 8px solid #000;
+  border-radius: 4px;
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+}
+/* === LAYOUT DO MENU DE TABELA OTIMIZADO === */
+.bubble-menu-table {
+  display: flex;
+  align-items: center;
+  background-color: #2d3748; /* Fundo escuro (Slate 800) */
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  gap: 0.5rem;
+  z-index: 50; /* Garante que fique acima de tudo */
+}
+
+/* Agrupadores para manter os botões juntos visualmente */
+.bubble-menu-table .btn-group {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+/* Botões Base */
+.bubble-menu-table button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #cbd5e0; /* Cinza claro */
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 28px;
+  height: 28px;
+}
+
+.bubble-menu-table button:hover {
+  background-color: #4a5568; /* Hover mais claro */
+  color: #fff;
+}
+
+/* Ícones */
+.bubble-menu-table i {
+  font-size: 0.9rem;
+}
+
+/* Pequeno indicador (+ ou -) sobreposto ao ícone */
+.mini-badge {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  font-size: 0.6rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* === ESTILOS DE AÇÃO === */
+
+/* Botões de Perigo (Delete) */
+.bubble-menu-table .btn-danger:hover {
+  background-color: rgba(229, 62, 62, 0.3); /* Vermelho translúcido */
+  color: #fc8181;
+}
+
+/* Divisor Vertical Elegante */
+.bubble-menu-table .menu-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #4a5568; /* Cinza médio */
+  margin: 0 2px;
+}
+
+/* Ajuste específico para o botão de Mesclar */
+.bubble-menu-table .btn-text {
+  padding: 0 8px;
+}
+
+/* ===================================================================
+   CORREÇÃO DEFINITIVA DE TABELAS (TI-PTAP)
+   Estratégia: Schema inline* (Script) + CSS de Layout Fixo
+   =================================================================== */
+
+:deep(.ProseMirror table) {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1.5rem 0; /* Espaçamento vertical saudável */
+  overflow: hidden;
+}
+
+:deep(.ProseMirror table td),
+:deep(.ProseMirror table th) {
+  position: relative;
+  vertical-align: top;
+  box-sizing: border-box;
+  
+  /* Com o schema inline*, height: auto funciona perfeitamente */
+  height: auto !important; 
+  min-height: 0 !important;
+  padding: 8px 10px !important;
+  
+  border: 1px solid #ced4da; /* Borda visível no editor */
+}
+
+/* Header estilizado */
+:deep(.ProseMirror table th) {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* UX: Feedback visual de seleção (Crucial para edição) */
+:deep(.ProseMirror .selectedCell:after) {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(200, 200, 255, 0.4);
+  pointer-events: none;
+}
+
+/* Handle de redimensionamento de coluna */
+:deep(.ProseMirror .column-resize-handle) {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: #adf;
+  pointer-events: none;
 }
 </style>
