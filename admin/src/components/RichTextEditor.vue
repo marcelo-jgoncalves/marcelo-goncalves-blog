@@ -20,8 +20,14 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { createLowlight, common } from 'lowlight'
 import hljs from 'highlight.js'
 
+// Customização para impedir parágrafos (<p>) dentro de células (TD)
 const CustomTableCell = TableCell.extend({
-  content: 'inline*', // Define que a célula só aceita texto, img, etc. (sem blocos)
+  content: 'inline*', 
+})
+
+// Customização para impedir parágrafos (<p>) dentro de cabeçalhos (TH)
+const CustomTableHeader = TableHeader.extend({
+  content: 'inline*', 
 })
 // Importando definições específicas para o nicho Tech/DevOps/AI
 const terraformDef = hljs.getLanguage('terraform')?.rawDefinition
@@ -73,8 +79,8 @@ const editorExtensions = [
     },
   }),
   TableRow,
-  TableHeader,
-  CustomTableCell,,
+  CustomTableHeader,
+  CustomTableCell,
   Youtube.configure({
     controls: true,
     nocookie: true,
@@ -761,54 +767,6 @@ defineExpose({
   border-radius: 4px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-}
-
-/* ===== TABLES (CRITICAL SETUP) ===== */
-:deep(.ProseMirror table) {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-:deep(.ProseMirror td),
-:deep(.ProseMirror th) {
-  min-width: 1em;
-  border: 2px solid #ced4da;
-  padding: 8px 12px;
-  vertical-align: top;
-  box-sizing: border-box;
-  position: relative;
-}
-
-:deep(.ProseMirror th) {
-  font-weight: bold;
-  text-align: left;
-  background-color: #f1f3f5;
-}
-
-:deep(.ProseMirror .selectedCell:after) {
-  z-index: 2;
-  position: absolute;
-  content: "";
-  left: 0; right: 0; top: 0; bottom: 0;
-  background: rgba(200, 200, 255, 0.4);
-  pointer-events: none;
-}
-
-:deep(.ProseMirror .column-resize-handle) {
-  position: absolute;
-  right: -2px;
-  top: 0;
-  bottom: -2px;
-  width: 4px;
-  background-color: #adf;
-  pointer-events: none;
-}
-
-:deep(.ProseMirror p) {
-  margin: 0; /* Remove margem extra dentro das células */
 }
 
 /* ===== YOUTUBE EMBED ===== */
