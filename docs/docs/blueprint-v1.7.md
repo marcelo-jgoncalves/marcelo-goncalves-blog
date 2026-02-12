@@ -655,7 +655,7 @@ Define a interface de administração interna. (ATUALIZADO v1.3)
             * Botão `[Publicar]` (envia `status: "Publicado"`).
             * Link `(Programar)` que revela campos de data/hora (envia `status: "Programado"` e `data_publicacao_programada`).
     3.  **Vista 3: `view-categories` (NOVO):**
-        * Tabela de categorias (via `GET /admin/categorias`).
+        * Tabela de categorias (via `GET /admin/categories`).
         * Botão `[+ Nova Categoria]` (abre Modal).
         * Botões `[Editar]` (abre Modal com dados).
     4.  **Vista 4: `view-author-edit` (NOVO):**

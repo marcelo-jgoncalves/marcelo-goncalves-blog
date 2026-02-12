@@ -1,0 +1,1 @@
+tree -a --dirsfirst -L 4 -I "node_modules|.next|dist|build|coverage|.git"

@@ -1,3 +1,5 @@
+/* admin/src/views */
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { postsApi } from '../services/api'

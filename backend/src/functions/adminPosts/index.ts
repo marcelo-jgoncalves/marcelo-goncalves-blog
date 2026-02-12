@@ -1,4 +1,5 @@
 // backend/src/functions/adminPosts/index.ts
+
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
@@ -119,13 +120,16 @@ async function savePost(data: Partial<Post>, isNew: boolean) {
 
   const now = new Date().toISOString();
   
+  // Nós calculamos o tempo baseado no HTML e salvamos na variável.
+  const tempoCalculado = calculateReadingTime(data.conteudo_html || "");
+  
   const item: Post = {
     ...data as Post,
     data_atualizacao: now,
     data_publicacao: isNew ? (data.data_publicacao || now) : data.data_publicacao!,
     e_popular: Number(data.e_popular || 0),
     e_projeto: Number(data.e_projeto || 0),
-    tempo_leitura_min: Number(data.tempo_leitura_min || 5)
+    tempo_leitura_min: tempoCalculado // Agora o TS sabe de onde vem esse valor
   };
 
   await dynamo.send(new PutCommand({
@@ -151,4 +155,28 @@ async function deletePost(slug: string) {
     body: JSON.stringify({ message: "Post deleted" }),
     headers, // <--- ADICIONADO
   };
+}
+
+/**
+ * Calcula o tempo de leitura estimado com base no conteúdo HTML.
+ * @param html Conteúdo rico vindo do Tiptap Editor.
+ * @returns Tempo em minutos (sempre no mínimo 1).
+ */
+function calculateReadingTime(html: string): number {
+  if (!html) return 1;
+
+  // 1. Remove todas as tags HTML substituindo por um espaço (evita colar palavras)
+  const plainText = html.replace(/<[^>]+>/g, ' ');
+
+  // 2. Remove espaços em branco múltiplos do início/fim e divide em um array de palavras
+  const words = plainText.trim().split(/\s+/);
+  
+  // Se o array ficar vazio ou tiver apenas strings vazias
+  if (words.length === 0 || words[0] === "") return 1;
+
+  // 3. Calcula o tempo: média de 200 palavras por minuto
+  const minutes = Math.ceil(words.length / 200);
+
+  // 4. Retorna no mínimo 1 minuto de leitura
+  return Math.max(1, minutes);
 }

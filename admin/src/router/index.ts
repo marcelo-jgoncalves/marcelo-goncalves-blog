@@ -40,6 +40,15 @@ const router = createRouter({
           path: 'profile', // Rota será /profile
           name: 'profile',
           component: AuthorEditView
+        },
+        {
+          path: 'categories',
+          name: 'categories',
+          component: () => import('../views/CategoriesView.vue'),
+          meta: {
+            layout: 'AdminLayout', // Garante que use o layout correto
+            requiresAuth: true
+          }
         }
         // Futuro: { path: 'posts/new', component: EditorView }
       ]

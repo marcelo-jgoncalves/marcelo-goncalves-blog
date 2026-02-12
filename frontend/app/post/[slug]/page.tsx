@@ -1,3 +1,5 @@
+/* frontend/app/post[slug]/page.tsx */ 
+
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -98,7 +100,7 @@ export default async function PostPage({ params }: Props) {
                 <i className="far fa-calendar-alt"></i> 
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
             </span>
-            <span><i className="far fa-clock"></i> {post.tempo_leitura_min} min de leitura</span>
+            <span><i className="far fa-clock"></i> {post.tempo_leitura_min || 5} min de leitura</span>
           </div>
         </div>
       </section>
