@@ -898,7 +898,6 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_integration.admin_autor_id_integration,
       aws_api_gateway_method.admin_autor_id_options,
       aws_api_gateway_integration.admin_autor_id_options_integration,
-      # --- Recursos Admin Categorias (NOVOS) ---
       aws_api_gateway_resource.admin_categorias,
       aws_api_gateway_resource.admin_categorias_slug,
       aws_api_gateway_method.admin_categorias_any,
