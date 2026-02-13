@@ -1,64 +1,52 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { categoriesApi } from '../services/api' // Importa a nossa nova API
 
-// --- Interfaces ---
-interface Category {
-  id: string
-  name: string
-  slug: string
-  icon: string
-  seoDescription: string
-  count?: number
+// --- Interfaces (Mapeadas exatamente como no DynamoDB) ---
+interface Categoria {
+  categoria_slug: string
+  nome_exibicao: string
+  icone_fa: string
+  descricao_seo: string
 }
 
 // --- Estado ---
-const categories = ref<Category[]>([])
+const categories = ref<Categoria[]>([])
 const isModalOpen = ref(false)
-const editingId = ref<string | null>(null)
+const editingSlug = ref<string | null>(null)
+const isLoading = ref(true)
+const isSaving = ref(false)
 
 // Estado do Formulário
-const defaultForm = {
-  name: '',
-  slug: '',
-  icon: 'fas fa-tag',
-  seoDescription: ''
+const defaultForm: Categoria = {
+  nome_exibicao: '',
+  categoria_slug: '',
+  icone_fa: 'fas fa-tag',
+  descricao_seo: ''
 }
-const form = ref({ ...defaultForm })
+const form = ref<Categoria>({ ...defaultForm })
 
-// --- Inicialização (Mock) ---
-const initMockData = () => {
-  categories.value = [
-    {
-      id: '1',
-      name: 'Inteligência Artificial',
-      slug: 'inteligencia-artificial',
-      icon: 'fas fa-robot',
-      seoDescription: 'Artigos sobre LLMs, Machine Learning e IA.',
-      count: 12
-    },
-    {
-      id: '2',
-      name: 'DevOps & Cloud',
-      slug: 'devops-cloud',
-      icon: 'fas fa-cloud',
-      seoDescription: 'Tutoriais de AWS e Kubernetes.',
-      count: 8
-    },
-    {
-      id: '3',
-      name: 'Frontend Moderno',
-      slug: 'frontend-moderno',
-      icon: 'fab fa-vuejs',
-      seoDescription: 'Dicas de Vue 3 e React.',
-      count: 24
-    }
-  ]
+// --- Lógica de Inicialização (Fetch da API) ---
+const fetchCategories = async () => {
+  isLoading.value = true
+  try {
+    const response = await categoriesApi.list()
+    categories.value = response.items || []
+  } catch (error) {
+    console.error('Erro ao buscar categorias:', error)
+    alert('Não foi possível carregar as categorias.')
+  } finally {
+    isLoading.value = false
+  }
 }
-initMockData()
 
-// --- Lógica ---
+onMounted(() => {
+  fetchCategories()
+})
 
-// Gerador de Slug
+// --- Lógica de UX / Auxiliares ---
+
+// Gerador de Slug Automático
 const generateSlug = (text: string) => {
   return text
     .toString()
@@ -70,21 +58,20 @@ const generateSlug = (text: string) => {
     .replace(/--+/g, '-')
 }
 
-// Watcher para Slug Automático
-watch(() => form.value.name, (newName) => {
-  if (!editingId.value) {
-    form.value.slug = generateSlug(newName)
+// Watcher para preencher o slug automaticamente apenas na criação
+watch(() => form.value.nome_exibicao, (newName) => {
+  if (!editingSlug.value) {
+    form.value.categoria_slug = generateSlug(newName)
   }
 })
 
 // Ações do Modal
-const openModal = (category?: Category) => {
+const openModal = (category?: Categoria) => {
   if (category) {
-    editingId.value = category.id
-    // Cópia profunda simples para quebrar reatividade indesejada
+    editingSlug.value = category.categoria_slug
     form.value = JSON.parse(JSON.stringify(category))
   } else {
-    editingId.value = null
+    editingSlug.value = null
     form.value = { ...defaultForm }
   }
   isModalOpen.value = true
@@ -92,40 +79,49 @@ const openModal = (category?: Category) => {
 
 const closeModal = () => {
   isModalOpen.value = false
-  // Pequeno delay para limpar o form
   setTimeout(() => {
     form.value = { ...defaultForm }
-    editingId.value = null
+    editingSlug.value = null
   }, 200)
 }
 
-const handleSave = () => {
-  if (!form.value.name || !form.value.slug) return alert('Preencha os campos obrigatórios')
+// --- Operações CRUD Reais ---
 
-  if (editingId.value) {
-    // Editar
-    const index = categories.value.findIndex(c => c.id === editingId.value)
-    if (index !== -1) {
-      categories.value[index] = { 
-        ...categories.value[index],
-        ...form.value,
-        id: editingId.value // Mantém o ID original
-      }
-    }
-  } else {
-    // Criar
-    categories.value.push({
-      ...form.value,
-      id: Date.now().toString(),
-      count: 0
-    })
+const handleSave = async () => {
+  if (!form.value.nome_exibicao || !form.value.categoria_slug) {
+    return alert('Preencha os campos obrigatórios (Nome e Slug)')
   }
-  closeModal()
+
+  isSaving.value = true
+  try {
+    if (editingSlug.value) {
+      // Editar
+      await categoriesApi.update(editingSlug.value, form.value)
+    } else {
+      // Criar
+      await categoriesApi.create(form.value)
+    }
+    
+    // Recarrega a lista após salvar com sucesso
+    await fetchCategories()
+    closeModal()
+  } catch (error: any) {
+    console.error('Erro ao salvar:', error)
+    alert(error.message || 'Erro ao salvar categoria.')
+  } finally {
+    isSaving.value = false
+  }
 }
 
-const handleDelete = (id: string) => {
-  if (confirm('Tem certeza que deseja excluir esta categoria?')) {
-    categories.value = categories.value.filter(c => c.id !== id)
+const handleDelete = async (slug: string) => {
+  if (confirm('Tem certeza que deseja excluir esta categoria? Isso não altera os posts associados a ela.')) {
+    try {
+      await categoriesApi.delete(slug)
+      await fetchCategories() // Atualiza a lista na tela
+    } catch (error: any) {
+      console.error('Erro ao excluir:', error)
+      alert(error.message || 'Erro ao excluir categoria.')
+    }
   }
 }
 </script>
@@ -134,13 +130,18 @@ const handleDelete = (id: string) => {
   <div class="dashboard">
     <div class="header-actions">
       <h1>Gerenciar Categorias</h1>
-      <button @click="openModal()" class="btn-primary">
+      <button @click="openModal()" class="btn-primary" :disabled="isLoading">
         <i class="fas fa-plus"></i> Nova Categoria
       </button>
     </div>
 
     <div class="table-container">
-      <div v-if="categories.length === 0" class="empty-state">
+      <div v-if="isLoading" class="empty-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Carregando categorias...</p>
+      </div>
+
+      <div v-else-if="categories.length === 0" class="empty-state">
         <i class="fas fa-folder-open"></i>
         <p>Nenhuma categoria encontrada.</p>
       </div>
@@ -155,26 +156,26 @@ const handleDelete = (id: string) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="cat in categories" :key="cat.id">
+          <tr v-for="cat in categories" :key="cat.categoria_slug">
             <td>
-              <strong>{{ cat.name }}</strong>
-              <br><small class="slug-text">/{{ cat.slug }}</small>
+              <strong>{{ cat.nome_exibicao }}</strong>
+              <br><small class="slug-text">/{{ cat.categoria_slug }}</small>
             </td>
             <td>
               <div class="icon-preview-cell">
-                <i :class="cat.icon"></i>
-                <span>{{ cat.icon }}</span>
+                <i :class="cat.icone_fa"></i>
+                <span class="icon-badge">{{ cat.icone_fa }}</span>
               </div>
             </td>
-            <td class="desc-cell" :title="cat.seoDescription">
-              {{ cat.seoDescription || '-' }}
+            <td class="desc-cell" :title="cat.descricao_seo">
+              {{ cat.descricao_seo || '-' }}
             </td>
             <td>
               <div class="actions-cell">
                 <button @click="openModal(cat)" class="btn-icon" title="Editar">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button @click="handleDelete(cat.id)" class="btn-icon btn-danger" title="Excluir">
+                <button @click="handleDelete(cat.categoria_slug)" class="btn-icon btn-danger" title="Excluir">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
@@ -187,26 +188,32 @@ const handleDelete = (id: string) => {
     <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>{{ editingId ? 'Editar Categoria' : 'Nova Categoria' }}</h2>
-          <button @click="closeModal" class="btn-close"><i class="fas fa-times"></i></button>
+          <h2>{{ editingSlug ? 'Editar Categoria' : 'Nova Categoria' }}</h2>
+          <button @click="closeModal" class="btn-close" :disabled="isSaving"><i class="fas fa-times"></i></button>
         </div>
 
         <div class="modal-body">
           <div class="form-group">
             <label>Nome da Categoria</label>
             <input 
-              v-model="form.name" 
+              v-model="form.nome_exibicao" 
               type="text" 
               placeholder="Ex: Inteligência Artificial"
               autofocus
+              :disabled="isSaving"
             >
           </div>
 
           <div class="form-group">
-            <label>Slug URL</label>
+            <label>Slug URL <small>(Identificador único)</small></label>
             <div class="input-group">
               <span class="input-addon">/</span>
-              <input v-model="form.slug" type="text" class="input-mono">
+              <input 
+                v-model="form.categoria_slug" 
+                type="text" 
+                class="input-mono"
+                :disabled="!!editingSlug || isSaving" 
+              >
             </div>
           </div>
 
@@ -214,27 +221,33 @@ const handleDelete = (id: string) => {
             <div class="form-group" style="flex: 1;">
               <label>Ícone (FontAwesome)</label>
               <input 
-                v-model="form.icon" 
+                v-model="form.icone_fa" 
                 type="text" 
                 placeholder="Ex: fas fa-robot"
                 class="input-mono"
+                :disabled="isSaving"
               >
             </div>
             <div class="preview-box">
-              <i :class="form.icon"></i>
+              <i :class="form.icone_fa"></i>
             </div>
           </div>
 
           <div class="form-group">
             <label>Descrição SEO</label>
-            <textarea v-model="form.seoDescription" rows="3"></textarea>
+            <textarea 
+              v-model="form.descricao_seo" 
+              rows="3"
+              :disabled="isSaving"
+            ></textarea>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button @click="closeModal" class="btn-secondary">Cancelar</button>
-          <button @click="handleSave" class="btn-primary">
-            {{ editingId ? 'Salvar' : 'Criar' }}
+          <button @click="closeModal" class="btn-secondary" :disabled="isSaving">Cancelar</button>
+          <button @click="handleSave" class="btn-primary" :disabled="isSaving">
+            <i v-if="isSaving" class="fas fa-circle-notch fa-spin"></i>
+            {{ isSaving ? 'Salvando...' : (editingSlug ? 'Salvar Alterações' : 'Criar Categoria') }}
           </button>
         </div>
       </div>
@@ -254,11 +267,8 @@ const handleDelete = (id: string) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px; /* Mesma distância da tabela que o Dashboard */
+  margin-bottom: 30px; 
 }
-
-/* O H1 foi removido daqui para usar o estilo global/nativo, 
-   garantindo tamanho e margens idênticos ao "Dashboard de Posts" */
 
 /* =========================================
    BOTÕES & AÇÕES
@@ -276,11 +286,16 @@ const handleDelete = (id: string) => {
   gap: 8px;
   transition: 0.2s;
   cursor: pointer;
-  font-size: 1rem; /* Garante consistência */
+  font-size: 1rem; 
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--aws-orange-hover, #e68a00);
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -293,7 +308,7 @@ const handleDelete = (id: string) => {
   font-weight: 500;
   transition: 0.2s;
 }
-.btn-secondary:hover { background-color: #f9f9f9; }
+.btn-secondary:hover:not(:disabled) { background-color: #f9f9f9; }
 
 /* =========================================
    TABELA (Cópia exata do DashboardView)
@@ -318,12 +333,11 @@ th {
   background-color: #f9fafb;
   font-weight: 600;
   color: var(--gray-text, #4b5563);
-  font-size: 0.9rem; /* Consistência com headers */
+  font-size: 0.9rem; 
 }
 
 tr:hover { background-color: #f8fafc; }
 
-/* Tipografia da tabela */
 .slug-text { color: #999; font-size: 0.85rem; }
 
 .desc-cell {
@@ -387,6 +401,11 @@ tr:hover { background-color: #f8fafc; }
 .form-group input:focus, .form-group textarea:focus {
   border-color: var(--aws-orange, #ff9900);
 }
+.form-group input:disabled, .form-group textarea:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
 
 .input-group { display: flex; align-items: center; }
 .input-addon {
@@ -401,7 +420,7 @@ tr:hover { background-color: #f8fafc; }
   width: 42px; height: 42px; background: var(--aws-dark, #232f3e);
   color: var(--aws-orange, #ff9900); border-radius: 6px;
   display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
-  margin-top: 29px; /* Alinhamento visual com input com label */
+  margin-top: 29px; 
 }
 
 .modal-footer {

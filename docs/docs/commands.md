@@ -1,1 +1,1 @@
-tree -a --dirsfirst -L 4 -I "node_modules|.next|dist|build|coverage|.git"
+tree -a --dirsfirst -L 3 -I "node_modules|.next|dist|build|coverage|.git|.terraform|docs|.vscode"

@@ -48,7 +48,7 @@ resource "aws_dynamodb_table" "posts" {
     name = "e_popular"
     type = "N" # Boolean armazenado como 0 ou 1 para índice
   }
-  
+
   attribute {
     name = "data_publicacao_programada"
     type = "S"
@@ -56,42 +56,42 @@ resource "aws_dynamodb_table" "posts" {
 
   # GSI 1: StatusPorData (Para /artigos e Home)
   global_secondary_index {
-    name               = "StatusPorData"
-    hash_key           = "status"
-    range_key          = "data_atualizacao"
-    projection_type    = "ALL"
+    name            = "StatusPorData"
+    hash_key        = "status"
+    range_key       = "data_atualizacao"
+    projection_type = "ALL"
   }
 
   # GSI 2: CategoriaPorData (Para /categoria/[slug])
   global_secondary_index {
-    name               = "CategoriaPorData"
-    hash_key           = "categoria_slug"
-    range_key          = "data_atualizacao"
-    projection_type    = "ALL"
+    name            = "CategoriaPorData"
+    hash_key        = "categoria_slug"
+    range_key       = "data_atualizacao"
+    projection_type = "ALL"
   }
 
   # GSI 3: ProjetoPorData (Para /o-projeto)
   global_secondary_index {
-    name               = "ProjetoPorData"
-    hash_key           = "e_projeto"
-    range_key          = "data_publicacao" # Ordem ascendente será controlada na query
-    projection_type    = "ALL"
+    name            = "ProjetoPorData"
+    hash_key        = "e_projeto"
+    range_key       = "data_publicacao" # Ordem ascendente será controlada na query
+    projection_type = "ALL"
   }
 
   # GSI 4: PopularesPorData (Para seções "Populares")
   global_secondary_index {
-    name               = "PopularesPorData"
-    hash_key           = "e_popular"
-    range_key          = "data_atualizacao"
-    projection_type    = "ALL"
+    name            = "PopularesPorData"
+    hash_key        = "e_popular"
+    range_key       = "data_atualizacao"
+    projection_type = "ALL"
   }
-  
+
   # GSI 5: StatusProgramadoPorData (Para Lambda Scheduler)
   global_secondary_index {
-    name               = "StatusProgramadoPorData"
-    hash_key           = "status"
-    range_key          = "data_publicacao_programada"
-    projection_type    = "ALL" # Projetar tudo para facilitar a atualização
+    name            = "StatusProgramadoPorData"
+    hash_key        = "status"
+    range_key       = "data_publicacao_programada"
+    projection_type = "ALL" # Projetar tudo para facilitar a atualização
   }
 }
 

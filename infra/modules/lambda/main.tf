@@ -5,8 +5,8 @@ resource "aws_iam_role" "lambda_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "lambda.amazonaws.com" }
     }]
   })
@@ -39,11 +39,12 @@ resource "aws_iam_policy" "lambda_policy" {
           "dynamodb:UpdateItem",
           "dynamodb:DeleteItem"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           var.posts_table_arn,
           "${var.posts_table_arn}/index/*", # Permitir acesso aos GSIs
-          var.autores_table_arn
+          var.autores_table_arn,
+          var.categorias_table_arn
         ]
       }
     ]
@@ -103,7 +104,7 @@ resource "aws_lambda_function" "get_post" {
 
   environment {
     variables = {
-      POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
+      POSTS_TABLE   = "${var.project_name}-${var.environment}-posts"
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
     }
   }
@@ -115,7 +116,7 @@ resource "aws_lambda_function" "get_author" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  
+
   # CORREÇÃO AQUI: Usar path.root em vez de path.module
   filename         = "${path.root}/builds/getAuthor.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/getAuthor.zip")
@@ -132,7 +133,7 @@ resource "aws_lambda_function" "admin_posts" {
   role          = aws_iam_role.lambda_role.arn # Reutilizamos a role (já tem acesso ao DynamoDB)
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  
+
   filename         = "${path.root}/builds/adminPosts.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminPosts.zip")
 
@@ -143,12 +144,29 @@ resource "aws_lambda_function" "admin_posts" {
   }
 }
 
+resource "aws_lambda_function" "admin_categories" {
+  filename         = "${path.root}/builds/adminCategories.zip"
+  function_name    = "${var.project_name}-${var.environment}-adminCategories"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "index.handler"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminCategories.zip")
+  runtime          = "nodejs20.x"
+
+  environment {
+    variables = {
+      # Certifique-se de que a variável var.categorias_table_name exista no seu módulo lambda
+      # Se a tabela de categorias se chamar algo diferente, ajuste aqui.
+      CATEGORIES_TABLE = var.categorias_table_name
+    }
+  }
+}
+
 resource "aws_lambda_function" "get_posts" {
   function_name = "${var.project_name}-${var.environment}-getPosts"
   role          = aws_iam_role.lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  
+
   filename         = "${path.root}/builds/getPosts.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/getPosts.zip")
 
@@ -165,7 +183,7 @@ resource "aws_lambda_function" "admin_authors" {
   role          = aws_iam_role.lambda_role.arn # Reutiliza a role com acesso ao DynamoDB
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  
+
   filename         = "${path.root}/builds/adminAuthors.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminAuthors.zip")
 

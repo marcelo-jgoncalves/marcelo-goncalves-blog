@@ -7,8 +7,8 @@ resource "aws_iam_role" "processor_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "lambda.amazonaws.com" }
     }]
   })
@@ -28,11 +28,11 @@ resource "aws_iam_policy" "processor_policy" {
       },
       {
         # Ler do bucket de uploads E escrever no bucket de assets (final)
-        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
-        Effect   = "Allow",
+        Action = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+        Effect = "Allow",
         Resource = [
           "${aws_s3_bucket.uploads.arn}/*",
-          "arn:aws:s3:::${var.assets_bucket_name}/*" 
+          "arn:aws:s3:::${var.assets_bucket_name}/*"
         ]
       }
     ]

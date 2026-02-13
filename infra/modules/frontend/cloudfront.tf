@@ -13,10 +13,10 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 # DISTRIBUIÇÃO CLOUDFRONT (Com Cache Desativado para Debug)
 # ==============================================================================
 resource "aws_cloudfront_distribution" "frontend" {
-  enabled             = true
-  is_ipv6_enabled     = true
-  price_class         = "PriceClass_100" 
-  
+  enabled         = true
+  is_ipv6_enabled = true
+  price_class     = "PriceClass_100"
+
   # --- Origem 1: S3 (Assets) ---
   origin {
     domain_name              = aws_s3_bucket.frontend_assets.bucket_regional_domain_name
@@ -79,7 +79,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     max_ttl                = 31536000
     compress               = true
   }
-  
+
   # 3. Imagens Públicas (static/*) -> S3
   ordered_cache_behavior {
     path_pattern     = "static/*"

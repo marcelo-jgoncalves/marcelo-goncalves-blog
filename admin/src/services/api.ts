@@ -1,3 +1,5 @@
+/**admin/src/services/api.ts */
+
 import { fetchAuthSession } from 'aws-amplify/auth'
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
@@ -78,5 +80,30 @@ export const authorsApi = {
   save: (data: any) => apiCall(`/admin/autor/${data.autor_id}`, {
     method: 'PUT',
     body: JSON.stringify(data)
+  })
+}
+
+export const categoriesApi = {
+  // Lista todas as categorias
+  list: () => apiCall('/admin/categorias'),
+  
+  // Busca uma categoria específica
+  get: (slug: string) => apiCall(`/admin/categorias/${slug}`),
+  
+  // Cria uma nova categoria
+  create: (data: any) => apiCall('/admin/categorias', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  }),
+  
+  // Atualiza uma categoria existente
+  update: (slug: string, data: any) => apiCall(`/admin/categorias/${slug}`, {
+    method: 'PUT',
+    body: JSON.stringify(data)
+  }),
+
+  // Deleta uma categoria
+  delete: (slug: string) => apiCall(`/admin/categorias/${slug}`, {
+    method: 'DELETE'
   })
 }

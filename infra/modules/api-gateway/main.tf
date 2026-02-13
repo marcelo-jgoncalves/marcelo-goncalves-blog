@@ -1,8 +1,49 @@
-# --- 1. A API REST ---
+# ==============================================================================
+# ÍNDICE ESTRUTURAL DA API GATEWAY
+# ==============================================================================
+#
+# [BLOCO 01] CORE - INFRAESTRUTURA BASE
+#   - Definição da API REST (root)
+#   - Autorizador Cognito
+#
+# [BLOCO 02] PUBLIC - ROTAS DE DETALHE (LEGADO/SINGULAR)
+#   - /post e /post/{slug}
+#   - /autor e /autor/{id}
+#   - Métodos GET associados
+#
+# [BLOCO 03] ADMIN - GESTÃO DE CONTEÚDO & AUTORES
+#   - Estrutura base /admin
+#   - /admin/autores e /admin/autor/{id} (CRUD Autores)
+#   - /admin/posts e /admin/post/{slug} (CRUD Posts)
+#   - Configurações de CORS (OPTIONS) e Integrações
+#
+# [BLOCO 04] ADMIN - GESTÃO DE MÍDIA
+#   - /admin/media/upload-url
+#   - Integração com Lambda de Upload
+#
+# [BLOCO 05] PERMISSÕES LAMBDA (IAM)
+#   - Permissões para o API Gateway invocar as Lambdas
+#   - Mapeamento das funções (getPost, getAuthor, etc.)
+#
+# [BLOCO 06] PUBLIC - LISTAGENS, BUSCA & NOVAS ROTAS
+#   - /posts (plural), /posts/recentes, /posts/populares
+#   - /artigos, /categoria/{slug}
+#   - /busca, /projeto
+#   - Integrações com Lambda getPosts
+#
+# [BLOCO 07] DEPLOYMENT & STAGE (GLOBAL)
+#   - Recurso aws_api_gateway_deployment (Triggers de hash)
+#   - Recurso aws_api_gateway_stage (v1)
+#   - NOTA: Este bloco depende de TODOS os outros recursos.
+
+# ==============================================================================
+
+# [BLOCO 01] CORE - INFRAESTRUTURA BASE (API & AUTH)
+
 resource "aws_api_gateway_rest_api" "main" {
   name        = "${var.project_name}-${var.environment}-api"
   description = "API principal do blog IA Decifrada"
-  
+
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -18,7 +59,10 @@ resource "aws_api_gateway_authorizer" "cognito_auth" {
 
 # --- 2. Recursos (Paths) ---
 
+# [BLOCO 02] PUBLIC - ROTAS DE DETALHE (SINGULAR/LEGADO)
+# ------------------------------------------------------------------------------
 # /post
+
 resource "aws_api_gateway_resource" "post" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
@@ -59,7 +103,9 @@ resource "aws_api_gateway_method" "get_post" {
 # --- Recursos Admin ---
 
 
-# /admin/autores (Plural - Para Criar/Listar)
+# [BLOCO 03] ADMIN - GESTÃO DE CONTEÚDO & AUTORES
+# ------------------------------------------------------------------------------
+
 resource "aws_api_gateway_resource" "admin_autores" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
@@ -135,12 +181,150 @@ resource "aws_api_gateway_method" "admin_post_slug_options" {
   authorization = "NONE"
 }
 
+# ==========================================
+# ROTAS: /admin/categorias
+# ==========================================
+resource "aws_api_gateway_resource" "admin_categorias" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.admin.id
+  path_part   = "categorias"
+}
 
-# --- Adicionar em infra/modules/api_gateway/main.tf ---
+resource "aws_api_gateway_resource" "admin_categorias_slug" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.admin_categorias.id
+  path_part   = "{slug}"
+}
 
-# --- Recursos de Autores (Admin) ---
+# --- ANY /admin/categorias (Protegido) ---
+resource "aws_api_gateway_method" "admin_categorias_any" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias.id
+  http_method   = "ANY"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+}
 
-# --- Métodos ---
+resource "aws_api_gateway_integration" "admin_categorias_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_categorias.id
+  http_method             = aws_api_gateway_method.admin_categorias_any.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_categories_invoke_arn
+}
+
+# --- ANY /admin/categorias/{slug} (Protegido) ---
+resource "aws_api_gateway_method" "admin_categorias_slug_any" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method   = "ANY"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method             = aws_api_gateway_method.admin_categorias_slug_any.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_categories_invoke_arn
+}
+
+# --- CORS OPTIONS para /admin/categorias ---
+resource "aws_api_gateway_method" "admin_categorias_options" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_options_integration" {
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_categorias.id
+  http_method       = aws_api_gateway_method.admin_categorias_options.http_method
+  type              = "MOCK"
+  request_templates = { "application/json" = "{\"statusCode\": 200}" }
+}
+
+resource "aws_api_gateway_method_response" "admin_categorias_options_200" {
+  rest_api_id     = aws_api_gateway_rest_api.main.id
+  resource_id     = aws_api_gateway_resource.admin_categorias.id
+  http_method     = aws_api_gateway_method.admin_categorias_options.http_method
+  status_code     = "200"
+  response_models = { "application/json" = "Empty" }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "admin_categorias_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias.id
+  http_method = aws_api_gateway_method.admin_categorias_options.http_method
+  status_code = aws_api_gateway_method_response.admin_categorias_options_200.status_code
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+  depends_on = [aws_api_gateway_method_response.admin_categorias_options_200]
+}
+
+# --- CORS OPTIONS para /admin/categorias/{slug} ---
+resource "aws_api_gateway_method" "admin_categorias_slug_options" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_slug_options_integration" {
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method       = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  type              = "MOCK"
+  request_templates = { "application/json" = "{\"statusCode\": 200}" }
+}
+
+resource "aws_api_gateway_method_response" "admin_categorias_slug_options_200" {
+  rest_api_id     = aws_api_gateway_rest_api.main.id
+  resource_id     = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method     = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  status_code     = "200"
+  response_models = { "application/json" = "Empty" }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "admin_categorias_slug_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  status_code = aws_api_gateway_method_response.admin_categorias_slug_options_200.status_code
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+  depends_on = [aws_api_gateway_method_response.admin_categorias_slug_options_200]
+}
+
+# --- PERMISSÃO LAMBDA (Bloco 05) ---
+resource "aws_lambda_permission" "apigw_admin_categorias" {
+  statement_id  = "AllowAPIGatewayInvokeAdminCategories"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_categories_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
 
 # 1. ANY /admin/autor/{id} (GET para ler, PUT para editar) - Protegido
 resource "aws_api_gateway_method" "admin_autor_id_any" {
@@ -169,10 +353,10 @@ resource "aws_api_gateway_method" "admin_autor_id_options" {
 }
 
 resource "aws_api_gateway_integration" "admin_autor_id_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_autor_id.id
-  http_method = aws_api_gateway_method.admin_autor_id_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_autor_id.id
+  http_method       = aws_api_gateway_method.admin_autor_id_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -181,7 +365,7 @@ resource "aws_api_gateway_method_response" "admin_autor_id_options_200" {
   resource_id = aws_api_gateway_resource.admin_autor_id.id
   http_method = aws_api_gateway_method.admin_autor_id_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -205,32 +389,6 @@ resource "aws_api_gateway_integration_response" "admin_autor_id_options_response
   depends_on = [aws_api_gateway_method_response.admin_autor_id_options_200]
 }
 
-# Permissão para o Gateway invocar a Lambda
-resource "aws_lambda_permission" "apigw_admin_authors" {
-  statement_id  = "AllowAPIGatewayInvokeAdminAuthors"
-  action        = "lambda:InvokeFunction"
-  function_name = var.admin_authors_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
-}
-
-# Integração com a Lambda getPosts (reutilizando a mesma lambda)
-resource "aws_api_gateway_integration" "get_populares_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.main.id
-  resource_id             = aws_api_gateway_resource.posts_populares.id
-  http_method             = aws_api_gateway_method.get_populares.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = var.get_posts_invoke_arn
-}
-
-# --- NOVO RECURSO: /posts/populares ---
-resource "aws_api_gateway_resource" "posts_populares" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  parent_id   = aws_api_gateway_resource.posts.id
-  path_part   = "populares"
-}
-
 # Método GET para /posts/populares
 resource "aws_api_gateway_method" "get_populares" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
@@ -240,10 +398,10 @@ resource "aws_api_gateway_method" "get_populares" {
 }
 
 resource "aws_api_gateway_integration" "admin_post_slug_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_post_slug.id
-  http_method = aws_api_gateway_method.admin_post_slug_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_post_slug.id
+  http_method       = aws_api_gateway_method.admin_post_slug_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -252,7 +410,7 @@ resource "aws_api_gateway_method_response" "admin_post_slug_options_200" {
   resource_id = aws_api_gateway_resource.admin_post_slug.id
   http_method = aws_api_gateway_method.admin_post_slug_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -273,16 +431,16 @@ resource "aws_api_gateway_integration_response" "admin_post_slug_options_integra
     "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
+
   depends_on = [aws_api_gateway_method_response.admin_post_slug_options_200]
 }
 
 # Método ANY em /admin/posts (Protegido pelo Cognito)
 resource "aws_api_gateway_method" "admin_posts_any" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_posts.id
-  http_method   = "ANY"
-  
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_posts.id
+  http_method = "ANY"
+
   # 🔒 AQUI ESTÁ A SEGURANÇA:
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
@@ -312,7 +470,7 @@ resource "aws_api_gateway_integration" "admin_posts_options_integration" {
   resource_id = aws_api_gateway_resource.admin_posts.id
   http_method = aws_api_gateway_method.admin_posts_options.http_method
   type        = "MOCK"
-  
+
   request_templates = {
     "application/json" = "{\"statusCode\": 200}"
   }
@@ -347,16 +505,8 @@ resource "aws_api_gateway_integration_response" "admin_posts_options_integration
     "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
-  depends_on = [aws_api_gateway_method_response.admin_posts_options_200]
-}
 
-resource "aws_lambda_permission" "apigw_admin_posts" {
-  statement_id  = "AllowAPIGatewayInvokeAdminPosts"
-  action        = "lambda:InvokeFunction"
-  function_name = var.admin_posts_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+  depends_on = [aws_api_gateway_method_response.admin_posts_options_200]
 }
 
 resource "aws_api_gateway_integration" "get_post_integration" {
@@ -368,9 +518,10 @@ resource "aws_api_gateway_integration" "get_post_integration" {
   uri                     = var.get_post_invoke_arn
 }
 
-# --- Recursos de Mídia ---
-
+# [BLOCO 04] ADMIN - GESTÃO DE MÍDIA
+# ------------------------------------------------------------------------------
 # /admin/media
+
 resource "aws_api_gateway_resource" "admin_media" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
@@ -412,10 +563,10 @@ resource "aws_api_gateway_method" "media_upload_options" {
 }
 
 resource "aws_api_gateway_integration" "media_upload_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_media_upload.id
-  http_method = aws_api_gateway_method.media_upload_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_media_upload.id
+  http_method       = aws_api_gateway_method.media_upload_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -424,7 +575,7 @@ resource "aws_api_gateway_method_response" "media_upload_options_200" {
   resource_id = aws_api_gateway_resource.admin_media_upload.id
   http_method = aws_api_gateway_method.media_upload_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -445,16 +596,8 @@ resource "aws_api_gateway_integration_response" "media_upload_options_response" 
     "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
-  depends_on = [aws_api_gateway_method_response.media_upload_options_200]
-}
 
-resource "aws_lambda_permission" "apigw_media_upload" {
-  statement_id  = "AllowAPIGatewayInvokeMediaUpload"
-  action        = "lambda:InvokeFunction"
-  function_name = var.media_upload_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+  depends_on = [aws_api_gateway_method_response.media_upload_options_200]
 }
 
 # GET /autor/{id} -> Lambda getAuthor
@@ -474,8 +617,8 @@ resource "aws_api_gateway_integration" "get_author_integration" {
   uri                     = var.get_author_invoke_arn
 }
 
-# --- 4. Permissões (Lambda Permission) ---
-# Necessário para o API Gateway ter permissão de invocar a função
+# [BLOCO 05] PERMISSÕES LAMBDA (IAM)
+# ------------------------------------------------------------------------------
 
 resource "aws_lambda_permission" "apigw_get_post" {
   statement_id  = "AllowAPIGatewayInvoke"
@@ -493,17 +636,43 @@ resource "aws_lambda_permission" "apigw_get_author" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# --- 5. Deploy e Stage ---
-
-resource "aws_api_gateway_stage" "main" {
-  deployment_id = aws_api_gateway_deployment.main.id
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  stage_name    = "v1" # URL final será /v1/post/...
+# Permissão para o Gateway invocar a Lambda
+resource "aws_lambda_permission" "apigw_admin_authors" {
+  statement_id  = "AllowAPIGatewayInvokeAdminAuthors"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_authors_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# --- 1. Recursos para Listagem ---
+resource "aws_lambda_permission" "apigw_admin_posts" {
+  statement_id  = "AllowAPIGatewayInvokeAdminPosts"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_posts_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
 
-# /posts (Já existe /post singular, agora criamos o plural)
+resource "aws_lambda_permission" "apigw_media_upload" {
+  statement_id  = "AllowAPIGatewayInvokeMediaUpload"
+  action        = "lambda:InvokeFunction"
+  function_name = var.media_upload_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
+# Permite que o API Gateway invoque a Lambda getPosts
+resource "aws_lambda_permission" "apigw_get_posts" {
+  statement_id  = "AllowAPIGatewayInvokeGetPosts"
+  action        = "lambda:InvokeFunction"
+  function_name = var.get_posts_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
+# [BLOCO 06] PUBLIC - LISTAGENS, BUSCA & NOVAS ROTAS
+# ------------------------------------------------------------------------------
+
 resource "aws_api_gateway_resource" "posts" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
@@ -515,6 +684,23 @@ resource "aws_api_gateway_resource" "posts_recentes" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.posts.id
   path_part   = "recentes"
+}
+
+# Integração com a Lambda getPosts (reutilizando a mesma lambda)
+resource "aws_api_gateway_integration" "get_populares_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.posts_populares.id
+  http_method             = aws_api_gateway_method.get_populares.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.get_posts_invoke_arn
+}
+
+# --- NOVO RECURSO: /posts/populares ---
+resource "aws_api_gateway_resource" "posts_populares" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.posts.id
+  path_part   = "populares"
 }
 
 # /artigos
@@ -591,15 +777,6 @@ resource "aws_api_gateway_integration" "get_categoria_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# Permite que o API Gateway invoque a Lambda getPosts
-resource "aws_lambda_permission" "apigw_get_posts" {
-  statement_id  = "AllowAPIGatewayInvokeGetPosts"
-  action        = "lambda:InvokeFunction"
-  function_name = var.get_posts_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
-}
-
 # Recurso /busca
 resource "aws_api_gateway_resource" "busca" {
   rest_api_id = aws_api_gateway_rest_api.main.id
@@ -650,11 +827,20 @@ resource "aws_api_gateway_integration" "get_projeto_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
+
+# [BLOCO 06] DEPLOYMENT & STAGE (GLOBAL)
+# -------------------------------------------------------------------------------
+
+resource "aws_api_gateway_stage" "main" {
+  deployment_id = aws_api_gateway_deployment.main.id
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  stage_name    = "v1" # URL final será /v1/post/...
+}
 # Triggers
 
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.main.id
-  
+
   # O trigger calcula um hash de todos os recursos. Se qualquer um mudar, ele faz redeploy.
   triggers = {
     redeployment = sha1(jsonencode([
@@ -703,7 +889,7 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.get_busca,
       aws_api_gateway_integration.get_busca_integration,
       aws_api_gateway_resource.projeto,
-      aws_api_gateway_method.get_projeto, 
+      aws_api_gateway_method.get_projeto,
       aws_api_gateway_integration.get_projeto_integration,
       aws_api_gateway_resource.admin_autores,
       aws_api_gateway_resource.admin_autor_singular,
@@ -711,9 +897,20 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.admin_autor_id_any,
       aws_api_gateway_integration.admin_autor_id_integration,
       aws_api_gateway_method.admin_autor_id_options,
-      aws_api_gateway_integration.admin_autor_id_options_integration
-      
-      ]))
+      aws_api_gateway_integration.admin_autor_id_options_integration,
+      # --- Recursos Admin Categorias (NOVOS) ---
+      aws_api_gateway_resource.admin_categorias,
+      aws_api_gateway_resource.admin_categorias_slug,
+      aws_api_gateway_method.admin_categorias_any,
+      aws_api_gateway_integration.admin_categorias_integration,
+      aws_api_gateway_method.admin_categorias_options,
+      aws_api_gateway_integration.admin_categorias_options_integration,
+      aws_api_gateway_method.admin_categorias_slug_any,
+      aws_api_gateway_integration.admin_categorias_slug_integration,
+      aws_api_gateway_method.admin_categorias_slug_options,
+      aws_api_gateway_integration.admin_categorias_slug_options_integration
+
+    ]))
   }
 
   lifecycle {
