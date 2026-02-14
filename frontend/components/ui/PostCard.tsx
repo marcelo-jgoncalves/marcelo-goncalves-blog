@@ -1,3 +1,5 @@
+/* frontend/components/ui/PostCard.tsx */
+
 import Link from 'next/link';
 
 interface PostCardProps {
@@ -7,6 +9,10 @@ interface PostCardProps {
     resumo: string;
     imagem_destaque_url: string;
     categoria_slug: string;
+    categoria?: {
+      nome_exibicao: string;
+      icone_fa?: string;
+    };
   };
 }
 
@@ -25,8 +31,10 @@ export default function PostCard({ post }: PostCardProps) {
       ></div>
 
       <div className="card-content">
-        <span className="post-tag">{post.categoria_slug}</span>
-        
+        <span className="post-tag">
+          {post.categoria?.icone_fa && <i className={`${post.categoria.icone_fa} mr-1`}></i>}
+          {post.categoria?.nome_exibicao || post.categoria_slug}
+        </span>
         <h3>
           <Link href={`/post/${post.slug}`}>
             {post.titulo}

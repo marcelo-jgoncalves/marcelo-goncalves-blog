@@ -1,14 +1,21 @@
+/**backend/src/getPosts/index.tls */
+
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
+const CATEGORIES_TABLE = process.env.CATEGORIES_TABLE; // <-- Adicionado
 
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*", 
   "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
+
+// 🚀 CACHE IN-MEMORY DAS CATEGORIAS
+// Lambdas "quentes" reaproveitam esse objeto, economizando chamadas ao DynamoDB!
+let categoriesCache: Record<string, any> | null = null;
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   const { queryStringParameters, pathParameters, resource } = event;
@@ -48,42 +55,63 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   }
 };
 
-// --- Funções Auxiliares ---
+// --- FUNÇÃO DE ENRIQUECIMENTO (O SEGREDO DA PERFORMANCE) ---
+async function enrichPostsWithCategories(posts: any[]) {
+  if (!posts || posts.length === 0 || !CATEGORIES_TABLE) return posts;
 
-// Converte para Title Case (ajuda na busca)
+  // Carrega o cache de categorias se estiver vazio
+  if (!categoriesCache) {
+    try {
+      const catResult = await dynamo.send(new ScanCommand({ TableName: CATEGORIES_TABLE }));
+      categoriesCache = {};
+      catResult.Items?.forEach(cat => {
+        categoriesCache![cat.categoria_slug] = cat;
+      });
+    } catch (err) {
+      console.error("Falha ao carregar cache de categorias:", err);
+      return posts; // Fallback: retorna posts sem categoria se falhar
+    }
+  }
+
+  // Enxerta a categoria em cada post
+  return posts.map(post => {
+    if (post.categoria_slug && categoriesCache && categoriesCache[post.categoria_slug]) {
+      return {
+        ...post,
+        categoria: categoriesCache[post.categoria_slug] // <-- O Frontend vai amar isso
+      };
+    }
+    return post;
+  });
+}
+
+// --- FUNÇÕES AUXILIARES (AGORA ENRIQUECIDAS) ---
+
 function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-// Lógica Específica para "O Projeto"
 async function getProjectPosts(queryParams: any) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20; // Timeline pode carregar mais itens
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20; 
   const nextToken = queryParams?.nextToken;
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
-    IndexName: "ProjetoPorData", // GSI específico definido no Blueprint
+    IndexName: "ProjetoPorData", 
     KeyConditionExpression: "e_projeto = :val",
-    ExpressionAttributeValues: { ":val": 1 }, // 1 = true (post faz parte do projeto)
-    ScanIndexForward: true, // TRUE = Ascendente (Mais antigos primeiro -> Cronologia)
+    ExpressionAttributeValues: { ":val": 1 }, 
+    ScanIndexForward: true, 
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
   const result = await dynamo.send(command);
+  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
   
-  const newNextToken = result.LastEvaluatedKey 
-    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
-    : null;
+  // 🚀 Enriquecendo os dados antes de devolver
+  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ 
-      posts: result.Items || [],
-      nextToken: newNextToken
-    }),
-    headers
-  };
+  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts, nextToken: newNextToken }), headers };
 }
 
 async function searchPosts(term: string, queryParams: any) {
@@ -114,8 +142,9 @@ async function searchPosts(term: string, queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
+  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: enrichedPosts, nextToken: newNextToken }), headers };
 }
 
 async function getRecentPosts() {
@@ -129,7 +158,9 @@ async function getRecentPosts() {
     Limit: 3
   });
   const result = await dynamo.send(command);
-  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
+  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
+  
+  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts }), headers };
 }
 
 async function getAllPosts(queryParams: any) {
@@ -149,8 +180,9 @@ async function getAllPosts(queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }), headers };
+  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts, nextToken: newNextToken }), headers };
 }
 
 async function getPostsByCategory(categorySlug: string, queryParams: any) {
@@ -169,13 +201,20 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
+
+  // Busca a categoria específica para o header da página de listagem
+  let categoryMeta = { slug: categorySlug, nome_exibicao: categorySlug, icone_fa: "" };
+  if (categoriesCache && categoriesCache[categorySlug]) {
+    categoryMeta = categoriesCache[categorySlug];
+  }
 
   return { 
     statusCode: 200, 
     body: JSON.stringify({ 
-      posts: result.Items || [], 
+      posts: enrichedPosts, 
       nextToken: newNextToken, 
-      category: { slug: categorySlug, nome: categorySlug } 
+      category: categoryMeta 
     }), 
     headers 
   };

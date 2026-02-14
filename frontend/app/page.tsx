@@ -1,3 +1,5 @@
+/**frontend/app/page.tsx */
+
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';

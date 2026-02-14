@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { postsApi } from '../services/api'
+import { postsApi, categoriesApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
@@ -39,14 +39,31 @@ const showUploadModal = ref(false)
 const loading = ref(false)
 const saving = ref(false)
 const uploadContext = ref<'destaque' | 'editor'>('destaque')
+const categorias = ref<any[]>([])
+const loadingCategories = ref(true)
 
 onMounted(async () => {
-  // Define autor padrão se logado
   if (auth.user?.username) {
     form.value.autor_id = 'marcelo-goncalves' 
   }
 
-  // Se for edição, busca os dados
+  // 1. Busca as categorias do banco primeiro
+  try {
+    const res = await categoriesApi.list()
+    categorias.value = res.items || []
+    
+    // Se for post novo e as categorias carregaram, seta a primeira como default
+    if (!isEditing.value && categorias.value.length > 0) {
+      form.value.categoria_slug = categorias.value[0].categoria_slug
+    }
+  } catch (error) {
+    console.error('Erro ao carregar categorias:', error)
+    alert('Aviso: Não foi possível carregar as categorias.')
+  } finally {
+    loadingCategories.value = false
+  }
+
+  // 2. Continua com a lógica normal de edição
   if (isEditing.value) {
     loading.value = true
     try {
@@ -55,7 +72,6 @@ onMounted(async () => {
       
       form.value = {
         ...data,
-        // Se vier null, converte para string vazia
         conteudo_html: data.conteudo_html || '', 
         e_popular: !!data.e_popular,
         e_projeto: !!data.e_projeto
@@ -213,13 +229,17 @@ function generateSlug() {
           <h3>Organização</h3>
           <div class="form-group">
             <label>Categoria</label>
-            <select v-model="form.categoria_slug">
-              <option value="inteligencia-artificial">Inteligência Artificial</option>
-              <option value="cloud-computing">Cloud Computing</option>
-              <option value="devops-automacao">DevOps e Automação</option>
-              <option value="seguranca-na-nuvem">Segurança na Nuvem</option>
-              <option value="engenharia-de-software">Engenharia de Software</option>
-              <option value="noticias-e-mercado">Notícias e Mercado</option>
+            <select v-model="form.categoria_slug" :disabled="loadingCategories">
+              <option v-if="loadingCategories" value="" disabled>Carregando categorias...</option>
+              <option v-else-if="categorias.length === 0" value="" disabled>Nenhuma categoria encontrada</option>
+              
+              <option 
+                v-for="cat in categorias" 
+                :key="cat.categoria_slug" 
+                :value="cat.categoria_slug"
+              >
+                {{ cat.nome_exibicao }}
+              </option>
             </select>
           </div>
           <div class="checkbox-group">

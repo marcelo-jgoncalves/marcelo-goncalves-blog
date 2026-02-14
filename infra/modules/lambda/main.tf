@@ -1,3 +1,5 @@
+/* infra/modules/lambda/main.tf */
+
 # --- 1. IAM Role (Identidade das Lambdas) ---
 resource "aws_iam_role" "lambda_role" {
   name = "${var.project_name}-${var.environment}-lambda-role"
@@ -106,6 +108,7 @@ resource "aws_lambda_function" "get_post" {
     variables = {
       POSTS_TABLE   = "${var.project_name}-${var.environment}-posts"
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
+      CATEGORIES_TABLE = var.categorias_table_name
     }
   }
 }
@@ -173,6 +176,7 @@ resource "aws_lambda_function" "get_posts" {
   environment {
     variables = {
       POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
+      CATEGORIES_TABLE = var.categorias_table_name
     }
   }
 }

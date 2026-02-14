@@ -411,22 +411,35 @@ header {
   background-position: center;
 }
 
-.card-content {
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+/* NOVO DESIGN DO BADGE NO CARD */
+.post-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 153, 0, 0.15); 
+  /* O texto e ícone assumem a cor forte da marca */
+  color: var(--aws-orange); 
+  
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 12px; 
+  align-self: flex-start;
+  line-height: 1;
+  transition: all 0.2s ease;
 }
 
-.post-tag {
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: var(--aws-orange);
-  color: white;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
-  align-self: flex-start;
+/* Efeito hover sutil no badge */
+.post-card:hover .post-tag {
+    background-color: rgba(255, 153, 0, 0.25); 
+}
+
+/* Garante que o ícone use a cor do texto pai */
+.post-tag i {
+    margin: 0;
+    font-size: 0.8rem;
+    color: currentColor; /* Herda o laranja forte */
 }
 
 .post-card h3 {
@@ -447,24 +460,28 @@ header {
 .post-card p {
   color: #666;
   font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 15px;
+  line-height: 1.7; /* AUMENTADO: Deixa o texto mais "arejado" e fácil de ler */
+  margin-bottom: 20px; /* Mais espaço antes do botão "ler mais" */
   flex-grow: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3; /* SUGESTÃO: Mostrar 3 linhas em vez de 2 preenche melhor o card */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+.card-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* ADICIONE ISSO PARA O LINK IR PARA A DIREITA: */
+  align-items: flex-start; /* Garante que o badge e título fiquem na esquerda */
+}
+
 .card-content .read-more {
-  color: var(--aws-orange) !important;
-  font-family: var(--font-space-grotesk);
-  font-weight: 600;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border-bottom: none !important;
+    /* ... suas regras existentes de cor e fonte ... */
+    margin-top: auto;      /* Empurra para o fundo do card */
+    align-self: flex-end;  /* Alinha à direita */
 }
 
 .card-content .read-more:hover {
@@ -1229,19 +1246,27 @@ footer {
 }
 
 .post-tag-header {
-  display: inline-block;
+  display: inline-flex;   /* <-- A mágica: mudou de inline-block para inline-flex */
+  align-items: center;    /* <-- Centraliza o ícone e a fonte na mesma linha */
+  gap: 8px;               /* <-- Cria o espaço exato entre o ícone e o texto */
   background-color: var(--aws-orange);
   color: white;
-  padding: 6px 12px;
+  padding: 6px 16px;      /* <-- Aumentei um pouquinho o padding lateral para ficar mais elegante */
   border-radius: 4px;
   font-size: 0.9rem;
   margin-bottom: 20px;
   text-transform: capitalize;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
 .post-tag-header:hover { 
-    opacity: 0.9; 
+  opacity: 0.9; 
+  transform: translateY(-2px); /* <-- Bônus: um leve pulinho ao passar o mouse */
+}
+
+/* Garante que o ícone do FontAwesome fique perfeitamente alinhado */
+.post-tag-header i {
+  margin: 0;
 }
 
 .post-meta {
@@ -1662,6 +1687,7 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
 /* =========================================
    14. LISTAS E CITAÇÕES (CORRIGIDO v1.0)
    ========================================= */

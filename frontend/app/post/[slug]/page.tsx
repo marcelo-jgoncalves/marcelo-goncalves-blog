@@ -19,8 +19,6 @@ import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import PopularPostsSection from '@/components/ui/PopularPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
 import ShareButtonsWrapper from '@/components/ui/ShareButtonsWrapper';
-//import PostFooterProtector from '@/components/ui/PostFooterProtector-deletar';
-// NOTA: Não precisamos mais do PostFooterProtector, pois resolvemos na estrutura.
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -48,7 +46,8 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  const { post } = data;
+  // 🚀 AQUI ESTÁ A CORREÇÃO: Extraímos a categoria do payload
+  const { post, category } = data;
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
   const renderFinalContent = () => {
@@ -90,9 +89,18 @@ export default async function PostPage({ params }: Props) {
 
       <section className="article-header">
         <div className="container">
-          <span className="post-tag">
-             {post.categoria_slug || 'Artigo'}
-          </span>
+          
+          {/* 🚀 BADGE DINÂMICO DA CATEGORIA COM FALLBACK */}
+          {category ? (
+                <Link href={`/categoria/${category.categoria_slug}`} className="post-tag-header hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>              {category.icone_fa && <i className={`${category.icone_fa} mr-2`}></i>}
+              {category.nome_exibicao}
+            </Link>
+          ) : (
+            <span className="post-tag">
+              {post.categoria_slug || 'Artigo'}
+            </span>
+          )}
+          
           <h1 className="article-title">{post.titulo}</h1>
           <div className="article-meta">
             <span><i className="fas fa-user-circle"></i> Por Marcelo Gonçalves</span>
@@ -117,15 +125,7 @@ export default async function PostPage({ params }: Props) {
 
       {/* GRID PRINCIPAL */}
       <div className="article-grid">
-        
-        {/* NOVA ESTRUTURA BLINDADA:
-           Criamos uma div wrapper (.main-content-column) para segurar o Article e o Footer.
-           Isso garante que o .article-grid continue vendo apenas 2 filhos (Main e Sidebar),
-           mas nos permite tirar o ShareButtons de dentro do Article perigoso.
-        */}
         <div className="main-content-column">
-        
-            {/* O Article contém APENAS o conteúdo que pode ter HTML quebrado */}
             <article>
                 <div className="post-body-wrapper">
                     {post.resumo && (
@@ -144,12 +144,11 @@ export default async function PostPage({ params }: Props) {
                 </div>
             </article>
 
-            {/* ÁREA SEGURA: Renderizada fora do article. */}
-                <div className="post-footer-safe-zone mt-8">
-                    <ShareButtonsWrapper title={post.titulo} slug={post.slug} />
-                    <AuthorBox authorId={post.autor_id} /> 
-                    <PopularPostsSection limit={4} variant="post" /> 
-                </div>
+            <div className="post-footer-safe-zone mt-8">
+                <ShareButtonsWrapper title={post.titulo} slug={post.slug} />
+                <AuthorBox authorId={post.autor_id} /> 
+                <PopularPostsSection limit={4} variant="post" /> 
+            </div>
         </div>
 
         {/* SIDEBAR (Intacta) */}
