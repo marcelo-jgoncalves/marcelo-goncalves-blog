@@ -478,13 +478,28 @@ header {
   align-items: flex-start; /* Garante que o badge e título fiquem na esquerda */
 }
 
+/* Botão "Ler Mais": Laranja, Alinhado à Direita, Fonte Maior */
 .card-content .read-more {
-    /* ... suas regras existentes de cor e fonte ... */
-    margin-top: auto;      /* Empurra para o fundo do card */
-    align-self: flex-end;  /* Alinha à direita */
+  color: var(--aws-orange) !important;
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  
+  font-size: 1.1rem;       /* <-- AUMENTADO: De 0.9rem para 1rem */
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  border-bottom: none !important;
+  
+  /* Alinhamento à Direita */
+  margin-top: auto;      
+  align-self: flex-end;  
+  transition: transform 0.2s ease;
 }
 
 .card-content .read-more:hover {
+  transform: translateX(5px);
   color: var(--aws-orange-hover) !important;
 }
 

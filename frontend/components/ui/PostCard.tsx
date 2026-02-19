@@ -31,10 +31,6 @@ export default function PostCard({ post }: PostCardProps) {
       ></div>
 
       <div className="card-content">
-        <span className="post-tag">
-          {post.categoria?.icone_fa && <i className={`${post.categoria.icone_fa} mr-1`}></i>}
-          {post.categoria?.nome_exibicao || post.categoria_slug}
-        </span>
         <h3>
           <Link href={`/post/${post.slug}`}>
             {post.titulo}
