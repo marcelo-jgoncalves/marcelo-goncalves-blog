@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Projeto | Marcelo Gonçalves - Engineering Log</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           0. VARIÁVEIS E TOKENS
+           ========================================= */
+        :root {
+            --aws-dark: #232F3E;
+            --aws-orange: #FF9900;
+            --aws-orange-hover: #e68a00;
+            
+            --gray-100: #f7fafc;
+            --gray-200: #edf2f7;
+            --gray-300: #e2e8f0;
+            --gray-800: #2D3748;
+            --gray-text: #4a5568;
+            
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            
+            --font-inter: 'Inter', sans-serif;
+            --font-space: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        /* =========================================
+           1. RESET & BASE
+           ========================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-inter);
+            color: var(--gray-800);
+            background-color: #fcfcfc;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .btn { font-family: var(--font-space); color: var(--aws-dark); font-weight: 700; }
+        a { color: inherit; text-decoration: none; transition: all 0.2s ease; }
+        img { max-width: 100%; display: block; }
+        
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .text-highlight { color: var(--aws-orange); }
+        
+        /* Acessibilidade */
+        .skip-link {
+            position: absolute; left: 20px; top: -80px;
+            background: var(--aws-dark); color: white;
+            padding: 12px 20px; z-index: 9999; border-radius: var(--radius-md); font-weight: 600;
+        }
+        .skip-link:focus { top: 20px; }
+
+        /* =========================================
+           2. HEADER
+           ========================================= */
+        header { 
+            background: white; 
+            border-bottom: 1px solid var(--gray-300);
+            position: sticky; top: 0; z-index: 50;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+        .logo { font-size: 1.5rem; letter-spacing: -0.02em; }
+        .logo span { color: var(--aws-orange); }
+
+        .nav-desktop { display: none; gap: 35px; }
+        .nav-desktop a { font-weight: 500; font-size: 0.95rem; color: var(--gray-800); }
+        .nav-desktop a:hover, .nav-desktop a.active { color: var(--aws-orange); }
+
+        .btn-mobile-menu { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--aws-dark); }
+        
+        .mobile-menu { display: none; background: white; border-bottom: 1px solid var(--gray-300); padding: 10px 20px; }
+        .mobile-menu.active { display: block; }
+        .mobile-menu a { display: block; padding: 12px 0; border-bottom: 1px solid var(--gray-200); }
+
+        /* =========================================
+           3. HERO SECTION (Clean)
+           ========================================= */
+        .project-hero {
+            padding: 60px 0;
+            background: white;
+            text-align: left;
+            /* Border removed here, moved to ribbon */
+        }
+
+        .project-hero h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 15px; letter-spacing: -0.03em; }
+        .project-hero p { font-size: 1.15rem; color: var(--gray-text); max-width: 700px; font-weight: 400; }
+
+        /* =========================================
+           3.5. ARCHITECTURE RIBBON (Centralizado)
+           ========================================= */
+        .tech-ribbon {
+            background-color: #fafafa;
+            border-top: 1px dashed var(--gray-300);
+            border-bottom: 1px solid var(--gray-300);
+            padding: 35px 0; /* Aumentei um pouco o padding vertical */
+        }
+
+        .tech-ribbon-container {
+            display: flex;
+            flex-direction: column; /* Empilha verticalmente */
+            align-items: center;    /* Centraliza horizontalmente */
+            gap: 25px;              /* Espaço entre o título e os ícones */
+        }
+
+        .tech-label {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gray-text);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+        }
+        
+        /* Detalhe opcional: Pequena linha decorativa abaixo do texto */
+        .tech-label::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--aws-orange);
+            margin: 8px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        .tech-icons-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px; /* Espaçamento entre ícones */
+            justify-content: center; /* Garante que ícones fiquem no meio */
+            align-items: center;
+        }
+
+        .tech-icon {
+            height: 45px; /* Ícones levemente maiores para destaque */
+            width: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .tech-icon:hover {
+            transform: scale(1.15);
+            cursor: help;
+        }
+
+        /* =========================================
+           4. LAYOUT GRID
+           ========================================= */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            padding: 60px 0;
+        }
+
+        /* =========================================
+           5. CARDS (Design Intacto)
+           ========================================= */
+        .timeline-feed { display: flex; flex-direction: column; gap: 50px; }
+
+        .project-card {
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-card);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #cbd5e0;
+        }
+
+        .card-header {
+            background: var(--gray-100);
+            padding: 12px 25px;
+            border-bottom: 1px solid var(--gray-300);
+            display: flex; align-items: center; gap: 10px;
+            color: var(--gray-text);
+            font-family: var(--font-space);
+            font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .card-header i { color: var(--aws-orange); }
+
+        .card-image-container {
+            width: 100%; height: 240px;
+            background-color: var(--gray-200);
+            position: relative; overflow: hidden;
+            border-bottom: 1px solid var(--gray-300);
+        }
+        .card-image-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .project-card:hover .card-image-container img { transform: scale(1.03); }
+
+        .card-body { padding: 30px 30px 20px 30px; }
+        .card-body h2 { font-size: 1.6rem; margin-bottom: 15px; line-height: 1.3; }
+        .card-body h2 a { color: var(--aws-dark); }
+        .card-body h2 a:hover { color: var(--aws-orange); }
+        .card-body p { color: var(--gray-text); margin-bottom: 10px; font-size: 1.05rem; line-height: 1.7; }
+
+        .card-footer {
+            padding: 0 30px 30px 30px;
+            display: flex; justify-content: flex-end; align-items: center;
+        }
+        .read-more-btn {
+            color: var(--aws-orange);
+            font-family: var(--font-space); font-weight: 700; font-size: 1rem;
+            text-transform: uppercase; letter-spacing: 0.02em;
+            display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+        }
+        .read-more-btn:hover { color: var(--aws-orange-hover); text-decoration: underline; text-underline-offset: 4px; }
+        .read-more-btn:hover i { transform: translateX(5px); }
+
+        .adsense-feed {
+            background: var(--gray-100);
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius-md);
+            padding: 30px; text-align: center;
+            color: var(--gray-text); font-family: var(--font-space); font-size: 0.9rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 140px;
+        }
+
+        /* =========================================
+           6. SIDEBAR & WIDGETS
+           ========================================= */
+        .sidebar-col { display: none; }
+        
+        .widget-box {
+            background: white; border: 1px solid var(--gray-300);
+            border-radius: var(--radius-lg); padding: 30px; margin-bottom: 30px;
+            text-align: center; box-shadow: var(--shadow-card);
+        }
+
+        .widget-author img {
+            width: 100px; height: 100px; border-radius: 50%;
+            margin: 0 auto 20px; border: 3px solid var(--gray-200); object-fit: cover;
+        }
+
+        .btn-full {
+            display: block; width: 100%; padding: 14px;
+            background: var(--aws-dark); color: white;
+            border-radius: 6px; font-weight: 600; margin-top: 20px; transition: background 0.3s;
+        }
+        .btn-full:hover { background: var(--aws-orange); color: var(--aws-dark); }
+
+        /* =========================================
+           7. MEDIA QUERIES
+           ========================================= */
+        @media (min-width: 1024px) {
+            .nav-desktop { display: flex; }
+            .btn-mobile-menu { display: none; }
+            .mobile-menu { display: none !important; }
+
+            .main-layout { grid-template-columns: 2fr 1fr; gap: 60px; }
+            .sidebar-col { display: block; }
+            .sticky-element { position: sticky; top: 100px; }
+            .project-hero h1 { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .tech-ribbon-container { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .tech-icons-list { justify-content: flex-start; gap: 20px; }
+        }
+
+        footer {
+            background: var(--aws-dark); color: white; padding: 50px 0;
+            text-align: center; margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Pular para Conteúdo</a>
+
+    <header>
+        <div class="container navbar">
+            <a href="/" class="logo">Marcelo<span>Gonçalves</span></a>
+            
+            <nav class="nav-desktop">
+                <a href="/">Home</a>
+                <a href="/artigos">Artigos</a>
+                <a href="/o-projeto" class="active">O Projeto</a>
+                <a href="/servicos">Serviços</a>
+                <a href="/sobre">Sobre</a>
+            </nav>
+            
+            <button class="btn-mobile-menu" id="mobileMenuBtn" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">Home</a>
+            <a href="/artigos">Artigos</a>
+            <a href="/o-projeto">O Projeto</a>
+            <a href="/servicos">Serviços</a>
+            <a href="/sobre">Sobre</a>
+        </div>
+    </header>
+
+    <main id="main-content">
+        
+        <section class="project-hero">
+            <div class="container">
+                <h1>O Projeto: <span class="text-highlight">Engineering Log</span></h1>
+                <p>O diário de bordo técnico da construção deste blog. Uma jornada documentada sobre como transformar prompts de IA em uma arquitetura Cloud robusta na AWS.</p>
+            </div>
+        </section>
+
+        <div class="tech-ribbon">
+            <div class="container tech-ribbon-container">
+                <span class="tech-label">Core Stack</span>
+                
+                <div class="tech-icons-list">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" 
+                         alt="Google Gemini" title="Built with Gemini" class="tech-icon" style="height: 35px;">
+
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" 
+                         alt="TypeScript" title="TypeScript" class="tech-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" 
+                         alt="React / Next.js" title="React (Next.js Framework)" class="tech-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" 
+                         alt="Vue.js" title="Vue.js" class="tech-icon">
+
+                    <div style="width: 20px; display: none; @media(min-width:768px){display:block;}"></div>
+
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" 
+                         alt="Terraform" title="Terraform (IaC)" class="tech-icon">
+                    
+                    <img src="https://icon.icepanel.io/AWS/svg/Compute/Lambda.svg" 
+                         alt="AWS Lambda" title="AWS Lambda" class="tech-icon">
+                    
+                    <img src="https://icon.icepanel.io/AWS/svg/App-Integration/API-Gateway.svg" 
+                         alt="API Gateway" title="AWS API Gateway" class="tech-icon">
+                    
+                    <img src="https://icon.icepanel.io/AWS/svg/Database/DynamoDB.svg" 
+                         alt="DynamoDB" title="Amazon DynamoDB" class="tech-icon">
+
+                    <img src="https://icon.icepanel.io/AWS/svg/Storage/Simple-Storage-Service.svg" 
+                         alt="S3" title="Amazon S3" class="tech-icon">
+
+                    <img src="https://icon.icepanel.io/AWS/svg/Networking-Content-Delivery/CloudFront.svg" 
+                         alt="CloudFront" title="Amazon CloudFront" class="tech-icon">
+                </div>
+            </div>
+        </div>
+
+        <div class="container main-layout">
+            
+            <div class="timeline-feed">
+
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="far fa-calendar-alt"></i>
+                        <time datetime="2024-03-01">01 de Março, 2024</time>
+                    </div>
+                    <div class="card-image-container">
+                        <img src="https://placehold.co/800x400/232F3E/FF9900?text=Launch+Day+-+v1.0" alt="Lançamento do Blog">
+                    </div>
+                    <div class="card-body">
+                        <h2><a href="#">O Lançamento Oficial (MVP)</a></h2>
+                        <p>O sistema está online. O pipeline de CI/CD foi ativado e a primeira versão estável foi implantada no S3. O stack final (Next.js + Terraform) provou-se resiliente e extremamente performático nos testes de carga.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="read-more-btn">Ler mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <div class="adsense-feed">
+                    <span style="font-weight: 700; margin-bottom: 5px;">Publicidade</span>
+                    <span>Espaço reservado para AdSense (In-Feed)</span>
+                </div>
+
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="far fa-calendar-alt"></i>
+                        <time datetime="2024-02-15">15 de Fevereiro, 2024</time>
+                    </div>
+                    <div class="card-image-container">
+                        <img src="https://placehold.co/800x400/f7fafc/3182CE?text=Design+System+CSS" alt="Estrutura CSS">
+                    </div>
+                    <div class="card-body">
+                        <h2><a href="#">Arquitetura CSS: Zero Frameworks</a></h2>
+                        <p>Decisão estratégica de engenharia: abandonar Tailwind e Bootstrap. Optamos por CSS "Vanilla" com metodologia BEM e variáveis CSS nativas. O resultado? Um bundle size minúsculo e Pontuação 100 no Lighthouse.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="read-more-btn">Ler mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="far fa-calendar-alt"></i>
+                        <time datetime="2024-01-25">25 de Janeiro, 2024</time>
+                    </div>
+                    <div class="card-image-container">
+                        <img src="https://placehold.co/800x400/2D3748/white?text=Terraform+IAC" alt="Código Terraform">
+                    </div>
+                    <div class="card-body">
+                        <h2><a href="#">Infraestrutura como Código (IaC)</a></h2>
+                        <p>Primeiro deploy do Terraform. A IA desenhou as políticas de IAM seguindo o princípio de "Least Privilege". Configuramos os buckets S3 privados e a distribuição CloudFront com OAI para garantir segurança máxima na borda.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="read-more-btn">Ler mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="far fa-calendar-alt"></i>
+                        <time datetime="2024-01-10">10 de Janeiro, 2024</time>
+                    </div>
+                    <div class="card-body">
+                        <h2><a href="#">A Gênese: O Prompt Zero</a></h2>
+                        <p>Definição do escopo do projeto. O desafio: criar uma autoridade técnica em Cloud Computing utilizando Inteligência Artificial não apenas para gerar texto, mas para atuar como Engenheira de Software Senior.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="read-more-btn">Ler mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="sidebar-col">
+                <div class="sticky-element">
+                    
+                    <div class="widget-box" style="text-align: left; padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--gray-300); padding-bottom: 10px;">
+                            <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-text); margin: 0;">System Status</h4>
+                            <span style="height: 8px; width: 8px; background-color: #48bb78; border-radius: 50%; box-shadow: 0 0 0 2px #c6f6d5;"></span>
+                        </div>
+                        
+                        <div style="font-family: var(--font-mono); font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px; color: var(--aws-dark);">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><i class="fas fa-code-branch" style="color: var(--blue-600); width: 20px; text-align: center;"></i> Version</span>
+                                <span style="font-weight: 700;">v1.2.0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><i class="fas fa-server" style="color: var(--aws-orange); width: 20px; text-align: center;"></i> Env</span>
+                                <span style="color: #2f855a; font-weight: 700; background: #f0fff4; padding: 0 6px; border-radius: 4px; border: 1px solid #c6f6d5;">Production</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><i class="fas fa-globe" style="color: var(--gray-text); width: 20px; text-align: center;"></i> Region</span>
+                                <span>us-east-1</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span><i class="fas fa-bolt" style="color: #ecc94b; width: 20px; text-align: center;"></i> Uptime</span>
+                                <span style="font-weight: 700;">99.99%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-box widget-author">
+                        <img src="https://placehold.co/200x200/232F3E/white?text=MG" alt="Marcelo Gonçalves">
+                        <h3>Marcelo Gonçalves</h3>
+                        <p style="font-size: 0.95rem; color: var(--gray-text); margin-top: 10px;">Arquiteto de Soluções Cloud. Transformando desafios complexos em sistemas escaláveis.</p>
+                        <a href="/sobre" class="btn-full">Minha Biografia</a>
+                    </div>
+
+                    <div class="widget-box" style="background: var(--aws-dark); color: white; border: none;">
+                        <i class="fas fa-rocket" style="font-size: 2.5rem; color: var(--aws-orange); margin-bottom: 20px;"></i>
+                        <h3 style="color: white;">Consultoria Cloud & IA</h3>
+                        <p style="font-size: 0.95rem; color: #cbd5e0; margin: 15px 0 25px 0;">Precisa de ajuda para arquitetar sua solução na AWS ou integrar LLMs?</p>
+                        <a href="/servicos" class="btn-full" style="background: var(--aws-orange); color: var(--aws-dark); margin-top: 0;">Conhecer Serviços</a>
+                    </div>
+
+                    <div class="adsense-feed" style="min-height: 500px; margin-bottom: 0;">
+                        <span>AdSense Vertical (Sticky)</span>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <h3>Marcelo<span style="color: var(--aws-orange);">Gonçalves</span></h3>
+            <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 15px;">&copy; 2024. Construído (quase) 100% com Inteligência Artificial.</p>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            const isActive = menu.classList.contains('active');
+            btn.innerHTML = isActive ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    </script>
+</body>
+</html>
