@@ -109,14 +109,14 @@
             background-color: #fafafa;
             border-top: 1px dashed var(--gray-300);
             border-bottom: 1px solid var(--gray-300);
-            padding: 35px 0; /* Aumentei um pouco o padding vertical */
+            padding: 35px 0; 
         }
 
         .tech-ribbon-container {
             display: flex;
-            flex-direction: column; /* Empilha verticalmente */
-            align-items: center;    /* Centraliza horizontalmente */
-            gap: 25px;              /* Espaço entre o título e os ícones */
+            flex-direction: column; 
+            align-items: center;    
+            gap: 25px;              
         }
 
         .tech-label {
@@ -129,7 +129,6 @@
             position: relative;
         }
         
-        /* Detalhe opcional: Pequena linha decorativa abaixo do texto */
         .tech-label::after {
             content: '';
             display: block;
@@ -143,13 +142,13 @@
         .tech-icons-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px; /* Espaçamento entre ícones */
-            justify-content: center; /* Garante que ícones fiquem no meio */
+            gap: 30px; 
+            justify-content: center; 
             align-items: center;
         }
 
         .tech-icon {
-            height: 45px; /* Ícones levemente maiores para destaque */
+            height: 45px; 
             width: auto;
             transition: transform 0.2s ease;
         }
@@ -335,16 +334,17 @@
                 
                 <div class="tech-icons-list">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" 
-                         alt="Google Gemini" title="Built with Gemini" class="tech-icon" style="height: 35px;">
+                         alt="Google Gemini" title="Architected with Gemini" class="tech-icon" style="height: 35px;">
 
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" 
                          alt="TypeScript" title="TypeScript" class="tech-icon">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" 
-                         alt="React / Next.js" title="React (Next.js Framework)" class="tech-icon">
+                         alt="React / Next.js" title="React & Next.js" class="tech-icon">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" 
-                         alt="Vue.js" title="Vue.js" class="tech-icon">
+                         alt="Vue.js" title="Vue.js (Components)" class="tech-icon">
 
-                    <div style="width: 20px; display: none; @media(min-width:768px){display:block;}"></div>
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg" 
+                         alt="GitHub Actions" title="GitHub Actions (CI/CD)" class="tech-icon">
 
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" 
                          alt="Terraform" title="Terraform (IaC)" class="tech-icon">
