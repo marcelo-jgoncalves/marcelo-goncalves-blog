@@ -158,7 +158,7 @@ Definição das tabelas e índices no **Amazon DynamoDB**. (ATUALIZADO v1.3)
 7.  **Página de Resultados de Busca** (`/busca`) - (v1.0)
 8.  **Página "Newsletter"** (`/newsletter`) - (v1.0)
 9.  **Página 404** (Não Encontrado) - (v1.1)
-10. **Página "Serviços" (NOVO)** (`/servicos`) - (v1.2)
+10. **Página "Serviços"** (`/servicos`) - (v1.2)
 
 #### 4.2. Elementos Persistentes (Header/Footer - ATUALIZADO)
 * **Header:** (Logo, Home, Artigos, O Projeto, **Serviços**, Sobre) - Links devem apontar para os templates da Seção 4.1.

@@ -1,3 +1,5 @@
+/*frontend/app/artigos/page.tsx */
+
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';

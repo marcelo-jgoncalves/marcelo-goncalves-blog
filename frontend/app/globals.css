@@ -979,6 +979,94 @@ header {
   margin-bottom: 20px; 
 }
 
+/* ==========================================================================
+   6.1 PÁGINA O PROJETO (Namespaced com .op-)
+   ========================================================================== */
+
+/* 1. Hero Section */
+.op-hero { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 40px 20px; text-align: center; }
+.op-hero-content { max-width: 900px; margin: 0 auto; }
+.op-hero h1 { font-size: 2rem; color: var(--aws-dark); line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.03em; font-family: var(--font-space-grotesk); font-weight: 700;}
+.op-highlight { color: var(--aws-orange); }
+.op-subtitle { font-size: 1.05rem; color: var(--gray-800); max-width: 700px; margin: 0 auto; }
+
+/* 2. Tech Ribbon */
+.op-tech-ribbon { background-color: #fafafa; border-top: 1px dashed var(--gray-border); border-bottom: 1px solid var(--gray-border); padding: 30px 0; }
+.op-tech-container { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; }
+.op-tech-label { font-family: var(--font-mono, monospace); font-size: 0.85rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.1em; position: relative; }
+.op-tech-label::after { content: ''; display: block; width: 40px; height: 2px; background: var(--aws-orange); margin-top: 8px; border-radius: 2px; }
+.op-tech-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; align-items: center; }
+.op-tech-icon { height: 35px; width: auto; transition: transform 0.2s ease; }
+.op-tech-icon:hover { transform: scale(1.15); }
+
+/* 3. Layout Principal e Timeline */
+.op-main-layout { display: grid; grid-template-columns: 1fr; gap: 40px; padding: 50px 20px; }
+.op-timeline-feed { display: flex; flex-direction: column; gap: 40px; }
+
+/* 4. Cards da Timeline */
+.op-project-card { background: white; border: 1px solid var(--gray-border); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+.op-project-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08); border-color: #cbd5e0; }
+.op-project-card:hover img { transform: scale(1.03); }
+.op-card-header { background: var(--gray-light); padding: 12px 25px; border-bottom: 1px solid var(--gray-border); display: flex; align-items: center; gap: 10px; color: var(--gray-text); font-family: var(--font-space-grotesk); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.op-card-header i { color: var(--aws-orange); }
+.op-card-image { width: 100%; height: 200px; background-color: var(--gray-light); position: relative; overflow: hidden; border-bottom: 1px solid var(--gray-border); }
+.op-card-body { padding: 25px; }
+.op-card-body h2 { font-size: 1.4rem; margin-bottom: 12px; line-height: 1.3; font-family: var(--font-space-grotesk); font-weight: 700; }
+.op-card-body h2 a { color: var(--aws-dark); text-decoration: none; transition: color 0.2s; }
+.op-card-body h2 a:hover { color: var(--aws-orange); }
+.op-card-body p { color: var(--gray-text); margin-bottom: 0; font-size: 1rem; line-height: 1.6; }
+.op-card-footer { padding: 0 25px 25px 25px; display: flex; justify-content: flex-end; }
+.op-read-more { color: var(--aws-orange); font-family: var(--font-space-grotesk); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.02em; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.op-read-more:hover { text-decoration: underline; text-underline-offset: 4px; }
+.op-read-more:hover i { transform: translateX(5px); transition: transform 0.2s; }
+.op-empty-state { text-align: center; color: var(--gray-text); padding: 40px 0; }
+
+/* 5. Sidebar e Widgets */
+.op-sidebar { display: none; } /* Oculto no Mobile */
+.op-widget { background: white; border: 1px solid var(--gray-border); border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+.op-widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--gray-border); padding-bottom: 10px; }
+.op-widget-header h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-text); margin: 0; font-family: var(--font-space-grotesk); font-weight: 700; }
+.op-status-dot { height: 8px; width: 8px; background-color: #48bb78; border-radius: 50%; box-shadow: 0 0 0 2px #c6f6d5; }
+.op-status-list { font-family: var(--font-mono, monospace); font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px; color: var(--aws-dark); }
+.op-status-list div { display: flex; justify-content: space-between; align-items: center; }
+.op-status-list i { width: 20px; text-align: center; }
+.op-env-tag { color: #2f855a; font-weight: 700; background: #f0fff4; padding: 0 6px; border-radius: 4px; border: 1px solid #c6f6d5; }
+.op-author-widget { text-align: center; }
+.op-author-img { border-radius: 50%; margin: 0 auto 15px; border: 3px solid var(--gray-light); object-fit: cover; display: block; }
+.op-author-widget p { font-size: 0.9rem; color: var(--gray-text); margin-top: 10px; }
+
+/* 6. AdSense Placeholders */
+.op-adsense-feed { background: var(--gray-light); border: 2px dashed var(--gray-border); border-radius: 8px; padding: 30px; text-align: center; color: var(--gray-text); font-family: var(--font-space-grotesk); font-size: 0.9rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; }
+
+/* 7. CTA de Vendas */
+.op-sales-cta { padding: 60px 20px; background-color: var(--gray-light); text-align: center; margin-top: 40px; }
+.op-sales-cta h2 { font-size: 1.8rem; color: var(--aws-dark); margin-bottom: 15px; font-family: var(--font-space-grotesk); font-weight: 700;}
+.op-sales-cta p { font-size: 1.05rem; color: var(--gray-text); max-width: 600px; margin: 0 auto 30px auto; }
+
+/* =========================================
+   MEDIA QUERIES (DESKTOP)
+   ========================================= */
+@media (min-width: 768px) {
+  .op-hero { padding: 60px 20px; }
+  .op-hero h1 { font-size: 2.8rem; }
+  .op-subtitle { font-size: 1.15rem; }
+  .op-tech-container { flex-direction: column; align-items: center; gap: 25px; }
+  .op-tech-label::after { margin: 8px auto 0 auto; }
+  .op-tech-list { justify-content: center; gap: 30px; }
+  .op-tech-icon { height: 45px; }
+  .op-card-image { height: 240px; }
+  .op-card-body h2 { font-size: 1.6rem; }
+  .op-sales-cta { padding: 80px 20px; margin-top: 80px; }
+  .op-sales-cta h2 { font-size: 2.2rem; }
+}
+
+@media (min-width: 1024px) {
+  .op-main-layout { grid-template-columns: 2fr 1fr; gap: 60px; padding: 60px 20px; }
+  .op-sidebar { display: block; }
+  .op-sticky { position: sticky; top: 100px; }
+}
+
+
 /* =========================================
    7. FOOTER
    ========================================= */
