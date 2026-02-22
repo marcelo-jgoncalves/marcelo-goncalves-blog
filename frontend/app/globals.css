@@ -478,29 +478,30 @@ header {
   align-items: flex-start; /* Garante que o badge e título fiquem na esquerda */
 }
 
-/* Botão "Ler Mais": Laranja, Alinhado à Direita, Fonte Maior */
-.card-content .read-more {
+/* COMPONENTE: READ MORE LINK (Global) */
+
+.read-more-global {
   color: var(--aws-orange) !important;
   font-family: var(--font-space-grotesk);
   font-weight: 700;
-  
-  font-size: 1.1rem;       /* <-- AUMENTADO: De 0.9rem para 1rem */
-  
+  font-size: 1.1rem; 
   display: inline-flex;
   align-items: center;
   gap: 5px;
   text-decoration: none;
   border-bottom: none !important;
-  
-  /* Alinhamento à Direita */
-  margin-top: auto;      
-  align-self: flex-end;  
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.card-content .read-more:hover {
+.read-more-global:hover {
   transform: translateX(5px);
-  color: var(--aws-orange-hover) !important;
+  color: var(--aws-orange-hover, #e68a00) !important;
+}
+
+/* Mantém o alinhamento à direita para os cards de postagens normais */
+.card-content .read-more-global {
+  margin-top: auto;      
+  align-self: flex-end; 
 }
 
 /* Super Destaque */
@@ -1000,7 +1001,13 @@ header {
 .op-tech-icon:hover { transform: scale(1.15); }
 
 /* 3. Layout Principal e Timeline */
-.op-main-layout { display: grid; grid-template-columns: 1fr; gap: 40px; padding: 50px 20px; }
+/* .op-main-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding: 40px 0;
+}
+*/
 .op-timeline-feed { display: flex; flex-direction: column; gap: 40px; }
 
 /* 4. Cards da Timeline */
@@ -1061,12 +1068,16 @@ header {
 }
 
 @media (min-width: 1024px) {
-  .op-main-layout { grid-template-columns: 2fr 1fr; gap: 60px; padding: 60px 20px; }
-  .op-sidebar { display: block; }
-  .op-sticky { position: sticky; top: 100px; }
+  .op-main-layout {
+    grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr);
+    gap: 60px;
+    padding: 60px 0;
+  }
+
+  .op-sidebar {
+    display: block;
+  }
 }
-
-
 /* =========================================
    7. FOOTER
    ========================================= */
@@ -1668,22 +1679,86 @@ footer {
   }
 }
 
-/* Grid Principal */
+/* =========================================
+   ESTRUTURA DE GRID UNIFICADA (2026)
+   ========================================= */
+
+/* Layout Mobile */
+.op-main-layout,
 .article-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 80px auto; 
-  padding: 0 20px;
+  padding: 40px 0;
 }
 
-.post-body-wrapper {
-  max-width: 800px;
+/* Desktop */
+@media (min-width: 1024px) {
+
+  .op-main-layout {
+    grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
+    gap: 60px;
+    padding: 60px 0;
+    align-items: start; /* 🔥 ESSENCIAL */
+  }
+
+  .article-grid {
+    grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
+    gap: 60px;
+    padding: 60px 0;
+    align-items: start; /* 🔥 ESSENCIAL */
+  }
+
+  .sidebar {
+    display: block;
+    min-width: 300px;
+
+    position: sticky;
+    top: 100px;
+  }
+}
+/* Garante que o conteúdo principal não vaze em telas pequenas */
+.main-content-column {
   width: 100%;
-  margin: 0 auto;
-  padding: 0; 
+  min-width: 0;
+}
+
+/* Mobile */
+.sidebar {
+  display: none;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    min-width: 300px;
+
+    position: sticky;
+    top: 100px;
+  }
+}
+
+ /* .sticky-wrapper {
+    position: sticky;
+    top: 100px;
+  }
+*/
+
+/* Placeholder Global do AdSense Vertical */
+.adsense-vertical {
+  min-height: 600px;
+  width: 100%;
+  background-color: var(--gray-light, #f8fafc);
+  border: 2px dashed var(--gray-border, #cbd5e0) !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--gray-text, #64748b);
+  margin-bottom: var(--post-block-spacing, 30px);
+  padding: 20px;
 }
 
 /* Resumo (Lead) */
@@ -1895,10 +1970,6 @@ html {
    15. WIDGETS E SIDEBAR
    ========================================= */
 
-.sidebar { 
-  display: none; 
-}
-
 .sticky-wrapper { 
   position: sticky; 
   top: 100px; 
@@ -1925,21 +1996,20 @@ html {
   text-align: left;
 }
 
-.sidebar .adsense-vertical {
-  background: none;
-  border: 1px dashed var(--gray-800);
-  box-shadow: none;
-  padding: 0; 
-  min-height: 600px; 
+/* Placeholder Global do AdSense Vertical (Componente Independente) */
+.adsense-vertical {
+  min-height: 600px;
   width: 100%;
-  background-color: var(--gray-light); 
+  background-color: var(--gray-light, #f8fafc);
+  border: 2px dashed var(--gray-border, #cbd5e0) !important;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: var(--gray-text);
-  font-size: 0.9rem;
-  margin-bottom: var(--post-block-spacing);
+  color: var(--gray-text, #64748b);
+  margin-bottom: var(--post-block-spacing, 30px);
+  padding: 20px;
 }
 
 /* TOC Widget */
@@ -2129,10 +2199,13 @@ html {
   }
 }
 
-@media (min-width: 1024px) {
-  .article-grid { 
+/* @media (min-width: 1024px) {
+  .article-grid {
+    display: grid; 
+    
     grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr); 
-    gap: 60px; 
+    gap: 60px;
+    align-items: start;
   }
   
   .sidebar { 
@@ -2140,11 +2213,19 @@ html {
     min-width: 300px; 
   }
   
+  
   .toc-mobile-accordion, 
   .mobile-only-injection { 
     display: none; 
   }
 }
+
+.main-content-column {
+  width: 100%;
+  min-width: 0;
+}
+
+*/
 
 .mobile-only-injection {
     margin: var(--post-block-spacing) 0;
@@ -2526,4 +2607,28 @@ article th,
   justify-content: center; /* Centraliza o conteúdo (o vídeo) dentro da figura */
   margin: 2rem 0;       /* Espaçamento vertical */
   width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+  }
+}
+
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
 }

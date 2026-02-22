@@ -1,3 +1,5 @@
+/*frontend/componentens/ui/TOC.tsx */
+
 'use client';
 
 import { useState } from 'react';
@@ -20,7 +22,7 @@ export default function TOC({ headings, variant }: TOCProps) {
   // --- RENDERIZAÇÃO MOBILE (Acordeão) ---
   if (variant === 'mobile') {
     return (
-      <nav className="toc-mobile-accordion" aria-label="Índice do artigo">
+      <nav className="toc-mobile-accordion mobile-only" aria-label="Índice do artigo">
         <button 
           className="toc-mobile-header w-full"
           onClick={() => setIsOpen(!isOpen)}
@@ -55,7 +57,7 @@ export default function TOC({ headings, variant }: TOCProps) {
 
   // --- RENDERIZAÇÃO DESKTOP (Widget Sidebar) ---
   return (
-    <div className="sidebar-widget toc-widget">
+    <div className="sidebar-widget toc-widget desktop-only">
       <span className="widget-title">
         {/* O estilo do ícone aqui é controlado pelo CSS Global que acabamos de editar */}
         <i className="fas fa-list-ul"></i> Neste Artigo

@@ -1,6 +1,7 @@
 /* frontend/components/ui/PostCard.tsx */
 
 import Link from 'next/link';
+import ReadMoreLink from './ReadMoreLink';
 
 interface PostCardProps {
   post: {
@@ -39,9 +40,8 @@ export default function PostCard({ post }: PostCardProps) {
         
         <p>{post.resumo}</p>
         
-        <Link href={`/post/${post.slug}`} className="read-more">
-          Ler mais →
-        </Link>
+        {/* Aqui entra o nosso novo componente global! */}
+        <ReadMoreLink href={`/post/${post.slug}`} />
       </div>
     </article>
   );

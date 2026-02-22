@@ -12,13 +12,13 @@ import { processFullPostContent } from '@/lib/postUtils';
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
-import ServiceCallout from '@/components/ui/ServiceCallout';
 import SuperDestaque from '@/components/ui/SuperDestaque'; 
-import AdsenseSidebar from '@/components/ui/AdsenseSidebar';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
 import PopularPostsSection from '@/components/ui/PopularPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
 import ShareButtonsWrapper from '@/components/ui/ShareButtonsWrapper';
+import BlogSidebar from '@/components/ui/BlogSidebar';
+import ServiceCallout from '@/components/ui/ServiceCallout';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -56,7 +56,7 @@ export default async function PostPage({ params }: Props) {
     return parts.map((part, index) => {
       if (part === '<div id="inject-service-placeholder"></div>') {
         return (
-          <div key="inject-service" className="mobile-only-injection"> 
+          <div key="inject-service" className="lg:hidden"> 
             <ServiceCallout />
           </div>
         );
@@ -124,7 +124,7 @@ export default async function PostPage({ params }: Props) {
       )}
 
       {/* GRID PRINCIPAL */}
-      <div className="article-grid">
+      <div className="container article-grid">
         <div className="main-content-column">
             <article>
                 <div className="post-body-wrapper">
@@ -152,24 +152,12 @@ export default async function PostPage({ params }: Props) {
         </div>
 
         {/* SIDEBAR (Intacta) */}
-        <aside className="sidebar">
-            <div className="sticky-wrapper">
+        <BlogSidebar adsenseBlockId="sidebar-300x600">
+            {/* O Índice (TOC) é o único elemento dinâmico aqui */}
+            {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
-                <ServiceCallout />
-                <AdsenseSidebar blockId="sidebar-300x600" />
-                <div className="sidebar-widget widget-newsletter">
-                    <div className="card-icon-wrapper">
-                        <i className="far fa-envelope"></i>
-                    </div>
-                    <span className="card-title">Newsletter VIP</span>
-                    <p className="card-desc">Receba análises exclusivas de IA e AWS direto no seu e-mail.</p>
-                    <Link href="/newsletter" className="btn-full btn-primary">
-                        Inscrever-se
-                    </Link>
-                </div>
-            </div>
-        </aside>
-
+            )}
+        </BlogSidebar>
       </div>
       
       <SuperDestaque />
