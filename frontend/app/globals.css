@@ -990,24 +990,85 @@ header {
 .op-hero h1 { font-size: 2rem; color: var(--aws-dark); line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.03em; font-family: var(--font-space-grotesk); font-weight: 700;}
 .op-highlight { color: var(--aws-orange); }
 .op-subtitle { font-size: 1.05rem; color: var(--gray-800); max-width: 700px; margin: 0 auto; }
+/* 1. CONTAINER PRINCIPAL DA BARRA */
+.op-tech-ribbon {
+  /* Bordas tracejadas muito mais suaves (usando transparência) */
+  border-top: 1px dashed rgba(0, 0, 0, 0.15); 
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15); 
+  
+  padding: 20px 0;
+  background-color: transparent;
+  overflow: hidden;
+}
 
-/* 2. Tech Ribbon */
-.op-tech-ribbon { background-color: #fafafa; border-top: 1px dashed var(--gray-border); border-bottom: 1px solid var(--gray-border); padding: 30px 0; }
-.op-tech-container { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; }
-.op-tech-label { font-family: var(--font-mono, monospace); font-size: 0.85rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.1em; position: relative; }
-.op-tech-label::after { content: ''; display: block; width: 40px; height: 2px; background: var(--aws-orange); margin-top: 8px; border-radius: 2px; }
-.op-tech-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; align-items: center; }
-.op-tech-icon { height: 35px; width: auto; transition: transform 0.2s ease; }
+/* 2. LAYOUT BASE (Mobile First) */
+.op-tech-container {
+  display: flex;
+  flex-direction: column; /* Garante que "Core Stack" fique na linha de cima */
+  align-items: center;
+  justify-content: center;
+  gap: 15px; 
+  text-align: center;
+}
+
+/* 1. O TEXTO CORE STACK (Extraído do protótipo) */
+.op-tech-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.6px;
+  font-weight: 700;
+  color: rgb(74, 85, 104);
+  text-transform: uppercase;
+  letter-spacing: 1.36px;
+  
+  /* Mantemos as regras de layout para o texto ficar centralizado em cima */
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+/* 2. A LINHA AMARELA (Extraída do protótipo) */
+.op-tech-label::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: rgb(255, 153, 0); /* Laranja/Amarelo original */
+  margin: 8px auto 0 auto; /* Centraliza a linha logo abaixo do texto */
+}
+
+.op-tech-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Ícones pulam de linha suavemente em telas finas */
+  gap: 15px;
+}
+
+.op-tech-icon {
+  object-fit: contain;
+}
+
+/* 3. REGRAS DE DESKTOP (Recuperando seu design original) */
+@media (min-width: 768px) {
+  .op-tech-container { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 25px; 
+  }
+  .op-tech-label::after { 
+    margin: 8px auto 0 auto; 
+  }
+  .op-tech-list { 
+    justify-content: center; 
+    gap: 30px; 
+  }
+  .op-tech-icon { 
+    height: 45px; 
+  }
+}
+
 .op-tech-icon:hover { transform: scale(1.15); }
 
-/* 3. Layout Principal e Timeline */
-/* .op-main-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
-  padding: 40px 0;
-}
-*/
 .op-timeline-feed { display: flex; flex-direction: column; gap: 40px; }
 
 /* 4. Cards da Timeline */
@@ -1054,13 +1115,12 @@ header {
    MEDIA QUERIES (DESKTOP)
    ========================================= */
 @media (min-width: 768px) {
+  /* Mantém o Hero com tamanho de Desktop */
   .op-hero { padding: 60px 20px; }
   .op-hero h1 { font-size: 2.8rem; }
   .op-subtitle { font-size: 1.15rem; }
-  .op-tech-container { flex-direction: column; align-items: center; gap: 25px; }
-  .op-tech-label::after { margin: 8px auto 0 auto; }
-  .op-tech-list { justify-content: center; gap: 30px; }
-  .op-tech-icon { height: 45px; }
+  
+  /* Mantém os Cards e o CTA com tamanho de Desktop */
   .op-card-image { height: 240px; }
   .op-card-body h2 { font-size: 1.6rem; }
   .op-sales-cta { padding: 80px 20px; margin-top: 80px; }
