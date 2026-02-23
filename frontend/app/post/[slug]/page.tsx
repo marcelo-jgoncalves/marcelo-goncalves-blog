@@ -1,5 +1,3 @@
-/* frontend/app/post[slug]/page.tsx */ 
-
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -46,7 +44,7 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  // 🚀 AQUI ESTÁ A CORREÇÃO: Extraímos a categoria do payload
+  // AQUI ESTÁ A CORREÇÃO: Extraímos a categoria do payload
   const { post, category } = data;
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
@@ -56,7 +54,8 @@ export default async function PostPage({ params }: Props) {
     return parts.map((part, index) => {
       if (part === '<div id="inject-service-placeholder"></div>') {
         return (
-          <div key="inject-service" className="lg:hidden"> 
+          // 🚀 CORREÇÃO: 'lg:hidden' substituído por 'mobile-only'
+          <div key="inject-service" className="mobile-only"> 
             <ServiceCallout />
           </div>
         );
@@ -90,9 +89,10 @@ export default async function PostPage({ params }: Props) {
       <section className="article-header">
         <div className="container">
           
-          {/* 🚀 BADGE DINÂMICO DA CATEGORIA COM FALLBACK */}
+          {/* BADGE DINÂMICO DA CATEGORIA COM FALLBACK */}
           {category ? (
-                <Link href={`/categoria/${category.categoria_slug}`} className="post-tag-header hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>              {category.icone_fa && <i className={`${category.icone_fa} mr-2`}></i>}
+            <Link href={`/categoria/${category.categoria_slug}`} className="post-tag-header hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>              
+              {category.icone_fa && <i className={`${category.icone_fa} mr-2`}></i>}
               {category.nome_exibicao}
             </Link>
           ) : (
@@ -151,12 +151,17 @@ export default async function PostPage({ params }: Props) {
             </div>
         </div>
 
-        {/* SIDEBAR (Intacta) */}
+        {/* SIDEBAR */}
         <BlogSidebar adsenseBlockId="sidebar-300x600">
-            {/* O Índice (TOC) é o único elemento dinâmico aqui */}
+            {/* 1. TOC */}
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
+            
+            {/* 2. CTA de Serviços */}
+            <div className="mt-8">
+              <ServiceCallout />
+            </div>
         </BlogSidebar>
       </div>
       

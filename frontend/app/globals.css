@@ -2199,33 +2199,6 @@ html {
   }
 }
 
-/* @media (min-width: 1024px) {
-  .article-grid {
-    display: grid; 
-    
-    grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr); 
-    gap: 60px;
-    align-items: start;
-  }
-  
-  .sidebar { 
-    display: block; 
-    min-width: 300px; 
-  }
-  
-  
-  .toc-mobile-accordion, 
-  .mobile-only-injection { 
-    display: none; 
-  }
-}
-
-.main-content-column {
-  width: 100%;
-  min-width: 0;
-}
-
-*/
 
 .mobile-only-injection {
     margin: var(--post-block-spacing) 0;
