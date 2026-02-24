@@ -1777,6 +1777,10 @@ footer {
     top: 100px;
   }
 }
+
+.sidebar > div + div {
+  margin-top: 30px; /* Ajuste para o valor que achar mais bonito (25px, 30px...) */
+}
 /* Garante que o conteúdo principal não vaze em telas pequenas */
 .main-content-column {
   width: 100%;
@@ -2043,6 +2047,10 @@ html {
   margin-bottom: var(--post-block-spacing);
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.sidebar-widget:last-child {
+  margin-bottom: 0px;
 }
 
 .widget-title {
@@ -2645,6 +2653,12 @@ article th,
 @media (min-width: 1024px) {
   .sidebar {
     display: block;
+    min-width: 300px;
+    
+    /* Comportamento Sticky Padrão (Gruda no topo) */
+    position: sticky;
+    top: 100px;
+    
   }
 }
 
