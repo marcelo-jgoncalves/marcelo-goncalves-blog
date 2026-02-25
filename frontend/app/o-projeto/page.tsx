@@ -8,6 +8,7 @@ import SystemStatus from "../../components/ui/SystemStatus";
 import BlogSidebar from "../../components/ui/BlogSidebar";
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import TechRibbon from "../../components/ui/TechRibbon";
+import TimelineCard from "../../components/ui/TimelineCard";
 
 // Tipagem baseada nos atributos REAIS retornados pelo DynamoDB
 export interface ProjectPost {
@@ -74,47 +75,10 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
               return (
                 // A key precisa vir para o Fragmento ao retornar múltiplos elementos irmãos
                 <React.Fragment key={post.id || post.slug}>
-                  <article className="op-project-card">
-                    
-                    <div className="op-card-header">
-                      <i className="far fa-calendar-alt" aria-hidden="true"></i>
-                      <time dateTime={post.data_publicacao}>{dataFormatada}</time>
-                    </div>
-
-                    {post.imagem_destaque_url && (
-                      <div className="op-card-image">
-                        <Image 
-                          src={post.imagem_destaque_url} 
-                          alt={`Capa do artigo: ${post.titulo}`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
-                          priority={index === 0} 
-                          style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
-                        />
-                      </div>
-                    )}
-
-                    <div className="op-card-body">
-                      {post.categoria?.nome_exibicao && (
-                        <span style={{ display: "inline-block", padding: "4px 8px", backgroundColor: "var(--aws-orange)", color: "white", borderRadius: "4px", fontSize: "0.75rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "10px" }}>
-                          {post.categoria.icone_fa && <i className={post.categoria.icone_fa} style={{ marginRight: "5px" }}></i>}
-                          {post.categoria.nome_exibicao}
-                        </span>
-                      )}
-                      <h2>
-                        <Link href={`/post/${post.slug}`}>
-                          {post.titulo}
-                        </Link>
-                      </h2>
-                      <p>{post.resumo}</p>
-                    </div>
-
-                    <div className="op-card-footer">
-                      <ReadMoreLink href={`/post/${post.slug}`} />
-                    </div>
-
-                  </article>
-
+                  <TimelineCard 
+                  post={post} 
+                  isPriority={index === 0} 
+                />
                   {/* INJEÇÃO DO ADSENSE APÓS O 4º POST */}
                   {index === 3 && (
                     <AdsenseInArticle 
