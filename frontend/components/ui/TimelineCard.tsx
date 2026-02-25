@@ -27,38 +27,48 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
     dataFormatada = `${dia} de ${mesCapitalizado}, ${ano}`;
   }
 
-  return (
-    <article className="op-project-card">
-      <div className="op-card-header">
-        <i className="far fa-calendar-alt" aria-hidden="true"></i>
-        <time dateTime={post.data_publicacao}>{dataFormatada}</time>
-      </div>
+  // frontend/components/ui/TimelineCard.tsx
 
-      {post.imagem_destaque_url && (
-        <div className="op-card-image">
-          <Image 
-            src={post.imagem_destaque_url} 
-            alt={`Capa do artigo: ${post.titulo}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
-            priority={isPriority} 
-            style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
-          />
-        </div>
-      )}
+// ... (mantenha os imports e a lógica de data)
 
-      <div className="op-card-body">
-        <h2>
-          <Link href={`/post/${post.slug}`}>
-            {post.titulo}
-          </Link>
-        </h2>
-        <p>{post.resumo}</p>
-      </div>
+return (
+  <article className="op-project-card">
+    <div className="op-card-header" style={{ padding: '1rem 1.25rem 0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <i className="far fa-calendar-alt" aria-hidden="true" style={{ color: 'var(--aws-orange)' }}></i>
+      <time dateTime={post.data_publicacao}>{dataFormatada}</time>
+    </div>
 
-      <div className="op-card-footer">
-        <ReadMoreLink href={`/post/${post.slug}`} />
-      </div>
-    </article>
-  );
+    {post.imagem_destaque_url && (
+      <Link 
+        href={`/post/${post.slug}`} 
+        className="op-card-image" 
+        style={{ position: 'relative', display: 'block', height: '200px', overflow: 'hidden' }}
+      >
+        <Image 
+          src={post.imagem_destaque_url} 
+          alt={`Capa do artigo: ${post.titulo}`}
+          fill
+          /* A matemática do LCP otimizado para o Mobile + Respiro do Container */
+          sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1024px) 66vw, 400px"
+          priority={isPriority} 
+          quality={80} 
+          style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
+        />
+      </Link>
+    )}
+
+    <div className="op-card-body">
+      <h2>
+        <Link href={`/post/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          {post.titulo}
+        </Link>
+      </h2>
+      <p>{post.resumo}</p>
+    </div>
+
+    <div className="op-card-footer">
+      <ReadMoreLink href={`/post/${post.slug}`} />
+    </div>
+  </article>
+);
 }

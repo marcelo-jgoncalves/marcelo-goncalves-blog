@@ -1,3 +1,5 @@
+/** frontend/app/o-projeto/page.tsx */
+
 import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
@@ -59,39 +61,24 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         {/* Coluna Esquerda: Timeline Feed */}
         <div className="main-content-column op-timeline-feed">
           {posts.length > 0 ? (
-            posts.map((post, index) => {
-              // Lógica de formatação definitiva (À prova de Bugs de Calendário)
-              let dataFormatada = 'Data indisponível';
-              if (post.data_publicacao) {
-                const dateObj = new Date(post.data_publicacao);
-                // getUTCDate() e getUTCFullYear() garantem o dia real ignorando fusos
-                const dia = String(dateObj.getUTCDate()).padStart(2, '0'); 
-                const mes = dateObj.toLocaleDateString('pt-BR', { month: 'long', timeZone: 'UTC' });
-                const mesCapitalizado = mes.charAt(0).toUpperCase() + mes.slice(1);
-                const ano = dateObj.getUTCFullYear();
-                dataFormatada = `${dia} de ${mesCapitalizado}, ${ano}`;
-              }
-
-              return (
-                // A key precisa vir para o Fragmento ao retornar múltiplos elementos irmãos
+              posts.map((post, index) => (
                 <React.Fragment key={post.id || post.slug}>
                   <TimelineCard 
-                  post={post} 
-                  isPriority={index === 0} 
-                />
+                    post={post} 
+                    isPriority={index === 0} 
+                  />
                   {/* INJEÇÃO DO ADSENSE APÓS O 4º POST */}
                   {index === 3 && (
                     <AdsenseInArticle 
-                        blockId="in-feed-adsense" /* Lembre-se de colocar o seu ID real aqui */
+                        blockId="in-feed-adsense" 
                         variant="in-feed" 
                     />
                   )}
                 </React.Fragment>
-              );
-            })
-          ) : (
-            <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>
-          )}
+              ))
+            ) : (
+              <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>
+            )}
 
           <Pagination nextToken={returnedNextToken} basePath="/o-projeto" />
 

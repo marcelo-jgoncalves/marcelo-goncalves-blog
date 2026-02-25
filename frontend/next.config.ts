@@ -1,10 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-
   images: {
-    // Permite que o Next.js processe SVGs (usamos vários nos ícones das tecnologias)
-    dangerouslyAllowSVG: true, 
+    // 1. Performance: Ativação de Formatos Next-Gen (AVIF prioritário)
+    formats: ['image/avif', 'image/webp'],
+
+    // 2. Permissão de SVGs para os ícones
+    dangerouslyAllowSVG: true,
+    
+    // 3. Segurança: Blindagem obrigatória contra XSS em SVGs externos
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+
+    // 4. Domínios Autorizados (Sua lista original mantida e intacta)
     remotePatterns: [
       {
         protocol: 'https',
@@ -22,9 +30,9 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'icon.icepanel.io',
       },
-     {
+      {
         protocol: 'https',
-        hostname: 'dsns2wusdrj9z.cloudfront.net',
+        hostname: 'dsns2wusdrj9z.cloudfront.net', // O seu CDN na AWS
       },
     ],
   },
