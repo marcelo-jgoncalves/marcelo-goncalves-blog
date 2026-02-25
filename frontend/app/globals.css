@@ -1324,19 +1324,35 @@ footer {
     clear: both; 
 }
 
-/* Placeholder Injetado no Conteúdo */
-.adsense-placeholder-box {
-    width: 100%;
-    max-width: 336px; 
-    min-height: 250px; 
-    margin: var(--post-block-spacing) auto; 
-    background-color: #f1f5f9;
-    border: 1px dashed var(--gray-800);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gray-text);
-    font-size: 0.9rem;
+.adsense-placeholder-box,
+.adsense-content-banner,
+.adsense-placeholder {
+  width: 100%;
+  max-width: 728px;
+  min-height: 90px;
+  margin: 40px auto; 
+  
+  /* Adicionamos o !important para esmagar qualquer estilo antigo ou do Tailwind */
+  background-color: rgb(248, 250, 252) !important;
+  border: 2px dashed rgb(224, 224, 224) !important;
+  border-radius: 8px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+  color: #64748b !important; 
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* 2. O Segredo Contextual (Desliga a margem se estiver dentro de um grid/feed) */
+.op-timeline-feed .adsense-placeholder-box,
+.op-timeline-feed .adsense-content-banner,
+.op-timeline-feed .adsense-placeholder {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
@@ -1759,14 +1775,14 @@ footer {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
     gap: 60px;
     padding: 60px 0;
-    align-items: start; /* 🔥 ESSENCIAL */
+    align-items: start; 
   }
 
   .article-grid {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
     gap: 60px;
     padding: 60px 0;
-    align-items: start; /* 🔥 ESSENCIAL */
+    align-items: start; 
   }
 
   .sidebar {

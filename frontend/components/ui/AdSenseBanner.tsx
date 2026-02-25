@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AdSenseBanner() {
   return (
-    <section style={{ padding: '40px 0' }}>
+    <section> {/* <-- Remova o style daqui! */}
       <div className="container">
         <div className="adsense-placeholder">
           [ADSENSE LEADERBOARD]

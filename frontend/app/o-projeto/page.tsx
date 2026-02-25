@@ -117,12 +117,10 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
                   {/* INJEÇÃO DO ADSENSE APÓS O 4º POST */}
                   {index === 3 && (
-                    <div style={{ margin: "40px 0" }} aria-label="Anúncio">
-                      <AdsenseInArticle 
+                    <AdsenseInArticle 
                         blockId="in-feed-adsense" /* Lembre-se de colocar o seu ID real aqui */
                         variant="in-feed" 
-                      />
-                    </div>
+                    />
                   )}
                 </React.Fragment>
               );
