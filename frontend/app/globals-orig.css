@@ -80,7 +80,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6, .logo, .btn {
+h1, h2, h3, h4, h5, h6, .logo, .btn, .post-tag {
   font-family: var(--font-space-grotesk);
   color: var(--aws-dark);
   font-weight: 700;
@@ -409,6 +409,37 @@ header {
   background-color: #eee;
   background-size: cover;
   background-position: center;
+}
+
+/* NOVO DESIGN DO BADGE NO CARD */
+.post-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 153, 0, 0.15); 
+  /* O texto e ícone assumem a cor forte da marca */
+  color: var(--aws-orange); 
+  
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 12px; 
+  align-self: flex-start;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+/* Efeito hover sutil no badge */
+.post-card:hover .post-tag {
+    background-color: rgba(255, 153, 0, 0.25); 
+}
+
+/* Garante que o ícone use a cor do texto pai */
+.post-tag i {
+    margin: 0;
+    font-size: 0.8rem;
+    color: currentColor; /* Herda o laranja forte */
 }
 
 .post-card h3 {
@@ -1302,6 +1333,9 @@ footer {
     justify-content: flex-start; 
   }
   
+  /* Página de Post */
+  .article-title { font-size: 3.5rem; }
+  
   /* Search / 404 */
   .search-hero h1 { font-size: 3.2rem; }
   .error-hero { padding: 80px 20px; }
@@ -1485,6 +1519,30 @@ footer {
   border-radius: 12px;
   border: 1px solid var(--gray-border); 
   margin-bottom: var(--post-block-spacing); 
+}
+
+.post-tag-header {
+  display: inline-flex;   /* <-- A mágica: mudou de inline-block para inline-flex */
+  align-items: center;    /* <-- Centraliza o ícone e a fonte na mesma linha */
+  gap: 8px;               /* <-- Cria o espaço exato entre o ícone e o texto */
+  background-color: var(--aws-orange);
+  color: white;
+  padding: 6px 16px;      /* <-- Aumentei um pouquinho o padding lateral para ficar mais elegante */
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.post-tag-header:hover { 
+  opacity: 0.9; 
+  transform: translateY(-2px); /* <-- Bônus: um leve pulinho ao passar o mouse */
+}
+
+/* Garante que o ícone do FontAwesome fique perfeitamente alinhado */
+.post-tag-header i {
+  margin: 0;
 }
 
 .post-meta {
@@ -1712,13 +1770,84 @@ footer {
    13. PÁGINA DE POST
    ========================================= */
 
+/* Header do Artigo */
+.article-header {
+  background-color: var(--gray-light);
+  width: 100vw; 
+  margin-left: calc(-50vw + 50%);
+  padding: 60px 0 100px 0; 
+  text-align: center;
+  border-bottom: 1px solid var(--gray-border);
+  position: relative;
+  z-index: 1;
+}
+
+.article-header .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.article-title {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 25px;
+  color: var(--aws-dark);
+}
+
+.article-meta {
+  display: flex; 
+  justify-content: center; 
+  gap: 25px;
+  color: var(--gray-text); 
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+
+.article-meta span { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.article-meta i { 
+  color: var(--aws-orange); 
+}
+
+/* Imagem de Destaque */
+.featured-image-container {
+  width: 100%;
+  max-width: 960px;
+  margin: -40px auto var(--post-block-spacing) auto; 
+  padding: 0 20px;
+  position: relative; 
+  z-index: 10; 
+}
+
+.featured-image {
+  width: 100%;
+  height: 500px; 
+  object-fit: cover; 
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .featured-image {
+    height: 300px; 
+  }
+}
 
 /* =========================================
    ESTRUTURA DE GRID UNIFICADA (2026)
    ========================================= */
 
 /* Layout Mobile */
-.op-main-layout {
+.op-main-layout,
+.article-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
@@ -1734,6 +1863,14 @@ footer {
     padding: 60px 0;
     align-items: start; 
   }
+
+  .article-grid {
+    grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
+    gap: 60px;
+    padding: 60px 0;
+    align-items: start; 
+  }
+
   .sidebar {
     display: block;
     min-width: 300px;
@@ -1745,6 +1882,11 @@ footer {
 
 .sidebar > div + div {
   margin-top: 30px; /* Ajuste para o valor que achar mais bonito (25px, 30px...) */
+}
+/* Garante que o conteúdo principal não vaze em telas pequenas */
+.main-content-column {
+  width: 100%;
+  min-width: 0;
 }
 
 /* Mobile */
@@ -1785,10 +1927,211 @@ footer {
   padding: 20px;
 }
 
+/* Resumo (Lead) */
+.post-lead {
+  width: 100%;
+  font-size: 1.27rem; 
+  font-style: italic; 
+  line-height: 1.6;
+  color: var(--gray-700);
+  padding: 0; 
+  margin: 0 0 var(--post-block-spacing) 0; 
+}
+
+@media (min-width: 768px) {
+    .post-lead {
+        font-size: 1.4rem; 
+    }
+}
+
+/* Conteúdo do Post */
+.post-content {
+  width: 100%;
+  margin: 0;
+  padding: 0; 
+  font-size: 1.15rem;
+  color: var(--gray-800);
+  line-height: 1.8;
+}
+
+.post-content p { 
+  margin-bottom: var(--post-block-spacing); 
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: var(--post-block-spacing) auto; 
+    border-radius: 8px;
+}
+
+.post-content a { 
+    color: var(--aws-orange); 
+    text-decoration: underline; 
+    transition: color 0.2s; 
+}
+
+.post-content a:hover { 
+    color: var(--aws-orange-hover); 
+}
+
+/* Títulos com Ritmo Vertical */
+.post-content h2, 
+.post-content h3, 
+.post-content h4, 
+.post-content h5 {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-dark);
+  line-height: 1.3;
+  margin-top: var(--post-heading-top); 
+  margin-bottom: var(--post-heading-bottom);
+}
+
+.post-content h2 {
+  font-size: 2rem;
+  position: relative;
+  padding-left: 15px;
+}
+
+.post-content h2::before {
+  content: ''; 
+  position: absolute; 
+  left: 0; 
+  top: 5px; 
+  bottom: 5px;
+  width: 4px; 
+  background-color: var(--aws-orange); 
+  border-radius: 2px;
+}
+
+.post-content h3 {
+  font-size: 1.6rem;
+}
+
+.post-content h4 {
+  font-size: 1.35rem;
+}
+
+.post-content h5 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Ajuste de Scroll para Âncoras */
+.post-content h2[id], 
+.post-content h3[id],
+.post-content h4[id],
+.post-content h5[id] {
+  scroll-margin-top: 100px;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
+/* =========================================
+   14. LISTAS E CITAÇÕES (CORRIGIDO v1.0)
+   ========================================= */
+
+/* --- Configuração Base (Comum a ambos) --- */
+.post-content ul, 
+.post-content ol { 
+  margin-bottom: var(--post-block-spacing); 
+  padding-left: 2rem; /* Garante o recuo do bloco inteiro */
+}
+
+.post-content li { 
+  margin-bottom: 12px; 
+  line-height: 1.6;
+  position: relative;
+  /* REMOVIDO: display: block; -> Deixamos o padrão 'list-item' do navegador */
+}
+
+/* Garante que o texto dentro do li fique na mesma linha */
+.post-content li p {
+  display: inline !important;
+  margin: 0 !important;
+}
+
+/* --- LISTA DESORDENADA (UL) - Bolinhas Amarelas --- */
+.post-content ul { 
+  list-style: none !important; /* Remove bolinha nativa preta */
+}
+
+/* Recuo extra apenas na UL para dar espaço à bolinha customizada */
+.post-content ul li { 
+  padding-left: 25px; 
+}
+
+/* A bolinha amarela agora é exclusiva de UL */
+.post-content ul li::before {
+  content: ''; 
+  position: absolute;
+  left: 0; 
+  top: 0.6em; /* Ajuste fino vertical */
+  width: 8px; /* Reduzi levemente para 8px para ficar mais elegante */
+  height: 8px;
+  background-color: var(--aws-orange); 
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* --- LISTA ORDENADA (OL) - Números --- */
+.post-content ol { 
+  list-style-type: decimal !important; /* Força números 1, 2, 3 */
+  padding-left: 2.5rem; /* Um pouco mais de espaço para números de 2 dígitos */
+}
+
+.post-content ol li {
+  padding-left: 10px; /* Pequeno respiro entre o número e o texto */
+}
+
+/* BLINDAGEM: Garante que nenhuma bolinha apareça aqui */
+.post-content ol li::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Estilização do Número (Cor Laranja) */
+.post-content ol li::marker {
+  color: var(--aws-orange);
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif; /* Usa sua fonte de títulos */
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .post-content ul, 
+  .post-content ol {
+    padding-left: 1.5rem;
+  }
+  
+  .post-content ul li {
+    padding-left: 20px; 
+  }
+}
+
+/* --- Blockquote (Mantido igual) --- */
+.post-content blockquote {
+  margin: var(--post-block-spacing) 0;
+  padding: 1.5rem 2rem;
+  background-color: var(--gray-light);
+  background-image: var(--bg-light-gradient);
+  border-left: 5px solid var(--blue-600);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.post-content blockquote p {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  font-style: italic;
+  margin: 0;
+}
 /* =========================================
    15. WIDGETS E SIDEBAR
    ========================================= */
@@ -1977,9 +2320,55 @@ html {
   transform: translateY(-2px);
 }
 
+/* TOC Mobile Accordion */
+.toc-mobile-accordion {
+  margin: var(--post-block-spacing) 0;
+  border: 1px solid var(--gray-border);
+  border-radius: 8px;
+  background-color: var(--gray-light);
+  overflow: hidden;
+  width: 100%;
+}
+
+.toc-mobile-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  padding: 15px 20px;
+  background: white;
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-dark);
+  cursor: pointer;
+  font-size: 1.2rem;
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.toc-mobile-content {
+  display: none;
+  padding: 10px 0;
+  border-top: 1px solid var(--gray-border);
+}
+
+.toc-mobile-content.open { 
+  display: block; 
+}
+
 /* =========================================
    16. MEDIA QUERIES FINAIS E GRID AVANÇADO
    ========================================= */
+
+@media (min-width: 768px) {
+  .article-title { 
+    font-size: 3.5rem; 
+  }
+  
+  .post-body-wrapper { 
+    padding: 0; 
+  }
+}
+
 
 .mobile-only-injection {
     margin: var(--post-block-spacing) 0;
@@ -2114,6 +2503,167 @@ html {
 }
 
 /* =========================================
+   18.5. FORMATAÇÃO INLINE (BUBBLE MENU)
+   ========================================= */
+
+/* --- Negrito (Bold) --- */
+/* Restaura o peso da fonte que o reset removeu */
+.post-content strong,
+.post-content b {
+  font-weight: 700;
+  color: var(--aws-dark); /* Garante contraste máximo para leitura */
+}
+
+/* --- Itálico (Italic) --- */
+/* Restaura o estilo inclinado */
+.post-content em,
+.post-content i {
+  font-style: italic;
+}
+
+/* --- Links (.content-link) --- */
+/* Porta o estilo do Vue usando suas variáveis globais */
+.post-content .content-link,
+.post-content a { /* Fallback para links padrão */
+  color: var(--blue-600);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.post-content .content-link:hover,
+.post-content a:hover {
+  color: var(--aws-dark);
+}
+
+/* --- Inline Code (< />) --- */
+/* Cópia visual exata do componente Vue */
+.post-content .inline-code {
+  background-color: #edf2f7; /* Fundo cinza específico do Tiptap */
+  color: #d53f8c;          /* Rosa/Roxo de destaque */
+  font-family: var(--font-code); /* JetBrains Mono */
+  font-size: 0.85em;       /* Levemente menor que o texto corrido */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  
+  /* Garante que o fundo não quebre feio se o código pular de linha */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* =========================================
+   19. BLOCOS DE CÓDIGO
+   ========================================= */
+
+.code-wrapper {
+  position: relative;
+  /* Margem total para garantir o ritmo vertical e afastar o texto subsequente */
+  margin: var(--post-block-spacing) 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--aws-dark);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #19212c;
+  color: #a0aec0;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+pre.code-block, 
+.post-content pre {
+  padding: 20px;
+  /* CORREÇÃO: Removido margin: 0 para permitir que a margem do container ou do próprio pre 
+     empurre o conteúdo abaixo. Adicionado margem inferior caso o pre seja usado sem wrapper. */
+  margin: 0 0 var(--post-block-spacing) 0; 
+  
+  overflow-x: auto;
+  color: #e2e8f0;
+  font-family: var(--font-code);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  background-color: var(--aws-dark) !important;
+  border-radius: 8px !important;
+  -webkit-overflow-scrolling: touch; 
+}
+
+/* Garante que se o pre estiver dentro de um wrapper, não duplique o espaço, 
+   usando apenas a margem do wrapper pai */
+.code-wrapper pre.code-block,
+.code-wrapper .post-content pre {
+  margin: 0 !important;
+}
+
+pre {
+  position: relative;
+  padding-top: 2.5rem !important; 
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background: var(--aws-orange);
+  border-color: var(--aws-orange);
+}
+
+.copy-code-btn.copied {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+pre code {
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* =========================================
+   20. MEDIA QUERIES - CÓDIGO (MOBILE)
+   ========================================= */
+
+@media (max-width: 768px) {
+  pre.code-block, 
+  .post-content pre {
+    padding: 15px;
+    font-size: 0.85rem; 
+    border-radius: 8px !important; 
+  }
+  
+  .code-header {
+    padding: 6px 12px;
+  }
+}
+
+/* =========================================
    21. CITAÇÃO (BLOCKQUOTE)
    ========================================= */
    
@@ -2175,6 +2725,31 @@ article th,
 .conteudo-post th {
   background-color: #f3f4f6; /* Fundo cinza claro para o cabeçalho */
   font-weight: 600;          /* Negrito no cabeçalho */
+}
+
+/* ==================================================
+   23. VÍDEOS (Centralizar e Responsivo)
+   ================================================== */
+
+/* Centraliza o iframe (o vídeo em si) */
+.post-content iframe,
+.post-content-part iframe,
+.post-content video,
+.post-content-part video {
+  display: block;       /* Transforma em bloco para aceitar margem */
+  margin: 2rem auto;    /* 'auto' nas laterais centraliza, '2rem' dá espaço vertical */
+  max-width: 100%;      /* Garante que o vídeo nunca seja maior que a tela do celular */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* (Opcional) Uma sombra leve para destaque */
+}
+
+/* Caso o seu editor envolva o vídeo em uma tag <figure> ou <div class="media"> */
+.post-content figure,
+.post-content-part figure,
+.post-content .media {
+  display: flex;        /* Usa Flexbox */
+  justify-content: center; /* Centraliza o conteúdo (o vídeo) dentro da figura */
+  margin: 2rem 0;       /* Espaçamento vertical */
+  width: 100%;
 }
 
 @media (min-width: 1024px) {

@@ -1,0 +1,553 @@
+/* ==========================================================================
+   POST PAGE STYLES (Mobile-First & Anti-Regression)
+   ========================================================================== */
+
+/* --- 1. LAYOUT BASE E GRID --- */
+.op-main-layout,
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  /* 🚀 CORREÇÃO MOBILE: Aplicando os 20px laterais do Design System */
+  padding: 40px 20px; 
+}
+
+.main-content-column {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .op-main-layout,
+  .article-grid {
+    grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
+    gap: 60px;
+    /* Mantemos o 0 lateral no Desktop para evitar regressão na centralização */
+    padding: 60px 0; 
+    align-items: start; 
+  }
+
+  .sidebar {
+    display: block;
+    min-width: 300px;
+    position: sticky;
+    top: 100px;
+  }
+}
+/* --- 2. HEADER E METADADOS --- */
+.article-header {
+  background-color: var(--gray-light);
+  width: 100vw; 
+  margin-left: calc(-50vw + 50%);
+  padding: 60px 0 100px 0; 
+  text-align: center;
+  border-bottom: 1px solid var(--gray-border);
+  position: relative;
+  z-index: 1;
+}
+
+.article-header .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.article-meta {
+  display: flex; 
+  justify-content: center; 
+  gap: 25px;
+  color: var(--gray-text); 
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+
+.article-meta span { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.article-meta i { 
+  color: var(--aws-orange); 
+}
+
+/* Tipografia do Header */
+.article-title {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  font-size: 2.5rem; /* Base Mobile */
+  line-height: 1.2;
+  margin-bottom: 25px;
+  color: var(--aws-dark);
+}
+
+@media (min-width: 768px) {
+  .article-title { 
+    font-size: 3.5rem; /* Override Desktop */
+  }
+  .post-body-wrapper { 
+    padding: 0; 
+  }
+}
+
+/* --- 3. BADGES (TAGS) --- */
+.post-tag {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 153, 0, 0.15); 
+  color: var(--aws-orange); 
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 12px; 
+  align-self: flex-start;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.post-card:hover .post-tag {
+  background-color: rgba(255, 153, 0, 0.25); 
+}
+
+.post-tag i {
+  margin: 0;
+  font-size: 0.8rem;
+  color: currentColor; 
+}
+
+.post-tag-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--aws-orange);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.post-tag-header:hover { 
+  opacity: 0.9; 
+  transform: translateY(-2px); 
+}
+
+.post-tag-header i { margin: 0; }
+
+/* --- 4. IMAGEM DE DESTAQUE --- */
+.featured-image-container {
+  width: 100%;
+  max-width: 960px;
+  margin: -40px auto var(--post-block-spacing) auto; 
+  padding: 0 20px;
+  position: relative; 
+  z-index: 10; 
+}
+
+.featured-image {
+  width: 100%;
+  height: 300px; /* Base Mobile */
+  object-fit: cover; 
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  background-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .featured-image {
+    height: 500px; /* Override Desktop */
+  }
+}
+
+/* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
+.post-content {
+  width: 100%;
+  margin: 0;
+  padding: 0; 
+  font-size: 1.15rem;
+  color: var(--gray-800);
+  line-height: 1.8;
+}
+
+.post-content p { margin-bottom: var(--post-block-spacing); }
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--post-block-spacing) auto; 
+  border-radius: 8px;
+}
+
+.post-content a,
+.post-content .content-link { 
+  color: var(--blue-600); 
+  text-decoration: underline; 
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease; 
+}
+
+.post-content a:hover,
+.post-content .content-link:hover { color: var(--aws-dark); }
+
+/* Tipografia Interna */
+.post-content strong,
+.post-content b {
+  font-weight: 700;
+  color: var(--aws-dark);
+}
+
+.post-content em,
+.post-content i { font-style: italic; }
+
+.post-content h2, 
+.post-content h3, 
+.post-content h4, 
+.post-content h5 {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-dark);
+  line-height: 1.3;
+  margin-top: var(--post-heading-top); 
+  margin-bottom: var(--post-heading-bottom);
+  scroll-margin-top: 100px;
+}
+
+.post-content h2 {
+  font-size: 2rem;
+  position: relative;
+  padding-left: 15px;
+}
+
+.post-content h2::before {
+  content: ''; 
+  position: absolute; 
+  left: 0; 
+  top: 5px; 
+  bottom: 5px;
+  width: 4px; 
+  background-color: var(--aws-orange); 
+  border-radius: 2px;
+}
+
+.post-content h3 { font-size: 1.6rem; }
+.post-content h4 { font-size: 1.35rem; }
+.post-content h5 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Vídeo centralizado e responsivo */
+.post-content iframe,
+.post-content-part iframe,
+.post-content video,
+.post-content-part video {
+  display: block;       /* Transforma em bloco para aceitar margem */
+  margin: 2rem auto;    /* 'auto' nas laterais centraliza, '2rem' dá espaço vertical */
+  max-width: 100%;      /* Garante que o vídeo nunca seja maior que a tela do celular */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* (Opcional) Uma sombra leve para destaque */
+}
+
+/* Caso o seu editor envolva o vídeo em uma tag <figure> ou <div class="media"> */
+.post-content figure,
+.post-content-part figure,
+.post-content .media {
+  display: flex;        /* Usa Flexbox */
+  justify-content: center; /* Centraliza o conteúdo (o vídeo) dentro da figura */
+  margin: 2rem 0;       /* Espaçamento vertical */
+  width: 100%;
+}
+
+
+/* --- 6. LISTAS E CITAÇÕES --- */
+.post-content ul, 
+.post-content ol { 
+  margin-bottom: var(--post-block-spacing); 
+  padding-left: 1.5rem; /* Base Mobile */
+}
+
+.post-content li { 
+  margin-bottom: 12px; 
+  line-height: 1.6;
+  position: relative;
+}
+
+.post-content li p {
+  display: inline;
+  margin: 0;
+}
+
+/* Listas Desordenadas (UL) */
+.post-content ul { list-style: none; }
+
+.post-content ul li { padding-left: 20px; /* Base Mobile */ }
+
+.post-content ul li::before {
+  content: ''; 
+  position: absolute;
+  left: 0; 
+  top: 0.6em; 
+  width: 8px; 
+  height: 8px;
+  background-color: var(--aws-orange); 
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Listas Ordenadas (OL) */
+.post-content ol { list-style-type: decimal; }
+
+.post-content ol li { padding-left: 10px; }
+
+.post-content ol li::before {
+  content: none;
+  display: none;
+}
+
+.post-content ol li::marker {
+  color: var(--aws-orange);
+  font-weight: 700;
+  font-family: var(--font-space-grotesk);
+}
+
+@media (min-width: 768px) {
+  .post-content ul { padding-left: 2rem; }
+  .post-content ol { padding-left: 2.5rem; }
+  .post-content ul li { padding-left: 25px; }
+}
+
+/* Blockquote */
+.post-content blockquote {
+  margin: var(--post-block-spacing) 0;
+  padding: 1.5rem 2rem;
+  background-color: var(--gray-light);
+  background-image: var(--bg-light-gradient);
+  border-left: 5px solid var(--blue-600);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.post-content blockquote:hover { transform: translateX(5px); }
+
+.post-content blockquote p {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  font-style: italic;
+  margin: 0;
+}
+
+.post-content blockquote::before {
+  content: "\f10d";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #ffffff;
+  padding: 0 8px;
+  color: var(--blue-600);
+  font-size: 0.85rem;
+}
+
+/* --- 7. BLOCOS DE CÓDIGO E BOTÃO COPY --- */
+.post-content .inline-code {
+  background-color: #edf2f7; 
+  color: #d53f8c;          
+  font-family: var(--font-code); 
+  font-size: 0.85em;       
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+pre.code-block, 
+.post-content pre {
+  padding: 15px; /* Base Mobile */
+  font-size: 0.85rem; /* Base Mobile */
+  border-radius: 8px; 
+  margin: 0 0 var(--post-block-spacing) 0; 
+  overflow-x: auto;
+  color: #e2e8f0;
+  font-family: var(--font-code);
+  line-height: 1.6;
+  background-color: var(--aws-dark); 
+  -webkit-overflow-scrolling: touch; 
+}
+
+.code-wrapper pre.code-block,
+.code-wrapper .post-content pre {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  pre.code-block, 
+  .post-content pre {
+    padding: 20px;
+    font-size: 0.95rem; 
+  }
+}
+
+.code-wrapper {
+  position: relative;
+  margin: var(--post-block-spacing) 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--aws-dark);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #19212c;
+  color: #a0aec0;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Escopado para segurança e sem !important */
+.code-wrapper pre,
+.post-content pre {
+  position: relative;
+  padding-top: 2.5rem; 
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background: var(--aws-orange);
+  border-color: var(--aws-orange);
+}
+
+.copy-code-btn.copied {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+.code-wrapper pre code,
+.post-content pre code {
+  display: block;
+}
+
+.code-wrapper pre::-webkit-scrollbar,
+.post-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.code-wrapper pre::-webkit-scrollbar-thumb,
+.post-content pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   9. TOC MOBILE (Índice) - VERSÃO FINAL (Ultra-Leve & Animada)
+   ========================================================================== */
+
+/* 1. O Container Principal (Acento Laranja e Respiro) */
+.toc-mobile-accordion {
+  border: none;
+  border-left: 4px solid var(--aws-orange);
+  background-color: transparent;
+  width: calc(100% - 24px); 
+  margin: 2rem auto;        
+  box-shadow: none;         
+  overflow: hidden;
+}
+
+/* 2. O Botão Clicável (Header) */
+.toc-mobile-header {
+  border: none; 
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 14px 16px 14px 20px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  font-size: 1.05rem; /* Fonte encorpada do título restaurada */
+  color: var(--aws-dark);
+  cursor: pointer;
+}
+
+/* 3. Os Ícones do Header (AQUI ESTAVA O PROBLEMA!) */
+.toc-mobile-header .toc-icon {
+  color: var(--aws-orange);
+  margin-right: 8px; /* Isso desgruda o texto do ícone da esquerda */
+}
+
+.toc-mobile-header .fa-chevron-down {
+  transition: transform 0.3s ease;
+  margin-left: auto; 
+  color: var(--aws-orange); /* Seta da direita laranja */
+}
+
+/* 4. A MÁGICA DA ANIMAÇÃO */
+.toc-mobile-content {
+  display: grid;
+  grid-template-rows: 0fr; 
+  transition: grid-template-rows 0.3s ease-out; 
+}
+
+.toc-mobile-content.open {
+  grid-template-rows: 1fr; 
+}
+
+/* 5. O Wrapper Interno */
+.toc-mobile-inner {
+  overflow: hidden;
+}
+
+/* 6. A Lista de Links Interna */
+.toc-mobile-inner .toc-list {
+  padding: 0 16px 16px 20px; 
+  margin: 0;
+  border-top: 1px solid rgba(0,0,0,0.05); 
+  list-style: none; 
+}
+
+.toc-mobile-inner .toc-list li {
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.toc-mobile-inner .toc-list li::before {
+  display: none !important;
+}
+
+/* 7. Os Links da Lista (Limpo e sem duplicações) */
+.toc-mobile-inner .toc-list a {
+  text-decoration: none;
+  color: var(--gray-800);
+  display: block; 
+  padding: 4px 0;
+  /* Sem font-size forçado aqui, ele herda a fonte agradável do texto do post */
+}
