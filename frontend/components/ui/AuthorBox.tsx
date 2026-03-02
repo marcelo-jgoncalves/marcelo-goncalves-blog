@@ -1,3 +1,5 @@
+// frontend/components/ui/AuthorBox.tsx
+
 import React from 'react';
 import Link from 'next/link';
 import { getAuthor } from '@/lib/api';

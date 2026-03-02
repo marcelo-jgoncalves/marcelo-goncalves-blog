@@ -1,5 +1,3 @@
-// frontend/app/post/[slug]/page.tsx
-
 import './post.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -20,6 +18,7 @@ import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import ShareButtonsWrapper from '@/components/ui/ShareButtonsWrapper';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
+import NewsletterWidget from '@/components/ui/NewsletterWidget'; // 🚀 NOVO: Importamos a Newsletter para usá-la no mobile
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -47,7 +46,6 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  // AQUI ESTÁ A CORREÇÃO: Extraímos a categoria do payload
   const { post, category } = data;
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
@@ -55,13 +53,9 @@ export default async function PostPage({ params }: Props) {
     const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
 
     return parts.map((part, index) => {
+      // 🚀 UX/CRO: Retornamos null aqui para NÃO quebrar a leitura no meio do texto no celular
       if (part === '<div id="inject-service-placeholder"></div>') {
-        return (
-          // 🚀 CORREÇÃO: 'lg:hidden' substituído por 'mobile-only'
-          <div key="inject-service" className="mobile-only"> 
-            <ServiceCallout />
-          </div>
-        );
+        return null; 
       }
 
       if (part === '<div id="inject-ads-placeholder"></div>') {
@@ -92,7 +86,6 @@ export default async function PostPage({ params }: Props) {
       <section className="article-header">
         <div className="container">
           
-          {/* BADGE DINÂMICO DA CATEGORIA COM FALLBACK */}
           {category ? (
             <Link href={`/categoria/${category.categoria_slug}`} className="post-tag-header hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>              
               {category.icone_fa && <i className={`${category.icone_fa} mr-2`}></i>}
@@ -126,7 +119,6 @@ export default async function PostPage({ params }: Props) {
         </div>
       )}
 
-      {/* GRID PRINCIPAL */}
       <div className="container article-grid">
         <div className="main-content-column">
             <article>
@@ -147,21 +139,27 @@ export default async function PostPage({ params }: Props) {
                 </div>
             </article>
 
+            {/* 🚀 A JORNADA DE ALTA CONVERSÃO MOBILE ACONTECE AQUI */}
             <div className="post-footer-safe-zone mt-8">
+                
+                {/* Mostra as ofertas principais apenas no celular, empilhadas de forma limpa */}
+                <div className="mobile-only flex flex-col gap-8 mb-8">
+                  <ServiceCallout />
+                  <NewsletterWidget />
+                </div>
+                
                 <ShareButtonsWrapper title={post.titulo} slug={post.slug} />
                 <AuthorBox authorId={post.autor_id} /> 
                 <PopularPostsSection limit={4} variant="post" /> 
             </div>
         </div>
 
-        {/* SIDEBAR */}
+        {/* SIDEBAR (Intocável, continua perfeita para o Desktop) */}
         <BlogSidebar adsenseBlockId="sidebar-300x600">
-            {/* 1. TOC */}
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
             
-            {/* 2. CTA de Serviços */}
             <div className="mt-8">
               <ServiceCallout />
             </div>

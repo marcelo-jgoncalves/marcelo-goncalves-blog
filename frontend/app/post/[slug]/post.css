@@ -8,8 +8,9 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
-  /* 🚀 CORREÇÃO MOBILE: Aplicando os 20px laterais do Design System */
-  padding: 40px 20px; 
+  /* 🚀 CORREÇÃO MOBILE: 0 no topo para evitar soma com a margem da imagem, 
+     20px nas laterais para o respiro, 40px no final */
+  padding: 0 20px 40px 20px; 
 }
 
 .main-content-column {
@@ -140,31 +141,69 @@
 .post-tag-header i { margin: 0; }
 
 /* --- 4. IMAGEM DE DESTAQUE --- */
+/* (O container .featured-image-container permanece igual) */
 .featured-image-container {
   width: 100%;
   max-width: 960px;
-  margin: -40px auto var(--post-block-spacing) auto; 
+  margin: -40px auto 20px auto; /* Mantendo o gap mobile corrigido */
   padding: 0 20px;
   position: relative; 
   z-index: 10; 
 }
 
+/* 🚀 ATUALIZAÇÃO: Aplicando as quinas na imagem real */
 .featured-image {
   width: 100%;
-  height: 300px; /* Base Mobile */
-  object-fit: cover; 
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  background-color: #fff;
+  height: auto; /* Mantém a proporção da imagem */
+  object-fit: cover; /* Garante que a imagem preencha sem distorcer */
+  display: block;
+  
+  /* Quinas arredondadas padrão do design system (ex: 8px ou 12px) */
+  border-radius: 12px; 
+  
+  /* Blindagem: Garante que nada "vaze" para fora das quinas arredondadas */
+  overflow: hidden; 
 }
 
 @media (min-width: 768px) {
+  /* (O container .featured-image-container permanece igual no desktop) */
+  .featured-image-container {
+    margin-bottom: var(--post-block-spacing, 40px); 
+  }
+  
   .featured-image {
-    height: 500px; /* Override Desktop */
+    height: 500px; /* Mantém a altura fixa no desktop */
+    /* border-radius já está aplicado acima e será herdado aqui */
+  }
+}
+
+/* --- 5.1. RESUMO DO POST (.post-lead) --- */
+.post-lead {
+  font-size: 1.25rem; 
+  font-weight: 500;   
+  color: var(--aws-dark); 
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .post-lead {
+    font-size: 1.35rem; /* Um pouco maior no desktop */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Força a tag injetada pelo Google a obedecer o quadrado */
+  .post-content .my-8 ins,
+  .post-content .my-8 iframe {
+    width: 300px !important;
+    height: 250px !important;
+    display: block !important;
   }
 }
 
 /* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
+
 .post-content {
   width: 100%;
   margin: 0;
@@ -550,4 +589,93 @@ pre.code-block,
   display: block; 
   padding: 4px 0;
   /* Sem font-size forçado aqui, ele herda a fonte agradável do texto do post */
+}
+
+/* ==========================================================================
+   10. ADSENSE E PERFORMANCE (Prevenção de CLS)
+   ========================================================================== */
+
+/* 1. Base Comum para Todos os Anúncios */
+.summary-ads-wrapper,
+.adsense-placeholder-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto; /* Zera margens externas */
+  overflow: hidden;
+  
+  /* UX: Fundo transparente e borda removida para máxima limpeza visual */
+  background-color: transparent; /* <- Alteração crítica para remover o cinza */
+  border-radius: 0;
+  border: none;
+}
+
+/* 2. Anúncio do Topo (Horizontal) */
+.summary-ads-wrapper {
+  /* CLS Zero: Reserva 100px no mobile para banners horizontais */
+  min-height: 100px; 
+}
+
+/* 3. Anúncio In-Article e In-Feed (O Quadrado de 300x250) */
+.adsense-placeholder-box {
+  /* CLS Zero: Reserva exatos 250px para o formato "rectangle" que pedimos no React */
+  min-height: 250px; 
+  margin: 2.5rem 0; /* Ritmo vertical do anúncio in-article */
+}
+
+/* Comportamento no Desktop */
+@media (min-width: 768px) {
+  .summary-ads-wrapper {
+    /* Leaderboard clássico do AdSense tem 90px de altura no desktop */
+    min-height: 90px; 
+  }
+}
+
+/* Garante que a tag do Google obedeça ao nosso alinhamento */
+.adsbygoogle {
+  display: block !important;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   11. RITMO VERTICAL E ESPAÇAMENTOS (Micro e Macro Rhythm)
+   ========================================================================== */
+
+/* --- MICRO-RITMO (16px / 1rem) - Leitura Densa --- */
+.post-content-part p {
+  margin-bottom: 1rem; /* Reduz de 40px para 16px no mobile */
+  line-height: 1.7;    /* Aumenta o respiro entre as linhas do texto */
+}
+
+/* O último parágrafo de cada bloco não precisa de margem extra */
+.post-content-part p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* --- MACRO-RITMO (32px / 2rem) - A Zona Segura do Rodapé --- */
+.post-footer-safe-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* 🚀 A MÁGICA: Implanta os 32px perfeitos entre todos os componentes */
+  margin-top: 2rem; /* Separação inicial do texto */
+}
+
+/* Blindagem: Neutraliza as margens caóticas de 40px que os componentes trouxeram */
+.post-footer-safe-zone > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* --- AJUSTES PARA DESKTOP (Respiro Ampliado) --- */
+@media (min-width: 768px) {
+  .post-content-part p {
+    margin-bottom: 1.25rem; /* ~20px no desktop para telas largas */
+  }
+  
+  .post-footer-safe-zone {
+    gap: 3rem; /* ~48px no desktop, já que há mais espaço */
+    margin-top: 3rem;
+  }
 }

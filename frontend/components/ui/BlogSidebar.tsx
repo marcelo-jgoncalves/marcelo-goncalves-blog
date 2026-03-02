@@ -1,3 +1,5 @@
+// frontend/components/ui/BlogSidebar.tsx
+
 import React from 'react';
 import NewsletterWidget from './NewsletterWidget';
 import AdsenseSidebar from './AdsenseSidebar';
