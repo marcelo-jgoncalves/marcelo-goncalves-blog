@@ -1,7 +1,5 @@
 // frontend/components/ui/AuthorBox.tsx
-
 import React from 'react';
-import Link from 'next/link';
 import { getAuthor } from '@/lib/api';
 
 interface AuthorBoxProps {
@@ -9,27 +7,31 @@ interface AuthorBoxProps {
 }
 
 export default async function AuthorBox({ authorId }: AuthorBoxProps) {
-  // Se não vier ID (ex: post antigo), usa o autor padrão
   const id = authorId || 'marcelo-goncalves';
-  
-  // Busca dados do autor
   const data = await getAuthor(id);
   
-  // Se a API falhar, não renderiza nada
   if (!data || !data.autor) return null;
 
   const { autor } = data;
 
   return (
-    <div className="author-box">
+    /* 🚀 SEO: Marcação Schema.org para validar Autoridade (E-E-A-T) */
+    <section className="author-box" itemScope itemType="https://schema.org/Person">
+      
       <div className="author-avatar">
         {autor.foto_avatar_url ? (
+          /* 🚀 PERFORMANCE: Dimensões explícitas e lazy loading = CLS Zero */
           <img 
             src={autor.foto_avatar_url} 
-            alt={autor.foto_avatar_alt_text || `Foto de ${autor.nome_exibicao}`} 
+            alt={autor.foto_avatar_alt_text || `Foto de ${autor.nome_exibicao}`}
+            width={80}
+            height={80}
+            loading="lazy"
+            decoding="async"
+            itemProp="image"
           />
         ) : (
-          <div className="author-avatar-placeholder">
+          <div className="author-avatar-placeholder" aria-hidden="true">
             <i className="fas fa-user"></i>
           </div>
         )}
@@ -37,34 +39,36 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
 
       <div className="author-info">
         <div className="author-text-flow">
-            {/* CORREÇÃO: Nome em destaque (Run-in) */}
-            <span className="author-name-runin">{autor.nome_exibicao} </span>
+            {/* 🚀 UX: Strong no nome para destaque semântico */}
+            <strong className="author-name-runin" itemProp="name">
+              {autor.nome_exibicao}
+            </strong>
             
-            {/* Renderiza o restante da bio */}
             <span 
               className="author-bio-content" 
+              itemProp="description"
               dangerouslySetInnerHTML={{ __html: autor.bio }} 
             />
         </div>
 
         <div className="author-social">
             {autor.linkedin_url && (
-                <a href={autor.linkedin_url} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <i className="fab fa-linkedin-in"></i>
+                <a href={autor.linkedin_url} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${autor.nome_exibicao}`}>
+                    <i className="fab fa-linkedin-in" aria-hidden="true"></i>
                 </a>
             )}
             {autor.github_url && (
-                <a href={autor.github_url} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <i className="fab fa-github"></i>
+                <a href={autor.github_url} target="_blank" rel="noopener noreferrer" aria-label={`GitHub de ${autor.nome_exibicao}`}>
+                    <i className="fab fa-github" aria-hidden="true"></i>
                 </a>
             )}
             {autor.instagram_url && (
-                <a href={autor.instagram_url} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <i className="fab fa-instagram"></i>
+                <a href={autor.instagram_url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram de ${autor.nome_exibicao}`}>
+                    <i className="fab fa-instagram" aria-hidden="true"></i>
                 </a>
             )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

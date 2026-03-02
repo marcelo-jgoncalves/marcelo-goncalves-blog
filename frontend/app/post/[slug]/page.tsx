@@ -15,7 +15,7 @@ import SuperDestaque from '@/components/ui/SuperDestaque';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
 import PopularPostsSection from '@/components/ui/PopularPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
-import ShareButtonsWrapper from '@/components/ui/ShareButtonsWrapper';
+import ShareButtons from '@/components/ui/ShareButtons';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import NewsletterWidget from '@/components/ui/NewsletterWidget'; // 🚀 NOVO: Importamos a Newsletter para usá-la no mobile
@@ -148,7 +148,7 @@ export default async function PostPage({ params }: Props) {
                   <NewsletterWidget />
                 </div>
                 
-                <ShareButtonsWrapper title={post.titulo} slug={post.slug} />
+                <ShareButtons title={post.titulo} slug={post.slug} />
                 <AuthorBox authorId={post.autor_id} /> 
                 <PopularPostsSection limit={4} variant="post" /> 
             </div>
