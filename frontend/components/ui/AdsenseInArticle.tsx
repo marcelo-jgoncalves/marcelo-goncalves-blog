@@ -1,4 +1,6 @@
-'use client'; // Necessário se for rodar o push() do AdSense no client-side
+// frontend/components/ui/AdsenseInArticle
+
+'use client'; 
 import React, { useEffect } from 'react';
 
 interface AdsenseInArticleProps {
@@ -8,14 +10,12 @@ interface AdsenseInArticleProps {
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-// 🚀 Adicionamos a propriedade "format" para domar o Google
 const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: string }> = ({ 
   blockId, 
   className, 
   format = 'auto' 
 }) => {
     
-    // Injeta o anúncio assim que o componente é montado no lado do cliente
     useEffect(() => {
       if (IS_PRODUCTION) {
         try {
@@ -29,7 +29,6 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
 
     return (
         <div className={className} aria-hidden="true">
-            {/* 🚀 A tag real do Google. Substitua o data-ad-client pelo seu ID real! */}
             <ins 
               className="adsbygoogle"
               style={{ display: 'block' }}
@@ -46,46 +45,57 @@ export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleP
   
   let placeholderClass = '';
   let placeholderText = ''; 
-  let adFormat = 'auto'; // Formato padrão
+  let adFormat = 'auto'; 
   
   if (variant === 'summary-divider') {
-    placeholderClass = 'adsense-content-banner';
+    placeholderClass = 'adsense-summary-mock';
     placeholderText = `[ADSENSE TOPO: ${blockId}]`;
-    adFormat = 'horizontal'; // Força formato horizontal no topo
+    adFormat = 'horizontal'; 
   } else if (variant === 'in-content') {
-    placeholderClass = 'adsense-placeholder-box'; 
+    // 🚀 Trocamos para uma classe CSS controlável e formato 'auto'
+    placeholderClass = 'adsense-in-content-mock'; 
     placeholderText = `[ADSENSE IN-ARTICLE: ${blockId}]`;
-    adFormat = 'rectangle'; // 🚀 A MÁGICA: Pede explicitamente o bloco quadrado 300x250
+    adFormat = 'auto'; 
   } else if (variant === 'in-feed') {
-    placeholderClass = 'adsense-placeholder-box'; 
+    placeholderClass = 'adsense-in-feed-mock'; 
     placeholderText = `[ADSENSE IN-FEED: ${blockId}]`;
-    adFormat = 'fluid'; // Ideal para feeds
+    adFormat = 'fluid'; 
   }
 
-  // 1. Lógica Condicional (Produção)
   if (IS_PRODUCTION) {
     const adSlot = <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
-
-    if (variant === 'summary-divider') {
-        return <div className="summary-ads-wrapper">{adSlot}</div>;
-    }
+    if (variant === 'summary-divider') return <div className="summary-ads-wrapper">{adSlot}</div>;
     return adSlot;
   }
   
-  // 2. Placeholder para Desenvolvimento
+  // Wrapper limpo, sem margens ou tamanhos fixos
+  const devWrapperStyle: React.CSSProperties = { 
+    display: 'flex', 
+    justifyContent: 'center', 
+    width: '100%' 
+  };
+
+  const mockBaseStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f8fafc',
+    border: '2px dashed #cbd5e1',
+    maxWidth: '100%',
+    boxSizing: 'border-box'
+  };
+
   const placeholderElement = (
-    <div className={placeholderClass}>
-      <span aria-hidden="true" style={{ fontSize: '0.8rem', color: '#666' }}>{placeholderText}</span>
+    <div className={placeholderClass} style={mockBaseStyle}>
+      <span aria-hidden="true" style={{ fontSize: '0.8rem', color: '#64748b', textAlign: 'center', padding: '10px' }}>
+        {placeholderText}
+      </span>
     </div>
   );
 
   if (variant === 'summary-divider') {
-    return <div className="summary-ads-wrapper" style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>{placeholderElement}</div>;
+    return <div className="summary-ads-wrapper" style={devWrapperStyle}>{placeholderElement}</div>;
   }
 
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
-       {placeholderElement}
-    </div>
-  );
+  return <div style={devWrapperStyle}>{placeholderElement}</div>;
 }

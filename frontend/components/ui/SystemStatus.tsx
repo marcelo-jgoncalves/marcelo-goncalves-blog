@@ -1,5 +1,7 @@
 /* frontend/components/ui/SystemStatus.tsx */
 
+import './SystemStatus.css';
+
 export default function SystemStatus() {
   return (
     <div className="op-widget">

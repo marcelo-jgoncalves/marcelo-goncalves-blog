@@ -1,0 +1,8 @@
+A Armadilha de Performance (Pilar 3 - DNS Lookups)
+Você está carregando 11 imagens a partir de 3 domínios externos diferentes (upload.wikimedia.org, cdn.jsdelivr.net, icon.icepanel.io). Isso gera dois grandes problemas no ecossistema AWS/Next.js:
+
+Problema A (Rede): O navegador do usuário precisará fazer 3 "DNS Lookups", 3 negociações SSL e 3 conexões TCP diferentes só para buscar esses ícones minúsculos. Isso atrasa o carregamento da página.
+
+Problema B (Next.js): Para o componente <Image> do Next.js funcionar com URLs externas sem estourar um erro na tela, esses três domínios precisam obrigatoriamente estar configurados no arquivo next.config.js (na diretiva remotePatterns).
+
+Recomendação de Ouro (Para o Futuro): Quando possível, baixe esses arquivos .svg, coloque-os na sua pasta local /public/icons/ e carregue-os localmente (src="/icons/nextjs.svg"). Isso zera a latência de DNS e acelera a renderização em 10x!

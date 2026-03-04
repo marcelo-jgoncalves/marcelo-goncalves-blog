@@ -1,0 +1,149 @@
+/* ==========================================================================
+   PÁGINA O PROJETO (Namespaced com .op-)
+   Refatorado: Mobile-First, Alta Performance, Grid 8px e Anti-Regressão
+   ========================================================================== */
+
+/* --- 1. HERO SECTION --- */
+.op-hero { 
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); 
+  padding: 48px 16px; /* Grid 8px ajustado */
+  text-align: center; 
+}
+.op-hero-content { 
+  max-width: 900px; 
+  margin: 0 auto; 
+}
+.op-hero h1 { 
+  font-size: 2rem; 
+  color: var(--aws-dark); 
+  line-height: 1.2; 
+  margin-bottom: 24px; /* Grid 8px: corrigido de 20px */
+  letter-spacing: -0.03em; 
+  font-family: var(--font-space-grotesk); 
+  font-weight: 700;
+}
+.op-highlight { 
+  color: var(--aws-orange); 
+}
+.op-subtitle { 
+  font-size: 1.05rem; 
+  color: var(--gray-800); 
+  max-width: 700px; 
+  margin: 0 auto; 
+}
+
+/* --- 2. LAYOUT PRINCIPAL E FEED --- */
+.op-main-layout {
+  padding-left: clamp(1rem, 5vw, 1.5rem) !important;
+  padding-right: clamp(1rem, 5vw, 1.5rem) !important;
+  margin-top: 0px; 
+  box-sizing: border-box;
+  width: 100%;
+}
+.op-timeline-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Grid 8px: Ritmo entre posts mantido */
+  width: 100%;
+}
+.op-empty-state { 
+  text-align: center; 
+  color: var(--gray-text); 
+  padding: 40px 0; 
+}
+
+/* --- 3. SALES CTA E BOTÃO --- */
+.op-sales-cta { 
+  padding: 64px 16px; /* Grid 8px: Corrigido de 60px 20px */
+  background-color: var(--gray-light); 
+  text-align: center; 
+  margin-top: 48px; /* Grid 8px: Corrigido de 40px */
+}
+.op-sales-cta h2 { 
+  font-size: 1.8rem; 
+  color: var(--aws-dark); 
+  margin-bottom: 16px; /* Grid 8px */
+  font-family: var(--font-space-grotesk); 
+  font-weight: 700;
+}
+.op-sales-cta p { 
+  font-size: 1.05rem; 
+  color: var(--gray-text); 
+  max-width: 600px; 
+  margin: 0 auto 32px auto; /* Grid 8px: Corrigido de 30px */
+}
+
+/* Extração do estilo inline do CTA */
+.op-btn-cta {
+  display: inline-block;
+  background-color: var(--aws-orange);
+  color: var(--aws-dark);
+  padding: 16px 32px; /* Grid 8px: Corrigido de 15px 35px */
+  border-radius: 8px; /* Grid 8px: Corrigido de 6px */
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .op-btn-cta:hover {
+    transform: translateY(-2px);
+    background-color: #ffaa00; /* Leve feedback visual */
+  }
+}
+
+/* ==========================================================================
+   5. ADSENSE WRAPPER & MOCKS (REGRAS GLOBAIS / MOBILE FIRST)
+   ========================================================================== */
+.op-feed-ad-wrapper {
+  width: 100%;
+  min-height: 250px; /* Proteção Anti-CLS Mobile */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adsense-in-content-mock {
+  width: 300px;
+  height: 250px;
+}
+
+/* Fallback visual para os outros formatos */
+.adsense-summary-mock { width: 100%; height: 90px; }
+.adsense-in-feed-mock { width: 100%; height: 150px; }
+
+
+/* ==========================================================================
+   6. MEDIA QUERIES (DESKTOP) - SEMPRE NO FINAL DO ARQUIVO
+   ========================================================================== */
+@media (min-width: 768px) {
+  .op-hero { padding: 64px 24px; }
+  .op-hero h1 { font-size: 2.8rem; }
+  .op-subtitle { font-size: 1.15rem; }
+  .op-sales-cta { padding: 80px 24px; margin-top: 80px; }
+  .op-sales-cta h2 { font-size: 2.2rem; }
+}
+
+@media (min-width: 1024px) {
+  .op-main-layout {
+    display: grid;
+    grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr);
+    gap: 56px; 
+    padding-top: 32px !important;
+    padding-bottom: 0 !important; 
+    padding-left: clamp(1.5rem, 5vw, 2rem) !important;
+    padding-right: clamp(1.5rem, 5vw, 2rem) !important;
+  }
+  
+  /* 🚀 Adaptação para Faixa Horizontal no Desktop (Sobrescrevendo o Mobile) */
+  .op-feed-ad-wrapper {
+    min-height: 90px; /* Reduz o escudo para não sobrar espaço */
+  }
+  
+  .adsense-in-content-mock {
+    width: 100%; /* Estica para preencher a coluna */
+    max-width: 800px; /* Limite de segurança */
+    height: 90px; /* Transforma o quadrado em faixa */
+  }
+}

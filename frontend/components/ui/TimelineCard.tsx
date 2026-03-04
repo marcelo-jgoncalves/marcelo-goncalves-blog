@@ -1,8 +1,9 @@
-// frontend/components/ui/TimelineCard.tsx
-import React from 'react';
+// frontend/components/ui/TimelineCard.tsx// frontend/components/ui/TimelineCard.tsx
+
 import Link from 'next/link';
 import Image from 'next/image';
 import ReadMoreLink from './ReadMoreLink';
+import './TimelineCard.css';
 
 interface TimelineCardProps {
   post: {
@@ -12,11 +13,11 @@ interface TimelineCardProps {
     data_publicacao: string;
     imagem_destaque_url?: string;
   };
-  isPriority?: boolean; // Usado para a primeira imagem carregar mais rápido (LCP)
+  isPriority?: boolean; 
 }
 
 export default function TimelineCard({ post, isPriority = false }: TimelineCardProps) {
-  // Lógica de formatação da data isolada no componente
+  
   let dataFormatada = 'Data indisponível';
   if (post.data_publicacao) {
     const dateObj = new Date(post.data_publicacao);
@@ -27,48 +28,47 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
     dataFormatada = `${dia} de ${mesCapitalizado}, ${ano}`;
   }
 
-  // frontend/components/ui/TimelineCard.tsx
+  return (
+    <article className="op-project-card">
+      
+      {/* 🚀 Estilos inline removidos. Delegação total para o .op-card-header */}
+      <div className="op-card-header">
+        <i className="far fa-calendar-alt" aria-hidden="true"></i>
+        <time dateTime={post.data_publicacao}>{dataFormatada}</time>
+      </div>
 
-// ... (mantenha os imports e a lógica de data)
-
-return (
-  <article className="op-project-card">
-    <div className="op-card-header" style={{ padding: '1rem 1.25rem 0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <i className="far fa-calendar-alt" aria-hidden="true" style={{ color: 'var(--aws-orange)' }}></i>
-      <time dateTime={post.data_publicacao}>{dataFormatada}</time>
-    </div>
-
-    {post.imagem_destaque_url && (
-      <Link 
-        href={`/post/${post.slug}`} 
-        className="op-card-image" 
-        style={{ position: 'relative', display: 'block', height: '200px', overflow: 'hidden' }}
-      >
-        <Image 
-          src={post.imagem_destaque_url} 
-          alt={`Capa do artigo: ${post.titulo}`}
-          fill
-          /* A matemática do LCP otimizado para o Mobile + Respiro do Container */
-          sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1024px) 66vw, 400px"
-          priority={isPriority} 
-          quality={80} 
-          style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
-        />
-      </Link>
-    )}
-
-    <div className="op-card-body">
-      <h2>
-        <Link href={`/post/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          {post.titulo}
+      {post.imagem_destaque_url && (
+        <Link 
+          href={`/post/${post.slug}`} 
+          className="op-card-image" 
+          aria-label={`Ler artigo: ${post.titulo}`}
+        >
+          <Image 
+            src={post.imagem_destaque_url} 
+            alt={`Capa do artigo: ${post.titulo}`}
+            fill
+            sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1024px) 66vw, 400px"
+            priority={isPriority} 
+            quality={80} 
+            // objectFit e transition mantidos aqui pois são props específicas de comportamento de imagem
+            style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
+          />
         </Link>
-      </h2>
-      <p>{post.resumo}</p>
-    </div>
+      )}
 
-    <div className="op-card-footer">
-      <ReadMoreLink href={`/post/${post.slug}`} />
-    </div>
-  </article>
-);
+      <div className="op-card-body">
+        <h2>
+          {/* 🚀 textDecoration e color removidos daqui. Delegados para o TimelineCard.css (.op-card-body h2 a) */}
+          <Link href={`/post/${post.slug}`}>
+            {post.titulo}
+          </Link>
+        </h2>
+        <p>{post.resumo}</p>
+      </div>
+
+      <div className="op-card-footer">
+        <ReadMoreLink href={`/post/${post.slug}`} />
+      </div>
+    </article>
+  );
 }

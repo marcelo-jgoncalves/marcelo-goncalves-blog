@@ -1,0 +1,33 @@
+/* ui/SystemStatus.css */
+.op-status-dot { 
+  height: 8px; 
+  width: 8px; 
+  background-color: #48bb78; 
+  border-radius: 50%; 
+  box-shadow: 0 0 0 2px #c6f6d5; 
+}
+.op-status-list { 
+  font-family: var(--font-mono, monospace); 
+  font-size: 0.85rem; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; /* Grid 8px: Corrigido de 12px */
+  color: var(--aws-dark); 
+}
+.op-status-list div { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+.op-status-list i { 
+  width: 20px; 
+  text-align: center; 
+}
+.op-env-tag { 
+  color: #2f855a; 
+  font-weight: 700; 
+  background: #f0fff4; 
+  padding: 0 8px; /* Grid 8px: Corrigido de 6px */
+  border-radius: 4px; 
+  border: 1px solid #c6f6d5; 
+}

@@ -1,5 +1,6 @@
-/*frontend/components/ui/Pagination.tsx */
+/* frontend/components/ui/Pagination.tsx */
 import Link from 'next/link';
+import './Pagination.css'; // 🚀 Pilar 2: Importando o CSS isolado do componente
 
 interface PaginationProps {
   nextToken?: string;
@@ -7,23 +8,22 @@ interface PaginationProps {
 }
 
 export default function Pagination({ nextToken, basePath }: PaginationProps) {
-  // Se não houver nextToken, chegamos ao fim (ou é página única)
   if (!nextToken) {
     return null;
   }
 
   return (
-    <nav className="pagination">
-      {/* Nota: Com DynamoDB/nextToken, não sabemos o número da página anterior 
-        sem manter estado complexo. Focaremos na navegação "Próxima" 
-        que é o padrão robusto para NoSQL.
-      */}
+    // 🚀 Pilar 4: aria-label adicionado para acessibilidade impecável
+    <nav className="op-pagination" aria-label="Paginação de postagens">
       
-      <span className="page-numbers current">Atual</span>
+      <span className="op-page-number current" aria-current="page">
+        Atual
+      </span>
       
       <Link 
         href={`${basePath}?nextToken=${encodeURIComponent(nextToken)}`} 
-        className="page-numbers"
+        className="op-page-number"
+        aria-label="Ir para a próxima página"
       >
         Próxima &rarr;
       </Link>

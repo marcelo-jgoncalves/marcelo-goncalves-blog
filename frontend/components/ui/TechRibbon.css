@@ -1,0 +1,72 @@
+/* frontend/components/ui/TechRibbon.css */
+
+.op-tech-ribbon {
+  display: none; /* 1. Esconde no Mobile por padrão */
+  border-top: 1px dashed rgba(0, 0, 0, 0.15); 
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15); 
+  padding: 24px 0; 
+  background-color: transparent;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.op-tech-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px; /* Grid 8px: Corrigido de 15px */
+  text-align: center;
+}
+
+.op-tech-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.6px;
+  font-weight: 700;
+  color: rgb(74, 85, 104);
+  text-transform: uppercase;
+  letter-spacing: 1.36px;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.op-tech-label::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: rgb(255, 153, 0); 
+  margin: 8px auto 0 auto; /* Já estava no Grid */
+}
+
+.op-tech-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; 
+  gap: 16px; /* Grid 8px: Corrigido de 15px */
+}
+
+.op-tech-icon { 
+  object-fit: contain; 
+  transition: transform 0.3s ease; 
+}
+
+/* 🚀 Interatividade protegida contra Sticky Hover em Tablets (iPads) */
+@media (hover: hover) {
+  .op-tech-icon:hover { 
+    transform: scale(1.15); 
+  }
+}
+
+@media (min-width: 768px) {
+  .op-tech-ribbon { display: block; } /* Revela a faixa no Desktop/Tablet */
+  .op-tech-container { gap: 24px; }   /* Aumenta o espaçamento interno */
+  .op-tech-list { gap: 32px; }        /* Afasta os ícones */
+  .op-tech-icon { 
+    height: 48px;     /* Aumenta os ícones */
+    width: auto;      /* 🚀 Proteção de Aspect Ratio e CLS */
+  }     
+}

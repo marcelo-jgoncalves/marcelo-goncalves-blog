@@ -1,8 +1,7 @@
 // frontend/components/ui/BlogSidebar.tsx
-
-import React from 'react';
 import NewsletterWidget from './NewsletterWidget';
 import AdsenseSidebar from './AdsenseSidebar';
+import './BlogSidebar.css';
 
 interface BlogSidebarProps {
   children?: React.ReactNode;
@@ -14,22 +13,15 @@ export default function BlogSidebar({
   adsenseBlockId = "sidebar-300x600" 
 }: BlogSidebarProps) {
   return (
-    <aside className="sidebar desktop-only">
+    <aside className="op-blog-sidebar op-desktop-only" aria-label="Barra lateral do blog">
+      {children && (
+        <div className="op-sidebar-dynamic-area">
+          {children}
+        </div>
+      )}
+      <AdsenseSidebar blockId={adsenseBlockId} />
       
-      {/* 1 e 2. Área Dinâmica (Recebe o TOC e o ServiceCallout via children) */}
-      <div className="sidebar-dynamic-area">
-        {children}
-      </div>
-
-      {/* 3. Adsense Vertical (Fixo) */}
-      <div className="mt-8">
-        <AdsenseSidebar blockId={adsenseBlockId} />
-      </div>
-
-      {/* 4. Newsletter (Fixo) */}
-      <div className="mt-8">
-        <NewsletterWidget />
-      </div>
+      <NewsletterWidget />
 
     </aside>
   );

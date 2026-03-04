@@ -1,0 +1,40 @@
+/* frontend/components/ui/Pagination.css */
+
+.op-pagination {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 16px; /* 🚀 Grid 8px: Corrigido de 10px para respiro adequado */
+  margin-top: 64px; /* 🚀 Grid 8px: Macro-ritmo corrigido de 60px */
+  padding-bottom: 64px; /* 🚀 Grid 8px: Macro-ritmo corrigido de 60px */
+  flex-wrap: wrap;
+}
+
+.op-page-number {
+  font-family: var(--font-space-grotesk); 
+  font-weight: 700; /* Elevado para 700 para igualar aos botões e títulos */
+  color: var(--aws-dark); 
+  padding: 8px 16px; /* 🚀 Grid 8px: Corrigido de 10px 15px */
+  border: 1px solid var(--gray-border); 
+  border-radius: 8px; /* 🚀 Grid 8px: Corrigido de 6px */
+  transition: all 0.2s ease; 
+  display: inline-flex; /* Melhor alinhamento interno que inline-block */
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Interatividade protegida no Mobile */
+@media (hover: hover) {
+  .op-page-number:not(.current):hover { 
+    background-color: var(--gray-light); 
+    border-color: #cbd5e1; 
+    transform: translateY(-2px); /* Feedback tátil de clique sutil */
+  }
+}
+
+.op-page-number.current { 
+  background-color: var(--aws-orange); 
+  color: var(--aws-dark); /* Contraste WCAG superior ao branco no nosso laranja */
+  border-color: var(--aws-orange); 
+  pointer-events: none; /* A11y: Evita que o usuário clique na página em que já está */
+}
