@@ -1,0 +1,114 @@
+/* frontend/components/ui/layout/Footer.css */
+
+.op-footer {
+  /* Ritmo 8px: 64px top, 24px lados, 32px bottom (8x8, 3x8, 4x8) */
+  padding: 64px 24px 32px; 
+  background-color: var(--aws-dark, #2d3748);
+  color: #cbd5e0;
+}
+
+.op-footer-content {
+  display: grid;
+  /* Grid fluido cravado no Ritmo de 8px: 256px = 32x8 */
+  grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+  gap: 40px; /* Ritmo 8px: 5x8 */
+  margin-bottom: 40px;
+}
+/* --- ESTILOS MOBILE (Padrão) --- */
+
+.op-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza no Mobile */
+  text-align: center;
+}
+
+.op-footer-title {
+  font-size: 1.25rem; /* ~20px (substitui o 19.2px quebrado) */
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px; /* Ritmo 8px (substitui os 15px) */
+  font-family: var(--font-space-grotesk);
+}
+
+.op-footer-text {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.op-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px; /* Ritmo 8px */
+  margin-top: 24px; /* Ritmo 8px: 3x8 */
+}
+
+.op-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (hover: hover) {
+  .op-social-link:hover {
+    background-color: var(--aws-orange, #ff9900);
+    transform: translateY(-2px);
+  }
+}
+
+.op-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+
+.op-footer-link {
+  font-size: 1rem; /* 16px */
+  color: #cbd5e0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .op-footer-link:hover {
+    color: var(--aws-orange, #ff9900);
+  }
+}
+
+/* Estilo específico para o link de email que tem um ícone ao lado */
+.op-footer-email {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Remove o style inline */
+  justify-content: center;
+}
+
+.op-copyright {
+  padding-top: 32px; /* Ritmo 8px (substitui os 30px) */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.875rem; /* 14px (substitui os 14.4px quebrados) */
+  text-align: center;
+  color: #a0aec0;
+}
+
+/* --- ESTILOS DESKTOP --- */
+@media (min-width: 768px) {
+  .op-footer-column {
+    align-items: flex-start; /* Alinha à esquerda no Desktop */
+    text-align: left;
+  }
+  
+  .op-social-links {
+    justify-content: flex-start;
+  }
+
+  .op-footer-email {
+    justify-content: flex-start;
+  }
+}

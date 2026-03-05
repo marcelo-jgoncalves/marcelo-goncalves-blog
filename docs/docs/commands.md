@@ -1,1 +1,3 @@
 sudo -u marcelo tree -a --dirsfirst -L 3 -I "node_modules|.next|dist|build|coverage|.git|.terraform|docs|.vscode"
+
+Sua ultima tarefa é gerar um documento de handover para a IA que vai assumir o projeto a partir de agora. Explique para ela o que está sendo feito, quais são nossos pilares, como ela deve atuar para evitar regressão, por exemplo primeiro se contextualizando via código para ser executado no console e depois tomando as decisões de refatoração. Informe a persona que ela deve assimir e quais habilidades deve ter. Além disso, informe que a próxima página a ser aprimorada é a página de artigos: /*frontend/app/artigos/page.tsx */

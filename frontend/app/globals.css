@@ -861,76 +861,6 @@ header {
 }
 
 /* =========================================
-   7. FOOTER
-   ========================================= */
-footer { 
-  background-color: var(--gray-800); 
-  color: white; 
-  padding: 60px 20px 30px; 
-  margin-top: 0; 
-}
-
-.footer-content { 
-  display: grid; 
-  grid-template-columns: 1fr; 
-  gap: 40px; 
-  margin-bottom: 40px; 
-  text-align: center; 
-}
-
-.footer-column h3 { 
-  margin-bottom: 15px; 
-  font-size: 1.2rem; 
-  color: white; 
-}
-
-.footer-column p { 
-  color: #cbd5e0; 
-}
-
-.footer-links a { 
-  color: #cbd5e0; 
-  display: block; 
-  margin-bottom: 10px; 
-}
-
-.footer-links a:hover { 
-  color: var(--aws-orange); 
-}
-
-.social-links { 
-  display: flex; 
-  gap: 15px; 
-  justify-content: center; 
-  margin-top: 20px; 
-}
-
-.social-links a { 
-  width: 40px; 
-  height: 40px; 
-  border-radius: 50%; 
-  background-color: rgba(255,255,255,0.1); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  color: white; 
-  transition: all 0.3s; 
-}
-
-.social-links a:hover { 
-  background-color: var(--aws-orange); 
-  transform: translateY(-3px); 
-}
-
-.copyright { 
-  text-align: center; 
-  padding-top: 30px; 
-  border-top: 1px solid rgba(255,255,255,0.2); 
-  color: #a0aec0; 
-  font-size: 0.9rem; 
-}
-
-/* =========================================
    8. MEDIA QUERIES (DESKTOP)
    ========================================= */
 @media (min-width: 768px) {
@@ -948,21 +878,6 @@ footer {
   /* Super Destaque */
   .super-destaque { 
     margin: 0 auto; 
-  }
-  
-  /* Footer */
-  footer { 
-    padding: 60px 20px 30px; 
-    margin-top: 0; 
-  }
-
-  .footer-content { 
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    text-align: left; 
-  }
-
-  .social-links { 
-    justify-content: flex-start; 
   }
   
   /* Search / 404 */
