@@ -80,7 +80,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6, .logo, .btn {
+h1, h2, h3, h4, h5, h6, .btn {
   font-family: var(--font-space-grotesk);
   color: var(--aws-dark);
   font-weight: 700;
@@ -232,49 +232,6 @@ header {
   padding: 0 20px;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.logo {
-  font-size: 1.5rem;
-  letter-spacing: -0.5px;
-  text-decoration: none; /* Remove sublinhado se for link */
-  color: var(--aws-dark);
-}
-
-.logo span {
-  color: var(--aws-orange);
-}
-
-/* --- NAVEGAÇÃO DESKTOP --- */
-.nav-links {
-  display: none; /* Escondido por padrão (Mobile-first) */
-  gap: 30px;
-  align-items: center;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--aws-dark);
-  font-family: var(--font-space-grotesk);
-  font-weight: 700;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-}
-
-/* CORREÇÃO: Hover Desktop */
-.nav-links a:hover {
-  color: var(--aws-orange);
-  transform: translateY(-1px);
-}
-
 /* --- MENU MOBILE --- */
 .mobile-menu-btn {
   display: block;
@@ -321,18 +278,6 @@ header {
   background: var(--gray-light);
   color: var(--aws-orange);
   padding-left: 45px; /* Efeito de indentação no hover mobile */
-}
-
-/* --- MEDIA QUERIES PARA NAVEGAÇÃO --- */
-@media (min-width: 768px) {
-  .nav-links {
-    display: flex; /* Mostra no Desktop */
-  }
-  
-  .mobile-menu-btn, 
-  .mobile-menu {
-    display: none !important; /* Esconde elementos mobile no Desktop */
-  }
 }
 
 /* =========================================
@@ -989,10 +934,6 @@ footer {
    8. MEDIA QUERIES (DESKTOP)
    ========================================= */
 @media (min-width: 768px) {
-  header { padding: 0 25px; }
-  .logo { font-size: 1.8rem; }
-  .mobile-menu-btn, .mobile-menu { display: none !important; }
-  .nav-links { display: flex; gap: 30px; }
   
   /* Hero & Tipografia */
   .hero-title { font-size: 3.5rem; }
