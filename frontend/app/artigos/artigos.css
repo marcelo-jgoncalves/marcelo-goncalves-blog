@@ -1,0 +1,151 @@
+/* frontend/app/artigos/artigos.css */
+/* ==========================================================================
+   ESTRUTURA E RITMO (8px)
+   ========================================================================== */
+.op-artigos-layout-root {
+  background-color: #ffffff;
+}
+
+.op-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ==========================================================================
+   HERO & SEARCH (Reset de Herança Global)
+   ========================================================================== */
+.op-search-hero-section {
+  background-color: #f8f9fa;
+  padding: 80px 0; /* Macro-ritmo 10*8 */
+  position: static !important; /* Previne o bug do header sticky global */
+  text-align: center;
+}
+
+.op-hero-title {
+  color: rgb(45, 55, 72);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 32px; /* 4*8 */
+  letter-spacing: -0.02em;
+}
+
+.op-search-form {
+  display: flex;
+  max-width: 704px;
+  margin: 0 auto;
+  height: 56px; /* 7*8 */
+  background: white;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 20px 0px;
+  overflow: hidden;
+}
+
+.op-search-input {
+  flex: 1;
+  border: none;
+  padding: 0 24px;
+  font-size: 1.1rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.op-search-btn {
+  width: 80px;
+  background-color: rgb(255, 153, 0); /* Laranja Original */
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.op-search-btn:hover {
+  background-color: #e68a00;
+}
+
+/* ==========================================================================
+   MAIN GRID (2 Colunas Desktop)
+   ========================================================================== */
+.op-main-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 48px 16px;
+  gap: 48px;
+}
+
+.op-articles-feed {
+  width: 100%;
+}
+
+.op-posts-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile-first */
+  gap: 32px;
+}
+
+.op-in-grid-ad {
+  grid-column: 1 / -1; /* Mantém a largura total no grid */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* 🚀 REMOÇÕES CRÍTICAS: */
+  border: none !important;      /* Mata a borda dupla */
+  background: transparent !important; /* Mata o fundo duplo */
+  min-height: 90px;             /* Ajustado para o tamanho real do mock do projeto */
+  margin: 32px 0;               /* Ritmo de 8px (4 * 8px) */
+}
+/* ==========================================================================
+   CTA INFERIOR (Navy Design)
+   ========================================================================== */
+.op-bottom-cta {
+  background-color: rgb(35, 47, 62); /* Navy Original */
+  padding: 80px 0;
+  color: white;
+  text-align: center;
+}
+
+.op-btn-outline-white {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 2px solid white;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 24px;
+  transition: all 0.2s ease;
+}
+
+.op-btn-outline-white:hover {
+  background: white;
+  color: rgb(35, 47, 62);
+}
+
+/* ==========================================================================
+   DESKTOP RESPONSIVENESS
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .op-main-grid-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .op-articles-feed {
+    flex: 1;
+  }
+
+  .op-posts-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 Colunas cravadas */
+  }
+
+  .op-blog-sidebar {
+    width: 320px; /* 40*8 */
+    flex-shrink: 0;
+  }
+}

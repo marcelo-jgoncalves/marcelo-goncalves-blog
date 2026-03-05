@@ -43,16 +43,18 @@ export async function getRecentPosts() {
   return res.json(); // Retorna { posts: [...] }
 }
 
-// 2. Buscar Todos os Posts (Para /artigos)
-export async function getAllPosts(nextToken?: string) {
-  const query = nextToken ? `?nextToken=${nextToken}` : '';
-  const res = await fetch(`${API_URL}/artigos${query}`, {
+export async function getAllPosts(nextToken?: string, limit: number = 12) {
+  const params = new URLSearchParams();
+  if (nextToken) params.set('nextToken', nextToken);
+  params.set('limit', limit.toString()); // Forçamos o limite de 12 para preencher o grid
+
+  const res = await fetch(`${API_URL}/artigos?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
   if (!res.ok) throw new Error('Failed to fetch posts');
 
-  return res.json(); // Retorna { posts: [...], nextToken: "..." }
+  return res.json(); 
 }
 
 // 3. Buscar por Categoria

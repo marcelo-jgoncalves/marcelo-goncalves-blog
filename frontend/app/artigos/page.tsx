@@ -1,110 +1,114 @@
-/*frontend/app/artigos/page.tsx */
-
-import Link from 'next/link';
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
-import AdSenseBanner from '@/components/ui/AdSenseBanner';
+import BlogSidebar from '@/components/ui/BlogSidebar';
+import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
+import ServiceCallout from '@/components/ui/ServiceCallout';
+import React from 'react';
+import './artigos.css';
 
-// Metadados para SEO
 export const metadata = {
   title: 'Todos os Artigos | IA Decifrada',
   description: 'Explore nosso arquivo completo de tutoriais AWS, análises de IA e engenharia de software.',
 };
 
-// ISR: Revalidar a cada 60 segundos (consistente com a Home)
+// ISR: Revalidação a cada 60 segundos para performance serverless na AWS
 export const revalidate = 60;
 
 interface ArtigosPageProps {
-  // No Next.js 15, searchParams é uma Promise
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
-  // 1. Resolvemos os parâmetros da URL (Next.js 15)
   const params = await searchParams;
   const nextToken = typeof params.nextToken === 'string' ? params.nextToken : undefined;
 
   let posts = [];
   let nextPageToken = undefined;
 
-  // 2. Buscamos os dados passando o token de paginação
   try {
+    // Buscamos 12 posts para garantir a simetria do grid (2 e 3 colunas)
     const data = await getAllPosts(nextToken);
-    posts = data.posts || [];
-    nextPageToken = data.nextToken;
+    posts = data?.posts || [];
+    nextPageToken = data?.nextToken;
   } catch (error) {
     console.error("Erro ao carregar artigos:", error);
   }
 
   return (
-    <>
-      {/* 1. Search Hero Section */}
-      <section className="search-hero">
-        <div className="search-header-content">
-          <h1>Explore Nossos Artigos</h1>
-          
-          <form className="archive-search-bar" action="/busca" method="get">
-            <input 
-              type="search" 
-              name="q" 
-              className="search-input" 
-              placeholder="Buscar por AWS, Terraform, RAG..." 
-              aria-label="Buscar artigos" 
-              required
-            />
-            <button type="submit" className="search-button" aria-label="Pesquisar">
-              <i className="fas fa-search"></i>
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* 2. Grid de Posts */}
-      <section className="post-grid-container">
-        <div className="container">
-          
-          {/* AdSense Topo */}
-          <div className="adsense-banner">
-             <AdSenseBanner />
+    <div className="op-artigos-layout-root">
+      {/* 1. HERO SECTION - Semântica e SEO */}
+      <header className="op-search-hero-section">
+        <div className="op-container">
+          <div className="op-hero-inner">
+            <h1 className="op-hero-title">Explore Nossos Artigos</h1>
+            <form className="op-search-form" action="/busca" method="get" role="search">
+              <input 
+                type="search" 
+                name="q" 
+                className="op-search-input" 
+                placeholder="Buscar por AWS, Terraform, RAG..." 
+                aria-label="Buscar artigos" 
+                required
+              />
+              <button type="submit" className="op-search-btn" aria-label="Pesquisar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </button>
+            </form>
           </div>
+        </div>
+      </header>
 
-          {/* Grid */}
-          <div className="posts-grid">
+      {/* 2. MAIN LAYOUT - Grid Editorial + Sidebar */}
+      <div className="op-container op-main-grid-wrapper">
+        <main className="op-articles-feed" aria-label="Lista de artigos de engenharia">
+          
+          <div className="op-posts-grid">
             {posts.length > 0 ? (
-              posts.map((post: any) => (
-                <PostCard key={post.slug} post={post} />
+              posts.map((post: any, index: number) => (
+                <React.Fragment key={post.slug}>
+                  <PostCard post={post} />
+                  
+                  {/* Injeção Estratégica Anti-Buraco: Após o 4º e 8º card */}
+                  {(index === 3 || index === 7) && (
+                    <div className="op-in-grid-ad">
+                      <AdsenseInArticle 
+                        blockId={`list-feed-ad-${index}`} 
+                        variant="in-content"
+                      />
+                    </div>
+                  )}
+                </React.Fragment>
               ))
             ) : (
-              <p className="col-span-full text-center" style={{ color: '#666', padding: '40px 0' }}>
-                Nenhum artigo encontrado no momento.
-              </p>
+              <p className="op-empty-message">Nenhum artigo encontrado no momento.</p>
             )}
           </div>
           
-          {/* Nova Paginação Funcional (com nextToken) */}
           <Pagination nextToken={nextPageToken} basePath="/artigos" />
+        </main>
 
-          {/* AdSense Fundo */}
-          <div style={{ paddingTop: '40px', paddingBottom: 0 }}>
-             <AdSenseBanner />
+        {/* SIDEBAR - ServiceCallout em 1º lugar (CRO) */}
+        <BlogSidebar adsenseBlockId="artigos-sidebar-primary">
+            <ServiceCallout />
+        </BlogSidebar>
+      </div>
+
+      {/* 3. FOOTER CTA - Conversão Final */}
+      <section className="op-bottom-cta">
+        <div className="op-container">
+          <div className="op-cta-box">
+            <h2>Quer se aprofundar em IA e Serverless?</h2>
+            <p>Receba análises exclusivas e os melhores artigos da semana direto no seu email.</p>
+            <a href="/newsletter" className="op-btn-outline-white">
+              Inscrever-se agora
+            </a>
           </div>
-
         </div>
       </section>
-
-      {/* 3. CTA Newsletter */}
-      <section className="cta">
-        <div className="container">
-          <h2>Quer se aprofundar em Inteligência Artificial?</h2>
-          <p>
-            Inscreva-se na nossa newsletter e receba análises exclusivas e os melhores artigos da semana direto no seu email.
-          </p>
-          <Link href="/newsletter" className="btn-outline">
-            Inscrever-se agora
-          </Link>
-        </div>
-      </section>
-    </>
+    </div>
   );
 }

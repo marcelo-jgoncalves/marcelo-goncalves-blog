@@ -1472,17 +1472,12 @@ html {
 }
 
 /* Cards de Serviço e Newsletter */
-.widget-services, .widget-newsletter {
+.widget-newsletter {
   border: none;
   border-radius: 12px;
   padding: 25px;
   margin-bottom: var(--post-block-spacing);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.widget-services {
-  background-color: var(--aws-dark);
-  color: white;
 }
 
 .widget-newsletter {
@@ -1504,9 +1499,11 @@ html {
   color: var(--aws-orange); 
 }
 
+/*
+
 .widget-services .card-icon-wrapper {
   background-color: rgba(255,255,255,0.1);
-}
+}*/
 
 .card-title {
   font-family: var(--font-space-grotesk);
@@ -1515,10 +1512,10 @@ html {
   margin-bottom: 10px; 
   display: block;
 }
-
+/*
 .widget-services .card-title { 
   color: white; 
-}
+}*/
 
 .widget-newsletter .card-title {
   color: var(--aws-dark);
