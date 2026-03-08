@@ -1,4 +1,5 @@
 /* frontend/app/artigos/artigos.css */
+
 /* ==========================================================================
    ESTRUTURA E RITMO (8px)
    ========================================================================== */
@@ -21,6 +22,7 @@
   padding: 80px 0; /* Macro-ritmo 10*8 */
   position: static !important; /* Previne o bug do header sticky global */
   text-align: center;
+  padding: 40px 0;
 }
 
 .op-hero-title {
@@ -73,8 +75,8 @@
 .op-main-grid-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 48px 16px;
-  gap: 48px;
+  padding: 40px 16px;
+  gap: 40px;
 }
 
 .op-articles-feed {
@@ -83,23 +85,23 @@
 
 .op-posts-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile-first */
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: 40px; 
 }
 
+/* Localize e substitua a regra .op-in-grid-ad no seu artigos.css */
+
 .op-in-grid-ad {
-  grid-column: 1 / -1; /* Mantém a largura total no grid */
+  grid-column: 1 / -1;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  /* 🚀 REMOÇÕES CRÍTICAS: */
-  border: none !important;      /* Mata a borda dupla */
-  background: transparent !important; /* Mata o fundo duplo */
-  min-height: 90px;             /* Ajustado para o tamanho real do mock do projeto */
-  margin: 32px 0;               /* Ritmo de 8px (4 * 8px) */
+  margin: 0 !important; 
+  border: none !important;
+  background: transparent !important;
 }
+
 /* ==========================================================================
    CTA INFERIOR (Navy Design)
    ========================================================================== */
@@ -131,9 +133,14 @@
    DESKTOP RESPONSIVENESS
    ========================================================================== */
 @media (min-width: 1024px) {
+  .op-search-hero-section {
+    padding: 80px 0; /* No desktop o respiro maior de 80px é mantido */
+  }
+
   .op-main-grid-wrapper {
     flex-direction: row;
     align-items: flex-start;
+    padding: 48px 16px;
   }
 
   .op-articles-feed {

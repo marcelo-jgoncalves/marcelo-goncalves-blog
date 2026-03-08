@@ -1,0 +1,65 @@
+/*frontend/components/ui/AdsenseInArticle.css*/
+
+/* ==========================================================================
+   ADSENSE COMPONENT SYSTEM - WORLD CLASS ALIGNMENT
+   ========================================================================== */
+
+/* 1. Reset e Base Comum */
+.op-adsense-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 0; 
+  overflow: hidden;
+}
+
+/* 2. Unificação de Altura (Mobile-First: 250px para todos) */
+.adsense-in-content-mock,
+.adsense-in-feed-mock,
+.adsense-summary-mock {
+  min-height: 250px; /* Corrigido: Removida a linha de 90px que causava o conflito */
+  width: 100%;
+}
+
+/* 3. Blindagem Crítica: Força a tag do Google a obedecer o layout */
+.op-adsense-wrapper .adsbygoogle {
+  display: block !important;
+  height: 250px !important; /* Garante que o iframe interno preencha o bloco */
+}
+
+/* 4. Gestão de Ritmo Vertical (Sagrados 40px) */
+.adsense-summary-mock {
+  margin-bottom: 40px; /* Espaço entre banner de topo e início do conteúdo */
+}
+
+.post-content .op-adsense-wrapper {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+/* 5. Comportamento Desktop (Breakpoint de 1024px) */
+@media (min-width: 1024px) {
+  .adsense-in-content-mock,
+  .adsense-summary-mock,
+  .adsense-in-feed-mock {
+    min-height: 90px; /* Formato Leaderboard elegante para telas largas */
+  }
+
+  .op-adsense-wrapper .adsbygoogle {
+    height: 90px !important;
+  }
+}
+
+/* 6. Estilo do Mock (Somente Ambiente de Desenvolvimento) */
+.op-adsense-dev-mock {
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  font-family: var(--font-space-grotesk, sans-serif);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

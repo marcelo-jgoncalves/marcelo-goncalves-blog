@@ -1,3 +1,6 @@
+/* frontend/app/artigos/artigos.tsx */
+
+
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
@@ -27,7 +30,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
   let nextPageToken = undefined;
 
   try {
-    // Buscamos 12 posts para garantir a simetria do grid (2 e 3 colunas)
     const data = await getAllPosts(nextToken);
     posts = data?.posts || [];
     nextPageToken = data?.nextToken;

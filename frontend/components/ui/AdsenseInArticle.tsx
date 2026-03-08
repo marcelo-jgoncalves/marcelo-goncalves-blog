@@ -1,7 +1,9 @@
-// frontend/components/ui/AdsenseInArticle
+// frontend/components/ui/AdsenseInArticle.tsx'
 
 'use client'; 
+
 import React, { useEffect } from 'react';
+import './AdsenseInArticle.css'; // 🚀 Importando o novo arquivo de estilo
 
 interface AdsenseInArticleProps {
   blockId: string; 
@@ -15,7 +17,6 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
   className, 
   format = 'auto' 
 }) => {
-    
     useEffect(() => {
       if (IS_PRODUCTION) {
         try {
@@ -28,7 +29,7 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
     }, []);
 
     return (
-        <div className={className} aria-hidden="true">
+        <div className={`op-adsense-wrapper ${className}`} aria-hidden="true">
             <ins 
               className="adsbygoogle"
               style={{ display: 'block' }}
@@ -42,7 +43,6 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
 };
 
 export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleProps) {
-  
   let placeholderClass = '';
   let placeholderText = ''; 
   let adFormat = 'auto'; 
@@ -50,9 +50,8 @@ export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleP
   if (variant === 'summary-divider') {
     placeholderClass = 'adsense-summary-mock';
     placeholderText = `[ADSENSE TOPO: ${blockId}]`;
-    adFormat = 'horizontal'; 
+    adFormat = 'auto'; 
   } else if (variant === 'in-content') {
-    // 🚀 Trocamos para uma classe CSS controlável e formato 'auto'
     placeholderClass = 'adsense-in-content-mock'; 
     placeholderText = `[ADSENSE IN-ARTICLE: ${blockId}]`;
     adFormat = 'auto'; 
@@ -63,39 +62,15 @@ export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleP
   }
 
   if (IS_PRODUCTION) {
-    const adSlot = <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
-    if (variant === 'summary-divider') return <div className="summary-ads-wrapper">{adSlot}</div>;
-    return adSlot;
+    return <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
   }
   
-  // Wrapper limpo, sem margens ou tamanhos fixos
-  const devWrapperStyle: React.CSSProperties = { 
-    display: 'flex', 
-    justifyContent: 'center', 
-    width: '100%' 
-  };
-
-  const mockBaseStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f8fafc',
-    border: '2px dashed #cbd5e1',
-    maxWidth: '100%',
-    boxSizing: 'border-box'
-  };
-
-  const placeholderElement = (
-    <div className={placeholderClass} style={mockBaseStyle}>
-      <span aria-hidden="true" style={{ fontSize: '0.8rem', color: '#64748b', textAlign: 'center', padding: '10px' }}>
+  // Retorno simplificado para desenvolvimento: apenas uma DIV com a classe correta
+  return (
+    <div className={`op-adsense-wrapper op-adsense-dev-mock ${placeholderClass}`}>
+      <span aria-hidden="true">
         {placeholderText}
       </span>
     </div>
   );
-
-  if (variant === 'summary-divider') {
-    return <div className="summary-ads-wrapper" style={devWrapperStyle}>{placeholderElement}</div>;
-  }
-
-  return <div style={devWrapperStyle}>{placeholderElement}</div>;
 }

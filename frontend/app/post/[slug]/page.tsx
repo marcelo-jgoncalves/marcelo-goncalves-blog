@@ -2,7 +2,7 @@ import './post.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
 
 // Libs e Utils
 import { getPost } from '@/lib/api';
@@ -18,7 +18,7 @@ import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import ShareButtons from '@/components/ui/ShareButtons';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
-import NewsletterWidget from '@/components/ui/NewsletterWidget'; // 🚀 NOVO: Importamos a Newsletter para usá-la no mobile
+import NewsletterWidget from '@/components/ui/NewsletterWidget';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -53,10 +53,7 @@ export default async function PostPage({ params }: Props) {
     const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
 
     return parts.map((part, index) => {
-      // 🚀 UX/CRO: Retornamos null aqui para NÃO quebrar a leitura no meio do texto no celular
-      if (part === '<div id="inject-service-placeholder"></div>') {
-        return null; 
-      }
+      if (part === '<div id="inject-service-placeholder"></div>') return null; 
 
       if (part === '<div id="inject-ads-placeholder"></div>') {
         return (
@@ -73,6 +70,8 @@ export default async function PostPage({ params }: Props) {
           key={`content-part-${index}`} 
           className="post-content-part" 
           dangerouslySetInnerHTML={{ __html: part }} 
+          // ⚠️ Nota: suppressHydrationWarning é mantido por enquanto para evitar quebra de produção,
+          // mas deve ser investigado na camada de processamento de HTML.
           suppressHydrationWarning={true} 
         />
       );
@@ -80,15 +79,18 @@ export default async function PostPage({ params }: Props) {
   };
 
   return (
-    <>
+    <article> {/* 🚀 SEO Power Move: Article agora encapsula todo o contexto */}
       <CopyCodeLogic />
 
-      <section className="article-header">
+      <header className="article-header">
         <div className="container">
-          
           {category ? (
-            <Link href={`/categoria/${category.categoria_slug}`} className="post-tag-header hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}>              
-              {category.icone_fa && <i className={`${category.icone_fa} mr-2`}></i>}
+            <Link 
+              href={`/categoria/${category.categoria_slug}`} 
+              className="post-tag-header hover:opacity-80 transition-opacity" 
+              style={{ textDecoration: 'none' }}
+            >              
+              {category.icone_fa && <i className={`${category.icone_fa} mr-2`} aria-hidden="true"></i>}
               {category.nome_exibicao}
             </Link>
           ) : (
@@ -98,51 +100,50 @@ export default async function PostPage({ params }: Props) {
           )}
           
           <h1 className="article-title">{post.titulo}</h1>
+          
           <div className="article-meta">
-            <span><i className="fas fa-user-circle"></i> Por Marcelo Gonçalves</span>
+            <span><i className="fas fa-user-circle" aria-hidden="true"></i> Por Marcelo Gonçalves</span>
             <span>
-                <i className="far fa-calendar-alt"></i> 
+                <i className="far fa-calendar-alt" aria-hidden="true"></i> 
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
             </span>
-            <span><i className="far fa-clock"></i> {post.tempo_leitura_min || 5} min de leitura</span>
+            <span><i className="far fa-clock" aria-hidden="true"></i> {post.tempo_leitura_min || 5} min de leitura</span>
           </div>
         </div>
-      </section>
+      </header>
 
       {post.imagem_destaque_url && (
         <div className="featured-image-container">
-          <img 
+          <Image 
             src={post.imagem_destaque_url} 
-            alt={post.imagem_destaque_alt_text || post.titulo} 
+            alt={post.imagem_destaque_alt_text || ""} // Fallback vazio se for decorativa, melhor para a11y
+            priority
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
             className="featured-image"
           />
         </div>
       )}
 
       <div className="container article-grid">
-        <div className="main-content-column">
-            <article>
-                <div className="post-body-wrapper">
-                    {post.resumo && (
-                      <div className="post-lead">{post.resumo}</div>
-                    )}
-                    
-                    {headings.length > 0 && (
-                        <TOC headings={headings} variant="mobile" />
-                    )}
-
-                    <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
-                    
-                    <div className="post-content">
-                      {renderFinalContent()}
-                    </div>
-                </div>
-            </article>
-
-            {/* 🚀 A JORNADA DE ALTA CONVERSÃO MOBILE ACONTECE AQUI */}
-            <div className="post-footer-safe-zone mt-8">
+        <main className="main-content-column">
+            <div className="post-body-wrapper">
+                {post.resumo && (
+                  <p className="post-lead">{post.resumo}</p>
+                )}
                 
-                {/* Mostra as ofertas principais apenas no celular, empilhadas de forma limpa */}
+                {headings.length > 0 && (
+                    <TOC headings={headings} variant="mobile" />
+                )}
+
+                <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
+                
+                <div className="post-content">
+                  {renderFinalContent()}
+                </div>
+            </div>
+
+            <footer className="post-footer-safe-zone mt-8">
                 <div className="mobile-only flex flex-col gap-8 mb-8">
                   <ServiceCallout />
                   <NewsletterWidget />
@@ -151,15 +152,13 @@ export default async function PostPage({ params }: Props) {
                 <ShareButtons title={post.titulo} slug={post.slug} />
                 <AuthorBox authorId={post.autor_id} /> 
                 <PopularPostsSection limit={4} variant="post" /> 
-            </div>
-        </div>
+            </footer>
+        </main>
 
-        {/* SIDEBAR (Intocável, continua perfeita para o Desktop) */}
         <BlogSidebar adsenseBlockId="sidebar-300x600">
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
-            
             <div className="mt-8">
               <ServiceCallout />
             </div>
@@ -167,6 +166,6 @@ export default async function PostPage({ params }: Props) {
       </div>
       
       <SuperDestaque />
-    </>
+    </article>
   );
 }
