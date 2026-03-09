@@ -144,13 +144,11 @@
 }
 
 .toc-wrapper.toc-mobile .toc-list a {
-  /* 🚀 A MÁGICA DOS LINKS: 24px lateral para acompanhar o título */
-  padding: 12px calc(var(--space-unit) * 3); 
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3); 
   border-left: none;
   border-bottom: 1px solid var(--gray-border); /* Linha divisória suave */
 }
 
-/* Remove a linha divisória do último link para um acabamento limpo */
 .toc-wrapper.toc-mobile .toc-list li:last-child a {
   border-bottom: none; 
 }
