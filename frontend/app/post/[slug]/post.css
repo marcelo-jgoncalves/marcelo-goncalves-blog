@@ -117,11 +117,8 @@
 
 /* --- 4. IMAGEM DE DESTAQUE --- */
 .featured-image-container {
-  /* 🚀 RESET MOBILE: Em vez de largura total, usamos 'auto' e margens laterais 
-     de 24px para espelhar o padding do container de texto. */
   width: auto; 
   max-width: 960px;
-  /* Margens: Topo -48px (overlap), Laterais 24px, Base 24px */
   margin: -48px 24px 24px 24px; 
   padding: 0; 
   position: relative; 
@@ -170,7 +167,7 @@
   padding: 0; 
   font-size: 1.15rem;
   color: var(--gray-800);
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
 @media (max-width: 767px) {
@@ -189,7 +186,9 @@
   }
 }
 
-.post-content p { margin-bottom: var(--post-block-spacing); }
+.post-content p { 
+  margin-bottom: var(--post-block-spacing); 
+}
 
 .post-content img {
   max-width: 100%;
@@ -225,7 +224,16 @@
 
 .post-content h2, 
 .post-content h3, 
-.post-content h4, 
+.post-content h4 {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-dark);
+  line-height: 1.3;
+  margin-top: var(--post-heading-top); 
+  margin-bottom: var(--post-heading-bottom);
+  scroll-margin-top: 96px; 
+}
+
 .post-content h5 {
   font-family: var(--font-space-grotesk);
   font-weight: 700;
@@ -233,21 +241,24 @@
   line-height: 1.3;
   margin-top: var(--post-heading-top); 
   margin-bottom: var(--post-heading-bottom);
-  scroll-margin-top: 100px;
+  scroll-margin-top: 96px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; 
 }
 
 .post-content h2 {
   font-size: 2rem;
   position: relative;
-  padding-left: 15px;
+  padding-left: calc(var(--space-unit) * 2); 
 }
 
 .post-content h2::before {
   content: ''; 
   position: absolute; 
   left: 0; 
-  top: 5px; 
-  bottom: 5px;
+  top: var(--space-unit); 
+  bottom: var(--space-unit);
   width: 4px; 
   background-color: var(--aws-orange); 
   border-radius: 2px;
@@ -287,13 +298,15 @@
 .post-content ul, 
 .post-content ol { 
   margin-bottom: var(--post-block-spacing); 
-  padding-left: 1.5rem; /* Base Mobile */
+  padding-left: 0; 
+  list-style: none;
 }
 
 .post-content li { 
-  margin-bottom: 12px; 
+  margin-bottom: var(--space-unit); 
   line-height: 1.6;
   position: relative;
+  padding-left: calc(var(--space-unit) * 4); 
 }
 
 .post-content li p {
@@ -304,28 +317,35 @@
 /* Listas Desordenadas (UL) */
 .post-content ul { list-style: none; }
 
-.post-content ul li { padding-left: 20px; /* Base Mobile */ }
+.post-content ul li { 
+  padding-left: var(--post-block-spacing); 
+}
 
 .post-content ul li::before {
-  content: ''; 
+  content: '';
   position: absolute;
-  left: 0; 
-  top: 0.6em; 
-  width: 8px; 
-  height: 8px;
+  left: 4px; 
+  top: 0.55em; 
+  width: var(--space-unit); 
+  height: var(--space-unit);
   background-color: var(--aws-orange); 
   border-radius: 50%;
-  display: inline-block;
 }
 
 /* Listas Ordenadas (OL) */
-.post-content ol { list-style-type: decimal; }
+.post-content ol { counter-reset: post-counter; }
 
-.post-content ol li { padding-left: 10px; }
-
+.post-content ol li { counter-increment: post-counter; }
 .post-content ol li::before {
-  content: none;
-  display: none;
+  content: counter(post-counter) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--space-unit) * 3); /* Reserva 24px para o número */
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  color: var(--aws-orange);
+  text-align: left;
 }
 
 .post-content ol li::marker {
@@ -342,14 +362,11 @@
 
 /* Blockquote */
 .post-content blockquote {
-  margin: var(--post-block-spacing) 0;
-  padding: 1.5rem 2rem;
+  margin: calc(var(--space-unit) * 4) 0; 
+  padding: var(--post-block-spacing) calc(var(--space-unit) * 4);
   background-color: var(--gray-light);
-  background-image: var(--bg-light-gradient);
-  border-left: 5px solid var(--blue-600);
+  border-left: 4px solid var(--blue-600);
   border-radius: 0 8px 8px 0;
-  position: relative;
-  transition: transform 0.2s ease;
 }
 
 .post-content blockquote:hover { transform: translateX(5px); }
@@ -373,14 +390,15 @@
   color: var(--blue-600);
   font-size: 0.85rem;
 }
+/* --- 7. BLOCOS DE CÓDIGO E BOTÃO COPY (Precisão de 8px) --- */
 
-/* --- 7. BLOCOS DE CÓDIGO E BOTÃO COPY --- */
 .post-content .inline-code {
   background-color: #edf2f7; 
   color: #d53f8c;          
   font-family: var(--font-code); 
-  font-size: 0.85em;       
-  padding: 0.2em 0.4em;
+  /* 🚀 NITIDEZ: Fixamos 14px para evitar sub-pixels de 15.64px */
+  font-size: 14px;       
+  padding: 4px 8px; /* 🚀 AJUSTE: Múltiplos de 8 */
   border-radius: 4px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -388,10 +406,11 @@
 
 pre.code-block, 
 .post-content pre {
-  padding: 15px; /* Base Mobile */
-  font-size: 0.85rem; /* Base Mobile */
+  /* 🚀 AJUSTE: 16px (2x8) para alinhar visualmente no mobile */
+  padding: calc(var(--space-unit) * 2); 
+  font-size: 0.875rem; /* 14px limpos */
   border-radius: 8px; 
-  margin: 0 0 var(--post-block-spacing) 0; 
+  margin-bottom: var(--post-block-spacing); 
   overflow-x: auto;
   color: #e2e8f0;
   font-family: var(--font-code);
@@ -400,22 +419,25 @@ pre.code-block,
   -webkit-overflow-scrolling: touch; 
 }
 
-.code-wrapper pre.code-block,
-.code-wrapper .post-content pre {
+/* Ajuste específico quando o pre está dentro do wrapper (com header) */
+.code-wrapper pre {
   margin: 0;
+  /* 🚀 ESPAÇAMENTO: Reservamos 48px no topo para o botão/header */
+  padding-top: calc(var(--space-unit) * 6); 
 }
 
 @media (min-width: 768px) {
   pre.code-block, 
   .post-content pre {
-    padding: 20px;
-    font-size: 0.95rem; 
+    /* 🚀 DESKTOP: 24px (3x8) para alinhar com o padding da página */
+    padding: var(--post-block-spacing);
+    font-size: 0.9375rem; /* 15px */
   }
 }
 
 .code-wrapper {
   position: relative;
-  margin: var(--post-block-spacing) 0;
+  margin-bottom: var(--post-block-spacing);
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--aws-dark);
@@ -426,31 +448,26 @@ pre.code-block,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 15px;
+  /* 🚀 AJUSTE: Padding 8px topo/base, 16px laterais */
+  padding: var(--space-unit) calc(var(--space-unit) * 2);
   background-color: #19212c;
   color: #a0aec0;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* 12px */
   border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-/* Escopado para segurança e sem !important */
-.code-wrapper pre,
-.post-content pre {
-  position: relative;
-  padding-top: 2.5rem; 
 }
 
 .copy-code-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  /* 🚀 AJUSTE: Posicionamento em 12px (1.5x8) para equilíbrio visual */
+  top: 12px;
+  right: 12px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   color: #fff;
-  padding: 4px 8px;
+  padding: 4px 12px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   transition: all 0.2s ease;
   z-index: 10;
 }
@@ -460,49 +477,33 @@ pre.code-block,
   border-color: var(--aws-orange);
 }
 
-.copy-code-btn.copied {
-  background: #28a745;
-  border-color: #28a745;
-}
-
-.code-wrapper pre code,
-.post-content pre code {
-  display: block;
-}
-
+/* Scrollbar com altura múltipla de 8 */
 .code-wrapper pre::-webkit-scrollbar,
 .post-content pre::-webkit-scrollbar {
   height: 8px;
 }
-
-.code-wrapper pre::-webkit-scrollbar-thumb,
-.post-content pre::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
 /* ==========================================================================
-   9. TOC MOBILE (Índice) - VERSÃO FINAL (Ultra-Leve & Animada)
+   8. TOC MOBILE (Índice) - VERSÃO FINAL (Sincronizada em 8px)
    ========================================================================== */
 
-/* 1. O Container Principal (Acento Laranja e Respiro) */
 .toc-mobile-accordion {
   border: none;
   border-left: 4px solid var(--aws-orange);
   background-color: transparent;
   width: 100%; 
-  margin: 2rem 0;        
+  /* 🚀 RITMO: Usa os 32px (4 * 8px) para margem vertical */
+  margin: calc(var(--space-unit) * 4) 0;        
   box-shadow: none;         
   overflow: hidden;
 }
 
-/* 2. O Botão Clicável (Header) */
 .toc-mobile-header {
   border: none; 
   outline: none;
   background: transparent;
   width: 100%;
-  padding: 16px 16px 16px 0; 
+  /* 🚀 ALINHAMENTO: 16px topo/base para área de toque; 0 na esquerda para colar na borda */
+  padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 2) calc(var(--space-unit) * 2) 0; 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -513,20 +514,19 @@ pre.code-block,
   cursor: pointer;
 }
 
-/* 3. Os Ícones do Header (AQUI ESTAVA O PROBLEMA!) */
 .toc-mobile-header .toc-icon {
   color: var(--aws-orange);
-  margin-right: 12px;
-  margin-left: 16px; 
+  /* 🚀 AJUSTE: Normalizado para 16px (2 * 8px) */
+  margin-right: calc(var(--space-unit) * 2); 
+  margin-left: calc(var(--space-unit) * 2); 
 }
 
 .toc-mobile-header .fa-chevron-down {
   transition: transform 0.3s ease;
   margin-left: auto; 
-  color: var(--aws-orange); /* Seta da direita laranja */
+  color: var(--aws-orange);
 }
 
-/* 4. A MÁGICA DA ANIMAÇÃO */
 .toc-mobile-content {
   display: grid;
   grid-template-rows: 0fr; 
@@ -537,21 +537,19 @@ pre.code-block,
   grid-template-rows: 1fr; 
 }
 
-/* 5. O Wrapper Interno */
 .toc-mobile-inner {
   overflow: hidden;
 }
 
-/* 6. A Lista de Links Interna */
 .toc-mobile-inner .toc-list {
-  padding: 0 16px 16px 20px; 
+  padding: 0 calc(var(--space-unit) * 2) calc(var(--space-unit) * 2) calc(var(--space-unit) * 3); 
   margin: 0;
   border-top: 1px solid rgba(0,0,0,0.05); 
   list-style: none; 
 }
 
 .toc-mobile-inner .toc-list li {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-unit);
   padding: 0;
 }
 
@@ -559,20 +557,22 @@ pre.code-block,
   display: none !important;
 }
 
-/* 7. Os Links da Lista (Limpo e sem duplicações) */
 .toc-mobile-inner .toc-list a {
   text-decoration: none;
   color: var(--gray-800);
   display: block; 
-  padding: 4px 0;
-  /* Sem font-size forçado aqui, ele herda a fonte agradável do texto do post */
+  padding: var(--space-unit) 0;
+  transition: color 0.2s ease;
+}
+
+.toc-mobile-inner .toc-list a:hover {
+  color: var(--aws-orange);
 }
 
 /* ==========================================================================
-   10. ADSENSE E PERFORMANCE (Prevenção de CLS)
+   9. ADSENSE E PERFORMANCE (Prevenção de CLS - 8px Ready)
    ========================================================================== */
 
-/* 1. Base Comum para Todos os Anúncios */
 .summary-ads-wrapper,
 .adsense-placeholder-box {
   display: flex;
@@ -581,109 +581,96 @@ pre.code-block,
   width: 100%;
   overflow: hidden;
   background-color: transparent;
-  border-radius: 0;
-  border: none;
 }
 
-/* 2. Anúncio do Topo (Horizontal) */
+/* Anúncio do Topo (Horizontal) */
 .summary-ads-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100px;
-  /* 🚀 GARANTIA: Margem explícita para evitar o efeito "colado" */
-  margin: 2rem 0; 
+  /* 🚀 CORREÇÃO CLS: De 100px para 104px (13 * 8px) */
+  min-height: 104px; 
+  margin: var(--post-block-spacing) 0; 
   clear: both;
 }
 
-/* 3. Anúncio In-Article e In-Feed (O Quadrado de 300x250) */
+/* Anúncio In-Article (Quadrado 300x250) */
 .adsense-placeholder-box {
-  /* CLS Zero: Reserva exatos 250px para o formato "rectangle" que pedimos no React */
-  min-height: 250px; 
-  margin: 2.5rem 0; /* Ritmo vertical do anúncio in-article */
+  /* 🚀 CORREÇÃO CLS: De 250px para 256px (32 * 8px) */
+  min-height: 256px; 
+  margin: var(--post-block-spacing) 0; 
 }
 
-/* Comportamento no Desktop */
 @media (min-width: 768px) {
   .summary-ads-wrapper {
-    /* Leaderboard clássico do AdSense tem 90px de altura no desktop */
-    min-height: 90px; 
+    /* 🚀 CORREÇÃO CLS: Leaderboard de 90px para 96px (12 * 8px) */
+    min-height: 96px; 
   }
 }
 
-/* Garante que a tag do Google obedeça ao nosso alinhamento */
 .adsbygoogle {
   display: block !important;
   margin: 0 auto;
 }
 
 /* ==========================================================================
-   11. RITMO VERTICAL E ESPAÇAMENTOS (Micro e Macro Rhythm)
+   10. RITMO VERTICAL E ESPAÇAMENTOS (Unificação de Variáveis)
    ========================================================================== */
 
-/* --- MICRO-RITMO (16px / 1rem) - Leitura Densa --- */
 .post-content-part p {
-  margin-bottom: 1rem; /* Reduz de 40px para 16px no mobile */
-  line-height: 1.7;    /* Aumenta o respiro entre as linhas do texto */
+  /* 🚀 UNIFICAÇÃO: Removemos os 16px fixos para usar os 24px do root */
+  margin-bottom: var(--post-block-spacing); 
+  line-height: 1.75; 
 }
 
-/* O último parágrafo de cada bloco não precisa de margem extra */
 .post-content-part p:last-child {
   margin-bottom: 0;
 }
 
-
-/* --- MACRO-RITMO (32px / 2rem) - A Zona Segura do Rodapé --- */
+/* A Zona Segura do Rodapé */
 .post-footer-safe-zone {
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* 🚀 A MÁGICA: Implanta os 32px perfeitos entre todos os componentes */
-  margin-top: 2rem; /* Separação inicial do texto */
+  /* 🚀 RITMO: Mantido os 32px (4 * 8px) que o JSON validou */
+  gap: calc(var(--space-unit) * 4); 
+  margin-top: calc(var(--space-unit) * 4); 
 }
 
-/* Blindagem: Neutraliza as margens caóticas de 40px que os componentes trouxeram */
 .post-footer-safe-zone > * {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
 
-/* --- AJUSTES PARA DESKTOP (Respiro Ampliado) --- */
 @media (min-width: 768px) {
-  .post-content-part p {
-    margin-bottom: 1.25rem; /* ~20px no desktop para telas largas */
-  }
-  
   .post-footer-safe-zone {
-    gap: 3rem; /* ~48px no desktop, já que há mais espaço */
-    margin-top: 3rem;
+    /* 🚀 DESKTOP: 48px (6 * 8px) para respiro amplo */
+    gap: calc(var(--space-unit) * 6); 
+    margin-top: calc(var(--space-unit) * 6);
   }
 }
-
 /* ==========================================================================
-   12. CAIXA DE AUTOR (.author-box) - E-E-A-T e UX
+   11. CAIXA DE AUTOR (.author-box) - Precisão de 8px e E-E-A-T
    ========================================================================== */
 
-/* Container Principal (Mobile First: Empilhado) */
 .author-box {
   display: flex;
   flex-direction: column; 
   align-items: center;
   text-align: center;
-  gap: 1.5rem; 
-  padding: 2rem;
-  background-color: var(--aws-light-gray, #f8f9fa); /* Cor de fundo suave */
-  border-radius: 12px;
+  /* 🚀 RITMO: Usa os 24px (3 * 8px) do sistema */
+  gap: var(--post-block-spacing); 
+  /* 🚀 PADDING: Mantido em 32px (4 * 8px) para respiro elegante */
+  padding: calc(var(--space-unit) * 4);
+  background-color: var(--gray-light);
+  /* 🚀 CORREÇÃO: De 12px para 16px (2 * 8px) para curvas perfeitas */
+  border-radius: calc(var(--space-unit) * 2);
 }
 
-/* 1. O Avatar (Blindado contra deformações) */
 .author-avatar {
   flex-shrink: 0;
+  /* 80px é 10 * 8px (Mantido - OK) */
   width: 80px;
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #e2e8f0; /* Esqueleto de carregamento */
+  background-color: var(--gray-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -692,86 +679,80 @@ pre.code-block,
 .author-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Garante que a foto preencha o círculo sem amassar */
+  object-fit: cover;
   display: block;
 }
 
-.author-avatar-placeholder i {
-  font-size: 2rem;
-  color: #94a3b8;
-}
-
-/* 2. As Informações de Texto */
 .author-info {
   display: flex;
   flex-direction: column;
-  gap: 1rem; 
+  /* 🚀 MICRO-RITMO: 8px entre o nome/bio e as redes sociais */
+  gap: var(--space-unit); 
 }
 
-/* O Nome (Destacado - Estilo Run-in Verdadeiro) */
 .author-name-runin {
-  font-size: 1rem; /* 🚀 Igualamos o tamanho da fonte com a bio para fluxo perfeito */
-  font-weight: 600; /* Deixamos em negrito para destacar */
-  color: var(--aws-dark, #1e293b);
-  margin-right: 0.25rem; /* Reduzimos drasticamente a margem extra */
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--aws-dark);
+  /* 🚀 AJUSTE: 8px de respiro para o efeito run-in não sufocar */
+  margin-right: var(--space-unit); 
 }
-/* A Bio e a Domadora de HTML */
+
 .author-bio-content {
   font-size: 1rem;
-  color: #475569;
+  color: var(--gray-text);
   line-height: 1.6;
 }
 
-/* 🚀 BLINDAGEM: Se o CMS enviar a bio dentro de um <p>, forçamos ele a ficar "inline" com o nome */
 .author-bio-content p {
   display: inline;
   margin: 0;
 }
 
-/* 3. Redes Sociais */
+/* 3. Redes Sociais (Sincronizadas) */
 .author-social {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
+  gap: calc(var(--space-unit) * 2); /* 16px */
+  margin-top: var(--space-unit);
 }
 
 .author-social a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  /* 🚀 CORREÇÃO: De 36px para 40px (5 * 8px) - Melhora UX e Geometria */
+  width: calc(var(--space-unit) * 5);
+  height: calc(var(--space-unit) * 5);
   border-radius: 50%;
   background-color: white;
-  color: var(--aws-dark, #1e293b);
+  color: var(--aws-dark);
   text-decoration: none;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra elegante */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .author-social a:hover {
-  background-color: var(--aws-primary, #ff9900); /* Interação de hover */
+  background-color: var(--aws-orange);
   color: white;
   transform: translateY(-2px);
 }
 
-/* --- DESKTOP BEHAVIOR --- */
 @media (min-width: 768px) {
   .author-box {
-    flex-direction: row; /* Desktop: Foto na esquerda, texto na direita */
+    flex-direction: row; 
     align-items: flex-start;
     text-align: left;
-    padding: 2.5rem;
+    padding: calc(var(--space-unit) * 6);
   }
 
   .author-social {
-    justify-content: flex-start; /* Alinha ícones à esquerda no desktop */
+    justify-content: flex-start;
   }
 }
 
 /* ==========================================================================
-   13. BOTÕES DE COMPARTILHAMENTO (.share-section)
+   12. BOTÕES DE COMPARTILHAMENTO (.share-section) - Grid 8px
    ========================================================================== */
 
 .share-section {
@@ -779,29 +760,29 @@ pre.code-block,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--aws-light-gray, #e2e8f0);
-  border-bottom: 1px solid var(--aws-light-gray, #e2e8f0);
+  gap: calc(var(--space-unit) * 2);
+  padding: var(--post-block-spacing) 0;
+  border-top: 1px solid var(--gray-border);
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .share-label {
   font-size: 1rem;
-  font-weight: 600;
-  color: var(--aws-dark, #1e293b);
+  font-weight: 700;
+  color: var(--aws-dark);
 }
 
 .share-buttons-container {
   display: flex;
-  gap: 1rem;
+  gap: calc(var(--space-unit) * 2); /* 16px */
 }
 
 .share-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;  /* Área de toque mínima recomendada pela Apple/Google */
-  height: 44px;
+  width: calc(var(--space-unit) * 6);
+  height: calc(var(--space-unit) * 6);
   border-radius: 50%;
   color: white;
   font-size: 1.25rem;
@@ -809,19 +790,22 @@ pre.code-block,
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+
+
 .share-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra múltipla de 8 */
 }
 
-/* Cores Oficiais das Marcas */
+/* Cores Oficiais (Mantidas) */
 .btn-linkedin { background-color: #0a66c2; }
 .btn-whatsapp { background-color: #25d366; }
-.btn-twitter  { background-color: #000000; } /* X é preto */
+.btn-twitter  { background-color: #000000; }
 
 @media (min-width: 768px) {
   .share-section {
-    flex-direction: row; /* Desktop: Fica tudo na mesma linha */
-    gap: 1.5rem;
+    flex-direction: row;
+    /* 🚀 DESKTOP: 24px (3 * 8px) para respiro amplo */
+    gap: var(--post-block-spacing);
   }
 }
