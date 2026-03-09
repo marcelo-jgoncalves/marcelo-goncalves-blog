@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 // Libs e Utils
-import { getPost } from '@/lib/api';
+import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 
 // Componentes UI
@@ -28,12 +28,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const data = await getPost(slug);
   if (!data || !data.post) return { title: 'Post não encontrado' };
+  const authorData = await getAuthor(data.post.autor_id || 'marcelo-goncalves');
+  const autorNome = authorData?.autor?.nome_exibicao || 'Marcelo Gonçalves';
+  const autorUrl = authorData?.autor?.linkedin_url || '';
 
   return {
-    title: `${data.post.titulo} | Marcelo Gonçalves`,
+    title: `${data.post.titulo} | ${autorNome}`,
     description: data.post.resumo,
+    authors: [{ name: autorNome, url: autorUrl }], 
     openGraph: {
-        images: [data.post.imagem_destaque_url]
+        title: data.post.titulo,
+        description: data.post.resumo,
+        type: 'article',
+        publishedTime: data.post.data_publicacao,
+        authors: [autorNome],
+        images: [
+          {
+            url: data.post.imagem_destaque_url,
+            alt: data.post.imagem_destaque_alt_text || `Capa do artigo: ${data.post.titulo}`
+          }
+        ]
     }
   };
 }
@@ -49,7 +63,29 @@ export default async function PostPage({ params }: Props) {
   const { post, category } = data;
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
+  // 🚀 ARQUITETURA: Busca o autor dinamicamente para garantir consistência em toda a página
+  const authorData = await getAuthor(post.autor_id || 'marcelo-goncalves');
+  const autor = authorData?.autor;
+  const autorNome = autor?.nome_exibicao || 'Marcelo Gonçalves';
+
+  // 🚀 SEO TÉCNICO: Gerando o Schema.org (JSON-LD) de "BlogPosting"
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.titulo,
+    "description": post.resumo,
+    "image": post.imagem_destaque_url ? [post.imagem_destaque_url] : [],
+    "datePublished": post.data_publicacao,
+    "dateModified": post.data_atualizacao || post.data_publicacao, // Crucial para SEO de frescor de conteúdo
+    "author": [{
+        "@type": "Person",
+        "name": autorNome,
+        "url": autor?.linkedin_url || autor?.github_url || "" // Conecta ao grafo de conhecimento
+    }]
+  };
+
   const renderFinalContent = () => {
+    // ... [MANTENHA A SUA LÓGICA ORIGINAL DO renderFinalContent AQUI INTACTA] ...
     const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
 
     return parts.map((part, index) => {
@@ -70,8 +106,6 @@ export default async function PostPage({ params }: Props) {
           key={`content-part-${index}`} 
           className="post-content-part" 
           dangerouslySetInnerHTML={{ __html: part }} 
-          // ⚠️ Nota: suppressHydrationWarning é mantido por enquanto para evitar quebra de produção,
-          // mas deve ser investigado na camada de processamento de HTML.
           suppressHydrationWarning={true} 
         />
       );
@@ -79,7 +113,13 @@ export default async function PostPage({ params }: Props) {
   };
 
   return (
-    <article> {/* 🚀 SEO Power Move: Article agora encapsula todo o contexto */}
+    <article>
+      {/* 🚀 INJEÇÃO DO SCRIPT JSON-LD: O Google vai ler isso antes de renderizar a página */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
       <CopyCodeLogic />
 
       <header className="article-header">
@@ -102,7 +142,8 @@ export default async function PostPage({ params }: Props) {
           <h1 className="article-title">{post.titulo}</h1>
           
           <div className="article-meta">
-            <span><i className="fas fa-user-circle" aria-hidden="true"></i> Por Marcelo Gonçalves</span>
+            {/* 🚀 ZERO REGRESSÃO: Autor agora é dinâmico e consistente com a AuthorBox */}
+            <span><i className="fas fa-user-circle" aria-hidden="true"></i> Por {autorNome}</span>
             <span>
                 <i className="far fa-calendar-alt" aria-hidden="true"></i> 
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}

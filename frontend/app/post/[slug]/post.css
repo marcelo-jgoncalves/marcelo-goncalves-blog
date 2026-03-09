@@ -1,3 +1,5 @@
+/*frontend/app/post/[slug]/post.css*/
+
 /* ==========================================================================
    POST PAGE STYLES (8px Grid System & Anti-Regression)
    ========================================================================== */
@@ -645,114 +647,10 @@ pre.code-block,
     margin-top: calc(var(--space-unit) * 6);
   }
 }
-/* ==========================================================================
-   11. CAIXA DE AUTOR (.author-box) - Precisão de 8px e E-E-A-T
-   ========================================================================== */
 
-.author-box {
-  display: flex;
-  flex-direction: column; 
-  align-items: center;
-  text-align: center;
-  /* 🚀 RITMO: Usa os 24px (3 * 8px) do sistema */
-  gap: var(--post-block-spacing); 
-  /* 🚀 PADDING: Mantido em 32px (4 * 8px) para respiro elegante */
-  padding: calc(var(--space-unit) * 4);
-  background-color: var(--gray-light);
-  /* 🚀 CORREÇÃO: De 12px para 16px (2 * 8px) para curvas perfeitas */
-  border-radius: calc(var(--space-unit) * 2);
-}
-
-.author-avatar {
-  flex-shrink: 0;
-  /* 80px é 10 * 8px (Mantido - OK) */
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: var(--gray-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.author-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.author-info {
-  display: flex;
-  flex-direction: column;
-  /* 🚀 MICRO-RITMO: 8px entre o nome/bio e as redes sociais */
-  gap: var(--space-unit); 
-}
-
-.author-name-runin {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--aws-dark);
-  /* 🚀 AJUSTE: 8px de respiro para o efeito run-in não sufocar */
-  margin-right: var(--space-unit); 
-}
-
-.author-bio-content {
-  font-size: 1rem;
-  color: var(--gray-text);
-  line-height: 1.6;
-}
-
-.author-bio-content p {
-  display: inline;
-  margin: 0;
-}
-
-/* 3. Redes Sociais (Sincronizadas) */
-.author-social {
-  display: flex;
-  justify-content: center;
-  gap: calc(var(--space-unit) * 2); /* 16px */
-  margin-top: var(--space-unit);
-}
-
-.author-social a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* 🚀 CORREÇÃO: De 36px para 40px (5 * 8px) - Melhora UX e Geometria */
-  width: calc(var(--space-unit) * 5);
-  height: calc(var(--space-unit) * 5);
-  border-radius: 50%;
-  background-color: white;
-  color: var(--aws-dark);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.author-social a:hover {
-  background-color: var(--aws-orange);
-  color: white;
-  transform: translateY(-2px);
-}
-
-@media (min-width: 768px) {
-  .author-box {
-    flex-direction: row; 
-    align-items: flex-start;
-    text-align: left;
-    padding: calc(var(--space-unit) * 6);
-  }
-
-  .author-social {
-    justify-content: flex-start;
-  }
-}
 
 /* ==========================================================================
-   12. BOTÕES DE COMPARTILHAMENTO (.share-section) - Grid 8px
+   11. BOTÕES DE COMPARTILHAMENTO (.share-section) - Grid 8px
    ========================================================================== */
 
 .share-section {

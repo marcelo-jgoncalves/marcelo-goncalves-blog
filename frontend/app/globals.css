@@ -62,22 +62,10 @@
   /* ============================================================
      SISTEMA DE RITMO VERTICAL (GRID DE 8px) 
      ============================================================ */
-  
-  /* 🚀 UNIDADE BASE: 8px */
+
   --space-unit: 0.5rem; 
-
-  /* 🚀 ESPAÇAMENTO ENTRE BLOCOS (Parágrafos, Imagens, Ads)
-     Ajustado de 2.5rem (40px) para 1.5rem (24px) para maior densidade.
-     Matemática: 1.5 * 16 = 24px (Múltiplo de 8). */
   --post-block-spacing: 1.5rem; 
-
-  /* 🚀 ESPAÇAMENTO SUPERIOR DOS TÍTULOS (Macro-ritmo)
-     Mantido em 3.5rem (56px). Matemática: 7 * 8 = 56px. */
   --post-heading-top: 3.5rem; 
-
-  /* 🚀 ESPAÇAMENTO INFERIOR DOS TÍTULOS
-     CORREÇÃO CRÍTICA: Alterado de 1.2rem (19.2px) para 1.5rem (24px).
-     Isso elimina o borrão de renderização detectado no diagnóstico. */
   --post-heading-bottom: 1.5rem; 
 }
 /* =========================================
