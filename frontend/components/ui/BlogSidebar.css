@@ -1,33 +1,20 @@
 /* frontend/components/ui/BlogSidebar.css */
-/* ==========================================================================
-   BLOG SIDEBAR (Mobile-First & Sticky Layout)
-   ========================================================================== */
 
 /* 1. Mobile First: Sidebar não existe no DOM visual em telas pequenas */
 .blog-sidebar { 
   display: none; 
 } 
 
-/* ==========================================================================
-   DESKTOP (Comportamento Estrutural e Sticky)
-   ========================================================================== */
-
 @media (min-width: 1024px) {
   .blog-sidebar { 
     display: flex; 
     flex-direction: column;
-    /* 🚀 RITMO DE 8px: O container pai dita o respiro de todos os filhos (32px) */
     gap: calc(var(--space-unit) * 4); 
-    
-    /* 🚀 ENGENHARIA STICKY: Altura dinâmica essencial para o sticky funcionar */
     height: max-content; 
     position: -webkit-sticky; 
     position: sticky; 
-    /* 104px = 13 * 8px (Altura do Header + Respiro visual) */
     top: 104px; 
   }
-
-  /* Garante que o container de children propague o ritmo de 8px se tiver múltiplos itens */
   .sidebar-dynamic-area {
     width: 100%;
     display: flex;

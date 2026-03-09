@@ -1398,65 +1398,7 @@ html {
   margin-bottom: var(--post-block-spacing, 30px);
   padding: 20px;
 }
-/* ==========================================================================
-   TOC WIDGET (Globals.css - Refatorado para 8px Grid e Zero Margem Externa)
-   ========================================================================== */
 
-.toc-widget { 
-  background-color: var(--gray-light);
-  padding: 0;
-  overflow: hidden;
-  text-align: left;
-  /* ❌ margin-bottom removido: o layout agora é governado pelo gap do pai */
-}
-
-.toc-widget .widget-title {
-  background-color: transparent; 
-  color: var(--aws-dark);
-  margin: 0;
-  /* 🚀 RITMO MATEMÁTICO: Corrigido de 25px/10px para 24px/8px (3x8/1x8) */
-  padding: 24px 24px 8px; 
-  font-size: 1.2rem; 
-  border-bottom: none;
-}
-
-.toc-widget .widget-title i {
-  color: var(--aws-orange);
-  margin-right: 8px; 
-}
-
-.toc-list { 
-  /* 🚀 RITMO: Corrigido de 25px para 24px (3x8) */
-  padding: 0 0 24px 0; 
-  list-style: none; 
-}
-
-.toc-list li { 
-  margin: 0; 
-  position: relative;
-}
-
-.toc-list li::before {
-  content: none; 
-}
-
-.toc-list a { 
-  display: block;
-  /* 🚀 RITMO: Corrigido de 25px para 24px (3x8) */
-  padding: 8px 24px; 
-  color: var(--gray-text); 
-  font-size: 0.95rem;
-  border-left: 3px solid transparent; 
-  transition: all 0.2s ease;
-  text-decoration: none; 
-}
-
-.toc-list a:hover { 
-  background-color: rgba(255,255,255, 0.6); 
-  color: var(--aws-orange); 
-  border-left-color: var(--aws-orange);
-  text-decoration: underline; 
-}
 /* Cards de Serviço e Newsletter */
 .widget-newsletter {
   border: none;
