@@ -4,8 +4,7 @@
   background-color: rgb(35, 47, 62); /* Navy Original */
   color: rgb(255, 255, 255);
   border-radius: 12px;
-  padding: 24px; /* Ajustado de 25px para 8px-rhythm */
-  margin-bottom: 40px; /* Macro-ritmo 5*8 */
+  padding: 24px; 
   text-align: center;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 25px 0px;
   width: 100%;

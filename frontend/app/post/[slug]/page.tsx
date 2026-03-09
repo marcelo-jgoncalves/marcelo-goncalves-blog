@@ -200,9 +200,7 @@ export default async function PostPage({ params }: Props) {
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
-            <div className="mt-8">
-              <ServiceCallout />
-            </div>
+            <ServiceCallout /> 
         </BlogSidebar>
       </div>
       
