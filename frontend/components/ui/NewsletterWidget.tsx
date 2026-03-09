@@ -1,5 +1,7 @@
 /* frontend/components/ui/NewsletterWidget.tsx */
+
 import Link from 'next/link';
+import './NewsletterWidget.css';
 
 export default function NewsletterWidget() {
   return (

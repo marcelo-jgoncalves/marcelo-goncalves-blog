@@ -1,3 +1,5 @@
+/* frontend/components/ui/NewsletterCTA.tsx */
+
 import Link from 'next/link';
 
 export default function NewsletterCTA() {

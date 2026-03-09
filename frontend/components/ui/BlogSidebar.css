@@ -1,83 +1,37 @@
-/* ui/BlogSidebar.css *//* frontend/components/ui/BlogSidebar.css */
+/* frontend/components/ui/BlogSidebar.css */
+/* ==========================================================================
+   BLOG SIDEBAR (Mobile-First & Sticky Layout)
+   ========================================================================== */
 
-/* Mobile First: Oculta a sidebar inteira em telas menores que 1024px */
-.op-blog-sidebar { 
+/* 1. Mobile First: Sidebar não existe no DOM visual em telas pequenas */
+.blog-sidebar { 
   display: none; 
 } 
 
 /* ==========================================================================
-   WIDGETS (Regras Visuais Independentes)
-   ========================================================================== */
-.op-widget { 
-  background: white; 
-  border: 1px solid var(--gray-border); 
-  border-radius: 12px; 
-  padding: 24px; /* Grid 8px */
-  /* 🚀 margin-bottom removido! O gap do pai fará esse trabalho */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.op-widget-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 16px; /* Grid 8px */
-  border-bottom: 1px solid var(--gray-border); 
-  padding-bottom: 8px; /* Grid 8px */
-}
-
-.op-widget-header h4 { 
-  font-size: 0.8rem; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
-  color: var(--gray-text); 
-  margin: 0; 
-  font-family: var(--font-space-grotesk); 
-  font-weight: 700; 
-}
-
-/* Outros Widgets */
-.op-author-widget { text-align: center; }
-.op-author-img { 
-  border-radius: 50%; 
-  margin: 0 auto 16px; /* Grid 8px */
-  border: 3px solid var(--gray-light); 
-  object-fit: cover; 
-  display: block; 
-}
-.op-author-widget p { font-size: 0.9rem; color: var(--gray-text); margin-top: 8px; }
-
-.op-adsense-feed { 
-  background: var(--gray-light); 
-  border: 2px dashed var(--gray-border); 
-  border-radius: 8px; 
-  padding: 32px; 
-  text-align: center; 
-  color: var(--gray-text); 
-  font-family: var(--font-space-grotesk); 
-  font-size: 0.9rem; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  min-height: 120px; 
-}
-
-/* ==========================================================================
    DESKTOP (Comportamento Estrutural e Sticky)
    ========================================================================== */
+
 @media (min-width: 1024px) {
-  .op-blog-sidebar { 
+  .blog-sidebar { 
     display: flex; 
     flex-direction: column;
-    gap: 32px; /* 🚀 Grid 8px: Resolve o espaçamento entre todos os widgets automaticamente! */
-    height: max-content; /* Necessário para o sticky funcionar corretamente */
+    /* 🚀 RITMO DE 8px: O container pai dita o respiro de todos os filhos (32px) */
+    gap: calc(var(--space-unit) * 4); 
     
-    /* 🚀 A Arma Secreta: Mantém a sidebar visível durante o scroll */
+    /* 🚀 ENGENHARIA STICKY: Altura dinâmica essencial para o sticky funcionar */
+    height: max-content; 
     position: -webkit-sticky; 
     position: sticky; 
-    top: 104px; /* Altura do seu Top Header (ex: 64px) + 40px de respiro (Grid 8px) */
+    /* 104px = 13 * 8px (Altura do Header + Respiro visual) */
+    top: 104px; 
+  }
+
+  /* Garante que o container de children propague o ritmo de 8px se tiver múltiplos itens */
+  .sidebar-dynamic-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space-unit) * 4);
   }
 }

@@ -1346,28 +1346,6 @@ header {
   }
 }
 
- /* .sticky-wrapper {
-    position: sticky;
-    top: 100px;
-  }
-*/
-
-/* Placeholder Global do AdSense Vertical */
-.adsense-vertical {
-  min-height: 600px;
-  width: 100%;
-  background-color: var(--gray-light, #f8fafc);
-  border: 2px dashed var(--gray-border, #cbd5e0) !important;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: var(--gray-text, #64748b);
-  margin-bottom: var(--post-block-spacing, 30px);
-  padding: 20px;
-}
-
 html {
   scroll-behavior: smooth;
 }

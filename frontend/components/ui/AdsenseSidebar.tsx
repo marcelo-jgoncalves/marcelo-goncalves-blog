@@ -1,46 +1,28 @@
 // frontend/components/ui/AdsenseSidebar.tsx
-
-import React from 'react';
+// 🚀 ARQUITETURA: Isolamento Estrito
+import './AdsenseSidebar.css';
 
 interface AdsenseSidebarProps {
-  blockId: string;
-  // A classe CSS 'adsense-vertical' é usada para o estilo do placeholder e para o Adsense real.
+  blockId?: string;
 }
 
-// Simula a lógica para determinar se deve carregar o AdSense real ou o placeholder.
-// Em um projeto real/Next.js, isso garante que o Adsense só é injetado em produção.
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-// Componente para o slot de anúncio do Google AdSense em produção.
-// Ele apenas usa a classe de layout para reservar o espaço (CLS prevention).
-const AdsenseSlot: React.FC<{ blockId: string; className: string }> = ({ blockId, className }) => {
-    // Nota: A implementação real do Adsense JS (ins class="adsbygoogle" ...)
-    // e o carregamento do script seriam feitos aqui ou em um componente wrapper.
-    return (
-        <div className={className}>
-            {/* <ins class="adsbygoogle" data-ad-client="ca-pub-XXXXXX" data-ad-slot={blockId} /> */}
-            {/* O conteúdo real do Adsense será renderizado aqui. */}
-            {/* Em produção, o CSS do placeholder (borda tracejada e fundo) é automaticamente substituído pelo AdSense. */}
-        </div>
-    );
-};
-
-
-export default function AdsenseSidebar({ blockId }: AdsenseSidebarProps) {
+export default function AdsenseSidebar({ blockId = "sidebar-300x600" }: AdsenseSidebarProps) {
   
-  const placeholderClass = 'adsense-vertical';
-  const placeholderText = `[ADSENSE VERTICAL SIDEBAR: ${blockId}]`;
-
-  // 1. Lógica Condicional: Se for Produção, renderiza o slot real (que só tem classes CLS)
   if (IS_PRODUCTION) {
-    return <AdsenseSlot blockId={blockId} className={placeholderClass} />;
+    return (
+      <div className="sidebar-ad-container" aria-label="Anúncio">
+          {/* 🚀 PILAR 3 (Performance): O contêiner pai já reserva o espaço de 600px exatos,
+               eliminando qualquer possibilidade de CLS quando o JS do Google carregar. */}
+          {/* <ins className="adsbygoogle" data-ad-client="ca-pub-XXXXXX" data-ad-slot={blockId}></ins> */}
+      </div>
+    );
   }
   
-  // 2. Se não for Produção (Desenvolvimento/Placeholder), renderiza o estilo tracejado
   return (
-    // Usa a classe CSS que define a borda tracejada, fundo e min-height (Seção 11 do globals.css)
-    <div className={placeholderClass}>
-      <span aria-hidden="true">{placeholderText}</span>
+    <div className="sidebar-ad-container ad-placeholder" aria-label="Espaço de anúncio reservado">
+      <span aria-hidden="true">[ADSENSE: {blockId}]</span>
     </div>
   );
 }

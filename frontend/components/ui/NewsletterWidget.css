@@ -1,0 +1,56 @@
+/* ==========================================================================
+   NEWSLETTER WIDGET (8px Grid & Strict Scope Isolation)
+   ========================================================================== */
+
+
+/* 🚀 2. Ícone Destaque */
+.widget-newsletter .card-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 🚀 RITMO: Corrigido de 60px para 64px (8x8) */
+  width: calc(var(--space-unit) * 8);
+  height: calc(var(--space-unit) * 8);
+  background-color: #fff8f0; 
+  color: var(--aws-orange);
+  border-radius: calc(var(--space-unit) * 1.5); /* 12px (Proporcional ao 64) */
+  font-size: 1.5rem;
+  /* 🚀 RITMO: Corrigido de 15px para 16px (2x8) */
+  margin: 0 auto calc(var(--space-unit) * 2);
+}
+
+
+
+.widget-newsletter .card-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--gray-text); 
+  /* 🚀 RITMO: Corrigido de 20px para 24px (3x8) */
+  margin-bottom: calc(var(--space-unit) * 3);
+}
+
+/* 🚀 4. O Botão (Limpo, Acessível e sem !important) */
+.widget-newsletter .btn-full {
+  display: block;
+  width: 100%;
+  text-align: center;
+  /* 🚀 RITMO UX: Ajustado de 12px para 16px de área de toque real (Mobile-Friendly) */
+  padding: calc(var(--space-unit) * 2);
+  background-color: var(--aws-orange);
+  color: var(--aws-dark);
+  text-decoration: none;
+  font-weight: 700;
+  /* 🚀 RITMO: Ajustado de 6px para 8px (1x8) */
+  border-radius: var(--space-unit);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Prevenção de Sticky Hover */
+@media (hover: hover) {
+  .widget-newsletter .btn-full:hover {
+    transform: translateY(-2px);
+    background-color: var(--aws-orange-hover);
+  }
+}
