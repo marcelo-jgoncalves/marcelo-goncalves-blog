@@ -490,8 +490,8 @@ pre.code-block,
   border: none;
   border-left: 4px solid var(--aws-orange);
   background-color: transparent;
-  width: calc(100% - 24px); 
-  margin: 2rem auto;        
+  width: 100%; 
+  margin: 2rem 0;        
   box-shadow: none;         
   overflow: hidden;
 }
@@ -502,13 +502,13 @@ pre.code-block,
   outline: none;
   background: transparent;
   width: 100%;
-  padding: 14px 16px 14px 20px; 
+  padding: 16px 16px 16px 0; 
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-space-grotesk);
   font-weight: 700;
-  font-size: 1.05rem; /* Fonte encorpada do título restaurada */
+  font-size: 1.05rem;
   color: var(--aws-dark);
   cursor: pointer;
 }
@@ -516,7 +516,8 @@ pre.code-block,
 /* 3. Os Ícones do Header (AQUI ESTAVA O PROBLEMA!) */
 .toc-mobile-header .toc-icon {
   color: var(--aws-orange);
-  margin-right: 8px; /* Isso desgruda o texto do ícone da esquerda */
+  margin-right: 12px;
+  margin-left: 16px; 
 }
 
 .toc-mobile-header .fa-chevron-down {
