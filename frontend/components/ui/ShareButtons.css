@@ -1,0 +1,89 @@
+/* frontend/components/ui/ShareButtons.css */
+
+/* Bloco Principal Mobile-First - Centralizado no Mobile */
+.share-buttons-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🚀 Voltando para center no mobile */
+  justify-content: center; /* Centralizado no eixo principal no mobile */
+  gap: 16px; /* Ritmo 2x 8px */
+  padding: 24px 0; /* Ritmo 3x 8px */
+  margin: 0;
+  border-top: 1px solid var(--gray-300, #e2e8f0);
+  width: 100%;
+}
+
+/* Layout Desktop - Alinhado à Esquerda (Padrão F) */
+@media (min-width: 768px) {
+  .share-buttons-section {
+    flex-direction: row;
+    align-items: center; 
+    justify-content: flex-start; /* 🚀 Desloca para a esquerda no Desktop */
+    gap: 24px; /* Ritmo 3x 8px */
+  }
+}
+
+/* O Label - Com mais presença e peso */
+.share-buttons-label {
+  font-family: var(--font-space, 'Space Grotesk', sans-serif);
+  font-size: 1.25rem; /* Aumentado para 20px */
+  line-height: 24px; /* 🚀 3x 8px: Ritmo protegido matematicamente */
+  font-weight: 700;
+  color: var(--aws-dark, #232F3E);
+  margin: 0;
+  text-align: center; /* Centraliza o texto se quebrar linha em telas muito pequenas */
+}
+
+/* O Container dos Botões */
+.share-buttons-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px; /* Ritmo 2x 8px */
+  flex-wrap: wrap; /* Garante que os botões quebrem de linha em telas minúsculas */
+}
+
+/* O Botão Base - Serve para <a> e <button> */
+.share-buttons-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; /* Ritmo 6x 8px */
+  height: 48px; /* Ritmo 6x 8px */
+  border-radius: 50%;
+  color: #ffffff;
+  text-decoration: none;
+  border: none; /* Reset para a tag <button> */
+  cursor: pointer; /* Feedback visual para a tag <button> */
+  padding: 0; /* Reset para a tag <button> */
+  flex-shrink: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.share-buttons-btn i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Cores das Redes e Ações */
+.share-buttons-linkedin { background-color: #0a66c2; }
+.share-buttons-whatsapp { background-color: #25D366; }
+.share-buttons-twitter  { background-color: #1DA1F2; }
+.share-buttons-copy { background-color: var(--aws-orange, #FF9900); }
+
+/* Cor de Sucesso (Verde) quando copiado */
+.share-buttons-copy.copied { background-color: #48bb78; } 
+
+/* Proteção de Sticky Hover em Telas Touch */
+@media (hover: hover) {
+  .share-buttons-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Acessibilidade de Teclado */
+.share-buttons-btn:focus-visible {
+  outline: 3px solid var(--aws-orange, #FF9900);
+  outline-offset: 4px;
+}

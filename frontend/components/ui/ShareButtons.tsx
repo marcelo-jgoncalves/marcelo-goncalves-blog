@@ -1,6 +1,7 @@
-// frontend/components/ui/ShareButtons.tsx
+/* frontend/components/ui/ShareButtons.tsx */
 
-import React from 'react';
+import './ShareButtons.css';
+import CopyLinkButton from './CopyLinkButton';
 
 interface ShareButtonsProps {
   title: string;
@@ -8,31 +9,24 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
-  
-  // 🚀 ARQUITETURA LAMBDA/OPEN-NEXT: 
-  // 1º Tenta a variável privada da Lambda (Run-time)
-  // 2º Tenta a variável pública do Build (SSG)
-  // 3º Fallback de segurança (Localhost)
   const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const postUrl = `${siteUrl}/post/${slug}`;
   
-  // As URLs são geradas no servidor, garantindo SEO e carregamento instantâneo
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(postUrl)}`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + postUrl)}`;
 
   return (
-    /* 🚀 PERFORMANCE: Sem 'minHeight' inline. O CSS cuida de tudo. */
-    <section className="share-section fade-in" aria-label="Botões de compartilhamento">
-        <span className="share-label">Gostou? Compartilhe:</span>
+    <section className="share-buttons-section fade-in" aria-label="Botões de compartilhamento">
+        <span className="share-buttons-label">Gostou? Compartilhe:</span>
         
-        <div className="share-buttons-container">
+        <div className="share-buttons-group">
           {/* Botão LinkedIn */}
           <a 
             href={linkedinUrl} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="share-btn btn-linkedin"
+            className="share-buttons-btn share-buttons-linkedin"
             aria-label="Compartilhar artigo no LinkedIn"
             title="Compartilhar no LinkedIn"
           >
@@ -44,7 +38,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             href={whatsappUrl} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="share-btn btn-whatsapp"
+            className="share-buttons-btn share-buttons-whatsapp"
             aria-label="Compartilhar artigo no WhatsApp"
             title="Compartilhar no WhatsApp"
           >
@@ -56,12 +50,15 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             href={twitterUrl} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="share-btn btn-twitter"
+            className="share-buttons-btn share-buttons-twitter"
             aria-label="Compartilhar artigo no X (antigo Twitter)"
             title="Compartilhar no X"
           >
             <i className="fab fa-twitter" aria-hidden="true"></i>
           </a>
+
+          {/* Novo Botão Interativo de Copiar Link */}
+          <CopyLinkButton url={postUrl} />
         </div>
     </section>
   );
