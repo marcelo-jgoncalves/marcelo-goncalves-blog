@@ -121,28 +121,6 @@ img {
   color: var(--aws-orange);
 }
 
-.skip-link {
-  position: absolute;
-  left: 20px;
-  top: -80px;
-  background: var(--aws-orange);
-  color: var(--aws-dark);
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-weight: 700;
-  text-decoration: none;
-  z-index: 9999;
-  transition: top 0.3s ease-out;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.skip-link:focus {
-  top: 20px;
-  outline: 3px solid #cc7a00;
-  background-color: var(--aws-orange);
-  color: var(--aws-dark);
-}
-
 /* =========================================
    3. COMPONENTES DE UI
    ========================================= */
