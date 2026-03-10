@@ -1,32 +1,52 @@
 /* frontend/components/ui/SystemStatus.tsx */
-
 import './SystemStatus.css';
 
 export default function SystemStatus() {
   return (
-    <div className="op-widget">
-      <div className="op-widget-header">
-        <h4>System Status</h4>
-        <span className="op-status-dot" aria-label="Status Online"></span>
+    <aside className="system-status-box" aria-labelledby="system-status-heading">
+      <div className="system-status-header">
+        <h4 id="system-status-heading" className="system-status-title">System Status</h4>
+        <div className="system-status-dot-container" aria-hidden="true">
+          <span className="system-status-dot"></span>
+        </div>
+        <span className="sr-only">System is Online</span>
       </div>
-      <div className="op-status-list">
-        <div>
-          <span><i className="fas fa-code-branch" style={{ color: "var(--blue-600)" }}></i> Version</span>
-          <strong>v1.2.0</strong>
+
+      <dl className="system-status-list">
+        <div className="system-status-row">
+          <dt className="system-status-group">
+            <i className="fas fa-code-branch system-status-icon-version" aria-hidden="true"></i>
+            <span>Version</span>
+          </dt>
+          <dd className="system-status-value-bold">v1.2.0</dd>
         </div>
-        <div>
-          <span><i className="fas fa-server" style={{ color: "var(--aws-orange)" }}></i> Env</span>
-          <span className="op-env-tag">Production</span>
+
+        <div className="system-status-row">
+          <dt className="system-status-group">
+            <i className="fas fa-server system-status-icon-env" aria-hidden="true"></i>
+            <span>Env</span>
+          </dt>
+          <dd>
+            <span className="system-status-env-tag">Production</span>
+          </dd>
         </div>
-        <div>
-          <span><i className="fas fa-globe" style={{ color: "var(--gray-text)" }}></i> Region</span>
-          <span>us-east-1</span>
+
+        <div className="system-status-row">
+          <dt className="system-status-group">
+            <i className="fas fa-globe system-status-icon-region" aria-hidden="true"></i>
+            <span>Region</span>
+          </dt>
+          <dd className="system-status-value-normal">us-east-1</dd>
         </div>
-        <div>
-          <span><i className="fas fa-bolt" style={{ color: "#ecc94b" }}></i> Uptime</span>
-          <strong>99.99%</strong>
+
+        <div className="system-status-row">
+          <dt className="system-status-group">
+            <i className="fas fa-bolt system-status-icon-uptime" aria-hidden="true"></i>
+            <span>Uptime</span>
+          </dt>
+          <dd className="system-status-value-bold">99.99%</dd>
         </div>
-      </div>
-    </div>
+      </dl>
+    </aside>
   );
 }
