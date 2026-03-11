@@ -1,8 +1,8 @@
-// frontend/components/ui/TimelineCard.tsx// frontend/components/ui/TimelineCard.tsx
-
+/* frontend/components/ui/TimelineCard.tsx */
 import Link from 'next/link';
 import Image from 'next/image';
 import ReadMoreLink from './ReadMoreLink';
+import CategoryBadge from './CategoryBadge';
 import './TimelineCard.css';
 
 interface TimelineCardProps {
@@ -12,6 +12,11 @@ interface TimelineCardProps {
     resumo: string;
     data_publicacao: string;
     imagem_destaque_url?: string;
+    categoria_slug?: string;
+    categoria?: {
+      nome_exibicao: string;
+      icone_fa?: string;
+    };
   };
   isPriority?: boolean; 
 }
@@ -31,7 +36,6 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
   return (
     <article className="op-project-card">
       
-      {/* 🚀 Estilos inline removidos. Delegação total para o .op-card-header */}
       <div className="op-card-header">
         <i className="far fa-calendar-alt" aria-hidden="true"></i>
         <time dateTime={post.data_publicacao}>{dataFormatada}</time>
@@ -50,15 +54,28 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
             sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1024px) 66vw, 400px"
             priority={isPriority} 
             quality={80} 
-            // objectFit e transition mantidos aqui pois são props específicas de comportamento de imagem
-            style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
           />
         </Link>
       )}
 
+      {/* A Mágica: Este contêiner continua sendo display: block (conforme JSON), 
+        mantendo todo o seu visual original. 
+      */}
       <div className="op-card-body">
+        
+        {/* Pilar SEO: Injeção do Badge */}
+        {post.categoria && post.categoria_slug && (
+          <div className="op-card-badge-wrapper">
+            <CategoryBadge 
+              nome={post.categoria.nome_exibicao}
+              slug={post.categoria_slug}
+              icone_fa={post.categoria.icone_fa}
+              size="sm"
+            />
+          </div>
+        )}
+
         <h2>
-          {/* 🚀 textDecoration e color removidos daqui. Delegados para o TimelineCard.css (.op-card-body h2 a) */}
           <Link href={`/post/${post.slug}`}>
             {post.titulo}
           </Link>
@@ -67,7 +84,10 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
       </div>
 
       <div className="op-card-footer">
-        <ReadMoreLink href={`/post/${post.slug}`} />
+        <ReadMoreLink 
+          href={`/post/${post.slug}`} 
+          ariaLabel={`Ler artigo completo sobre ${post.titulo}`}
+        />
       </div>
     </article>
   );

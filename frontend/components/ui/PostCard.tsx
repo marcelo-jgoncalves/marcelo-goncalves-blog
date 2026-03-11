@@ -1,7 +1,9 @@
 /* frontend/components/ui/PostCard.tsx */
-
 import Link from 'next/link';
+import Image from 'next/image';
 import ReadMoreLink from './ReadMoreLink';
+import CategoryBadge from './CategoryBadge'; // 👈 Componente Modular Injetado
+import './PostCard.css';
 
 interface PostCardProps {
   post: {
@@ -15,33 +17,56 @@ interface PostCardProps {
       icone_fa?: string;
     };
   };
+  isPriority?: boolean; // 👈 Otimização de LCP (Pilar Performance)
 }
 
-export default function PostCard({ post }: PostCardProps) {
-  // Garante que a URL da imagem seja válida para CSS (escapa aspas simples)
-  const bgImage = post.imagem_destaque_url 
-    ? `url('${post.imagem_destaque_url}')` 
-    : 'none';
-
+export default function PostCard({ post, isPriority = false }: PostCardProps) {
   return (
     <article className="post-card">
-      {/* Usando DIV para imagem (igual ao protótipo) */}
-      <div 
-        className="post-image" 
-        style={{ backgroundImage: bgImage }}
-      ></div>
+      
+      {/* Wrapper de Imagem com Next/Image (Pilar: Performance & Vitals) */}
+      <div className="post-card__image-wrapper">
+        {post.imagem_destaque_url && (
+          <Image
+            src={post.imagem_destaque_url}
+            alt={`Imagem de capa para o artigo: ${post.titulo}`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="post-card__image"
+            priority={isPriority} // 👈 O gatilho mágico que instrui a AWS/Browser a não fazer lazy-load
+          />
+        )}
+      </div>
 
-      <div className="card-content">
-        <h3>
-          <Link href={`/post/${post.slug}`}>
+      {/* Conteúdo do Card */}
+      <div className="post-card__content">
+        
+        {/* Pilar SEO On-Page: Injeção do Badge de Categoria */}
+        {post.categoria && (
+          <div>
+            <CategoryBadge 
+              nome={post.categoria.nome_exibicao}
+              slug={post.categoria_slug}
+              icone_fa={post.categoria.icone_fa}
+              size="sm"
+            />
+          </div>
+        )}
+
+        <h3 className="post-card__title">
+          <Link href={`/post/${post.slug}`} className="post-card__title-link">
             {post.titulo}
           </Link>
         </h3>
         
-        <p>{post.resumo}</p>
+        <p className="post-card__excerpt">{post.resumo}</p>
         
-        {/* Aqui entra o nosso novo componente global! */}
-        <ReadMoreLink href={`/post/${post.slug}`} />
+        {/* Componente Global Injetado com Contexto de SEO */}
+        <ReadMoreLink 
+          href={`/post/${post.slug}`} 
+          ariaLabel={`Ler post completo sobre ${post.titulo}`}
+          className="post-card__read-more"
+        />
       </div>
     </article>
   );

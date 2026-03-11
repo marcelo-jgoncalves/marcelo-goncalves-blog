@@ -1,0 +1,65 @@
+/* frontend/components/ui/CategoryBadge.css */
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  background-color: var(--orange-light, #fffaf0);
+  color: var(--aws-orange, #FF9900);
+  border: 1px solid rgba(255, 153, 0, 0.2);
+  
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  
+  border-radius: 16px; 
+  transition: all 0.2s ease;
+  white-space: nowrap; /* Impede que o badge quebre em duas linhas */
+}
+
+/* Interação Acessível (Mobile-First Hover) */
+@media (hover: hover) {
+  .category-badge:hover {
+    background-color: var(--aws-orange);
+    color: #ffffff;
+    transform: translateY(-2px); /* Micro-interação premium */
+    box-shadow: 0 4px 6px -1px rgba(255, 153, 0, 0.2);
+  }
+}
+
+/* --- MODIFICADORES DE TAMANHO (BEM) --- */
+
+/* Tamanho Small (Para PostCards e TimelineCards) */
+.category-badge--sm {
+  font-size: 0.75rem; /* 12px */
+  padding: 4px 8px;   /* Ritmo de 8px (0.5x e 1x) */
+  gap: 4px;           /* Substitui o antigo mr-2 */
+}
+
+/* Tamanho Medium (Para o Cabeçalho da página do Post) */
+.category-badge--md {
+  font-size: 0.875rem; /* 14px */
+  padding: 4px 12px;   /* Ritmo de 8px equilibrado */
+  gap: 8px;            /* Ritmo de 8px exato */
+}
+
+
+.category-badge--lg {
+  font-size: 1rem;     /* 16px */
+  padding: 8px 16px;   /* Ritmo de 8px pleno */
+  gap: 8px;
+}
+
+/* O Ícone */
+.category-badge__icon {
+  display: inline-flex;
+  align-items: center; 
+}
+
+/* Pilar Mobile-First: Oculta o ícone em celulares e tablets (mesmo em tamanhos md/lg) */
+@media (max-width: 768px) {
+  .category-badge__icon {
+    display: none;
+  }
+}

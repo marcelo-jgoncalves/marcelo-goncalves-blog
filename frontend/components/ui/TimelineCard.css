@@ -1,96 +1,111 @@
-/* ui/TimelineCard.css */
+/* frontend/components/ui/TimelineCard.css */
 
-.op-project-card { 
-  background: white; 
-  border: 1px solid var(--gray-border); 
-  border-radius: 12px; /* Mantido para não quebrar a identidade visual curva */
-  overflow: hidden; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
+.op-project-card {
+  background: white;
+  border: 1px solid var(--gray-border);
+  border-radius: 12px; 
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  
   display: flex;
   flex-direction: column;
+  height: 100%; /* Mantém os cards na mesma altura no Grid */
 }
-.op-card-header { 
-  background: var(--gray-light); 
-  padding: 16px 24px; /* Grid 8px: Corrigido de 12px 25px */
-  border-bottom: 1px solid var(--gray-border); 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; /* Grid 8px: Corrigido de 10px */
-  color: var(--gray-text); 
-  font-family: var(--font-space-grotesk); 
-  font-weight: 700; 
-  font-size: 0.875rem; 
-  text-transform: uppercase; 
-  letter-spacing: 0.05em; 
+
+.op-card-header {
+  background: var(--gray-light);
+  padding: 16px 24px; 
+  border-bottom: 1px solid var(--gray-border);
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  color: var(--gray-text);
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
+
 .op-card-header i { color: var(--aws-orange); }
 
-.op-card-image { 
+.op-card-image {
   display: block;
-  width: 100%; 
-  height: 200px; /* 200px é múltiplo de 8 (8x25) */
-  background-color: var(--gray-light); 
-  position: relative; 
-  overflow: hidden; 
-  border-bottom: 1px solid var(--gray-border); 
+  width: 100%;
+  height: 200px; 
+  background-color: var(--gray-light);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--gray-border);
 }
-.op-card-body { padding: 24px; } /* Grid 8px: Corrigido de 25px */
-.op-card-body h2 { 
-  margin-bottom: 16px; /* Grid 8px: Micro-ritmo corrigido de 12px */
-  line-height: 1.3; 
-  font-family: var(--font-space-grotesk); 
-  font-weight: 700; 
+
+/* Otimização: Transição de imagem delegada para o CSS */
+.op-card-image img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
+
+.op-card-body {
+  padding: 24px; 
+  display: block; /* 🛡️ Garantido pelo JSON para respeitar suas margens globais */
+  flex-grow: 1;   /* 🛡️ Estica este bloco para empurrar o rodapé pro fundo */
+}
+
+.op-card-badge-wrapper {
+  margin-bottom: 16px; /* Ritmo exato do seu H2 original */
+}
+
+.op-card-body h2 {
+  margin-bottom: 16px; 
+  line-height: 1.3;
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+}
+
 .op-card-body h2 a {
   display: block;
   transition: color 0.3s ease;
-  color: var(--aws-dark); 
+  color: var(--aws-dark);
   text-decoration: none;
   font-size: clamp(1.2rem, 5vw, 1.5rem);
 }
-.op-card-body p { 
-  color: var(--gray-text); 
-  margin-bottom: 0; 
-  font-size: 1rem; 
-  line-height: 1.6; 
+
+.op-card-body p {
+  color: var(--gray-text);
+  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  
+  /* 🛡️ Truncamento Blindado (PostCSS Safe) */
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-.op-card-footer { 
-  padding: 0 24px 24px 24px; /* Grid 8px: Corrigido de 25px */
-  display: flex; justify-content: flex-end; 
-}
-.op-read-more { 
-  color: var(--aws-orange); 
-  font-family: var(--font-space-grotesk); 
-  font-weight: 700; 
-  font-size: 0.95rem; 
-  text-transform: uppercase; 
-  letter-spacing: 0.02em; 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 8px; 
-  text-decoration: none; 
+  text-overflow: ellipsis;
 }
 
-/* Interatividade Anti-Sticky Hover */
+.op-card-footer {
+  padding: 0 24px 24px 24px; 
+  display: flex; 
+  justify-content: flex-end;
+}
+
+/* --- Interatividade Anti-Sticky Hover --- */
 .op-card-body h2 a:hover,
 .op-project-card:hover .op-card-body h2 a { color: var(--aws-orange) !important; }
 .op-card-body h2 a:active { color: var(--aws-orange) !important; transition: none !important; }
-.op-read-more:hover { text-decoration: underline; text-underline-offset: 4px; }
-.op-read-more:hover i { transform: translateX(5px); transition: transform 0.2s; }
 
 @media (hover: hover) {
-  .op-project-card:hover { 
-    transform: translateY(-6px); 
-    box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.15); 
-    border-color: var(--aws-orange); 
+  .op-project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.15);
+    border-color: var(--aws-orange);
   }
-  .op-project-card:hover img { transform: scale(1.05); }
+  .op-project-card:hover .op-card-image img { transform: scale(1.05); }
 }
+
 @media (min-width: 768px) {
-  .op-card-image { height: 240px; } /* Múltiplo de 8 */
+  .op-card-image { height: 240px; } 
 }

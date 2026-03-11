@@ -1,0 +1,82 @@
+/* PostCard.css */
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 16px; /* Ritmo de 8px (2x8) */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* Fundamental para a imagem respeitar as bordas arredondadas */
+  height: 100%; /* Garante que os cards estiquem uniformemente em um CSS Grid */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .post-card:hover {
+    transform: translateY(-4px); /* Feedback visual premium */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Otimização LCP: Contêiner de imagem com tamanho previsível (Zero CLS) */
+.post-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10; /* Aproximação limpa do seu 1.57 */
+  background-color: #f3f4f6; /* Esqueleto visual enquanto a imagem carrega */
+}
+
+.post-card__image {
+  object-fit: cover;
+}
+
+.post-card__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 24px; /* Macro-ritmo de 8px (3x8) */
+  gap: 16px; /* Micro-ritmo de 8px (2x8) entre título, texto e botão */
+}
+
+.post-card__title {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.post-card__title-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.post-card__title-link:hover {
+  color: #FF9900; /* AWS Orange */
+}
+
+.post-card__excerpt {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6; /* 25.6px */
+  color: #4b5563;
+  margin: 0; 
+  /* Mobile-First: Padrão de 2 linhas para poupar espaço e manter SEO/UX */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; 
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Macro-ritmo de tela: Expande o texto quando o viewport permite */
+@media (min-width: 768px) {
+  .post-card__excerpt {
+    -webkit-line-clamp: 3; /* ou 4, dependendo do volume que você prefere no desktop */
+  }
+}
+
+.post-card__read-more {
+  align-self: flex-end; /* A Mágica: Empurra apenas este elemento para a direita */
+  margin-top: auto; /* Ritmo de 8px: Um respiro extra entre o resumo e o botão, se necessário */
+}
