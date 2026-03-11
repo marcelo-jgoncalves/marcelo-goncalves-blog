@@ -1,0 +1,43 @@
+/* ReadMoreLink.css */
+
+/* Bloco Principal */
+.read-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Ritmo de 8px */
+  color: #FF9900; /* AWS Orange */
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1.5;
+  transition: transform 0.2s ease, color 0.2s ease;
+  
+  /* Touch Target Acessível (Pilar Performance/a11y) */
+  padding: 8px 0; 
+  min-height: 44px;
+}
+
+/* Elemento: Ícone */
+.read-more-link__icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* Modificadores e Estados */
+@media (hover: hover) {
+  .read-more-link:hover {
+    color: #FFB84D;
+  }
+
+  .read-more-link:hover .read-more-link__icon {
+    transform: translateX(4px); /* Micro-interação para LCP/UX */
+  }
+}
+
+/* Ajuste Mobile-First: No mobile, garantimos que o toque seja centralizado */
+@media (max-width: 768px) {
+  .read-more-link {
+    font-size: 1rem; /* 16px para preservar hierarquia em telas pequenas */
+  }
+}

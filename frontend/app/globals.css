@@ -375,28 +375,9 @@ header {
   align-items: flex-start; /* Garante que o badge e título fiquem na esquerda */
 }
 
-/* COMPONENTE: READ MORE LINK (Global) */
-
-.read-more-global {
-  color: var(--aws-orange) !important;
-  font-family: var(--font-space-grotesk);
-  font-weight: 700;
-  font-size: 1.1rem; 
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  text-decoration: none;
-  border-bottom: none !important;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.read-more-global:hover {
-  transform: translateX(5px);
-  color: var(--aws-orange-hover, #e68a00) !important;
-}
 
 /* Mantém o alinhamento à direita para os cards de postagens normais */
-.card-content .read-more-global {
+.card-content {
   margin-top: auto;      
   align-self: flex-end; 
 }
