@@ -2,6 +2,7 @@
 
 import NewsletterWidget from './NewsletterWidget';
 import AdsenseSidebar from './AdsenseSidebar';
+import PopularPostsWidget from './PopularPostsWidget';
 import './BlogSidebar.css';
 
 interface BlogSidebarProps {
@@ -14,7 +15,6 @@ export default function BlogSidebar({
   adsenseBlockId = "sidebar-300x600" 
 }: BlogSidebarProps) {
   return (
-    /* 🚀 ARQUITETURA: Classes limpas, sem prefixos, sem redundâncias */
     <aside className="blog-sidebar" aria-label="Barra lateral do blog">
       
       {children && (
@@ -22,7 +22,7 @@ export default function BlogSidebar({
           {children}
         </div>
       )}
-      
+      <PopularPostsWidget />
       <AdsenseSidebar blockId={adsenseBlockId} />
       <NewsletterWidget />
 
