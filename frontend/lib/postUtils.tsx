@@ -1,4 +1,4 @@
-import { createHighlighter } from 'shiki';
+import { createHighlighter, type Highlighter } from 'shiki';
 
 export interface Heading {
   id: string;
@@ -10,18 +10,22 @@ export interface ProcessedPost {
   headings: Heading[];
 }
 
-/**
- * Pipeline Sênior de Processamento de Post
- * Resolve: Syntax Highlighting, TOC, e Injeções sem quebrar o HTML.
- */
+let highlighterInstance: Highlighter | null = null;
+
+async function getHighlighter(): Promise<Highlighter> {
+  if (!highlighterInstance) {
+    highlighterInstance = await createHighlighter({
+      themes: ['dark-plus'],
+      langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python'],
+    });
+  }
+  return highlighterInstance;
+}
+
 export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
 
-  // 1. Inicializa o Shiki para o Syntax Highlighting
-  const highlighter = await createHighlighter({
-    themes: ['dark-plus'],
-    langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python']
-  });
+  const highlighter = await getHighlighter();
 
   // 2. Limpeza de H1 (SEO) e Normalização
   let processedHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '').trim();
