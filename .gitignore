@@ -57,6 +57,9 @@ admin/dist/
 admin/coverage/
 *.local
 
+# --- CLAUDE CODE (Configurações locais do usuário) ---
+.claude/settings.local.json
+
 # --- IDEs (Configurações locais) ---
 .vscode/
 .idea/
