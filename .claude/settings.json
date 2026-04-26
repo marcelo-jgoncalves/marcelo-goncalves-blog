@@ -23,7 +23,13 @@
       "Bash(type *)",
       "Bash(tail *)",
       "Bash(head *)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(touch *)",
+      "Bash(for *)",
+      "Bash(sleep *)"
     ]
+  },
+  "sandbox": {
+    "enabled": false
   }
 }
