@@ -1,7 +1,8 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
 **Data:** 2026-04-26  
 **Auditor:** Claude (Staff Engineer Mode)  
-**Status:** Auditoria Completa — Aguardando Fase 3 (Correções)
+**Status:** Fase 3 em execução — 8 ciclos atômicos concluídos na sessão de onboarding  
+**Última atualização:** 2026-04-26
 
 ---
 
@@ -40,38 +41,34 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 
 > ⛔ **Devem ser resolvidos antes de qualquer deploy em produção.**
 
-### 3.1 Sem Terraform Remote State — BLOQUEANTE PARA PROD
+### 3.1 ~~Sem Terraform Remote State~~ — ✅ CORRIGIDO (2026-04-26)
 **Arquivo:** `infra/providers.tf`  
-O backend do Terraform é local. O comentário no arquivo diz "será configurado posteriormente". Para produção, sem estado remoto (S3 + DynamoDB lock), qualquer segundo operador destrói a infraestrutura.  
-**Risco:** Perda total de infra em prod se outro operador fizer `terraform apply`.  
-**Correção:** Adicionar backend S3 com lock DynamoDB em `providers.tf`.
+Backend S3 configurado. `scripts/bootstrap-state.sh` cria os recursos necessários.  
+**Pendente:** Executar o bootstrap script e configurar `infra/backend.hcl` local.
 
-### 3.2 API Pública Retorna Posts com Status Rascunho/Programado
-**Arquivos:** `backend/src/functions/getPost/index.ts`, `backend/src/functions/getPosts/index.ts`
+### 3.2 ~~API Pública Retorna Posts com Status Rascunho/Programado~~ — ✅ CORRIGIDO (2026-04-26)
+**Commits:** `146f438`  
+- `getPost`: retorna 404 se status != "Publicado"
+- `getPostsByCategory`: `FilterExpression` adicionado  
+- `searchPosts`: `FilterExpression` adicionado
+- `getProjectPosts`: `FilterExpression` adicionado
 
-- `getPost`: faz `GetCommand` sem filtrar `status`. Se alguém souber o slug de um rascunho, obtém o conteúdo.
-- `getPostsByCategory`: faz `QueryCommand` no GSI `CategoriaPorData` sem `FilterExpression: status = Publicado`. Retorna rascunhos.
-- `searchPosts`: `ScanCommand` sem filtrar por status. Retorna rascunhos nos resultados de busca.  
-
-**Risco:** Vazamento de conteúdo não publicado.  
-**Correção:** Adicionar `FilterExpression: "#status = :published"` nas queries públicas.
-
-### 3.3 Zero Testes Automatizados
+### 3.3 Zero Testes Automatizados — ⛔ AINDA CRÍTICO
 Nenhum teste unitário, de integração ou end-to-end em nenhuma das quatro camadas.  
-**Risco:** Qualquer refactoring ou nova feature pode quebrar silenciosamente funcionalidades existentes. Impossível ter CI/CD confiável.  
-**Correção:** Implementar testes unitários para o backend (Jest + AWS SDK mocks) como primeira prioridade.
+**Risco:** Qualquer refactoring ou nova feature pode quebrar silenciosamente. Impossível ter CI/CD confiável.  
+**Próximo passo:** Implementar testes unitários para o backend (Jest + AWS SDK mocks).
 
-### 3.4 Sem Pipeline de Deploy Automatizado
-**Arquivo:** `.github/workflows/deploy.yml`  
-O workflow existente faz apenas **validação** (lint, audit, terraform validate). Não há nenhum job de deploy. Todo deploy é manual, seguindo procedimentos do `tec.md` seção 3.  
-**Risco:** Deploy manual é propenso a erros. O procedimento para Next.js é particularmente complexo (zip da pasta específica).  
-**Correção:** Implementar jobs de deploy automatizado no pipeline de CI/CD.
+### 3.4 ~~Sem Pipeline de Deploy Automatizado~~ — ✅ CORRIGIDO (2026-04-26)
+**Arquivo:** `.github/workflows/cd.yml` criado.  
+Pipeline completa: build backend + frontend + admin, terraform apply, S3 sync, CloudFront invalidation.  
+**Pendente:** Configurar GitHub Secrets (AWS_ROLE_ARN_DEV, AWS_ROLE_ARN_PROD) e OIDC roles na AWS.
 
-### 3.5 IAM: Todas as Lambdas Compartilham a Mesma Role Over-privilegiada
-**Arquivo:** `infra/modules/lambda/main.tf`  
-A `lambda-role` única tem permissão de `dynamodb:Scan` e `dynamodb:PutItem`/`DeleteItem` em todas as tabelas. Lambdas públicas como `getPost` e `getPosts` têm permissão de escrita no DynamoDB — violação direta do princípio Least Privilege mandatório no blueprint.  
-**Risco:** Se uma Lambda pública for comprometida (RCE), o atacante pode alterar/deletar dados do blog.  
-**Correção:** Criar roles separadas por função (read-only para Lambdas públicas, read-write apenas para Lambdas admin).
+### 3.5 ~~IAM: Todas as Lambdas Compartilham a Mesma Role Over-privilegiada~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `8bc7727`  
+3 roles separadas implementadas:
+- `public-lambda-role`: read-only DynamoDB (getPost, getPosts, getAuthor)
+- `admin-lambda-role`: full CRUD (adminPosts, adminAuthors)
+- `media-upload-role`: s3:PutObject apenas (mediaUpload)
 
 ---
 
@@ -79,14 +76,13 @@ A `lambda-role` única tem permissão de `dynamodb:Scan` e `dynamodb:PutItem`/`D
 
 > ⚠️ **Devem ser endereçados antes do crescimento de tráfego ou conteúdo sensível.**
 
-### 4.1 adminPosts listPosts Usa Full Table Scan
-**Arquivo:** `backend/src/functions/adminPosts/index.ts:76-87`  
-A função `listPosts()` usa `ScanCommand` na tabela Posts. Com poucos posts não é problema, mas o DynamoDB Scan lê TODA a tabela e cobra por cada item escaneado. Com centenas/milhares de posts, isso é caro e lento.  
-**Correção:** Usar `QueryCommand` com o GSI `StatusPorData` para listar posts, igual ao que `getPosts` já faz.
+### 4.1 ~~adminPosts listPosts Usa Full Table Scan~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `37063b8`  
+`listPosts()` agora usa `QueryCommand` no GSI `StatusPorData` para cada status (Publicado, Rascunho, Programado). Elimina custo de Scan completo.
 
-### 4.2 `adminAuthors` Não Usa o Client Compartilhado
-**Arquivo:** `backend/src/functions/adminAuthors/index.ts:2-5`  
-Cria seu próprio `DynamoDBDocument.from(new DynamoDBClient())` em vez de importar o `dynamo` de `common/dynamodb.ts`. Inconsistência de padrão — duplicação desnecessária e não aplica `removeUndefinedValues`.
+### 4.2 ~~`adminAuthors` Não Usa o Client Compartilhado~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `37063b8`  
+Unificado para importar `dynamo` de `common/dynamodb.ts`. Tipagem corrigida para `APIGatewayProxyHandler`.
 
 ### 4.3 CORS Wildcard nas Lambdas Admin
 **Arquivos:** `adminPosts/index.ts:13`, `adminAuthors/index.ts:11`, `mediaUpload/index.ts:10`  
@@ -98,10 +94,9 @@ Cria seu próprio `DynamoDBDocument.from(new DynamoDBClient())` em vez de import
 O campo `conteudo_html` é armazenado diretamente no DynamoDB sem nenhuma sanitização. Se o painel admin for comprometido, um atacante pode injetar scripts maliciosos que serão renderizados via `dangerouslySetInnerHTML` no frontend.  
 **Correção:** Usar uma biblioteca de sanitização (ex: DOMPurify server-side ou sanitize-html) antes de armazenar.
 
-### 4.5 `next.config.ts` Vazio — Sem Security Headers
-**Arquivo:** `frontend/next.config.ts`  
-O arquivo está completamente vazio. Ausentes: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Content-Security-Policy`, configuração de domínios de imagem.  
-**Correção:** Adicionar security headers e configuração de `images.remotePatterns`.
+### 4.5 ~~`next.config.ts` Vazio — Sem Security Headers~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `6b39557`  
+Security headers adicionados: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. `images.remotePatterns` configurado para CloudFront e S3. `optimizePackageImports` para fontawesome.
 
 ### 4.6 Featured Image sem Next.js `<Image>` e sem Alt Obrigatório
 **Arquivo:** `frontend/app/post/[slug]/page.tsx:128-136`  
@@ -153,19 +148,18 @@ Usar `alert()` nativo bloqueia a thread e é visual e funcionalmente primitivo. 
 **Arquivo:** `frontend/app/layout.tsx:36-39`  
 Carrega FontAwesome via CDN externo (`cdnjs.cloudflare.com`) sendo que `@fortawesome/fontawesome-free: ^7.1.0` está instalado via npm. Dependência externa desnecessária — impacta performance (DNS lookup + request externo).
 
-### 5.7 Shiki Instância por Request (Performance)
-**Arquivo:** `frontend/lib/postUtils.tsx:21`  
-`createHighlighter(...)` é chamado dentro da função que processa cada post. Em desenvolvimento (dev server), cada navegação cria um novo highlighter. Deveria ser um singleton/module-level cache.
+### 5.7 ~~Shiki Instância por Request (Performance)~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `23e2a39`  
+Singleton implementado em module level em `frontend/lib/postUtils.tsx`. `getHighlighter()` cria a instância uma única vez e reutiliza em todos os requests.
 
-### 5.8 `globals copy.css` — Arquivo Lixo
-**Arquivo:** `frontend/app/globals copy.css`  
-Arquivo duplicado do CSS global (provavelmente um backup manual). Deve ser deletado — não é importado em nenhum lugar mas polui o diretório.
+### 5.8 ~~`globals copy.css` — Arquivo Lixo~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `37063b8` — Arquivo deletado.
 
-### 5.9 `admin/src/stores/counter.ts` — Arquivo Lixo
-Store padrão do template Vue/Pinia, não usado em nenhum componente. Deve ser deletado.
+### 5.9 ~~`admin/src/stores/counter.ts` — Arquivo Lixo~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `37063b8` — Store deletada.
 
-### 5.10 Root `package.json` com Dependências Incorretas
-O `package.json` na raiz do monorepo contém apenas dependências Tiptap (`@tiptap/pm`, `@tiptap/starter-kit`, `@tiptap/vue-3`). Essas dependências pertencem ao `admin/package.json` (e já estão lá). O root `package.json` parece ser resquício de experimento.
+### 5.10 ~~Root `package.json` com Dependências Incorretas~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `23e2a39` — Root package.json limpo. Agora tem apenas scripts de conveniência para o monorepo (`build:backend`, `build:frontend`, `build:admin`).
 
 ### 5.11 No `imagem_destaque_alt_text` no PostCard
 **Arquivo:** `frontend/components/ui/PostCard.tsx`  
@@ -179,18 +173,18 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 
 ## 6. Quick Wins (Alto Impacto, Baixo Esforço)
 
-| # | Item | Arquivo | Esforço |
+| # | Item | Status | Commit |
 |---|---|---|---|
-| QW-1 | Deletar `globals copy.css` | `frontend/app/globals copy.css` | 5 min |
-| QW-2 | Deletar `admin/src/stores/counter.ts` | `admin/src/stores/counter.ts` | 5 min |
-| QW-3 | Fix status filter em `getPost` (retorna rascunho) | `backend/src/functions/getPost/index.ts` | 20 min |
-| QW-4 | Fix status filter em `getPostsByCategory` e `searchPosts` | `backend/src/functions/getPosts/index.ts` | 30 min |
-| QW-5 | Fix `listPosts` de Scan para Query com GSI | `backend/src/functions/adminPosts/index.ts` | 30 min |
-| QW-6 | Unificar `adminAuthors` para usar `dynamo` compartilhado | `backend/src/functions/adminAuthors/index.ts` | 15 min |
-| QW-7 | Configurar `next.config.ts` com security headers | `frontend/next.config.ts` | 30 min |
-| QW-8 | Singleton para Shiki highlighter | `frontend/lib/postUtils.tsx` | 15 min |
-| QW-9 | Criar `.tfvars.example` para os dois ambientes | `infra/env/` | 20 min |
-| QW-10 | Remover root `package.json` Tiptap deps | `package.json` | 10 min |
+| QW-1 | Deletar `globals copy.css` | ✅ Feito | `37063b8` |
+| QW-2 | Deletar `admin/src/stores/counter.ts` | ✅ Feito | `37063b8` |
+| QW-3 | Fix status filter em `getPost` | ✅ Feito | `146f438` |
+| QW-4 | Fix status filter em `getPostsByCategory` e `searchPosts` | ✅ Feito | `146f438` |
+| QW-5 | Fix `listPosts` de Scan para Query com GSI | ✅ Feito | `37063b8` |
+| QW-6 | Unificar `adminAuthors` para usar `dynamo` compartilhado | ✅ Feito | `37063b8` |
+| QW-7 | Configurar `next.config.ts` com security headers | ✅ Feito | `6b39557` |
+| QW-8 | Singleton para Shiki highlighter | ✅ Feito | `23e2a39` |
+| QW-9 | Criar `.tfvars.example` + `dev.tfvars` + `prd.tfvars` | ✅ Feito | `72241c8` |
+| QW-10 | Limpar root `package.json` | ✅ Feito | `23e2a39` |
 
 ---
 
@@ -227,28 +221,29 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 
 ## 8. Plano de Correção Incremental
 
-### Sprint 1 — Estabilização (Esta semana)
-- [ ] QW-1 a QW-10 (Quick Wins de limpeza e bug fixes)
-- [ ] Fix status filter nas APIs públicas (QW-3, QW-4)
-- [ ] Fix adminPosts listPosts (QW-5)
-- [ ] Configurar `next.config.ts` com headers e image domains
+### Sprint 1 — Estabilização ✅ CONCLUÍDA
+- [x] QW-1 a QW-10 (Quick Wins de limpeza e bug fixes)
+- [x] Fix status filter nas APIs públicas (QW-3, QW-4) — commit `146f438`
+- [x] Fix adminPosts listPosts (QW-5) — commit `37063b8`
+- [x] Configurar `next.config.ts` com headers e image domains — commit `6b39557`
 
-### Sprint 2 — Segurança e Infra
-- [ ] Terraform remote state (S3 + DynamoDB lock)
-- [ ] IAM roles separadas por grupo funcional
-- [ ] CloudWatch log groups com retenção no Terraform
-- [ ] `.tfvars.example` files documentando variáveis necessárias
+### Sprint 2 — Segurança e Infra ✅ CONCLUÍDA
+- [x] Terraform remote state (S3 + DynamoDB lock) — commit `dc93284`
+- [x] IAM roles separadas por grupo funcional — commit `8bc7727`
+- [x] `.tfvars.example` + `dev.tfvars` + `prd.tfvars` documentados/commitados
+- [ ] CloudWatch log groups com retenção no Terraform — pendente
 
-### Sprint 3 — Testes e Observabilidade
-- [ ] Testes unitários para backend (Jest)
-- [ ] Structured JSON logging nas 7 Lambdas
-- [ ] PostSchedulerLambda + EventBridge Scheduler
+### Sprint 3 — Testes e Observabilidade ⚠️ PARCIAL
+- [ ] Testes unitários para backend (Jest) — pendente (crítico)
+- [x] Structured JSON logging nas 7 Lambdas — commit `36a6372`
+- [ ] PostSchedulerLambda + EventBridge Scheduler — pendente
 
-### Sprint 4 — Features e Pipeline
-- [ ] Pipeline de deploy automatizado (GitHub Actions)
-- [ ] Endpoints admin para Categorias
-- [ ] Categorias dinâmicas no EditorView
-- [ ] Toast notifications no admin
+### Sprint 4 — Features e Pipeline ⚠️ PARCIAL
+- [x] Pipeline de deploy automatizado (GitHub Actions cd.yml) — commit `72241c8`
+- [ ] Configurar pré-requisitos do CD (GitHub secrets, OIDC roles) — pendente manual
+- [ ] Endpoints admin para Categorias — pendente
+- [ ] Categorias dinâmicas no EditorView — pendente
+- [ ] Toast notifications no admin — pendente
 
 ---
 
@@ -270,8 +265,8 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 | Acessibilidade WCAG 2.1 | ⚠️ Parcial (base ok, melhorias pendentes) |
 | Logging Estruturado JSON | ❌ Não implementado |
 | Ambientes dev/prod isolados | ⚠️ Terraform pronto, contas AWS não separadas confirmadas |
-| CI/CD GitHub Actions Deploy | ❌ Apenas validação, sem deploy |
+| CI/CD GitHub Actions Deploy | ✅ cd.yml criado — pendente configuração de secrets |
 | PostSchedulerLambda | ❌ Não implementado |
 | WAF no Admin CloudFront | ❌ Não implementado |
-| Terraform Remote State | ❌ Estado local |
+| Terraform Remote State | ✅ Configurado — pendente bootstrap manual |
 | Testes | ❌ Zero testes |
