@@ -1,19 +1,17 @@
 // backend/src/functions/adminAuthors/index.ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocument, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocument.from(client);
+import { APIGatewayProxyHandler } from "aws-lambda";
+import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { dynamo } from "../../common/dynamodb";
 
 const TABLE_NAME = process.env.AUTHORS_TABLE || '';
 
 const headers = {
-  "Access-Control-Allow-Origin": "*", // O API Gateway restringe isso em Prod, aqui deixamos aberto para a Lambda
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Credentials": "true",
   "Content-Type": "application/json"
 };
 
-export const handler = async (event: any) => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   // Logs para debug (serão filtrados em prod pelo Terraform)
   console.log("Event:", JSON.stringify(event));
 
@@ -32,7 +30,7 @@ export const handler = async (event: any) => {
         Key: { autor_id: authorId }
       });
 
-      const result = await docClient.send(command);
+      const result = await dynamo.send(command);
 
       if (!result.Item) {
         return { statusCode: 404, headers, body: JSON.stringify({ error: "Author not found" }) };
@@ -78,7 +76,7 @@ export const handler = async (event: any) => {
         Item: authorItem
       });
 
-      await docClient.send(command);
+      await dynamo.send(command);
 
       return {
         statusCode: 200,

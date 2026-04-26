@@ -1,6 +1,6 @@
 // backend/src/functions/adminPosts/index.ts
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
 
@@ -73,17 +73,27 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 // --- Funções Auxiliares (AGORA COM HEADERS) ---
 
 async function listPosts() {
-  const command = new ScanCommand({
-    TableName: TABLE_NAME,
-    ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
-    ExpressionAttributeNames: { "#status": "status" }
-  });
-  const result = await dynamo.send(command);
-  
+  const statuses = ["Publicado", "Rascunho", "Programado"];
+  const allItems: any[] = [];
+
+  for (const status of statuses) {
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: "StatusPorData",
+      KeyConditionExpression: "#status = :status",
+      ExpressionAttributeNames: { "#status": "status" },
+      ExpressionAttributeValues: { ":status": status },
+      ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
+      ScanIndexForward: false,
+    });
+    const result = await dynamo.send(command);
+    allItems.push(...(result.Items || []));
+  }
+
   return {
     statusCode: 200,
-    body: JSON.stringify({ items: result.Items || [], count: result.Count }),
-    headers, // <--- ADICIONADO
+    body: JSON.stringify({ items: allItems, count: allItems.length }),
+    headers,
   };
 }
 
