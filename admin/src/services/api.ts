@@ -80,3 +80,14 @@ export const authorsApi = {
     body: JSON.stringify(data)
   })
 }
+
+export const categoriasApi = {
+  list: (): Promise<{ items: Array<{ categoria_slug: string; nome: string }> }> =>
+    apiCall('/admin/categorias'),
+
+  create: (data: { categoria_slug: string; nome: string; descricao?: string }) =>
+    apiCall('/admin/categorias', { method: 'POST', body: JSON.stringify(data) }),
+
+  delete: (slug: string) =>
+    apiCall(`/admin/categorias/${slug}`, { method: 'DELETE' }),
+}

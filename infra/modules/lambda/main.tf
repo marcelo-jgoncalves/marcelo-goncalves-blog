@@ -78,6 +78,7 @@ resource "aws_iam_policy" "admin_lambda_policy" {
           "${var.posts_table_arn}/index/*",
           var.autores_table_arn,
           "${var.autores_table_arn}/index/*",
+          var.categorias_table_arn,
         ]
       }
     ]
@@ -163,6 +164,11 @@ resource "aws_cloudwatch_log_group" "admin_authors" {
 
 resource "aws_cloudwatch_log_group" "post_scheduler" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-postScheduler"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "admin_categorias" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-adminCategorias"
   retention_in_days = var.log_retention_days
 }
 
@@ -281,6 +287,25 @@ resource "aws_lambda_function" "admin_authors" {
   }
 
   depends_on = [aws_cloudwatch_log_group.admin_authors]
+}
+
+resource "aws_lambda_function" "admin_categorias" {
+  function_name = "${var.project_name}-${var.environment}-adminCategorias"
+  role          = aws_iam_role.admin_lambda_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs20.x"
+
+  filename         = "${path.root}/builds/adminCategorias.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminCategorias.zip")
+
+  environment {
+    variables = {
+      CATEGORIAS_TABLE = "${var.project_name}-${var.environment}-categorias"
+      LOG_LEVEL        = var.log_level
+    }
+  }
+
+  depends_on = [aws_cloudwatch_log_group.admin_categorias]
 }
 
 # --- PostSchedulerLambda ---

@@ -19,3 +19,7 @@ output "autores_table_arn" {
 output "categorias_table_name" {
   value = aws_dynamodb_table.categorias.name
 }
+
+output "categorias_table_arn" {
+  value = aws_dynamodb_table.categorias.arn
+}

@@ -45,3 +45,11 @@ output "admin_authors_invoke_arn" {
 output "admin_authors_function_name" {
   value = aws_lambda_function.admin_authors.function_name
 }
+
+output "admin_categorias_invoke_arn" {
+  value = aws_lambda_function.admin_categorias.invoke_arn
+}
+
+output "admin_categorias_function_name" {
+  value = aws_lambda_function.admin_categorias.function_name
+}

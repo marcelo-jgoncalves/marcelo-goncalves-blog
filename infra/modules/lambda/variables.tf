@@ -16,3 +16,8 @@ variable "log_retention_days" {
   type        = number
   default     = 7
 }
+
+variable "categorias_table_arn" {
+  description = "ARN of the Categorias DynamoDB table"
+  type        = string
+}

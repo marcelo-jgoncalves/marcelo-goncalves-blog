@@ -650,6 +650,107 @@ resource "aws_api_gateway_integration" "get_projeto_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
+# --- /admin/categorias ---
+
+resource "aws_api_gateway_resource" "admin_categorias" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.admin.id
+  path_part   = "categorias"
+}
+
+resource "aws_api_gateway_resource" "admin_categorias_slug" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.admin_categorias.id
+  path_part   = "{slug}"
+}
+
+resource "aws_api_gateway_method" "admin_categorias_any" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias.id
+  http_method   = "ANY"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_categorias.id
+  http_method             = aws_api_gateway_method.admin_categorias_any.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_categorias_invoke_arn
+}
+
+resource "aws_api_gateway_method" "admin_categorias_options" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_options_integration" {
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_categorias.id
+  http_method       = aws_api_gateway_method.admin_categorias_options.http_method
+  type              = "MOCK"
+  request_templates = { "application/json" = "{\"statusCode\": 200}" }
+}
+
+resource "aws_api_gateway_method_response" "admin_categorias_options_200" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias.id
+  http_method = aws_api_gateway_method.admin_categorias_options.http_method
+  status_code = "200"
+
+  response_models = { "application/json" = "Empty" }
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "admin_categorias_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias.id
+  http_method = aws_api_gateway_method.admin_categorias_options.http_method
+  status_code = aws_api_gateway_method_response.admin_categorias_options_200.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [aws_api_gateway_method_response.admin_categorias_options_200]
+}
+
+resource "aws_api_gateway_method" "admin_categorias_slug_any" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method   = "ANY"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method             = aws_api_gateway_method.admin_categorias_slug_any.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_categorias_invoke_arn
+}
+
+resource "aws_lambda_permission" "apigw_admin_categorias" {
+  statement_id  = "AllowAPIGatewayInvokeAdminCategorias"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_categorias_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
 # Triggers
 
 resource "aws_api_gateway_deployment" "main" {
@@ -711,7 +812,15 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.admin_autor_id_any,
       aws_api_gateway_integration.admin_autor_id_integration,
       aws_api_gateway_method.admin_autor_id_options,
-      aws_api_gateway_integration.admin_autor_id_options_integration
+      aws_api_gateway_integration.admin_autor_id_options_integration,
+      aws_api_gateway_resource.admin_categorias,
+      aws_api_gateway_method.admin_categorias_any,
+      aws_api_gateway_integration.admin_categorias_integration,
+      aws_api_gateway_method.admin_categorias_options,
+      aws_api_gateway_integration.admin_categorias_options_integration,
+      aws_api_gateway_resource.admin_categorias_slug,
+      aws_api_gateway_method.admin_categorias_slug_any,
+      aws_api_gateway_integration.admin_categorias_slug_integration
 
     ]))
   }
