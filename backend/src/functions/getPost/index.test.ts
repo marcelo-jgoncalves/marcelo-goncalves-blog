@@ -1,0 +1,117 @@
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { handler } from './index';
+import { dynamo } from '../../common/dynamodb';
+
+jest.mock('../../common/dynamodb', () => ({
+  dynamo: { send: jest.fn() },
+}));
+
+const mockSend = dynamo.send as jest.Mock;
+
+const ctx = {
+  awsRequestId: 'req-test-123',
+  callbackWaitsForEmptyEventLoop: false,
+  functionName: 'getPost',
+  functionVersion: '$LATEST',
+  invokedFunctionArn: 'arn:aws:lambda:us-east-1:123:function:getPost',
+  memoryLimitInMB: '128',
+  logGroupName: '/aws/lambda/getPost',
+  logStreamName: '2026/01/01/[$LATEST]test',
+  getRemainingTimeInMillis: () => 30000,
+  done: jest.fn(),
+  fail: jest.fn(),
+  succeed: jest.fn(),
+} as Context;
+
+function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEvent {
+  return {
+    body: null,
+    headers: {},
+    httpMethod: 'GET',
+    isBase64Encoded: false,
+    multiValueHeaders: {},
+    multiValueQueryStringParameters: null,
+    path: '/posts/test-slug',
+    pathParameters: { slug: 'test-slug' },
+    queryStringParameters: null,
+    requestContext: {} as any,
+    resource: '/posts/{slug}',
+    stageVariables: null,
+    ...overrides,
+  } as APIGatewayProxyEvent;
+}
+
+beforeAll(() => {
+  process.env.POSTS_TABLE = 'test-posts-table';
+  process.env.LOG_LEVEL = 'ERROR';
+});
+
+describe('getPost handler', () => {
+  describe('input validation', () => {
+    it('returns 400 when slug is missing', async () => {
+      const result = await handler(event({ pathParameters: null }), ctx, jest.fn());
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when pathParameters is empty object', async () => {
+      const result = await handler(event({ pathParameters: {} }), ctx, jest.fn());
+      expect(result?.statusCode).toBe(400);
+    });
+  });
+
+  describe('post not found', () => {
+    it('returns 404 when DynamoDB returns no item', async () => {
+      mockSend.mockResolvedValueOnce({ Item: undefined });
+      const result = await handler(event(), ctx, jest.fn());
+      expect(result?.statusCode).toBe(404);
+    });
+
+    it('returns 404 when post status is Rascunho', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Rascunho', titulo: 'Test' } });
+      const result = await handler(event(), ctx, jest.fn());
+      expect(result?.statusCode).toBe(404);
+    });
+
+    it('returns 404 when post status is Programado', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Programado', titulo: 'Test' } });
+      const result = await handler(event(), ctx, jest.fn());
+      expect(result?.statusCode).toBe(404);
+    });
+  });
+
+  describe('post found', () => {
+    it('returns 200 with post data when status is Publicado', async () => {
+      const post = { slug: 'test-slug', status: 'Publicado', titulo: 'My Post' };
+      mockSend.mockResolvedValueOnce({ Item: post });
+
+      const result = await handler(event(), ctx, jest.fn());
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.post).toEqual(post);
+    });
+
+    it('calls DynamoDB with correct key', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      await handler(event(), ctx, jest.fn());
+
+      const sentCommand = mockSend.mock.calls[0][0];
+      expect(sentCommand.input.Key).toEqual({ slug: 'test-slug' });
+    });
+
+    it('response includes CORS headers', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      const result = await handler(event(), ctx, jest.fn());
+      expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('*');
+    });
+  });
+
+  describe('error handling', () => {
+    it('returns 500 when DynamoDB throws', async () => {
+      mockSend.mockRejectedValueOnce(new Error('DynamoDB connection failed'));
+      const result = await handler(event(), ctx, jest.fn());
+      expect(result?.statusCode).toBe(500);
+    });
+  });
+});
