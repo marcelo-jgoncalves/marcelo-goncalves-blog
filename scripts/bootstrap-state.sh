@@ -4,7 +4,7 @@
 # Run ONCE per AWS account/environment before the first `terraform init`.
 #
 # Usage:
-#   ENV=dev   AWS_PROFILE=devops-blog-dev   bash scripts/bootstrap-state.sh
+#   ENV=dev   AWS_PROFILE=claude-dev   bash scripts/bootstrap-state.sh
 #   ENV=prod  AWS_PROFILE=devops-blog-prod  bash scripts/bootstrap-state.sh
 
 set -euo pipefail

@@ -10,4 +10,4 @@ key            = "blog/terraform.tfstate"
 region         = "us-east-1"
 dynamodb_table = "marcelo-goncalves-blog-dev-tflock"
 encrypt        = true
-profile        = "devops-blog-dev"
+profile        = "claude-dev"

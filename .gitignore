@@ -26,11 +26,13 @@ node_modules/
 *.tfstate.*
 # Ignora a pasta de plugins baixados
 .terraform/
-# Ignora arquivos de variáveis com valores reais
-*.tfvars
+# Ignora tfvars com segredos (credenciais, tokens)
+# Os tfvars de ambiente (env/*.tfvars) são commitados pois não têm segredos
+*.tfvars.secret
 # Ignora o arquivo de backend config local (contém bucket name e perfil)
 infra/backend.hcl
-# Exceção: Arquivos de exemplo são commitados
+# Exceção: Arquivos de exemplo e tfvars de ambiente são commitados
+!infra/env/*.tfvars
 !*.tfvars.example
 !backend.hcl.example
 # Logs de crash

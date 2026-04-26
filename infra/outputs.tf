@@ -1,5 +1,3 @@
-
-# Outputs para usarmos depois
 output "cognito_user_pool_id" {
   value = module.cognito.user_pool_id
 }
@@ -20,12 +18,20 @@ output "frontend_bucket" {
   value = module.frontend.s3_bucket_name
 }
 
+output "frontend_cloudfront_id" {
+  value = module.frontend.cloudfront_distribution_id
+}
+
 output "admin_url" {
   value = "https://${module.admin.cloudfront_url}"
 }
 
 output "admin_bucket" {
   value = module.admin.s3_bucket_name
+}
+
+output "admin_cloudfront_id" {
+  value = module.admin.cloudfront_distribution_id
 }
 
 output "uploads_bucket" {
