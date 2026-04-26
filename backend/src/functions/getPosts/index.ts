@@ -57,15 +57,17 @@ function toTitleCase(str: string) {
 
 // Lógica Específica para "O Projeto"
 async function getProjectPosts(queryParams: any) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20; // Timeline pode carregar mais itens
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
   const nextToken = queryParams?.nextToken;
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
-    IndexName: "ProjetoPorData", // GSI específico definido no Blueprint
+    IndexName: "ProjetoPorData",
     KeyConditionExpression: "e_projeto = :val",
-    ExpressionAttributeValues: { ":val": 1 }, // 1 = true (post faz parte do projeto)
-    ScanIndexForward: true, // TRUE = Ascendente (Mais antigos primeiro -> Cronologia)
+    FilterExpression: "#status = :published",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":val": 1, ":published": "Publicado" },
+    ScanIndexForward: true,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
@@ -101,12 +103,15 @@ async function searchPosts(term: string, queryParams: any) {
   const command = new ScanCommand({
     TableName: TABLE_NAME,
     FilterExpression: `
-      (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3)) 
-      OR 
-      (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+      (#status = :published) AND (
+        (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3))
+        OR
+        (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+      )
     `,
-    ExpressionAttributeValues: { 
-      ":t1": tLower, ":t2": tUpper, ":t3": tTitle
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: {
+      ":t1": tLower, ":t2": tUpper, ":t3": tTitle, ":published": "Publicado"
     },
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
@@ -161,7 +166,9 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
     TableName: TABLE_NAME,
     IndexName: "CategoriaPorData",
     KeyConditionExpression: "categoria_slug = :cat",
-    ExpressionAttributeValues: { ":cat": categorySlug },
+    FilterExpression: "#status = :published",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":cat": categorySlug, ":published": "Publicado" },
     ScanIndexForward: false,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined

@@ -31,7 +31,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       })
     );
 
-    if (!result.Item) {
+    if (!result.Item || result.Item.status !== "Publicado") {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Post not found" }),
