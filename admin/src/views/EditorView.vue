@@ -39,26 +39,38 @@ const showUploadModal = ref(false)
 const loading = ref(false)
 const saving = ref(false)
 const uploadContext = ref<'destaque' | 'editor'>('destaque')
-const categorias = ref<any[]>([])
 const loadingCategories = ref(true)
+const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
+
+const FALLBACK_CATEGORIAS = [
+  { categoria_slug: 'inteligencia-artificial', nome: 'Inteligência Artificial' },
+  { categoria_slug: 'cloud-computing', nome: 'Cloud Computing' },
+  { categoria_slug: 'devops-automacao', nome: 'DevOps e Automação' },
+  { categoria_slug: 'seguranca-na-nuvem', nome: 'Segurança na Nuvem' },
+  { categoria_slug: 'engenharia-de-software', nome: 'Engenharia de Software' },
+  { categoria_slug: 'noticias-e-mercado', nome: 'Notícias e Mercado' },
+]
+const categorias = ref(FALLBACK_CATEGORIAS)
+
+function showToast(message: string, type: 'success' | 'error' = 'success') {
+  toast.value = { message, type }
+  setTimeout(() => { toast.value = null }, 4000)
+}
 
 onMounted(async () => {
+  // autor_id vem do Cognito username (não mais hardcoded)
   if (auth.user?.username) {
-    form.value.autor_id = 'marcelo-goncalves' 
+    form.value.autor_id = auth.user.username
   }
 
-  // 1. Busca as categorias do banco primeiro
   try {
     const res = await categoriesApi.list()
-    categorias.value = res.items || []
-    
-    // Se for post novo e as categorias carregaram, seta a primeira como default
-    if (!isEditing.value && categorias.value.length > 0) {
-      form.value.categoria_slug = categorias.value[0].categoria_slug
+    if (res.items?.length) {
+      categorias.value = res.items
+      if (!isEditing.value) form.value.categoria_slug = res.items[0].categoria_slug
     }
-  } catch (error) {
-    console.error('Erro ao carregar categorias:', error)
-    alert('Aviso: Não foi possível carregar as categorias.')
+  } catch {
+    // fallback já está no default de `categorias`
   } finally {
     loadingCategories.value = false
   }
@@ -69,7 +81,7 @@ onMounted(async () => {
     try {
       const slug = route.params.slug as string
       const data = await postsApi.get(slug)
-      
+
       form.value = {
         ...data,
         conteudo_html: data.conteudo_html || '', 
@@ -77,8 +89,7 @@ onMounted(async () => {
         e_projeto: !!data.e_projeto
       }
     } catch (error) {
-      console.error(error)
-      alert('Erro ao carregar post ou post não encontrado.')
+      showToast('Erro ao carregar post', 'error')
       router.push('/')
     } finally {
       loading.value = false
@@ -101,10 +112,10 @@ async function save() {
       await postsApi.create(payload)
     }
     
-    alert('Post salvo com sucesso!')
+    showToast('Post salvo com sucesso!')
     router.push('/')
   } catch (error: any) {
-    alert('Erro ao salvar: ' + error.message)
+    showToast('Erro ao salvar: ' + error.message, 'error')
   } finally {
     saving.value = false
   }
@@ -156,6 +167,11 @@ function generateSlug() {
 
 <template>
   <div class="editor">
+    <Transition name="toast">
+      <div v-if="toast" :class="['toast', `toast--${toast.type}`]" role="alert">
+        {{ toast.message }}
+      </div>
+    </Transition>
     <header class="editor-header">
       <h1>{{ isEditing ? 'Editar Post' : 'Novo Post' }}</h1>
       <div class="actions">
@@ -231,15 +247,11 @@ function generateSlug() {
             <label>Categoria</label>
             <select v-model="form.categoria_slug" :disabled="loadingCategories">
               <option v-if="loadingCategories" value="" disabled>Carregando categorias...</option>
-              <option v-else-if="categorias.length === 0" value="" disabled>Nenhuma categoria encontrada</option>
-              
-              <option 
-                v-for="cat in categorias" 
-                :key="cat.categoria_slug" 
+              <option
+                v-for="cat in categorias"
+                :key="cat.categoria_slug"
                 :value="cat.categoria_slug"
-              >
-                {{ cat.nome_exibicao }}
-              </option>
+              >{{ cat.nome }}</option>
             </select>
           </div>
           <div class="checkbox-group">
@@ -303,4 +315,19 @@ input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--gr
 .btn-secondary { background: #e0e0e0; border: none; padding: 10px 20px; border-radius: 4px; margin-right: 10px; cursor: pointer; }
 .btn-outline { background: transparent; border: 1px solid var(--aws-dark); padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; }
 @media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } }
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.toast--success { background: #2d6a4f; }
+.toast--error   { background: #c0392b; }
+.toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
 </style>

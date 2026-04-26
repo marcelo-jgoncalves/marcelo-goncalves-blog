@@ -1,0 +1,371 @@
+name: Deploy Pipeline (CD)
+
+on:
+  push:
+    branches:
+      - develop  # auto-deploy para dev
+      - main     # deploy para prod com aprovação manual
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Ambiente alvo'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, prod]
+
+permissions:
+  contents: read
+  id-token: write  # Necessário para OIDC
+
+env:
+  PROJECT_NAME: marcelo-goncalves-blog
+  AWS_REGION: us-east-1
+  NODE_VERSION: '20'
+  TERRAFORM_VERSION: '1.8.0'
+
+# ==============================================================
+# JOB 1: Build de todos os artefatos (backend + frontend)
+# O admin é buildado depois do terraform apply (precisa de outputs)
+# ==============================================================
+jobs:
+  build:
+    name: 1. Build Artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # --- Backend ---
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+
+      - name: Test backend Lambdas
+        run: npm test
+        working-directory: backend
+
+      - name: Build backend Lambdas
+        run: npm run build
+        working-directory: backend
+      # Gera infra/builds/*.zip (getPost.zip, getPosts.zip, etc.)
+
+      # --- Frontend (Next.js + OpenNext) ---
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build frontend (OpenNext)
+        run: npx open-next build
+        working-directory: frontend
+        env:
+          # Placeholder para satisfazer a validação do Next.js no build.
+          # O valor real é injetado via Lambda env var pelo Terraform em runtime.
+          NEXT_PUBLIC_API_URL: "https://build-placeholder.local"
+
+      - name: Package Next.js Lambda
+        run: |
+          mkdir -p infra/builds
+          cd frontend/.open-next/server-functions/default
+          zip -r ../../../../infra/builds/nextjs.zip .
+
+      - name: Copy frontend static assets
+        run: |
+          cp -r frontend/.open-next/assets infra/builds/nextjs-assets
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            infra/builds/
+          retention-days: 1
+
+# ==============================================================
+# JOB 2: Deploy para Dev (branch develop)
+# ==============================================================
+  deploy-dev:
+    name: 2a. Deploy → Dev
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    environment: dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: infra/builds/
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Init (dev)
+        working-directory: infra
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ env.PROJECT_NAME }}-dev-tfstate" \
+            -backend-config="key=blog/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ env.PROJECT_NAME }}-dev-tflock" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Apply (dev)
+        working-directory: infra
+        run: terraform apply -auto-approve -var-file="env/dev.tfvars"
+
+      - name: Get Terraform outputs
+        id: tf
+        working-directory: infra
+        run: |
+          echo "api_url=$(terraform output -raw api_base_url)"           >> $GITHUB_OUTPUT
+          echo "frontend_bucket=$(terraform output -raw frontend_bucket)" >> $GITHUB_OUTPUT
+          echo "frontend_cf=$(terraform output -raw frontend_cloudfront_id)" >> $GITHUB_OUTPUT
+          echo "admin_bucket=$(terraform output -raw admin_bucket)"       >> $GITHUB_OUTPUT
+          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"    >> $GITHUB_OUTPUT
+          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_OUTPUT
+          echo "cognito_client=$(terraform output -raw cognito_client_id)" >> $GITHUB_OUTPUT
+          echo "admin_url=$(terraform output -raw admin_url)"             >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js (para build do admin)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install admin dependencies
+        run: npm ci
+        working-directory: admin
+
+      - name: Build admin SPA
+        working-directory: admin
+        env:
+          VITE_API_BASE_URL: ${{ steps.tf.outputs.api_url }}
+          VITE_COGNITO_USER_POOL_ID: ${{ steps.tf.outputs.cognito_pool }}
+          VITE_COGNITO_CLIENT_ID: ${{ steps.tf.outputs.cognito_client }}
+          VITE_ASSETS_URL: https://${{ steps.tf.outputs.frontend_bucket }}.s3.amazonaws.com
+        run: npm run build
+
+      - name: Sync frontend static assets to S3
+        run: |
+          aws s3 sync infra/builds/nextjs-assets s3://${{ steps.tf.outputs.frontend_bucket }} \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+      - name: Sync admin SPA to S3
+        run: |
+          aws s3 sync admin/dist s3://${{ steps.tf.outputs.admin_bucket }} \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --delete
+
+      - name: Invalidate CloudFront (frontend + admin)
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf.outputs.frontend_cf }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf.outputs.admin_cf }} \
+            --paths "/*"
+
+      - name: Deploy summary
+        run: |
+          echo "### Deploy Dev Concluído ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
+
+# ==============================================================
+# JOB 3: Terraform Plan para Prod (branch main)
+# ==============================================================
+  plan-prod:
+    name: 2b. Terraform Plan → Prod
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: infra/builds/
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Init (prod)
+        working-directory: infra
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ env.PROJECT_NAME }}-prod-tfstate" \
+            -backend-config="key=blog/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ env.PROJECT_NAME }}-prod-tflock" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Plan (prod)
+        working-directory: infra
+        run: |
+          terraform plan -var-file="env/prd.tfvars" -out=tfplan-prod
+          terraform show -no-color tfplan-prod >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Terraform plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan-prod
+          path: infra/tfplan-prod
+          retention-days: 1
+
+# ==============================================================
+# JOB 4: Aprovação Manual (gate para prod)
+# Configurar em Settings → Environments → production → Required reviewers
+# ==============================================================
+  approve-prod:
+    name: 3. Aprovação Manual
+    runs-on: ubuntu-latest
+    needs: plan-prod
+    if: github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      - run: echo "Deploy para produção aprovado."
+
+# ==============================================================
+# JOB 5: Deploy para Prod (após aprovação)
+# ==============================================================
+  deploy-prod:
+    name: 4. Deploy → Prod
+    runs-on: ubuntu-latest
+    needs: approve-prod
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: infra/builds/
+
+      - name: Download Terraform plan
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan-prod
+          path: infra/
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Init (prod)
+        working-directory: infra
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ env.PROJECT_NAME }}-prod-tfstate" \
+            -backend-config="key=blog/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ env.PROJECT_NAME }}-prod-tflock" \
+            -backend-config="encrypt=true"
+
+      - name: Terraform Apply (prod — executa o plano aprovado)
+        working-directory: infra
+        run: terraform apply tfplan-prod
+
+      - name: Get Terraform outputs
+        id: tf
+        working-directory: infra
+        run: |
+          echo "api_url=$(terraform output -raw api_base_url)"                >> $GITHUB_OUTPUT
+          echo "frontend_bucket=$(terraform output -raw frontend_bucket)"      >> $GITHUB_OUTPUT
+          echo "frontend_cf=$(terraform output -raw frontend_cloudfront_id)"   >> $GITHUB_OUTPUT
+          echo "admin_bucket=$(terraform output -raw admin_bucket)"            >> $GITHUB_OUTPUT
+          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"         >> $GITHUB_OUTPUT
+          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"    >> $GITHUB_OUTPUT
+          echo "cognito_client=$(terraform output -raw cognito_client_id)"     >> $GITHUB_OUTPUT
+          echo "admin_url=$(terraform output -raw admin_url)"                  >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js (para build do admin)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install admin dependencies
+        run: npm ci
+        working-directory: admin
+
+      - name: Build admin SPA (com outputs de prod)
+        working-directory: admin
+        env:
+          VITE_API_BASE_URL: ${{ steps.tf.outputs.api_url }}
+          VITE_COGNITO_USER_POOL_ID: ${{ steps.tf.outputs.cognito_pool }}
+          VITE_COGNITO_CLIENT_ID: ${{ steps.tf.outputs.cognito_client }}
+          VITE_ASSETS_URL: https://${{ steps.tf.outputs.frontend_bucket }}.s3.amazonaws.com
+        run: npm run build
+
+      - name: Sync frontend static assets to S3
+        run: |
+          aws s3 sync infra/builds/nextjs-assets s3://${{ steps.tf.outputs.frontend_bucket }} \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+      - name: Sync admin SPA to S3
+        run: |
+          aws s3 sync admin/dist s3://${{ steps.tf.outputs.admin_bucket }} \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --delete
+
+      - name: Invalidate CloudFront (frontend + admin)
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf.outputs.frontend_cf }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf.outputs.admin_cf }} \
+            --paths "/*"
+
+      - name: Deploy summary
+        run: |
+          echo "### Deploy Prod Concluído ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY

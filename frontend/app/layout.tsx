@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Importa os componentes
 import Header from "../components/layout/Header";
@@ -35,13 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <head>
-        {/* Solução CDN para FontAwesome: Estável e Rápida para Dev */}
-        <link 
-          rel="stylesheet" 
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-        />
-      </head>
+      <head />
       {/* ADICIONADO: suppressHydrationWarning para evitar erros de extensões no body */}
       <body 
         className={`${inter.variable} ${spaceGrotesk.variable}`}

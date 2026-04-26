@@ -44,12 +44,5 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
     filter_suffix       = ".jpeg"
   }
 
-  # Gatilho para WEBP
-  lambda_function {
-    lambda_function_arn = aws_lambda_function.image_processor.arn
-    events              = ["s3:ObjectCreated:*"]
-    filter_suffix       = ".webp"
-  }
-
   depends_on = [aws_lambda_permission.allow_s3]
 }

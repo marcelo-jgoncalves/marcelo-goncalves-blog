@@ -10,16 +10,17 @@ module "dynamodb" {
 module "lambda" {
   source = "./modules/lambda"
 
-  environment  = var.environment
-  project_name = var.project_name
+  environment        = var.environment
+  project_name       = var.project_name
+  log_level          = var.log_level
+  log_retention_days = var.log_retention_days
 
-  #ARNs das tabelas que vieram do módulo dynamodb
-  posts_table_arn       = module.dynamodb.posts_table_arn
-  autores_table_arn     = module.dynamodb.autores_table_arn
-  uploads_bucket_name   = module.media.uploads_bucket_name
-  uploads_bucket_arn    = module.media.uploads_bucket_arn
-  categorias_table_arn  = module.dynamodb.categorias_table_arn
-  categorias_table_name = module.dynamodb.categorias_table_name
+  posts_table_arn      = module.dynamodb.posts_table_arn
+  autores_table_arn    = module.dynamodb.autores_table_arn
+  categorias_table_arn = module.dynamodb.categorias_table_arn
+  uploads_bucket_name  = module.media.uploads_bucket_name
+  uploads_bucket_arn   = module.media.uploads_bucket_arn
+  admin_origin         = "https://${module.admin.cloudfront_url}"
 }
 
 module "api-gateway" {
@@ -43,15 +44,16 @@ module "api-gateway" {
   get_posts_function_name        = module.lambda.get_posts_function_name
   admin_authors_invoke_arn       = module.lambda.admin_authors_invoke_arn
   admin_authors_function_name    = module.lambda.admin_authors_function_name
-  admin_categories_invoke_arn    = module.lambda.admin_categories_invoke_arn
-  admin_categories_function_name = module.lambda.admin_categories_function_name
+  admin_categorias_invoke_arn    = module.lambda.admin_categorias_invoke_arn
+  admin_categorias_function_name = module.lambda.admin_categorias_function_name
 }
 
 module "frontend" {
   source = "./modules/frontend"
 
-  environment  = var.environment
-  project_name = var.project_name
+  environment        = var.environment
+  project_name       = var.project_name
+  log_retention_days = var.log_retention_days
 
   # Passamos a URL da API Backend para que o Frontend saiba quem chamar
   api_url = module.api-gateway.api_url
@@ -74,9 +76,9 @@ module "admin" {
 module "media" {
   source = "./modules/media"
 
-  environment  = var.environment
-  project_name = var.project_name
-
-  # O Bucket de Assets (Frontend) é o destino das imagens otimizadas
+  environment        = var.environment
+  project_name       = var.project_name
+  log_level          = var.log_level
+  log_retention_days = var.log_retention_days
   assets_bucket_name = module.frontend.s3_bucket_name
 }

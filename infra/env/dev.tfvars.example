@@ -1,0 +1,7 @@
+# infra/env/dev.tfvars.example
+# Copy to dev.tfvars (gitignored) and fill in real values.
+
+environment  = "dev"
+project_name = "marcelo-goncalves-blog"
+aws_region   = "us-east-1"
+log_level    = "DEBUG"

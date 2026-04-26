@@ -1,0 +1,7 @@
+# infra/env/prd.tfvars.example
+# Copy to prd.tfvars (gitignored) and fill in real values.
+
+environment  = "prod"
+project_name = "marcelo-goncalves-blog"
+aws_region   = "us-east-1"
+log_level    = "INFO"

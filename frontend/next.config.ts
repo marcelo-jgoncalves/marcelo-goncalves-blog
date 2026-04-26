@@ -1,40 +1,38 @@
 import type { NextConfig } from "next";
 
+const securityHeaders = [
+  { key: "X-DNS-Prefetch-Control", value: "on" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
+
   images: {
-    // 1. Performance: Ativação de Formatos Next-Gen (AVIF prioritário)
-    formats: ['image/avif', 'image/webp'],
-
-    // 2. Permissão de SVGs para os ícones
-    dangerouslyAllowSVG: true,
-    
-    // 3. Segurança: Blindagem obrigatória contra XSS em SVGs externos
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-
-    // 4. Domínios Autorizados (Sua lista original mantida e intacta)
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'placehold.co',
+        protocol: "https",
+        hostname: "**.cloudfront.net",
       },
       {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.jsdelivr.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'icon.icepanel.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'dsns2wusdrj9z.cloudfront.net', // O seu CDN na AWS
+        protocol: "https",
+        hostname: "**.amazonaws.com",
       },
     ],
+  },
+
+  experimental: {
+    optimizePackageImports: ["@fortawesome/fontawesome-free"],
   },
 };
 

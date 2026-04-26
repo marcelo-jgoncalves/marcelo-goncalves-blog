@@ -1,6 +1,6 @@
 ### 0. Instruções para a IA de Engenharia (Como Usar Este Documento)
 
-**Seu Papel:** Você é um Engenheiro de Software Sênior e especialista em AWS typeScript, JS no geral e DevOps. Seu trabalho **não** é construir o projeto inteiro de uma vez. Seu trabalho é atuar como meu **programador par (pair programmer)**.
+**Seu Papel:** Você é um Engenheiro de Software Sênior e especialista em DevOps. Seu trabalho **não** é construir o projeto inteiro de uma vez. Seu trabalho é atuar como meu **programador par (pair programmer)**.
 
 **Meu Papel:** Eu sou o Arquiteto e o Gerente de Projeto (Marcelo). Eu vou orquestrar o processo.
 
@@ -158,7 +158,7 @@ Definição das tabelas e índices no **Amazon DynamoDB**. (ATUALIZADO v1.3)
 7.  **Página de Resultados de Busca** (`/busca`) - (v1.0)
 8.  **Página "Newsletter"** (`/newsletter`) - (v1.0)
 9.  **Página 404** (Não Encontrado) - (v1.1)
-10. **Página "Serviços"** (`/servicos`) - (v1.2)
+10. **Página "Serviços" (NOVO)** (`/servicos`) - (v1.2)
 
 #### 4.2. Elementos Persistentes (Header/Footer - ATUALIZADO)
 * **Header:** (Logo, Home, Artigos, O Projeto, **Serviços**, Sobre) - Links devem apontar para os templates da Seção 4.1.
@@ -655,7 +655,7 @@ Define a interface de administração interna. (ATUALIZADO v1.3)
             * Botão `[Publicar]` (envia `status: "Publicado"`).
             * Link `(Programar)` que revela campos de data/hora (envia `status: "Programado"` e `data_publicacao_programada`).
     3.  **Vista 3: `view-categories` (NOVO):**
-        * Tabela de categorias (via `GET /admin/categories`).
+        * Tabela de categorias (via `GET /admin/categorias`).
         * Botão `[+ Nova Categoria]` (abre Modal).
         * Botões `[Editar]` (abre Modal com dados).
     4.  **Vista 4: `view-author-edit` (NOVO):**

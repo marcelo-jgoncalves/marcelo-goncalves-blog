@@ -1,5 +1,10 @@
 # infra/modules/media/lambda.tf
 
+resource "aws_cloudwatch_log_group" "image_processor" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-imageProcessor"
+  retention_in_days = var.log_retention_days
+}
+
 # 1. Role IAM
 resource "aws_iam_role" "processor_role" {
   name = "${var.project_name}-${var.environment}-processor-role"
@@ -60,8 +65,11 @@ resource "aws_lambda_function" "image_processor" {
   environment {
     variables = {
       DESTINATION_BUCKET = var.assets_bucket_name
+      LOG_LEVEL          = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.image_processor]
 }
 
 # 4. Permissão para o S3 invocar a Lambda

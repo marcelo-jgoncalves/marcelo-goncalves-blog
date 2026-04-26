@@ -1,12 +1,7 @@
 // frontend/open-next.config.ts
 
 const config = {
-  default: {
-    fulfillment: {
-      handler: "index.handler",
-    },
-  },
-  // Otimização para reduzir tamanho do pacote
+  default: {},
   buildCommand: "npm run build",
 };
 

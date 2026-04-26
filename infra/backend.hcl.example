@@ -1,0 +1,13 @@
+# infra/backend.hcl.example
+# Copy to backend.hcl (gitignored) and fill in values for local dev.
+# CI/CD passes these via -backend-config flags directly.
+#
+# Usage:
+#   terraform init -backend-config=backend.hcl -var-file=env/dev.tfvars
+
+bucket         = "marcelo-goncalves-blog-dev-tfstate"
+key            = "blog/terraform.tfstate"
+region         = "us-east-1"
+dynamodb_table = "marcelo-goncalves-blog-dev-tflock"
+encrypt        = true
+profile        = "claude-dev"

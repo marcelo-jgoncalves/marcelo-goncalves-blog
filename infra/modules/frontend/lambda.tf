@@ -1,5 +1,12 @@
 # infra/modules/frontend/lambda.tf
 
+# infra/modules/frontend/lambda.tf
+
+resource "aws_cloudwatch_log_group" "nextjs_server" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-nextjs-server"
+  retention_in_days = var.log_retention_days
+}
+
 # Role para a Lambda do Next.js
 resource "aws_iam_role" "nextjs_role" {
   name = "${var.project_name}-${var.environment}-nextjs-role"
@@ -42,19 +49,21 @@ resource "aws_lambda_function" "nextjs_server" {
       NEXT_PUBLIC_API_URL = var.api_url
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.nextjs_server]
 }
 
-# URL Pública da Lambda (Para o CloudFront acessar)
+# URL da Lambda com AWS_IAM — apenas CloudFront (via OAC) pode invocar
 resource "aws_lambda_function_url" "nextjs_url" {
   function_name      = aws_lambda_function.nextjs_server.function_name
-  authorization_type = "NONE" # O CloudFront protege, a Lambda fica "aberta" mas com URL obscura
+  authorization_type = "AWS_IAM"
 }
 
-# ADIÇÃO CRÍTICA: Permite que qualquer pessoa (público) invoque a URL da função
-resource "aws_lambda_permission" "allow_public_url" {
-  statement_id           = "FunctionURLAllowPublicAccessTerraform"
-  action                 = "lambda:InvokeFunctionUrl"
-  function_name          = aws_lambda_function.nextjs_server.function_name
-  principal              = "*"
-  function_url_auth_type = "NONE"
+# Permite somente o CloudFront invocar a Lambda (via OAC com SigV4)
+resource "aws_lambda_permission" "allow_cloudfront" {
+  statement_id  = "AllowCloudFrontServicePrincipalNextJS"
+  action        = "lambda:InvokeFunctionUrl"
+  function_name = aws_lambda_function.nextjs_server.function_name
+  principal     = "cloudfront.amazonaws.com"
+  source_arn    = aws_cloudfront_distribution.frontend.arn
 }

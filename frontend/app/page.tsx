@@ -8,9 +8,10 @@ import AdSenseBanner from '@/components/ui/AdSenseBanner';
 export const revalidate = 60;
 
 export default async function Home() {
+  const fallback = { posts: [] };
   const [recentData, popularData] = await Promise.all([
-    getRecentPosts(),
-    getPopularPosts().catch(() => ({ posts: [] }))
+    getRecentPosts().catch(() => fallback),
+    getPopularPosts().catch(() => fallback),
   ]);
 
   const recentPosts = recentData.posts || [];

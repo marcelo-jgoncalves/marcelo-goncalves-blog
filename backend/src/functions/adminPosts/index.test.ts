@@ -1,0 +1,281 @@
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { handler } from './index';
+import { dynamo } from '../../common/dynamodb';
+
+jest.mock('../../common/dynamodb', () => ({
+  dynamo: { send: jest.fn() },
+}));
+
+const mockSend = dynamo.send as jest.Mock;
+
+const ctx = {
+  awsRequestId: 'req-admin-789',
+  callbackWaitsForEmptyEventLoop: false,
+  functionName: 'adminPosts',
+  functionVersion: '$LATEST',
+  invokedFunctionArn: 'arn:aws:lambda:us-east-1:123:function:adminPosts',
+  memoryLimitInMB: '128',
+  logGroupName: '/aws/lambda/adminPosts',
+  logStreamName: '2026/01/01/[$LATEST]test',
+  getRemainingTimeInMillis: () => 30000,
+  done: jest.fn(),
+  fail: jest.fn(),
+  succeed: jest.fn(),
+} as Context;
+
+function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEvent {
+  return {
+    body: null,
+    headers: { Authorization: 'Bearer token' },
+    httpMethod: 'GET',
+    isBase64Encoded: false,
+    multiValueHeaders: {},
+    multiValueQueryStringParameters: null,
+    path: '/admin/posts',
+    pathParameters: null,
+    queryStringParameters: null,
+    requestContext: {} as any,
+    resource: '/admin/posts',
+    stageVariables: null,
+    ...overrides,
+  } as APIGatewayProxyEvent;
+}
+
+const SAMPLE_POST = {
+  slug: 'meu-post',
+  titulo: 'Meu Post',
+  autor_id: 'marcelo-goncalves',
+  conteudo_html: '<p>Content</p>',
+  resumo: 'Resumo',
+  imagem_destaque_url: 'https://example.com/img.jpg',
+  imagem_destaque_alt_text: 'Alt text',
+  categoria_slug: 'aws',
+  status: 'Publicado' as const,
+  data_publicacao: '2026-01-01T00:00:00.000Z',
+  data_atualizacao: '2026-01-01T00:00:00.000Z',
+  tempo_leitura_min: 5,
+  e_popular: 0,
+  e_projeto: 0,
+};
+
+beforeAll(() => {
+  process.env.POSTS_TABLE = 'test-posts-table';
+  process.env.LOG_LEVEL = 'ERROR';
+});
+
+describe('adminPosts handler', () => {
+  describe('OPTIONS (CORS preflight)', () => {
+    it('returns 200 with empty body', async () => {
+      const result = await handler(event({ httpMethod: 'OPTIONS' }), ctx, jest.fn());
+      expect(result?.statusCode).toBe(200);
+      expect(result?.body).toBe('');
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('GET /admin/posts (list all)', () => {
+    it('queries all three statuses and merges results', async () => {
+      const published = { slug: 'a', status: 'Publicado' };
+      const draft = { slug: 'b', status: 'Rascunho' };
+      const scheduled = { slug: 'c', status: 'Programado' };
+
+      mockSend
+        .mockResolvedValueOnce({ Items: [published] })
+        .mockResolvedValueOnce({ Items: [draft] })
+        .mockResolvedValueOnce({ Items: [scheduled] });
+
+      const result = await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.count).toBe(3);
+      expect(body.items).toHaveLength(3);
+      expect(mockSend).toHaveBeenCalledTimes(3);
+    });
+
+    it('uses StatusPorData GSI for each status', async () => {
+      mockSend.mockResolvedValue({ Items: [] });
+      await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
+
+      const calls = mockSend.mock.calls;
+      const statuses = calls.map((c: any[]) => c[0].input.ExpressionAttributeValues[':status']);
+      expect(statuses).toEqual(['Publicado', 'Rascunho', 'Programado']);
+    });
+  });
+
+  describe('GET /admin/posts/:slug (get one)', () => {
+    it('returns the post when found', async () => {
+      mockSend.mockResolvedValueOnce({ Item: SAMPLE_POST });
+
+      const result = await handler(
+        event({ httpMethod: 'GET', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.slug).toBe('meu-post');
+    });
+
+    it('returns 404 when post not found', async () => {
+      mockSend.mockResolvedValueOnce({ Item: undefined });
+
+      const result = await handler(
+        event({ httpMethod: 'GET', pathParameters: { slug: 'nao-existe' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(404);
+    });
+  });
+
+  describe('POST /admin/posts (create)', () => {
+    it('creates a new post and returns 200', async () => {
+      mockSend.mockResolvedValueOnce({});
+
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.message).toBe('Post saved');
+      expect(body.slug).toBe('meu-post');
+    });
+
+    it('returns 400 when slug is missing', async () => {
+      const { slug, ...noSlug } = SAMPLE_POST;
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(noSlug) }),
+        ctx,
+        jest.fn(),
+      );
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when titulo is missing', async () => {
+      const { titulo, ...noTitulo } = SAMPLE_POST;
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(noTitulo) }),
+        ctx,
+        jest.fn(),
+      );
+      expect(result?.statusCode).toBe(400);
+    });
+
+    it('returns 400 when autor_id is missing', async () => {
+      const { autor_id, ...noAutor } = SAMPLE_POST;
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(noAutor) }),
+        ctx,
+        jest.fn(),
+      );
+      expect(result?.statusCode).toBe(400);
+    });
+
+    it('sets data_atualizacao automatically', async () => {
+      mockSend.mockResolvedValueOnce({});
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[0][0];
+      expect(sentCmd.input.Item.data_atualizacao).toBeDefined();
+    });
+
+    it('converts e_popular and e_projeto to Number', async () => {
+      mockSend.mockResolvedValueOnce({});
+      const postWithBooleans = { ...SAMPLE_POST, e_popular: 1, e_projeto: 1 };
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(postWithBooleans) }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[0][0];
+      expect(typeof sentCmd.input.Item.e_popular).toBe('number');
+      expect(typeof sentCmd.input.Item.e_projeto).toBe('number');
+    });
+  });
+
+  describe('PUT /admin/posts/:slug (update)', () => {
+    it('updates an existing post', async () => {
+      mockSend.mockResolvedValueOnce({});
+
+      const result = await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+    });
+
+    it('returns 500 on slug mismatch', async () => {
+      const result = await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'outro-slug' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(500);
+    });
+  });
+
+  describe('DELETE /admin/posts/:slug', () => {
+    it('deletes the post and returns 200', async () => {
+      mockSend.mockResolvedValueOnce({});
+
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+      expect(JSON.parse(result?.body ?? '{}').message).toBe('Post deleted');
+    });
+
+    it('calls DynamoDB DeleteCommand with correct key', async () => {
+      mockSend.mockResolvedValueOnce({});
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.Key).toEqual({ slug: 'meu-post' });
+    });
+  });
+
+  describe('unknown method', () => {
+    it('returns 405 Method Not Allowed', async () => {
+      const result = await handler(event({ httpMethod: 'PATCH' }), ctx, jest.fn());
+      expect(result?.statusCode).toBe(405);
+    });
+  });
+
+  describe('CORS headers', () => {
+    it('all responses include Access-Control-Allow-Origin', async () => {
+      mockSend.mockResolvedValue({ Items: [] });
+      const result = await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
+      expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('*');
+    });
+  });
+});

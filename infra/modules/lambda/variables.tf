@@ -5,12 +5,25 @@ variable "autores_table_arn" {}
 variable "uploads_bucket_name" {}
 variable "uploads_bucket_arn" {}
 
-variable "categorias_table_name" {
+variable "log_level" {
+  description = "Log level for Lambda functions (DEBUG in dev, INFO in prod)"
   type        = string
-  description = "Nome da tabela de categorias"
+  default     = "INFO"
+}
+
+variable "log_retention_days" {
+  description = "CloudWatch log retention in days"
+  type        = number
+  default     = 7
 }
 
 variable "categorias_table_arn" {
+  description = "ARN of the Categorias DynamoDB table"
   type        = string
-  description = "ARN da tabela de categorias para permissões IAM"
+}
+
+variable "admin_origin" {
+  description = "Allowed CORS origin for admin Lambdas (CloudFront admin URL)"
+  type        = string
+  default     = "*"
 }

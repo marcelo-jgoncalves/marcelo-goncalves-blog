@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(aws *)",
+      "Bash(terraform *)",
+      "Bash(find *)",
+      "Bash(ls*)",
+      "Bash(mkdir *)",
+      "Bash(rm *)",
+      "Bash(zip *)",
+      "Bash(cat *)",
+      "Bash(echo *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(cd *)",
+      "Bash(which *)",
+      "Bash(type *)",
+      "Bash(tail *)",
+      "Bash(head *)",
+      "Bash(grep *)",
+      "Bash(touch *)",
+      "Bash(for *)",
+      "Bash(sleep *)"
+    ]
+  },
+  "sandbox": {
+    "enabled": false
+  }
+}

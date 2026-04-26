@@ -1,11 +1,9 @@
-/**backend/src/getPosts/index.tls */
-
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
+import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
-const CATEGORIES_TABLE = process.env.CATEGORIES_TABLE; // <-- Adicionado
 
 const headers = {
   "Content-Type": "application/json",
@@ -13,108 +11,72 @@ const headers = {
   "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
 
-// 🚀 CACHE IN-MEMORY DAS CATEGORIAS
-// Lambdas "quentes" reaproveitam esse objeto, economizando chamadas ao DynamoDB!
-let categoriesCache: Record<string, any> | null = null;
-
-export const handler: APIGatewayProxyHandler = async (event) => {
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
   const { queryStringParameters, pathParameters, resource } = event;
-  
+
+  logger.debug("get_posts_request", { requestId, resource, queryStringParameters });
+
   try {
-    // 1. GET /posts/recentes
     if (resource.includes("/posts/recentes")) {
-      return await getRecentPosts();
+      return await getRecentPosts(requestId);
     }
-
-    // 2. GET /categoria/{slug}
     if (resource.includes("/categoria/") && pathParameters?.slug) {
-      return await getPostsByCategory(pathParameters.slug, queryStringParameters);
+      return await getPostsByCategory(pathParameters.slug, queryStringParameters, requestId);
     }
-
-    // 3. GET /busca
     if (resource.includes("/busca") || queryStringParameters?.q) {
-      const term = queryStringParameters?.q || "";
-      return await searchPosts(term, queryStringParameters);
+      return await searchPosts(queryStringParameters?.q || "", queryStringParameters, requestId);
     }
-
-    // 4. GET /projeto (NOVO - Timeline Cronológica)
     if (resource.includes("/projeto")) {
-      return await getProjectPosts(queryStringParameters);
+      return await getProjectPosts(queryStringParameters, requestId);
     }
-
-    // 5. GET /artigos (Default)
-    return await getAllPosts(queryStringParameters);
+    return await getAllPosts(queryStringParameters, requestId);
 
   } catch (error: any) {
-    console.error("Error:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Internal Server Error" }),
-      headers,
-    };
+    logger.error("get_posts_error", { requestId, resource, error: error.message });
+    return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error" }), headers };
   }
 };
 
-// --- FUNÇÃO DE ENRIQUECIMENTO (O SEGREDO DA PERFORMANCE) ---
-async function enrichPostsWithCategories(posts: any[]) {
-  if (!posts || posts.length === 0 || !CATEGORIES_TABLE) return posts;
+// --- Funções Auxiliares ---
 
-  // Carrega o cache de categorias se estiver vazio
-  if (!categoriesCache) {
-    try {
-      const catResult = await dynamo.send(new ScanCommand({ TableName: CATEGORIES_TABLE }));
-      categoriesCache = {};
-      catResult.Items?.forEach(cat => {
-        categoriesCache![cat.categoria_slug] = cat;
-      });
-    } catch (err) {
-      console.error("Falha ao carregar cache de categorias:", err);
-      return posts; // Fallback: retorna posts sem categoria se falhar
-    }
-  }
-
-  // Enxerta a categoria em cada post
-  return posts.map(post => {
-    if (post.categoria_slug && categoriesCache && categoriesCache[post.categoria_slug]) {
-      return {
-        ...post,
-        categoria: categoriesCache[post.categoria_slug] // <-- O Frontend vai amar isso
-      };
-    }
-    return post;
-  });
-}
-
-// --- FUNÇÕES AUXILIARES (AGORA ENRIQUECIDAS) ---
-
+// Converte para Title Case (ajuda na busca)
 function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-async function getProjectPosts(queryParams: any) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20; 
+// Lógica Específica para "O Projeto"
+async function getProjectPosts(queryParams: any, requestId?: string) {
+  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
   const nextToken = queryParams?.nextToken;
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
-    IndexName: "ProjetoPorData", 
+    IndexName: "ProjetoPorData",
     KeyConditionExpression: "e_projeto = :val",
-    ExpressionAttributeValues: { ":val": 1 }, 
-    ScanIndexForward: true, 
+    FilterExpression: "#status = :published",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":val": 1, ":published": "Publicado" },
+    ScanIndexForward: true,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
   const result = await dynamo.send(command);
-  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
   
-  // 🚀 Enriquecendo os dados antes de devolver
-  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
+  const newNextToken = result.LastEvaluatedKey 
+    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
+    : null;
 
-  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts, nextToken: newNextToken }), headers };
+  logger.info("project_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }),
+    headers
+  };
 }
 
-async function searchPosts(term: string, queryParams: any) {
+async function searchPosts(term: string, queryParams: any, requestId?: string) {
   if (!term || term.trim() === "") {
     return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
   }
@@ -129,12 +91,15 @@ async function searchPosts(term: string, queryParams: any) {
   const command = new ScanCommand({
     TableName: TABLE_NAME,
     FilterExpression: `
-      (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3)) 
-      OR 
-      (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+      (#status = :published) AND (
+        (contains(titulo, :t1) OR contains(titulo, :t2) OR contains(titulo, :t3))
+        OR
+        (contains(resumo, :t1) OR contains(resumo, :t2) OR contains(resumo, :t3))
+      )
     `,
-    ExpressionAttributeValues: { 
-      ":t1": tLower, ":t2": tUpper, ":t3": tTitle
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: {
+      ":t1": tLower, ":t2": tUpper, ":t3": tTitle, ":published": "Publicado"
     },
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
@@ -142,12 +107,12 @@ async function searchPosts(term: string, queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
-  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: enrichedPosts, nextToken: newNextToken }), headers };
+  logger.info("search_posts_fetched", { requestId, term, count: result.Items?.length ?? 0 });
+  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
-async function getRecentPosts() {
+async function getRecentPosts(requestId?: string) {
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
@@ -158,12 +123,11 @@ async function getRecentPosts() {
     Limit: 3
   });
   const result = await dynamo.send(command);
-  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
-  
-  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts }), headers };
+  logger.info("recent_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
 }
 
-async function getAllPosts(queryParams: any) {
+async function getAllPosts(queryParams: any, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
@@ -180,12 +144,12 @@ async function getAllPosts(queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
-  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  return { statusCode: 200, body: JSON.stringify({ posts: enrichedPosts, nextToken: newNextToken }), headers };
+  logger.info("all_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
-async function getPostsByCategory(categorySlug: string, queryParams: any) {
+async function getPostsByCategory(categorySlug: string, queryParams: any, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
@@ -193,7 +157,9 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
     TableName: TABLE_NAME,
     IndexName: "CategoriaPorData",
     KeyConditionExpression: "categoria_slug = :cat",
-    ExpressionAttributeValues: { ":cat": categorySlug },
+    FilterExpression: "#status = :published",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":cat": categorySlug, ":published": "Publicado" },
     ScanIndexForward: false,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
@@ -201,21 +167,11 @@ async function getPostsByCategory(categorySlug: string, queryParams: any) {
 
   const result = await dynamo.send(command);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
-  const enrichedPosts = await enrichPostsWithCategories(result.Items || []);
 
-  // Busca a categoria específica para o header da página de listagem
-  let categoryMeta = { slug: categorySlug, nome_exibicao: categorySlug, icone_fa: "" };
-  if (categoriesCache && categoriesCache[categorySlug]) {
-    categoryMeta = categoriesCache[categorySlug];
-  }
-
-  return { 
-    statusCode: 200, 
-    body: JSON.stringify({ 
-      posts: enrichedPosts, 
-      nextToken: newNextToken, 
-      category: categoryMeta 
-    }), 
-    headers 
+  logger.info("category_posts_fetched", { requestId, categorySlug, count: result.Items?.length ?? 0 });
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, category: { slug: categorySlug, nome: categorySlug } }),
+    headers
   };
 }

@@ -1,28 +1,32 @@
 // backend/src/functions/adminPosts/index.ts
-
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
+import { logger } from "../../common/logger";
+import { sanitizePostHtml } from "../../common/sanitizer";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
+const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
-// Cabeçalhos CORS Obrigatórios em TODAS as respostas
 const headers = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*", 
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  // Se por acaso o API Gateway deixar passar um OPTIONS para a Lambda, respondemos rápido
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
+
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, body: "", headers };
   }
 
   const { httpMethod, pathParameters, body } = event;
   const slug = pathParameters?.slug;
+
+  logger.debug("admin_posts_request", { requestId, httpMethod, slug });
 
   try {
     // 1. Listar Todos
@@ -62,11 +66,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
 
   } catch (error: any) {
-    console.error("Error:", error);
+    logger.error("admin_posts_error", { requestId, httpMethod, slug, error: error.message });
     return {
       statusCode: 500,
       body: JSON.stringify({ message: error.message || "Internal Server Error" }),
-      headers, // <--- Importante: Headers até no erro 500
+      headers,
     };
   }
 };
@@ -74,17 +78,27 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 // --- Funções Auxiliares (AGORA COM HEADERS) ---
 
 async function listPosts() {
-  const command = new ScanCommand({
-    TableName: TABLE_NAME,
-    ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
-    ExpressionAttributeNames: { "#status": "status" }
-  });
-  const result = await dynamo.send(command);
-  
+  const statuses = ["Publicado", "Rascunho", "Programado"];
+  const allItems: any[] = [];
+
+  for (const status of statuses) {
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: "StatusPorData",
+      KeyConditionExpression: "#status = :status",
+      ExpressionAttributeNames: { "#status": "status" },
+      ExpressionAttributeValues: { ":status": status },
+      ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
+      ScanIndexForward: false,
+    });
+    const result = await dynamo.send(command);
+    allItems.push(...(result.Items || []));
+  }
+
   return {
     statusCode: 200,
-    body: JSON.stringify({ items: result.Items || [], count: result.Count }),
-    headers, // <--- ADICIONADO
+    body: JSON.stringify({ items: allItems, count: allItems.length }),
+    headers,
   };
 }
 
@@ -119,17 +133,15 @@ async function savePost(data: Partial<Post>, isNew: boolean) {
   }
 
   const now = new Date().toISOString();
-  
-  // Nós calculamos o tempo baseado no HTML e salvamos na variável.
-  const tempoCalculado = calculateReadingTime(data.conteudo_html || "");
-  
+
   const item: Post = {
     ...data as Post,
+    conteudo_html: sanitizePostHtml(data.conteudo_html ?? ""),
     data_atualizacao: now,
     data_publicacao: isNew ? (data.data_publicacao || now) : data.data_publicacao!,
     e_popular: Number(data.e_popular || 0),
     e_projeto: Number(data.e_projeto || 0),
-    tempo_leitura_min: tempoCalculado // Agora o TS sabe de onde vem esse valor
+    tempo_leitura_min: Number(data.tempo_leitura_min || 5)
   };
 
   await dynamo.send(new PutCommand({
@@ -155,28 +167,4 @@ async function deletePost(slug: string) {
     body: JSON.stringify({ message: "Post deleted" }),
     headers, // <--- ADICIONADO
   };
-}
-
-/**
- * Calcula o tempo de leitura estimado com base no conteúdo HTML.
- * @param html Conteúdo rico vindo do Tiptap Editor.
- * @returns Tempo em minutos (sempre no mínimo 1).
- */
-function calculateReadingTime(html: string): number {
-  if (!html) return 1;
-
-  // 1. Remove todas as tags HTML substituindo por um espaço (evita colar palavras)
-  const plainText = html.replace(/<[^>]+>/g, ' ');
-
-  // 2. Remove espaços em branco múltiplos do início/fim e divide em um array de palavras
-  const words = plainText.trim().split(/\s+/);
-  
-  // Se o array ficar vazio ou tiver apenas strings vazias
-  if (words.length === 0 || words[0] === "") return 1;
-
-  // 3. Calcula o tempo: média de 200 palavras por minuto
-  const minutes = Math.ceil(words.length / 200);
-
-  // 4. Retorna no mínimo 1 minuto de leitura
-  return Math.max(1, minutes);
 }

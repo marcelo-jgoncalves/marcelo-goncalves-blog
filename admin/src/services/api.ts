@@ -84,26 +84,17 @@ export const authorsApi = {
 }
 
 export const categoriesApi = {
-  // Lista todas as categorias
-  list: () => apiCall('/admin/categorias'),
-  
-  // Busca uma categoria específica
-  get: (slug: string) => apiCall(`/admin/categorias/${slug}`),
-  
-  // Cria uma nova categoria
-  create: (data: any) => apiCall('/admin/categorias', {
-    method: 'POST',
-    body: JSON.stringify(data)
-  }),
-  
-  // Atualiza uma categoria existente
-  update: (slug: string, data: any) => apiCall(`/admin/categorias/${slug}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
-  }),
+  list: (): Promise<{ items: Array<{ categoria_slug: string; nome: string }> }> =>
+    apiCall('/admin/categorias'),
 
-  // Deleta uma categoria
-  delete: (slug: string) => apiCall(`/admin/categorias/${slug}`, {
-    method: 'DELETE'
-  })
+  get: (slug: string) => apiCall(`/admin/categorias/${slug}`),
+
+  create: (data: { categoria_slug: string; nome: string; descricao?: string }) =>
+    apiCall('/admin/categorias', { method: 'POST', body: JSON.stringify(data) }),
+
+  update: (slug: string, data: { categoria_slug: string; nome: string; descricao?: string }) =>
+    apiCall(`/admin/categorias/${slug}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+  delete: (slug: string) =>
+    apiCall(`/admin/categorias/${slug}`, { method: 'DELETE' }),
 }

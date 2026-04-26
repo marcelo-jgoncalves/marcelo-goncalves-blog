@@ -1,24 +1,25 @@
 // backend/src/functions/adminAuthors/index.ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocument, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocument.from(client);
+import { APIGatewayProxyHandler } from "aws-lambda";
+import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { dynamo } from "../../common/dynamodb";
+import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.AUTHORS_TABLE || '';
+const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
 const headers = {
-  "Access-Control-Allow-Origin": "*", // O API Gateway restringe isso em Prod, aqui deixamos aberto para a Lambda
-  "Access-Control-Allow-Credentials": "true",
-  "Content-Type": "application/json"
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Content-Type": "application/json",
 };
 
-export const handler = async (event: any) => {
-  // Logs para debug (serão filtrados em prod pelo Terraform)
-  console.log("Event:", JSON.stringify(event));
-
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
   const { httpMethod, pathParameters, body } = event;
   const authorId = pathParameters?.id;
+
+  logger.debug("admin_authors_request", { requestId, httpMethod, authorId });
 
   try {
     // 1. GET - Buscar Autor pelo ID
@@ -32,7 +33,7 @@ export const handler = async (event: any) => {
         Key: { autor_id: authorId }
       });
 
-      const result = await docClient.send(command);
+      const result = await dynamo.send(command);
 
       if (!result.Item) {
         return { statusCode: 404, headers, body: JSON.stringify({ error: "Author not found" }) };
@@ -78,7 +79,7 @@ export const handler = async (event: any) => {
         Item: authorItem
       });
 
-      await docClient.send(command);
+      await dynamo.send(command);
 
       return {
         statusCode: 200,
@@ -89,12 +90,8 @@ export const handler = async (event: any) => {
 
     return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
-  } catch (error) {
-    console.error("Error:", error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: "Internal Server Error" })
-    };
+  } catch (error: any) {
+    logger.error("admin_authors_error", { requestId, httpMethod, authorId, error: error.message });
+    return { statusCode: 500, headers, body: JSON.stringify({ error: "Internal Server Error" }) };
   }
 };

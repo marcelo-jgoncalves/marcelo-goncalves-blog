@@ -80,10 +80,32 @@ jobs:
         run: echo "Nenhum package.json encontrado, pulando checks de JS."
         if: steps.files.outputs.pkg == 'false'
 
-  # --- JOB 2: Validar a Infraestrutura (Terraform) ---
+  # --- JOB 2: Testar o Backend (Jest) ---
+  test-backend:
+    runs-on: ubuntu-latest
+    name: 2. Testes Backend (Jest)
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependencias do Backend
+        run: npm ci
+        working-directory: backend
+
+      - name: Rodar Testes Unitarios
+        run: npm test
+        working-directory: backend
+
+  # --- JOB 3: Validar a Infraestrutura (Terraform) ---
   validate-infrastructure:
     runs-on: ubuntu-latest
-    name: 2. Validar Infra (Terraform)
+    name: 3. Validar Infra (Terraform)
     
     outputs:
       tf_files_found: ${{ steps.files.outputs.tf }}

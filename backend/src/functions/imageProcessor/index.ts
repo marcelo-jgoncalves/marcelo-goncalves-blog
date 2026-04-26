@@ -1,8 +1,9 @@
 // backend/src/functions/imageProcessor/index.ts
 import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { S3Event } from "aws-lambda";
-import sharp from "sharp"; // O import funciona, mas o binário será injetado no build
+import sharp from "sharp";
 import { Readable } from "stream";
+import { logger } from "../../common/logger";
 
 const s3 = new S3Client({});
 const DEST_BUCKET = process.env.DESTINATION_BUCKET;
@@ -18,7 +19,7 @@ const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 };
 
 export const handler = async (event: S3Event) => {
-  console.log("Event:", JSON.stringify(event));
+  logger.debug("image_processor_triggered", { recordCount: event.Records.length });
 
   // Itera sobre os registros (geralmente é 1 por evento)
   for (const record of event.Records) {
@@ -62,10 +63,10 @@ export const handler = async (event: S3Event) => {
         CacheControl: "public, max-age=31536000, immutable" // Cache agressivo para performance
       }));
 
-      console.log(`Success: ${srcBucket}/${srcKey} -> ${DEST_BUCKET}/${destKey}`);
+      logger.info("image_processed", { srcBucket, srcKey, destBucket: DEST_BUCKET, destKey });
 
     } catch (error) {
-      console.error(`Error processing ${srcKey}:`, error);
+      logger.error("image_processor_error", { srcKey, error: (error as Error).message });
       throw error; // Faz a Lambda tentar de novo (Retry) se for erro temporário
     }
   }

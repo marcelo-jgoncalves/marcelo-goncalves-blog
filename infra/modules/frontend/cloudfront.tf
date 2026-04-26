@@ -1,6 +1,6 @@
-# ==============================================================================
-# CONTROLE DE ACESSO (OAC) - Faltava este bloco!
-# ==============================================================================
+# infra/modules/frontend/cloudfront.tf
+
+# OAC para o bucket S3 de assets estáticos
 resource "aws_cloudfront_origin_access_control" "oac" {
   name                              = "${var.project_name}-${var.environment}-oac"
   description                       = "Acesso restrito S3 Frontend"
@@ -9,13 +9,19 @@ resource "aws_cloudfront_origin_access_control" "oac" {
   signing_protocol                  = "sigv4"
 }
 
-# ==============================================================================
-# DISTRIBUIÇÃO CLOUDFRONT (Com Cache Desativado para Debug)
-# ==============================================================================
+# OAC para a Lambda Function URL — garante que só o CloudFront pode invocar
+resource "aws_cloudfront_origin_access_control" "lambda_oac" {
+  name                              = "${var.project_name}-${var.environment}-lambda-oac"
+  description                       = "Acesso restrito Lambda SSR via SigV4"
+  origin_access_control_origin_type = "lambda"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "frontend" {
   enabled         = true
   is_ipv6_enabled = true
-  price_class     = "PriceClass_100"
+  price_class     = "PriceClass_100" # Usa apenas NA/Europa (Mais barato para dev)
 
   # --- Origem 1: S3 (Assets) ---
   origin {
@@ -24,11 +30,11 @@ resource "aws_cloudfront_distribution" "frontend" {
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
-  # --- Origem 2: Lambda (SSR Server) ---
+  # --- Origem 2: Lambda (SSR Server) com OAC — apenas CloudFront pode invocar ---
   origin {
-    # Remove o https:// para evitar erros de parsing
-    domain_name = replace(aws_lambda_function_url.nextjs_url.function_url, "/^https?://([^/]*).*/", "$1")
-    origin_id   = "Lambda-SSR"
+    domain_name              = replace(aws_lambda_function_url.nextjs_url.function_url, "/^https?://([^/]*).*/", "$1")
+    origin_id                = "Lambda-SSR"
+    origin_access_control_id = aws_cloudfront_origin_access_control.lambda_oac.id
 
     custom_origin_config {
       http_port              = 80
@@ -38,30 +44,51 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  # ========================================================================
-  # REGRAS DE CACHE (ASSETS) - Mantém cache para performance básica
-  # ========================================================================
-
-  # 1. Arquivos de Mídia (Uploads) -> S3
+  # --- REGRA NOVA: Arquivos de Mídia (Uploads) vão para o S3 ---
   ordered_cache_behavior {
     path_pattern     = "media/*"
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "S3-Assets"
+    target_origin_id = "S3-Assets" # Aponta para o bucket
 
     forwarded_values {
       query_string = false
-      cookies { forward = "none" }
+      cookies {
+        forward = "none"
+      }
     }
 
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 31536000
+    default_ttl            = 86400    # 1 dia de cache
+    max_ttl                = 31536000 # 1 ano
     compress               = true
   }
 
-  # 2. Arquivos Estáticos do Next.js (_next/static/*) -> S3
+
+  # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
+  default_cache_behavior {
+    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "Lambda-SSR"
+
+    # Forwarding total (Cookies, Headers, QueryString) para o SSR funcionar
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+      headers = ["Authorization"] # Importante passar Host
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0
+  }
+
+  # --- Comportamento Estático (_next/static/*): Manda para o S3 ---
+  # Isso economiza muito dinheiro e acelera o site!
   ordered_cache_behavior {
     path_pattern     = "_next/static/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
@@ -70,17 +97,19 @@ resource "aws_cloudfront_distribution" "frontend" {
 
     forwarded_values {
       query_string = false
-      cookies { forward = "none" }
+      cookies {
+        forward = "none"
+      }
     }
 
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 31536000
+    default_ttl            = 86400    # 1 dia
+    max_ttl                = 31536000 # 1 ano (Assets do Next têm hash no nome, são imutáveis)
     compress               = true
   }
 
-  # 3. Imagens Públicas (static/*) -> S3
+  # Regra para imagens públicas (se houver)
   ordered_cache_behavior {
     path_pattern     = "static/*"
     allowed_methods  = ["GET", "HEAD"]
@@ -89,28 +118,13 @@ resource "aws_cloudfront_distribution" "frontend" {
 
     forwarded_values {
       query_string = false
-      cookies { forward = "none" }
+      cookies {
+        forward = "none"
+      }
     }
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
-  }
-
-  # ========================================================================
-  # 🚨 MODO DEBUG: CACHE DESATIVADO (SSR/Páginas)
-  # ========================================================================
-  default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "Lambda-SSR"
-
-    # Managed-CachingDisabled (AWS)
-    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
-
-    # Managed-AllViewer (AWS) - Passa tudo para o Lambda
-    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
-
-    viewer_protocol_policy = "redirect-to-https"
   }
 
   restrictions {
