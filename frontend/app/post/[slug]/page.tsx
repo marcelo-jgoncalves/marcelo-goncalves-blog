@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import React from 'react';
 
 // Libs e Utils
@@ -126,10 +127,14 @@ export default async function PostPage({ params }: Props) {
 
       {/* --- IMAGEM DE DESTAQUE --- */}
       {post.imagem_destaque_url && (
-        <div className="featured-image-container">
-          <img 
-            src={post.imagem_destaque_url} 
-            alt={post.imagem_destaque_alt_text || post.titulo} 
+        <div className="featured-image-container" style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+          <Image
+            src={post.imagem_destaque_url}
+            alt={post.imagem_destaque_alt_text || post.titulo}
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 1200px"
+            style={{ objectFit: 'cover' }}
             className="featured-image"
           />
         </div>

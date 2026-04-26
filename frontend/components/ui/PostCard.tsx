@@ -6,6 +6,7 @@ interface PostCardProps {
     titulo: string;
     resumo: string;
     imagem_destaque_url: string;
+    imagem_destaque_alt_text?: string;
     categoria_slug: string;
   };
 }
@@ -19,10 +20,12 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <article className="post-card">
       {/* Usando DIV para imagem (igual ao protótipo) */}
-      <div 
-        className="post-image" 
+      <div
+        className="post-image"
         style={{ backgroundImage: bgImage }}
-      ></div>
+        role="img"
+        aria-label={post.imagem_destaque_alt_text || post.titulo}
+      />
 
       <div className="card-content">
         <span className="post-tag">{post.categoria_slug}</span>
