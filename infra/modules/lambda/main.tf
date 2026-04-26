@@ -24,8 +24,8 @@ resource "aws_iam_policy" "public_lambda_policy" {
         Resource = "arn:aws:logs:*:*:*"
       },
       {
-        Action   = ["dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"]
-        Effect   = "Allow"
+        Action = ["dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"]
+        Effect = "Allow"
         Resource = [
           var.posts_table_arn,
           "${var.posts_table_arn}/index/*",
@@ -72,7 +72,7 @@ resource "aws_iam_policy" "admin_lambda_policy" {
           "dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan",
           "dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:DeleteItem"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           var.posts_table_arn,
           "${var.posts_table_arn}/index/*",
@@ -128,6 +128,39 @@ resource "aws_iam_role_policy_attachment" "media_upload_attach" {
   policy_arn = aws_iam_policy.media_upload_policy.arn
 }
 
+# --- CloudWatch Log Groups (com retenção explícita) ---
+# Criados antes das Lambdas para evitar que o runtime crie grupos sem retenção.
+
+resource "aws_cloudwatch_log_group" "media_upload" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-mediaUpload"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "get_post" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-getPost"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "get_author" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-getAuthor"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "get_posts" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-getPosts"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "admin_posts" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-adminPosts"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "admin_authors" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-adminAuthors"
+  retention_in_days = var.log_retention_days
+}
+
 # --- Lambda Functions ---
 
 resource "aws_lambda_function" "media_upload" {
@@ -145,6 +178,8 @@ resource "aws_lambda_function" "media_upload" {
       LOG_LEVEL      = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.media_upload]
 }
 
 resource "aws_lambda_function" "get_post" {
@@ -163,6 +198,8 @@ resource "aws_lambda_function" "get_post" {
       LOG_LEVEL     = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.get_post]
 }
 
 resource "aws_lambda_function" "get_author" {
@@ -180,6 +217,8 @@ resource "aws_lambda_function" "get_author" {
       LOG_LEVEL     = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.get_author]
 }
 
 resource "aws_lambda_function" "get_posts" {
@@ -197,6 +236,8 @@ resource "aws_lambda_function" "get_posts" {
       LOG_LEVEL   = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.get_posts]
 }
 
 resource "aws_lambda_function" "admin_posts" {
@@ -214,6 +255,8 @@ resource "aws_lambda_function" "admin_posts" {
       LOG_LEVEL   = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.admin_posts]
 }
 
 resource "aws_lambda_function" "admin_authors" {
@@ -231,4 +274,6 @@ resource "aws_lambda_function" "admin_authors" {
       LOG_LEVEL     = var.log_level
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.admin_authors]
 }

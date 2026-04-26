@@ -10,10 +10,10 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 }
 
 resource "aws_cloudfront_distribution" "frontend" {
-  enabled             = true
-  is_ipv6_enabled     = true
-  price_class         = "PriceClass_100" # Usa apenas NA/Europa (Mais barato para dev)
-  
+  enabled         = true
+  is_ipv6_enabled = true
+  price_class     = "PriceClass_100" # Usa apenas NA/Europa (Mais barato para dev)
+
   # --- Origem 1: S3 (Assets) ---
   origin {
     domain_name              = aws_s3_bucket.frontend_assets.bucket_regional_domain_name
@@ -99,7 +99,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     max_ttl                = 31536000 # 1 ano (Assets do Next têm hash no nome, são imutáveis)
     compress               = true
   }
-  
+
   # Regra para imagens públicas (se houver)
   ordered_cache_behavior {
     path_pattern     = "static/*"

@@ -26,15 +26,15 @@ resource "aws_cognito_user_pool_client" "admin_client" {
   name = "${var.project_name}-${var.environment}-admin-client"
 
   user_pool_id = aws_cognito_user_pool.admin_pool.id
-  
+
   # Configurações para SPA (Vue.js)
-  generate_secret     = false # SPAs não conseguem guardar segredos, então desligamos
+  generate_secret = false # SPAs não conseguem guardar segredos, então desligamos
   explicit_auth_flows = [
-    "ALLOW_USER_SRP_AUTH", 
+    "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
     "ALLOW_USER_PASSWORD_AUTH" # Permite login direto user/senha (mais simples para admin interno)
   ]
-  
+
   # Tokens válidos por 1 hora (Acesso) e 30 dias (Refresh)
   access_token_validity  = 60
   id_token_validity      = 60

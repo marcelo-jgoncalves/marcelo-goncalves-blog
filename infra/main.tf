@@ -10,9 +10,10 @@ module "dynamodb" {
 module "lambda" {
   source = "./modules/lambda"
 
-  environment  = var.environment
-  project_name = var.project_name
-  log_level    = var.log_level
+  environment        = var.environment
+  project_name       = var.project_name
+  log_level          = var.log_level
+  log_retention_days = var.log_retention_days
 
   posts_table_arn     = module.dynamodb.posts_table_arn
   autores_table_arn   = module.dynamodb.autores_table_arn
@@ -46,8 +47,9 @@ module "api-gateway" {
 module "frontend" {
   source = "./modules/frontend"
 
-  environment  = var.environment
-  project_name = var.project_name
+  environment        = var.environment
+  project_name       = var.project_name
+  log_retention_days = var.log_retention_days
 
   # Passamos a URL da API Backend para que o Frontend saiba quem chamar
   api_url = module.api-gateway.api_url
@@ -73,5 +75,6 @@ module "media" {
   environment        = var.environment
   project_name       = var.project_name
   log_level          = var.log_level
+  log_retention_days = var.log_retention_days
   assets_bucket_name = module.frontend.s3_bucket_name
 }

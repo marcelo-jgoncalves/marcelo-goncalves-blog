@@ -27,3 +27,14 @@ variable "log_level" {
     error_message = "log_level must be one of: DEBUG, INFO, WARN, ERROR."
   }
 }
+
+variable "log_retention_days" {
+  description = "Retenção dos logs no CloudWatch em dias. 7 para dev, 30 para prod."
+  type        = number
+  default     = 7
+
+  validation {
+    condition     = contains([1, 3, 5, 7, 14, 30, 60, 90, 180, 365], var.log_retention_days)
+    error_message = "log_retention_days deve ser um valor válido do CloudWatch: 1, 3, 5, 7, 14, 30, 60, 90, 180 ou 365."
+  }
+}

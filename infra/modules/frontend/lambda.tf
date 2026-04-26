@@ -1,5 +1,12 @@
 # infra/modules/frontend/lambda.tf
 
+# infra/modules/frontend/lambda.tf
+
+resource "aws_cloudwatch_log_group" "nextjs_server" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-nextjs-server"
+  retention_in_days = var.log_retention_days
+}
+
 # Role para a Lambda do Next.js
 resource "aws_iam_role" "nextjs_role" {
   name = "${var.project_name}-${var.environment}-nextjs-role"
@@ -7,8 +14,8 @@ resource "aws_iam_role" "nextjs_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "lambda.amazonaws.com" }
     }]
   })
@@ -26,10 +33,10 @@ resource "aws_lambda_function" "nextjs_server" {
   role          = aws_iam_role.nextjs_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  
+
   # Aumentamos memória e timeout para SSR (Next.js é pesado)
-  memory_size   = 1024 
-  timeout       = 30   
+  memory_size = 1024
+  timeout     = 30
 
   # Placeholder inicial (será substituído pelo build do Next.js no CI/CD)
   filename         = "${path.root}/builds/nextjs.zip"
@@ -39,9 +46,11 @@ resource "aws_lambda_function" "nextjs_server" {
     variables = {
       NODE_ENV = "production"
       # Injetamos a URL da API Backend aqui para o SSR funcionar
-      NEXT_PUBLIC_API_URL = var.api_url 
+      NEXT_PUBLIC_API_URL = var.api_url
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.nextjs_server]
 }
 
 # URL Pública da Lambda (Para o CloudFront acessar)

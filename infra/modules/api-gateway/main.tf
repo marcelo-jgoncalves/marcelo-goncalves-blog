@@ -2,7 +2,7 @@
 resource "aws_api_gateway_rest_api" "main" {
   name        = "${var.project_name}-${var.environment}-api"
   description = "API principal do blog IA Decifrada"
-  
+
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -169,10 +169,10 @@ resource "aws_api_gateway_method" "admin_autor_id_options" {
 }
 
 resource "aws_api_gateway_integration" "admin_autor_id_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_autor_id.id
-  http_method = aws_api_gateway_method.admin_autor_id_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_autor_id.id
+  http_method       = aws_api_gateway_method.admin_autor_id_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -181,7 +181,7 @@ resource "aws_api_gateway_method_response" "admin_autor_id_options_200" {
   resource_id = aws_api_gateway_resource.admin_autor_id.id
   http_method = aws_api_gateway_method.admin_autor_id_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -240,10 +240,10 @@ resource "aws_api_gateway_method" "get_populares" {
 }
 
 resource "aws_api_gateway_integration" "admin_post_slug_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_post_slug.id
-  http_method = aws_api_gateway_method.admin_post_slug_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_post_slug.id
+  http_method       = aws_api_gateway_method.admin_post_slug_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -252,7 +252,7 @@ resource "aws_api_gateway_method_response" "admin_post_slug_options_200" {
   resource_id = aws_api_gateway_resource.admin_post_slug.id
   http_method = aws_api_gateway_method.admin_post_slug_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -273,16 +273,16 @@ resource "aws_api_gateway_integration_response" "admin_post_slug_options_integra
     "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
+
   depends_on = [aws_api_gateway_method_response.admin_post_slug_options_200]
 }
 
 # Método ANY em /admin/posts (Protegido pelo Cognito)
 resource "aws_api_gateway_method" "admin_posts_any" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_posts.id
-  http_method   = "ANY"
-  
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_posts.id
+  http_method = "ANY"
+
   # 🔒 AQUI ESTÁ A SEGURANÇA:
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
@@ -312,7 +312,7 @@ resource "aws_api_gateway_integration" "admin_posts_options_integration" {
   resource_id = aws_api_gateway_resource.admin_posts.id
   http_method = aws_api_gateway_method.admin_posts_options.http_method
   type        = "MOCK"
-  
+
   request_templates = {
     "application/json" = "{\"statusCode\": 200}"
   }
@@ -347,7 +347,7 @@ resource "aws_api_gateway_integration_response" "admin_posts_options_integration
     "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
+
   depends_on = [aws_api_gateway_method_response.admin_posts_options_200]
 }
 
@@ -412,10 +412,10 @@ resource "aws_api_gateway_method" "media_upload_options" {
 }
 
 resource "aws_api_gateway_integration" "media_upload_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_media_upload.id
-  http_method = aws_api_gateway_method.media_upload_options.http_method
-  type        = "MOCK"
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_media_upload.id
+  http_method       = aws_api_gateway_method.media_upload_options.http_method
+  type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
@@ -424,7 +424,7 @@ resource "aws_api_gateway_method_response" "media_upload_options_200" {
   resource_id = aws_api_gateway_resource.admin_media_upload.id
   http_method = aws_api_gateway_method.media_upload_options.http_method
   status_code = "200"
-  
+
   response_models = { "application/json" = "Empty" }
 
   response_parameters = {
@@ -445,7 +445,7 @@ resource "aws_api_gateway_integration_response" "media_upload_options_response" 
     "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
-  
+
   depends_on = [aws_api_gateway_method_response.media_upload_options_200]
 }
 
@@ -654,7 +654,7 @@ resource "aws_api_gateway_integration" "get_projeto_integration" {
 
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.main.id
-  
+
   # O trigger calcula um hash de todos os recursos. Se qualquer um mudar, ele faz redeploy.
   triggers = {
     redeployment = sha1(jsonencode([
@@ -703,7 +703,7 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.get_busca,
       aws_api_gateway_integration.get_busca_integration,
       aws_api_gateway_resource.projeto,
-      aws_api_gateway_method.get_projeto, 
+      aws_api_gateway_method.get_projeto,
       aws_api_gateway_integration.get_projeto_integration,
       aws_api_gateway_resource.admin_autores,
       aws_api_gateway_resource.admin_autor_singular,
@@ -712,8 +712,8 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_integration.admin_autor_id_integration,
       aws_api_gateway_method.admin_autor_id_options,
       aws_api_gateway_integration.admin_autor_id_options_integration
-      
-      ]))
+
+    ]))
   }
 
   lifecycle {
