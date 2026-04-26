@@ -5,10 +5,11 @@ import { logger } from "../../common/logger";
 
 const s3 = new S3Client({});
 const UPLOADS_BUCKET = process.env.UPLOADS_BUCKET;
+const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
 const headers = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };

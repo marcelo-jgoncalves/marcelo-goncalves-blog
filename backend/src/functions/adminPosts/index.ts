@@ -7,11 +7,11 @@ import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
+const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
-// Cabeçalhos CORS Obrigatórios em TODAS as respostas
 const headers = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*", 
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };

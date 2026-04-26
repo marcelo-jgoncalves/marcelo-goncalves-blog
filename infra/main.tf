@@ -20,6 +20,7 @@ module "lambda" {
   categorias_table_arn = module.dynamodb.categorias_table_arn
   uploads_bucket_name  = module.media.uploads_bucket_name
   uploads_bucket_arn   = module.media.uploads_bucket_arn
+  admin_origin         = "https://${module.admin.cloudfront_url}"
 }
 
 module "api-gateway" {

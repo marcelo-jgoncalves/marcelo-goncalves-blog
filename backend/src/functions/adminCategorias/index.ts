@@ -5,10 +5,11 @@ import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.CATEGORIAS_TABLE;
+const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
 const headers = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ADMIN_ORIGIN,
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };

@@ -21,3 +21,9 @@ variable "categorias_table_arn" {
   description = "ARN of the Categorias DynamoDB table"
   type        = string
 }
+
+variable "admin_origin" {
+  description = "Allowed CORS origin for admin Lambdas (CloudFront admin URL)"
+  type        = string
+  default     = "*"
+}
