@@ -68,7 +68,7 @@ describe('getPosts handler', () => {
       const cmd = mockSend.mock.calls[0][0];
       expect(cmd.input.IndexName).toBe('StatusPorData');
       expect(cmd.input.ScanIndexForward).toBe(false);
-      expect(cmd.input.Limit).toBe(3);
+      expect(cmd.input.Limit).toBe(6);
     });
   });
 

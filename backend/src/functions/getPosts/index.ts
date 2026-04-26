@@ -19,7 +19,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
   try {
     if (resource.includes("/posts/recentes")) {
-      return await getRecentPosts(requestId);
+      return await getRecentPosts(queryStringParameters, requestId);
     }
     if (resource.includes("/categoria/") && pathParameters?.slug) {
       return await getPostsByCategory(pathParameters.slug, queryStringParameters, requestId);
@@ -47,7 +47,7 @@ function toTitleCase(str: string) {
 
 // Lógica Específica para "O Projeto"
 async function getProjectPosts(queryParams: any, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
+  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 8;
   const nextToken = queryParams?.nextToken;
 
   const command = new QueryCommand({
@@ -81,7 +81,7 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
     return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
   }
 
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 20;
+  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 9;
   const nextToken = queryParams?.nextToken;
 
   const tLower = term.toLowerCase();
@@ -112,7 +112,8 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
   return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
-async function getRecentPosts(requestId?: string) {
+async function getRecentPosts(queryParams: any, requestId?: string) {
+  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
@@ -120,7 +121,7 @@ async function getRecentPosts(requestId?: string) {
     ExpressionAttributeNames: { "#status": "status" },
     ExpressionAttributeValues: { ":status": "Publicado" },
     ScanIndexForward: false,
-    Limit: 3
+    Limit: limit
   });
   const result = await dynamo.send(command);
   logger.info("recent_posts_fetched", { requestId, count: result.Items?.length ?? 0 });

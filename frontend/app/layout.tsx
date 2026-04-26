@@ -9,9 +9,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import SkipLink from "../components/ui/SkipLink";
-// 🚨 DEBUG MODE: Força todo o site a ser dinâmico e sem cache
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter",

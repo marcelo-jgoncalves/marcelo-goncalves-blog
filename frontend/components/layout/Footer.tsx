@@ -61,10 +61,9 @@ export default function Footer() {
           <div className="op-footer-column">
             <h3 className="op-footer-title">Contato</h3>
             <div className="op-footer-links">
-              {/* CORREÇÃO: Email unificado. Substitua pelo seu domínio oficial se for iadecifrada. */}
-              <a href="mailto:contato@marcelogoncalves.com.br" className="op-footer-link op-footer-email">
+              <a href="mailto:contato@iadecifrada.com" className="op-footer-link op-footer-email">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                contato@marcelogoncalves.com.br
+                contato@iadecifrada.com
               </a>
             </div>
           </div>

@@ -7,12 +7,8 @@ if (!API_URL) {
 }
 
 export async function getPost(slug: string) {
-  // 🚨 DEBUG MODE: cache: 'no-store'
-  // Isso força o fetch a bater na API real toda vez.
-  // Ignora o cache de dados do Next.js.
   const res = await fetch(`${API_URL}/post/${slug}`, {
-    cache: 'no-store', 
-    // next: { revalidate: 60 }, <--- Comentado para Debug
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -33,20 +29,22 @@ export async function getAuthor(authorId: string) {
 }
 
 // 1. Buscar Posts Recentes (Para a Home)
-export async function getRecentPosts() {
-  const res = await fetch(`${API_URL}/posts/recentes`, {
-    next: { revalidate: 60 }, // Cache ISR de 60s
+export async function getRecentPosts(limit: number = 6) {
+  const params = new URLSearchParams();
+  params.set('limit', limit.toString());
+  const res = await fetch(`${API_URL}/posts/recentes?${params.toString()}`, {
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) throw new Error('Failed to fetch recent posts');
 
-  return res.json(); // Retorna { posts: [...] }
+  return res.json();
 }
 
-export async function getAllPosts(nextToken?: string, limit: number = 12) {
+export async function getAllPosts(nextToken?: string, limit: number = 9) {
   const params = new URLSearchParams();
   if (nextToken) params.set('nextToken', nextToken);
-  params.set('limit', limit.toString()); // Forçamos o limite de 12 para preencher o grid
+  params.set('limit', limit.toString());
 
   const res = await fetch(`${API_URL}/artigos?${params.toString()}`, {
     next: { revalidate: 60 },
@@ -58,9 +56,11 @@ export async function getAllPosts(nextToken?: string, limit: number = 12) {
 }
 
 // 3. Buscar por Categoria
-export async function getPostsByCategory(slug: string, nextToken?: string) {
-  const query = nextToken ? `?nextToken=${nextToken}` : '';
-  const res = await fetch(`${API_URL}/categoria/${slug}${query}`, {
+export async function getPostsByCategory(slug: string, nextToken?: string, limit: number = 9) {
+  const params = new URLSearchParams();
+  if (nextToken) params.set('nextToken', nextToken);
+  params.set('limit', limit.toString());
+  const res = await fetch(`${API_URL}/categoria/${slug}?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
@@ -84,35 +84,27 @@ export async function getPopularPosts() {
 }
 
 // 5. Buscar Posts por Termo (Search)
-export async function searchPosts(term: string, nextToken?: string) {
-  // Constrói a Query String: ?q=termo&nextToken=...
+export async function searchPosts(term: string, nextToken?: string, limit: number = 9) {
   const params = new URLSearchParams();
   params.set('q', term);
-  if (nextToken) {
-    params.set('nextToken', nextToken);
-  }
+  if (nextToken) params.set('nextToken', nextToken);
+  params.set('limit', limit.toString());
 
-  // Busca na API (Endpoint definido no Blueprint seção 6.1)
   const res = await fetch(`${API_URL}/busca?${params.toString()}`, {
-    // Busca geralmente não deve ser cacheada por muito tempo, 
-    // mas 60s evita DDoS se alguém spammar F5
-    next: { revalidate: 60 }, 
+    next: { revalidate: 60 },
   });
 
-  if (!res.ok) {
-    // Se a busca falhar ou não retornar nada, retornamos array vazio para não quebrar a UI
-    return { posts: [], nextToken: undefined };
-  }
+  if (!res.ok) return { posts: [], nextToken: undefined };
 
-  return res.json(); // Retorna { termo_busca: "...", posts: [...], nextToken: "..." }
+  return res.json();
 }
 
 // 6. Buscar Posts do Projeto (Timeline)
-export async function getProjectPosts(nextToken?: string) {
+export async function getProjectPosts(nextToken?: string, limit: number = 8) {
   const params = new URLSearchParams();
   if (nextToken) params.set('nextToken', nextToken);
+  params.set('limit', limit.toString());
 
-  // Endpoint definido no Blueprint v1.7
   const res = await fetch(`${API_URL}/projeto?${params.toString()}`, {
     next: { revalidate: 60 },
   });
