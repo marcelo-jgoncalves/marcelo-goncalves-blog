@@ -60,6 +60,10 @@ jobs:
       - name: Build frontend (OpenNext)
         run: npx open-next build
         working-directory: frontend
+        env:
+          # Placeholder para satisfazer a validação do Next.js no build.
+          # O valor real é injetado via Lambda env var pelo Terraform em runtime.
+          NEXT_PUBLIC_API_URL: "https://build-placeholder.local"
 
       - name: Package Next.js Lambda
         run: |

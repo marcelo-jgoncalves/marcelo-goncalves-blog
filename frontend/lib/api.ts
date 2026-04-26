@@ -1,15 +1,17 @@
 // frontend/lib/api.ts
+// NEXT_PUBLIC_API_URL is injected at Lambda runtime via Terraform env vars.
+// The build succeeds without it; the check happens per-request at runtime.
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-  throw new Error("NEXT_PUBLIC_API_URL is not defined");
+function getApiUrl(): string {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  if (!url) throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  return url;
 }
 
 export async function getPost(slug: string) {
   // O next: { revalidate: 60 } ativa o ISR (Incremental Static Regeneration)
   // Isso significa que a página será cacheada por 60 segundos na borda.
-  const res = await fetch(`${API_URL}/post/${slug}`, {
+  const res = await fetch(`${getApiUrl()}/post/${slug}`, {
     next: { revalidate: 60 }, 
   });
 
@@ -23,7 +25,7 @@ export async function getPost(slug: string) {
 }
 
 export async function getAuthor(authorId: string) {
-  const res = await fetch(`${API_URL}/autor/${authorId}`, {
+  const res = await fetch(`${getApiUrl()}/autor/${authorId}`, {
     next: { revalidate: 3600 }, // Cache de autor por 1 hora (muda pouco)
   });
 
@@ -34,7 +36,7 @@ export async function getAuthor(authorId: string) {
 
 // 1. Buscar Posts Recentes (Para a Home)
 export async function getRecentPosts() {
-  const res = await fetch(`${API_URL}/posts/recentes`, {
+  const res = await fetch(`${getApiUrl()}/posts/recentes`, {
     next: { revalidate: 60 }, // Cache ISR de 60s
   });
 
@@ -46,7 +48,7 @@ export async function getRecentPosts() {
 // 2. Buscar Todos os Posts (Para /artigos)
 export async function getAllPosts(nextToken?: string) {
   const query = nextToken ? `?nextToken=${nextToken}` : '';
-  const res = await fetch(`${API_URL}/artigos${query}`, {
+  const res = await fetch(`${getApiUrl()}/artigos${query}`, {
     next: { revalidate: 60 },
   });
 
@@ -58,7 +60,7 @@ export async function getAllPosts(nextToken?: string) {
 // 3. Buscar por Categoria
 export async function getPostsByCategory(slug: string, nextToken?: string) {
   const query = nextToken ? `?nextToken=${nextToken}` : '';
-  const res = await fetch(`${API_URL}/categoria/${slug}${query}`, {
+  const res = await fetch(`${getApiUrl()}/categoria/${slug}${query}`, {
     next: { revalidate: 60 },
   });
 
@@ -69,7 +71,7 @@ export async function getPostsByCategory(slug: string, nextToken?: string) {
 
 // 4. Buscar Posts Populares
 export async function getPopularPosts() {
-  const res = await fetch(`${API_URL}/posts/populares`, {
+  const res = await fetch(`${getApiUrl()}/posts/populares`, {
     next: { revalidate: 60 },
   });
 
@@ -91,7 +93,7 @@ export async function searchPosts(term: string, nextToken?: string) {
   }
 
   // Busca na API (Endpoint definido no Blueprint seção 6.1)
-  const res = await fetch(`${API_URL}/busca?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/busca?${params.toString()}`, {
     // Busca geralmente não deve ser cacheada por muito tempo, 
     // mas 60s evita DDoS se alguém spammar F5
     next: { revalidate: 60 }, 
@@ -111,7 +113,7 @@ export async function getProjectPosts(nextToken?: string) {
   if (nextToken) params.set('nextToken', nextToken);
 
   // Endpoint definido no Blueprint v1.7
-  const res = await fetch(`${API_URL}/projeto?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/projeto?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
