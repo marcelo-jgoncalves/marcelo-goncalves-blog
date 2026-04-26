@@ -1,6 +1,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { logger } from "../../common/logger";
 
 const s3 = new S3Client({});
 const UPLOADS_BUCKET = process.env.UPLOADS_BUCKET;
@@ -12,8 +13,9 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  // Tratamento de CORS (OPTIONS)
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
+
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, body: "", headers };
   }
@@ -21,6 +23,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     if (!event.body) throw new Error("Body missing");
     const { nome_arquivo, tipo_arquivo } = JSON.parse(event.body);
+
+    logger.debug("media_upload_request", { requestId, nome_arquivo, tipo_arquivo });
 
     if (!nome_arquivo || !tipo_arquivo) {
       return { statusCode: 400, body: JSON.stringify({ message: "Missing params" }), headers };
@@ -45,14 +49,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     // Por simplicidade, o frontend monta a URL final ou retornamos o caminho relativo.
     const finalPath = `media/${key.replace(/\.[^.]+$/, "")}.webp`;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ uploadURL, finalPath }),
-      headers,
-    };
+    logger.info("presigned_url_generated", { requestId, finalPath });
+    return { statusCode: 200, body: JSON.stringify({ uploadURL, finalPath }), headers };
 
   } catch (error: any) {
-    console.error("Error:", error);
+    logger.error("media_upload_error", { requestId, error: error.message });
     return { statusCode: 500, body: JSON.stringify({ message: error.message }), headers };
   }
 };

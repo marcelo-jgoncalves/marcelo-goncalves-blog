@@ -16,3 +16,14 @@ variable "project_name" {
   type        = string
   default     = "marcelo-goncalves-blog"
 }
+
+variable "log_level" {
+  description = "Log level para as Lambdas. DEBUG em dev, INFO em prod."
+  type        = string
+  default     = "INFO"
+
+  validation {
+    condition     = contains(["DEBUG", "INFO", "WARN", "ERROR"], var.log_level)
+    error_message = "log_level must be one of: DEBUG, INFO, WARN, ERROR."
+  }
+}

@@ -12,11 +12,11 @@ module "lambda" {
 
   environment  = var.environment
   project_name = var.project_name
+  log_level    = var.log_level
 
-  #ARNs das tabelas que vieram do módulo dynamodb
-  posts_table_arn   = module.dynamodb.posts_table_arn
-  autores_table_arn = module.dynamodb.autores_table_arn
-  uploads_bucket_name = module.media.uploads_bucket_name # Corrigido para usar o nome do output do módulo media
+  posts_table_arn     = module.dynamodb.posts_table_arn
+  autores_table_arn   = module.dynamodb.autores_table_arn
+  uploads_bucket_name = module.media.uploads_bucket_name
   uploads_bucket_arn  = module.media.uploads_bucket_arn
 }
 
@@ -28,17 +28,17 @@ module "api-gateway" {
   aws_region   = var.aws_region
 
   # Conecta as saídas do módulo lambda nas entradas do api-gateway
-  get_post_invoke_arn      = module.lambda.get_post_invoke_arn
-  get_post_function_name   = module.lambda.get_post_function_name
-  get_author_invoke_arn    = module.lambda.get_author_invoke_arn
-  get_author_function_name = module.lambda.get_author_function_name
-  cognito_user_pool_arn    = module.cognito.user_pool_arn
-  admin_posts_invoke_arn   = module.lambda.admin_posts_invoke_arn
-  admin_posts_function_name = module.lambda.admin_posts_function_name
-  media_upload_invoke_arn   = module.lambda.media_upload_invoke_arn
-  media_upload_function_name = module.lambda.media_upload_function_name
-  get_posts_invoke_arn     = module.lambda.get_posts_invoke_arn
-  get_posts_function_name  = module.lambda.get_posts_function_name
+  get_post_invoke_arn         = module.lambda.get_post_invoke_arn
+  get_post_function_name      = module.lambda.get_post_function_name
+  get_author_invoke_arn       = module.lambda.get_author_invoke_arn
+  get_author_function_name    = module.lambda.get_author_function_name
+  cognito_user_pool_arn       = module.cognito.user_pool_arn
+  admin_posts_invoke_arn      = module.lambda.admin_posts_invoke_arn
+  admin_posts_function_name   = module.lambda.admin_posts_function_name
+  media_upload_invoke_arn     = module.lambda.media_upload_invoke_arn
+  media_upload_function_name  = module.lambda.media_upload_function_name
+  get_posts_invoke_arn        = module.lambda.get_posts_invoke_arn
+  get_posts_function_name     = module.lambda.get_posts_function_name
   admin_authors_invoke_arn    = module.lambda.admin_authors_invoke_arn
   admin_authors_function_name = module.lambda.admin_authors_function_name
 }
@@ -48,9 +48,9 @@ module "frontend" {
 
   environment  = var.environment
   project_name = var.project_name
-  
+
   # Passamos a URL da API Backend para que o Frontend saiba quem chamar
-  api_url      = module.api-gateway.api_url
+  api_url = module.api-gateway.api_url
 }
 
 module "cognito" {
@@ -72,7 +72,6 @@ module "media" {
 
   environment        = var.environment
   project_name       = var.project_name
-  
-  # O Bucket de Assets (Frontend) é o destino das imagens otimizadas
+  log_level          = var.log_level
   assets_bucket_name = module.frontend.s3_bucket_name
 }

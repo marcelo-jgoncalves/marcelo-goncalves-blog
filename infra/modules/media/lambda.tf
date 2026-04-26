@@ -60,6 +60,7 @@ resource "aws_lambda_function" "image_processor" {
   environment {
     variables = {
       DESTINATION_BUCKET = var.assets_bucket_name
+      LOG_LEVEL          = var.log_level
     }
   }
 }

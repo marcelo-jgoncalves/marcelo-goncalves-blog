@@ -2,6 +2,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
+import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.AUTHORS_TABLE || '';
 
@@ -11,12 +12,12 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  // Logs para debug (serão filtrados em prod pelo Terraform)
-  console.log("Event:", JSON.stringify(event));
-
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
   const { httpMethod, pathParameters, body } = event;
   const authorId = pathParameters?.id;
+
+  logger.debug("admin_authors_request", { requestId, httpMethod, authorId });
 
   try {
     // 1. GET - Buscar Autor pelo ID
@@ -87,12 +88,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
-  } catch (error) {
-    console.error("Error:", error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: "Internal Server Error" })
-    };
+  } catch (error: any) {
+    logger.error("admin_authors_error", { requestId, httpMethod, authorId, error: error.message });
+    return { statusCode: 500, headers, body: JSON.stringify({ error: "Internal Server Error" }) };
   }
 };

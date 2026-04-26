@@ -3,6 +3,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
+import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -14,14 +15,17 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  // Se por acaso o API Gateway deixar passar um OPTIONS para a Lambda, respondemos rápido
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+  const requestId = context.awsRequestId;
+
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, body: "", headers };
   }
 
   const { httpMethod, pathParameters, body } = event;
   const slug = pathParameters?.slug;
+
+  logger.debug("admin_posts_request", { requestId, httpMethod, slug });
 
   try {
     // 1. Listar Todos
@@ -61,11 +65,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
 
   } catch (error: any) {
-    console.error("Error:", error);
+    logger.error("admin_posts_error", { requestId, httpMethod, slug, error: error.message });
     return {
       statusCode: 500,
       body: JSON.stringify({ message: error.message || "Internal Server Error" }),
-      headers, // <--- Importante: Headers até no erro 500
+      headers,
     };
   }
 };

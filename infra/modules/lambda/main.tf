@@ -80,6 +80,7 @@ resource "aws_lambda_function" "media_upload" {
   environment {
     variables = {
       UPLOADS_BUCKET = var.uploads_bucket_name
+      LOG_LEVEL      = var.log_level
     }
   }
 }
@@ -103,8 +104,9 @@ resource "aws_lambda_function" "get_post" {
 
   environment {
     variables = {
-      POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
+      POSTS_TABLE   = "${var.project_name}-${var.environment}-posts"
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
+      LOG_LEVEL     = var.log_level
     }
   }
 }
@@ -123,6 +125,7 @@ resource "aws_lambda_function" "get_author" {
   environment {
     variables = {
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
+      LOG_LEVEL     = var.log_level
     }
   }
 }
@@ -139,6 +142,7 @@ resource "aws_lambda_function" "admin_posts" {
   environment {
     variables = {
       POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL   = var.log_level
     }
   }
 }
@@ -155,6 +159,7 @@ resource "aws_lambda_function" "get_posts" {
   environment {
     variables = {
       POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL   = var.log_level
     }
   }
 }
@@ -172,6 +177,7 @@ resource "aws_lambda_function" "admin_authors" {
   environment {
     variables = {
       AUTHORS_TABLE = "${var.project_name}-${var.environment}-autores"
+      LOG_LEVEL     = var.log_level
     }
   }
 }
