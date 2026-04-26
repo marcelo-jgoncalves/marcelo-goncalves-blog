@@ -13,7 +13,7 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 | Camada | Tecnologia | Estado |
 |---|---|---|
 | Frontend Público | Next.js 16 + OpenNext v3 | Funcional, incompleto |
-| Backend (API) | Node.js 20 + 7 Lambda Functions | Funcional, com bugs |
+| Backend (API) | Node.js 20 + 8 Lambda Functions | Funcional |
 | CMS Admin | Vue 3 + Vite + Pinia + AWS Amplify | Funcional, incompleto |
 | Infraestrutura | Terraform (módulos AWS) | Funcional, local |
 
@@ -124,14 +124,13 @@ A Lambda do Next.js SSR tem URL pública com `authorization_type = "NONE"`. Qual
 
 ## 5. Melhorias Recomendadas
 
-### 5.1 Structured JSON Logging
-Todas as 7 Lambdas usam `console.log("Event:", JSON.stringify(event))`. Para ser "production-grade operável às 3h da manhã" (blueprint 2.5), cada Lambda deveria emitir JSON estruturado:
-```json
-{ "level": "INFO", "requestId": "...", "event": "post_fetched", "slug": "...", "duration_ms": 45 }
-```
+### ~~5.1 Structured JSON Logging~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `36a6372`  
+Todas as 8 Lambdas emitem JSON estruturado via `backend/src/common/logger.ts`.
 
-### 5.2 CloudWatch Log Groups com Retenção Explícita
-Nenhum `aws_cloudwatch_log_group` está definido no Terraform. As Lambda criam grupos automaticamente sem política de retenção — acumulam logs para sempre em prod.
+### ~~5.2 CloudWatch Log Groups com Retenção Explícita~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `9ca8136`  
+8 log groups criados via Terraform com `depends_on`. dev: 7 dias, prod: 30 dias (`log_retention_days`).
 
 ### 5.3 Hardcoded `autor_id` no Editor Admin
 **Arquivo:** `admin/src/views/EditorView.vue:40`  
@@ -191,32 +190,33 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 
 ## 7. Dívida Técnica Priorizada
 
-### Prioridade CRÍTICA (Bloqueante para Prod)
-1. **Terraform Remote State** — sem isso, prod é inoperável em equipe
-2. **IAM Least Privilege** — roles separadas por função
-3. **Filtro de Status na API Pública** — vazamento de rascunhos
-4. **Testes unitários** — mínimo para backend (getPost, getPosts, adminPosts)
+### ~~Prioridade CRÍTICA — todos resolvidos~~ ✅
+1. ~~Terraform Remote State~~ — `dc93284`
+2. ~~IAM Least Privilege~~ — `8bc7727`
+3. ~~Filtro de Status na API Pública~~ — `146f438`
+4. ~~Testes unitários~~ — `ce9ff80` (47 testes)
 
-### Prioridade ALTA
-5. **Deploy CI/CD Automatizado** — jobs de build+deploy no GitHub Actions
-6. **PostSchedulerLambda** — feature de agendamento está broken sem ela
-7. **Endpoints de Categorias Admin** — tabela existe, CRUD no backend não
-8. **Security Headers no Next.js** — CSP, X-Frame-Options, etc.
+### ~~Prioridade ALTA — todos resolvidos~~ ✅
+5. ~~Deploy CI/CD Automatizado~~ — `72241c8` + `4191f3b`
+6. ~~PostSchedulerLambda~~ — `f55b3d6`
+7. **Endpoints de Categorias Admin** — pendente
+8. ~~Security Headers no Next.js~~ — `6b39557`
 
 ### Prioridade MÉDIA
-9. **Structured JSON Logging** — observabilidade production-grade
-10. **CloudWatch Log Groups com Retenção** — custo e compliance
-11. **CORS Admin Restrito** — wildcard é aceitável para MVP, deve ser corrigido antes de escalar
-12. **HTML Sanitization no Backend** — DOMPurify / sanitize-html
+9. ~~Structured JSON Logging~~ — `36a6372`
+10. ~~CloudWatch Log Groups com Retenção~~ — `9ca8136`
+11. **CORS Admin Restrito** — wildcard → domínio do admin
+12. **HTML Sanitization no Backend** — sanitize-html antes de salvar no DynamoDB
 13. **Paginação de Categorias na API Admin** — `GET /admin/categorias` não implementado
+14. **Lambda Function URL sem auth CloudFront** — DoS vector
 
 ### Prioridade BAIXA (Polish)
-14. Substituir `alert()` por toast no admin
-15. Categorias dinâmicas no editor (consumir API)
-16. `autor_id` dinâmico no editor (usar Cognito user ID)
-17. Next.js `<Image>` para imagem de destaque
-18. Singleton Shiki
-19. CDN FontAwesome → npm package
+15. **Substituir `alert()` por toast no admin**
+16. **Categorias dinâmicas no editor** (consumir API)
+17. **`autor_id` dinâmico no editor** (usar Cognito user ID)
+18. **Next.js `<Image>` para imagem de destaque**
+19. ~~Singleton Shiki~~ — `23e2a39`
+20. **CDN FontAwesome → npm package**
 
 ---
 
@@ -232,7 +232,7 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 - [x] Terraform remote state (S3 + DynamoDB lock) — commit `dc93284`
 - [x] IAM roles separadas por grupo funcional — commit `8bc7727`
 - [x] `.tfvars.example` + `dev.tfvars` + `prd.tfvars` documentados/commitados
-- [ ] CloudWatch log groups com retenção no Terraform — pendente
+- [x] CloudWatch log groups com retenção no Terraform — commit `9ca8136`
 
 ### Sprint 3 — Testes e Observabilidade ✅ CONCLUÍDA
 - [x] Testes unitários para backend (Jest) — commit `ce9ff80` (47 testes, 4 suites)
@@ -267,10 +267,10 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 | 10 Templates de Página | ✅ Implementado |
 | Mobile-First CSS | ✅ Implementado |
 | Acessibilidade WCAG 2.1 | ⚠️ Parcial (base ok, melhorias pendentes) |
-| Logging Estruturado JSON | ❌ Não implementado |
+| Logging Estruturado JSON | ✅ Implementado — `36a6372` |
 | Ambientes dev/prod isolados | ⚠️ Terraform pronto, contas AWS não separadas confirmadas |
-| CI/CD GitHub Actions Deploy | ✅ cd.yml criado — pendente configuração de secrets |
-| PostSchedulerLambda | ❌ Não implementado |
+| CI/CD GitHub Actions Deploy | ✅ cd.yml funcional — pendente GitHub Secrets (OIDC) |
+| PostSchedulerLambda | ✅ Implementado — `f55b3d6` |
 | WAF no Admin CloudFront | ❌ Não implementado |
 | Terraform Remote State | ✅ Configurado — pendente bootstrap manual |
-| Testes | ❌ Zero testes |
+| Testes | ✅ 47 testes unitários — `ce9ff80` |

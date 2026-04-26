@@ -4,6 +4,7 @@ import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/li
 import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
 import { logger } from "../../common/logger";
+import { sanitizePostHtml } from "../../common/sanitizer";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -132,9 +133,10 @@ async function savePost(data: Partial<Post>, isNew: boolean) {
   }
 
   const now = new Date().toISOString();
-  
+
   const item: Post = {
     ...data as Post,
+    conteudo_html: sanitizePostHtml(data.conteudo_html ?? ""),
     data_atualizacao: now,
     data_publicacao: isNew ? (data.data_publicacao || now) : data.data_publicacao!,
     e_popular: Number(data.e_popular || 0),
