@@ -1,8 +1,8 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
 **Data:** 2026-04-26  
 **Auditor:** Claude (Staff Engineer Mode)  
-**Status:** Sprint 3 e 4 concluídas — 6 ciclos atômicos adicionais na sessão 2  
-**Última atualização:** 2026-04-26 (Sessão 2)
+**Status:** Sessão 3 concluída — todos os riscos médios resolvidos, polish aplicado  
+**Última atualização:** 2026-04-26 (Sessão 3)
 
 ---
 
@@ -84,41 +84,38 @@ Pipeline completa: build backend + frontend + admin, terraform apply, S3 sync, C
 **Commit:** `37063b8`  
 Unificado para importar `dynamo` de `common/dynamodb.ts`. Tipagem corrigida para `APIGatewayProxyHandler`.
 
-### 4.3 CORS Wildcard nas Lambdas Admin
-**Arquivos:** `adminPosts/index.ts:13`, `adminAuthors/index.ts:11`, `mediaUpload/index.ts:10`  
-`Access-Control-Allow-Origin: *` em todas as Lambdas admin. Em produção, deve ser restrito ao domínio do painel admin.  
-**Nota:** Apenas as configurações MOCK do API Gateway CORS foram corretamente configuradas. As lambdas retornam wildcard independente.
+### 4.3 ~~CORS Wildcard nas Lambdas Admin~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `de2b56c`  
+`ADMIN_ORIGIN` env var injetada via Terraform (`module.admin.cloudfront_url`). Cobre adminPosts, adminAuthors, mediaUpload e adminCategorias. Fallback `*` preservado para dev local.
 
-### 4.4 Sem Sanitização HTML no Backend
-**Arquivo:** `backend/src/functions/adminPosts/index.ts:122`  
-O campo `conteudo_html` é armazenado diretamente no DynamoDB sem nenhuma sanitização. Se o painel admin for comprometido, um atacante pode injetar scripts maliciosos que serão renderizados via `dangerouslySetInnerHTML` no frontend.  
-**Correção:** Usar uma biblioteca de sanitização (ex: DOMPurify server-side ou sanitize-html) antes de armazenar.
+### 4.4 ~~Sem Sanitização HTML no Backend~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `8d73e5b`  
+`sanitize-html` aplicado em `savePost()` antes de persistir no DynamoDB. Allowlist de tags Tiptap configurada em `backend/src/common/sanitizer.ts`. Links externos recebem `rel=noopener noreferrer` automaticamente.
 
 ### 4.5 ~~`next.config.ts` Vazio — Sem Security Headers~~ — ✅ CORRIGIDO (2026-04-26)
 **Commit:** `6b39557`  
 Security headers adicionados: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. `images.remotePatterns` configurado para CloudFront e S3. `optimizePackageImports` para fontawesome.
 
-### 4.6 Featured Image sem Next.js `<Image>` e sem Alt Obrigatório
-**Arquivo:** `frontend/app/post/[slug]/page.tsx:128-136`  
-A imagem de destaque usa `<img>` nativo em vez do componente `<Image>` do Next.js, que provê otimização automática (WebP, lazy loading, dimensões). Além disso, `imagem_destaque_alt_text` pode ser undefined se não cadastrado.
+### 4.6 ~~Featured Image sem Next.js `<Image>` e sem Alt Obrigatório~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `9c16816`  
+Substituído `<img>` nativo por `<Image fill priority sizes="..." />` com `objectFit: cover`. Alt text com fallback para título do post.
 
 ### 4.7 ~~PostSchedulerLambda Não Implementada~~ — ✅ CORRIGIDO (2026-04-26)
 **Commits:** `f55b3d6`  
 Lambda implementada: consulta GSI `StatusProgramadoPorData`, publica posts vencidos com ConditionExpression anti-race-condition.  
 EventBridge Scheduler criado via Terraform com `rate(15 minutes)`. IAM least privilege.
 
-### 4.8 Tiptap: Versão Mismatch Entre Root e Admin
-**Arquivos:** `package.json` (raiz), `admin/package.json`  
-Root tem `@tiptap/*: ^3.14.0`, admin tem `@tiptap/*: ^2.11.0`. A versão 3 tem breaking changes. O root package.json parece ser um resquício de experimento — as dependências Tiptap da raiz não fazem sentido num monorepo onde o único consumidor de Tiptap é o admin.
+### 4.8 ~~Tiptap: Versão Mismatch Entre Root e Admin~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `23e2a39`  
+Root `package.json` limpo desde Sessão 1. Apenas scripts de conveniência do monorepo. Tiptap v2 exclusivo do `admin/package.json`.
 
 ### 4.9 Cognito: ALLOW_USER_PASSWORD_AUTH Habilitado
 **Arquivo:** `infra/modules/cognito/main.tf:32-37`  
-`ALLOW_USER_PASSWORD_AUTH` permite enviar username/senha diretamente na requisição (menos seguro que SRP). O fluxo SRP (`ALLOW_USER_SRP_AUTH`) nunca expõe a senha pela rede. Para um admin que raramente troca de acesso, está aceitável — mas deve ser documentado como decisão consciente.
+`ALLOW_USER_PASSWORD_AUTH` é menos seguro que SRP. Para um admin pessoal com acesso raro, aceitável. **Decisão consciente documentada** — não requer ação imediata.
 
-### 4.10 Lambda Function URL Sem Autenticação CloudFront
-**Arquivo:** `infra/modules/frontend/lambda.tf:48-60`  
-A Lambda do Next.js SSR tem URL pública com `authorization_type = "NONE"`. Qualquer pessoa que descubra a URL pode invocar a Lambda diretamente, bypassando o CloudFront. O custo de Lambda seria cobrado, e é um potencial DoS vector.  
-**Correção Ideal:** Usar `authorization_type = "AWS_IAM"` e configurar CloudFront com OAC para Lambda, ou adicionar WAF rate limiting.
+### 4.10 ~~Lambda Function URL Sem Autenticação CloudFront~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `fd47e1d`  
+`authorization_type = "AWS_IAM"` + OAC `lambda_oac` (SigV4). Lambda só aceita requests assinados pelo CloudFront. `allow_public_url` substituído por `allow_cloudfront` com `source_arn = cloudfront_distribution.arn`.
 
 ---
 
@@ -132,21 +129,21 @@ Todas as 8 Lambdas emitem JSON estruturado via `backend/src/common/logger.ts`.
 **Commit:** `9ca8136`  
 8 log groups criados via Terraform com `depends_on`. dev: 7 dias, prod: 30 dias (`log_retention_days`).
 
-### 5.3 Hardcoded `autor_id` no Editor Admin
-**Arquivo:** `admin/src/views/EditorView.vue:40`  
-`form.value.autor_id = 'marcelo-goncalves'` — hardcoded. Deveria usar o ID do usuário Cognito autenticado.
+### 5.3 ~~Hardcoded `autor_id` no Editor Admin~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `f0a197d`  
+`form.value.autor_id = auth.user.username` — usa o Cognito username do usuário autenticado.
 
-### 5.4 Categorias Hardcoded no Editor Admin
-**Arquivo:** `admin/src/views/EditorView.vue:172-179`  
-O dropdown de categorias lista 6 categorias hardcoded. Deveria consumir `GET /admin/categorias` para ser dinâmico. A tabela `Categorias` existe no DynamoDB mas nenhum endpoint de admin gerencia categorias no backend.
+### 5.4 ~~Categorias Hardcoded no Editor Admin~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `f0a197d`  
+Lambda `adminCategorias` implementada com CRUD completo. `categoriasApi.list()` chamada no `onMounted` com fallback silencioso para as 6 categorias hardcoded caso a API falhe.
 
-### 5.5 `alert()` no Admin — UX Primitivo
-**Arquivo:** `admin/src/views/EditorView.vue:77,80`  
-Usar `alert()` nativo bloqueia a thread e é visual e funcionalmente primitivo. Implementar um sistema de toast/notificação.
+### 5.5 ~~`alert()` no Admin — UX Primitivo~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `f0a197d`  
+Toast com Transition CSS (sucesso verde / erro vermelho), auto-dismiss em 4s. Substitui todos os `alert()` do EditorView.
 
-### 5.6 CDN FontAwesome vs NPM Package
-**Arquivo:** `frontend/app/layout.tsx:36-39`  
-Carrega FontAwesome via CDN externo (`cdnjs.cloudflare.com`) sendo que `@fortawesome/fontawesome-free: ^7.1.0` está instalado via npm. Dependência externa desnecessária — impacta performance (DNS lookup + request externo).
+### 5.6 ~~CDN FontAwesome vs NPM Package~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `9c16816`  
+`import "@fortawesome/fontawesome-free/css/all.min.css"` em `layout.tsx`. CDN externo removido. Elimina DNS lookup externo e melhora TTFB.
 
 ### 5.7 ~~Shiki Instância por Request (Performance)~~ — ✅ CORRIGIDO (2026-04-26)
 **Commit:** `23e2a39`  
@@ -161,13 +158,13 @@ Singleton implementado em module level em `frontend/lib/postUtils.tsx`. `getHigh
 ### 5.10 ~~Root `package.json` com Dependências Incorretas~~ — ✅ CORRIGIDO (2026-04-26)
 **Commit:** `23e2a39` — Root package.json limpo. Agora tem apenas scripts de conveniência para o monorepo (`build:backend`, `build:frontend`, `build:admin`).
 
-### 5.11 No `imagem_destaque_alt_text` no PostCard
-**Arquivo:** `frontend/components/ui/PostCard.tsx`  
-A imagem é renderizada como `div` com `backgroundImage` — correto para CSS, mas não tem texto alternativo. Para acessibilidade, o card deveria ter `role="img"` e `aria-label` na div de imagem.
+### 5.11 ~~No `imagem_destaque_alt_text` no PostCard~~ — ✅ CORRIGIDO (2026-04-26)
+**Commit:** `9c16816`  
+`role="img"` e `aria-label={post.imagem_destaque_alt_text || post.titulo}` adicionados à div de background-image.
 
 ### 5.12 Paginação Unidirecional
 **Arquivo:** `frontend/components/ui/Pagination.tsx`  
-O componente só tem "Próxima" página — sem volta. Embora seja uma limitação real do DynamoDB (sem cursor reverso), a UX pode ser melhorada com histórico de tokens no client-side.
+O componente só tem "Próxima" página. Limitação real do DynamoDB (sem cursor reverso). UX pode ser melhorada com histórico de tokens no client-side — baixa prioridade.
 
 ---
 
@@ -240,14 +237,23 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 - [x] PostSchedulerLambda + EventBridge Scheduler — commit `f55b3d6`
 - [x] CloudWatch log groups com retenção (dev: 7d, prod: 30d) — commit `9ca8136`
 
-### Sprint 4 — Features e Pipeline ⚠️ PARCIAL
+### Sprint 4 — Features e Pipeline ✅ CONCLUÍDA
 - [x] Pipeline de deploy automatizado (GitHub Actions cd.yml) — commit `72241c8`
 - [x] Bug OpenNext path corrigido (server-functions plural) — commit `4191f3b`
 - [x] Backend test step adicionado ao CI e CD — commit `ce9ff80`
-- [ ] Configurar pré-requisitos do CD (GitHub secrets, OIDC roles) — pendente manual
-- [ ] Endpoints admin para Categorias — pendente
-- [ ] Categorias dinâmicas no EditorView — pendente
-- [ ] Toast notifications no admin — pendente
+- [ ] Configurar pré-requisitos do CD (GitHub secrets, OIDC roles) — **pendente manual** (fora do escopo de código)
+- [x] Endpoints admin para Categorias (Lambda + API GW + Terraform) — commit `f0a197d`
+- [x] Categorias dinâmicas no EditorView (API + fallback) — commit `f0a197d`
+- [x] Toast notifications no admin — commit `f0a197d`
+
+### Sprint 5 — Segurança e Polish ✅ CONCLUÍDA (Sessão 3)
+- [x] HTML sanitization no backend (sanitize-html) — commit `8d73e5b`
+- [x] CORS restrito nas Lambdas admin (ADMIN_ORIGIN via Terraform) — commit `de2b56c`
+- [x] Lambda Function URL protegida via OAC + AWS_IAM — commit `fd47e1d`
+- [x] autor_id dinâmico no editor (Cognito username) — commit `f0a197d`
+- [x] FontAwesome CDN → npm package — commit `9c16816`
+- [x] Featured image: `<img>` → Next.js `<Image fill>` — commit `9c16816`
+- [x] PostCard: `role="img"` + `aria-label` — commit `9c16816`
 
 ---
 
@@ -266,7 +272,7 @@ O componente só tem "Próxima" página — sem volta. Embora seja uma limitaç�
 | Tiptap Editor | ✅ Implementado |
 | 10 Templates de Página | ✅ Implementado |
 | Mobile-First CSS | ✅ Implementado |
-| Acessibilidade WCAG 2.1 | ⚠️ Parcial (base ok, melhorias pendentes) |
+| Acessibilidade WCAG 2.1 | ⚠️ Melhorada — PostCard role=img, alt obrigatório, SkipLink. Paginação unidirecional persiste. |
 | Logging Estruturado JSON | ✅ Implementado — `36a6372` |
 | Ambientes dev/prod isolados | ⚠️ Terraform pronto, contas AWS não separadas confirmadas |
 | CI/CD GitHub Actions Deploy | ✅ cd.yml funcional — pendente GitHub Secrets (OIDC) |
