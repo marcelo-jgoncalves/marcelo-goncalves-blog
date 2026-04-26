@@ -28,8 +28,11 @@ node_modules/
 .terraform/
 # Ignora arquivos de variáveis com valores reais
 *.tfvars
-# Exceção: Se quiser commitar um exemplo (renomeie seus arquivos para .example)
+# Ignora o arquivo de backend config local (contém bucket name e perfil)
+infra/backend.hcl
+# Exceção: Arquivos de exemplo são commitados
 !*.tfvars.example
+!backend.hcl.example
 # Logs de crash
 crash.log
 override.tf
