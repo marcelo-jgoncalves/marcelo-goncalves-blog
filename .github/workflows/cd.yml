@@ -68,7 +68,7 @@ jobs:
       - name: Package Next.js Lambda
         run: |
           mkdir -p infra/builds
-          cd frontend/.open-next/server-function/default
+          cd frontend/.open-next/server-functions/default
           zip -r ../../../../infra/builds/nextjs.zip .
 
       - name: Copy frontend static assets
