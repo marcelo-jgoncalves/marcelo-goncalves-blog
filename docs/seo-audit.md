@@ -231,10 +231,10 @@ O projeto tem uma base sólida — semantic HTML correto, JSON-LD em posts indiv
 | 11 | revalidate estáticas | ✅ feito | 2026-04-27 |
 | 12 | Favicon real | ⏳ pendente — aguarda assets do design system | — |
 | 13 | alt text fallback | ✅ feito | 2026-04-27 |
-| 14 | /sobre generateMetadata | ⏳ pendente | — |
+| 14 | /sobre generateMetadata | ✅ feito | 2026-04-27 |
 | 15 | Manifest | ⏳ pendente — aguarda assets do design system | — |
 | 16 | Footer links sociais | ⏳ pendente — aguarda URLs reais | — |
-| 17 | Schema /servicos | ⏳ pendente | — |
+| 17 | Schema /servicos | ✅ feito | 2026-04-27 |
 | 18 | Link #calendar | ⏳ pendente — aguarda ferramenta de agendamento | — |
-| 19 | ISR tuning | ⏳ pendente | — |
+| 19 | ISR tuning | ✅ feito | 2026-04-27 |
 | 20 | revalidate /post/[slug] | ✅ feito | 2026-04-27 |

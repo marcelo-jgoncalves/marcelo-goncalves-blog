@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
 
 export const revalidate = 3600;
 
@@ -7,9 +8,64 @@ export const metadata = {
   description: 'Serviços de consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.',
 };
 
+const servicosJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: `Consultoria AWS e DevOps — ${AUTHOR_NAME}`,
+  description: 'Consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.',
+  url: `${SITE_URL}/servicos`,
+  provider: {
+    '@type': 'Person',
+    name: AUTHOR_NAME,
+    url: `${SITE_URL}/sobre`,
+  },
+  areaServed: { '@type': 'Country', name: 'Brazil' },
+  serviceType: 'Cloud Computing Consulting',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Serviços de Consultoria',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Arquitetura de Nuvem (AWS)',
+          description: 'Desenho e implementação de soluções robustas e escaláveis na AWS. Foco em performance, custo e segurança.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'FinOps & Otimização de Custos',
+          description: 'Auditoria da fatura AWS, rightsizing de recursos e estratégias de compra para reduzir o TCO.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Automação e DevOps (IaC & CI/CD)',
+          description: 'Criação de pipelines de CI/CD com GitHub Actions e infraestrutura como código com Terraform.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Desenvolvimento Serverless',
+          description: 'Backends e APIs de alta performance com AWS Lambda, API Gateway e DynamoDB.',
+        },
+      },
+    ],
+  },
+};
+
 export default function ServicosPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicosJsonLd) }} />
+
       {/* 1. Hero da Página */}
       <section className="hero-section"> {/* Reutilizando classe padrão */}
         <div className="container">

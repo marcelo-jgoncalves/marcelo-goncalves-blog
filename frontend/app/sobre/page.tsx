@@ -1,35 +1,76 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAuthor, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
-export const metadata = {
-  title: 'Sobre Mim | Marcelo Gonçalves',
-  description: 'Conheça a história de Marcelo Gonçalves, especialista em AWS e Linguística, e o projeto IA Decifrada.',
-};
+export const revalidate = 3600;
 
-export const revalidate = 3600; // Cache de 1 hora
+const AUTOR_ID = 'marcelo-goncalves';
+const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais de 8 anos de experiência, Mestre em Linguística e criador do blog IA Decifrada.';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const authorData = await getAuthor(AUTOR_ID).catch(() => null);
+  const autor = authorData?.autor;
+  const nome = autor?.nome_exibicao || 'Marcelo Gonçalves';
+  const desc = autor?.bio ? autor.bio.substring(0, 160) : FALLBACK_DESC;
+  const canonicalUrl = `${SITE_URL}/sobre`;
+  const avatarUrl = autor?.foto_avatar_url;
+
+  return {
+    title: { absolute: `Sobre Mim | ${nome}` },
+    description: desc,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: `Sobre Mim | ${nome}`,
+      description: desc,
+      url: canonicalUrl,
+      type: 'profile',
+      siteName: SITE_NAME,
+      locale: 'pt_BR',
+      ...(avatarUrl && { images: [{ url: avatarUrl, alt: `Foto de ${nome}` }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Sobre Mim | ${nome}`,
+      description: desc,
+      creator: AUTHOR_TWITTER,
+    },
+  };
+}
 
 export default async function SobrePage() {
-  // Busca dados em paralelo
   const [authorData, popularData] = await Promise.all([
-    getAuthor('marcelo-goncalves').catch(() => null),
-    getPopularPosts().catch(() => ({ posts: [] }))
+    getAuthor(AUTOR_ID).catch(() => null),
+    getPopularPosts().catch(() => ({ posts: [] })),
   ]);
 
   // Dados do Autor (API)
   const author = authorData?.autor || {};
   const popularPosts = popularData.posts || [];
 
-  // URLs de fallback para redes sociais
   const linkedinUrl = author.linkedin_url || '#';
   const githubUrl = author.github_url || '#';
-  
-  // Imagem: usa a da API ou um placeholder se não existir
-  const avatarUrl = author.foto_avatar_url; 
+  const avatarUrl = author.foto_avatar_url;
+
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: author.nome_exibicao || 'Marcelo Gonçalves',
+    url: `${SITE_URL}/sobre`,
+    image: avatarUrl || undefined,
+    jobTitle: 'Especialista em AWS & DevOps',
+    description: author.bio || FALLBACK_DESC,
+    sameAs: [linkedinUrl, githubUrl].filter((u) => u && u !== '#'),
+    knowsAbout: ['AWS', 'Arquitetura Serverless', 'DevOps', 'Terraform', 'FinOps', 'Inteligência Artificial'],
+    worksFor: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+  };
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+
       {/* 1. Hero da Missão */}
       <section className="hero-section">
         <div className="container">

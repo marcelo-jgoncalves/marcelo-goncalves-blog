@@ -33,7 +33,7 @@ export async function getRecentPosts(limit: number = 6) {
   const params = new URLSearchParams();
   params.set('limit', limit.toString());
   const res = await fetch(`${getApiUrl()}/posts/recentes?${params.toString()}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) throw new Error('Failed to fetch recent posts');
@@ -47,7 +47,7 @@ export async function getAllPosts(nextToken?: string, limit: number = 9) {
   params.set('limit', limit.toString());
 
   const res = await fetch(`${getApiUrl()}/artigos?${params.toString()}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) throw new Error('Failed to fetch posts');
@@ -60,7 +60,7 @@ export async function getPostsByCategory(slug: string, nextToken?: string, limit
   if (nextToken) params.set('nextToken', nextToken);
   params.set('limit', limit.toString());
   const res = await fetch(`${getApiUrl()}/categoria/${slug}?${params.toString()}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) return null;
@@ -70,7 +70,7 @@ export async function getPostsByCategory(slug: string, nextToken?: string, limit
 
 export async function getPopularPosts() {
   const res = await fetch(`${getApiUrl()}/posts/populares`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) return { posts: [] };
@@ -85,7 +85,7 @@ export async function searchPosts(term: string, nextToken?: string, limit: numbe
   params.set('limit', limit.toString());
 
   const res = await fetch(`${getApiUrl()}/busca?${params.toString()}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) return { posts: [], nextToken: undefined };
@@ -99,7 +99,7 @@ export async function getProjectPosts(nextToken?: string, limit: number = 8) {
   params.set('limit', limit.toString());
 
   const res = await fetch(`${getApiUrl()}/projeto?${params.toString()}`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) return { posts: [], nextToken: undefined };
