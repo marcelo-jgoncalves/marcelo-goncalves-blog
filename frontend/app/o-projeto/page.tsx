@@ -1,5 +1,7 @@
 /** frontend/app/o-projeto/page.tsx */
 
+export const revalidate = 3600;
+
 import Link from "next/link";
 import React from 'react';
 import { getProjectPosts } from "../../lib/api";

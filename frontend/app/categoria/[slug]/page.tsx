@@ -5,6 +5,7 @@ import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 // 1. Configuração de Cache (ISR)
 export const revalidate = 60;
@@ -49,12 +50,31 @@ interface CategoryPageProps {
 
 // 4. Metadados SEO
 export async function generateMetadata({ params }: CategoryPageProps) {
-  const resolvedParams = await params;
-  const meta = CATEGORY_META[resolvedParams.slug];
+  const { slug } = await params;
+  const meta = CATEGORY_META[slug];
   if (!meta) return { title: 'Categoria Não Encontrada | IA Decifrada' };
+
+  const canonicalUrl = `${SITE_URL}/categoria/${slug}`;
+  const title = `Artigos sobre ${meta.title} | ${SITE_NAME}`;
+
   return {
-    title: `Artigos sobre ${meta.title} | IA Decifrada`,
+    title: { absolute: title },
     description: meta.description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title,
+      description: meta.description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: SITE_NAME,
+      locale: 'pt_BR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: meta.description,
+      creator: AUTHOR_TWITTER,
+    },
   };
 }
 
@@ -86,10 +106,22 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     description: `Artigos e tutoriais sobre ${slug.replace(/-/g, ' ')}.`
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+      { "@type": "ListItem", "position": 2, "name": "Categorias", "item": `${SITE_URL}/artigos` },
+      { "@type": "ListItem", "position": 3, "name": meta.title, "item": `${SITE_URL}/categoria/${slug}` },
+    ],
+  };
+
   return (
     <>
-      {/* Hero da Categoria (Fiel ao Protótipo pgn-categoria-v1.0.html) */}
-      <section className="search-hero"> {/* Reutilizando classe do globals.css que bate com o estilo */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+
+      {/* Hero da Categoria */}
+      <section className="search-hero">
         <div className="search-header-content">
           <h1 style={{ marginBottom: '20px' }}>
             Artigos na Categoria: <span className="highlight">{meta.title}</span>

@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Libs e Utils
 import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
@@ -20,6 +20,8 @@ import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import NewsletterWidget from '@/components/ui/NewsletterWidget';
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -32,23 +34,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const autorNome = authorData?.autor?.nome_exibicao || 'Marcelo Gonçalves';
   const autorUrl = authorData?.autor?.linkedin_url || '';
 
+  const canonicalUrl = `${SITE_URL}/post/${data.post.slug}`;
+
   return {
-    title: `${data.post.titulo} | ${autorNome}`,
+    title: { absolute: `${data.post.titulo} | ${autorNome}` },
     description: data.post.resumo,
-    authors: [{ name: autorNome, url: autorUrl }], 
+    authors: [{ name: autorNome, url: autorUrl }],
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-        title: data.post.titulo,
-        description: data.post.resumo,
-        type: 'article',
-        publishedTime: data.post.data_publicacao,
-        authors: [autorNome],
+      title: data.post.titulo,
+      description: data.post.resumo,
+      url: canonicalUrl,
+      type: 'article',
+      publishedTime: data.post.data_publicacao,
+      modifiedTime: data.post.data_atualizacao || data.post.data_publicacao,
+      authors: [autorNome],
+      siteName: SITE_NAME,
+      locale: 'pt_BR',
+      ...(data.post.imagem_destaque_url && {
         images: [
           {
             url: data.post.imagem_destaque_url,
-            alt: data.post.imagem_destaque_alt_text || `Capa do artigo: ${data.post.titulo}`
-          }
-        ]
-    }
+            width: 1200,
+            height: 630,
+            alt: data.post.imagem_destaque_alt_text || `Capa do artigo: ${data.post.titulo}`,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: data.post.titulo,
+      description: data.post.resumo,
+      creator: AUTHOR_TWITTER,
+    },
   };
 }
 
@@ -68,7 +87,8 @@ export default async function PostPage({ params }: Props) {
   const autor = authorData?.autor;
   const autorNome = autor?.nome_exibicao || 'Marcelo Gonçalves';
 
-  // 🚀 SEO TÉCNICO: Gerando o Schema.org (JSON-LD) de "BlogPosting"
+  const canonicalUrl = `${SITE_URL}/post/${post.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -76,12 +96,35 @@ export default async function PostPage({ params }: Props) {
     "description": post.resumo,
     "image": post.imagem_destaque_url ? [post.imagem_destaque_url] : [],
     "datePublished": post.data_publicacao,
-    "dateModified": post.data_atualizacao || post.data_publicacao, // Crucial para SEO de frescor de conteúdo
+    "dateModified": post.data_atualizacao || post.data_publicacao,
+    "url": canonicalUrl,
+    "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
+    "publisher": {
+      "@type": "Organization",
+      "name": SITE_NAME,
+      "url": SITE_URL,
+    },
     "author": [{
-        "@type": "Person",
-        "name": autorNome,
-        "url": autor?.linkedin_url || autor?.github_url || "" // Conecta ao grafo de conhecimento
-    }]
+      "@type": "Person",
+      "name": autorNome,
+      "url": autor?.linkedin_url || autor?.github_url || "",
+    }],
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+      { "@type": "ListItem", "position": 2, "name": "Artigos", "item": `${SITE_URL}/artigos` },
+      ...(post.categoria_slug ? [{
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.categoria_slug,
+        "item": `${SITE_URL}/categoria/${post.categoria_slug}`,
+      }] : []),
+      { "@type": "ListItem", "position": post.categoria_slug ? 4 : 3, "name": post.titulo, "item": canonicalUrl },
+    ],
   };
 
   const renderFinalContent = () => {
@@ -114,11 +157,8 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <article>
-      {/* 🚀 INJEÇÃO DO SCRIPT JSON-LD: O Google vai ler isso antes de renderizar a página */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       
       <CopyCodeLogic />
 
@@ -157,7 +197,7 @@ export default async function PostPage({ params }: Props) {
         <div className="featured-image-container">
           <Image 
             src={post.imagem_destaque_url} 
-            alt={post.imagem_destaque_alt_text || ""} // Fallback vazio se for decorativa, melhor para a11y
+            alt={post.imagem_destaque_alt_text || post.titulo}
             priority
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"

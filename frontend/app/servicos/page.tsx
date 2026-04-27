@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: 'Consultoria AWS e DevOps | Marcelo Gonçalves',
   description: 'Serviços de consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.',

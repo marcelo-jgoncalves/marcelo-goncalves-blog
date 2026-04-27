@@ -218,23 +218,23 @@ O projeto tem uma base sólida — semantic HTML correto, JSON-LD em posts indiv
 
 | # | Tarefa | Status | Data |
 |---|--------|--------|------|
-| 1 | sitemap.ts | ⏳ pendente | — |
-| 2 | robots.ts | ⏳ pendente | — |
-| 3 | OG Image dinâmica | ⏳ pendente | — |
-| 4 | metadata home | ⏳ pendente | — |
-| 5 | Organization JSON-LD | ⏳ pendente | — |
-| 6 | BreadcrumbList JSON-LD | ⏳ pendente | — |
-| 7 | RSS Feed | ⏳ pendente | — |
-| 8 | Twitter Card | ⏳ pendente | — |
-| 9 | Canonical URLs | ⏳ pendente | — |
-| 10 | rel next/prev | ⏳ pendente | — |
-| 11 | revalidate estáticas | ⏳ pendente | — |
-| 12 | Favicon real | ⏳ pendente | — |
-| 13 | alt text fallback | ⏳ pendente | — |
+| 1 | sitemap.ts | ✅ feito | 2026-04-27 |
+| 2 | robots.ts | ✅ feito | 2026-04-27 |
+| 3 | OG Image dinâmica | ✅ feito | 2026-04-27 |
+| 4 | metadata home | ✅ feito | 2026-04-27 |
+| 5 | Organization JSON-LD | ✅ feito | 2026-04-27 |
+| 6 | BreadcrumbList JSON-LD | ✅ feito | 2026-04-27 |
+| 7 | RSS Feed | ✅ feito | 2026-04-27 |
+| 8 | Twitter Card | ✅ feito | 2026-04-27 |
+| 9 | Canonical URLs | ✅ feito | 2026-04-27 |
+| 10 | rel next/prev | ✅ feito | 2026-04-27 |
+| 11 | revalidate estáticas | ✅ feito | 2026-04-27 |
+| 12 | Favicon real | ⏳ pendente — aguarda assets do design system | — |
+| 13 | alt text fallback | ✅ feito | 2026-04-27 |
 | 14 | /sobre generateMetadata | ⏳ pendente | — |
-| 15 | Manifest | ⏳ pendente | — |
-| 16 | Footer links sociais | ⏳ pendente | — |
+| 15 | Manifest | ⏳ pendente — aguarda assets do design system | — |
+| 16 | Footer links sociais | ⏳ pendente — aguarda URLs reais | — |
 | 17 | Schema /servicos | ⏳ pendente | — |
-| 18 | Link #calendar | ⏳ pendente | — |
+| 18 | Link #calendar | ⏳ pendente — aguarda ferramenta de agendamento | — |
 | 19 | ISR tuning | ⏳ pendente | — |
-| 20 | revalidate /post/[slug] | ⏳ pendente | — |
+| 20 | revalidate /post/[slug] | ✅ feito | 2026-04-27 |

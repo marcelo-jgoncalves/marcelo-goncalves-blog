@@ -20,10 +20,11 @@ export default function Pagination({ nextToken, basePath }: PaginationProps) {
         Atual
       </span>
       
-      <Link 
-        href={`${basePath}?nextToken=${encodeURIComponent(nextToken)}`} 
+      <Link
+        href={`${basePath}?nextToken=${encodeURIComponent(nextToken)}`}
         className="op-page-number"
         aria-label="Ir para a próxima página"
+        rel="next"
       >
         Próxima &rarr;
       </Link>

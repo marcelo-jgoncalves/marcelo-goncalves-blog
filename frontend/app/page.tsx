@@ -1,11 +1,29 @@
 /**frontend/app/page.tsx */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: { absolute: `${SITE_NAME} | ${AUTHOR_NAME}` },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    title: `${SITE_NAME} | ${AUTHOR_NAME}`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    type: 'website',
+  },
+  twitter: {
+    title: `${SITE_NAME} | ${AUTHOR_NAME}`,
+    description: SITE_DESCRIPTION,
+  },
+};
 
 export default async function Home() {
   const fallback = { posts: [] };
