@@ -199,6 +199,76 @@ alarm_email              = "oncall@example.com"
 
 ---
 
+## SEO (OBRIGATÓRIO)
+
+O blog é um produto de descoberta orgânica. SEO world-class é requisito não-negociável.
+
+### Regras gerais
+
+- **toda nova `page.tsx`** deve exportar `generateMetadata()` com: `title`, `description`, `alternates.canonical`, `openGraph` e `twitter`
+- **nunca** usar `export const metadata = { title: '...' }` hardcoded para páginas que têm dados dinâmicos — usar `generateMetadata()` async
+- **`title` absoluto** (não herdando o template do layout) em páginas com título completo: usar `title: { absolute: '...' }`
+- **imagens de destaque** de posts devem sempre ter `alt` text — fallback mínimo: título do post
+
+### Fonte única de configuração
+
+Toda constante de SEO vive em `frontend/lib/config.ts`:
+
+```typescript
+export const SITE_URL   // Atualizar via NEXT_PUBLIC_SITE_URL no .tfvars quando o domínio mudar
+export const SITE_NAME
+export const SITE_DESCRIPTION
+export const AUTHOR_NAME
+export const AUTHOR_TWITTER
+```
+
+**Nunca** repetir a URL do site ou o nome do blog em string literal em outros arquivos.
+
+### Arquivos técnicos obrigatórios (já implementados — não remover)
+
+| Arquivo | Função |
+|---------|--------|
+| `app/sitemap.ts` | Sitemap dinâmico — revalida 1h, pagina todos os posts |
+| `app/robots.ts` | `Allow: /`, `Disallow: /busca`, link do sitemap |
+| `app/feed.xml/route.ts` | RSS 2.0 com os 20 posts mais recentes |
+| `app/opengraph-image.tsx` | OG image branded padrão (1200×630) |
+| `app/post/[slug]/opengraph-image.tsx` | OG image dinâmica por post |
+
+### JSON-LD obrigatório por tipo de página
+
+| Página | Schema obrigatório |
+|--------|--------------------|
+| Layout (todas) | `Organization` + `WebSite` (com `SearchAction`) |
+| `/post/[slug]` | `BlogPosting` + `BreadcrumbList` |
+| `/categoria/[slug]` | `BreadcrumbList` |
+| `/sobre` | `Person` |
+| `/servicos` | `ProfessionalService` |
+| Novas páginas de listagem | `BreadcrumbList` |
+
+### ISR — revalidação por tipo de conteúdo
+
+```typescript
+// Post individual — deve aparecer rápido após publicação
+next: { revalidate: 60 }
+
+// Listagens (recentes, artigos, categoria, populares, busca)
+next: { revalidate: 300 }
+
+// Páginas estáticas (sobre, servicos, o-projeto)
+export const revalidate = 3600
+```
+
+### Páginas que não devem ser indexadas
+
+Usar `robots: { index: false, follow: true }` no `generateMetadata()`. Atualmente: `/busca`.
+
+### SEO audit
+
+Progresso completo em `docs/seo-audit.md`. **16/20 itens implementados.**  
+Itens pendentes dependem de assets externos (favicon, manifest, links sociais reais, ferramenta de agendamento).
+
+---
+
 ## Developer Experience
 
 O repositório deve permitir:
