@@ -81,6 +81,30 @@ describe('imageProcessor', () => {
     expect(putCalls).toHaveLength(6);
   });
 
+  it('gera 6 variantes para WebP (formato comum em screenshots e edições)', async () => {
+    const { handler } = await import('./index');
+    await handler(makeS3Event('screenshot.webp'));
+
+    const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
+    expect(putCalls).toHaveLength(6);
+  });
+
+  it('gera 6 variantes para HEIC (formato padrão iPhone)', async () => {
+    const { handler } = await import('./index');
+    await handler(makeS3Event('iphone-photo.heic'));
+
+    const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
+    expect(putCalls).toHaveLength(6);
+  });
+
+  it('gera 6 variantes para HEIF', async () => {
+    const { handler } = await import('./index');
+    await handler(makeS3Event('photo.heif'));
+
+    const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
+    expect(putCalls).toHaveLength(6);
+  });
+
   it('ignora arquivos sem extensão suportada', async () => {
     const { handler } = await import('./index');
     await handler(makeS3Event('document.pdf'));

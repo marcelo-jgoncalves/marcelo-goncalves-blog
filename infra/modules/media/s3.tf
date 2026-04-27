@@ -19,29 +19,45 @@ resource "aws_s3_bucket_cors_configuration" "uploads_cors" {
   }
 }
 
-# 3. Notificação (Gatilhos atualizados para PNG, JPG, JPEG)
+# 3. Notificação S3 → Lambda imageProcessor
+# Extensões normalizadas para minúsculas pelo mediaUpload Lambda (evita duplicação de triggers)
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.uploads.id
 
-  # Gatilho para PNG
-  lambda_function {
-    lambda_function_arn = aws_lambda_function.image_processor.arn
-    events              = ["s3:ObjectCreated:*"]
-    filter_suffix       = ".png"
-  }
-
-  # Gatilho para JPG
   lambda_function {
     lambda_function_arn = aws_lambda_function.image_processor.arn
     events              = ["s3:ObjectCreated:*"]
     filter_suffix       = ".jpg"
   }
 
-  # Gatilho para JPEG
   lambda_function {
     lambda_function_arn = aws_lambda_function.image_processor.arn
     events              = ["s3:ObjectCreated:*"]
     filter_suffix       = ".jpeg"
+  }
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.image_processor.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_suffix       = ".png"
+  }
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.image_processor.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_suffix       = ".webp"
+  }
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.image_processor.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_suffix       = ".heic"
+  }
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.image_processor.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_suffix       = ".heif"
   }
 
   depends_on = [aws_lambda_permission.allow_s3]

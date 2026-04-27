@@ -1,65 +1,103 @@
 // backend/src/functions/mediaUpload/index.test.ts
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
-
-const mockSend = jest.fn();
-const mockGetSignedUrl = jest.fn().mockResolvedValue('https://s3.example.com/presigned');
+import { handler } from './index';
 
 jest.mock('@aws-sdk/client-s3', () => ({
-  S3Client: jest.fn().mockImplementation(() => ({ send: mockSend })),
+  S3Client: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
   PutObjectCommand: jest.fn().mockImplementation((args) => args),
 }));
-jest.mock('@aws-sdk/s3-request-presigner', () => ({ getSignedUrl: mockGetSignedUrl }));
+
+jest.mock('@aws-sdk/s3-request-presigner', () => ({
+  getSignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/presigned'),
+}));
+
 jest.mock('../../common/logger', () => ({
   logger: { debug: jest.fn(), info: jest.fn(), error: jest.fn() },
 }));
 
-function makeEvent(body: object): APIGatewayProxyEvent {
-  return {
-    httpMethod: 'POST',
-    body: JSON.stringify(body),
-    headers: {},
-  } as unknown as APIGatewayProxyEvent;
-}
-
 const ctx = { awsRequestId: 'req-test' } as Context;
+
+function makeEvent(body: object | null, method = 'POST'): APIGatewayProxyEvent {
+  return {
+    httpMethod: method,
+    body: body ? JSON.stringify(body) : null,
+    headers: {},
+    multiValueHeaders: {},
+    isBase64Encoded: false,
+    path: '/admin/media/upload-url',
+    pathParameters: null,
+    queryStringParameters: null,
+    multiValueQueryStringParameters: null,
+    stageVariables: null,
+    requestContext: {} as any,
+    resource: '',
+  };
+}
 
 describe('mediaUpload', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
     process.env.UPLOADS_BUCKET = 'uploads-bucket';
+    process.env.ADMIN_ORIGIN = 'https://admin.example.com';
   });
 
-  it('retorna basePath sem extensão para uso no ResponsiveImage', async () => {
-    const { handler } = await import('./index');
+  it('retorna uploadURL e basePath sem extensão', async () => {
     const res = await handler(makeEvent({ nome_arquivo: 'foto.jpg', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
-
     expect(res!.statusCode).toBe(200);
     const body = JSON.parse(res!.body);
-
     expect(body.uploadURL).toBe('https://s3.example.com/presigned');
-    expect(body.basePath).toMatch(/^media\/.+-foto$/);   // sem extensão
-    expect(body.basePath).not.toMatch(/\.webp$/);
-    expect(body.basePath).not.toMatch(/\.jpg$/);
+    expect(body.basePath).toMatch(/^media\//);
+    expect(body.basePath).not.toMatch(/\.(webp|jpg|jpeg|png|heic|heif)$/);
   });
 
-  it('basePath não contém a extensão original do arquivo', async () => {
-    const { handler } = await import('./index');
-    const res = await handler(makeEvent({ nome_arquivo: 'banner.png', tipo_arquivo: 'image/png' }), ctx, jest.fn());
+  it('basePath termina com o nome base do arquivo (sem extensão)', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'minha-foto.png', tipo_arquivo: 'image/png' }), ctx, jest.fn());
     const { basePath } = JSON.parse(res!.body);
+    expect(basePath).toMatch(/minha-foto$/);
     expect(basePath).not.toContain('.png');
+  });
+
+  it('normaliza extensão maiúscula JPG → jpg no basePath', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'PHOTO.JPG', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
+    const { basePath } = JSON.parse(res!.body);
+    // A chave normalizada não deve conter .JPG maiúsculo
+    expect(basePath).not.toContain('.JPG');
+    expect(basePath).toMatch(/PHOTO$/);
+  });
+
+  it('normaliza extensão maiúscula PNG → png', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'Screenshot.PNG', tipo_arquivo: 'image/png' }), ctx, jest.fn());
+    const { basePath } = JSON.parse(res!.body);
+    expect(basePath).not.toContain('.PNG');
+  });
+
+  it('aceita WebP — gera basePath correto', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'design.webp', tipo_arquivo: 'image/webp' }), ctx, jest.fn());
+    expect(res!.statusCode).toBe(200);
+    const { basePath } = JSON.parse(res!.body);
+    expect(basePath).toMatch(/design$/);
     expect(basePath).not.toContain('.webp');
   });
 
-  it('responde 400 quando faltam parâmetros', async () => {
-    const { handler } = await import('./index');
-    const res = await handler(makeEvent({ nome_arquivo: 'x.jpg' }), ctx, jest.fn());
+  it('aceita HEIC (iPhone) — gera basePath correto', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'photo.heic', tipo_arquivo: 'image/heic' }), ctx, jest.fn());
+    expect(res!.statusCode).toBe(200);
+    const { basePath } = JSON.parse(res!.body);
+    expect(basePath).toMatch(/photo$/);
+    expect(basePath).not.toContain('.heic');
+  });
+
+  it('responde 400 quando nome_arquivo está ausente', async () => {
+    const res = await handler(makeEvent({ tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
     expect(res!.statusCode).toBe(400);
   });
 
-  it('responde 200 para OPTIONS (preflight CORS)', async () => {
-    const { handler } = await import('./index');
-    const event = { httpMethod: 'OPTIONS', body: null } as unknown as APIGatewayProxyEvent;
-    const res = await handler(event, ctx, jest.fn());
+  it('responde 400 quando tipo_arquivo está ausente', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'foto.jpg' }), ctx, jest.fn());
+    expect(res!.statusCode).toBe(400);
+  });
+
+  it('responde 200 para OPTIONS (CORS preflight)', async () => {
+    const res = await handler(makeEvent(null, 'OPTIONS'), ctx, jest.fn());
     expect(res!.statusCode).toBe(200);
   });
 });

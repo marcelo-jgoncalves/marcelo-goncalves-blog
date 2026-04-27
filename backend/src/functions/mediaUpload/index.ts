@@ -31,8 +31,10 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return { statusCode: 400, body: JSON.stringify({ message: "Missing params" }), headers };
     }
 
-    // Gera um nome único para evitar sobrescrita (timestamp + random)
-    const key = `${Date.now()}-${Math.random().toString(36).substring(7)}-${nome_arquivo}`;
+    // Normaliza extensão para minúsculas — S3 filter_suffix é case-sensitive,
+    // então "foto.JPG" e "foto.jpg" precisam ter o mesmo comportamento.
+    const nome_normalizado = nome_arquivo.replace(/\.[^.]+$/, (ext: string) => ext.toLowerCase());
+    const key = `${Date.now()}-${Math.random().toString(36).substring(7)}-${nome_normalizado}`;
 
     // Cria o comando de PUT
     const command = new PutObjectCommand({

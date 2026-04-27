@@ -46,7 +46,7 @@ async function handleUpload() {
       <div class="modal-body">
         <div class="form-group">
           <label>Selecionar Arquivo</label>
-          <input type="file" ref="fileInput" accept="image/png, image/jpeg, image/webp" :disabled="uploading">
+          <input type="file" ref="fileInput" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" :disabled="uploading">
         </div>
         <p v-if="error" class="error">{{ error }}</p>
       </div>

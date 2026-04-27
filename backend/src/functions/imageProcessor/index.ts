@@ -38,7 +38,7 @@ export const handler = async (event: S3Event) => {
     const srcBucket = record.s3.bucket.name;
     const srcKey = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
 
-    if (!srcKey.match(/\.(jpg|jpeg|png)$/i)) {
+    if (!srcKey.match(/\.(jpg|jpeg|png|webp|heic|heif)$/i)) {
       logger.debug("image_processor_skipped", { srcKey, reason: "not_supported_format" });
       continue;
     }
