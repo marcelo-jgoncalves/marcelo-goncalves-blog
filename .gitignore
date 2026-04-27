@@ -24,6 +24,7 @@ node_modules/
 # Ignora arquivos de estado locais (contêm segredos!)
 *.tfstate
 *.tfstate.*
+infra/tf-state
 # Ignora a pasta de plugins baixados
 .terraform/
 # Ignora tfvars com segredos (credenciais, tokens)
