@@ -48,7 +48,7 @@ function onError() {
     <div class="image-container" :class="{ 'selected': selected, 'error': hasError && !isLoading }">
       
       <div v-if="isLoading" class="loading-overlay">
-        <i class="fas fa-cog fa-spin"></i> Processando WebP...
+        <i class="fas fa-cog fa-spin"></i> Processando imagem...
       </div>
 
       <img 

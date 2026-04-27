@@ -129,16 +129,19 @@ function handleFeatureImageError() {
   }, 2500)
 }
 // O callback único que resolve tudo
+// relativePath = "media/{uuid}-{nome}" (sem extensão — novo formato multi-variante)
 function onImageUploaded(relativePath: string) {
-  const fullUrl = `${ASSETS_URL}/${relativePath}`
+  const baseUrl = `${ASSETS_URL}/${relativePath}`
 
   if (uploadContext.value === 'destaque') {
-    // Cenário A: Preenche o campo de destaque
-    form.value.imagem_destaque_url = fullUrl
+    // Armazena o basePath sem extensão — ResponsiveImage no frontend
+    // monta automaticamente as variantes (-480.avif, -480.webp, -768.*, -1280.*)
+    form.value.imagem_destaque_url = baseUrl
+    featureImageCacheBuster.value = Date.now()
   } else {
-    // Cenário B: Insere dentro do texto via método exposto
-    // O segundo parâmetro é o Alt Text (opcional, pode deixar vazio ou pedir num prompt se quiser)
-    editorRef.value?.insertImage(fullUrl, form.value.titulo || 'Imagem do artigo')
+    // Para imagens inline no editor: usa a variante desktop WebP (maior qualidade visual)
+    const editorUrl = `${baseUrl}-1280.webp`
+    editorRef.value?.insertImage(editorUrl, form.value.titulo || 'Imagem do artigo')
   }
 }
 

@@ -8,7 +8,20 @@ import { logger } from "../../common/logger";
 const s3 = new S3Client({});
 const DEST_BUCKET = process.env.DESTINATION_BUCKET;
 
-// Helper para converter stream do S3 em Buffer
+const VARIANTS: Array<{
+  width: number;
+  format: "avif" | "webp";
+  quality: number;
+  contentType: string;
+}> = [
+  { width: 480,  format: "avif", quality: 65, contentType: "image/avif" },
+  { width: 480,  format: "webp", quality: 80, contentType: "image/webp" },
+  { width: 768,  format: "avif", quality: 65, contentType: "image/avif" },
+  { width: 768,  format: "webp", quality: 80, contentType: "image/webp" },
+  { width: 1280, format: "avif", quality: 65, contentType: "image/avif" },
+  { width: 1280, format: "webp", quality: 80, contentType: "image/webp" },
+];
+
 const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
     const chunks: Uint8Array[] = [];
@@ -21,53 +34,61 @@ const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 export const handler = async (event: S3Event) => {
   logger.debug("image_processor_triggered", { recordCount: event.Records.length });
 
-  // Itera sobre os registros (geralmente é 1 por evento)
   for (const record of event.Records) {
     const srcBucket = record.s3.bucket.name;
-    // Decodifica o nome do arquivo (ex: espaços viram %20)
     const srcKey = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
 
-    // Validação básica: evitar loops infinitos ou arquivos errados
     if (!srcKey.match(/\.(jpg|jpeg|png)$/i)) {
-      console.log(`Skipping non-image: ${srcKey}`);
+      logger.debug("image_processor_skipped", { srcKey, reason: "not_supported_format" });
       continue;
     }
 
     try {
-      // 1. Baixar imagem original
-      const getCommand = new GetObjectCommand({
-        Bucket: srcBucket,
-        Key: srcKey,
+      // 1. Baixar imagem original uma única vez
+      const { Body } = await s3.send(new GetObjectCommand({ Bucket: srcBucket, Key: srcKey }));
+      if (!Body) throw new Error("S3 body vazio");
+
+      const inputBuffer = await streamToBuffer(Body as Readable);
+      const basename = srcKey.replace(/\.[^.]+$/, "");
+
+      logger.info("image_processor_start", { srcKey, variants: VARIANTS.length });
+
+      // 2. Gerar todas as variantes em paralelo (Sharp + S3 upload)
+      await Promise.all(
+        VARIANTS.map(async ({ width, format, quality, contentType }) => {
+          const outputBuffer = await sharp(inputBuffer)
+            .resize({ width, withoutEnlargement: true })
+            .toFormat(format, {
+              quality,
+              // AVIF: effort 2 = encode rápido (Lambda CPU), arquivo ~5% maior que effort 4
+              ...(format === "avif" && { effort: 2 }),
+            })
+            .toBuffer();
+
+          const destKey = `media/${basename}-${width}.${format}`;
+
+          await s3.send(new PutObjectCommand({
+            Bucket: DEST_BUCKET,
+            Key: destKey,
+            Body: outputBuffer,
+            ContentType: contentType,
+            CacheControl: "public, max-age=31536000, immutable",
+          }));
+
+          logger.debug("variant_saved", { destKey, width, format, bytes: outputBuffer.length });
+        })
+      );
+
+      logger.info("image_processor_done", {
+        srcKey,
+        destBucket: DEST_BUCKET,
+        basename: `media/${basename}`,
+        variants: VARIANTS.length,
       });
-      const response = await s3.send(getCommand);
-      
-      if (!response.Body) throw new Error("Body is empty");
-      
-      const inputBuffer = await streamToBuffer(response.Body as Readable);
-
-      // 2. Processar com Sharp (Redimensionar + WebP)
-      const outputBuffer = await sharp(inputBuffer)
-        .resize({ width: 1280, withoutEnlargement: true }) // Max width 1280px
-        .toFormat("webp", { quality: 80 })
-        .toBuffer();
-
-      // 3. Salvar no Bucket de Destino (Público)
-      // Mudamos a extensão para .webp e organizamos na pasta 'media/'
-      const destKey = `media/${srcKey.replace(/\.[^.]+$/, "")}.webp`;
-
-      await s3.send(new PutObjectCommand({
-        Bucket: DEST_BUCKET,
-        Key: destKey,
-        Body: outputBuffer,
-        ContentType: "image/webp",
-        CacheControl: "public, max-age=31536000, immutable" // Cache agressivo para performance
-      }));
-
-      logger.info("image_processed", { srcBucket, srcKey, destBucket: DEST_BUCKET, destKey });
 
     } catch (error) {
       logger.error("image_processor_error", { srcKey, error: (error as Error).message });
-      throw error; // Faz a Lambda tentar de novo (Retry) se for erro temporário
+      throw error;
     }
   }
 };

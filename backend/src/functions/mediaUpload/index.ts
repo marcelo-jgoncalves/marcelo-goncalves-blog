@@ -44,14 +44,12 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     // Gera a URL assinada válida por 5 minutos
     const uploadURL = await getSignedUrl(s3, command, { expiresIn: 300 });
 
-    // Retorna a URL de upload E a URL pública final (onde o arquivo processado vai aparecer)
-    // Nota: A URL pública aponta para o CloudFront/S3 de Assets, pasta media/, extensão .webp
-    // Precisamos saber o domínio do CloudFront de assets aqui? 
-    // Por simplicidade, o frontend monta a URL final ou retornamos o caminho relativo.
-    const finalPath = `media/${key.replace(/\.[^.]+$/, "")}.webp`;
+    // basePath: caminho sem extensão — o imageProcessor gera as variantes
+    // ({basePath}-480.avif, {basePath}-480.webp, {basePath}-768.*, {basePath}-1280.*)
+    const basePath = `media/${key.replace(/\.[^.]+$/, "")}`;
 
-    logger.info("presigned_url_generated", { requestId, finalPath });
-    return { statusCode: 200, body: JSON.stringify({ uploadURL, finalPath }), headers };
+    logger.info("presigned_url_generated", { requestId, basePath });
+    return { statusCode: 200, body: JSON.stringify({ uploadURL, basePath }), headers };
 
   } catch (error: any) {
     logger.error("media_upload_error", { requestId, error: error.message });

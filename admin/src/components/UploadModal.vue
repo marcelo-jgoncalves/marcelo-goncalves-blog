@@ -18,12 +18,14 @@ async function handleUpload() {
 
   try {
     // 1. Obter URL Assinada
-    const { uploadURL, finalPath } = await mediaApi.getUploadUrl(file.name, file.type)
+    const { uploadURL, basePath } = await mediaApi.getUploadUrl(file.name, file.type)
 
     // 2. Enviar para o S3
     await mediaApi.uploadToS3(uploadURL, file)
-    
-    emit('uploaded', finalPath)
+
+    // basePath = "media/{uuid}-{nome}" (sem extensão)
+    // O imageProcessor gera as variantes: -480.avif, -480.webp, -768.*, -1280.*
+    emit('uploaded', basePath)
     emit('close')
   } catch (err: any) {
     error.value = err.message || 'Erro no upload'

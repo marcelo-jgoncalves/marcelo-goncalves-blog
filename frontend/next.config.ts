@@ -19,14 +19,13 @@ const nextConfig: NextConfig = {
   },
 
   images: {
+    // Restrito ao hostname exato do projeto — evita que Next/Image otimize
+    // imagens de qualquer CloudFront/S3 da AWS (vetor de abuso).
+    // Atualizar quando o domínio definitivo for configurado.
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.cloudfront.net",
-      },
-      {
-        protocol: "https",
-        hostname: "**.amazonaws.com",
+        hostname: "dsns2wusdrj9z.cloudfront.net",
       },
     ],
   },

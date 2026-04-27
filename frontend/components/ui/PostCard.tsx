@@ -1,8 +1,8 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
-import Image from 'next/image';
 import ReadMoreLink from './ReadMoreLink';
-import CategoryBadge from './CategoryBadge'; // 👈 Componente Modular Injetado
+import CategoryBadge from './CategoryBadge';
+import ResponsiveImage from './ResponsiveImage';
 import './PostCard.css';
 
 interface PostCardProps {
@@ -27,13 +27,13 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
       {/* Wrapper de Imagem com Next/Image (Pilar: Performance & Vitals) */}
       <div className="post-card__image-wrapper">
         {post.imagem_destaque_url && (
-          <Image
+          <ResponsiveImage
             src={post.imagem_destaque_url}
             alt={`Imagem de capa para o artigo: ${post.titulo}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="post-card__image"
-            priority={isPriority} // 👈 O gatilho mágico que instrui a AWS/Browser a não fazer lazy-load
+            priority={isPriority}
           />
         )}
       </div>

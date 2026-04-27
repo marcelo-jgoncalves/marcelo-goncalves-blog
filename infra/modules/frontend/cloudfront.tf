@@ -21,7 +21,7 @@ resource "aws_cloudfront_origin_access_control" "lambda_oac" {
 resource "aws_cloudfront_distribution" "frontend" {
   enabled         = true
   is_ipv6_enabled = true
-  price_class     = "PriceClass_100" # Usa apenas NA/Europa (Mais barato para dev)
+  price_class     = "PriceClass_200" # NA/Europa + América do Sul (Brasil) — obrigatório para blog PT-BR
 
   # --- Origem 1: S3 (Assets) ---
   origin {

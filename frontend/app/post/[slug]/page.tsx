@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
@@ -195,8 +196,8 @@ export default async function PostPage({ params }: Props) {
 
       {post.imagem_destaque_url && (
         <div className="featured-image-container">
-          <Image 
-            src={post.imagem_destaque_url} 
+          <ResponsiveImage
+            src={post.imagem_destaque_url}
             alt={post.imagem_destaque_alt_text || post.titulo}
             priority
             fill

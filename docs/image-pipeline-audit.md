@@ -286,15 +286,15 @@ Sharp usa binários C++ compilados. O `build.js` já instala com `--os=linux --c
 
 | # | Item | Status | Data |
 |---|------|--------|------|
-| 1 | CloudFront PriceClass_200 | ⏳ pendente | — |
-| 2 | Sharp em production deps | ⏳ pendente | — |
-| 3 | Variantes mobile/tablet no imageProcessor | ⏳ pendente | — |
-| 4 | AVIF no imageProcessor | ⏳ pendente | — |
-| 5 | mediaUpload retorna basePath | ⏳ pendente | — |
-| 6 | Frontend: picture + srcset | ⏳ pendente | — |
-| 7 | DynamoDB: migrar para basePath | ⏳ pendente | — |
-| 8 | LQIP no imageProcessor | ⏳ pendente | — |
-| 9 | blurDataURL no frontend | ⏳ pendente | — |
-| 10 | Admin ImageNode: multi-formato | ⏳ pendente | — |
-| 11 | remotePatterns exato | ⏳ pendente | — |
-| 12 | S3 CORS restrito | ⏳ pendente | — |
+| 1 | CloudFront PriceClass_200 | ✅ feito | 2026-04-27 |
+| 2 | Sharp em devDependencies (testes) | ✅ feito | 2026-04-27 |
+| 3 | Variantes mobile/tablet no imageProcessor | ✅ feito | 2026-04-27 |
+| 4 | AVIF no imageProcessor | ✅ feito | 2026-04-27 |
+| 5 | mediaUpload retorna basePath | ✅ feito | 2026-04-27 |
+| 6 | Frontend: componente ResponsiveImage + picture + srcset | ✅ feito | 2026-04-27 |
+| 7 | DynamoDB: novos posts já gravam basePath via EditorView | ✅ feito | 2026-04-27 |
+| 8 | LQIP no imageProcessor | ⏳ pendente — requer campo novo no DynamoDB | — |
+| 9 | blurDataURL no frontend | ⏳ pendente — depende do item 8 | — |
+| 10 | Admin ImageNode: atualizado (inline usa -1280.webp) | ✅ feito | 2026-04-27 |
+| 11 | remotePatterns exato (hostname específico) | ✅ feito | 2026-04-27 |
+| 12 | S3 CORS restrito | ⏳ pendente — baixa prioridade | — |
