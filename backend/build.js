@@ -55,7 +55,11 @@ async function build() {
     try {
         if (fs.existsSync(zipOutput)) fs.unlinkSync(zipOutput);
         console.log(`📦 Zipping to ${zipOutput}...`);
-        execSync(`cd "${funcDistDir}" && zip -r -q "${zipOutput}" .`); // Zipa tudo (incluindo node_modules se houver)
+        if (process.platform === 'win32') {
+            execSync(`powershell -Command "Compress-Archive -Path '${funcDistDir}\\*' -DestinationPath '${zipOutput}' -Force"`);
+        } else {
+            execSync(`cd "${funcDistDir}" && zip -r -q "${zipOutput}" .`);
+        }
     } catch (error) {
         console.error(`❌ Erro ao zipar ${func}:`, error);
         process.exit(1);
