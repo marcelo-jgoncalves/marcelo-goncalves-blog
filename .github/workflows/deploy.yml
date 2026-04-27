@@ -14,79 +14,10 @@ permissions:
   contents: read
 
 jobs:
-  # --- JOB 1: Validar a Aplicacao (Next.js) ---
-  validate-application:
-    runs-on: ubuntu-latest
-    name: 1. Validar Aplicacao (JS)
-    
-    outputs:
-      js_files_found: ${{ steps.files.outputs.pkg }}
-      
-    steps:
-      - name: Checkout do Codigo
-        uses: actions/checkout@v4
-
-      - name: Verificar existencia do package.json
-        id: files 
-        run: |
-          if [ -f "package.json" ]; then
-            echo "pkg=true" >> $GITHUB_OUTPUT
-          else
-            echo "pkg=false" >> $GITHUB_OUTPUT
-          fi
-          
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Instalar Dependencias (npm ci)
-        run: npm ci
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Scan de Dependencias (Seguranca)
-        run: npm audit --audit-level=high
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Lint de Codigo (Qualidade)
-        run: |
-          if grep -q "\"lint\"" package.json; then
-            echo "Script 'lint' encontrado, executando..."
-            npm run lint
-          else
-            echo "Script 'lint' nao encontrado, pulando."
-          fi
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Testes Unitarios/Integracao
-        run: |
-          if grep -q "\"test\"" package.json; then
-            echo "Script 'test' encontrado, executando..."
-            npm test -- --passWithNoTests
-          else
-            echo "Script 'test' nao encontrado, pulando."
-          fi
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Build da Aplicacao (Next.js)
-        run: |
-          if grep -q "\"build\"" package.json; then
-            echo "Script 'build' encontrado, executando..."
-            npm run build
-          else
-            echo "Script 'build' nao encontrado, pulando."
-          fi
-        if: steps.files.outputs.pkg == 'true'
-
-      - name: Pular passos de JS
-        run: echo "Nenhum package.json encontrado, pulando checks de JS."
-        if: steps.files.outputs.pkg == 'false'
-
-  # --- JOB 2: Testar o Backend (Jest) ---
+  # --- JOB 1: Testar o Backend (Jest + audit) ---
   test-backend:
     runs-on: ubuntu-latest
-    name: 2. Testes Backend (Jest)
+    name: 1. Testes Backend (Jest)
 
     steps:
       - name: Checkout do Codigo
@@ -101,14 +32,18 @@ jobs:
         run: npm ci
         working-directory: backend
 
+      - name: Scan de Seguranca (npm audit)
+        run: npm audit --audit-level=high
+        working-directory: backend
+
       - name: Rodar Testes Unitarios
         run: npm test
         working-directory: backend
 
-  # --- JOB 2b: Testar o Frontend (Jest) ---
+  # --- JOB 2: Testar o Frontend (Jest + audit) ---
   test-frontend:
     runs-on: ubuntu-latest
-    name: 2b. Testes Frontend (Jest)
+    name: 2. Testes Frontend (Jest)
 
     steps:
       - name: Checkout do Codigo
@@ -123,14 +58,18 @@ jobs:
         run: npm ci
         working-directory: frontend
 
+      - name: Scan de Seguranca (npm audit)
+        run: npm audit --audit-level=high
+        working-directory: frontend
+
       - name: Rodar Testes Unitarios
         run: npm test
         working-directory: frontend
 
-  # --- JOB 2c: Testar o Admin (Vitest) ---
+  # --- JOB 3: Testar o Admin (Vitest + audit) ---
   test-admin:
     runs-on: ubuntu-latest
-    name: 2c. Testes Admin (Vitest)
+    name: 3. Testes Admin (Vitest)
 
     steps:
       - name: Checkout do Codigo
@@ -143,6 +82,10 @@ jobs:
 
       - name: Instalar Dependencias do Admin
         run: npm ci
+        working-directory: admin
+
+      - name: Scan de Seguranca (npm audit)
+        run: npm audit --audit-level=high
         working-directory: admin
 
       - name: Rodar Testes Unitarios
