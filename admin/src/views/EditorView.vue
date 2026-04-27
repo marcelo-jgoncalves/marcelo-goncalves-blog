@@ -67,7 +67,7 @@ onMounted(async () => {
     const res = await categoriesApi.list()
     if (res.items?.length) {
       categorias.value = res.items
-      if (!isEditing.value) form.value.categoria_slug = res.items[0].categoria_slug
+      if (!isEditing.value && res.items[0]) form.value.categoria_slug = res.items[0].categoria_slug
     }
   } catch {
     // fallback já está no default de `categorias`

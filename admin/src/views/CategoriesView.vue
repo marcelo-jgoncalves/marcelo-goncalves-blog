@@ -2,12 +2,11 @@
 import { ref, watch, onMounted } from 'vue'
 import { categoriesApi } from '../services/api' // Importa a nossa nova API
 
-// --- Interfaces (Mapeadas exatamente como no DynamoDB) ---
+// --- Interfaces (modelo real do DynamoDB via adminCategorias Lambda) ---
 interface Categoria {
   categoria_slug: string
-  nome_exibicao: string
-  icone_fa: string
-  descricao_seo: string
+  nome: string
+  descricao?: string
 }
 
 // --- Estado ---
@@ -19,10 +18,9 @@ const isSaving = ref(false)
 
 // Estado do Formulário
 const defaultForm: Categoria = {
-  nome_exibicao: '',
+  nome: '',
   categoria_slug: '',
-  icone_fa: 'fas fa-tag',
-  descricao_seo: ''
+  descricao: ''
 }
 const form = ref<Categoria>({ ...defaultForm })
 
@@ -59,7 +57,7 @@ const generateSlug = (text: string) => {
 }
 
 // Watcher para preencher o slug automaticamente apenas na criação
-watch(() => form.value.nome_exibicao, (newName) => {
+watch(() => form.value.nome, (newName) => {
   if (!editingSlug.value) {
     form.value.categoria_slug = generateSlug(newName)
   }
@@ -88,7 +86,7 @@ const closeModal = () => {
 // --- Operações CRUD Reais ---
 
 const handleSave = async () => {
-  if (!form.value.nome_exibicao || !form.value.categoria_slug) {
+  if (!form.value.nome || !form.value.categoria_slug) {
     return alert('Preencha os campos obrigatórios (Nome e Slug)')
   }
 
@@ -150,25 +148,18 @@ const handleDelete = async (slug: string) => {
         <thead>
           <tr>
             <th>Categoria / Slug</th>
-            <th>Ícone</th>
-            <th>Descrição SEO</th>
+            <th>Descrição</th>
             <th style="width: 100px;">Ações</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="cat in categories" :key="cat.categoria_slug">
             <td>
-              <strong>{{ cat.nome_exibicao }}</strong>
+              <strong>{{ cat.nome }}</strong>
               <br><small class="slug-text">/{{ cat.categoria_slug }}</small>
             </td>
-            <td>
-              <div class="icon-preview-cell">
-                <i :class="cat.icone_fa"></i>
-                <span class="icon-badge">{{ cat.icone_fa }}</span>
-              </div>
-            </td>
-            <td class="desc-cell" :title="cat.descricao_seo">
-              {{ cat.descricao_seo || '-' }}
+            <td class="desc-cell" :title="cat.descricao">
+              {{ cat.descricao || '-' }}
             </td>
             <td>
               <div class="actions-cell">
@@ -195,9 +186,9 @@ const handleDelete = async (slug: string) => {
         <div class="modal-body">
           <div class="form-group">
             <label>Nome da Categoria</label>
-            <input 
-              v-model="form.nome_exibicao" 
-              type="text" 
+            <input
+              v-model="form.nome"
+              type="text"
               placeholder="Ex: Inteligência Artificial"
               autofocus
               :disabled="isSaving"
@@ -217,27 +208,12 @@ const handleDelete = async (slug: string) => {
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group" style="flex: 1;">
-              <label>Ícone (FontAwesome)</label>
-              <input 
-                v-model="form.icone_fa" 
-                type="text" 
-                placeholder="Ex: fas fa-robot"
-                class="input-mono"
-                :disabled="isSaving"
-              >
-            </div>
-            <div class="preview-box">
-              <i :class="form.icone_fa"></i>
-            </div>
-          </div>
-
           <div class="form-group">
-            <label>Descrição SEO</label>
-            <textarea 
-              v-model="form.descricao_seo" 
+            <label>Descrição</label>
+            <textarea
+              v-model="form.descricao"
               rows="3"
+              placeholder="Descrição opcional da categoria"
               :disabled="isSaving"
             ></textarea>
           </div>
