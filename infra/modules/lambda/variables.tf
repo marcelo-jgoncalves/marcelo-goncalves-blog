@@ -27,3 +27,21 @@ variable "admin_origin" {
   type        = string
   default     = "*"
 }
+
+variable "enable_xray_tracing" {
+  description = "Enable AWS X-Ray active tracing on Lambda functions"
+  type        = bool
+  default     = false
+}
+
+variable "enable_cloudwatch_alarms" {
+  description = "Cria alarmes CloudWatch de erro para todas as funções Lambda"
+  type        = bool
+  default     = false
+}
+
+variable "alarm_email" {
+  description = "E-mail para notificações SNS dos alarmes Lambda"
+  type        = string
+  default     = ""
+}

@@ -496,9 +496,10 @@ resource "aws_lambda_permission" "apigw_get_author" {
 # --- 5. Deploy e Stage ---
 
 resource "aws_api_gateway_stage" "main" {
-  deployment_id = aws_api_gateway_deployment.main.id
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  stage_name    = "v1" # URL final será /v1/post/...
+  deployment_id        = aws_api_gateway_deployment.main.id
+  rest_api_id          = aws_api_gateway_rest_api.main.id
+  stage_name           = "v1"
+  xray_tracing_enabled = var.enable_xray_tracing
 }
 
 # --- 1. Recursos para Listagem ---

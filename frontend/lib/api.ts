@@ -1,13 +1,13 @@
 // frontend/lib/api.ts
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-  throw new Error("NEXT_PUBLIC_API_URL is not defined");
+function getApiUrl(): string {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  if (!url) throw new Error('NEXT_PUBLIC_API_URL is not defined');
+  return url;
 }
 
 export async function getPost(slug: string) {
-  const res = await fetch(`${API_URL}/post/${slug}`, {
+  const res = await fetch(`${getApiUrl()}/post/${slug}`, {
     next: { revalidate: 60 },
   });
 
@@ -18,9 +18,10 @@ export async function getPost(slug: string) {
 
   return res.json();
 }
+
 export async function getAuthor(authorId: string) {
-  const res = await fetch(`${API_URL}/autor/${authorId}`, {
-    next: { revalidate: 3600 }, // Cache de autor por 1 hora (muda pouco)
+  const res = await fetch(`${getApiUrl()}/autor/${authorId}`, {
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) return null;
@@ -28,11 +29,10 @@ export async function getAuthor(authorId: string) {
   return res.json();
 }
 
-// 1. Buscar Posts Recentes (Para a Home)
 export async function getRecentPosts(limit: number = 6) {
   const params = new URLSearchParams();
   params.set('limit', limit.toString());
-  const res = await fetch(`${API_URL}/posts/recentes?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/posts/recentes?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
@@ -46,21 +46,20 @@ export async function getAllPosts(nextToken?: string, limit: number = 9) {
   if (nextToken) params.set('nextToken', nextToken);
   params.set('limit', limit.toString());
 
-  const res = await fetch(`${API_URL}/artigos?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/artigos?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
   if (!res.ok) throw new Error('Failed to fetch posts');
 
-  return res.json(); 
+  return res.json();
 }
 
-// 3. Buscar por Categoria
 export async function getPostsByCategory(slug: string, nextToken?: string, limit: number = 9) {
   const params = new URLSearchParams();
   if (nextToken) params.set('nextToken', nextToken);
   params.set('limit', limit.toString());
-  const res = await fetch(`${API_URL}/categoria/${slug}?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/categoria/${slug}?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
@@ -69,28 +68,23 @@ export async function getPostsByCategory(slug: string, nextToken?: string, limit
   return res.json();
 }
 
-// 4. Buscar Posts Populares
 export async function getPopularPosts() {
-  const res = await fetch(`${API_URL}/posts/populares`, {
+  const res = await fetch(`${getApiUrl()}/posts/populares`, {
     next: { revalidate: 60 },
   });
 
-  if (!res.ok) {
-    // Fallback: se a API de populares falhar ou não existir, retorna array vazio para não quebrar a home
-    return { posts: [] };
-  }
+  if (!res.ok) return { posts: [] };
 
   return res.json();
 }
 
-// 5. Buscar Posts por Termo (Search)
 export async function searchPosts(term: string, nextToken?: string, limit: number = 9) {
   const params = new URLSearchParams();
   params.set('q', term);
   if (nextToken) params.set('nextToken', nextToken);
   params.set('limit', limit.toString());
 
-  const res = await fetch(`${API_URL}/busca?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/busca?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 
@@ -99,13 +93,12 @@ export async function searchPosts(term: string, nextToken?: string, limit: numbe
   return res.json();
 }
 
-// 6. Buscar Posts do Projeto (Timeline)
 export async function getProjectPosts(nextToken?: string, limit: number = 8) {
   const params = new URLSearchParams();
   if (nextToken) params.set('nextToken', nextToken);
   params.set('limit', limit.toString());
 
-  const res = await fetch(`${API_URL}/projeto?${params.toString()}`, {
+  const res = await fetch(`${getApiUrl()}/projeto?${params.toString()}`, {
     next: { revalidate: 60 },
   });
 

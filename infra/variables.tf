@@ -38,3 +38,21 @@ variable "log_retention_days" {
     error_message = "log_retention_days deve ser um valor válido do CloudWatch: 1, 3, 5, 7, 14, 30, 60, 90, 180 ou 365."
   }
 }
+
+variable "enable_xray_tracing" {
+  description = "Habilita AWS X-Ray tracing ativo nas Lambdas e no API Gateway. Desativado em dev para reduzir custos."
+  type        = bool
+  default     = false
+}
+
+variable "enable_cloudwatch_alarms" {
+  description = "Cria CloudWatch Alarms para erros de Lambda e 5xx do API Gateway. Desativado em dev."
+  type        = bool
+  default     = false
+}
+
+variable "alarm_email" {
+  description = "Email para notificações SNS dos CloudWatch Alarms. Obrigatório se enable_cloudwatch_alarms=true."
+  type        = string
+  default     = ""
+}

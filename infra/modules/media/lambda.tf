@@ -1,5 +1,9 @@
 # infra/modules/media/lambda.tf
 
+locals {
+  xray_mode = var.enable_xray_tracing ? "Active" : "PassThrough"
+}
+
 resource "aws_cloudwatch_log_group" "image_processor" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-imageProcessor"
   retention_in_days = var.log_retention_days
@@ -32,13 +36,17 @@ resource "aws_iam_policy" "processor_policy" {
         Resource = "arn:aws:logs:*:*:*"
       },
       {
-        # Ler do bucket de uploads E escrever no bucket de assets (final)
         Action = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
         Effect = "Allow",
         Resource = [
           "${aws_s3_bucket.uploads.arn}/*",
           "arn:aws:s3:::${var.assets_bucket_name}/*"
         ]
+      },
+      {
+        Action   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords", "xray:GetSamplingRules", "xray:GetSamplingTargets"]
+        Effect   = "Allow"
+        Resource = "*"
       }
     ]
   })
@@ -66,9 +74,11 @@ resource "aws_lambda_function" "image_processor" {
     variables = {
       DESTINATION_BUCKET = var.assets_bucket_name
       LOG_LEVEL          = var.log_level
+      XRAY_ENABLED       = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.image_processor]
 }
 

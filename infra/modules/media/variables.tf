@@ -13,3 +13,9 @@ variable "log_retention_days" {
   type        = number
   default     = 7
 }
+
+variable "enable_xray_tracing" {
+  description = "Habilita AWS X-Ray tracing na Lambda imageProcessor"
+  type        = bool
+  default     = false
+}

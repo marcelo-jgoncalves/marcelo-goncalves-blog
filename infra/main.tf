@@ -10,10 +10,13 @@ module "dynamodb" {
 module "lambda" {
   source = "./modules/lambda"
 
-  environment        = var.environment
-  project_name       = var.project_name
-  log_level          = var.log_level
-  log_retention_days = var.log_retention_days
+  environment              = var.environment
+  project_name             = var.project_name
+  log_level                = var.log_level
+  log_retention_days       = var.log_retention_days
+  enable_xray_tracing      = var.enable_xray_tracing
+  enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
+  alarm_email              = var.alarm_email
 
   posts_table_arn      = module.dynamodb.posts_table_arn
   autores_table_arn    = module.dynamodb.autores_table_arn
@@ -26,9 +29,12 @@ module "lambda" {
 module "api-gateway" {
   source = "./modules/api-gateway"
 
-  environment  = var.environment
-  project_name = var.project_name
-  aws_region   = var.aws_region
+  environment              = var.environment
+  project_name             = var.project_name
+  aws_region               = var.aws_region
+  enable_xray_tracing      = var.enable_xray_tracing
+  enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
+  alarm_email              = var.alarm_email
 
   # Conecta as saídas do módulo lambda nas entradas do api-gateway
   get_post_invoke_arn            = module.lambda.get_post_invoke_arn
@@ -51,12 +57,11 @@ module "api-gateway" {
 module "frontend" {
   source = "./modules/frontend"
 
-  environment        = var.environment
-  project_name       = var.project_name
-  log_retention_days = var.log_retention_days
-
-  # Passamos a URL da API Backend para que o Frontend saiba quem chamar
-  api_url = module.api-gateway.api_url
+  environment         = var.environment
+  project_name        = var.project_name
+  log_retention_days  = var.log_retention_days
+  enable_xray_tracing = var.enable_xray_tracing
+  api_url             = module.api-gateway.api_url
 }
 
 module "cognito" {
@@ -76,9 +81,10 @@ module "admin" {
 module "media" {
   source = "./modules/media"
 
-  environment        = var.environment
-  project_name       = var.project_name
-  log_level          = var.log_level
-  log_retention_days = var.log_retention_days
-  assets_bucket_name = module.frontend.s3_bucket_name
+  environment         = var.environment
+  project_name        = var.project_name
+  log_level           = var.log_level
+  log_retention_days  = var.log_retention_days
+  enable_xray_tracing = var.enable_xray_tracing
+  assets_bucket_name  = module.frontend.s3_bucket_name
 }

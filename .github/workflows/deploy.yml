@@ -105,6 +105,50 @@ jobs:
         run: npm test
         working-directory: backend
 
+  # --- JOB 2b: Testar o Frontend (Jest) ---
+  test-frontend:
+    runs-on: ubuntu-latest
+    name: 2b. Testes Frontend (Jest)
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependencias do Frontend
+        run: npm ci
+        working-directory: frontend
+
+      - name: Rodar Testes Unitarios
+        run: npm test
+        working-directory: frontend
+
+  # --- JOB 2c: Testar o Admin (Vitest) ---
+  test-admin:
+    runs-on: ubuntu-latest
+    name: 2c. Testes Admin (Vitest)
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependencias do Admin
+        run: npm ci
+        working-directory: admin
+
+      - name: Rodar Testes Unitarios
+        run: npm test
+        working-directory: admin
+
   # --- JOB 3: Validar a Infraestrutura (Terraform) ---
   validate-infrastructure:
     runs-on: ubuntu-latest

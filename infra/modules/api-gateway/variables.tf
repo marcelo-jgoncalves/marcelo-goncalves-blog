@@ -16,3 +16,21 @@ variable "admin_authors_invoke_arn" {}
 variable "admin_authors_function_name" {}
 variable "admin_categorias_invoke_arn" {}
 variable "admin_categorias_function_name" {}
+
+variable "enable_xray_tracing" {
+  description = "Habilita AWS X-Ray tracing no API Gateway stage"
+  type        = bool
+  default     = false
+}
+
+variable "enable_cloudwatch_alarms" {
+  description = "Cria alarmes CloudWatch para 5xx e latência do API Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "alarm_email" {
+  description = "E-mail para notificações dos alarmes via SNS"
+  type        = string
+  default     = ""
+}

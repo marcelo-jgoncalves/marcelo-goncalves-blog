@@ -1,3 +1,16 @@
+# infra/modules/lambda/main.tf
+
+locals {
+  xray_mode = var.enable_xray_tracing ? "Active" : "PassThrough"
+
+  # Statement X-Ray reutilizado em todas as policies (inofensivo quando desativado)
+  xray_statement = {
+    Action   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords", "xray:GetSamplingRules", "xray:GetSamplingTargets"]
+    Effect   = "Allow"
+    Resource = "*"
+  }
+}
+
 # --- IAM: Role pública (read-only DynamoDB) ---
 resource "aws_iam_role" "public_lambda_role" {
   name = "${var.project_name}-${var.environment}-public-lambda-role"
@@ -32,7 +45,8 @@ resource "aws_iam_policy" "public_lambda_policy" {
           var.autores_table_arn,
           "${var.autores_table_arn}/index/*",
         ]
-      }
+      },
+      local.xray_statement
     ]
   })
 }
@@ -80,7 +94,8 @@ resource "aws_iam_policy" "admin_lambda_policy" {
           "${var.autores_table_arn}/index/*",
           var.categorias_table_arn,
         ]
-      }
+      },
+      local.xray_statement
     ]
   })
 }
@@ -119,7 +134,8 @@ resource "aws_iam_policy" "media_upload_policy" {
         Action   = ["s3:PutObject"]
         Effect   = "Allow"
         Resource = "${var.uploads_bucket_arn}/*"
-      }
+      },
+      local.xray_statement
     ]
   })
 }
@@ -129,8 +145,7 @@ resource "aws_iam_role_policy_attachment" "media_upload_attach" {
   policy_arn = aws_iam_policy.media_upload_policy.arn
 }
 
-# --- CloudWatch Log Groups (com retenção explícita) ---
-# Criados antes das Lambdas para evitar que o runtime crie grupos sem retenção.
+# --- CloudWatch Log Groups (retenção explícita — criados antes das Lambdas) ---
 
 resource "aws_cloudwatch_log_group" "media_upload" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-mediaUpload"
@@ -188,9 +203,11 @@ resource "aws_lambda_function" "media_upload" {
       UPLOADS_BUCKET = var.uploads_bucket_name
       ADMIN_ORIGIN   = var.admin_origin
       LOG_LEVEL      = var.log_level
+      XRAY_ENABLED   = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.media_upload]
 }
 
@@ -208,9 +225,11 @@ resource "aws_lambda_function" "get_post" {
       POSTS_TABLE   = "${var.project_name}-${var.environment}-posts"
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
       LOG_LEVEL     = var.log_level
+      XRAY_ENABLED  = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.get_post]
 }
 
@@ -227,9 +246,11 @@ resource "aws_lambda_function" "get_author" {
     variables = {
       AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
       LOG_LEVEL     = var.log_level
+      XRAY_ENABLED  = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.get_author]
 }
 
@@ -244,11 +265,13 @@ resource "aws_lambda_function" "get_posts" {
 
   environment {
     variables = {
-      POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
-      LOG_LEVEL   = var.log_level
+      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL    = var.log_level
+      XRAY_ENABLED = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.get_posts]
 }
 
@@ -266,9 +289,11 @@ resource "aws_lambda_function" "admin_posts" {
       POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
       ADMIN_ORIGIN = var.admin_origin
       LOG_LEVEL    = var.log_level
+      XRAY_ENABLED = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.admin_posts]
 }
 
@@ -286,9 +311,11 @@ resource "aws_lambda_function" "admin_authors" {
       AUTHORS_TABLE = "${var.project_name}-${var.environment}-autores"
       ADMIN_ORIGIN  = var.admin_origin
       LOG_LEVEL     = var.log_level
+      XRAY_ENABLED  = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.admin_authors]
 }
 
@@ -306,9 +333,11 @@ resource "aws_lambda_function" "admin_categorias" {
       CATEGORIAS_TABLE = "${var.project_name}-${var.environment}-categorias"
       ADMIN_ORIGIN     = var.admin_origin
       LOG_LEVEL        = var.log_level
+      XRAY_ENABLED     = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.admin_categorias]
 }
 
@@ -347,7 +376,8 @@ resource "aws_iam_policy" "scheduler_lambda_policy" {
         Action   = ["dynamodb:UpdateItem"]
         Effect   = "Allow"
         Resource = var.posts_table_arn
-      }
+      },
+      local.xray_statement
     ]
   })
 }
@@ -369,11 +399,13 @@ resource "aws_lambda_function" "post_scheduler" {
 
   environment {
     variables = {
-      POSTS_TABLE = "${var.project_name}-${var.environment}-posts"
-      LOG_LEVEL   = var.log_level
+      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL    = var.log_level
+      XRAY_ENABLED = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.post_scheduler]
 }
 
@@ -414,9 +446,7 @@ resource "aws_scheduler_schedule" "post_scheduler" {
   name       = "${var.project_name}-${var.environment}-post-scheduler"
   group_name = "default"
 
-  flexible_time_window {
-    mode = "OFF"
-  }
+  flexible_time_window { mode = "OFF" }
 
   schedule_expression = "rate(15 minutes)"
 

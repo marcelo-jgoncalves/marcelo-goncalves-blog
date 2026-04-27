@@ -124,6 +124,81 @@ Logs devem orientar decisões técnicas.
 
 ---
 
+## Logging (OBRIGATÓRIO)
+
+Todo código backend (Lambda) **deve** usar o logger estruturado em `backend/src/common/logger.ts`.
+
+Regras:
+
+- **nunca** usar `console.log` diretamente — sempre via `logger.info/debug/warn/error`
+- logs devem ser JSON estruturado com campos: `level`, `message`, `timestamp`, `requestId` (quando disponível)
+- nível padrão: `INFO` em produção, `DEBUG` em desenvolvimento — controlado via `LOG_LEVEL` env var no `.tfvars`
+- erros devem ser logados com stack trace completo via `logger.error`
+- logs sensíveis (tokens, senhas, PII) são proibidos
+
+Configuração via Terraform:
+
+```hcl
+# dev.tfvars
+log_level = "DEBUG"
+
+# prod.tfvars
+log_level = "INFO"
+```
+
+---
+
+## Tracing (OBRIGATÓRIO)
+
+AWS X-Ray tracing é obrigatório em produção e opcional em desenvolvimento.
+
+Regras:
+
+- toda Lambda **deve** ter `tracing_config { mode = local.xray_mode }` (controlado por `enable_xray_tracing`)
+- o cliente DynamoDB **deve** ser instrumentado via `aws-xray-sdk-core` quando `XRAY_ENABLED=true`
+- o API Gateway stage **deve** ter `xray_tracing_enabled = var.enable_xray_tracing`
+- novas Lambdas adicionadas ao projeto **devem** incluir o padrão de tracing desde o primeiro commit
+
+Configuração via Terraform:
+
+```hcl
+# dev.tfvars
+enable_xray_tracing = false
+
+# prod.tfvars
+enable_xray_tracing = true
+```
+
+Ativar/desativar não requer mudança de código — apenas mudança de `.tfvars` + `terraform apply`.
+
+---
+
+## CloudWatch Alarms (OBRIGATÓRIO em produção)
+
+Alarmes CloudWatch são obrigatórios em produção e opcionais em desenvolvimento.
+
+Regras:
+
+- cada Lambda **deve** ter alarme de erro (threshold: 5 erros/minuto)
+- cada Lambda **deve** ter alarme de throttle (threshold: 10/minuto)
+- o API Gateway **deve** ter alarme de 5xx (threshold: 5 erros/minuto)
+- o API Gateway **deve** ter alarme de latência P99 (threshold: 5s)
+- todos os alarmes notificam via SNS (e-mail configurado em `alarm_email`)
+
+Configuração via Terraform:
+
+```hcl
+# dev.tfvars
+enable_cloudwatch_alarms = false
+alarm_email              = ""
+
+# prod.tfvars
+enable_cloudwatch_alarms = true
+alarm_email              = "oncall@example.com"
+```
+
+---
+
 ## Developer Experience
 
 O repositório deve permitir:

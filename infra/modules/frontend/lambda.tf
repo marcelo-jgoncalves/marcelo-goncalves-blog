@@ -27,6 +27,13 @@ resource "aws_iam_role_policy_attachment" "nextjs_logs" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+# Permissão X-Ray (somente quando tracing ativo)
+resource "aws_iam_role_policy_attachment" "nextjs_xray" {
+  count      = var.enable_xray_tracing ? 1 : 0
+  role       = aws_iam_role.nextjs_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
 # A Função Lambda (Servidor SSR)
 resource "aws_lambda_function" "nextjs_server" {
   function_name = "${var.project_name}-${var.environment}-nextjs-server"
@@ -44,12 +51,13 @@ resource "aws_lambda_function" "nextjs_server" {
 
   environment {
     variables = {
-      NODE_ENV = "production"
-      # Injetamos a URL da API Backend aqui para o SSR funcionar
+      NODE_ENV            = "production"
       NEXT_PUBLIC_API_URL = var.api_url
+      XRAY_ENABLED        = tostring(var.enable_xray_tracing)
     }
   }
 
+  tracing_config { mode = var.enable_xray_tracing ? "Active" : "PassThrough" }
   depends_on = [aws_cloudwatch_log_group.nextjs_server]
 }
 
