@@ -199,6 +199,52 @@ alarm_email              = "oncall@example.com"
 
 ---
 
+## Imagens (OBRIGATÓRIO)
+
+O blog é mobile-first. A pipeline de imagens é crítica para Core Web Vitals e experiência do usuário.
+
+### Formatos aceitos no upload (admin)
+
+PNG, JPEG/JPG, WebP, HEIC, HEIF. Qualquer outro formato deve ser rejeitado no `UploadModal.vue`.  
+Extensões maiúsculas (`.JPG`, `.PNG`) são normalizadas automaticamente pelo `mediaUpload` Lambda.
+
+### Variantes geradas (imageProcessor Lambda)
+
+Por cada imagem enviada, o `imageProcessor` gera **6 arquivos**:
+
+```
+{basePath}-480.avif   {basePath}-480.webp   ← mobile
+{basePath}-768.avif   {basePath}-768.webp   ← tablet
+{basePath}-1280.avif  {basePath}-1280.webp  ← desktop
+```
+
+**Nunca** gerar apenas uma variante. AVIF é o formato primário (25-35% menor que WebP).
+
+### Convenção de nomenclatura
+
+- `mediaUpload` retorna `basePath` sem extensão: `media/{timestamp}-{uuid}-{nome}`
+- DynamoDB `imagem_destaque_url` armazena a URL completa sem extensão
+- Variantes são construídas pelo frontend via sufixo: `{baseUrl}-480.avif`
+
+### Componente obrigatório para renderização
+
+**Sempre** usar `<ResponsiveImage>` (`frontend/components/ui/ResponsiveImage.tsx`) em vez de `<Image>` Next.js para imagens de conteúdo (capa de post, cards).
+
+O componente detecta automaticamente:
+- URL com extensão (`.webp`, `.jpg`) → renderiza `<Image>` Next.js (retrocompatibilidade)
+- basePath sem extensão → renderiza `<picture>` nativo com AVIF+WebP por breakpoint
+
+### Retrocompatibilidade
+
+Posts existentes com `imagem_destaque_url` terminando em `.webp` continuam funcionando via `<ResponsiveImage>`. Não é necessário migrar dados antigos.
+
+### S3 triggers
+
+Todos os formatos suportados têm trigger S3→Lambda: `.jpg`, `.jpeg`, `.png`, `.webp`, `.heic`, `.heif`.  
+**Nunca** adicionar novo formato aceito no admin sem adicionar o trigger correspondente no `infra/modules/media/s3.tf`.
+
+---
+
 ## SEO (OBRIGATÓRIO)
 
 O blog é um produto de descoberta orgânica. SEO world-class é requisito não-negociável.
