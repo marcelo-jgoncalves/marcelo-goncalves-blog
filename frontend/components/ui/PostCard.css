@@ -52,7 +52,7 @@
 }
 
 .post-card__title-link:hover {
-  color: #FF9900; /* AWS Orange */
+  color: var(--accent);
 }
 
 .post-card__excerpt {

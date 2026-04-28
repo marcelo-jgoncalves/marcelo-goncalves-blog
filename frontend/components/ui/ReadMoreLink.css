@@ -5,8 +5,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px; /* Ritmo de 8px */
-  color: #FF9900; /* AWS Orange */
-  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  color: var(--accent);
+  font-family: var(--font-display), sans-serif;
   font-size: 1.125rem; /* 18px */
   font-weight: 700;
   text-decoration: none;
@@ -27,7 +27,7 @@
 /* Modificadores e Estados */
 @media (hover: hover) {
   .read-more-link:hover {
-    color: #FFB84D;
+    color: var(--accent-hover);
   }
 
   .read-more-link:hover .read-more-link__icon {

@@ -70,7 +70,7 @@ export default async function Home() {
         </div>
 
         <div style={{ textAlign: 'right', marginTop: '25px' }}>
-          <Link href="/artigos" style={{ color: 'var(--aws-orange)', fontWeight: 600 }}>
+          <Link href="/artigos" style={{ color: 'var(--accent)', fontWeight: 600 }}>
             Ver todos os artigos →
           </Link>
         </div>

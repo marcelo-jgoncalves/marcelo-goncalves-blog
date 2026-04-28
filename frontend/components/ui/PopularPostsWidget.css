@@ -13,7 +13,7 @@
   line-height: 1.2;
   margin: 0;
   color: var(--text-primary, #111827);
-  border-bottom: 2px solid #FF9900; /* AWS Orange para destaque sutil */
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 8px; /* Micro-ritmo (1x8) */
   display: inline-block;
   align-self: flex-start;
@@ -44,7 +44,7 @@
 
 @media (hover: hover) {
   .popular-widget__link:hover .popular-widget__post-title {
-    color: #FF9900;
+    color: var(--accent);
   }
   .popular-widget__link:hover .popular-widget__image {
     transform: scale(1.05);

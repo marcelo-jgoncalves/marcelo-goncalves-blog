@@ -83,7 +83,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           <style dangerouslySetInnerHTML={{__html: `
             .search-icon-container { font-size: 5rem; color: var(--aws-dark); margin-bottom: 20px; position: relative; display: inline-block; }
             .search-icon-container .fa-robot { text-shadow: 3px 3px 0px rgba(255, 153, 0, 0.2); }
-            .question-mark { position: absolute; top: -10px; right: -15px; font-size: 3rem; color: var(--aws-orange); animation: float 2s ease-in-out infinite; }
+            .question-mark { position: absolute; top: -10px; right: -15px; font-size: 3rem; color: var(--accent); animation: float 2s ease-in-out infinite; }
             @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
             .search-hero-404 { padding: 60px 20px; text-align: center; background: linear-gradient(180deg, rgba(248,250,252,0) 0%, rgba(248,250,252,1) 100%); }
           `}} />

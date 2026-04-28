@@ -151,7 +151,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 <p style={{ color: '#666', fontSize: '1.2rem', marginBottom: '20px' }}>
                   Ainda não publicamos artigos nesta categoria.
                 </p>
-                <Link href="/artigos" style={{ color: 'var(--aws-orange)', fontWeight: 600, fontSize: '1.1rem' }}>
+                <Link href="/artigos" style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>
                   Ver todos os artigos &rarr;
                 </Link>
               </div>
