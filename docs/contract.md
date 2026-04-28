@@ -245,6 +245,75 @@ Todos os formatos suportados têm trigger S3→Lambda: `.jpg`, `.jpeg`, `.png`, 
 
 ---
 
+## Design System (OBRIGATÓRIO)
+
+O design system define os tokens visuais que garantem consistência em toda a UI. Nunca usar valores hardcoded de cor ou fonte — sempre referenciar os tokens.
+
+### Fontes
+
+| Variável CSS | Fonte | Uso |
+|---|---|---|
+| `--font-display` | DM Sans | Headings, display, UI elements (botões, labels, nav) |
+| `--font-sans` | Inter | Body text, parágrafos, meta |
+| `--font-mono` | JetBrains Mono | Blocos de código, inline code |
+
+Carregadas via `next/font/google` em `frontend/app/layout.tsx`. **Nunca** usar `Space Grotesk` — foi removido.
+
+### Paleta de Cores
+
+```css
+/* Brand */
+--accent: #3B5F8A        /* Classic Blue — CTA, links, ativo */
+--accent-hover: #2D4F76  /* Hover/pressed do accent */
+--accent-light: #EBF1F8  /* Fundo sutil, badges, ícone bg */
+--accent-dark: #1E3A57   /* Texto sobre fundo claro, deep blue */
+
+/* Dark Scale */
+--dark-900: #111827      /* Near-black — headings, logo */
+--dark-800: #1F2937      /* Cards escuros, dark sections */
+--dark-700: #374151      /* Body text */
+--dark-600: #475569      /* Secondary text */
+
+/* Slate Neutrals */
+--slate-50:  #F8FAFC     /* Page bg, hero bg */
+--slate-100: #F1F5F9     /* Card bg, section alt */
+--slate-200: #E2E8F0     /* Borders (= --border-color) */
+--slate-300: #CBD5E1     /* Dividers, muted borders */
+--slate-400: #94A3B8     /* Placeholder text */
+--slate-500: #64748B     /* Muted text, metadata */
+```
+
+### Tokens de Superfície
+
+```css
+--border-color: #E2E8F0        /* Borda padrão (= --slate-200) */
+--border-radius-sm: 4px        /* Tags, badges */
+--border-radius: 8px           /* Cards, inputs */
+--border-radius-lg: 12px       /* Modais, widgets grandes */
+--shadow-sm: 0 2px 8px rgba(0,0,0,0.05)
+--shadow-md: 0 4px 16px rgba(0,0,0,0.08)
+--shadow-lg: 0 12px 32px rgba(0,0,0,0.12)
+--bg-light-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)
+```
+
+### Regras
+
+- **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` ou `--font-space-grotesk` — foram removidos.
+- Botões primários: `background: var(--accent)`, `color: white`. Nunca texto escuro em fundo azul.
+- `.highlight` e `.accent` aplicam `color: var(--accent)`.
+- Referência completa dos exemplos visuais: `docs/design-system/design-reference.md`.
+
+### Logo Wordmark
+
+```
+Marcelo          → color: var(--dark-900) — #111827
+Gonçalves        → color: var(--accent)   — #3B5F8A
+```
+
+Font: DM Sans 700, letter-spacing: -0.5px.
+
+---
+
 ## SEO (OBRIGATÓRIO)
 
 O blog é um produto de descoberta orgânica. SEO world-class é requisito não-negociável.
