@@ -1,3 +1,4 @@
+import './not-found.css';
 import Link from 'next/link';
 import { getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';

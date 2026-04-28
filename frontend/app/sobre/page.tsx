@@ -1,3 +1,4 @@
+import './sobre.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAuthor, getPopularPosts } from '@/lib/api';

@@ -707,3 +707,78 @@ pre.code-block,
     gap: var(--post-block-spacing);
   }
 }
+
+/* --- CALLOUTS (Tiptap) --- */
+
+.content-callout {
+  display: block !important;
+  position: relative;
+  padding: 20px 25px !important;
+  margin: var(--post-block-spacing) 0 !important;
+  border-radius: 8px;
+  border-left: 5px solid;
+  line-height: 1.6;
+  font-size: 1.05rem;
+  overflow-wrap: break-word;
+}
+
+.content-callout .callout-label-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+  user-select: none;
+  pointer-events: none;
+  vertical-align: baseline;
+  font-weight: 700;
+}
+
+.content-callout .callout-content-area {
+  display: inline;
+}
+
+.content-callout p,
+.content-callout br {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.callout-info {
+  background-color: var(--blue-light) !important;
+  border-left-color: var(--blue-600) !important;
+  color: #2c5282 !important;
+}
+
+.callout-warning {
+  background-color: var(--orange-light) !important;
+  border-left-color: var(--accent) !important;
+  color: #744210 !important;
+}
+
+@media (max-width: 768px) {
+  .content-callout { padding: 15px 18px !important; font-size: 1rem; }
+}
+
+/* --- TABELAS (Editor) --- */
+
+article table,
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+article th, article td,
+.post-content th, .post-content td {
+  border: 1px solid #d1d5db;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+article th,
+.post-content th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+}

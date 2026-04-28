@@ -1,0 +1,48 @@
+/* frontend/app/not-found.css */
+
+.error-hero {
+  background: var(--bg-light-gradient);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.error-404-text {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.error-hero h1 {
+  font-size: 2.2rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.error-subtitle {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-retention-container {
+  padding: 60px 20px 0 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.retention-title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .error-hero { padding: 80px 20px; }
+  .error-404-text { font-size: 8rem; }
+  .error-hero h1 { font-size: 3rem; }
+  .search-retention-container { padding-top: 80px; }
+  .retention-title { font-size: 1.8rem; margin-bottom: 30px; }
+}

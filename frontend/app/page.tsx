@@ -1,5 +1,6 @@
 /**frontend/app/page.tsx */
 
+import './home.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts } from '@/lib/api';

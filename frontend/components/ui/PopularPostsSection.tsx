@@ -1,5 +1,6 @@
 // frontend/components/ui/PopularPostsSection.tsx
 
+import './PopularPostsSection.css';
 import Link from 'next/link';
 import { getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard'; 

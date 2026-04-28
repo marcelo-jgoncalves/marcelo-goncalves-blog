@@ -1,3 +1,4 @@
+import './busca.css';
 import Link from 'next/link';
 import { searchPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';

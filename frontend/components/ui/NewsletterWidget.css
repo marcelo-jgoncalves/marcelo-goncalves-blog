@@ -2,6 +2,32 @@
    NEWSLETTER WIDGET (8px Grid & Strict Scope Isolation)
    ========================================================================== */
 
+.sidebar-widget {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.widget-newsletter {
+  background-color: white;
+  color: var(--dark-900);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  display: block;
+  color: var(--dark-900);
+}
+
 
 /* 🚀 2. Ícone Destaque */
 .widget-newsletter .card-icon-wrapper {

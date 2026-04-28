@@ -1,0 +1,77 @@
+/* frontend/app/servicos/servicos.css */
+
+.services-content {
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: var(--post-block-spacing);
+  text-align: center;
+  padding-bottom: var(--post-block-spacing);
+  border-bottom: 1px solid #eee;
+}
+
+.service-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.service-icon {
+  width: 70px;
+  height: 70px;
+  background-color: var(--accent-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 2rem;
+  margin: 0 auto;
+}
+
+.service-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.service-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.sales-cta {
+  padding: 80px 20px;
+  background-color: var(--slate-50);
+  text-align: center;
+  margin-top: 40px;
+}
+
+.sales-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.sales-cta p {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+}
+
+@media (min-width: 768px) {
+  .services-content { padding: 80px 20px; }
+  .service-item {
+    flex-direction: row;
+    gap: 40px;
+    text-align: left;
+  }
+  .service-icon { margin: 0; }
+  .service-text h2 { font-size: 2rem; }
+  .sales-cta h2 { font-size: 2.5rem; }
+}

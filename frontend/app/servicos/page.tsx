@@ -1,3 +1,4 @@
+import './servicos.css';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
 

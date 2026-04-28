@@ -1,0 +1,93 @@
+/* frontend/app/sobre/sobre.css */
+
+.bio-section {
+  padding: 40px 0;
+  max-width: 900px;
+  margin: 0 auto;
+  overflow: auto;
+  text-align: center;
+}
+
+.bio-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto 30px auto;
+  background-color: #e0e0e0;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bio-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bio-content h2 {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.bio-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.bio-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.bio-social-links a {
+  color: var(--dark-700);
+  font-size: 1.8rem;
+  transition: color 0.3s;
+}
+
+.bio-social-links a:hover {
+  color: var(--accent);
+}
+
+.bio-cta-section {
+  padding: 40px 0 0 0;
+  text-align: center;
+  clear: both;
+  margin-top: var(--post-block-spacing);
+  border-top: 1px solid var(--border-color);
+}
+
+.bio-cta-section h3 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.bio-cta-section p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+@media (min-width: 768px) {
+  .bio-section { padding: 80px 0; text-align: left; }
+  .bio-avatar {
+    float: left;
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    margin: 0 40px 20px 0;
+  }
+  .bio-social-links { justify-content: flex-start; }
+  .bio-content h2 { font-size: 2.5rem; }
+  .bio-content p { font-size: 1.1rem; }
+  .bio-cta-section { padding-top: var(--post-block-spacing); border-top: none; }
+  .bio-cta-section h3 { font-size: 2.2rem; }
+}
