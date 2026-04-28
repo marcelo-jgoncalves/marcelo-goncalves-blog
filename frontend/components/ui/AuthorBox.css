@@ -9,18 +9,19 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--post-block-spacing); /* 24px */
-  padding: calc(var(--space-unit) * 4); /* 32px */
+  gap: 20px;
+  padding: 24px;
   background-color: var(--slate-50);
-  border-radius: calc(var(--space-unit) * 2); /* 16px */
-  margin: calc(var(--space-unit) * 6) 0; /* 48px - Isolamento vertical */
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin: calc(var(--space-unit) * 6) 0;
 }
 
 /* --- Avatar & Imagem --- */
 .author-avatar {
   flex-shrink: 0;
-  width: calc(var(--space-unit) * 10); /* 80px */
-  height: calc(var(--space-unit) * 10); /* 80px */
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   overflow: hidden;
   background-color: var(--border-color);
@@ -115,8 +116,8 @@
     flex-direction: row;
     align-items: flex-start;
     text-align: left;
-    padding: calc(var(--space-unit) * 6); /* 48px */
-    gap: calc(var(--space-unit) * 4); /* 32px */
+    padding: 24px;
+    gap: 24px;
   }
 
   .author-social {

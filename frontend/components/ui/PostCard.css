@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  border-radius: 16px; /* Ritmo de 8px (2x8) */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
   overflow: hidden; /* Fundamental para a imagem respeitar as bordas arredondadas */
   height: 100%; /* Garante que os cards estiquem uniformemente em um CSS Grid */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -14,7 +14,7 @@
 @media (hover: hover) {
   .post-card:hover {
     transform: translateY(-4px); /* Feedback visual premium */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
   }
 }
 

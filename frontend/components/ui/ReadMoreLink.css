@@ -7,8 +7,8 @@
   gap: 8px; /* Ritmo de 8px */
   color: var(--accent);
   font-family: var(--font-display), sans-serif;
-  font-size: 1.125rem; /* 18px */
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-decoration: none;
   line-height: 1.5;
   transition: transform 0.2s ease, color 0.2s ease;

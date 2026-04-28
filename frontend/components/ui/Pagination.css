@@ -12,11 +12,11 @@
 
 .op-page-number {
   font-family: var(--font-display); 
-  font-weight: 700; /* Elevado para 700 para igualar aos botões e títulos */
-  color: var(--dark-900); 
-  padding: 8px 16px; /* 🚀 Grid 8px: Corrigido de 10px 15px */
-  border: 1px solid var(--border-color); 
-  border-radius: 8px; /* 🚀 Grid 8px: Corrigido de 6px */
+  font-weight: 600;
+  color: var(--dark-900);
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   transition: all 0.2s ease; 
   display: inline-flex; /* Melhor alinhamento interno que inline-block */
   align-items: center;
@@ -33,8 +33,8 @@
 }
 
 .op-page-number.current { 
-  background-color: var(--accent); 
-  color: var(--dark-900); /* Contraste WCAG superior ao branco no nosso laranja */
+  background-color: var(--accent);
+  color: #ffffff;
   border-color: var(--accent); 
   pointer-events: none; /* A11y: Evita que o usuário clique na página em que já está */
 }

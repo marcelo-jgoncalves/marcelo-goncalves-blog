@@ -37,7 +37,7 @@
   /* 🚀 RITMO: Corrigido de 60px para 64px (8x8) */
   width: calc(var(--space-unit) * 8);
   height: calc(var(--space-unit) * 8);
-  background-color: #fff8f0; 
+  background-color: var(--accent-light);
   color: var(--accent);
   border-radius: calc(var(--space-unit) * 1.5); /* 12px (Proporcional ao 64) */
   font-size: 1.5rem;
@@ -63,11 +63,11 @@
   /* 🚀 RITMO UX: Ajustado de 12px para 16px de área de toque real (Mobile-Friendly) */
   padding: calc(var(--space-unit) * 2);
   background-color: var(--accent);
-  color: var(--dark-900);
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 700;
-  /* 🚀 RITMO: Ajustado de 6px para 8px (1x8) */
-  border-radius: var(--space-unit);
+  font-weight: 600;
+  font-family: var(--font-display);
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
