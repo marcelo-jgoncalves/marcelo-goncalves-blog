@@ -41,7 +41,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 
   # --- Origem 2: S3 Uploads (Mídia) ---
   origin {
-    domain_name              = "marcelo-goncalves-blog-${var.environment}-uploads-raw.s3.amazonaws.com"
+    domain_name              = var.uploads_bucket_regional_domain_name
     origin_id                = "S3-Uploads"
     origin_access_control_id = aws_cloudfront_origin_access_control.media_oac.id
   }

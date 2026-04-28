@@ -62,8 +62,9 @@ module "frontend" {
   log_retention_days  = var.log_retention_days
   enable_xray_tracing = var.enable_xray_tracing
   api_url             = module.api-gateway.api_url
-  uploads_bucket_name = module.media.uploads_bucket_name
-  uploads_bucket_arn  = module.media.uploads_bucket_arn
+  uploads_bucket_name                 = module.media.uploads_bucket_name
+  uploads_bucket_arn                  = module.media.uploads_bucket_arn
+  uploads_bucket_regional_domain_name = module.media.uploads_bucket_regional_domain_name
 }
 
 module "cognito" {

@@ -23,3 +23,8 @@ variable "uploads_bucket_arn" {
   description = "ARN do bucket S3 de uploads de mídia"
   type        = string
 }
+
+variable "uploads_bucket_regional_domain_name" {
+  description = "Regional domain name do bucket S3 de uploads (necessário para OAC SigV4)"
+  type        = string
+}
