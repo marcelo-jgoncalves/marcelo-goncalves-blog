@@ -377,6 +377,18 @@ export const revalidate = 3600
 
 Usar `robots: { index: false, follow: true }` no `generateMetadata()`. Atualmente: `/busca`.
 
+### Ambiente dev — proteção contra indexação
+
+O domínio CloudFront (`*.cloudfront.net`) **nunca** deve ser indexado pelo Google.
+
+Implementado via `SITE_URL.includes('cloudfront.net')` em dois arquivos:
+- `app/robots.ts` → retorna `Disallow: /` para todos os bots no domínio dev
+- `app/layout.tsx` → emite `<meta name="robots" content="noindex, nofollow">`
+
+Quando `NEXT_PUBLIC_SITE_URL` apontar para o domínio definitivo, ambos voltam ao comportamento de produção **automaticamente** — sem mudança de código.
+
+**Nunca** remover essa lógica sem primeiro confirmar que `SITE_URL` é o domínio definitivo.
+
 ### SEO audit
 
 Progresso completo em `docs/seo-audit.md`. **16/20 itens implementados.**  
