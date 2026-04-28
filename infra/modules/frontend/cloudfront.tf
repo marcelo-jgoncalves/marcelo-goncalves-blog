@@ -9,6 +9,15 @@ resource "aws_cloudfront_origin_access_control" "oac" {
   signing_protocol                  = "sigv4"
 }
 
+# OAC para o bucket de uploads de mídia
+resource "aws_cloudfront_origin_access_control" "media_oac" {
+  name                              = "${var.project_name}-${var.environment}-media-oac"
+  description                       = "Acesso restrito S3 Uploads de Mídia"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 # OAC para a Lambda Function URL — garante que só o CloudFront pode invocar
 resource "aws_cloudfront_origin_access_control" "lambda_oac" {
   name                              = "${var.project_name}-${var.environment}-lambda-oac"
@@ -30,7 +39,14 @@ resource "aws_cloudfront_distribution" "frontend" {
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
-  # --- Origem 2: Lambda (SSR Server) com OAC — apenas CloudFront pode invocar ---
+  # --- Origem 2: S3 Uploads (Mídia) ---
+  origin {
+    domain_name              = "marcelo-goncalves-blog-${var.environment}-uploads-raw.s3.amazonaws.com"
+    origin_id                = "S3-Uploads"
+    origin_access_control_id = aws_cloudfront_origin_access_control.media_oac.id
+  }
+
+  # --- Origem 3: Lambda (SSR Server) com OAC — apenas CloudFront pode invocar ---
   origin {
     domain_name              = replace(aws_lambda_function_url.nextjs_url.function_url, "/^https?://([^/]*).*/", "$1")
     origin_id                = "Lambda-SSR"
@@ -44,12 +60,12 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  # --- REGRA NOVA: Arquivos de Mídia (Uploads) vão para o S3 ---
+  # --- REGRA: Arquivos de Mídia (Uploads) vão para o bucket de uploads ---
   ordered_cache_behavior {
     path_pattern     = "media/*"
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "S3-Assets" # Aponta para o bucket
+    target_origin_id = "S3-Uploads"
 
     forwarded_values {
       query_string = false
