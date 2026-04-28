@@ -38,7 +38,9 @@ export const metadata: Metadata = {
   authors: [{ name: AUTHOR_NAME }],
   creator: AUTHOR_NAME,
   publisher: SITE_NAME,
-  robots: { index: true, follow: true },
+  robots: SITE_URL.includes('cloudfront.net')
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
