@@ -16,15 +16,22 @@ interface PostCardProps {
       nome_exibicao: string;
       icone_fa?: string;
     };
+    data_publicacao?: string;
+    tempo_leitura_min?: number;
   };
-  isPriority?: boolean; // 👈 Otimização de LCP (Pilar Performance)
+  isPriority?: boolean;
+}
+
+function formatDate(iso?: string): string | null {
+  if (!iso) return null;
+  return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 export default function PostCard({ post, isPriority = false }: PostCardProps) {
+  const date = formatDate(post.data_publicacao);
+
   return (
     <article className="post-card">
-      
-      {/* Wrapper de Imagem com Next/Image (Pilar: Performance & Vitals) */}
       <div className="post-card__image-wrapper">
         {post.imagem_destaque_url && (
           <ResponsiveImage
@@ -38,32 +45,46 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
         )}
       </div>
 
-      {/* Conteúdo do Card */}
       <div className="post-card__content">
-        
-        {/* Pilar SEO On-Page: Injeção do Badge de Categoria */}
-        {post.categoria && (
-          <div>
-            <CategoryBadge 
+
+        {/* Badge + meta na mesma linha */}
+        <div className="post-card__meta-row">
+          {post.categoria && (
+            <CategoryBadge
               nome={post.categoria.nome_exibicao}
               slug={post.categoria_slug}
               icone_fa={post.categoria.icone_fa}
               size="sm"
             />
-          </div>
-        )}
+          )}
+          {(date || post.tempo_leitura_min) && (
+            <div className="post-card__meta-info" aria-label="Informações do artigo">
+              {date && (
+                <span>
+                  <i className="far fa-calendar-alt" aria-hidden="true" />
+                  {date}
+                </span>
+              )}
+              {post.tempo_leitura_min && (
+                <span>
+                  <i className="far fa-clock" aria-hidden="true" />
+                  {post.tempo_leitura_min} min
+                </span>
+              )}
+            </div>
+          )}
+        </div>
 
         <h3 className="post-card__title">
           <Link href={`/post/${post.slug}`} className="post-card__title-link">
             {post.titulo}
           </Link>
         </h3>
-        
+
         <p className="post-card__excerpt">{post.resumo}</p>
-        
-        {/* Componente Global Injetado com Contexto de SEO */}
-        <ReadMoreLink 
-          href={`/post/${post.slug}`} 
+
+        <ReadMoreLink
+          href={`/post/${post.slug}`}
           ariaLabel={`Ler post completo sobre ${post.titulo}`}
           className="post-card__read-more"
         />

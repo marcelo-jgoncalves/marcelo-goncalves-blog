@@ -2,48 +2,88 @@
 
 /* --- Hero --- */
 .hero-section {
-  background: var(--bg-light-gradient);
+  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
   padding: 80px 20px;
   text-align: center;
 }
 
+.hero-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
 .hero-title {
-  font-size: 2.5rem;
-  line-height: 1.1;
+  font-size: 2.8rem;
+  line-height: 1.15;
   margin-bottom: 20px;
+  letter-spacing: -0.03em;
 }
 
 .hero-subtitle {
   font-size: 1.1rem;
   color: var(--slate-500);
-  margin-bottom: 30px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* --- Layout principal: 2 colunas com sidebar --- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-items: start;
+}
+
+.home-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 48px 0;
+}
+
+/* --- Posts grid dentro do main (2 colunas) --- */
+.home-posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+/* --- Link "ver todos" --- */
+.home-see-all {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.home-see-all a {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.home-see-all a:hover {
+  color: var(--accent-hover);
 }
 
 /* --- Section header --- */
 .section-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .section-header h2 {
   font-size: 2rem;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .section-header p {
-  color: #666;
-  font-size: 1.1rem;
-}
-
-/* --- Posts grid (home) --- */
-.posts-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-  width: 100%;
+  color: var(--slate-500);
+  font-size: 1rem;
 }
 
 /* --- Super destaque --- */
@@ -56,9 +96,10 @@
 }
 
 .super-destaque h2 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 20px;
   color: white;
+  line-height: 1.25;
 }
 
 .super-destaque h2 .highlight {
@@ -69,9 +110,10 @@
   font-size: 1.1rem;
   color: var(--slate-50);
   margin-bottom: 40px;
-  max-width: 900px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
 }
 
 /* --- CTA Newsletter --- */
@@ -83,49 +125,50 @@
 }
 
 .cta h2 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 20px;
   color: white;
+  line-height: 1.25;
 }
 
 .cta p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  color: #94A3B8;
   margin-bottom: 30px;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
 }
 
-/* --- Categorias --- */
-.categories {
-  padding: 80px 20px;
-  background-color: white;
-}
-
+/* --- Categorias (dentro do main) --- */
 .categories-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 .category-card {
   background: white;
   border: 1px solid #f0f0f0;
   border-radius: 12px;
-  padding: 30px;
+  padding: 20px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  text-decoration: none;
+  color: inherit;
 }
 
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    border-color: var(--accent);
+  }
 }
 
 .category-icon {
@@ -137,27 +180,45 @@
   align-items: center;
   justify-content: center;
   color: var(--accent);
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .category-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--dark-900);
+  margin-bottom: 6px;
 }
 
 .category-card p {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.5;
+  font-size: 0.8rem;
+  color: var(--slate-500);
+  line-height: 1.4;
+  margin: 0;
 }
 
+/* --- Tablet e acima --- */
 @media (min-width: 768px) {
-  .hero-title { font-size: 3.5rem; }
   .hero-subtitle { font-size: 1.25rem; }
-  .section-header h2 { font-size: 2.5rem; }
+  .section-header h2 { font-size: 2rem; }
+  .home-posts-grid { grid-template-columns: repeat(2, 1fr); }
+  .categories-grid { grid-template-columns: repeat(3, 1fr); }
   .super-destaque h2,
   .cta h2 { font-size: 2.5rem; }
-  .posts-grid { grid-template-columns: repeat(3, 1fr); }
-  .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 30px; }
+}
+
+/* --- Desktop: ativa o grid 2 colunas com sidebar --- */
+@media (min-width: 1024px) {
+  .home-layout {
+    grid-template-columns: 1fr 300px;
+    gap: 60px;
+    padding-top: 0;
+  }
+
+  .home-main {
+    padding: 60px 0;
+  }
 }

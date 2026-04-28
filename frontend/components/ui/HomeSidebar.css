@@ -1,0 +1,10 @@
+/* frontend/components/ui/HomeSidebar.css */
+
+.home-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  height: max-content;
+  position: sticky;
+  top: 104px;
+}

@@ -76,7 +76,35 @@
   }
 }
 
+.post-card__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.post-card__meta-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.post-card__meta-info span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.post-card__meta-info i {
+  color: #cbd5e1;
+  font-size: 0.7rem;
+}
+
 .post-card__read-more {
-  align-self: flex-end; /* A Mágica: Empurra apenas este elemento para a direita */
-  margin-top: auto; /* Ritmo de 8px: Um respiro extra entre o resumo e o botão, se necessário */
+  align-self: flex-end;
+  margin-top: auto;
 }
