@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { getPopularPosts } from '@/lib/api';
 import './PopularPostsWidget.css';
 
@@ -50,13 +50,12 @@ async function PopularPostsList() {
             
             {post.imagem_destaque_url && (
               <div className="popular-widget__image-wrapper">
-                <Image
+                <ResponsiveImage
                   src={post.imagem_destaque_url}
                   alt={`Ler artigo: ${post.titulo}`}
                   fill
-                  sizes="(max-width: 1023px) 100vw, 350px" // Mobile: full width, Desktop: tamanho da sidebar
+                  sizes="(max-width: 1023px) 100vw, 350px"
                   className="popular-widget__image"
-                  loading="lazy" // Sidebar não é prioridade de LCP, preservamos banda
                 />
               </div>
             )}

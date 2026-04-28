@@ -1,6 +1,6 @@
 /* frontend/components/ui/TimelineCard.tsx */
 import Link from 'next/link';
-import Image from 'next/image';
+import ResponsiveImage from './ResponsiveImage';
 import ReadMoreLink from './ReadMoreLink';
 import CategoryBadge from './CategoryBadge';
 import './TimelineCard.css';
@@ -42,18 +42,17 @@ export default function TimelineCard({ post, isPriority = false }: TimelineCardP
       </div>
 
       {post.imagem_destaque_url && (
-        <Link 
-          href={`/post/${post.slug}`} 
-          className="op-card-image" 
+        <Link
+          href={`/post/${post.slug}`}
+          className="op-card-image"
           aria-label={`Ler artigo: ${post.titulo}`}
         >
-          <Image 
-            src={post.imagem_destaque_url} 
+          <ResponsiveImage
+            src={post.imagem_destaque_url}
             alt={`Capa do artigo: ${post.titulo}`}
             fill
             sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1024px) 66vw, 400px"
-            priority={isPriority} 
-            quality={80} 
+            priority={isPriority}
           />
         </Link>
       )}

@@ -15,29 +15,37 @@ jest.mock('next/image', () => ({
   },
 }));
 
+// URLs com extensão (.webp/.jpg/.png) são tratadas como basePath — a extensão
+// é stripped e o componente renderiza <picture> com variantes AVIF/WebP.
+// Isso cobre tanto URLs do admin antigo (uuid.webp) quanto novos basePaths.
 const LEGACY_URL = 'https://cdn.example.com/media/ts-uuid-foto.webp';
 const BASE_URL   = 'https://cdn.example.com/media/ts-uuid-foto';
 
 describe('ResponsiveImage', () => {
-  describe('detecção de URL legada', () => {
-    it('renderiza <img> via Next/Image para URL com .webp', () => {
+  describe('URLs com extensão (tratadas como basePath)', () => {
+    it('renderiza <picture> para URL com .webp (strip extensão)', () => {
       const { container } = render(<ResponsiveImage src={LEGACY_URL} alt="teste" />);
-      expect(container.querySelector('picture')).toBeNull();
-      expect(container.querySelector('img')).not.toBeNull();
+      expect(container.querySelector('picture')).not.toBeNull();
     });
 
-    it('renderiza <img> via Next/Image para URL com .jpg', () => {
+    it('source mobile aponta para basePath-480.avif sem a extensão original', () => {
+      const { container } = render(<ResponsiveImage src={LEGACY_URL} alt="teste" />);
+      const src = container.querySelector('source[media="(max-width: 480px)"][type="image/avif"]')?.getAttribute('srcset');
+      expect(src).toBe(`${BASE_URL}-480.avif`);
+    });
+
+    it('renderiza <picture> para URL com .jpg', () => {
       const { container } = render(
         <ResponsiveImage src="https://cdn.example.com/img.jpg" alt="teste" />
       );
-      expect(container.querySelector('picture')).toBeNull();
+      expect(container.querySelector('picture')).not.toBeNull();
     });
 
-    it('renderiza <img> via Next/Image para URL com .png', () => {
+    it('renderiza <picture> para URL com .png', () => {
       const { container } = render(
         <ResponsiveImage src="https://cdn.example.com/img.png" alt="teste" />
       );
-      expect(container.querySelector('picture')).toBeNull();
+      expect(container.querySelector('picture')).not.toBeNull();
     });
   });
 
