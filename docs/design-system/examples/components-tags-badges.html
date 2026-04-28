@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #fff; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+  .label { font-size: 10px; font-weight: 600; color: #94a3b8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; }
+  .tag-primary { background: #3B5F8A; color: white; }
+  .tag-muted { background: #EBF1F8; color: #3B5F8A; }
+  .tag-dark { background: #111827; color: white; }
+  .tag-outline { border: 1px solid #E2E8F0; color: #374151; background: white; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 9999px; font-size: 0.72rem; font-weight: 600; }
+  .badge-accent { background: #EBF1F8; color: #3B5F8A; }
+  .badge-dark { background: #1F2937; color: #CBD5E1; }
+  .badge-green { background: #DCFCE7; color: #166534; }
+  .pager { display: inline-flex; align-items: center; gap: 6px; }
+  .pg { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem; border: 1px solid #E2E8F0; color: #374151; cursor: pointer; }
+  .pg.active { background: #3B5F8A; color: white; border-color: #3B5F8A; }
+  .pg:hover:not(.active) { background: #f8fafc; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="label">Post Tags</div>
+    <div class="row">
+      <span class="tag tag-primary">inteligencia-artificial</span>
+      <span class="tag tag-primary">cloud-computing</span>
+      <span class="tag tag-primary">devops-automacao</span>
+      <span class="tag tag-muted">engenharia-de-software</span>
+      <span class="tag tag-outline">noticias-e-mercado</span>
+    </div>
+  </div>
+  <div>
+    <div class="label">Badges</div>
+    <div class="row">
+      <span class="badge badge-accent">IA</span>
+      <span class="badge badge-accent">AWS</span>
+      <span class="badge badge-green">Novo</span>
+      <span class="badge badge-dark">8 min de leitura</span>
+      <span class="badge badge-dark">14 jan 2025</span>
+    </div>
+  </div>
+  <div>
+    <div class="label">Pagination</div>
+    <div class="pager">
+      <div class="pg">←</div>
+      <div class="pg">1</div>
+      <div class="pg active">2</div>
+      <div class="pg">3</div>
+      <div class="pg">4</div>
+      <div class="pg">→</div>
+    </div>
+  </div>
+</body>
+</html>
