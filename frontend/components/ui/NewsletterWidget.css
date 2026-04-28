@@ -12,7 +12,7 @@
   width: calc(var(--space-unit) * 8);
   height: calc(var(--space-unit) * 8);
   background-color: #fff8f0; 
-  color: var(--aws-orange);
+  color: var(--accent);
   border-radius: calc(var(--space-unit) * 1.5); /* 12px (Proporcional ao 64) */
   font-size: 1.5rem;
   /* 🚀 RITMO: Corrigido de 15px para 16px (2x8) */
@@ -24,7 +24,7 @@
 .widget-newsletter .card-desc {
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--gray-text); 
+  color: var(--slate-500); 
   /* 🚀 RITMO: Corrigido de 20px para 24px (3x8) */
   margin-bottom: calc(var(--space-unit) * 3);
 }
@@ -36,8 +36,8 @@
   text-align: center;
   /* 🚀 RITMO UX: Ajustado de 12px para 16px de área de toque real (Mobile-Friendly) */
   padding: calc(var(--space-unit) * 2);
-  background-color: var(--aws-orange);
-  color: var(--aws-dark);
+  background-color: var(--accent);
+  color: var(--dark-900);
   text-decoration: none;
   font-weight: 700;
   /* 🚀 RITMO: Ajustado de 6px para 8px (1x8) */
@@ -51,6 +51,6 @@
 @media (hover: hover) {
   .widget-newsletter .btn-full:hover {
     transform: translateY(-2px);
-    background-color: var(--aws-orange-hover);
+    background-color: var(--accent-hover);
   }
 }

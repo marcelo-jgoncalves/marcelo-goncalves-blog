@@ -3,7 +3,7 @@
 .op-footer {
   /* Ritmo 8px: 64px top, 24px lados, 32px bottom (8x8, 3x8, 4x8) */
   padding: 64px 24px 32px; 
-  background-color: var(--aws-dark, #2d3748);
+  background-color: var(--dark-900);
   color: #cbd5e0;
 }
 
@@ -28,7 +28,7 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 16px; /* Ritmo 8px (substitui os 15px) */
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
 }
 
 .op-footer-text {
@@ -57,7 +57,7 @@
 
 @media (hover: hover) {
   .op-social-link:hover {
-    background-color: var(--aws-orange, #ff9900);
+    background-color: var(--accent);
     transform: translateY(-2px);
   }
 }
@@ -77,7 +77,7 @@
 
 @media (hover: hover) {
   .op-footer-link:hover {
-    color: var(--aws-orange, #ff9900);
+    color: var(--accent);
   }
 }
 

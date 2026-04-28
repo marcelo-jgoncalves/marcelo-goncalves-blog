@@ -57,7 +57,7 @@
   background-color: #f8fafc;
   border: 1px dashed #cbd5e1;
   color: #64748b;
-  font-family: var(--font-space-grotesk, sans-serif);
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: 0.85rem;
   text-transform: uppercase;

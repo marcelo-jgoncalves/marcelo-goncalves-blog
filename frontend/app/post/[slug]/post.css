@@ -38,13 +38,13 @@
 
 /* --- 2. HEADER E METADADOS --- */
 .article-header {
-  background-color: var(--gray-light);
+  background-color: var(--slate-50);
   width: 100vw; 
   margin-left: calc(-50vw + 50%);
   /* 🚀 AJUSTE: Ritmo vertical corrigido */
   padding: 64px 0 96px 0; 
   text-align: center;
-  border-bottom: 1px solid var(--gray-border);
+  border-bottom: 1px solid var(--border-color);
   position: relative;
   z-index: 1;
 }
@@ -59,7 +59,7 @@
   display: flex; 
   justify-content: center; 
   gap: 24px; /* 🚀 AJUSTE: 3x8 */
-  color: var(--gray-text); 
+  color: var(--slate-500); 
   font-size: 0.875rem; /* 14px - Padrão de legibilidade meta */
   flex-wrap: wrap;
 }
@@ -72,12 +72,12 @@
 
 /* Tipografia do Header */
 .article-title {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 2.5rem; 
   line-height: 1.2;
   margin-bottom: 24px; /* 🚀 AJUSTE: 3x8 */
-  color: var(--aws-dark);
+  color: var(--dark-900);
 }
 
 @media (min-width: 768px) {
@@ -88,13 +88,13 @@
 
 /* --- 3. BADGES (TAGS) --- */
 .post-tag {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background-color: rgba(255, 153, 0, 0.15); 
-  color: var(--aws-orange); 
+  color: var(--accent); 
   padding: 4px 12px; /* 🚀 AJUSTE: Micro-ritmo */
   border-radius: 4px;
   font-size: 0.75rem;
@@ -107,7 +107,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--aws-orange);
+  background-color: var(--accent);
   color: white;
   padding: 8px 16px; /* 🚀 AJUSTE: 1:2 ratio */
   border-radius: 4px;
@@ -157,7 +157,7 @@
 .post-lead {
   font-size: 1.25rem; 
   font-weight: 500;   
-  color: var(--aws-dark); 
+  color: var(--dark-900); 
   line-height: 1.6;
   margin-bottom: 2rem !important;
 }
@@ -168,7 +168,7 @@
   margin: 0;
   padding: 0; 
   font-size: 1.15rem;
-  color: var(--gray-800);
+  color: var(--dark-700);
   line-height: 1.75;
 }
 
@@ -183,7 +183,7 @@
   .post-lead {
     font-size: 1.35rem;
     font-style: italic;
-    border-left: 4px solid var(--aws-orange);
+    border-left: 4px solid var(--accent);
     padding-left: 1.5rem;
   }
 }
@@ -212,13 +212,13 @@
 }
 
 .post-content a:hover,
-.post-content .content-link:hover { color: var(--aws-dark); }
+.post-content .content-link:hover { color: var(--dark-900); }
 
 /* Tipografia Interna */
 .post-content strong,
 .post-content b {
   font-weight: 700;
-  color: var(--aws-dark);
+  color: var(--dark-900);
 }
 
 .post-content em,
@@ -227,9 +227,9 @@
 .post-content h2, 
 .post-content h3, 
 .post-content h4 {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   line-height: 1.3;
   margin-top: var(--post-heading-top); 
   margin-bottom: var(--post-heading-bottom);
@@ -237,9 +237,9 @@
 }
 
 .post-content h5 {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   line-height: 1.3;
   margin-top: var(--post-heading-top); 
   margin-bottom: var(--post-heading-bottom);
@@ -262,7 +262,7 @@
   top: var(--space-unit); 
   bottom: var(--space-unit);
   width: 4px; 
-  background-color: var(--aws-orange); 
+  background-color: var(--accent); 
   border-radius: 2px;
 }
 
@@ -330,7 +330,7 @@
   top: 0.55em; 
   width: var(--space-unit); 
   height: var(--space-unit);
-  background-color: var(--aws-orange); 
+  background-color: var(--accent); 
   border-radius: 50%;
 }
 
@@ -344,16 +344,16 @@
   left: 0;
   top: 0;
   width: calc(var(--space-unit) * 3); /* Reserva 24px para o número */
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--aws-orange);
+  color: var(--accent);
   text-align: left;
 }
 
 .post-content ol li::marker {
-  color: var(--aws-orange);
+  color: var(--accent);
   font-weight: 700;
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
 }
 
 @media (min-width: 768px) {
@@ -366,7 +366,7 @@
 .post-content blockquote {
   margin: calc(var(--space-unit) * 4) 0; 
   padding: var(--post-block-spacing) calc(var(--space-unit) * 4);
-  background-color: var(--gray-light);
+  background-color: var(--slate-50);
   border-left: 4px solid var(--blue-600);
   border-radius: 0 8px 8px 0;
 }
@@ -417,7 +417,7 @@ pre.code-block,
   color: #e2e8f0;
   font-family: var(--font-code);
   line-height: 1.6;
-  background-color: var(--aws-dark); 
+  background-color: var(--dark-900); 
   -webkit-overflow-scrolling: touch; 
 }
 
@@ -442,7 +442,7 @@ pre.code-block,
   margin-bottom: var(--post-block-spacing);
   border-radius: 8px;
   overflow: hidden;
-  background-color: var(--aws-dark);
+  background-color: var(--dark-900);
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
@@ -475,8 +475,8 @@ pre.code-block,
 }
 
 .copy-code-btn:hover {
-  background: var(--aws-orange);
-  border-color: var(--aws-orange);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 /* Scrollbar com altura múltipla de 8 */
@@ -490,7 +490,7 @@ pre.code-block,
 
 .toc-mobile-accordion {
   border: none;
-  border-left: 4px solid var(--aws-orange);
+  border-left: 4px solid var(--accent);
   background-color: transparent;
   width: 100%; 
   /* 🚀 RITMO: Usa os 32px (4 * 8px) para margem vertical */
@@ -509,15 +509,15 @@ pre.code-block,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   cursor: pointer;
 }
 
 .toc-mobile-header .toc-icon {
-  color: var(--aws-orange);
+  color: var(--accent);
   /* 🚀 AJUSTE: Normalizado para 16px (2 * 8px) */
   margin-right: calc(var(--space-unit) * 2); 
   margin-left: calc(var(--space-unit) * 2); 
@@ -526,7 +526,7 @@ pre.code-block,
 .toc-mobile-header .fa-chevron-down {
   transition: transform 0.3s ease;
   margin-left: auto; 
-  color: var(--aws-orange);
+  color: var(--accent);
 }
 
 .toc-mobile-content {
@@ -561,14 +561,14 @@ pre.code-block,
 
 .toc-mobile-inner .toc-list a {
   text-decoration: none;
-  color: var(--gray-800);
+  color: var(--dark-700);
   display: block; 
   padding: var(--space-unit) 0;
   transition: color 0.2s ease;
 }
 
 .toc-mobile-inner .toc-list a:hover {
-  color: var(--aws-orange);
+  color: var(--accent);
 }
 
 /* ==========================================================================
@@ -660,14 +660,14 @@ pre.code-block,
   justify-content: center;
   gap: calc(var(--space-unit) * 2);
   padding: var(--post-block-spacing) 0;
-  border-top: 1px solid var(--gray-border);
-  border-bottom: 1px solid var(--gray-border);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .share-label {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--aws-dark);
+  color: var(--dark-900);
 }
 
 .share-buttons-container {

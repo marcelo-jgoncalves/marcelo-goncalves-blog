@@ -4,9 +4,9 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: var(--bg-primary, #ffffff);
+  background-color: #ffffff;
   height: 88px; /* Macro-ritmo cravado (11 x 8px) */
-  border-bottom: 1px solid var(--border-color, #eaeaea);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .op-navbar {
@@ -22,16 +22,16 @@
 
 /* Tipografia Fiel ao Legado */
 .op-logo {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-size: 1.5rem; /* Tamanho Mobile */
   font-weight: 700;
   letter-spacing: -0.5px;
   text-decoration: none;
-  color: var(--aws-dark);
+  color: var(--dark-900);
 }
 
 .op-logo span {
-  color: var(--aws-orange);
+  color: var(--accent);
 }
 
 /* --- MOBILE FIRST --- */
@@ -43,7 +43,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   padding: 8px; /* Micro-ritmo: 1x8 */
 }
 
@@ -56,7 +56,7 @@
   top: 100%; 
   left: -24px; /* Compensa o padding exato da navbar */
   right: -24px;
-  background-color: var(--bg-primary, #ffffff);
+  background-color: #ffffff;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -79,18 +79,18 @@
 }
 
 .op-nav-link-mobile {
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   text-decoration: none;
   padding: 16px 0;
   font-size: 1.25rem;
-  border-bottom: 1px solid var(--border-color, #eaeaea);
+  border-bottom: 1px solid var(--border-color);
   transition: color 0.2s ease;
 }
 
 .op-nav-link-mobile.op-active {
-  color: var(--aws-orange);
+  color: var(--accent);
 }
 
 /* --- DESKTOP --- */
@@ -112,10 +112,10 @@
   }
 
   .op-nav-link {
-    font-family: var(--font-space-grotesk);
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.125rem;
-    color: var(--aws-dark);
+    color: var(--dark-900);
     text-decoration: none;
     /* Zero repaint: Animando apenas o que muda na GPU */
     transition: color 0.2s ease, transform 0.2s ease; 
@@ -124,12 +124,12 @@
   /* Blindagem contra Sticky Hover em tablets/monitores touch */
   @media (hover: hover) {
     .op-nav-link:hover {
-      color: var(--aws-orange);
+      color: var(--accent);
       transform: translateY(-1px); /* O pulinho elegante está de volta */
     }
   }
 
   .op-nav-link.op-active {
-    color: var(--aws-orange);
+    color: var(--accent);
   }
 }

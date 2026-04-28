@@ -6,10 +6,10 @@
   justify-content: center;
   
   background-color: var(--orange-light, #fffaf0);
-  color: var(--aws-orange, #FF9900);
+  color: var(--accent);
   border: 1px solid rgba(255, 153, 0, 0.2);
   
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-sans), sans-serif;
   font-weight: 600;
   text-decoration: none;
   
@@ -21,7 +21,7 @@
 /* Interação Acessível (Mobile-First Hover) */
 @media (hover: hover) {
   .category-badge:hover {
-    background-color: var(--aws-orange);
+    background-color: var(--accent);
     color: #ffffff;
     transform: translateY(-2px); /* Micro-interação premium */
     box-shadow: 0 4px 6px -1px rgba(255, 153, 0, 0.2);

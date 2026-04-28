@@ -15,19 +15,19 @@
 }
 .op-hero h1 { 
   font-size: 2rem; 
-  color: var(--aws-dark); 
+  color: var(--dark-900); 
   line-height: 1.2; 
   margin-bottom: 24px; /* Grid 8px: corrigido de 20px */
   letter-spacing: -0.03em; 
-  font-family: var(--font-space-grotesk); 
+  font-family: var(--font-display); 
   font-weight: 700;
 }
 .op-highlight { 
-  color: var(--aws-orange); 
+  color: var(--accent); 
 }
 .op-subtitle { 
   font-size: 1.05rem; 
-  color: var(--gray-800); 
+  color: var(--dark-700); 
   max-width: 700px; 
   margin: 0 auto; 
 }
@@ -50,27 +50,27 @@
 }
 .op-empty-state { 
   text-align: center; 
-  color: var(--gray-text); 
+  color: var(--slate-500); 
   padding: 40px 0; 
 }
 
 /* --- 3. SALES CTA E BOTÃO --- */
 .op-sales-cta { 
   padding: 64px 16px; /* Grid 8px: Corrigido de 60px 20px */
-  background-color: var(--gray-light); 
+  background-color: var(--slate-50); 
   text-align: center; 
   margin-top: 48px; /* Grid 8px: Corrigido de 40px */
 }
 .op-sales-cta h2 { 
   font-size: 1.8rem; 
-  color: var(--aws-dark); 
+  color: var(--dark-900); 
   margin-bottom: 16px; /* Grid 8px */
-  font-family: var(--font-space-grotesk); 
+  font-family: var(--font-display); 
   font-weight: 700;
 }
 .op-sales-cta p { 
   font-size: 1.05rem; 
-  color: var(--gray-text); 
+  color: var(--slate-500); 
   max-width: 600px; 
   margin: 0 auto 32px auto; 
 }
@@ -78,8 +78,8 @@
 /* Extração do estilo inline do CTA */
 .op-btn-cta {
   display: inline-block;
-  background-color: var(--aws-orange);
-  color: var(--aws-dark);
+  background-color: var(--accent);
+  color: var(--dark-900);
   padding: 16px 32px; 
   border-radius: 8px; 
   font-weight: 700;

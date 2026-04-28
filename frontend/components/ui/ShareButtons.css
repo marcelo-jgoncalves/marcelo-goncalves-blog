@@ -29,7 +29,7 @@
   font-size: 1.25rem; /* Aumentado para 20px */
   line-height: 24px; /* 🚀 3x 8px: Ritmo protegido matematicamente */
   font-weight: 700;
-  color: var(--aws-dark, #232F3E);
+  color: var(--dark-900);
   margin: 0;
   text-align: center; /* Centraliza o texto se quebrar linha em telas muito pequenas */
 }
@@ -69,7 +69,7 @@
 .share-buttons-linkedin { background-color: #0a66c2; }
 .share-buttons-whatsapp { background-color: #25D366; }
 .share-buttons-twitter  { background-color: #1DA1F2; }
-.share-buttons-copy { background-color: var(--aws-orange, #FF9900); }
+.share-buttons-copy { background-color: var(--accent); }
 
 /* Cor de Sucesso (Verde) quando copiado */
 .share-buttons-copy.copied { background-color: #48bb78; } 
@@ -84,6 +84,6 @@
 
 /* Acessibilidade de Teclado */
 .share-buttons-btn:focus-visible {
-  outline: 3px solid var(--aws-orange, #FF9900);
+  outline: 3px solid var(--accent);
   outline-offset: 4px;
 }

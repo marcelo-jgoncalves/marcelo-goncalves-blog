@@ -4,8 +4,8 @@
 
 /* 🚀 1. O Container Principal (Desktop) */
 .toc-wrapper.toc-desktop {
-  background-color: var(--gray-light);
-  border: 1px solid var(--gray-border);
+  background-color: var(--slate-50);
+  border: 1px solid var(--border-color);
   border-radius: calc(var(--space-unit) * 1.5); /* 12px */
   padding: 0;
   overflow: hidden;
@@ -16,18 +16,18 @@
 /* 🚀 2. O Título (Semântica H2) */
 .toc-title {
   background-color: transparent; 
-  color: var(--aws-dark);
+  color: var(--dark-900);
   margin: 0;
   padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 3) var(--space-unit); 
   font-size: 1.2rem; 
-  font-family: var(--font-space-grotesk);
+  font-family: var(--font-display);
   font-weight: 700;
   border-bottom: none;
   display: block; 
 }
 
 .toc-title i {
-  color: var(--aws-orange);
+  color: var(--accent);
   margin-right: var(--space-unit); /* 8px */
 }
 
@@ -55,7 +55,7 @@
 .toc-list a { 
   display: block;
   padding: var(--space-unit) calc(var(--space-unit) * 3); 
-  color: var(--gray-text); 
+  color: var(--slate-500); 
   font-size: 0.95rem;
   border-left: 3px solid transparent; 
   transition: all 0.2s ease;
@@ -66,8 +66,8 @@
 @media (hover: hover) {
   .toc-list a:hover { 
     background-color: rgba(255,255,255, 0.6); 
-    color: var(--aws-orange); 
-    border-left-color: var(--aws-orange);
+    color: var(--accent); 
+    border-left-color: var(--accent);
   }
 }
 
@@ -76,8 +76,8 @@
    ========================================================================== */
    
 .toc-wrapper.toc-mobile {
-  background-color: var(--gray-light); /* Fundo sutil de widget */
-  border: 1px solid var(--gray-border);
+  background-color: var(--slate-50); /* Fundo sutil de widget */
+  border: 1px solid var(--border-color);
   border-radius: calc(var(--space-unit) * 1.5); /* 12px de curva, igual aos outros */
   /* Macro-ritmo de 32px na base para afastar do texto do post */
   margin: 0 0 calc(var(--space-unit) * 4) 0; 
@@ -101,8 +101,8 @@
   align-items: center;
   justify-content: flex-start; /* 🚀 FORÇA À ESQUERDA: Previne que o flexbox centralize o conteúdo */
   font-weight: 700;
-  color: var(--aws-dark);
-  font-family: var(--font-space-grotesk);
+  color: var(--dark-900);
+  font-family: var(--font-display);
   font-size: 1.1rem;
   margin: 0; /* 🚀 RESET: Remove margens fantasmas */
   padding: 0;
@@ -111,12 +111,12 @@
 .toc-mobile-title .toc-icon {
   /* 🚀 MATEMÁTICA ESTRITA: Topo 0, Direita 12px, Baixo 0, ESQUERDA 0 */
   margin: 0 calc(var(--space-unit) * 1.5) 0 0; 
-  color: var(--aws-orange);
+  color: var(--accent);
 }
 
 .toc-chevron {
   transition: transform 0.3s ease;
-  color: var(--aws-dark);
+  color: var(--dark-900);
   font-size: 1.1rem;
 }
 
@@ -146,7 +146,7 @@
 .toc-wrapper.toc-mobile .toc-list a {
   padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3); 
   border-left: none;
-  border-bottom: 1px solid var(--gray-border); /* Linha divisória suave */
+  border-bottom: 1px solid var(--border-color); /* Linha divisória suave */
 }
 
 .toc-wrapper.toc-mobile .toc-list li:last-child a {
@@ -155,5 +155,5 @@
 
 .toc-wrapper.toc-mobile .toc-list a:hover {
   background-color: rgba(255, 255, 255, 0.5);
-  color: var(--aws-orange);
+  color: var(--accent);
 }

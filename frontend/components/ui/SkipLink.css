@@ -6,8 +6,8 @@
   left: 24px; /* Ritmo 3x 8px (corrigido de 20px) */
   transform: translateY(-150%); /* Tira da tela pela GPU em vez de usar top: -80px */
   
-  background-color: var(--aws-orange);
-  color: var(--aws-dark);
+  background-color: var(--accent);
+  color: var(--dark-900);
   
   padding: 16px 24px; /* Ritmo 8px (corrigido de 12px 20px) */
   border-radius: 8px; /* Ritmo 8px (corrigido de 6px) */
