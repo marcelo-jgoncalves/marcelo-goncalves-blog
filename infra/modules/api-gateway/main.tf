@@ -744,6 +744,51 @@ resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
   uri                     = var.admin_categorias_invoke_arn
 }
 
+resource "aws_api_gateway_method" "admin_categorias_slug_options" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_categorias_slug_options_integration" {
+  rest_api_id       = aws_api_gateway_rest_api.main.id
+  resource_id       = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method       = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  type              = "MOCK"
+  request_templates = { "application/json" = "{\"statusCode\": 200}" }
+}
+
+resource "aws_api_gateway_method_response" "admin_categorias_slug_options_200" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  status_code = "200"
+
+  response_models = { "application/json" = "Empty" }
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "admin_categorias_slug_options_response" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  resource_id = aws_api_gateway_resource.admin_categorias_slug.id
+  http_method = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  status_code = aws_api_gateway_method_response.admin_categorias_slug_options_200.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [aws_api_gateway_method_response.admin_categorias_slug_options_200]
+}
+
 resource "aws_lambda_permission" "apigw_admin_categorias" {
   statement_id  = "AllowAPIGatewayInvokeAdminCategorias"
   action        = "lambda:InvokeFunction"
@@ -821,7 +866,9 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_integration.admin_categorias_options_integration,
       aws_api_gateway_resource.admin_categorias_slug,
       aws_api_gateway_method.admin_categorias_slug_any,
-      aws_api_gateway_integration.admin_categorias_slug_integration
+      aws_api_gateway_integration.admin_categorias_slug_integration,
+      aws_api_gateway_method.admin_categorias_slug_options,
+      aws_api_gateway_integration.admin_categorias_slug_options_integration
 
     ]))
   }
