@@ -17,9 +17,14 @@ interface ResponsiveImageProps {
   style?: React.CSSProperties;
 }
 
-/** Detecta URLs legadas que já têm extensão de imagem */
-function isLegacyUrl(src: string): boolean {
-  return /\.(webp|avif|jpg|jpeg|png|gif)(\?.*)?$/i.test(src);
+/**
+ * Normaliza src para basePath sem extensão.
+ * URLs do admin antigo chegam com .webp/.jpg appended (ex: media/uuid.webp),
+ * mas o imageProcessor gera variantes como media/uuid-480.avif.
+ * Strippando a extensão, o <picture> constrói as URLs corretas das variantes.
+ */
+function toBasePath(src: string): string {
+  return src.replace(/\.(webp|avif|jpg|jpeg|png|gif)(\?.*)?$/i, '');
 }
 
 export default function ResponsiveImage({
@@ -33,20 +38,7 @@ export default function ResponsiveImage({
 }: ResponsiveImageProps) {
   if (!src) return null;
 
-  // Retrocompatibilidade: posts existentes têm URL com extensão
-  if (isLegacyUrl(src)) {
-    return (
-      <Image
-        src={src}
-        alt={alt}
-        fill={fill}
-        priority={priority}
-        sizes={sizes}
-        className={className}
-        style={style}
-      />
-    );
-  }
+  const basePath = toBasePath(src);
 
   // Novo formato: src é o basePath sem extensão
   // Ex: "https://cdn.../media/1234-uuid-nome"
@@ -56,7 +48,7 @@ export default function ResponsiveImage({
   //   {basePath}-1280.avif |  {basePath}-1280.webp
 
   const imgProps: React.ImgHTMLAttributes<HTMLImageElement> & { fetchPriority?: string } = {
-    src: `${src}-1280.webp`,
+    src: `${basePath}-1280.webp`,
     alt,
     loading: priority ? "eager" : "lazy",
     fetchPriority: priority ? "high" : "auto",
@@ -78,11 +70,11 @@ export default function ResponsiveImage({
           height: "100%",
         }}
       >
-        <source media="(max-width: 480px)" type="image/avif" srcSet={`${src}-480.avif`} />
-        <source media="(max-width: 480px)" type="image/webp" srcSet={`${src}-480.webp`} />
-        <source media="(max-width: 768px)" type="image/avif" srcSet={`${src}-768.avif`} />
-        <source media="(max-width: 768px)" type="image/webp" srcSet={`${src}-768.webp`} />
-        <source type="image/avif" srcSet={`${src}-1280.avif`} />
+        <source media="(max-width: 480px)" type="image/avif" srcSet={`${basePath}-480.avif`} />
+        <source media="(max-width: 480px)" type="image/webp" srcSet={`${basePath}-480.webp`} />
+        <source media="(max-width: 768px)" type="image/avif" srcSet={`${basePath}-768.avif`} />
+        <source media="(max-width: 768px)" type="image/webp" srcSet={`${basePath}-768.webp`} />
+        <source type="image/avif" srcSet={`${basePath}-1280.avif`} />
         <img {...imgProps} />
       </picture>
     );
@@ -90,11 +82,11 @@ export default function ResponsiveImage({
 
   return (
     <picture>
-      <source media="(max-width: 480px)" type="image/avif" srcSet={`${src}-480.avif`} />
-      <source media="(max-width: 480px)" type="image/webp" srcSet={`${src}-480.webp`} />
-      <source media="(max-width: 768px)" type="image/avif" srcSet={`${src}-768.avif`} />
-      <source media="(max-width: 768px)" type="image/webp" srcSet={`${src}-768.webp`} />
-      <source type="image/avif" srcSet={`${src}-1280.avif`} />
+      <source media="(max-width: 480px)" type="image/avif" srcSet={`${basePath}-480.avif`} />
+      <source media="(max-width: 480px)" type="image/webp" srcSet={`${basePath}-480.webp`} />
+      <source media="(max-width: 768px)" type="image/avif" srcSet={`${basePath}-768.avif`} />
+      <source media="(max-width: 768px)" type="image/webp" srcSet={`${basePath}-768.webp`} />
+      <source type="image/avif" srcSet={`${basePath}-1280.avif`} />
       <img {...imgProps} />
     </picture>
   );

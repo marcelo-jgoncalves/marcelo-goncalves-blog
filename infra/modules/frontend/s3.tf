@@ -62,25 +62,3 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
   })
 }
 
-# 6. Política do bucket de uploads: Permitir CloudFront servir a mídia
-resource "aws_s3_bucket_policy" "allow_cloudfront_uploads" {
-  bucket = var.uploads_bucket_name
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "AllowCloudFrontServicePrincipalMedia"
-        Effect    = "Allow"
-        Principal = { Service = "cloudfront.amazonaws.com" }
-        Action    = "s3:GetObject"
-        Resource  = "${var.uploads_bucket_arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.frontend.arn
-          }
-        }
-      }
-    ]
-  })
-  depends_on = [aws_cloudfront_distribution.frontend]
-}
