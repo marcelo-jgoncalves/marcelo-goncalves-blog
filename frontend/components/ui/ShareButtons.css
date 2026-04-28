@@ -25,7 +25,7 @@
 
 /* O Label - Com mais presença e peso */
 .share-buttons-label {
-  font-family: var(--font-space, 'Space Grotesk', sans-serif);
+  font-family: var(--font-display);
   font-size: 1.25rem; /* Aumentado para 20px */
   line-height: 24px; /* 🚀 3x 8px: Ritmo protegido matematicamente */
   font-weight: 700;

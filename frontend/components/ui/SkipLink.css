@@ -11,7 +11,7 @@
   
   padding: 16px 24px; /* Ritmo 8px (corrigido de 12px 20px) */
   border-radius: 8px; /* Ritmo 8px (corrigido de 6px) */
-  font-family: var(--font-space, 'Space Grotesk', sans-serif);
+  font-family: var(--font-display);
   font-weight: 700;
   text-decoration: none;
   z-index: 9999;

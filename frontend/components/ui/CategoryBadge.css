@@ -5,9 +5,9 @@
   align-items: center;
   justify-content: center;
   
-  background-color: var(--orange-light, #fffaf0);
+  background-color: var(--accent-light);
   color: var(--accent);
-  border: 1px solid rgba(255, 153, 0, 0.2);
+  border: 1px solid rgba(59, 95, 138, 0.2);
   
   font-family: var(--font-sans), sans-serif;
   font-weight: 600;
@@ -24,7 +24,7 @@
     background-color: var(--accent);
     color: #ffffff;
     transform: translateY(-2px); /* Micro-interação premium */
-    box-shadow: 0 4px 6px -1px rgba(255, 153, 0, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(59, 95, 138, 0.2);
   }
 }
 

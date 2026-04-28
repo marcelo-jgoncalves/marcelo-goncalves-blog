@@ -93,7 +93,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: rgba(255, 153, 0, 0.15); 
+  background-color: var(--accent-light);
   color: var(--accent); 
   padding: 4px 12px; /* 🚀 AJUSTE: Micro-ritmo */
   border-radius: 4px;
