@@ -234,12 +234,12 @@ describe('getProjectPosts', () => {
 // ─── getApiUrl guard ─────────────────────────────────────────────────────────
 
 describe('API_URL guard', () => {
-  it('throws if NEXT_PUBLIC_API_URL is not defined', async () => {
-    const original = process.env.NEXT_PUBLIC_API_URL;
-    delete process.env.NEXT_PUBLIC_API_URL;
+  it('throws if API_URL is not defined', async () => {
+    const original = process.env.API_URL;
+    delete process.env.API_URL;
     jest.resetModules();
     const { getPost: getPostFresh } = await import('../../lib/api');
-    await expect(getPostFresh('slug')).rejects.toThrow('NEXT_PUBLIC_API_URL is not defined');
-    process.env.NEXT_PUBLIC_API_URL = original;
+    await expect(getPostFresh('slug')).rejects.toThrow('API_URL is not defined');
+    process.env.API_URL = original;
   });
 });

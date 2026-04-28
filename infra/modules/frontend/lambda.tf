@@ -52,7 +52,7 @@ resource "aws_lambda_function" "nextjs_server" {
   environment {
     variables = {
       NODE_ENV            = "production"
-      NEXT_PUBLIC_API_URL = var.api_url
+      API_URL = var.api_url
       XRAY_ENABLED        = tostring(var.enable_xray_tracing)
     }
   }
