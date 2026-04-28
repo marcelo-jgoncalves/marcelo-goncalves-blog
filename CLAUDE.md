@@ -92,7 +92,7 @@ marcelo-goncalves-blog/
 - No Windows: `build.js` usa `PowerShell Compress-Archive` (não `zip`).
 
 ### Variáveis de ambiente
-- `NEXT_PUBLIC_API_URL`: injetado em runtime via Lambda env var. Build usa placeholder `https://build-placeholder.local`. Validação dentro de `getApiUrl()`.
+- `API_URL` (sem prefixo `NEXT_PUBLIC_`): lida em runtime do `process.env` real da Lambda. `NEXT_PUBLIC_*` seria baked pelo Next.js/SWC no bundle em build time — não funciona para runtime injection.
 - Admin (`VITE_*` vars): baked no build — o CD builda o admin **após** terraform apply outputs.
 
 ### Segurança / CORS
@@ -142,9 +142,12 @@ Gonçalves  → color: var(--accent)   — DM Sans 700
 ## 6. Imagens (pipeline obrigatória)
 
 - **Upload**: formatos aceitos = PNG, JPEG, WebP, HEIC, HEIF. Extensões maiúsculas normalizadas automaticamente.
-- **imageProcessor** gera 6 variantes por upload: `{base}-480.avif`, `{base}-480.webp`, `{base}-768.avif`, `{base}-768.webp`, `{base}-1280.avif`, `{base}-1280.webp`.
-- **Nunca** renderizar imagens de conteúdo com `<Image>` Next.js diretamente — usar `<ResponsiveImage>` (`frontend/components/ui/ResponsiveImage.tsx`).
-- `imagem_destaque_url` no DynamoDB: basePath sem extensão (novos posts) ou URL `.webp` (retrocompat).
+- **imageProcessor** gera 6 variantes por upload e as grava no bucket `assets` sob `media/`: `{base}-480.avif`, `{base}-480.webp`, `{base}-768.avif`, `{base}-768.webp`, `{base}-1280.avif`, `{base}-1280.webp`.
+- **CloudFront** `media/*` → `S3-Assets` (bucket de assets estáticos, não o uploads-raw).
+- **CD pipeline**: `aws s3 sync ... --exclude "media/*"` para preservar variantes entre deploys.
+- **Nunca** renderizar imagens de conteúdo com `<Image>` Next.js diretamente — sempre `<ResponsiveImage>` (`frontend/components/ui/ResponsiveImage.tsx`).
+- **`ResponsiveImage`** sempre strip extensão do `src` antes de usar como basePath (cobre URLs antigas do admin com `.webp` appended e novos basePaths sem extensão).
+- `imagem_destaque_url` no DynamoDB: basePath sem extensão (novos posts) ou URL `.webp` legada — ambos funcionam via strip.
 - Alt text: nunca string vazia — fallback mínimo = título do post.
 
 ---
@@ -202,23 +205,22 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 ## 10. Backlog Atual
 
 ### Aguarda ação de Marcelo
-1. **Seed de categorias** — logar no admin e criar via UI (Cognito: `us-east-1_EuJTxL0vs`)
-2. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box
-3. **Favicon + Web App Manifest** — bloqueiam 4/20 itens SEO
-4. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
-5. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
+1. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box *(categorias ✅ criadas na sessão 9)*
+2. **Favicon + Web App Manifest** — bloqueiam 4/20 itens SEO
+3. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
+4. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
 
 ### Próximas entregas técnicas
-6. **Design system — componentes visuais restantes** — PostCard, Hero, CategoryCard, CTA, newsletter widget (tokens já aplicados; visuais detalhados das seções pendentes)
-7. **Testes E2E Playwright** — expandir `e2e/smoke.spec.ts` com golden path (home, post, busca, categoria)
-8. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)
-9. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
+5. **Design system — componentes visuais restantes** — PostCard, Hero, CategoryCard, CTA, newsletter widget (tokens já aplicados; visuais detalhados das seções pendentes)
+6. **Testes E2E Playwright** — expandir `e2e/smoke.spec.ts` com golden path (home, post, busca, categoria)
+7. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)
+8. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
 
 ### Baixa prioridade
-10. Paginação bidirecional — limitação DynamoDB
-11. WAF no Admin CloudFront — quando houver tráfego real
-12. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
-13. Preview de imagens no admin
+9. Paginação bidirecional — limitação DynamoDB
+10. WAF no Admin CloudFront — quando houver tráfego real
+11. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
+12. Preview de imagens no admin
 
 ---
 
