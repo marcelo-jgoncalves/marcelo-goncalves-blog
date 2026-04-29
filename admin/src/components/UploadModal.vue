@@ -9,9 +9,22 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
 const error = ref('')
 
+const VALID_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif']
+const MAX_SIZE_MB = 10
+const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
+
 async function handleUpload() {
   const file = fileInput.value?.files?.[0]
   if (!file) return
+
+  if (!VALID_TYPES.includes(file.type)) {
+    error.value = `Tipo inválido: ${file.type || 'desconhecido'}. Use PNG, JPEG, WebP, HEIC ou HEIF.`
+    return
+  }
+  if (file.size > MAX_SIZE_BYTES) {
+    error.value = `Arquivo muito grande: ${(file.size / 1024 / 1024).toFixed(1)} MB (máximo ${MAX_SIZE_MB} MB).`
+    return
+  }
 
   uploading.value = true
   error.value = ''
