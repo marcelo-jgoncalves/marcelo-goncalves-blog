@@ -4,33 +4,6 @@
    ========================================================================== */
 
 /* --- 1. HERO SECTION --- */
-.op-hero { 
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); 
-  padding: 48px 16px; /* Grid 8px ajustado */
-  text-align: center; 
-}
-.op-hero-content { 
-  max-width: 900px; 
-  margin: 0 auto; 
-}
-.op-hero h1 { 
-  font-size: 2rem; 
-  color: var(--dark-900); 
-  line-height: 1.2; 
-  margin-bottom: 24px; /* Grid 8px: corrigido de 20px */
-  letter-spacing: -0.03em; 
-  font-family: var(--font-display); 
-  font-weight: 700;
-}
-.op-highlight { 
-  color: var(--accent); 
-}
-.op-subtitle { 
-  font-size: 1.05rem; 
-  color: var(--dark-700); 
-  max-width: 700px; 
-  margin: 0 auto; 
-}
 
 /* --- 2. LAYOUT PRINCIPAL E FEED --- */
 .op-main-layout {
@@ -119,9 +92,6 @@
    6. MEDIA QUERIES (DESKTOP) - SEMPRE NO FINAL DO ARQUIVO
    ========================================================================== */
 @media (min-width: 768px) {
-  .op-hero { padding: 64px 24px; }
-  .op-hero h1 { font-size: 2.8rem; }
-  .op-subtitle { font-size: 1.15rem; }
   .op-sales-cta { padding: 80px 24px; margin-top: 80px; }
   .op-sales-cta h2 { font-size: 2.2rem; }
 }

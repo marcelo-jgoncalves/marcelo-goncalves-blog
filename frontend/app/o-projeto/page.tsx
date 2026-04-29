@@ -12,6 +12,7 @@ import BlogSidebar from "../../components/ui/BlogSidebar";
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
+import PageHero from '@/components/ui/PageHero';
 import './o-projeto.css';
 
 export interface ProjectPost {
@@ -52,16 +53,14 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
   return (
     <>
       {/* 1. HERO */}
-      <section className="op-hero" aria-labelledby="hero-title">
-        <div className="container op-hero-content">
-          <h1 id="hero-title">
-            O Projeto: Construindo um Blog <span className="op-highlight">quase</span> 100% com IA
-          </h1>
-          <p className="op-subtitle">
-            Acompanhe a jornada, os desafios técnicos, os custos e os aprendizados.
-          </p>
-        </div>
-      </section>
+      <PageHero>
+        <h1 className="hero-title">
+          O Projeto: Construindo um Blog <span className="accent">quase</span> 100% com IA
+        </h1>
+        <p className="hero-subtitle">
+          Acompanhe a jornada, os desafios técnicos, os custos e os aprendizados.
+        </p>
+      </PageHero>
 
       {/* 2. TECH RIBBON */}
       <TechRibbon />
