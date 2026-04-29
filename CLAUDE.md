@@ -129,7 +129,11 @@ marcelo-goncalves-blog/
 ```
 
 **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos.  
-Referência completa: `docs/design-system/design-reference.md`.
+Referência completa: `docs/design-system/design-reference.md`.  
+Layout de referência da home: `docs/design-system/home-layout-description.md`.
+
+**Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
+**AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseSidebar.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
 
 ### Logo
 ```
@@ -159,7 +163,7 @@ Gonçalves  → color: var(--accent)   — DM Sans 700
 | `backend/` | Jest | `npm test` | 96 testes |
 | `frontend/` | Jest | `npm test` | 45 testes |
 | `admin/` | Vitest | `npm test` | 16 testes |
-| `frontend/` | Playwright | `npm run test:e2e` | smoke tests |
+| `frontend/` | Playwright | `npm run test:e2e` | 7 testes (smoke + home-layout) |
 
 - `tsconfig.test.json` separado no backend com `"types": ["jest"]`.
 - `npm audit --audit-level=high` roda em cada job de CI. Zero high/critical tolerado.
@@ -205,14 +209,14 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 ## 10. Backlog Atual
 
 ### Aguarda ação de Marcelo
-1. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box *(categorias ✅ criadas na sessão 9)*
+1. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box
 2. **Favicon + Web App Manifest** — bloqueiam 4/20 itens SEO
 3. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
 4. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
+5. **Publisher ID AdSense** — quando ativo, trocar `ADSENSE_CONFIGURED = false` → `true` em `AdsenseSidebar.tsx` e descomentar `<ins>`
 
 ### Próximas entregas técnicas
-5. **Design system — componentes visuais restantes** — PostCard, Hero, CategoryCard, CTA, newsletter widget (tokens já aplicados; visuais detalhados das seções pendentes)
-6. **Testes E2E Playwright** — expandir `e2e/smoke.spec.ts` com golden path (home, post, busca, categoria)
+6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
 7. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)
 8. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
 
