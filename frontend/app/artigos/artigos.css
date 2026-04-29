@@ -15,16 +15,10 @@
 }
 
 /* ==========================================================================
-   HERO & SEARCH (Reset de Herança Global)
+   HERO & SEARCH
    ========================================================================== */
-.op-search-hero-section {
-  background-color: #f8f9fa;
-  padding: 80px 0; /* Macro-ritmo 10*8 */
-  position: static !important; /* Previne o bug do header sticky global */
-  text-align: center;
-  padding: 40px 0;
-}
 
+/* Tipografia do hero — layout via PageHero */
 .op-hero-title {
   color: rgb(45, 55, 72);
   font-size: 2.5rem;
@@ -133,10 +127,6 @@
    DESKTOP RESPONSIVENESS
    ========================================================================== */
 @media (min-width: 1024px) {
-  .op-search-hero-section {
-    padding: 80px 0; /* No desktop o respiro maior de 80px é mantido */
-  }
-
   .op-main-grid-wrapper {
     flex-direction: row;
     align-items: flex-start;

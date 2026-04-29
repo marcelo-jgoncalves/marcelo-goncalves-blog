@@ -7,6 +7,7 @@ import Pagination from '@/components/ui/Pagination';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import ServiceCallout from '@/components/ui/ServiceCallout';
+import PageHero from '@/components/ui/PageHero';
 import React from 'react';
 import './artigos.css';
 
@@ -39,30 +40,26 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
   return (
     <div className="op-artigos-layout-root">
-      {/* 1. HERO SECTION - Semântica e SEO */}
-      <header className="op-search-hero-section">
-        <div className="op-container">
-          <div className="op-hero-inner">
-            <h1 className="op-hero-title">Explore Nossos Artigos</h1>
-            <form className="op-search-form" action="/busca" method="get" role="search">
-              <input 
-                type="search" 
-                name="q" 
-                className="op-search-input" 
-                placeholder="Buscar por AWS, Terraform, RAG..." 
-                aria-label="Buscar artigos" 
-                required
-              />
-              <button type="submit" className="op-search-btn" aria-label="Pesquisar">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
+      {/* 1. HERO SECTION */}
+      <PageHero as="header">
+        <h1 className="op-hero-title">Explore Nossos Artigos</h1>
+        <form className="op-search-form" action="/busca" method="get" role="search">
+          <input
+            type="search"
+            name="q"
+            className="op-search-input"
+            placeholder="Buscar por AWS, Terraform, RAG..."
+            aria-label="Buscar artigos"
+            required
+          />
+          <button type="submit" className="op-search-btn" aria-label="Pesquisar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+      </PageHero>
 
       {/* 2. MAIN LAYOUT - Grid Editorial + Sidebar */}
       <div className="op-container op-main-grid-wrapper">

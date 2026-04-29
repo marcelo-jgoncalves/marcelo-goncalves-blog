@@ -1,17 +1,7 @@
 /* frontend/app/busca/busca.css */
 
-.search-hero {
-  background: var(--bg-light-gradient);
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.search-header-content {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.search-hero h1 {
+/* Tipografia do hero — layout via PageHero */
+.page-hero h1 {
   font-size: 2.5rem;
   line-height: 1.2;
   margin-bottom: 30px;

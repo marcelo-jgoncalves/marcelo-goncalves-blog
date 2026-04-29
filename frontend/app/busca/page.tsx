@@ -5,6 +5,7 @@ import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
 
 // SEO: Não indexar resultados de busca interna
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -49,16 +50,14 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
       {hasResults ? (
         // --- CENÁRIO A: Encontrou Resultados ---
         <>
-          <section className="search-hero">
-            <div className="search-header-content">
-              <h1>
-                Resultados para: <span className="highlight">{q}</span>
-              </h1>
-              <p className="search-results-subtitle">
-                Encontramos estes artigos para sua pesquisa.
-              </p>
-            </div>
-          </section>
+          <PageHero>
+            <h1>
+              Resultados para: <span className="highlight">{q}</span>
+            </h1>
+            <p className="search-results-subtitle">
+              Encontramos estes artigos para sua pesquisa.
+            </p>
+          </PageHero>
 
           <section className="post-grid-container">
             <div className="container">

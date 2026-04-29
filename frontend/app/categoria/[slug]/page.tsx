@@ -5,6 +5,7 @@ import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 // 1. Configuração de Cache (ISR)
@@ -121,16 +122,14 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* Hero da Categoria */}
-      <section className="search-hero">
-        <div className="search-header-content">
-          <h1 style={{ marginBottom: '20px' }}>
-            Artigos na Categoria: <span className="highlight">{meta.title}</span>
-          </h1>
-          <p className="search-results-subtitle">
-            {meta.description}
-          </p>
-        </div>
-      </section>
+      <PageHero>
+        <h1>
+          Artigos na Categoria: <span className="highlight">{meta.title}</span>
+        </h1>
+        <p className="search-results-subtitle">
+          {meta.description}
+        </p>
+      </PageHero>
 
       {/* Grid de Posts */}
       <section className="post-grid-container">

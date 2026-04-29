@@ -8,6 +8,7 @@ import PostCard from '@/components/ui/PostCard';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import HomeSidebar from '@/components/ui/HomeSidebar';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
 export const revalidate = 60;
@@ -41,21 +42,19 @@ export default async function Home() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="hero-section">
-        <div className="hero-container">
-          <h1 className="hero-title">
-            Desvendando a{' '}
-            <span className="accent">Inteligência Artificial</span>
-            , AWS e DevOps detalhe por detalhe
-          </h1>
-          <p className="hero-subtitle">
-            Análises profundas, tutoriais práticos e as últimas notícias do mundo da tecnologia, da AWS à OpenAI.
-          </p>
-          <Link href="/artigos" className="btn btn-primary">
-            Ver Todos os Artigos
-          </Link>
-        </div>
-      </section>
+      <PageHero>
+        <h1 className="hero-title">
+          Desvendando a{' '}
+          <span className="accent">Inteligência Artificial</span>
+          , AWS e DevOps detalhe por detalhe
+        </h1>
+        <p className="hero-subtitle">
+          Análises profundas, tutoriais práticos e as últimas notícias do mundo da tecnologia, da AWS à OpenAI.
+        </p>
+        <Link href="/artigos" className="btn btn-primary">
+          Ver Todos os Artigos
+        </Link>
+      </PageHero>
 
       {/* 2. Grid principal + sidebar */}
       <div className="home-layout container">

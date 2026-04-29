@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getAuthor, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 export const revalidate = 3600;
@@ -73,16 +74,14 @@ export default async function SobrePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
       {/* 1. Hero da Missão */}
-      <section className="hero-section">
-        <div className="container">
-          <h1 className="hero-title">
-            Sobre Mim e <span className="highlight">O Projeto</span>
-          </h1>
-          <p className="hero-subtitle">
-            Minha missão é provar que a união da experiência humana em engenharia e linguística com o poder da IA pode criar conteúdo técnico de valor inigualável.
-          </p>
-        </div>
-      </section>
+      <PageHero>
+        <h1 className="hero-title">
+          Sobre Mim e <span className="highlight">O Projeto</span>
+        </h1>
+        <p className="hero-subtitle">
+          Minha missão é provar que a união da experiência humana em engenharia e linguística com o poder da IA pode criar conteúdo técnico de valor inigualável.
+        </p>
+      </PageHero>
 
       {/* 2. Biografia (Texto Longo Fixo + Dados API) */}
       <section className="container">

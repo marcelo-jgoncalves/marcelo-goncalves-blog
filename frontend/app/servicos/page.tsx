@@ -1,6 +1,7 @@
 import './servicos.css';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
+import PageHero from '@/components/ui/PageHero';
 
 export const revalidate = 3600;
 
@@ -68,16 +69,14 @@ export default function ServicosPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicosJsonLd) }} />
 
       {/* 1. Hero da Página */}
-      <section className="hero-section"> {/* Reutilizando classe padrão */}
-        <div className="container">
-          <h1 className="hero-title">
-            Consultoria em AWS, DevOps, FinOps e <span className="highlight">Serverless</span>
-          </h1>
-          <p className="hero-subtitle">
-            Transforme suas ideias em arquiteturas escaláveis, seguras e com custos otimizados, usando a mesma engenharia que move este blog.
-          </p>
-        </div>
-      </section>
+      <PageHero>
+        <h1 className="hero-title">
+          Consultoria em AWS, DevOps, FinOps e <span className="highlight">Serverless</span>
+        </h1>
+        <p className="hero-subtitle">
+          Transforme suas ideias em arquiteturas escaláveis, seguras e com custos otimizados, usando a mesma engenharia que move este blog.
+        </p>
+      </PageHero>
 
       {/* 2. Lista de Serviços */}
       <section className="services-content container">

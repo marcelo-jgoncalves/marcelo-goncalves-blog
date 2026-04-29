@@ -1,0 +1,12 @@
+/* frontend/components/ui/PageHero.css */
+
+.page-hero {
+  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.page-hero__inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
