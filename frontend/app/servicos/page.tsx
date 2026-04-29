@@ -83,7 +83,7 @@ export default function ServicosPage() {
         <div className="service-proof-fullwidth__inner">
           <h2>
             Não acredite apenas na minha palavra. Veja o{' '}
-            <span className="accent-light">making of</span>.
+            <em style={{ color: '#000000', fontStyle: 'italic' }}>making of</em>.
           </h2>
           <p>
             Este blog, da infraestrutura serverless ao frontend Next.js, foi construído
