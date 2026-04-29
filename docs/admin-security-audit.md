@@ -83,7 +83,11 @@ O Amplify v6 armazena tokens em `localStorage` por padrão — vulnerável a XSS
 
 ---
 
-## 5. ALTO — Rota de edição não valida ownership do post
+## 5. ~~ALTO — Rota de edição não valida ownership do post~~ — N/A (único admin)
+
+> **Decisão de produto (2026-04-29):** o blog terá apenas um administrador. Não há risco de um admin acessar posts de outro. AUTHOR_ID hardcoded também é aceitável por este motivo.
+
+## 5. ALTO — Rota de edição não valida ownership do post [IGNORADO POR DESIGN]
 
 **Arquivos:** `admin/src/router/index.ts` · `admin/src/views/EditorView.vue`  
 Qualquer admin autenticado pode acessar `/post/:slug` e editar posts de outros autores. A validação existe apenas no backend.
