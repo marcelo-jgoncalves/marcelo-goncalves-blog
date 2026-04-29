@@ -7,7 +7,7 @@ import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
 import SystemStatus from "../../components/ui/SystemStatus";
 import BlogSidebar from "../../components/ui/BlogSidebar";
-import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
+import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
 import PageHero from '@/components/ui/PageHero';
@@ -17,10 +17,10 @@ import './o-projeto.css';
 export interface ProjectPost {
   id?: string;
   slug: string;
-  titulo: string;       
-  resumo: string;       
-  data_publicacao: string; 
-  imagem_destaque_url?: string; 
+  titulo: string;
+  resumo: string;
+  data_publicacao: string;
+  imagem_destaque_url?: string;
   categoria?: {
     nome_exibicao: string;
     icone_fa?: string;
@@ -45,7 +45,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const nextToken = typeof params.nextToken === 'string' ? params.nextToken : undefined;
 
-  const data = await getProjectPosts(nextToken);
+  const data = await getProjectPosts(nextToken, 6);
   const posts: ProjectPost[] = data?.posts || [];
   const returnedNextToken = data?.nextToken;
 
@@ -64,32 +64,27 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
       {/* 2. TECH RIBBON */}
       <TechRibbon />
 
-      {/* 3. MAIN LAYOUT (Semântico) */}
+      {/* Banner após hero */}
+      <div className="container">
+        <AdSenseBanner />
+      </div>
+
+      {/* 3. MAIN LAYOUT */}
       <main className="container op-main-layout">
-        
+
         {/* Coluna Esquerda: Timeline Feed */}
         <div className="main-content-column op-timeline-feed">
-          {posts.length > 0 ? (
-              posts.map((post, index) => (
-                <React.Fragment key={post.id || post.slug}>
-                  <TimelineCard 
-                    post={post} 
-                    isPriority={index === 0} 
-                  />
-                  {/* INJEÇÃO DO ADSENSE APÓS O 4º POST */}
-                  {(index === 3 || index === 7) && (
-                    <div className="op-feed-ad-wrapper">
-                      <AdsenseInArticle 
-                        blockId={`post-in-article-300x250-${index}`}
-                        variant="in-content"
-                      />
-                  </div>
-                  )}
-                </React.Fragment>
-              ))
-            ) : (
-              <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>
-            )}
+          {posts.length === 0 ? (
+            <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>
+          ) : (
+            posts.map((post, index) => (
+              <React.Fragment key={post.id || post.slug}>
+                <TimelineCard post={post} isPriority={index === 0} />
+                {/* Banner após o 3º card */}
+                {index === 2 && <AdSenseBanner />}
+              </React.Fragment>
+            ))
+          )}
 
           <Pagination nextToken={returnedNextToken} basePath="/o-projeto" />
         </div>
