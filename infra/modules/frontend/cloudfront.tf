@@ -83,8 +83,8 @@ resource "aws_cloudfront_distribution" "frontend" {
     viewer_protocol_policy = "redirect-to-https"
     compress    = true  # Gzip/Brotli — reduz payload HTML em ~70%
     min_ttl     = 0
-    default_ttl = 0     # Respeita Cache-Control: s-maxage do Next.js (ISR)
-    max_ttl     = 300   # Cap de 5 min — alinhado com revalidate das listagens
+    default_ttl = 0
+    max_ttl     = 0     # ISR cache gerenciado pelo OpenNext; SSR caching requer Suspense streaming
   }
 
   # --- Comportamento Estático (_next/static/*): Manda para o S3 ---
