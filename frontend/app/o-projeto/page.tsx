@@ -5,7 +5,6 @@ export const revalidate = 3600;
 import React from 'react';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
-import PopularPostsWidget from '../../components/ui/PopularPostsWidget';
 import SystemStatus from "../../components/ui/SystemStatus";
 import BlogSidebar from "../../components/ui/BlogSidebar";
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
@@ -93,7 +92,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             )}
 
           <Pagination nextToken={returnedNextToken} basePath="/o-projeto" />
-          <PopularPostsWidget className="popular-widget--mobile-flow" />
         </div>
 
         {/* Coluna Direita: Sidebar */}
