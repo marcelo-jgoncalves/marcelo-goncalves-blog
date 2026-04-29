@@ -65,17 +65,10 @@
 }
 
 /* ==========================================================================
-   MAIN GRID (2 Colunas Desktop)
+   FEED DE ARTIGOS (coluna principal do page-layout)
    ========================================================================== */
-.op-main-grid-wrapper {
-  display: flex;
-  flex-direction: column;
-  padding: 40px 16px;
-  gap: 40px;
-}
-
 .op-articles-feed {
-  width: 100%;
+  min-width: 0; /* Previne overflow da coluna 1fr no CSS grid */
 }
 
 .op-posts-grid {
@@ -128,22 +121,7 @@
    DESKTOP RESPONSIVENESS
    ========================================================================== */
 @media (min-width: 1024px) {
-  .op-main-grid-wrapper {
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 48px 16px;
-  }
-
-  .op-articles-feed {
-    flex: 1;
-  }
-
   .op-posts-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 Colunas cravadas */
-  }
-
-  .op-blog-sidebar {
-    width: 320px; /* 40*8 */
-    flex-shrink: 0;
+    grid-template-columns: repeat(2, 1fr);
   }
 }

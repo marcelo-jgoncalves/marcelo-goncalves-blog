@@ -63,7 +63,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       </PageHero>
 
       {/* 2. MAIN LAYOUT - Grid Editorial + Sidebar */}
-      <div className="op-container op-main-grid-wrapper">
+      <div className="page-layout container">
         <main className="op-articles-feed" aria-label="Lista de artigos de engenharia">
           
           <div className="op-posts-grid">
