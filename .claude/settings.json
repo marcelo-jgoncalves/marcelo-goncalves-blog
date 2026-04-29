@@ -52,9 +52,18 @@
       "Bash(AWS_PROFILE=claude-dev aws cloudfront get-distribution --id E1XI31PS4HFJIH --query \"Distribution.{Status:Status,Origins:DistributionConfig.Origins.Items[].Id}\" --output json)",
       "Bash(AWS_PROFILE=claude-dev terraform init -backend-config=env/dev.tfvars)",
       "Bash(AWS_PROFILE=claude-dev terraform init)",
-      "Bash(AWS_PROFILE=claude-dev terraform state rm module.frontend.aws_cloudfront_origin_access_control.media_oac)"
+      "Bash(AWS_PROFILE=claude-dev terraform state rm module.frontend.aws_cloudfront_origin_access_control.media_oac)",
+      "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test --project=chromium)",
+      "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/smoke.spec.ts --reporter=line)",
+      "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/smoke.spec.ts --project=chromium --reporter=line)",
+      "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/home-layout.spec.ts --project=chromium --reporter=line)",
+      "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/home-layout.spec.ts e2e/smoke.spec.ts --project=chromium --reporter=line)",
+      "Bash(awk '{print $1}')"
     ],
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "bypassPermissions",
+    "additionalDirectories": [
+      "c:\\Users\\Usuario\\.claude\\projects\\c--Users-Usuario-Desktop-projects-marcelo-goncalves-blog\\memory"
+    ]
   },
   "sandbox": {
     "enabled": false
