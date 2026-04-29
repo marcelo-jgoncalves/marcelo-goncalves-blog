@@ -148,19 +148,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* 4. CTA Final de Vendas */}
-      <section className="sales-cta">
-        <div className="container">
-          <h2>Pronto para otimizar sua operação?</h2>
-          <p>
-            Vamos conversar. Agende uma chamada inicial de 30 minutos (sem custo) para discutirmos a sua arquitetura e os seus desafios.
-          </p>
-          {/* Link fictício, substitua pelo seu link do Calendly/Google Calendar real */}
-          <Link href="#" className="btn btn-primary" style={{ fontSize: '1.2rem', padding: '15px 35px' }}>
-            Agendar Chamada &rarr;
-          </Link>
-        </div>
-      </section>
     </>
   );
 }

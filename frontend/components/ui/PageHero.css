@@ -13,6 +13,12 @@
   width: 100%;
 }
 
+/* Impede que text-align:center cascade para inputs dentro do hero */
+.page-hero input,
+.page-hero textarea {
+  text-align: left;
+}
+
 /* --- Tipografia compartilhada --- */
 .page-hero .hero-title {
   font-size: 2.8rem;

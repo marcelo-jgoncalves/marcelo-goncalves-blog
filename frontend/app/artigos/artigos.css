@@ -45,6 +45,7 @@
   font-size: 1.1rem;
   outline: none;
   font-family: inherit;
+  text-align: left;
 }
 
 .op-search-btn {

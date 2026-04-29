@@ -124,50 +124,10 @@ export default async function SobrePage() {
                 <a href={githubUrl} title="GitHub" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
             </div>
           </div>
-
-          {/* 3. CTA de Serviços Integrado na Bio */}
-          <div className="bio-cta-section">
-             <h3>Vamos Trabalhar Juntos?</h3>
-             <p>Precisa de ajuda com a sua arquitetura AWS e automação?</p>
-             <Link href="/servicos" className="btn-outline-dark">
-                Veja Meus Serviços de Consultoria
-             </Link>
-          </div>
-
         </div>
       </section>
 
-      {/* 4. História do Blog (Super Destaque) */}
-      <section className="super-destaque">
-        <div className="container">
-            <h2>Por que &quot;<span className="highlight">quase</span>&quot; 100% com IA?</h2>
-            <p>
-                Este projeto é minha prova de que a IA é uma ferramenta poderosa, mas a direção, a experiência e a curadoria humana são o que garantem a qualidade. Acompanhe a jornada onde documento exatamente o que a IA fez bem e onde eu, como engenheiro e linguista, tive que assumir o controle.
-            </p>
-            <Link href="/o-projeto" className="btn btn-primary">
-                Acompanhe a jornada aqui &rarr;
-            </Link>
-        </div>
-      </section>
-
-      {/* 5. Populares */}
-      <section className="container" style={{ padding: '60px 20px', backgroundColor: '#fdfdfd' }}>
-        <div className="section-header">
-            <h2>Comece por aqui</h2>
-            <p>Meus artigos mais populares</p>
-        </div>
-        <div className="posts-grid">
-            {popularPosts.length > 0 ? (
-                popularPosts.slice(0, 3).map((post: any) => (
-                    <PostCard key={post.slug} post={post} />
-                ))
-            ) : (
-                <p className="text-center w-full text-gray-500">Carregando sugestões...</p>
-            )}
-        </div>
-      </section>
-
-      {/* 6. CTA Newsletter */}
+      {/* CTA Newsletter */}
       <NewsletterCTA />
     </>
   );
