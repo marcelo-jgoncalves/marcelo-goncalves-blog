@@ -8,8 +8,14 @@ const auth = useAuthStore()
 const router = useRouter()
 
 async function handleLogout() {
-  await auth.logout()
-  router.push('/login')
+  try {
+    await auth.logout()
+  } catch {
+    // Erro no signOut remoto não impede limpeza local
+  } finally {
+    auth.$reset()
+    router.push('/login')
+  }
 }
 </script>
 
