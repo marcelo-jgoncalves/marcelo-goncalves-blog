@@ -7,6 +7,7 @@ import { getRecentPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import HomeSidebar from '@/components/ui/HomeSidebar';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
 export const revalidate = 60;
@@ -150,17 +151,7 @@ export default async function Home() {
       </div>
 
       {/* 3. CTA Newsletter fullwidth */}
-      <section className="cta">
-        <div className="container">
-          <h2>Quer se aprofundar em IA, DevOps e muito mais?</h2>
-          <p>
-            Inscreva-se na nossa newsletter e receba análises exclusivas e os melhores artigos da semana.
-          </p>
-          <Link href="/newsletter" className="btn-outline">
-            Inscrever-se agora
-          </Link>
-        </div>
-      </section>
+      <NewsletterCTA />
     </>
   );
 }
