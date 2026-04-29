@@ -1,6 +1,5 @@
 import './sobre.css';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
@@ -44,14 +43,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SobrePage() {
-  const [authorData, popularData] = await Promise.all([
-    getAuthor(AUTOR_ID).catch(() => null),
-    getPopularPosts().catch(() => ({ posts: [] })),
-  ]);
+  const authorData = await getAuthor(AUTOR_ID).catch(() => null);
 
   // Dados do Autor (API)
   const author = authorData?.autor || {};
-  const popularPosts = popularData.posts || [];
 
   const linkedinUrl = author.linkedin_url || '#';
   const githubUrl = author.github_url || '#';
