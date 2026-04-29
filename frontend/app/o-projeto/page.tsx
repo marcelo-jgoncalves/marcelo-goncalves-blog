@@ -2,7 +2,6 @@
 
 export const revalidate = 3600;
 
-import Link from "next/link";
 import React from 'react';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
@@ -13,6 +12,7 @@ import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
 import PageHero from '@/components/ui/PageHero';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import './o-projeto.css';
 
 export interface ProjectPost {
@@ -102,17 +102,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </BlogSidebar>
       </main>
 
-      {/* 4. SALES CTA */}
-      <section className="op-sales-cta" aria-labelledby="cta-title">
-        <div className="container">
-          <h2 id="cta-title">Pronto para levar seu projeto para o próximo nível?</h2>
-          <p>Vamos conversar. Agende uma chamada inicial de 30 minutos (sem custo) para discutirmos a sua arquitetura e os seus objetivos de negócio.</p>
-          {/* Estilos inline removidos. Responsabilidade transferida para o CSS */}
-          <Link href="/servicos" className="op-btn-cta">
-            Agendar Chamada →
-          </Link>
-        </div>
-      </section>
+      <NewsletterCTA />
     </>
   );
 }

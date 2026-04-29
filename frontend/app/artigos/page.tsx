@@ -8,6 +8,7 @@ import BlogSidebar from '@/components/ui/BlogSidebar';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import PageHero from '@/components/ui/PageHero';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import React from 'react';
 import './artigos.css';
 
@@ -96,18 +97,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         </BlogSidebar>
       </div>
 
-      {/* 3. FOOTER CTA - Conversão Final */}
-      <section className="op-bottom-cta">
-        <div className="op-container">
-          <div className="op-cta-box">
-            <h2>Quer se aprofundar em IA e Serverless?</h2>
-            <p>Receba análises exclusivas e os melhores artigos da semana direto no seu email.</p>
-            <a href="/newsletter" className="op-btn-outline-white">
-              Inscrever-se agora
-            </a>
-          </div>
-        </div>
-      </section>
+      <NewsletterCTA />
     </div>
   );
 }

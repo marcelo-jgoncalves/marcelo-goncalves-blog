@@ -6,6 +6,8 @@ import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
+import BlogSidebar from '@/components/ui/BlogSidebar';
+import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 // 1. Configuração de Cache (ISR)
@@ -131,22 +133,17 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         </p>
       </PageHero>
 
-      {/* Grid de Posts */}
-      <section className="post-grid-container">
-        <div className="container">
-          
-          <div className="adsense-banner">
-             <AdSenseBanner />
-          </div>
-
+      {/* Layout principal + sidebar */}
+      <div className="page-layout container">
+        <main>
+          <AdSenseBanner />
           <div className="posts-grid">
             {posts.length > 0 ? (
               posts.map((post: any) => (
                 <PostCard key={post.slug} post={post} />
               ))
             ) : (
-              // Estado Vazio (Centralizado)
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 0' }}>
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
                 <p style={{ color: '#666', fontSize: '1.2rem', marginBottom: '20px' }}>
                   Ainda não publicamos artigos nesta categoria.
                 </p>
@@ -156,18 +153,13 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               </div>
             )}
           </div>
-          
-          <Pagination 
-            nextToken={nextPageToken} 
-            basePath={`/categoria/${slug}`} 
-          />
+          <Pagination nextToken={nextPageToken} basePath={`/categoria/${slug}`} />
+        </main>
 
-          <div style={{ paddingTop: '40px', paddingBottom: 0 }}>
-             <AdSenseBanner />
-          </div>
-
-        </div>
-      </section>
+        <BlogSidebar>
+          <ServiceCallout />
+        </BlogSidebar>
+      </div>
 
       <NewsletterCTA />
     </>

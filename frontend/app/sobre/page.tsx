@@ -1,10 +1,11 @@
 import './sobre.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAuthor, getPopularPosts } from '@/lib/api';
-import PostCard from '@/components/ui/PostCard';
+import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
+import BlogSidebar from '@/components/ui/BlogSidebar';
+import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 export const revalidate = 3600;
@@ -83,8 +84,9 @@ export default async function SobrePage() {
         </p>
       </PageHero>
 
-      {/* 2. Biografia (Texto Longo Fixo + Dados API) */}
-      <section className="container">
+      {/* 2. Layout principal + sidebar */}
+      <div className="page-layout container">
+        <main>
         <div className="bio-section">
           
           {/* Avatar (Vem da API) */}
@@ -125,7 +127,12 @@ export default async function SobrePage() {
             </div>
           </div>
         </div>
-      </section>
+        </main>
+
+        <BlogSidebar>
+          <ServiceCallout />
+        </BlogSidebar>
+      </div>
 
       {/* CTA Newsletter */}
       <NewsletterCTA />
