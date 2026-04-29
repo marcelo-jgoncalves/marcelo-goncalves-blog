@@ -3,10 +3,19 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import DOMPurify from 'dompurify'
 import { postsApi, categoriesApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
+
+const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
+  'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr']
+const ALLOWED_ATTR = ['src','alt','href','title','class','target','rel','width','height']
+
+function sanitizeHtml(html: string): string {
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR })
+}
 
 const featureImageCacheBuster = ref(Date.now())
 const route = useRoute()
@@ -102,6 +111,7 @@ async function save() {
   try {
     const payload = {
       ...form.value,
+      conteudo_html: sanitizeHtml(form.value.conteudo_html),
       e_popular: form.value.e_popular ? 1 : 0,
       e_projeto: form.value.e_projeto ? 1 : 0
     }
