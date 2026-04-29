@@ -70,7 +70,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
               </div>
               <Pagination nextToken={nextPageToken} basePath="/busca" />
             </main>
-            <BlogSidebar>
+            <BlogSidebar showPopularPosts={false}>
               <ServiceCallout />
             </BlogSidebar>
           </div>
@@ -120,7 +120,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
                 ) : null}
               </div>
             </main>
-            <BlogSidebar>
+            <BlogSidebar showPopularPosts={false}>
               <ServiceCallout />
             </BlogSidebar>
           </div>

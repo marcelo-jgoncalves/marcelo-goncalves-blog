@@ -124,7 +124,7 @@ export default async function SobrePage() {
         </div>
         </main>
 
-        <BlogSidebar>
+        <BlogSidebar showPopularPosts={false}>
           <ServiceCallout />
         </BlogSidebar>
       </div>

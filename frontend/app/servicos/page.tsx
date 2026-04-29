@@ -119,7 +119,7 @@ export default function ServicosPage() {
 
         </main>
 
-        <BlogSidebar>
+        <BlogSidebar showPopularPosts={false}>
           <ServiceCallout />
         </BlogSidebar>
       </div>
