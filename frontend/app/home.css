@@ -181,6 +181,49 @@
   .cta h2 { font-size: 2.5rem; }
 }
 
+/* --- Skeleton de posts (Suspense fallback) --- */
+.post-card-skeleton {
+  background: white;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.post-card-skeleton__image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--slate-100);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.post-card-skeleton__body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-card-skeleton__line {
+  height: 14px;
+  background: var(--slate-100);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.post-card-skeleton__line--title {
+  height: 22px;
+  width: 85%;
+}
+
+.post-card-skeleton__line--short {
+  width: 50%;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 /* --- Desktop: ativa o grid 2 colunas com sidebar --- */
 @media (min-width: 1024px) {
   .home-layout {

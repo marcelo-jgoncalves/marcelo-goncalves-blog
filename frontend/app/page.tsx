@@ -1,6 +1,7 @@
 /**frontend/app/page.tsx */
 
 import './home.css';
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts } from '@/lib/api';
@@ -29,16 +30,60 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  const fallback = { posts: [] };
-  const [recentData, popularData] = await Promise.all([
-    getRecentPosts().catch(() => fallback),
-    getPopularPosts().catch(() => fallback),
-  ]);
+// Skeleton para enquanto os posts carregam via Suspense
+function PostsSkeleton() {
+  return (
+    <div className="home-posts-grid" aria-hidden="true">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="post-card-skeleton">
+          <div className="post-card-skeleton__image" />
+          <div className="post-card-skeleton__body">
+            <div className="post-card-skeleton__line post-card-skeleton__line--title" />
+            <div className="post-card-skeleton__line" />
+            <div className="post-card-skeleton__line post-card-skeleton__line--short" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const recentPosts = (recentData.posts || []).slice(0, 4);
-  const popularPosts = (popularData.posts || []).slice(0, 4);
+// Componente async isolado — busca seus próprios dados em request-time
+async function RecentPostsSection() {
+  const data = await getRecentPosts().catch(() => ({ posts: [] }));
+  const posts = (data.posts || []).slice(0, 4);
 
+  return (
+    <>
+      <div className="home-posts-grid">
+        {posts.map((post: any) => (
+          <PostCard key={post.slug} post={post} />
+        ))}
+      </div>
+      <div className="home-see-all">
+        <Link href="/artigos">Ver todos os artigos →</Link>
+      </div>
+    </>
+  );
+}
+
+// Componente async isolado — busca seus próprios dados em request-time
+async function PopularPostsSection() {
+  const data = await getPopularPosts().catch(() => ({ posts: [] }));
+  const posts = (data.posts || []).slice(0, 4);
+
+  if (posts.length === 0) return null;
+
+  return (
+    <div className="home-posts-grid">
+      {posts.map((post: any) => (
+        <PostCard key={post.slug} post={post} />
+      ))}
+    </div>
+  );
+}
+
+export default function Home() {
   return (
     <>
       {/* 1. Hero */}
@@ -67,14 +112,9 @@ export default async function Home() {
               <h2 id="recentes-heading">Últimos Artigos</h2>
               <p>O conteúdo mais recente sobre IA e Nuvem</p>
             </div>
-            <div className="home-posts-grid">
-              {recentPosts.map((post: any) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
-            <div className="home-see-all">
-              <Link href="/artigos">Ver todos os artigos →</Link>
-            </div>
+            <Suspense fallback={<PostsSkeleton />}>
+              <RecentPostsSection />
+            </Suspense>
           </section>
 
           <AdSenseBanner />
@@ -85,17 +125,9 @@ export default async function Home() {
               <h2 id="populares-heading">Populares & Mais Lidos</h2>
               <p>O conteúdo que a comunidade mais acessou</p>
             </div>
-            <div className="home-posts-grid">
-              {popularPosts.length > 0 ? (
-                popularPosts.map((post: any) => (
-                  <PostCard key={post.slug} post={post} />
-                ))
-              ) : (
-                <p className="home-empty" style={{ gridColumn: '1 / -1' }}>
-                  Sem dados disponíveis.
-                </p>
-              )}
-            </div>
+            <Suspense fallback={<PostsSkeleton />}>
+              <PopularPostsSection />
+            </Suspense>
           </section>
 
           <AdSenseBanner />
