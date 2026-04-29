@@ -11,7 +11,7 @@ import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: { absolute: `${SITE_NAME} | ${AUTHOR_NAME}` },
