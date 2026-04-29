@@ -9,7 +9,7 @@
   .blog-sidebar { 
     display: flex; 
     flex-direction: column;
-    gap: calc(var(--space-unit) * 4); 
+    gap: var(--space-3);
     height: max-content; 
     position: -webkit-sticky; 
     position: sticky; 

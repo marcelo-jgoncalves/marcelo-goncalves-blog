@@ -63,7 +63,7 @@
 .super-destaque {
   background-color: var(--dark-900);
   color: white;
-  padding: 80px 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
   margin: 0;
 }
@@ -93,7 +93,7 @@
 .cta {
   background-color: var(--dark-900);
   color: white;
-  padding: 80px 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
 }
 

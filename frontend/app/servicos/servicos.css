@@ -2,7 +2,7 @@
 
 /* Grupo de serviços — centrado com max-width */
 .services-content {
-  padding: 60px 20px;
+  padding: var(--space-5) 20px;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -52,7 +52,8 @@
    ============================================================ */
 .service-proof-fullwidth {
   background-color: var(--accent-dark); /* #1E3A57 */
-  padding: 80px 20px;
+  padding: var(--space-6) 20px;
+  min-height: var(--section-min-height);
   text-align: center;
 }
 
@@ -111,7 +112,7 @@
    RESPONSIVO
    ============================================================ */
 @media (min-width: 768px) {
-  .services-content         { padding: 80px 20px; }
+  .services-content         { padding: var(--space-5) 20px; }
   .service-item             { flex-direction: row; gap: 40px; text-align: left; }
   .service-icon             { margin: 0; }
   .service-text h2          { font-size: 2rem; }

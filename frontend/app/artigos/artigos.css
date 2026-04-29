@@ -74,7 +74,7 @@
 .op-posts-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px; 
+  gap: var(--space-3);
 }
 
 /* Localize e substitua a regra .op-in-grid-ad no seu artigos.css */
@@ -88,33 +88,6 @@
   margin: 0 !important; 
   border: none !important;
   background: transparent !important;
-}
-
-/* ==========================================================================
-   CTA INFERIOR (Navy Design)
-   ========================================================================== */
-.op-bottom-cta {
-  background-color: rgb(35, 47, 62); /* Navy Original */
-  padding: 80px 0;
-  color: white;
-  text-align: center;
-}
-
-.op-btn-outline-white {
-  display: inline-block;
-  padding: 12px 32px;
-  border: 2px solid white;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 700;
-  margin-top: 24px;
-  transition: all 0.2s ease;
-}
-
-.op-btn-outline-white:hover {
-  background: white;
-  color: rgb(35, 47, 62);
 }
 
 /* ==========================================================================

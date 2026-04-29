@@ -6,7 +6,7 @@
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 25px;
+  padding: var(--space-3);
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
@@ -16,7 +16,7 @@
   color: var(--dark-900);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 25px;
+  padding: var(--space-3);
 }
 
 .card-title {

@@ -2,9 +2,9 @@
 
 .page-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: 80px 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
-  min-height: 384px;
+  min-height: var(--section-min-height);
 }
 
 .page-hero__inner {

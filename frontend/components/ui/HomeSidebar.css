@@ -3,7 +3,7 @@
 .home-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: var(--space-3);
   height: max-content;
   position: sticky;
   top: 104px;

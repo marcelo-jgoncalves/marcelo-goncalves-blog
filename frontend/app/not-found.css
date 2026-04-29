@@ -2,8 +2,9 @@
 
 .error-hero {
   background: var(--bg-light-gradient);
-  padding: 60px 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
+  min-height: var(--section-min-height);
 }
 
 .error-404-text {
@@ -28,7 +29,7 @@
 }
 
 .search-retention-container {
-  padding: 60px 20px 0 20px;
+  padding: var(--space-5) 20px 0 20px;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -40,9 +41,8 @@
 }
 
 @media (min-width: 768px) {
-  .error-hero { padding: 80px 20px; }
   .error-404-text { font-size: 8rem; }
   .error-hero h1 { font-size: 3rem; }
-  .search-retention-container { padding-top: 80px; }
+  .search-retention-container { padding-top: var(--space-5); }
   .retention-title { font-size: 1.8rem; margin-bottom: 30px; }
 }
