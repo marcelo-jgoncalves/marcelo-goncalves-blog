@@ -74,7 +74,7 @@ export default function ServicosPage() {
           Consultoria em AWS, DevOps, FinOps e <span className="highlight">Serverless</span>
         </h1>
         <p className="hero-subtitle">
-          Transforme suas ideias em arquiteturas escaláveis, seguras e com custos otimizados, usando a mesma engenharia que move este blog.
+          Adote arquiteturas escaláveis, seguras, com custos otimizados e a mesma engenharia usada neste blog.
         </p>
       </PageHero>
 

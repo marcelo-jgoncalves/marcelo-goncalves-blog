@@ -48,9 +48,6 @@ export default async function Home() {
           <span className="accent">Inteligência Artificial</span>
           , AWS e DevOps detalhe por detalhe
         </h1>
-        <p className="hero-subtitle">
-          Análises profundas, tutoriais práticos e as últimas notícias do mundo da tecnologia, da AWS à OpenAI.
-        </p>
         <Link href="/artigos" className="btn btn-primary">
           Ver Todos os Artigos
         </Link>

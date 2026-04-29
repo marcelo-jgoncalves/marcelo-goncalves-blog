@@ -1,20 +1,5 @@
 /* frontend/app/home.css */
 
-/* --- Hero (tipografia — layout via PageHero) --- */
-.hero-title {
-  font-size: 2.8rem;
-  line-height: 1.15;
-  margin-bottom: 20px;
-  letter-spacing: -0.03em;
-}
-
-.hero-subtitle {
-  font-size: 1.1rem;
-  color: var(--slate-500);
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-
 /* --- Layout principal: 2 colunas com sidebar --- */
 .home-layout {
   display: grid;
@@ -190,7 +175,6 @@
 
 /* --- Tablet e acima --- */
 @media (min-width: 768px) {
-  .hero-subtitle { font-size: 1.25rem; }
   .section-header h2 { font-size: 2rem; }
   .home-posts-grid { grid-template-columns: repeat(2, 1fr); }
   .categories-grid { grid-template-columns: repeat(3, 1fr); }

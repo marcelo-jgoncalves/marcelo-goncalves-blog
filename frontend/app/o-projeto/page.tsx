@@ -58,7 +58,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             O Projeto: Construindo um Blog <span className="op-highlight">quase</span> 100% com IA
           </h1>
           <p className="op-subtitle">
-            Acompanhe a jornada, os desafios técnicos, os custos e os aprendizados de construir este blog do zero, usando IA em cada etapa da arquitetura 100% serverless na AWS.
+            Acompanhe a jornada, os desafios técnicos, os custos e os aprendizados.
           </p>
         </div>
       </section>
