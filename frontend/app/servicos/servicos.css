@@ -1,5 +1,6 @@
 /* frontend/app/servicos/servicos.css */
 
+/* Grupo de serviços — centrado com max-width */
 .services-content {
   padding: 60px 20px;
   max-width: 900px;
@@ -22,39 +23,6 @@
   padding-bottom: 0;
 }
 
-/* Callout de prova social — entre 3º e 4º serviço */
-.service-proof-callout {
-  background: var(--accent-light);
-  border-left: 4px solid var(--accent);
-  border-radius: var(--border-radius-lg);
-  padding: 36px 40px;
-  margin-bottom: var(--post-block-spacing);
-  text-align: left;
-}
-
-.service-proof-callout h3 {
-  font-size: 1.5rem;
-  color: var(--dark-900);
-  margin-bottom: 12px;
-  line-height: 1.3;
-}
-
-.service-proof-callout p {
-  color: var(--dark-700);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-@media (max-width: 767px) {
-  .service-proof-callout {
-    padding: 28px 24px;
-  }
-  .service-proof-callout h3 {
-    font-size: 1.25rem;
-  }
-}
-
 .service-icon {
   width: 70px;
   height: 70px;
@@ -66,6 +34,7 @@
   color: var(--accent);
   font-size: 2rem;
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .service-text h2 {
@@ -78,33 +47,74 @@
   line-height: 1.7;
 }
 
-.sales-cta {
+/* ============================================================
+   CALLOUT "MAKING OF" — Fullwidth, fundo azul profundo
+   ============================================================ */
+.service-proof-fullwidth {
+  background-color: var(--accent-dark); /* #1E3A57 */
   padding: 80px 20px;
-  background-color: var(--slate-50);
   text-align: center;
-  margin-top: 40px;
 }
 
-.sales-cta h2 {
+.service-proof-fullwidth__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.service-proof-fullwidth h2 {
   font-size: 2rem;
-  margin-bottom: 15px;
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
-.sales-cta p {
-  font-size: 1.2rem;
-  color: #555;
-  max-width: 700px;
-  margin: 0 auto 30px auto;
+/* "making of" aparece em azul claro sobre o fundo escuro */
+.service-proof-fullwidth .accent-light {
+  color: var(--accent-light); /* #EBF1F8 */
 }
 
+.service-proof-fullwidth p {
+  color: var(--slate-300); /* #CBD5E1 — branco suavizado */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 0;
+}
+
+/* Botão: fundo branco + texto do azul escuro — máximo contraste */
+.service-proof-btn {
+  display: inline-block;
+  background: #ffffff;
+  color: var(--accent-dark);
+  padding: 14px 36px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 4px;
+}
+
+.service-proof-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  color: var(--accent-dark);
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
 @media (min-width: 768px) {
-  .services-content { padding: 80px 20px; }
-  .service-item {
-    flex-direction: row;
-    gap: 40px;
-    text-align: left;
-  }
-  .service-icon { margin: 0; }
-  .service-text h2 { font-size: 2rem; }
-  .sales-cta h2 { font-size: 2.5rem; }
+  .services-content         { padding: 80px 20px; }
+  .service-item             { flex-direction: row; gap: 40px; text-align: left; }
+  .service-icon             { margin: 0; }
+  .service-text h2          { font-size: 2rem; }
+  .service-proof-fullwidth h2 { font-size: 2.5rem; }
+  .service-proof-fullwidth p  { font-size: 1.2rem; }
 }

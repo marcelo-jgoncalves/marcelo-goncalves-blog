@@ -51,9 +51,8 @@ export default function ServicosPage() {
         </p>
       </PageHero>
 
-      {/* 2. Serviços (sem sidebar) */}
-      <main className="services-content">
-
+      {/* 2. Serviços 1–3 */}
+      <div className="services-content">
         <div className="service-item">
           <div className="service-icon"><i className="fas fa-cloud"></i></div>
           <div className="service-text">
@@ -77,22 +76,27 @@ export default function ServicosPage() {
             <p>Criação de pipelines de CI/CD (GitHub Actions) e automação completa de infraestrutura como código (Terraform). Crio o &quot;botão mágico&quot; que permite à sua equipe fazer deploys seguros e repetíveis.</p>
           </div>
         </div>
+      </div>
 
-        {/* Prova social após 3º serviço */}
-        <div className="service-proof-callout">
-          <h3>
+      {/* 3. Prova social — fullwidth, fundo azul profundo */}
+      <section className="service-proof-fullwidth">
+        <div className="service-proof-fullwidth__inner">
+          <h2>
             Não acredite apenas na minha palavra. Veja o{' '}
-            <span className="accent">making of</span>.
-          </h3>
+            <span className="accent-light">making of</span>.
+          </h2>
           <p>
             Este blog, da infraestrutura serverless ao frontend Next.js, foi construído
             com as exatas metodologias que ofereço.
           </p>
-          <Link href="/o-projeto" className="btn">
+          <Link href="/o-projeto" className="service-proof-btn">
             Conheça &quot;O Projeto&quot; →
           </Link>
         </div>
+      </section>
 
+      {/* 4. Serviço 4 */}
+      <div className="services-content">
         <div className="service-item">
           <div className="service-icon"><i className="fas fa-bolt"></i></div>
           <div className="service-text">
@@ -100,8 +104,7 @@ export default function ServicosPage() {
             <p>Construção de backends e APIs de alta performance e custo zero quando ociosos. Especialista em AWS Lambda, API Gateway e DynamoDB para escalar do zero a milhões de usuários sem gerenciar servidores.</p>
           </div>
         </div>
-
-      </main>
+      </div>
 
       {/* 3. CTA final — agendar chamada */}
       <PageCTA
