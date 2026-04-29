@@ -168,18 +168,21 @@ describe('getPosts handler', () => {
   });
 
   describe('default (all posts)', () => {
-    it('returns all published posts', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [POST_A, POST_B] });
+    it('returns all published posts with totalCount', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A, POST_B] }); // posts query
+      mockSend.mockResolvedValueOnce({ Count: 2 });                // count query
 
       const result = await handler(event(), ctx, jest.fn());
 
       expect(result?.statusCode).toBe(200);
       const body = JSON.parse(result?.body ?? '{}');
       expect(body.posts).toHaveLength(2);
+      expect(body.totalCount).toBe(2);
     });
 
     it('uses StatusPorData GSI with default limit 9', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [] });
+      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
+      mockSend.mockResolvedValueOnce({ Count: 0 });  // count query
       await handler(event(), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];
@@ -188,8 +191,19 @@ describe('getPosts handler', () => {
       expect(cmd.input.ExpressionAttributeValues[':status']).toBe('Publicado');
     });
 
+    it('count query uses SELECT COUNT without Limit', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
+      mockSend.mockResolvedValueOnce({ Count: 5 });  // count query
+      await handler(event(), ctx, jest.fn());
+
+      const countCmd = mockSend.mock.calls[1][0];
+      expect(countCmd.input.Select).toBe('COUNT');
+      expect(countCmd.input.Limit).toBeUndefined();
+    });
+
     it('respects custom limit from query param', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [] });
+      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
+      mockSend.mockResolvedValueOnce({ Count: 0 });  // count query
       await handler(event({ queryStringParameters: { limit: '3' } }), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];

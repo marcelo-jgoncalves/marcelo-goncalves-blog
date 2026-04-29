@@ -132,7 +132,7 @@ async function getAllPosts(queryParams: any, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
-  const command = new QueryCommand({
+  const postsCommand = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
     KeyConditionExpression: "#status = :status",
@@ -143,11 +143,29 @@ async function getAllPosts(queryParams: any, requestId?: string) {
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
-  const result = await dynamo.send(command);
-  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const countCommand = new QueryCommand({
+    TableName: TABLE_NAME,
+    IndexName: "StatusPorData",
+    KeyConditionExpression: "#status = :status",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":status": "Publicado" },
+    Select: "COUNT"
+  });
 
-  logger.info("all_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
-  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }), headers };
+  const [result, countResult] = await Promise.all([
+    dynamo.send(postsCommand),
+    dynamo.send(countCommand)
+  ]);
+
+  const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const totalCount = countResult.Count ?? 0;
+
+  logger.info("all_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, totalCount }),
+    headers
+  };
 }
 
 async function getPostsByCategory(categorySlug: string, queryParams: any, requestId?: string) {

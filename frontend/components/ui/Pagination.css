@@ -1,40 +1,49 @@
 /* frontend/components/ui/Pagination.css */
 
 .op-pagination {
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  gap: 16px; /* 🚀 Grid 8px: Corrigido de 10px para respiro adequado */
-  margin-top: 64px; /* 🚀 Grid 8px: Macro-ritmo corrigido de 60px */
-  padding-bottom: 64px; /* 🚀 Grid 8px: Macro-ritmo corrigido de 60px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 64px;
+  padding-bottom: 64px;
   flex-wrap: wrap;
 }
 
 .op-page-number {
-  font-family: var(--font-display); 
+  font-family: var(--font-display);
   font-weight: 600;
+  font-size: 0.95rem;
   color: var(--dark-900);
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
-  transition: all 0.2s ease; 
-  display: inline-flex; /* Melhor alinhamento interno que inline-block */
+  transition: all 0.2s ease;
+  display: inline-flex;
   align-items: center;
   text-decoration: none;
 }
 
-/* Interatividade protegida no Mobile */
+.op-page-number--disabled {
+  color: var(--slate-400);
+  border-color: var(--slate-200);
+  pointer-events: none;
+  cursor: default;
+}
+
 @media (hover: hover) {
-  .op-page-number:not(.current):hover { 
-    background-color: var(--slate-50); 
-    border-color: #cbd5e1; 
-    transform: translateY(-2px); /* Feedback tátil de clique sutil */
+  .op-page-number:not(.op-page-number--disabled):hover {
+    background-color: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    transform: translateY(-2px);
   }
 }
 
-.op-page-number.current { 
-  background-color: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent); 
-  pointer-events: none; /* A11y: Evita que o usuário clique na página em que já está */
+.op-page-info {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--slate-500);
+  padding: 10px 16px;
+  white-space: nowrap;
 }

@@ -21,20 +21,28 @@ interface ArtigosPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+const LIMIT = 12;
+
 export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
   const params = await searchParams;
-  const nextToken = typeof params.nextToken === 'string' ? params.nextToken : undefined;
+  const nextToken    = typeof params.nextToken    === 'string' ? params.nextToken    : undefined;
+  const prevTokens   = typeof params.prevTokens   === 'string' ? params.prevTokens   : '';
+  const page         = typeof params.page         === 'string' ? Math.max(1, parseInt(params.page)) : 1;
 
   let posts: any[] = [];
-  let nextPageToken = undefined;
+  let nextPageToken: string | undefined;
+  let totalCount = 0;
 
   try {
-    const data = await getAllPosts(nextToken, 12);
-    posts = data?.posts || [];
-    nextPageToken = data?.nextToken;
+    const data = await getAllPosts(nextToken, LIMIT);
+    posts         = data?.posts      || [];
+    nextPageToken = data?.nextToken  ?? undefined;
+    totalCount    = data?.totalCount ?? 0;
   } catch (error) {
     console.error("Erro ao carregar artigos:", error);
   }
+
+  const totalPages = totalCount > 0 ? Math.ceil(totalCount / LIMIT) : 0;
 
   const firstHalf  = posts.slice(0, 6);
   const secondHalf = posts.slice(6);
@@ -95,7 +103,14 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             </>
           )}
 
-          <Pagination nextToken={nextPageToken} basePath="/artigos" />
+          <Pagination
+            basePath="/artigos"
+            page={page}
+            totalPages={totalPages}
+            nextToken={nextPageToken}
+            currentPageToken={nextToken}
+            prevTokens={prevTokens}
+          />
         </main>
 
         <BlogSidebar adsenseBlockId="artigos-sidebar-primary">
