@@ -72,19 +72,19 @@ resource "aws_cloudfront_distribution" "frontend" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "Lambda-SSR"
 
-    # Forwarding total (Cookies, Headers, QueryString) para o SSR funcionar
     forwarded_values {
-      query_string = true
+      query_string = true  # Necessário para paginação (?nextToken) e busca (?q)
       cookies {
-        forward = "all"
+        forward = "none"   # Blog público sem auth — cookies não afetam o render
       }
-      headers = ["Authorization"] # Importante passar Host
+      headers = ["Authorization"]
     }
 
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 0
-    max_ttl                = 0
+    compress    = true  # Gzip/Brotli — reduz payload HTML em ~70%
+    min_ttl     = 0
+    default_ttl = 0     # Respeita Cache-Control: s-maxage do Next.js (ISR)
+    max_ttl     = 300   # Cap de 5 min — alinhado com revalidate das listagens
   }
 
   # --- Comportamento Estático (_next/static/*): Manda para o S3 ---
