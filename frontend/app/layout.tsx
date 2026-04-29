@@ -38,6 +38,10 @@ export const metadata: Metadata = {
   authors: [{ name: AUTHOR_NAME }],
   creator: AUTHOR_NAME,
   publisher: SITE_NAME,
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+  },
   robots: SITE_URL.includes('cloudfront.net')
     ? { index: false, follow: false }
     : { index: true, follow: true },
