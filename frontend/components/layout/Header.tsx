@@ -38,11 +38,11 @@ export default function Header() {
         {/* Menu Desktop */}
         <div className="op-nav-links">
           {NAV_LINKS.map((link) => (
-            <Link 
-              key={link.href} 
+            <Link
+              key={link.href}
               href={link.href}
+              prefetch={false}
               className={`op-nav-link ${isActive(link.href) ? 'op-active' : ''}`}
-              /* 2. ADIÇÃO: Informa semanticamente qual é a página atual */
               aria-current={isActive(link.href) ? 'page' : undefined}
             >
               {link.name}
@@ -67,18 +67,18 @@ export default function Header() {
         </button>
 
         {/* Menu Mobile */}
-        <div 
+        <div
           id="mobile-menu-dropdown"
           className={`op-mobile-menu ${isMenuOpen ? 'op-active' : ''}`}
           aria-hidden={!isMenuOpen}
         >
           {NAV_LINKS.map((link) => (
-            <Link 
-              key={link.href} 
-              href={link.href} 
+            <Link
+              key={link.href}
+              href={link.href}
+              prefetch={false}
               onClick={closeMenu}
               className={`op-nav-link-mobile ${isActive(link.href) ? 'op-active' : ''}`}
-              /* 2. ADIÇÃO: Informa semanticamente qual é a página atual também no mobile */
               aria-current={isActive(link.href) ? 'page' : undefined}
             >
               {link.name}
