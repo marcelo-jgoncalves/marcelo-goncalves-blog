@@ -24,7 +24,11 @@ interface PostCardProps {
 
 function formatDate(iso?: string): string | null {
   if (!iso) return null;
-  return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+  const d = new Date(iso);
+  const day = d.getUTCDate();
+  const month = d.toLocaleDateString('pt-BR', { month: 'short', timeZone: 'UTC' }).replace('.', '');
+  const year = String(d.getUTCFullYear()).slice(-2);
+  return `${day} ${month} '${year}`;
 }
 
 function slugToName(slug?: string): string {
