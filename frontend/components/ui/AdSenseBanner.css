@@ -1,0 +1,22 @@
+/* frontend/components/ui/AdSenseBanner.css */
+
+.adsense-banner-wrapper {
+  width: 100%;
+}
+
+.adsense-placeholder {
+  min-height: 90px;
+  background-color: var(--slate-50);
+  border: 1px dashed var(--border-color);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate-500);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: 100%;
+}

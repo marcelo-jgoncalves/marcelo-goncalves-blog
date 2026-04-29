@@ -149,23 +149,7 @@ export default async function Home() {
 
       </div>
 
-      {/* 3. Super Destaque fullwidth */}
-      <section className="super-destaque">
-        <div className="container">
-          <h2>
-            Um Blog sobre as tecnologias do futuro, construído{' '}
-            <span className="highlight">quase</span> 100% com IA.
-          </h2>
-          <p>
-            Acompanhe a jornada, os desafios e os custos reais de construir este site do zero na AWS.
-          </p>
-          <Link href="/o-projeto" className="btn btn-primary">
-            Conheça &ldquo;O Projeto&rdquo; →
-          </Link>
-        </div>
-      </section>
-
-      {/* 4. CTA Newsletter fullwidth */}
+      {/* 3. CTA Newsletter fullwidth */}
       <section className="cta">
         <div className="container">
           <h2>Quer se aprofundar em IA, DevOps e muito mais?</h2>

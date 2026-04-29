@@ -27,8 +27,15 @@ function formatDate(iso?: string): string | null {
   return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
+function slugToName(slug?: string): string {
+  if (!slug) return '';
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
 export default function PostCard({ post, isPriority = false }: PostCardProps) {
   const date = formatDate(post.data_publicacao);
+  const categoriaNome = post.categoria?.nome_exibicao || slugToName(post.categoria_slug);
+  const categoriaSlug = post.categoria_slug;
 
   return (
     <article className="post-card">
@@ -49,11 +56,11 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
         {/* Badge + meta na mesma linha */}
         <div className="post-card__meta-row">
-          {post.categoria && (
+          {categoriaSlug && (
             <CategoryBadge
-              nome={post.categoria.nome_exibicao}
-              slug={post.categoria_slug}
-              icone_fa={post.categoria.icone_fa}
+              nome={categoriaNome}
+              slug={categoriaSlug}
+              icone_fa={post.categoria?.icone_fa}
               size="sm"
             />
           )}

@@ -1,13 +1,11 @@
-import React from 'react';
+import './AdSenseBanner.css';
 
 export default function AdSenseBanner() {
   return (
-    <section> {/* <-- Remova o style daqui! */}
-      <div className="container">
-        <div className="adsense-placeholder">
-          [ADSENSE LEADERBOARD]
-        </div>
+    <div className="adsense-banner-wrapper">
+      <div className="adsense-placeholder" aria-label="Espaço reservado para anúncio">
+        AdSense — 728×90
       </div>
-    </section>
+    </div>
   );
 }
