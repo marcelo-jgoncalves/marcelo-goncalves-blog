@@ -61,6 +61,15 @@ resource "aws_lambda_function" "nextjs_server" {
   depends_on = [aws_cloudwatch_log_group.nextjs_server]
 }
 
+# Provisioned Concurrency — mantém instâncias aquecidas para eliminar cold starts
+# Ativar em produção: provisioned_concurrency = 1 no env/prd.tfvars
+resource "aws_lambda_provisioned_concurrency_config" "nextjs_warm" {
+  count                             = var.provisioned_concurrency > 0 ? 1 : 0
+  function_name                     = aws_lambda_function.nextjs_server.function_name
+  qualifier                         = aws_lambda_function.nextjs_server.version
+  provisioned_concurrent_executions = var.provisioned_concurrency
+}
+
 # URL da Lambda com AWS_IAM — apenas CloudFront (via OAC) pode invocar
 resource "aws_lambda_function_url" "nextjs_url" {
   function_name      = aws_lambda_function.nextjs_server.function_name

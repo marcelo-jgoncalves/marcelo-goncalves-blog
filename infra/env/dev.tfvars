@@ -8,3 +8,7 @@ log_retention_days = 7
 enable_xray_tracing      = false
 enable_cloudwatch_alarms = false
 alarm_email              = ""
+
+# Lambda Provisioned Concurrency — 0 = off (dev economiza custo)
+# Em prod: setar para 1+ para eliminar cold starts
+provisioned_concurrency  = 0

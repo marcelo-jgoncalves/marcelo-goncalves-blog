@@ -14,3 +14,9 @@ variable "enable_xray_tracing" {
   default     = false
 }
 
+variable "provisioned_concurrency" {
+  description = "Instâncias Lambda pré-aquecidas (0 = off, >=1 = on). Ativar em prod para eliminar cold starts."
+  type        = number
+  default     = 0
+}
+
