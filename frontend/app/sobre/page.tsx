@@ -5,6 +5,7 @@ import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
+import AvatarImage from '@/components/ui/AvatarImage';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 export const revalidate = 3600;
@@ -87,9 +88,9 @@ export default async function SobrePage() {
           {/* Avatar (Vem da API) */}
           <div className="bio-avatar" aria-label="Foto de Marcelo Gonçalves">
             {avatarUrl ? (
-                <img src={avatarUrl} alt={author.nome_exibicao || "Marcelo Gonçalves"} />
+              <AvatarImage src={avatarUrl} alt={author.nome_exibicao || 'Marcelo Gonçalves'} />
             ) : (
-                <i className="fa-solid fa-user" style={{ fontSize: '4rem', color: '#ccc' }}></i>
+              <i className="fa-solid fa-user" style={{ fontSize: '4rem', color: '#ccc' }} aria-hidden="true" />
             )}
           </div>
           
