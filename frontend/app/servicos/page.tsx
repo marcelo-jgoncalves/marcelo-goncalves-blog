@@ -4,7 +4,7 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
 import PageHero from '@/components/ui/PageHero';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
-import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageCTA from '@/components/ui/PageCTA';
 
 export const revalidate = 3600;
 
@@ -124,18 +124,12 @@ export default function ServicosPage() {
         </BlogSidebar>
       </div>
 
-      {/* 3. Prova Social — fullwidth antes do CTA */}
-      <section className="super-destaque">
-        <div className="container">
-          <h2>Não acredite apenas na minha palavra. Veja o <i>making of</i>.</h2>
-          <p>Este blog, da infraestrutura serverless ao frontend Next.js, foi construído com as exatas metodologias que ofereço. Acompanhe a jornada técnica.</p>
-          <Link href="/o-projeto" className="btn btn-primary">
-            Conheça &quot;O Projeto&quot; &rarr;
-          </Link>
-        </div>
-      </section>
-
-      <NewsletterCTA />
+      <PageCTA
+        title={<>Não acredite apenas na minha palavra. Veja o <span className="accent">making of</span>.</>}
+        body="Este blog, da infraestrutura serverless ao frontend Next.js, foi construído com as exatas metodologias que ofereço. Acompanhe a jornada técnica."
+        linkHref="/o-projeto"
+        linkText={'Conheça "O Projeto" →'}
+      />
     </>
   );
 }
