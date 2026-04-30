@@ -1,0 +1,53 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Scan backend (TypeScript + Node.js)
+        run: |
+          semgrep scan \
+            --config p/typescript \
+            --config p/nodejs \
+            --severity ERROR \
+            --error \
+            --quiet \
+            backend/src/
+
+      - name: Scan frontend (TypeScript)
+        run: |
+          semgrep scan \
+            --config p/typescript \
+            --severity ERROR \
+            --error \
+            --quiet \
+            frontend/
+
+      - name: Scan admin (TypeScript)
+        run: |
+          semgrep scan \
+            --config p/typescript \
+            --severity ERROR \
+            --error \
+            --quiet \
+            admin/src/
