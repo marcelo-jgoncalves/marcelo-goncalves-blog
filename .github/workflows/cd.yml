@@ -84,7 +84,8 @@ jobs:
         run: |
           mkdir -p infra/builds
           cd frontend/.open-next/server-functions/default
-          zip -r ../../../../infra/builds/nextjs.zip .
+          find . -exec touch -t 202001010000.00 {} \;
+          zip -rX ../../../../infra/builds/nextjs.zip .
 
       - name: Copy frontend static assets
         run: |

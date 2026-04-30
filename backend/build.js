@@ -58,7 +58,8 @@ async function build() {
         if (process.platform === 'win32') {
             execSync(`powershell -Command "Compress-Archive -Path '${funcDistDir}\\*' -DestinationPath '${zipOutput}' -Force"`);
         } else {
-            execSync(`cd "${funcDistDir}" && zip -r -q "${zipOutput}" .`);
+            // Normaliza timestamps para ZIP determinístico — Terraform só atualiza a Lambda se o código mudar
+            execSync(`find "${funcDistDir}" -exec touch -t 202001010000.00 {} \\; && zip -rX -q "${zipOutput}" .`, { cwd: funcDistDir });
         }
     } catch (error) {
         console.error(`❌ Erro ao zipar ${func}:`, error);
