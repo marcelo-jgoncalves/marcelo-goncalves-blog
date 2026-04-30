@@ -122,6 +122,7 @@ marcelo-goncalves-blog/
 --accent: #3B5F8A        /* Classic Blue — CTA, links, ativo */
 --accent-hover: #2D4F76
 --accent-light: #EBF1F8
+--accent-dark: #1E3A57   /* Navy profundo — ServiceCallout, service-proof-fullwidth */
 --dark-900: #111827      /* Headings */
 --dark-700: #374151      /* Body text */
 --slate-50:  #F8FAFC     /* Page bg */
@@ -134,6 +135,19 @@ Layout de referência da home: `docs/design-system/home-layout-description.md`.
 
 **Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseSidebar.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
+
+### Escala de espaçamento (8px grid)
+```css
+--space-1:  8px   /* Micro: badges, gap inline */
+--space-2:  16px  /* Pequeno: meta-row, margin ícone */
+--space-3:  24px  /* Médio: gap cards, padding widgets sidebar */
+--space-4:  40px  /* Grande: gap seção→grid, margin banners AdSense */
+--space-5:  64px  /* Seção: padding vertical de layouts de conteúdo */
+--space-6:  80px  /* Landmark: padding de PageHero, CTAs fullwidth */
+--section-min-height: 384px  /* min-height de landmarks */
+```
+
+**Regra não-negociável:** componentes usam `--space-1` a `--space-4`. Seções de layout usam `--space-5` e `--space-6`. Nenhum CSS de componente deve ter padding vertical maior que `--space-4`.
 
 ### Logo
 ```
@@ -214,6 +228,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 3. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
 4. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
 5. **Publisher ID AdSense** — quando ativo, trocar `ADSENSE_CONFIGURED = false` → `true` em `AdsenseSidebar.tsx` e descomentar `<ins>`
+6. **AWS Support ticket** — elevar Lambda concurrent executions de 10 → 1000 (conta com limite sandbox; sem isso reloads rápidos retornam `ConcurrentInvocationLimitExceeded`). Support → Service limit increase → Lambda → Concurrent executions → us-east-1 → 1000
 
 ### Próximas entregas técnicas
 6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
