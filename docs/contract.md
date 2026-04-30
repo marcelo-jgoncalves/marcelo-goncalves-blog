@@ -312,6 +312,45 @@ Gonçalves        → color: var(--accent)   — #3B5F8A
 
 Font: DM Sans 700, letter-spacing: -0.5px.
 
+### Ritmo Vertical — Escala de Espaçamento (OBRIGATÓRIO)
+
+O sistema usa uma escala de 6 níveis baseada em 8px. Cada nível tem responsabilidade exclusiva — **nunca misturar**.
+
+```css
+--space-1:  8px    /* Micro: gap ícone/badge, separação inline */
+--space-2:  16px   /* Pequeno: meta-row, margin entre ícone e texto */
+--space-3:  24px   /* Médio: gap entre cards, padding interno de widgets */
+--space-4:  40px   /* Grande: gap seção→grid, margin de banners AdSense */
+--space-5:  64px   /* Seção: padding vertical de layouts de conteúdo */
+--space-6:  80px   /* Landmark: padding de PageHero e CTAs fullwidth */
+--section-min-height: 384px  /* min-height de landmarks (hero, PageCTA, service-proof) */
+```
+
+**Regra não-negociável:**
+
+| Contexto | Tokens permitidos |
+|---|---|
+| Componentes (PostCard, widgets, badges) | `--space-1` a `--space-4` |
+| Seções de layout (page-layout, bio-section) | `--space-5` |
+| Landmarks fullwidth (PageHero, PageCTA, CTAs dark) | `--space-6` |
+
+Nenhum CSS de componente deve ter `padding` vertical maior que `--space-4`. Nenhuma seção de layout deve usar valor menor que `--space-5`.
+
+**Hierarquia visual de 4 camadas (referência: página `/artigos`):**
+
+```
+Landmark   → 80px   PageHero, NewsletterCTA
+Seção      → 40px   hero→banner, banner→grid, grid→banner, pagination, gap colunas
+Componente → 24px   gap entre cards, padding de widgets, gap sidebar
+Micro      → 16px   elementos internos do card (título, excerpt, meta)
+```
+
+**`--space-4` é o separador universal de blocos.** Toda transição entre elementos de nível seção usa exatamente 40px — banner margins, padding-top do layout, gap de colunas desktop, padding da paginação. O olho percebe o mesmo respiro em qualquer ponto da página.
+
+**Primeiro banner de cada página** deve ter `margin-top: 0` via `:first-child` no container pai — alinha com o topo da sidebar sem empurrar o conteúdo.
+
+**Paginação** deve ficar **fora** do grid de duas colunas (abaixo de ambas as colunas) — evita altura assimétrica que desalinha o último card com o último widget da sidebar.
+
 ---
 
 ## SEO (OBRIGATÓRIO)
