@@ -17,19 +17,14 @@
   gap: 0;
 }
 
-/* Banner → 24px → título da secção (pequeno gap de intro) */
+/* Cada banner carrega 40px acima e abaixo de si */
 .home-main > .adsense-banner-wrapper {
-  margin-bottom: var(--space-3);
+  margin: var(--space-4) 0;
 }
 
-/* Secção → 40px → próximo banner (separador padrão de bloco) */
-.home-main > section {
-  margin-bottom: var(--space-4);
-}
-
-/* Última secção não precisa de margem — padding do home-layout fornece o respiro */
-.home-main > section:last-child {
-  margin-bottom: 0;
+/* Primeiro banner: layout padding-top já fornece os 40px acima */
+.home-main > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
 }
 
 /* --- Posts grid dentro do main (2 colunas) --- */
