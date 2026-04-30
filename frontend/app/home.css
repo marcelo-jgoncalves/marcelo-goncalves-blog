@@ -14,17 +14,12 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--space-4);
 }
 
-/* Cada banner carrega 40px acima e abaixo de si */
+/* gap gerencia todo o ritmo — sem margin nos banners evita margin collapsing */
 .home-main > .adsense-banner-wrapper {
-  margin: var(--space-4) 0;
-}
-
-/* Primeiro banner: layout padding-top já fornece os 40px acima */
-.home-main > .adsense-banner-wrapper:first-child {
-  margin-top: 0;
+  margin: 0;
 }
 
 /* --- Posts grid dentro do main (2 colunas) --- */
