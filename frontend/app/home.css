@@ -43,9 +43,9 @@
   color: var(--accent-hover);
 }
 
-/* Primeiro banner sem margem superior — alinha com o topo da sidebar */
-.home-main > .adsense-banner-wrapper:first-child {
-  margin-top: 0;
+/* Banners dentro do home-main: flex gap já provê o ritmo, margin zerado */
+.home-main > .adsense-banner-wrapper {
+  margin: 0;
 }
 
 /* --- Section header --- */
