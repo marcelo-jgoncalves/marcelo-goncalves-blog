@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27  
+**Data:** 2026-04-27 | **Última atualização:** 2026-04-30  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -132,6 +132,16 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [ ] Seed de categorias no DynamoDB
 - [ ] Primeiro post real no blog
 - [ ] Validação end-to-end (criar post no admin → aparecer no blog)
+
+**Sprint 9 — CSS + Pipeline (Sessão 13) ✅**
+- [x] Ritmo vertical world-class: spacing scale `--space-1..6` + `--section-min-height` em globals.css
+- [x] Alinhamento primeiro banner com topo da sidebar (home, artigos, o-projeto)
+- [x] Paginação de artigos fora do grid de duas colunas — alinha último card com último widget
+- [x] Espaçamento uniforme 40px em artigos (padding-top, gap desktop, pagination)
+- [x] ServiceCallout: esquema accent-dark (fundo azul escuro, botão branco)
+- [x] ZIPs determinísticos: timestamps normalizados antes de zipar — Terraform só atualiza Lambda quando código muda
+- [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
+- [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
 
 ---
 
