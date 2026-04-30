@@ -64,9 +64,16 @@
   background-color: var(--accent-hover);
 }
 
-/* Iguala o espaço hero→conteúdo ao espaço entre os banners (var(--space-4) = 40px) */
+/* Espaçamento uniforme: 40px em todos os sentidos (igual ao margin dos banners) */
 .op-artigos-layout-root .page-layout {
   padding-top: var(--space-4);
+  padding-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+  .op-artigos-layout-root .page-layout {
+    gap: var(--space-4);
+  }
 }
 
 /* ==========================================================================
