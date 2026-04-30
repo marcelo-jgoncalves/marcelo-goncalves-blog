@@ -64,6 +64,11 @@
   background-color: var(--accent-hover);
 }
 
+/* Iguala o espaço hero→conteúdo ao espaço entre os banners (var(--space-4) = 40px) */
+.op-artigos-layout-root .page-layout {
+  padding-top: var(--space-4);
+}
+
 /* ==========================================================================
    FEED DE ARTIGOS (coluna principal do page-layout)
    ========================================================================== */
