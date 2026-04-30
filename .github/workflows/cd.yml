@@ -192,7 +192,6 @@ jobs:
         run: |
           aws s3 sync infra/builds/nextjs-assets s3://${{ steps.tf.outputs.frontend_bucket }} \
             --cache-control "public, max-age=31536000, immutable" \
-            --delete \
             --exclude "media/*"
 
       - name: Sync admin SPA to S3
@@ -369,7 +368,6 @@ jobs:
         run: |
           aws s3 sync infra/builds/nextjs-assets s3://${{ steps.tf.outputs.frontend_bucket }} \
             --cache-control "public, max-age=31536000, immutable" \
-            --delete \
             --exclude "media/*"
 
       - name: Sync admin SPA to S3
