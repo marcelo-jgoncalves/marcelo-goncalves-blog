@@ -3,8 +3,8 @@ name: Deploy Pipeline (CD)
 on:
   push:
     branches:
-      - develop  # auto-deploy para dev
-      - main     # deploy para prod com aprovação manual
+      - develop
+      - main
   workflow_dispatch:
     inputs:
       environment:
@@ -16,7 +16,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write  # Necessário para OIDC
+  id-token: write
 
 env:
   PROJECT_NAME: marcelo-goncalves-blog
@@ -25,39 +25,28 @@ env:
   TERRAFORM_VERSION: '1.8.0'
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
-# ==============================================================
-# JOB 1: Build de todos os artefatos (backend + frontend)
-# O admin é buildado depois do terraform apply (precisa de outputs)
-# ==============================================================
 jobs:
-  build:
-    name: 1. Build Artifacts
+
+  # ==============================================================
+  # JOB 1a: Build Backend (Lambdas) — paralelo com 1b
+  # ==============================================================
+  build-backend:
+    name: 1a. Build Backend
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Cache backend node_modules
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: backend/node_modules
           key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: backend-${{ runner.os }}-
 
-      - name: Cache frontend node_modules
-        uses: actions/cache@v4
-        with:
-          path: frontend/node_modules
-          key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: frontend-${{ runner.os }}-
-
-      # --- Backend ---
       - name: Install backend dependencies
         run: npm ci
         working-directory: backend
@@ -69,9 +58,33 @@ jobs:
       - name: Build backend Lambdas
         run: npm run build
         working-directory: backend
-      # Gera infra/builds/*.zip (getPost.zip, getPosts.zip, etc.)
 
-      # --- Frontend (Next.js + OpenNext) ---
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-backend
+          path: infra/builds/
+          retention-days: 1
+
+  # ==============================================================
+  # JOB 1b: Build Frontend (Next.js + OpenNext) — paralelo com 1a
+  # ==============================================================
+  build-frontend:
+    name: 1b. Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/cache@v4
+        with:
+          path: frontend/node_modules
+          key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: frontend-${{ runner.os }}-
+
       - name: Install frontend dependencies
         run: npm ci
         working-directory: frontend
@@ -88,45 +101,45 @@ jobs:
           zip -rX ../../../../infra/builds/nextjs.zip .
 
       - name: Copy frontend static assets
-        run: |
-          cp -r frontend/.open-next/assets infra/builds/nextjs-assets
+        run: cp -r frontend/.open-next/assets infra/builds/nextjs-assets
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-frontend
           path: |
-            infra/builds/
+            infra/builds/nextjs.zip
+            infra/builds/nextjs-assets/
           retention-days: 1
 
-# ==============================================================
-# JOB 2: Deploy para Dev (branch develop)
-# ==============================================================
+  # ==============================================================
+  # JOB 2a: Deploy para Dev (branch develop)
+  # ==============================================================
   deploy-dev:
     name: 2a. Deploy → Dev
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build-backend, build-frontend]
     if: github.ref == 'refs/heads/develop'
     environment: dev
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-backend
           path: infra/builds/
 
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-frontend
+          path: infra/builds/
+
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
@@ -149,17 +162,16 @@ jobs:
         id: tf
         working-directory: infra
         run: |
-          echo "api_url=$(terraform output -raw api_base_url)"           >> $GITHUB_OUTPUT
-          echo "frontend_bucket=$(terraform output -raw frontend_bucket)" >> $GITHUB_OUTPUT
+          echo "api_url=$(terraform output -raw api_base_url)"               >> $GITHUB_OUTPUT
+          echo "frontend_bucket=$(terraform output -raw frontend_bucket)"    >> $GITHUB_OUTPUT
           echo "frontend_cf=$(terraform output -raw frontend_cloudfront_id)" >> $GITHUB_OUTPUT
-          echo "admin_bucket=$(terraform output -raw admin_bucket)"       >> $GITHUB_OUTPUT
-          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"    >> $GITHUB_OUTPUT
-          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_OUTPUT
-          echo "cognito_client=$(terraform output -raw cognito_client_id)" >> $GITHUB_OUTPUT
-          echo "admin_url=$(terraform output -raw admin_url)"             >> $GITHUB_OUTPUT
+          echo "admin_bucket=$(terraform output -raw admin_bucket)"          >> $GITHUB_OUTPUT
+          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"       >> $GITHUB_OUTPUT
+          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"  >> $GITHUB_OUTPUT
+          echo "cognito_client=$(terraform output -raw cognito_client_id)"   >> $GITHUB_OUTPUT
+          echo "admin_url=$(terraform output -raw admin_url)"                >> $GITHUB_OUTPUT
 
-      - name: Setup Node.js (para build do admin)
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -205,33 +217,34 @@ jobs:
           echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
           echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
 
-# ==============================================================
-# JOB 3: Terraform Plan para Prod (branch main)
-# ==============================================================
+  # ==============================================================
+  # JOB 2b: Terraform Plan para Prod (branch main)
+  # ==============================================================
   plan-prod:
     name: 2b. Terraform Plan → Prod
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build-backend, build-frontend]
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-backend
           path: infra/builds/
 
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-frontend
+          path: infra/builds/
+
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
@@ -252,17 +265,15 @@ jobs:
           terraform plan -var-file="env/prd.tfvars" -out=tfplan-prod
           terraform show -no-color tfplan-prod >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload Terraform plan
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: tfplan-prod
           path: infra/tfplan-prod
           retention-days: 1
 
-# ==============================================================
-# JOB 4: Aprovação Manual (gate para prod)
-# Configurar em Settings → Environments → production → Required reviewers
-# ==============================================================
+  # ==============================================================
+  # JOB 3: Aprovação Manual (gate para prod)
+  # ==============================================================
   approve-prod:
     name: 3. Aprovação Manual
     runs-on: ubuntu-latest
@@ -273,9 +284,9 @@ jobs:
     steps:
       - run: echo "Deploy para produção aprovado."
 
-# ==============================================================
-# JOB 5: Deploy para Prod (após aprovação)
-# ==============================================================
+  # ==============================================================
+  # JOB 4: Deploy para Prod (após aprovação)
+  # ==============================================================
   deploy-prod:
     name: 4. Deploy → Prod
     runs-on: ubuntu-latest
@@ -283,29 +294,29 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-backend
           path: infra/builds/
 
-      - name: Download Terraform plan
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-frontend
+          path: infra/builds/
+
+      - uses: actions/download-artifact@v4
         with:
           name: tfplan-prod
           path: infra/
 
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
@@ -328,17 +339,16 @@ jobs:
         id: tf
         working-directory: infra
         run: |
-          echo "api_url=$(terraform output -raw api_base_url)"                >> $GITHUB_OUTPUT
-          echo "frontend_bucket=$(terraform output -raw frontend_bucket)"      >> $GITHUB_OUTPUT
-          echo "frontend_cf=$(terraform output -raw frontend_cloudfront_id)"   >> $GITHUB_OUTPUT
-          echo "admin_bucket=$(terraform output -raw admin_bucket)"            >> $GITHUB_OUTPUT
-          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"         >> $GITHUB_OUTPUT
-          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"    >> $GITHUB_OUTPUT
-          echo "cognito_client=$(terraform output -raw cognito_client_id)"     >> $GITHUB_OUTPUT
-          echo "admin_url=$(terraform output -raw admin_url)"                  >> $GITHUB_OUTPUT
+          echo "api_url=$(terraform output -raw api_base_url)"               >> $GITHUB_OUTPUT
+          echo "frontend_bucket=$(terraform output -raw frontend_bucket)"    >> $GITHUB_OUTPUT
+          echo "frontend_cf=$(terraform output -raw frontend_cloudfront_id)" >> $GITHUB_OUTPUT
+          echo "admin_bucket=$(terraform output -raw admin_bucket)"          >> $GITHUB_OUTPUT
+          echo "admin_cf=$(terraform output -raw admin_cloudfront_id)"       >> $GITHUB_OUTPUT
+          echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"  >> $GITHUB_OUTPUT
+          echo "cognito_client=$(terraform output -raw cognito_client_id)"   >> $GITHUB_OUTPUT
+          echo "admin_url=$(terraform output -raw admin_url)"                >> $GITHUB_OUTPUT
 
-      - name: Setup Node.js (para build do admin)
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
