@@ -103,20 +103,21 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             </>
           )}
 
-          <Pagination
-            basePath="/artigos"
-            page={page}
-            totalPages={totalPages}
-            nextToken={nextPageToken}
-            currentPageToken={nextToken}
-            prevTokens={prevTokens}
-          />
         </main>
 
         <BlogSidebar adsenseBlockId="artigos-sidebar-primary">
           <ServiceCallout />
         </BlogSidebar>
       </div>
+
+      <Pagination
+        basePath="/artigos"
+        page={page}
+        totalPages={totalPages}
+        nextToken={nextPageToken}
+        currentPageToken={nextToken}
+        prevTokens={prevTokens}
+      />
 
       <NewsletterCTA />
     </div>
