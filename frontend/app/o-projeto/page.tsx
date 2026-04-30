@@ -64,16 +64,15 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
       {/* 2. TECH RIBBON */}
       <TechRibbon />
 
-      {/* Banner após hero */}
-      <div className="container">
-        <AdSenseBanner />
-      </div>
-
       {/* 3. MAIN LAYOUT */}
       <main className="container op-main-layout">
 
         {/* Coluna Esquerda: Timeline Feed */}
         <div className="main-content-column op-timeline-feed">
+
+          {/* Banner alinhado ao topo da sidebar */}
+          <AdSenseBanner />
+
           {posts.length === 0 ? (
             <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>
           ) : (

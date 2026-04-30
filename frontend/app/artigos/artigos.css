@@ -71,6 +71,11 @@
   min-width: 0; /* Previne overflow da coluna 1fr no CSS grid */
 }
 
+/* Primeiro banner sem margem superior — alinha com o topo da sidebar */
+.op-articles-feed > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
+}
+
 .op-posts-grid {
   display: grid;
   grid-template-columns: 1fr;

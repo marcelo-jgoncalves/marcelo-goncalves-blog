@@ -18,8 +18,13 @@
 .op-timeline-feed {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* Grid 8px: Ritmo entre posts mantido */
+  gap: 40px;
   width: 100%;
+}
+
+/* Primeiro banner sem margem superior — alinha com o topo da sidebar */
+.op-timeline-feed > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
 }
 .op-empty-state { 
   text-align: center; 

@@ -43,6 +43,11 @@
   color: var(--accent-hover);
 }
 
+/* Primeiro banner sem margem superior — alinha com o topo da sidebar */
+.home-main > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
+}
+
 /* --- Section header --- */
 .section-header {
   text-align: center;
