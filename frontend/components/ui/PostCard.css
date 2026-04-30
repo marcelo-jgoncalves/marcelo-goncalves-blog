@@ -88,7 +88,7 @@
 .post-card__meta-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1);
   font-size: 0.75rem;
   color: #94a3b8;
   white-space: nowrap;

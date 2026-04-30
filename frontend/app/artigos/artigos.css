@@ -94,18 +94,6 @@
   gap: var(--space-3);
 }
 
-/* Localize e substitua a regra .op-in-grid-ad no seu artigos.css */
-
-.op-in-grid-ad {
-  grid-column: 1 / -1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 !important; 
-  border: none !important;
-  background: transparent !important;
-}
 
 /* ==========================================================================
    DESKTOP RESPONSIVENESS
