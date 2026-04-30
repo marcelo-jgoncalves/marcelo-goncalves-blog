@@ -230,6 +230,11 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 5. **Publisher ID AdSense** — quando ativo, trocar `ADSENSE_CONFIGURED = false` → `true` em `AdsenseSidebar.tsx` e descomentar `<ins>`
 6. **AWS Support ticket** — elevar Lambda concurrent executions de 10 → 1000 (conta com limite sandbox; sem isso reloads rápidos retornam `ConcurrentInvocationLimitExceeded`). Support → Service limit increase → Lambda → Concurrent executions → us-east-1 → 1000
 
+### Notas de pipeline (não-negociável)
+- **Static assets S3 sync sem `--delete`** — arquivos Next.js têm hash de conteúdo; `--delete` causa race condition com 403 pós-deploy. Manter apenas no admin SPA.
+- **Semgrep** (`security.yml`) roda em todo push para `develop`/`main` — não remover.
+- **Dependabot** abre PRs toda segunda — revisar e mergear regularmente para manter deps atualizadas.
+
 ### Próximas entregas técnicas
 6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
 7. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)

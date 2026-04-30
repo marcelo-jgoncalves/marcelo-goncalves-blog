@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27 | **Última atualização:** 2026-04-30  
+**Data:** 2026-04-27 | **Última atualização:** 2026-04-30 (sessão 14)  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -142,6 +142,16 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [x] ZIPs determinísticos: timestamps normalizados antes de zipar — Terraform só atualiza Lambda quando código muda
 - [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
 - [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
+
+**Sprint 10 — Segurança + Home (Sessão 14) ✅**
+- [x] Home spacing: todos os valores migrados para tokens (gap 48→40px, padding 60→40/64px)
+- [x] Home banners: `margin: 0` no contexto flex — elimina duplo espaçamento (gap+margin=80px)
+- [x] Fix 403 pós-deploy: removido `--delete` do sync de static assets — race condition resolvida
+- [x] PostCard: `meta-info gap` 10px → `var(--space-1)` = 8px
+- [x] artigos.css: bloco `.op-in-grid-ad` morto removido (com `!important` residual)
+- [x] Dependabot: PRs automáticos semanais para npm (3 workspaces) + GitHub Actions
+- [x] Semgrep SAST: `security.yml` com `p/typescript` + `p/nodejs`, falha em ERROR severity
+- [x] contract.md: seção de ritmo vertical documentada como padrão obrigatório
 
 ---
 
