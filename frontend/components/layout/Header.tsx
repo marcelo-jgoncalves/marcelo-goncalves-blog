@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import './Header.css';
 
@@ -31,8 +32,15 @@ export default function Header() {
     <header className="op-header">
       {/* 1. ADIÇÃO: aria-label para identificar a Landmark */}
       <nav className="op-navbar" aria-label="Navegação Principal">
-        <Link href="/" className="op-logo" onClick={closeMenu}>
-          Marcelo<span>Gonçalves</span>
+        <Link href="/" className="op-logo" onClick={closeMenu} aria-label="Marcelo Gonçalves — página inicial">
+          <Image
+            src="/logo-desktop.png"
+            alt="Marcelo Gonçalves"
+            width={1774}
+            height={887}
+            className="op-logo-img"
+            priority
+          />
         </Link>
 
         {/* Menu Desktop */}

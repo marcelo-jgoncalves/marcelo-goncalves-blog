@@ -20,18 +20,24 @@
   margin: 0 auto;
 }
 
-/* Tipografia Fiel ao Legado */
 .op-logo {
-  font-family: var(--font-display);
-  font-size: 1.5rem; /* Tamanho Mobile */
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  color: var(--dark-900);
+  flex-shrink: 0;
 }
 
-.op-logo span {
-  color: var(--accent);
+.op-logo-img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .op-logo-img {
+    height: 48px;
+  }
 }
 
 /* --- MOBILE FIRST --- */
@@ -95,10 +101,6 @@
 
 /* --- DESKTOP --- */
 @media (min-width: 768px) {
-  .op-logo {
-    font-size: 1.8rem; /* Cresce no desktop conforme legado */
-  }
-
   .op-mobile-btn,
   .op-mobile-menu {
     display: none !important;
