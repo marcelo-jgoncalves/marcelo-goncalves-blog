@@ -20,24 +20,18 @@
   margin: 0 auto;
 }
 
+/* Tipografia do Logo */
 .op-logo {
-  display: flex;
-  align-items: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
   text-decoration: none;
-  flex-shrink: 0;
+  color: var(--dark-900);
 }
 
-.op-logo-img {
-  height: 40px;
-  width: auto;
-  display: block;
-  object-fit: contain;
-}
-
-@media (min-width: 768px) {
-  .op-logo-img {
-    height: 48px;
-  }
+.op-logo span {
+  color: var(--accent);
 }
 
 /* --- MOBILE FIRST --- */
@@ -101,6 +95,10 @@
 
 /* --- DESKTOP --- */
 @media (min-width: 768px) {
+  .op-logo {
+    font-size: 1.8rem;
+  }
+
   .op-mobile-btn,
   .op-mobile-menu {
     display: none !important;
