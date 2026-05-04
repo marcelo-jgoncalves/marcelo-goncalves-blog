@@ -108,9 +108,8 @@
    ========================================= */
 
 .popular-widget--mobile-flow {
-  /* Macro-ritmo de 8px: Um respiro generoso (6x8) antes de começar a seção no celular */
-  margin-top: 48px; 
-  margin-bottom: 48px;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 /* Quando chegamos no Desktop (onde a Sidebar passa a existir) */
