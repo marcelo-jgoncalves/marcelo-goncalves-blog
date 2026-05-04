@@ -17,7 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const authorData = await getAuthor(AUTOR_ID).catch(() => null);
   const autor = authorData?.autor;
   const nome = autor?.nome_exibicao || 'Marcelo Gonçalves';
-  const desc = autor?.bio ? autor.bio.substring(0, 160) : FALLBACK_DESC;
+  const rawBio = autor?.bio?.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim() ?? '';
+  const desc = rawBio ? rawBio.substring(0, 160) : FALLBACK_DESC;
   const canonicalUrl = `${SITE_URL}/sobre`;
   const avatarUrl = autor?.foto_avatar_url;
 

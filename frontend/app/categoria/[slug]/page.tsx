@@ -55,7 +55,7 @@ interface CategoryPageProps {
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params;
   const meta = CATEGORY_META[slug];
-  if (!meta) return { title: 'Categoria Não Encontrada | IA Decifrada' };
+  if (!meta) return { title: `Categoria Não Encontrada | ${SITE_NAME}` };
 
   const canonicalUrl = `${SITE_URL}/categoria/${slug}`;
   const title = `Artigos sobre ${meta.title} | ${SITE_NAME}`;
@@ -98,9 +98,8 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       posts = data.posts || [];
       nextPageToken = data.nextToken;
     }
-  } catch (error) {
-    console.error("Erro ao buscar categoria:", error);
-    // Se der erro grave, não faz notFound() direto, deixa renderizar vazio para debug
+  } catch {
+    // Não faz notFound() — deixa renderizar vazio para não expor erros de infra
   }
 
   // Se não tem no mapa, usa fallback genérico formatado
@@ -153,7 +152,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               </div>
             )}
           </div>
-          <Pagination nextToken={nextPageToken} basePath={`/categoria/${slug}`} />
         </main>
 
         <BlogSidebar>
@@ -161,6 +159,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         </BlogSidebar>
       </div>
 
+      <Pagination nextToken={nextPageToken} basePath={`/categoria/${slug}`} />
       <NewsletterCTA />
     </>
   );

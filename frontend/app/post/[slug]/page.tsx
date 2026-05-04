@@ -184,8 +184,10 @@ export default async function PostPage({ params }: Props) {
             {/* 🚀 ZERO REGRESSÃO: Autor agora é dinâmico e consistente com a AuthorBox */}
             <span><i className="fas fa-user-circle" aria-hidden="true"></i> Por {autorNome}</span>
             <span>
-                <i className="far fa-calendar-alt" aria-hidden="true"></i> 
-                {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
+                <i className="far fa-calendar-alt" aria-hidden="true"></i>
+                <time dateTime={post.data_publicacao}>
+                  {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
+                </time>
             </span>
             <span><i className="far fa-clock" aria-hidden="true"></i> {post.tempo_leitura_min || 5} min de leitura</span>
           </div>

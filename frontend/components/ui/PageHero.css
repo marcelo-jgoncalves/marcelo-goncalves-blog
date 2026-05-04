@@ -4,7 +4,12 @@
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
   padding: var(--space-6) 20px;
   text-align: center;
-  min-height: var(--section-min-height);
+}
+
+@media (min-width: 768px) {
+  .page-hero {
+    min-height: var(--section-min-height);
+  }
 }
 
 .page-hero__inner {
@@ -21,10 +26,16 @@
 
 /* --- Tipografia compartilhada --- */
 .page-hero .hero-title {
-  font-size: 2.8rem;
+  font-size: 2rem;
   line-height: 1.15;
   margin-bottom: 20px;
   letter-spacing: -0.03em;
+}
+
+@media (min-width: 768px) {
+  .page-hero .hero-title {
+    font-size: 2.8rem;
+  }
 }
 
 .page-hero .hero-subtitle {

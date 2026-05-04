@@ -14,14 +14,17 @@ const CATEGORY_SLUGS = [
   'tutoriais-aws',
 ];
 
+const now = new Date();
+
 const staticPages: MetadataRoute.Sitemap = [
-  { url: SITE_URL,                     changeFrequency: 'daily',   priority: 1.0 },
-  { url: `${SITE_URL}/artigos`,        changeFrequency: 'daily',   priority: 0.9 },
-  { url: `${SITE_URL}/o-projeto`,      changeFrequency: 'weekly',  priority: 0.7 },
-  { url: `${SITE_URL}/servicos`,       changeFrequency: 'monthly', priority: 0.8 },
-  { url: `${SITE_URL}/sobre`,          changeFrequency: 'monthly', priority: 0.6 },
+  { url: SITE_URL,                     lastModified: now, changeFrequency: 'daily',   priority: 1.0 },
+  { url: `${SITE_URL}/artigos`,        lastModified: now, changeFrequency: 'daily',   priority: 0.9 },
+  { url: `${SITE_URL}/o-projeto`,      lastModified: now, changeFrequency: 'weekly',  priority: 0.7 },
+  { url: `${SITE_URL}/servicos`,       lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+  { url: `${SITE_URL}/sobre`,          lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
   ...CATEGORY_SLUGS.map((slug) => ({
     url: `${SITE_URL}/categoria/${slug}`,
+    lastModified: now,
     changeFrequency: 'daily' as const,
     priority: 0.8,
   })),

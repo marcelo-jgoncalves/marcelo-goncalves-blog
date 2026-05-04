@@ -1,14 +1,32 @@
 import './servicos.css';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import PageHero from '@/components/ui/PageHero';
 import PageCTA from '@/components/ui/PageCTA';
 
 export const revalidate = 3600;
 
+const TITLE = 'Consultoria AWS e DevOps | Marcelo Gonçalves';
+const DESCRIPTION = 'Serviços de consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.';
+
 export const metadata = {
-  title: 'Consultoria AWS e DevOps | Marcelo Gonçalves',
-  description: 'Serviços de consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.',
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/servicos` },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${SITE_URL}/servicos`,
+    type: 'website',
+    siteName: SITE_NAME,
+    locale: 'pt_BR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    creator: AUTHOR_TWITTER,
+  },
 };
 
 const servicosJsonLd = {
