@@ -66,6 +66,90 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
 
+  # --- Assets estáticos de raiz: favicon, manifest, logo, touch icons ---
+  # Estes arquivos vivem em public/ → sincronizados no S3 pelo pipeline.
+  # Sem behaviors específicos, o CloudFront os mandaria para o Lambda (que não os serve).
+
+  ordered_cache_behavior {
+    path_pattern     = "*.ico"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-Assets"
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl     = 0
+    default_ttl = 86400
+    max_ttl     = 31536000
+    compress    = true
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "*.webmanifest"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-Assets"
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl     = 0
+    default_ttl = 86400
+    max_ttl     = 86400
+    compress    = true
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "apple-touch-icon.png"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-Assets"
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl     = 0
+    default_ttl = 86400
+    max_ttl     = 31536000
+    compress    = true
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "favicon-*.png"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-Assets"
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl     = 0
+    default_ttl = 86400
+    max_ttl     = 31536000
+    compress    = true
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "logo-desktop.*"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-Assets"
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl     = 0
+    default_ttl = 86400
+    max_ttl     = 31536000
+    compress    = true
+  }
+
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
