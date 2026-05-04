@@ -1,16 +1,12 @@
 /* ==========================================================================
-   PÁGINA O PROJETO (Namespaced com .op-)
-   Refatorado: Mobile-First, Alta Performance, Grid 8px e Anti-Regressão
+   PÁGINA O PROJETO
    ========================================================================== */
 
-/* --- 1. HERO SECTION --- */
-
-/* --- 2. LAYOUT PRINCIPAL E FEED --- */
 .op-main-layout {
-  padding-top: var(--space-5);
+  padding-top: var(--space-4);
   padding-left: clamp(1rem, 5vw, 1.5rem);
   padding-right: clamp(1rem, 5vw, 1.5rem);
-  margin-top: 0;
+  padding-bottom: 0;
   box-sizing: border-box;
   width: 100%;
 }
@@ -18,107 +14,29 @@
 .op-timeline-feed {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--space-4);
   width: 100%;
 }
 
-/* Primeiro banner sem margem superior — alinha com o topo da sidebar */
-.op-timeline-feed > .adsense-banner-wrapper:first-child {
-  margin-top: 0;
-}
-.op-empty-state { 
-  text-align: center; 
-  color: var(--slate-500); 
-  padding: 40px 0; 
+/* gap gerencia o ritmo — sem margin evita duplo espaçamento */
+.op-timeline-feed > .adsense-banner-wrapper {
+  margin: 0;
 }
 
-/* --- 3. SALES CTA E BOTÃO --- */
-.op-sales-cta { 
-  padding: 64px 16px; /* Grid 8px: Corrigido de 60px 20px */
-  background-color: var(--slate-50); 
-  text-align: center; 
-  margin-top: 48px; /* Grid 8px: Corrigido de 40px */
-}
-.op-sales-cta h2 { 
-  font-size: 1.8rem; 
-  color: var(--dark-900); 
-  margin-bottom: 16px; /* Grid 8px */
-  font-family: var(--font-display); 
-  font-weight: 700;
-}
-.op-sales-cta p { 
-  font-size: 1.05rem; 
-  color: var(--slate-500); 
-  max-width: 600px; 
-  margin: 0 auto 32px auto; 
-}
-
-/* Extração do estilo inline do CTA */
-.op-btn-cta {
-  display: inline-block;
-  background-color: var(--accent);
-  color: var(--dark-900);
-  padding: 16px 32px; 
-  border-radius: 8px; 
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-@media (hover: hover) {
-  .op-btn-cta:hover {
-    transform: translateY(-2px);
-    background-color: #ffaa00; 
-  }
-}
-
-/* ==========================================================================
-   5. ADSENSE WRAPPER & MOCKS (REGRAS GLOBAIS / MOBILE FIRST)
-   ========================================================================== */
-.op-feed-ad-wrapper {
-  width: 100%;
-  min-height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.adsense-in-content-mock {
-  width: 300px;
-  height: 250px;
-}
-
-.adsense-summary-mock { width: 100%; height: 90px; }
-.adsense-in-feed-mock { width: 100%; height: 150px; }
-
-
-/* ==========================================================================
-   6. MEDIA QUERIES (DESKTOP) - SEMPRE NO FINAL DO ARQUIVO
-   ========================================================================== */
-@media (min-width: 768px) {
-  .op-sales-cta { padding: var(--space-5) 24px; margin-top: var(--space-5); }
-  .op-sales-cta h2 { font-size: 2.2rem; }
+.op-empty-state {
+  text-align: center;
+  color: var(--slate-500);
+  padding: var(--space-4) 0;
 }
 
 @media (min-width: 1024px) {
   .op-main-layout {
     display: grid;
     grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr);
-    gap: var(--space-5);
-    padding-top: var(--space-5);
+    gap: var(--space-4);
+    padding-top: var(--space-4);
     padding-bottom: 0;
     padding-left: clamp(1.5rem, 5vw, 2rem);
     padding-right: clamp(1.5rem, 5vw, 2rem);
-  }
-  
-  .op-feed-ad-wrapper {
-    min-height: 90px; 
-  }
-  
-  .adsense-in-content-mock {
-    width: 100%; 
-    max-width: 800px; 
-    height: 90px; 
   }
 }
