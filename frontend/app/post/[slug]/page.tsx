@@ -21,7 +21,7 @@ import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import NewsletterWidget from '@/components/ui/NewsletterWidget';
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -121,7 +121,7 @@ export default async function PostPage({ params }: Props) {
       ...(post.categoria_slug ? [{
         "@type": "ListItem",
         "position": 3,
-        "name": post.categoria_slug,
+        "name": category?.nome_exibicao || post.categoria_slug,
         "item": `${SITE_URL}/categoria/${post.categoria_slug}`,
       }] : []),
       { "@type": "ListItem", "position": post.categoria_slug ? 4 : 3, "name": post.titulo, "item": canonicalUrl },
@@ -133,8 +133,6 @@ export default async function PostPage({ params }: Props) {
     const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
 
     return parts.map((part, index) => {
-      if (part === '<div id="inject-service-placeholder"></div>') return null; 
-
       if (part === '<div id="inject-ads-placeholder"></div>') {
         return (
           <div key="inject-ads" className="my-8">
@@ -226,7 +224,7 @@ export default async function PostPage({ params }: Props) {
             </div>
 
             <footer className="post-footer-safe-zone mt-8">
-                <div className="mobile-only flex flex-col gap-8 mb-8">
+                <div className="post-mobile-extras">
                   <ServiceCallout />
                   <NewsletterWidget />
                 </div>

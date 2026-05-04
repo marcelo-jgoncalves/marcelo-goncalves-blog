@@ -50,7 +50,7 @@ export default async function PostOgImage({ params }: Props) {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span
             style={{
-              color: '#f97316',
+              color: '#EBF1F8',
               fontSize: '18px',
               fontWeight: 700,
               letterSpacing: '3px',
@@ -99,7 +99,7 @@ export default async function PostOgImage({ params }: Props) {
           <span style={{ color: '#64748b', fontSize: '20px' }}>por {nomeAutor}</span>
           <span
             style={{
-              backgroundColor: '#f97316',
+              backgroundColor: '#3B5F8A',
               color: '#fff',
               fontSize: '16px',
               fontWeight: 600,

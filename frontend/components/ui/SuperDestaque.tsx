@@ -17,9 +17,7 @@ export default function SuperDestaque({ title, description }: SuperDestaqueProps
   return (
     <section className="super-destaque">
       <div className="container">
-        {/* CORREÇÃO 2: Adiciona um wrapper interno para garantir o padding de 20px nas laterais, 
-           já que removemos o padding do .container no globals.css para o fundo 100% */}
-        <div style={{ padding: '0 20px' }}> 
+        <div className="super-destaque-inner">
           
           <h2>
             {/* Renderiza o título usando dangerouslySetInnerHTML para aplicar o <span> highlight */}

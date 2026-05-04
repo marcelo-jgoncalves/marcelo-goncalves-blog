@@ -65,6 +65,10 @@
 }
 
 /* --- Super destaque --- */
+.super-destaque-inner {
+  padding: 0 20px;
+}
+
 .super-destaque {
   background-color: var(--dark-900);
   color: white;

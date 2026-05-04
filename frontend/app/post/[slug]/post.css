@@ -5,13 +5,11 @@
    ========================================================================== */
 
 /* --- 1. LAYOUT BASE E GRID --- */
-.op-main-layout,
 .article-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px; /* 8x5 - OK */
-  /* 🚀 AJUSTE: 24px nas laterais para alinhar ao grid de 8 */
-  padding: 0 24px 48px 24px; 
+  gap: var(--space-4);
+  padding: 0 var(--space-3) var(--space-4) var(--space-3);
 }
 
 .main-content-column {
@@ -20,12 +18,11 @@
 }
 
 @media (min-width: 1024px) {
-  .op-main-layout,
   .article-grid {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
-    gap: 64px; /* 🚀 AJUSTE: Macro-ritmo de 64px */
-    padding: 64px 0; 
-    align-items: start; 
+    gap: var(--space-5);
+    padding: var(--space-5) 0;
+    align-items: start;
   }
 
   .sidebar {
@@ -41,8 +38,7 @@
   background-color: var(--slate-50);
   width: 100vw; 
   margin-left: calc(-50vw + 50%);
-  /* 🚀 AJUSTE: Ritmo vertical corrigido */
-  padding: 64px 0 96px 0; 
+  padding: var(--space-5) 0 var(--space-6) 0;
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   position: relative;
@@ -133,10 +129,9 @@
 @media (min-width: 768px) {
   .featured-image-container {
     width: 100%;
-    /* No Desktop, voltamos para centralização automática e margens amplas */
-    margin: -48px auto 32px auto; 
-    height: 512px; 
-    aspect-ratio: auto; 
+    margin: -48px auto var(--space-3) auto;
+    height: 512px;
+    aspect-ratio: auto;
   }
 }
 
@@ -147,9 +142,9 @@
 
 @media (min-width: 768px) {
   .featured-image-container {
-    height: 512px; /* 🚀 AJUSTE: 64x8 */
-    aspect-ratio: auto; 
-    margin-bottom: 32px;
+    height: 512px;
+    aspect-ratio: auto;
+    margin-bottom: var(--space-3);
   }
 }
 /* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
@@ -364,7 +359,8 @@
 
 /* Blockquote */
 .post-content blockquote {
-  margin: calc(var(--space-unit) * 4) 0; 
+  position: relative;
+  margin: calc(var(--space-unit) * 4) 0;
   padding: var(--post-block-spacing) calc(var(--space-unit) * 4);
   background-color: var(--slate-50);
   border-left: 4px solid var(--blue-600);
@@ -397,7 +393,7 @@
 .post-content .inline-code {
   background-color: #edf2f7; 
   color: #d53f8c;          
-  font-family: var(--font-code); 
+  font-family: var(--font-mono); 
   /* 🚀 NITIDEZ: Fixamos 14px para evitar sub-pixels de 15.64px */
   font-size: 14px;       
   padding: 4px 8px; /* 🚀 AJUSTE: Múltiplos de 8 */
@@ -415,7 +411,7 @@ pre.code-block,
   margin-bottom: var(--post-block-spacing); 
   overflow-x: auto;
   color: #e2e8f0;
-  font-family: var(--font-code);
+  font-family: var(--font-mono);
   line-height: 1.6;
   background-color: var(--dark-900); 
   -webkit-overflow-scrolling: touch; 
@@ -780,4 +776,19 @@ article th,
 .post-content th {
   background-color: #f3f4f6;
   font-weight: 600;
+}
+
+/* Bloco mobile-only: ServiceCallout + NewsletterWidget no footer do artigo */
+@media (max-width: 1023px) {
+  .post-mobile-extras {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .post-mobile-extras {
+    display: none;
+  }
 }

@@ -46,9 +46,8 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
     try {
       const highlighted = highlighter.codeToHtml(rawCode, { lang, theme: 'dark-plus' });
       preProcessedHtml = preProcessedHtml.replace(fullMatch, highlighted);
-    } catch (e) {
-      console.error(`Erro Shiki no bloco ${lang}:`, e);
-      // Se der erro, mantém o original
+    } catch {
+      // Mantém o bloco original se o Shiki não suportar a linguagem
     }
   }
 
@@ -77,31 +76,17 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
   const directChildren = $body.children(); // Apenas filhos diretos para manter a estrutura
   const totalChildren = directChildren.length;
 
-  // Configuração dos pontos de injeção
-  const TARGET_SERVICE_INDEX = 2; // Após o 3º elemento
-  const TARGET_ADS_INDEX = Math.floor(totalChildren / 2); // Meio do post
-
-  let serviceInjected = false;
+  // Injeção do AdSense no meio do post
+  const TARGET_ADS_INDEX = Math.floor(totalChildren / 2);
   let adsInjected = false;
 
   directChildren.each((index, element) => {
-    // Não injeta após o último elemento
     if (index >= totalChildren - 1) return;
 
     const $current = $(element);
-    
-    // Guardrails: Não injetar após títulos ou imagens para não quebrar fluxo de leitura
     const isHeading = $current.is('h2, h3, h4, h5, h6');
     const isImage = $current.is('figure, img') || $current.find('img').length > 0;
 
-    // Injeção do Callout de Serviços
-    if (!serviceInjected && index >= TARGET_SERVICE_INDEX && !isHeading && !isImage) {
-      $current.after('\n<div id="inject-service-placeholder"></div>\n');
-      serviceInjected = true;
-      return; // Impede injetar ads no mesmo lugar
-    }
-
-    // Injeção do AdSense
     if (!adsInjected && index >= TARGET_ADS_INDEX && !isHeading && !isImage) {
       $current.after('\n<div id="inject-ads-placeholder"></div>\n');
       adsInjected = true;

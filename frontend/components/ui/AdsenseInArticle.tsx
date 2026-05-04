@@ -10,7 +10,7 @@ interface AdsenseInArticleProps {
   variant: 'summary-divider' | 'in-content' | 'in-feed'; 
 }
 
-const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const ADSENSE_CONFIGURED = false; // Trocar para true quando o publisher ID estiver ativo
 
 const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: string }> = ({ 
   blockId, 
@@ -18,7 +18,7 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
   format = 'auto' 
 }) => {
     useEffect(() => {
-      if (IS_PRODUCTION) {
+      if (ADSENSE_CONFIGURED) {
         try {
           // @ts-ignore
           (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -61,7 +61,7 @@ export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleP
     adFormat = 'fluid'; 
   }
 
-  if (IS_PRODUCTION) {
+  if (ADSENSE_CONFIGURED) {
     return <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
   }
   
