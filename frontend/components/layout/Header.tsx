@@ -40,6 +40,7 @@ export default function Header() {
             height={887}
             className="op-logo-img"
             priority
+            unoptimized
           />
         </Link>
 
