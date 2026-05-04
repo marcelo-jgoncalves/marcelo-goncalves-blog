@@ -4,9 +4,9 @@
 
 .op-main-layout {
   padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
   padding-left: clamp(1rem, 5vw, 1.5rem);
   padding-right: clamp(1rem, 5vw, 1.5rem);
-  padding-bottom: 0;
   box-sizing: border-box;
   width: 100%;
 }

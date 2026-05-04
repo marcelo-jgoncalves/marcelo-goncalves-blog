@@ -9,12 +9,14 @@ interface BlogSidebarProps {
   children?: React.ReactNode;
   adsenseBlockId?: string;
   showPopularPosts?: boolean;
+  showNewsletter?: boolean;
 }
 
 export default function BlogSidebar({
   children,
   adsenseBlockId = "sidebar-300x600",
   showPopularPosts = true,
+  showNewsletter = true,
 }: BlogSidebarProps) {
   return (
     <aside className="blog-sidebar" aria-label="Barra lateral do blog">
@@ -26,7 +28,7 @@ export default function BlogSidebar({
       )}
       {showPopularPosts && <PopularPostsWidget />}
       <AdsenseSidebar blockId={adsenseBlockId} />
-      <NewsletterWidget />
+      {showNewsletter && <NewsletterWidget />}
 
     </aside>
   );

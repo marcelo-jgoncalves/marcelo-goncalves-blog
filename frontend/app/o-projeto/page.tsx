@@ -5,8 +5,8 @@ export const revalidate = 3600;
 import React from 'react';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
-import SystemStatus from "../../components/ui/SystemStatus";
 import BlogSidebar from "../../components/ui/BlogSidebar";
+import NewsletterWidget from "../../components/ui/NewsletterWidget";
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
@@ -43,7 +43,9 @@ export const metadata = {
 
 export default async function OProjetoPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const nextToken = typeof params.nextToken === 'string' ? params.nextToken : undefined;
+  const nextToken     = typeof params.nextToken   === 'string' ? params.nextToken   : undefined;
+  const prevTokens    = typeof params.prevTokens  === 'string' ? params.prevTokens  : '';
+  const page          = typeof params.page        === 'string' ? Math.max(1, parseInt(params.page)) : 1;
 
   const data = await getProjectPosts(nextToken, 6);
   const posts: ProjectPost[] = data?.posts || [];
@@ -85,12 +87,18 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             ))
           )}
 
-          <Pagination nextToken={returnedNextToken} basePath="/o-projeto" />
+          <Pagination
+            basePath="/o-projeto"
+            nextToken={returnedNextToken}
+            page={page}
+            currentPageToken={nextToken}
+            prevTokens={prevTokens}
+          />
         </div>
 
         {/* Coluna Direita: Sidebar */}
-        <BlogSidebar>
-          <SystemStatus />
+        <BlogSidebar showNewsletter={false}>
+          <NewsletterWidget />
         </BlogSidebar>
       </main>
 

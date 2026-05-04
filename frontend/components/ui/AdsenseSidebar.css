@@ -7,18 +7,13 @@
 
 /* 1. O Contêiner de Contenção (Container de Alta Performance) */
 .sidebar-ad-container {
-  /* 🚀 CLS ZERO: Reserva estrita da altura do formato IAB (300x600) */
-  min-height: 600px; /* 75 x 8px */
+  min-height: 600px;
   width: 100%;
-  max-width: 300px;
-  margin: 0 auto; /* Centraliza na sidebar */
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Evita que erros de iframe do Adsense vazem para o layout */
+  overflow: hidden;
   background-color: transparent;
-  
-  /* NOTA: margin-bottom foi removido. O respiro de 32px é ditado pelo pai (BlogSidebar). */
 }
 
 /* 2. O Placeholder Visual (Apenas Dev/Homologação) */
