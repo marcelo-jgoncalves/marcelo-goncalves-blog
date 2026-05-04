@@ -93,9 +93,6 @@ export default function Home() {
           <span className="accent">Inteligência Artificial</span>
           , AWS e DevOps detalhe por detalhe
         </h1>
-        <Link href="/artigos" className="btn btn-primary">
-          Ver Todos os Artigos
-        </Link>
       </PageHero>
 
       {/* 2. Grid principal + sidebar */}

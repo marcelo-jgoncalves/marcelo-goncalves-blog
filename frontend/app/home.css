@@ -31,21 +31,30 @@
 
 /* --- Link "ver todos" --- */
 .home-see-all {
-  text-align: right;
-  margin-top: 16px;
+  text-align: center;
+  margin-top: var(--space-3);
 }
 
 .home-see-all a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   color: var(--accent);
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   text-decoration: none;
-  transition: color 0.2s;
+  padding: 10px 28px;
+  border: 1.5px solid var(--accent-light);
+  background-color: var(--accent-light);
+  border-radius: 6px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .home-see-all a:hover {
-  color: var(--accent-hover);
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
 }
 
 /* --- Section header --- */
@@ -170,13 +179,13 @@
 .category-card h3 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.5rem;
   color: var(--dark-900);
   margin-bottom: 6px;
 }
 
 .category-card p {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--slate-500);
   line-height: 1.4;
   margin: 0;

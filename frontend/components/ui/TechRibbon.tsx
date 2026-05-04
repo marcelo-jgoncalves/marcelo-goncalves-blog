@@ -12,7 +12,7 @@ export default function TechRibbon() {
             Certifique-se de que wikimedia.org, jsdelivr.net e icepanel.io 
             estão autorizados no seu next.config.js!
           */}
-          <Image src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" alt="Google Gemini" title="Architected with Gemini" width={100} height={35} className="op-tech-icon" />
+          <Image src="https://cdn.simpleicons.org/claude" alt="Claude Code" title="Built with Claude Code" width={45} height={45} className="op-tech-icon" unoptimized />
           <Image src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT" title="ChatGPT" width={45} height={45} className="op-tech-icon" />
           <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js" title="Next.js" width={45} height={45} className="op-tech-icon" />
           <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg" alt="Vue.js" title="Vue.js (Admin)" width={45} height={45} className="op-tech-icon" />
