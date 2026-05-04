@@ -28,6 +28,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+export const viewport = {
+  themeColor: '#3B5F8A',
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -39,9 +43,14 @@ export const metadata: Metadata = {
   creator: AUTHOR_NAME,
   publisher: SITE_NAME,
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico',    sizes: 'any' },
+      { url: '/favicon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
     shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
+  manifest: '/site.webmanifest',
   robots: SITE_URL.includes('cloudfront.net')
     ? { index: false, follow: false }
     : { index: true, follow: true },

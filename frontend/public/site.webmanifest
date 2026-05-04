@@ -1,0 +1,14 @@
+{
+  "name": "Marcelo Gonçalves",
+  "short_name": "Marcelo G.",
+  "description": "Blog de autoridade sobre IA, AWS e Engenharia de Software por Marcelo Gonçalves.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#3B5F8A",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-192.png",      "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/favicon-512.png",      "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
