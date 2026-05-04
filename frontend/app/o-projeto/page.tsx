@@ -89,15 +89,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
               </React.Fragment>
             ))
           )}
-
-          <Pagination
-            basePath="/o-projeto"
-            nextToken={returnedNextToken}
-            page={page}
-            totalPages={totalPages}
-            currentPageToken={nextToken}
-            prevTokens={prevTokens}
-          />
         </div>
 
         {/* Coluna Direita: Sidebar */}
@@ -105,6 +96,15 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           <ServiceCallout />
         </BlogSidebar>
       </main>
+
+      <Pagination
+        basePath="/o-projeto"
+        nextToken={returnedNextToken}
+        page={page}
+        totalPages={totalPages}
+        currentPageToken={nextToken}
+        prevTokens={prevTokens}
+      />
 
       <NewsletterCTA />
     </>
