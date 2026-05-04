@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27 | **Última atualização:** 2026-04-30 (sessão 14)  
+**Data:** 2026-04-27 | **Última atualização:** 2026-05-04 (sessão 15)  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -142,6 +142,19 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [x] ZIPs determinísticos: timestamps normalizados antes de zipar — Terraform só atualiza Lambda quando código muda
 - [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
 - [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
+
+**Sprint 11 — O Projeto + Home Final (Sessão 15) ✅**
+- [x] Home: margin collapsing corrigido — `gap: var(--space-4)` + `margin: 0` nos banners
+- [x] Home: `section-header margin-bottom` 40px → 24px (título conectado ao conteúdo)
+- [x] Home: `home-layout padding-bottom` 64px → 40px
+- [x] Sidebar: `BlogSidebar` prop `showNewsletter` + `sidebar-dynamic-area gap` 32px→24px
+- [x] Sidebar: `ProjetoWidget`, `PopularPostsWidget`, `AdsenseSidebar` — tokens aplicados
+- [x] O Projeto: CSS simplificado 124→43 linhas, dead CSS removido
+- [x] O Projeto: `padding-top/gap` 64px→40px, banners `margin:0` com gap
+- [x] O Projeto: `Pagination` movida para fora do grid (padrão artigos)
+- [x] O Projeto: sidebar reordenada — `ServiceCallout` topo, `NewsletterWidget` rodapé
+- [x] O Projeto: backend `getProjectPosts` retorna `totalCount`; frontend exibe "Página X de Y"
+- [x] `Pagination.tsx`: bidirecional sem dependência de `totalPages` — botão Anterior funciona em qualquer página com cursor stack
 
 **Sprint 10 — Segurança + Home (Sessão 14) ✅**
 - [x] Home spacing: todos os valores migrados para tokens (gap 48→40px, padding 60→40/64px)

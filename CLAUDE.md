@@ -235,6 +235,11 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 - **Semgrep** (`security.yml`) roda em todo push para `develop`/`main` — não remover.
 - **Dependabot** abre PRs toda segunda — revisar e mergear regularmente para manter deps atualizadas.
 
+### Componentes de layout reutilizáveis (padrões obrigatórios)
+- **`Pagination`** — componente único em artigos e o-projeto. Deve ficar **fora** do grid de duas colunas (entre `</grid>` e `<NewsletterCTA />`). Botão "← Anterior" funciona sem `totalPages` via cursor stack. "Página X de Y" só aparece quando `totalPages` é passado.
+- **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget.
+- **`home-main` (flex column)** — usar `gap: var(--space-4)` + `margin: 0` nos banners. NUNCA combinar gap + margin nos banners — causa duplo espaçamento e margin collapsing em seções vazias.
+
 ### Próximas entregas técnicas
 6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
 7. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)
