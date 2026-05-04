@@ -6,7 +6,7 @@ import React from 'react';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
 import BlogSidebar from "../../components/ui/BlogSidebar";
-import NewsletterWidget from "../../components/ui/NewsletterWidget";
+import ServiceCallout from "../../components/ui/ServiceCallout";
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
@@ -47,9 +47,12 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
   const prevTokens    = typeof params.prevTokens  === 'string' ? params.prevTokens  : '';
   const page          = typeof params.page        === 'string' ? Math.max(1, parseInt(params.page)) : 1;
 
-  const data = await getProjectPosts(nextToken, 6);
+  const LIMIT = 6;
+  const data = await getProjectPosts(nextToken, LIMIT);
   const posts: ProjectPost[] = data?.posts || [];
   const returnedNextToken = data?.nextToken;
+  const totalCount: number = data?.totalCount ?? 0;
+  const totalPages = totalCount > 0 ? Math.ceil(totalCount / LIMIT) : 0;
 
   return (
     <>
@@ -91,14 +94,15 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             basePath="/o-projeto"
             nextToken={returnedNextToken}
             page={page}
+            totalPages={totalPages}
             currentPageToken={nextToken}
             prevTokens={prevTokens}
           />
         </div>
 
         {/* Coluna Direita: Sidebar */}
-        <BlogSidebar showNewsletter={false}>
-          <NewsletterWidget />
+        <BlogSidebar>
+          <ServiceCallout />
         </BlogSidebar>
       </main>
 

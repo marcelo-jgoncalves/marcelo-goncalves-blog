@@ -4,7 +4,7 @@
 
 .op-main-layout {
   padding-top: var(--space-4);
-  padding-bottom: var(--space-4);
+  padding-bottom: var(--space-5);
   padding-left: clamp(1rem, 5vw, 1.5rem);
   padding-right: clamp(1rem, 5vw, 1.5rem);
   box-sizing: border-box;

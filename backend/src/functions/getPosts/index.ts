@@ -50,28 +50,38 @@ async function getProjectPosts(queryParams: any, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 8;
   const nextToken = queryParams?.nextToken;
 
-  const command = new QueryCommand({
+  const baseQuery = {
     TableName: TABLE_NAME,
     IndexName: "ProjetoPorData",
     KeyConditionExpression: "e_projeto = :val",
     FilterExpression: "#status = :published",
     ExpressionAttributeNames: { "#status": "status" },
     ExpressionAttributeValues: { ":val": 1, ":published": "Publicado" },
+  };
+
+  const postsCommand = new QueryCommand({
+    ...baseQuery,
     ScanIndexForward: true,
     Limit: limit,
-    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined,
   });
 
-  const result = await dynamo.send(command);
-  
-  const newNextToken = result.LastEvaluatedKey 
-    ? btoa(JSON.stringify(result.LastEvaluatedKey)) 
-    : null;
+  const countCommand = new QueryCommand({ ...baseQuery, Select: "COUNT" });
 
-  logger.info("project_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  const [result, countResult] = await Promise.all([
+    dynamo.send(postsCommand),
+    dynamo.send(countCommand),
+  ]);
+
+  const newNextToken = result.LastEvaluatedKey
+    ? btoa(JSON.stringify(result.LastEvaluatedKey))
+    : null;
+  const totalCount = countResult.Count ?? 0;
+
+  logger.info("project_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken }),
+    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, totalCount }),
     headers
   };
 }
