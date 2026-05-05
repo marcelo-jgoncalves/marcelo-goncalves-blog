@@ -13,19 +13,19 @@ const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais
 
 const FORMACAO = [
   {
+    icon: 'fa-book-open',
+    titulo: 'Letras + Mestrado em Linguística',
+    descricao: 'Base analítica voltada para estrutura, interpretação e sistemas complexos.',
+  },
+  {
     icon: 'fa-graduation-cap',
-    titulo: 'Licenciatura em Letras',
-    descricao: 'Base acadêmica em linguagem, comunicação e análise de sistemas complexos de sentido.',
+    titulo: 'Sistemas de Informação',
+    descricao: 'Graduação com foco em desenvolvimento e arquitetura de sistemas.',
   },
   {
-    icon: 'fa-microscope',
-    titulo: 'Mestrado em Linguística',
-    descricao: 'Pesquisa em cognição e estrutura da linguagem — a fundação que hoje se traduz em clareza técnica.',
-  },
-  {
-    icon: 'fa-chalkboard',
-    titulo: '15+ Anos como Professor',
-    descricao: 'Transformar complexidade em clareza é a habilidade central em tudo que faço, do código ao artigo.',
+    icon: 'fa-cloud',
+    titulo: 'Pós-graduação em Arquitetura Cloud Computing',
+    descricao: 'Especialização em soluções escaláveis e modernas na nuvem.',
   },
 ];
 
