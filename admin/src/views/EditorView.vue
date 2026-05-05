@@ -1,8 +1,8 @@
 /* admin/src/views/EditorView.vue */
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DOMPurify from 'dompurify'
 import { postsApi, categoriesApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
@@ -50,6 +50,36 @@ const saving = ref(false)
 const uploadContext = ref<'destaque' | 'editor'>('destaque')
 const loadingCategories = ref(true)
 const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
+
+// Dirty state — detecta alterações não salvas
+const initialFormJson = ref('')
+const isDirty = computed(() =>
+  initialFormJson.value !== '' && JSON.stringify(form.value) !== initialFormJson.value
+)
+
+function captureInitialState() {
+  initialFormJson.value = JSON.stringify(form.value)
+}
+
+const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+  if (isDirty.value) { e.preventDefault(); e.returnValue = '' }
+}
+onMounted(() => window.addEventListener('beforeunload', handleBeforeUnload))
+onUnmounted(() => window.removeEventListener('beforeunload', handleBeforeUnload))
+
+onBeforeRouteLeave(() => {
+  if (isDirty.value) {
+    return window.confirm('Há alterações não salvas. Deseja sair mesmo assim?')
+  }
+})
+
+// Link de preview no blog
+const BLOG_URL = ASSETS_URL.split('/').slice(0, 3).join('/')
+const previewUrl = computed(() =>
+  isEditing.value && form.value.slug && form.value.status === 'Publicado'
+    ? `${BLOG_URL}/post/${form.value.slug}`
+    : ''
+)
 
 const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'inteligencia-artificial', nome: 'Inteligência Artificial' },
@@ -104,9 +134,21 @@ onMounted(async () => {
       loading.value = false
     }
   }
+  await nextTick()
+  captureInitialState()
 })
 
 async function save() {
+  // Validação: status Programado exige data futura
+  if (form.value.status === 'Programado') {
+    if (!form.value.data_publicacao) {
+      return showToast('Defina a data de publicação para agendar o post.', 'error')
+    }
+    if (new Date(form.value.data_publicacao) <= new Date()) {
+      return showToast('A data de publicação deve ser no futuro para agendar o post.', 'error')
+    }
+  }
+
   saving.value = true
   try {
     const payload = {
@@ -122,6 +164,7 @@ async function save() {
       await postsApi.create(payload)
     }
     
+    captureInitialState()
     showToast('Post salvo com sucesso!')
     router.push('/')
   } catch (error: any) {
@@ -188,6 +231,10 @@ function generateSlug() {
     <header class="editor-header">
       <h1>{{ isEditing ? 'Editar Post' : 'Novo Post' }}</h1>
       <div class="actions">
+        <span v-if="isDirty" class="dirty-badge" title="Alterações não salvas">● Não salvo</span>
+        <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="btn-secondary btn-preview">
+          <i class="fas fa-external-link-alt"></i> Ver no Blog
+        </a>
         <button class="btn-secondary" @click="$router.push('/')">Cancelar</button>
         <button class="btn-primary" @click="save" :disabled="saving">
           {{ saving ? 'Salvando...' : 'Salvar Post' }}
@@ -341,6 +388,15 @@ input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--gr
 }
 .toast--success { background: #2d6a4f; }
 .toast--error   { background: #c0392b; }
+
+.dirty-badge {
+  font-size: 0.8rem; font-weight: 600; color: #b45309;
+  display: flex; align-items: center; gap: 4px;
+}
+.btn-preview {
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; font-size: 0.875rem;
+}
 .toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
 </style>

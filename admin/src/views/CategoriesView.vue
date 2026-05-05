@@ -15,6 +15,12 @@ const isModalOpen = ref(false)
 const editingSlug = ref<string | null>(null)
 const isLoading = ref(true)
 const isSaving = ref(false)
+const toast = ref<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null)
+
+function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
+  toast.value = { message, type }
+  setTimeout(() => { toast.value = null }, 4000)
+}
 
 // Estado do Formulário
 const defaultForm: Categoria = {
@@ -31,8 +37,7 @@ const fetchCategories = async () => {
     const response = await categoriesApi.list()
     categories.value = response.items || []
   } catch (error) {
-    console.error('Erro ao buscar categorias:', error)
-    alert('Não foi possível carregar as categorias.')
+    showToast('Não foi possível carregar as categorias.', 'error')
   } finally {
     isLoading.value = false
   }
@@ -87,7 +92,7 @@ const closeModal = () => {
 
 const handleSave = async () => {
   if (!form.value.nome || !form.value.categoria_slug) {
-    return alert('Preencha os campos obrigatórios (Nome e Slug)')
+    return showToast('Preencha os campos obrigatórios (Nome e Slug)', 'warning')
   }
 
   isSaving.value = true
@@ -102,10 +107,10 @@ const handleSave = async () => {
     
     // Recarrega a lista após salvar com sucesso
     await fetchCategories()
+    showToast(editingSlug.value ? 'Categoria atualizada!' : 'Categoria criada!')
     closeModal()
   } catch (error: any) {
-    console.error('Erro ao salvar:', error)
-    alert(error.message || 'Erro ao salvar categoria.')
+    showToast(error.message || 'Erro ao salvar categoria.', 'error')
   } finally {
     isSaving.value = false
   }
@@ -115,10 +120,10 @@ const handleDelete = async (slug: string) => {
   if (confirm('Tem certeza que deseja excluir esta categoria? Isso não altera os posts associados a ela.')) {
     try {
       await categoriesApi.delete(slug)
-      await fetchCategories() // Atualiza a lista na tela
+      await fetchCategories()
+      showToast('Categoria excluída.')
     } catch (error: any) {
-      console.error('Erro ao excluir:', error)
-      alert(error.message || 'Erro ao excluir categoria.')
+      showToast(error.message || 'Erro ao excluir categoria.', 'error')
     }
   }
 }
@@ -126,6 +131,12 @@ const handleDelete = async (slug: string) => {
 
 <template>
   <div class="dashboard">
+    <Transition name="toast">
+      <div v-if="toast" :class="['toast', `toast--${toast.type}`]" role="alert">
+        {{ toast.message }}
+      </div>
+    </Transition>
+
     <div class="header-actions">
       <h1>Gerenciar Categorias</h1>
       <button @click="openModal()" class="btn-primary" :disabled="isLoading">
@@ -403,4 +414,15 @@ tr:hover { background-color: #f8fafc; }
   padding: 16px 24px; border-top: 1px solid var(--gray-border, #eee);
   background: #f9fafb; display: flex; justify-content: flex-end; gap: 12px; border-radius: 0 0 8px 8px;
 }
+
+.toast {
+  position: fixed; top: 20px; right: 20px;
+  padding: 14px 20px; border-radius: 6px; font-weight: 600; color: #fff;
+  z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.toast--success  { background: #2d6a4f; }
+.toast--error    { background: #c0392b; }
+.toast--warning  { background: #b45309; }
+.toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
 </style>
