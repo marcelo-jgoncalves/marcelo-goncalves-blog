@@ -20,7 +20,7 @@ interface PopularPostsWidgetProps {
 // 1. O Skeleton State (Pilar: Performance e Zero CLS)
 function PopularPostsSkeleton() {
   // Mockamos 4 itens para preencher o espaço enquanto carrega
-  const skeletonItems = Array.from({ length: 4 });
+  const skeletonItems = Array.from({ length: 5 });
 
   return (
     <div className="popular-widget__list" aria-hidden="true">
@@ -37,8 +37,8 @@ function PopularPostsSkeleton() {
 
 // 2. O Componente Assíncrono (Pilar: React/Next.js Best Practices)
 async function PopularPostsList() {
-  const { posts } = await getPopularPosts().catch(() => ({ posts: [] }));
-  const topPosts: PopularPost[] = (posts || []).slice(0, 4); // Limitamos a 4 na lateral para não ficar massante
+  const { posts } = await getPopularPosts(5).catch(() => ({ posts: [] }));
+  const topPosts: PopularPost[] = (posts || []).slice(0, 5);
 
   if (topPosts.length === 0) return null;
 
