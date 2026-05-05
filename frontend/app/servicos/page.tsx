@@ -71,6 +71,12 @@ export default function ServicosPage() {
         <p className="hero-subtitle">
           Adote arquiteturas escaláveis e com engenharia similar a deste blog.
         </p>
+        <a
+          href="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"
+          className="btn"
+        >
+          Entrar em Contato →
+        </a>
       </PageHero>
 
       {/* 2. Serviços 1–4 */}
