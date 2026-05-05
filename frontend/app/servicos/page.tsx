@@ -7,7 +7,7 @@ import PageCTA from '@/components/ui/PageCTA';
 export const revalidate = 3600;
 
 const TITLE = 'Consultoria AWS e DevOps | Marcelo Gonçalves';
-const DESCRIPTION = 'Arquitetura, modernização e otimização contínua de ambientes AWS. Serverless, FinOps, DevOps e Segurança Cloud.';
+const DESCRIPTION = 'Serviços de consultoria especializada em Arquitetura Serverless, FinOps, DevOps e Engenharia de Nuvem na AWS.';
 
 export const metadata = {
   title: TITLE,
@@ -46,10 +46,10 @@ const servicosJsonLd = {
     '@type': 'OfferCatalog',
     name: 'Serviços de Consultoria',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Diagnóstico AWS', description: 'Análise completa do ambiente para identificar riscos, desperdícios e oportunidades de melhoria.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Transformação Cloud', description: 'Modernização completa da infraestrutura com arquiteturas cloud modernas, automatizadas e escaláveis.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Evolução Contínua', description: 'Acompanhamento estratégico para otimização contínua de custos, performance e segurança.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Arquitetura & Modernização', description: 'AWS Architecture, Serverless, Landing Zone e Platform Engineering.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Arquitetura de Nuvem (AWS)', description: 'Desenho e implementação de soluções robustas e escaláveis na AWS.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'FinOps & Otimização de Custos', description: 'Auditoria da fatura AWS, rightsizing e estratégias de compra.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação e DevOps (IaC & CI/CD)', description: 'Pipelines de CI/CD com GitHub Actions e Terraform.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desenvolvimento Serverless', description: 'Backends e APIs com AWS Lambda, API Gateway e DynamoDB.' } },
     ],
   },
 };
@@ -62,163 +62,50 @@ export default function ServicosPage() {
       {/* 1. Hero */}
       <PageHero>
         <h1 className="hero-title">
-          Arquitetura AWS moderna, segura e escalável
+          Consultoria em AWS, DevOps, FinOps e <span className="highlight">Serverless</span>
         </h1>
         <p className="hero-subtitle">
-          👉 Estratégia e implementação AWS do diagnóstico à evolução contínua.
+          Adote arquiteturas escaláveis e com engenharia similar a deste blog.
         </p>
-        <a href="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS" className="btn">
-          Agendar conversa estratégica
-        </a>
       </PageHero>
 
-      {/* 2. Como posso ajudar — 3 cards */}
-      <section className="servicos-section">
-        <div className="container">
-          <h2 className="servicos-section__title">Como posso ajudar</h2>
-          <div className="service-cards-grid">
-
-            <div className="service-card">
-              <div className="service-card__icon"><i className="fas fa-magnifying-glass"></i></div>
-              <h3 className="service-card__name">Diagnóstico AWS</h3>
-              <p className="service-card__desc">Análise completa do seu ambiente para identificar riscos, desperdícios e oportunidades de melhoria imediata.</p>
-              <ul className="service-card__list">
-                <li>Revisão de arquitetura</li>
-                <li>Análise de custos</li>
-                <li>Segurança e backups</li>
-                <li>Roadmap de evolução</li>
-              </ul>
-              <a href="mailto:marcelo.mjgoncalves@gmail.com?subject=Diagnóstico%20AWS" className="service-card__action">
-                Solicitar diagnóstico
-              </a>
-            </div>
-
-            <div className="service-card service-card--featured">
-              <div className="service-card__icon"><i className="fas fa-rocket"></i></div>
-              <h3 className="service-card__name">Transformação Cloud</h3>
-              <p className="service-card__desc">Modernização completa da sua infraestrutura com arquiteturas cloud modernas, automatizadas e escaláveis.</p>
-              <ul className="service-card__list">
-                <li>Arquitetura AWS</li>
-                <li>Serverless &amp; Containers</li>
-                <li>DevOps e IaC</li>
-                <li>Segurança by design</li>
-              </ul>
-              <a href="mailto:marcelo.mjgoncalves@gmail.com?subject=Transformação%20Cloud" className="service-card__action">
-                Iniciar projeto
-              </a>
-            </div>
-
-            <div className="service-card">
-              <div className="service-card__icon"><i className="fas fa-chart-line"></i></div>
-              <h3 className="service-card__name">Evolução Contínua</h3>
-              <p className="service-card__desc">Acompanhamento estratégico para otimização contínua de custos, performance e segurança do seu ambiente.</p>
-              <ul className="service-card__list">
-                <li>FinOps recorrente</li>
-                <li>Observabilidade</li>
-                <li>Revisões Well-Architected</li>
-                <li>Advisory técnico</li>
-              </ul>
-              <a href="mailto:marcelo.mjgoncalves@gmail.com?subject=Evolução%20Contínua" className="service-card__action">
-                Conversar sobre parceria
-              </a>
-            </div>
-
+      {/* 2. Serviços 1–3 */}
+      <div className="services-content">
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-cloud"></i></div>
+          <div className="service-text">
+            <h2>Arquitetura de Nuvem (AWS)</h2>
+            <p>Desenho e implementação de soluções robustas e escaláveis na AWS. Foco em arquiteturas que equilibram performance, custo e segurança, utilizando os serviços certos para o seu problema (EC2, Containers, VPC).</p>
           </div>
         </div>
-      </section>
 
-      {/* 3. O que está incluso — 4 mini-cards, fundo alt */}
-      <section className="servicos-section servicos-section--alt">
-        <div className="container">
-          <h2 className="servicos-section__title">O que está incluso</h2>
-          <div className="incluso-grid">
-
-            <div className="incluso-card">
-              <div className="incluso-card__icon"><i className="fas fa-cloud"></i></div>
-              <h3 className="incluso-card__name">Arquitetura &amp; Modernização</h3>
-              <p>AWS Architecture, Serverless, Landing Zone e Platform Engineering.</p>
-            </div>
-
-            <div className="incluso-card">
-              <div className="incluso-card__icon"><i className="fas fa-gears"></i></div>
-              <h3 className="incluso-card__name">Automação &amp; DevOps</h3>
-              <p>Terraform, CI/CD, automação de deploy e infraestrutura reproduzível.</p>
-            </div>
-
-            <div className="incluso-card">
-              <div className="incluso-card__icon"><i className="fas fa-shield-halved"></i></div>
-              <h3 className="incluso-card__name">Segurança &amp; Observabilidade</h3>
-              <p>Cloud Security Review, monitoramento inteligente e Disaster Recovery.</p>
-            </div>
-
-            <div className="incluso-card">
-              <div className="incluso-card__icon"><i className="fas fa-hand-holding-dollar"></i></div>
-              <h3 className="incluso-card__name">FinOps &amp; Eficiência</h3>
-              <p>Otimização de custos AWS, rightsizing e estratégias de compra inteligentes.</p>
-            </div>
-
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-hand-holding-dollar"></i></div>
+          <div className="service-text">
+            <h2>FinOps & Otimização de Custos</h2>
+            <p>Auditoria completa da sua fatura AWS. Identificação de desperdícios, implementação de tags de alocação, rightsizing de recursos e estratégias de compra (Savings Plans) para reduzir drasticamente o seu TCO.</p>
           </div>
         </div>
-      </section>
 
-      {/* 4. Experiência e Especialização */}
-      <section className="servicos-section">
-        <div className="container">
-          <h2 className="servicos-section__title">Experiência e Especialização</h2>
-          <div className="authority-tags">
-            <span className="authority-tag">Arquiteturas Serverless AWS</span>
-            <span className="authority-tag">Terraform &amp; DevOps</span>
-            <span className="authority-tag">FinOps &amp; Otimização de Custos</span>
-            <span className="authority-tag">Multi-Account &amp; Governança</span>
-            <span className="authority-tag">Segurança Cloud</span>
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-gears"></i></div>
+          <div className="service-text">
+            <h2>Automação e DevOps (IaC & CI/CD)</h2>
+            <p>Criação de pipelines de CI/CD (GitHub Actions) e automação completa de infraestrutura como código (Terraform). Crio o &quot;botão mágico&quot; que permite à sua equipe fazer deploys seguros e repetíveis.</p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 5. Como funciona — 4 steps, fundo alt */}
-      <section className="servicos-section servicos-section--alt">
-        <div className="container">
-          <h2 className="servicos-section__title">Como funciona</h2>
-          <div className="steps-grid">
-
-            <div className="step-card">
-              <div className="step-number">1</div>
-              <h3 className="step-title">Entendimento</h3>
-              <p>Compreensão dos desafios e objetivos do seu negócio.</p>
-            </div>
-
-            <div className="step-card">
-              <div className="step-number">2</div>
-              <h3 className="step-title">Diagnóstico</h3>
-              <p>Análise técnica aprofundada e definição do plano de evolução.</p>
-            </div>
-
-            <div className="step-card">
-              <div className="step-number">3</div>
-              <h3 className="step-title">Implementação</h3>
-              <p>Execução das melhorias com boas práticas AWS e DevOps.</p>
-            </div>
-
-            <div className="step-card">
-              <div className="step-number">4</div>
-              <h3 className="step-title">Evolução</h3>
-              <p>Otimização contínua e acompanhamento estratégico.</p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Prova social — making of */}
+      {/* 3. Prova social — fullwidth, fundo azul profundo */}
       <section className="service-proof-fullwidth">
         <div className="service-proof-fullwidth__inner">
           <h2>
             Não acredite apenas na minha palavra. Veja o{' '}
-            <em className="accent-light">making of</em>.
+            <em style={{ color: '#000000', fontStyle: 'italic' }}>making of</em>.
           </h2>
           <p>
             Este blog, da infraestrutura serverless ao frontend Next.js, foi construído
-            com as exatas metodologias que ofereço como consultor.
+            com as exatas metodologias que ofereço.
           </p>
           <Link href="/o-projeto" className="service-proof-btn">
             Conheça &quot;O Projeto&quot; →
@@ -226,12 +113,23 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* 7. CTA final */}
+      {/* 4. Serviço 4 */}
+      <div className="services-content">
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-bolt"></i></div>
+          <div className="service-text">
+            <h2>Desenvolvimento Serverless</h2>
+            <p>Construção de backends e APIs de alta performance e custo zero quando ociosos. Especialista em AWS Lambda, API Gateway e DynamoDB para escalar do zero a milhões de usuários sem gerenciar servidores.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. CTA final — agendar chamada */}
       <PageCTA
-        title="Vamos avaliar sua arquitetura AWS?"
-        body="Uma conversa inicial para entender seu cenário e identificar oportunidades reais de melhoria. Sem custo, sem compromisso."
+        title="Vamos trabalhar juntos?"
+        body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
         linkHref="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"
-        linkText="Agendar conversa estratégica →"
+        linkText="Entrar em Contato →"
       />
     </>
   );
