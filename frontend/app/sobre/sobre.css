@@ -5,24 +5,23 @@
 }
 
 /* ═══════════════════════════════════════════
-   HERO — foto à esquerda, texto à direita
+   BIO — foto à esquerda, texto à direita
 ═══════════════════════════════════════════ */
-.sobre-hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-4);
+.sobre-bio {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: var(--space-4);
   text-align: center;
 }
 
 .sobre-photo {
-  width: 240px;
-  height: 240px;
+  width: 200px;
+  height: 200px;
   border-radius: 12px;
   overflow: hidden;
-  margin: 0 auto;
-  background: var(--accent-light);
   flex-shrink: 0;
+  background: var(--accent-light);
 }
 
 .sobre-photo img {
@@ -38,28 +37,28 @@
   align-items: center;
   justify-content: center;
   color: var(--accent);
-  font-size: 5rem;
+  font-size: 4.5rem;
 }
 
-.sobre-hero__text h1 {
-  font-size: 2rem;
-  color: var(--accent-dark);
-  margin: 0 0 var(--space-1);
+.sobre-bio__text h2 {
+  font-size: 1.8rem;
+  color: var(--dark-900);
+  margin: 0 0 4px;
 }
 
 .sobre-subtitle {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--accent);
   margin-bottom: var(--space-3) !important;
 }
 
-.sobre-hero__text p {
+.sobre-bio__text p {
   font-size: 1rem;
   color: var(--dark-700);
+  line-height: 1.75;
   margin-bottom: var(--space-2);
-  line-height: 1.7;
 }
 
 .sobre-social {
@@ -70,15 +69,15 @@
 }
 
 .sobre-social a {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--accent-light);
   color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.05rem;
+  font-size: 1rem;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -88,21 +87,19 @@
 }
 
 @media (min-width: 768px) {
-  .sobre-hero {
-    grid-template-columns: 280px 1fr;
+  .sobre-bio {
+    flex-direction: row;
+    align-items: flex-start;
     text-align: left;
-    gap: 48px;
   }
 
   .sobre-photo {
-    width: 100%;
+    width: 260px;
     height: 300px;
-    margin: 0;
   }
 
-  .sobre-hero__text h1 { font-size: 2.4rem; }
-  .sobre-subtitle { font-size: 1.1rem; }
-  .sobre-hero__text p { font-size: 1.05rem; }
+  .sobre-bio__text h2 { font-size: 2.2rem; }
+  .sobre-bio__text p  { font-size: 1.05rem; }
   .sobre-social { justify-content: flex-start; }
 }
 
@@ -113,12 +110,12 @@
   margin-top: var(--space-5);
 }
 
-.sobre-section h2 {
+.sobre-section-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--accent);
-  margin-bottom: var(--space-3);
+  font-size: 1.6rem;
+  color: var(--dark-900);
+  margin-bottom: var(--space-4);
 }
 
 .sobre-section p {
@@ -128,109 +125,96 @@
   margin-bottom: var(--space-2);
 }
 
-.sobre-section p:last-child {
-  margin-bottom: 0;
-}
+.sobre-section p:last-child { margin-bottom: 0; }
 
 /* ═══════════════════════════════════════════
-   FORMAÇÃO — 2 cards lado a lado + 1 wide
+   FORMAÇÃO — idêntico ao .category-card da home
 ═══════════════════════════════════════════ */
-.sobre-cards-two {
+.sobre-formacao-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-3);
-  margin-bottom: var(--space-3);
 }
 
 @media (min-width: 640px) {
-  .sobre-cards-two {
-    grid-template-columns: repeat(2, 1fr);
+  .sobre-formacao-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.sobre-card {
-  background: var(--accent-light);
+.sobre-formacao-card {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
   padding: var(--space-3);
-  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.sobre-card strong {
-  display: block;
+@media (hover: hover) {
+  .sobre-formacao-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    border-color: var(--accent);
+  }
+}
+
+.sobre-formacao-icon {
+  width: 44px;
+  height: 44px;
+  background-color: var(--accent-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: var(--space-2);
+  flex-shrink: 0;
+}
+
+.sobre-formacao-card h3 {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1rem;
   color: var(--dark-900);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-.sobre-card p {
-  font-size: 0.95rem;
-  color: var(--dark-700);
-  line-height: 1.6;
+.sobre-formacao-card p {
+  font-size: 0.9rem;
+  color: var(--slate-500);
+  line-height: 1.5;
   margin: 0;
 }
 
-.sobre-card--wide {
-  margin-top: 0;
-}
-
 /* ═══════════════════════════════════════════
-   CERTIFICAÇÕES — Credly badges
+   CERTIFICAÇÕES — 2 colunas, card minimalista
 ═══════════════════════════════════════════ */
 .sobre-certs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
-  margin-top: var(--space-3);
-  align-items: center;
-  justify-items: center;
 }
 
-/* ═══════════════════════════════════════════
-   CTA ESCURO FINAL
-═══════════════════════════════════════════ */
-.sobre-cta {
-  margin-top: var(--space-5);
-  background: var(--accent-dark);
-  color: white;
-  padding: var(--space-4);
-  border-radius: 12px;
-  text-align: center;
-}
-
-.sobre-cta h3 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.6rem;
-  color: white;
-  margin-bottom: var(--space-2);
-}
-
-.sobre-cta p {
-  color: #dce6f2;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 8px;
-}
-
-.sobre-cta p:last-of-type {
-  margin-bottom: 0;
-}
-
-.sobre-cta__btn {
-  display: inline-block;
-  margin-top: var(--space-3);
-  padding: 12px 26px;
+.sobre-cert-card {
   background: white;
-  color: var(--accent-dark);
-  font-family: var(--font-display);
-  font-weight: 700;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--space-3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.sobre-cta__btn:hover {
-  background: var(--accent-light);
-  color: var(--accent-dark);
+@media (hover: hover) {
+  .sobre-cert-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+  }
 }

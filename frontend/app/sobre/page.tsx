@@ -3,6 +3,7 @@ import Script from 'next/script';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
 import AvatarImage from '@/components/ui/AvatarImage';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
@@ -10,6 +11,24 @@ export const revalidate = 3600;
 
 const AUTOR_ID = 'marcelo-goncalves';
 const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais de 8 anos de experiência, Mestre em Linguística e criador do blog.';
+
+const FORMACAO = [
+  {
+    icon: 'fa-graduation-cap',
+    titulo: 'Licenciatura em Letras',
+    descricao: 'Base acadêmica em linguagem, comunicação e análise de sistemas complexos de sentido.',
+  },
+  {
+    icon: 'fa-microscope',
+    titulo: 'Mestrado em Linguística',
+    descricao: 'Pesquisa em cognição e estrutura da linguagem — a fundação que hoje se traduz em clareza técnica.',
+  },
+  {
+    icon: 'fa-chalkboard',
+    titulo: '15+ Anos como Professor',
+    descricao: 'Transformar complexidade em clareza é a habilidade central em tudo que faço, do código ao artigo.',
+  },
+];
 
 const CREDLY_BADGES = [
   '5326ba20-c51f-4565-a7fc-36fcc3fccf7d',
@@ -75,10 +94,21 @@ export default async function SobrePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
+      {/* 1. Hero — mantido da versão anterior */}
+      <PageHero>
+        <h1 className="hero-title">
+          Sobre Mim e <span className="highlight">O Projeto</span>
+        </h1>
+        <p className="hero-subtitle">
+          Minha missão é provar que a união da experiência humana em engenharia e linguística
+          com o poder da IA pode criar conteúdo técnico de valor inigualável.
+        </p>
+      </PageHero>
+
       <div className="sobre-container container">
 
-        {/* HERO — foto à esquerda, texto à direita */}
-        <div className="sobre-hero">
+        {/* 2. Bio — foto à esquerda, texto à direita */}
+        <div className="sobre-bio">
           <div className="sobre-photo">
             {avatarUrl ? (
               <AvatarImage src={avatarUrl} alt={`Foto de ${nome}`} />
@@ -89,8 +119,8 @@ export default async function SobrePage() {
             )}
           </div>
 
-          <div className="sobre-hero__text">
-            <h1>{nome}</h1>
+          <div className="sobre-bio__text">
+            <h2>{nome}</h2>
             <p className="sobre-subtitle">Arquiteto de Cloud • Especialista em AWS • Professor</p>
 
             <p>
@@ -99,8 +129,9 @@ export default async function SobrePage() {
               <strong>Anynines</strong> e <strong>Credisis</strong>.
             </p>
             <p>
-              Foco em segurança, eficiência de custos e arquiteturas resilientes para ambientes
-              de produção — de startups a operações globais.
+              Antes de trabalhar com cloud, eu já era <strong>professor há mais de 15 anos</strong> e
+              um acadêmico da palavra — formado em Letras, com Mestrado em Linguística. A convergência
+              dessas duas áreas é o que diferencia cada artigo deste blog.
             </p>
 
             <div className="sobre-social">
@@ -114,51 +145,43 @@ export default async function SobrePage() {
           </div>
         </div>
 
-        {/* FORMAÇÃO */}
+        {/* 3. Formação — 3 cards lado a lado, estilo category card */}
         <div className="sobre-section">
-          <h2>Formação</h2>
-
-          <div className="sobre-cards-two">
-            <div className="sobre-card">
-              <strong>Licenciatura em Letras</strong>
-              <p>Graduação com foco em linguagem, comunicação e análise de sistemas complexos de sentido.</p>
-            </div>
-            <div className="sobre-card">
-              <strong>Mestrado em Linguística</strong>
-              <p>Pesquisa aprofundada em cognição e estrutura da linguagem — base que hoje se traduz em clareza técnica.</p>
-            </div>
-          </div>
-
-          <div className="sobre-card sobre-card--wide">
-            <strong>15+ Anos como Professor</strong>
-            <p>
-              Ensinar é a habilidade de transformar complexidade em clareza. Exercida em sala de aula por mais de 15 anos,
-              é o que hoje diferencia cada artigo deste blog.
-            </p>
+          <h2 className="sobre-section-title">Formação</h2>
+          <div className="sobre-formacao-grid">
+            {FORMACAO.map((item) => (
+              <div key={item.titulo} className="sobre-formacao-card">
+                <div className="sobre-formacao-icon">
+                  <i className={`fas ${item.icon}`} aria-hidden="true" />
+                </div>
+                <h3>{item.titulo}</h3>
+                <p>{item.descricao}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* CERTIFICAÇÕES — badges Credly oficiais */}
+        {/* 4. Certificações — 2 colunas, cards minimalistas */}
         <div className="sobre-section">
-          <h2>Certificações</h2>
-
+          <h2 className="sobre-section-title">Certificações AWS</h2>
           <div className="sobre-certs">
             {CREDLY_BADGES.map((id) => (
-              <div
-                key={id}
-                data-iframe-width="150"
-                data-iframe-height="270"
-                data-share-badge-id={id}
-                data-share-badge-host="https://www.credly.com"
-              />
+              <div key={id} className="sobre-cert-card">
+                <div
+                  data-iframe-width="150"
+                  data-iframe-height="270"
+                  data-share-badge-id={id}
+                  data-share-badge-host="https://www.credly.com"
+                />
+              </div>
             ))}
           </div>
           <Script src="https://cdn.credly.com/assets/utilities/embed.js" strategy="lazyOnload" />
         </div>
 
-        {/* SOBRE ESTE BLOG */}
+        {/* 5. Sobre este blog */}
         <div className="sobre-section">
-          <h2>Sobre este blog</h2>
+          <h2 className="sobre-section-title">Sobre este blog</h2>
           <p>
             Este blog é onde decisões arquiteturais reais são traduzidas em conteúdo prático e aplicável.
           </p>
@@ -168,9 +191,9 @@ export default async function SobrePage() {
           </p>
         </div>
 
-        {/* DIFERENCIAL */}
+        {/* 6. Diferencial */}
         <div className="sobre-section">
-          <h2>Diferencial</h2>
+          <h2 className="sobre-section-title">Diferencial</h2>
           <p>Minha base não é apenas engenharia.</p>
           <p>
             Sou formado em Letras, com Mestrado em Linguística, e professor há mais de 15 anos.
@@ -185,22 +208,6 @@ export default async function SobrePage() {
             Isso me permite enxergar arquitetura de forma estrutural, indo além da implementação técnica
             e conectando o como ao porquê de cada decisão.
           </p>
-        </div>
-
-        {/* CTA FINAL */}
-        <div className="sobre-cta">
-          <h3>Auditoria de Arquitetura AWS</h3>
-          <p>
-            Identifique falhas invisíveis na sua infraestrutura antes que elas impactem custo,
-            segurança ou disponibilidade.
-          </p>
-          <p>Minha auditoria é direta, técnica e focada em resultado.</p>
-          <a
-            href={`mailto:marcelo.mjgoncalves@gmail.com?subject=Auditoria%20AWS`}
-            className="sobre-cta__btn"
-          >
-            Solicitar análise
-          </a>
         </div>
 
       </div>
