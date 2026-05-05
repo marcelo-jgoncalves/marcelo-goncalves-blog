@@ -1,5 +1,49 @@
 # infra/modules/frontend/cloudfront.tf
 
+# --- Bucket S3 para logs de acesso do CloudFront (criado apenas se enable_cloudfront_logging=true) ---
+
+resource "aws_s3_bucket" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = "${var.project_name}-${var.environment}-cf-frontend-logs"
+
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+# CloudFront exige ACL habilitado no bucket de logs
+resource "aws_s3_bucket_ownership_controls" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = aws_s3_bucket.cf_logs[0].id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "cf_logs" {
+  count      = var.enable_cloudfront_logging ? 1 : 0
+  depends_on = [aws_s3_bucket_ownership_controls.cf_logs]
+  bucket     = aws_s3_bucket.cf_logs[0].id
+  acl        = "log-delivery-write"
+}
+
+# Logs expiram no mesmo período que os logs do CloudWatch
+resource "aws_s3_bucket_lifecycle_configuration" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = aws_s3_bucket.cf_logs[0].id
+
+  rule {
+    id     = "expire-cf-logs"
+    status = "Enabled"
+
+    expiration {
+      days = var.log_retention_days
+    }
+  }
+}
+
 # OAC para o bucket S3 de assets estáticos
 resource "aws_cloudfront_origin_access_control" "oac" {
   name                              = "${var.project_name}-${var.environment}-oac"
@@ -209,6 +253,15 @@ resource "aws_cloudfront_distribution" "frontend" {
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
+  }
+
+  dynamic "logging_config" {
+    for_each = var.enable_cloudfront_logging ? [1] : []
+    content {
+      include_cookies = false
+      bucket          = aws_s3_bucket.cf_logs[0].bucket_domain_name
+      prefix          = "cloudfront/"
+    }
   }
 
   restrictions {

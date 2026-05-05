@@ -24,7 +24,7 @@ Blog de autoridade sobre IA, AWS e DevOps. Propósito: AdSense + leads para cons
 - **`.project-context.md`** — memória viva do projeto. Leia a seção "⚡ PRÓXIMA SESSÃO" ao iniciar.
 - **`docs/contract.md`** — padrões de engenharia não-negociáveis (logging, SEO, design system, segurança).
 - **`docs/audit-report.md`** — histórico de dívida técnica e o que foi resolvido.
-- **`docs/seo-audit.md`** — status de 20 itens SEO (16/20 feitos).
+- **`docs/seo-audit.md`** — status de 20 itens SEO (18/20 feitos).
 
 ---
 
@@ -98,6 +98,11 @@ marcelo-goncalves-blog/
 ### Segurança / CORS
 - Lambda URL: `authorization_type = "AWS_IAM"` + OAC SigV4. Só CloudFront pode invocar.
 - `ADMIN_ORIGIN = "https://${module.admin.cloudfront_url}"` — definido via Terraform, não hardcoded.
+
+### CloudFront / Assets estáticos
+- Arquivos em `public/` (`.ico`, `.webmanifest`, `.png` root-level) **precisam de `ordered_cache_behavior` explícito** apontando para `S3-Assets` — o behavior padrão roteia tudo para Lambda (que não serve `public/`).
+- `/_next/image` retorna 404 para imagens locais (`src="/..."`): não há Lambda de image optimizer neste deploy. Nunca usar `<Image>` Next.js com `src` local — usar `<img>` com `unoptimized` ou CSS.
+- `app/favicon.ico` tem prioridade sobre `public/favicon.ico` no Next.js App Router.
 
 ### SEO — proteção dev
 - `app/robots.ts` e `app/layout.tsx` detectam `SITE_URL.includes('cloudfront.net')` e emitem `Disallow: /` + `noindex, nofollow`.
@@ -224,7 +229,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 
 ### Aguarda ação de Marcelo
 1. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box
-2. **Favicon + Web App Manifest** — bloqueiam 4/20 itens SEO
+2. ~~**Favicon + Web App Manifest**~~ ✅ Deployados sessão 16 — SEO agora 18/20
 3. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
 4. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
 5. **Publisher ID AdSense** — quando ativo, trocar `ADSENSE_CONFIGURED = false` → `true` em `AdsenseSidebar.tsx` e descomentar `<ins>`
@@ -235,6 +240,13 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 - **Semgrep** (`security.yml`) roda em todo push para `develop`/`main` — não remover.
 - **Dependabot** abre PRs toda segunda — revisar e mergear regularmente para manter deps atualizadas.
 
+### Admin CMS — padrões obrigatórios
+- **Editor rich text:** usar `RichTextEditor` (Tiptap, já instalado em `admin/src/components/tiptap/`). `QuillEditor` (`@vueup/vue-quill`) **não está instalado** — não usar.
+- **Toasts:** todos os feedbacks de ação via `showToast(msg, type)` — nunca `alert()` ou `window.confirm()` (exceto para guards de navegação).
+- **Dirty state:** formulários de edição devem rastrear mudanças com `JSON.stringify` snapshot + `onBeforeRouteLeave` guard.
+- **Tipos centralizados:** `admin/src/types/index.ts` — Post, Categoria, Autor, PostStatus. Não redefinir inline.
+- **Slug:** usar `slugify()` de `admin/src/utils/slug.ts` — não duplicar a lógica.
+
 ### Componentes de layout reutilizáveis (padrões obrigatórios)
 - **`Pagination`** — componente único em artigos e o-projeto. Deve ficar **fora** do grid de duas colunas (entre `</grid>` e `<NewsletterCTA />`). Botão "← Anterior" funciona sem `totalPages` via cursor stack. "Página X de Y" só aparece quando `totalPages` é passado.
 - **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget.
@@ -242,14 +254,14 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 
 ### Próximas entregas técnicas
 6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
-7. **SEO residual** — favicon, manifest, links sociais (depende de assets de Marcelo)
+7. **SEO residual** — links sociais reais (#16) e agendamento (#18) — os 2 itens restantes dependem de Marcelo
 8. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
 
 ### Baixa prioridade
-9. Paginação bidirecional — limitação DynamoDB
+9. ~~Paginação bidirecional~~ ✅ Implementada em artigos e o-projeto
 10. WAF no Admin CloudFront — quando houver tráfego real
 11. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
-12. Preview de imagens no admin
+12. Preview de imagens no admin (upload pipeline já existe)
 
 ---
 

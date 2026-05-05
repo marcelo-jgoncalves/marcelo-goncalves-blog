@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27 | **Última atualização:** 2026-05-04 (sessão 15)  
+**Data:** 2026-04-27 | **Última atualização:** 2026-05-04 (sessão 16)  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -105,14 +105,24 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 ## 6. Dívida Técnica Priorizada
 
 ### Aguarda ação manual de Marcelo
-1. **Seed de categorias no DynamoDB** — logar no admin e criar via UI
+1. **URLs sociais reais** — LinkedIn, GitHub, Instagram para footer e author box
+2. **Ferramenta de agendamento** — Calendly ou similar para /servicos
+3. **AWS Support ticket** — elevar Lambda concurrent executions 10→1000
+4. **NEXT_PUBLIC_SITE_URL** — configurar via Terraform quando domínio definitivo estiver pronto
+
+### Resolvidos nesta sessão (sessão 16)
+- ✅ Favicon + apple-touch-icon + favicon-192/512 + site.webmanifest deployados
+- ✅ CloudFront behaviors para arquivos estáticos root-level
+- ✅ Admin: QuillEditor (crítico) → RichTextEditor (Tiptap)
+- ✅ Admin: Dashboard reescrito com tabs/busca/delete
+- ✅ Admin: dirty state, preview link, date validation, SERP preview, auto reading time
+- ✅ SEO: 18/20 itens (restam #16 links sociais e #18 agendamento)
 
 ### Baixa prioridade
-2. Paginação bidirecional — limitação DynamoDB (sem cursor reverso)
-3. WAF no Admin CloudFront — quando houver tráfego real
-4. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
-5. Hero height padronizado em todas as páginas
-6. Preview de imagens no admin
+5. Paginação bidirecional — ✅ Implementada (artigos + o-projeto)
+6. WAF no Admin CloudFront — quando houver tráfego real
+7. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
+8. Preview de imagens no admin (upload pipeline já existe)
 
 ---
 
@@ -142,6 +152,25 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [x] ZIPs determinísticos: timestamps normalizados antes de zipar — Terraform só atualiza Lambda quando código muda
 - [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
 - [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
+
+**Sprint 12 — Post page, Mobile SEO, Brand Assets, Admin (Sessão 16) ✅**
+- [x] Post page 13 fixes: `revalidate=60`, `--font-mono`, blockquote `position:relative`, BreadcrumbList com `category.nome`, dead code removed (service injection, console.error), OG image tokens (#3B5F8A), `<time dateTime>`, AdsenseInArticle usa `ADSENSE_CONFIGURED` (não `NODE_ENV`), mobile class corrigida
+- [x] Mobile SEO 8 fixes: hero `min-height:280px` flex centrado, hero-title scaling mobile→desktop, /servicos OG+canonical completos, sitemap `lastModified` em todas as páginas, "IA Decifrada" eliminado de todas as strings, Pagination fora do grid em `/categoria/[slug]`, `<time datetime>` correto
+- [x] Brand assets: `app/favicon.ico`, `public/apple-touch-icon.png`, `public/favicon-192.png`, `public/favicon-512.png`, `public/site.webmanifest`, `public/logo-desktop.png` deployados
+- [x] CloudFront 5 `ordered_cache_behavior` para arquivos estáticos root-level: `*.ico`, `*.webmanifest`, `apple-touch-icon.png`, `favicon-*.png`, `logo-desktop.*` → target `S3-Assets`
+- [x] UI: category cards h3 `0.95→1.5rem` + p `0.8→1rem`; hero min-height `280px` + flex centrado em todas as páginas; home-see-all ghost pill (accent-light bg); /servicos icon acima texto centralizado desktop; TechRibbon Gemini→Claude Code
+- [x] Color consistency: PostCard título `--dark-700→--dark-900`; PopularPostsWidget `--text-primary→--dark-900`
+- [x] Admin crítico: `AuthorEditView.vue` — `QuillEditor` (pacote não instalado) → `RichTextEditor` (Tiptap já no projeto)
+- [x] Admin alto: todos `alert()` → `showToast()` com tipos `success/error/warning` (CategoriesView, DashboardView, AuthorEditView)
+- [x] Admin alto: `DashboardView.vue` reescrito — tabs de status com contagens, busca de texto client-side, delete posts com confirm
+- [x] Admin alto: `EditorView.vue` dirty state — `isDirty` computed + `onBeforeRouteLeave` guard + badge "● Não salvo"
+- [x] Admin alto: `EditorView.vue` preview link — botão "Ver no Blog" quando post status=Publicado
+- [x] Admin alto: `EditorView.vue` date validation — Programado exige data futura
+- [x] Admin médio: `admin/src/utils/slug.ts` + `admin/src/types/index.ts` criados (centralizados)
+- [x] Admin médio: `EditorView.vue` SERP preview — computed title/desc/URL com contadores de chars
+- [x] Admin médio: `EditorView.vue` auto reading time — watcher em `conteudo_html`, strip HTML, palavras÷200
+- [x] Admin médio: `ImageNode.vue` — definitive error state após maxRetries, não tenta mais; retries 10→5 (~10s)
+- [ ] AWS Support ticket: elevar Lambda concurrent executions 10→1000 (aguarda Marcelo)
 
 **Sprint 11 — O Projeto + Home Final (Sessão 15) ✅**
 - [x] Home: margin collapsing corrigido — `gap: var(--space-4)` + `margin: 0` nos banners
@@ -188,6 +217,9 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 | CI/CD GitHub Actions | ✅ Verde em develop |
 | PostSchedulerLambda | ✅ ENABLED no EventBridge |
 | Terraform Remote State | ✅ |
-| Testes Unitários | ✅ 47 testes |
+| Testes Unitários | ✅ 157 testes (96 backend + 45 frontend + 16 admin) |
+| Favicon + Manifest | ✅ Deployados sessão 16 — CloudFront behaviors ativos |
+| SEO world-class | ✅ 18/20 itens (restam social links + agendamento) |
+| Admin CMS completo | ✅ Dirty state, SERP preview, auto reading time, Dashboard filtros |
 | WAF Admin CloudFront | ❌ Low priority |
 | Ambiente dev/prod isolado | ⚠️ Apenas dev ativo |

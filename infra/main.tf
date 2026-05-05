@@ -57,11 +57,12 @@ module "api-gateway" {
 module "frontend" {
   source = "./modules/frontend"
 
-  environment         = var.environment
-  project_name        = var.project_name
-  log_retention_days  = var.log_retention_days
-  enable_xray_tracing = var.enable_xray_tracing
-  api_url             = module.api-gateway.api_url
+  environment               = var.environment
+  project_name              = var.project_name
+  log_retention_days        = var.log_retention_days
+  enable_xray_tracing       = var.enable_xray_tracing
+  enable_cloudfront_logging = var.enable_cloudfront_logging
+  api_url                   = module.api-gateway.api_url
 }
 
 module "cognito" {
@@ -74,8 +75,10 @@ module "cognito" {
 module "admin" {
   source = "./modules/admin"
 
-  environment  = var.environment
-  project_name = var.project_name
+  environment               = var.environment
+  project_name              = var.project_name
+  enable_cloudfront_logging = var.enable_cloudfront_logging
+  log_retention_days        = var.log_retention_days
 }
 
 module "media" {

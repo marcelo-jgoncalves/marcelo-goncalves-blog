@@ -56,3 +56,9 @@ variable "alarm_email" {
   type        = string
   default     = ""
 }
+
+variable "enable_cloudfront_logging" {
+  description = "Habilita logs de acesso do CloudFront em bucket S3. Logs expiram conforme log_retention_days. Desativado em dev para reduzir custos."
+  type        = bool
+  default     = false
+}

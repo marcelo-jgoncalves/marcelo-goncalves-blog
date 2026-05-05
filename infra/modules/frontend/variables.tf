@@ -20,3 +20,9 @@ variable "provisioned_concurrency" {
   default     = 0
 }
 
+variable "enable_cloudfront_logging" {
+  description = "Habilita logs de acesso do CloudFront em bucket S3. Logs expiram conforme log_retention_days."
+  type        = bool
+  default     = false
+}
+

@@ -1,5 +1,47 @@
 # infra/modules/admin/cloudfront.tf
 
+# --- Bucket S3 para logs de acesso do CloudFront (criado apenas se enable_cloudfront_logging=true) ---
+
+resource "aws_s3_bucket" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = "${var.project_name}-${var.environment}-cf-admin-logs"
+
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = aws_s3_bucket.cf_logs[0].id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "cf_logs" {
+  count      = var.enable_cloudfront_logging ? 1 : 0
+  depends_on = [aws_s3_bucket_ownership_controls.cf_logs]
+  bucket     = aws_s3_bucket.cf_logs[0].id
+  acl        = "log-delivery-write"
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "cf_logs" {
+  count  = var.enable_cloudfront_logging ? 1 : 0
+  bucket = aws_s3_bucket.cf_logs[0].id
+
+  rule {
+    id     = "expire-cf-logs"
+    status = "Enabled"
+
+    expiration {
+      days = var.log_retention_days
+    }
+  }
+}
+
 resource "aws_cloudfront_origin_access_control" "admin_oac" {
   name                              = "${var.project_name}-${var.environment}-admin-oac"
   description                       = "Acesso restrito S3 Admin"
@@ -52,6 +94,15 @@ resource "aws_cloudfront_distribution" "admin" {
     response_code         = 200
     response_page_path    = "/index.html"
     error_caching_min_ttl = 10
+  }
+
+  dynamic "logging_config" {
+    for_each = var.enable_cloudfront_logging ? [1] : []
+    content {
+      include_cookies = false
+      bucket          = aws_s3_bucket.cf_logs[0].bucket_domain_name
+      prefix          = "cloudfront/"
+    }
   }
 
   restrictions {
