@@ -73,40 +73,6 @@
   font-size: 1rem;
 }
 
-/* --- Super destaque --- */
-.super-destaque-inner {
-  padding: 0 20px;
-}
-
-.super-destaque {
-  background-color: var(--dark-900);
-  color: white;
-  padding: var(--space-6) 20px;
-  text-align: center;
-  margin: 0;
-}
-
-.super-destaque h2 {
-  font-size: 2rem;
-  margin-bottom: var(--space-2);
-  color: white;
-  line-height: 1.25;
-}
-
-.super-destaque h2 .highlight {
-  color: var(--accent);
-}
-
-.super-destaque p {
-  font-size: 1.1rem;
-  color: var(--slate-50);
-  margin-bottom: 40px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-}
-
 /* --- CTA Newsletter --- */
 .cta {
   background-color: var(--dark-900);
@@ -195,7 +161,6 @@
 @media (min-width: 768px) {
   .section-header h2 { font-size: 2rem; }
   .home-posts-grid { grid-template-columns: repeat(2, 1fr); }
-  .super-destaque h2,
   .cta h2 { font-size: 2.5rem; }
 }
 

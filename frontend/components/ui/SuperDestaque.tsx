@@ -1,6 +1,7 @@
 // frontend/components/ui/SuperDestaque.tsx
 
 import Link from 'next/link';
+import './SuperDestaque.css';
 
 
 interface SuperDestaqueProps {

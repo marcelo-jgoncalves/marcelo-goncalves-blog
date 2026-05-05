@@ -1,0 +1,38 @@
+/* frontend/components/ui/SuperDestaque.css */
+
+.super-destaque {
+  background-color: var(--dark-900);
+  color: white;
+  padding: var(--space-6) 20px;
+  text-align: center;
+  margin: 0;
+}
+
+.super-destaque-inner {
+  padding: 0 20px;
+}
+
+.super-destaque h2 {
+  font-size: 2rem;
+  margin-bottom: var(--space-2);
+  color: white;
+  line-height: 1.25;
+}
+
+.super-destaque h2 .highlight {
+  color: var(--accent);
+}
+
+.super-destaque p {
+  font-size: 1.1rem;
+  color: var(--slate-50);
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .super-destaque h2 { font-size: 2.5rem; }
+}
