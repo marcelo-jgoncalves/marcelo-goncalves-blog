@@ -10,8 +10,9 @@ const src = computed(() => props.node.attrs.src)
 const alt = computed(() => props.node.attrs.alt)
 const isLoading = ref(true)
 const hasError = ref(false)
+const isDefinitiveError = ref(false)
 const retryCount = ref(0)
-const maxRetries = 10 // Tenta por ~20 segundos (10 * 2s)
+const maxRetries = 5 // Tenta por ~10 segundos (5 * 2s)
 
 // Cache Buster para forçar o navegador a tentar baixar de novo se der erro
 const cacheBuster = ref('')
@@ -30,15 +31,16 @@ function onLoad() {
 function onError() {
   isLoading.value = false
   hasError.value = true
-  
+
   if (retryCount.value < maxRetries) {
-    // Agenda uma nova tentativa em 2 segundos
     setTimeout(() => {
       retryCount.value++
       isLoading.value = true
       hasError.value = false
-      cacheBuster.value = Date.now().toString() // Força refresh da URL
+      cacheBuster.value = Date.now().toString()
     }, 2000)
+  } else {
+    isDefinitiveError.value = true
   }
 }
 </script>
@@ -59,8 +61,11 @@ function onError() {
         :class="{ 'opacity-50': isLoading }"
       />
 
-      <div v-if="hasError && !isLoading" class="error-msg">
-        ⚠️ Falha ao carregar imagem
+      <div v-if="hasError && !isLoading && !isDefinitiveError" class="error-msg">
+        ⚠️ Carregando... tentativa {{ retryCount }}/{{ maxRetries }}
+      </div>
+      <div v-if="isDefinitiveError" class="error-msg error-definitive">
+        ✕ Imagem indisponível — verifique a URL
       </div>
     </div>
   </NodeViewWrapper>
@@ -113,9 +118,13 @@ img {
   left: 0;
   width: 100%;
   text-align: center;
-  background: rgba(255, 0, 0, 0.7);
+  background: rgba(180, 83, 9, 0.85);
   color: white;
   padding: 5px;
   font-size: 0.8rem;
+}
+.error-definitive {
+  background: rgba(185, 28, 28, 0.9);
+  font-weight: 600;
 }
 </style>

@@ -8,6 +8,7 @@ import { postsApi, categoriesApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
+import { slugify } from '../utils/slug'
 
 const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
   'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr']
@@ -49,7 +50,7 @@ const loading = ref(false)
 const saving = ref(false)
 const uploadContext = ref<'destaque' | 'editor'>('destaque')
 const loadingCategories = ref(true)
-const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
+const toast = ref<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null)
 
 // Dirty state — detecta alterações não salvas
 const initialFormJson = ref('')
@@ -91,10 +92,29 @@ const FALLBACK_CATEGORIAS = [
 ]
 const categorias = ref(FALLBACK_CATEGORIAS)
 
-function showToast(message: string, type: 'success' | 'error' = 'success') {
+function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
   toast.value = { message, type }
   setTimeout(() => { toast.value = null }, 4000)
 }
+
+// Auto-cálculo do tempo de leitura (200 palavras/min)
+watch(() => form.value.conteudo_html, (html) => {
+  if (!html) return
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  const words = text.split(/\s+/).filter(Boolean).length
+  form.value.tempo_leitura_min = Math.max(1, Math.round(words / 200))
+})
+
+// Preview SERP
+const serpTitle = computed(() =>
+  (form.value.meta_titulo_seo || form.value.titulo || 'Título do Artigo').substring(0, 70)
+)
+const serpDesc = computed(() =>
+  (form.value.meta_descricao_seo || form.value.resumo || 'Descrição do artigo...').substring(0, 160)
+)
+const serpUrl = computed(() =>
+  `${BLOG_URL}/post/${form.value.slug || 'url-do-artigo'}`
+)
 
 onMounted(async () => {
   // autor_id vem do Cognito username (não mais hardcoded)
@@ -109,7 +129,7 @@ onMounted(async () => {
       if (!isEditing.value && res.items[0]) form.value.categoria_slug = res.items[0].categoria_slug
     }
   } catch {
-    // fallback já está no default de `categorias`
+    showToast('API de categorias indisponível — usando categorias padrão.', 'warning')
   } finally {
     loadingCategories.value = false
   }
@@ -212,11 +232,7 @@ function openEditorImageUpload() {
 
 function generateSlug() {
   if (!isEditing.value) {
-    form.value.slug = form.value.titulo
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
+    form.value.slug = slugify(form.value.titulo)
   }
 }
 </script>
@@ -274,12 +290,29 @@ function generateSlug() {
         <div class="seo-box">
           <h3>SEO & Meta Tags</h3>
           <div class="form-group">
-            <label>Meta Título</label>
+            <label>
+              Meta Título
+              <span :class="['char-count', { warn: serpTitle.length > 60 }]">
+                {{ serpTitle.length }}/60
+              </span>
+            </label>
             <input v-model="form.meta_titulo_seo" type="text" />
           </div>
           <div class="form-group">
-            <label>Meta Descrição</label>
+            <label>
+              Meta Descrição
+              <span :class="['char-count', { warn: serpDesc.length > 155 }]">
+                {{ serpDesc.length }}/160
+              </span>
+            </label>
             <textarea v-model="form.meta_descricao_seo" rows="2"></textarea>
+          </div>
+
+          <div class="serp-preview">
+            <p class="serp-label">Preview Google</p>
+            <div class="serp-url">{{ serpUrl }}</div>
+            <div class="serp-title">{{ serpTitle }}</div>
+            <div class="serp-desc">{{ serpDesc }}</div>
           </div>
         </div>
       </div>
@@ -298,6 +331,10 @@ function generateSlug() {
           <div class="form-group">
             <label>Data Publicação</label>
             <input v-model="form.data_publicacao" type="datetime-local" />
+          </div>
+          <div class="form-group">
+            <label>Tempo de Leitura (min) <span class="auto-badge">auto</span></label>
+            <input v-model.number="form.tempo_leitura_min" type="number" min="1" max="60" />
           </div>
         </div>
 
@@ -388,6 +425,28 @@ input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--gr
 }
 .toast--success { background: #2d6a4f; }
 .toast--error   { background: #c0392b; }
+.toast--warning { background: #b45309; }
+
+.seo-box { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.seo-box h3 { font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+
+.char-count { font-size: 0.75rem; font-weight: 400; color: #9ca3af; margin-left: 8px; }
+.char-count.warn { color: #dc2626; font-weight: 600; }
+
+.serp-preview {
+  margin-top: 16px; padding: 14px 16px; border: 1px solid #e5e7eb;
+  border-radius: 8px; background: #f9fafb; font-family: Arial, sans-serif;
+}
+.serp-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; margin-bottom: 8px; font-family: inherit; }
+.serp-url  { font-size: 0.75rem; color: #1a0dab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.serp-title { font-size: 1rem; color: #1a0dab; font-weight: 400; margin: 2px 0; }
+.serp-title:hover { text-decoration: underline; }
+.serp-desc { font-size: 0.8rem; color: #545454; line-height: 1.4; margin-top: 4px; }
+
+.auto-badge {
+  display: inline-block; font-size: 0.65rem; background: #d1fae5; color: #065f46;
+  border-radius: 4px; padding: 1px 6px; font-weight: 600; vertical-align: middle; margin-left: 6px;
+}
 
 .dirty-badge {
   font-size: 0.8rem; font-weight: 600; color: #b45309;

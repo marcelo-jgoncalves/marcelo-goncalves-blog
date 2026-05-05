@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
-import { categoriesApi } from '../services/api' // Importa a nossa nova API
-
-// --- Interfaces (modelo real do DynamoDB via adminCategorias Lambda) ---
-interface Categoria {
-  categoria_slug: string
-  nome: string
-  descricao?: string
-}
+import { categoriesApi } from '../services/api'
+import { slugify } from '../utils/slug'
+import type { Categoria } from '../types'
 
 // --- Estado ---
 const categories = ref<Categoria[]>([])
@@ -49,22 +44,10 @@ onMounted(() => {
 
 // --- Lógica de UX / Auxiliares ---
 
-// Gerador de Slug Automático
-const generateSlug = (text: string) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-}
-
 // Watcher para preencher o slug automaticamente apenas na criação
 watch(() => form.value.nome, (newName) => {
   if (!editingSlug.value) {
-    form.value.categoria_slug = generateSlug(newName)
+    form.value.categoria_slug = slugify(newName)
   }
 })
 
