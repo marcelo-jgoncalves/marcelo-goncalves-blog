@@ -101,6 +101,31 @@ describe('adminPosts handler', () => {
       const statuses = calls.map((c: any[]) => c[0].input.ExpressionAttributeValues[':status']);
       expect(statuses).toEqual(['Publicado', 'Rascunho', 'Programado']);
     });
+
+    it('envia as 3 queries em paralelo — todas chegam mesmo que uma retorne vazio', async () => {
+      mockSend
+        .mockResolvedValueOnce({ Items: [{ slug: 'a', status: 'Publicado' }] })
+        .mockResolvedValueOnce({ Items: [] })
+        .mockResolvedValueOnce({ Items: [{ slug: 'c', status: 'Programado' }] });
+
+      const result = await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
+      const body = JSON.parse(result?.body ?? '{}');
+
+      // Promise.all garante que todas as 3 queries foram disparadas
+      expect(mockSend).toHaveBeenCalledTimes(3);
+      // e o resultado combina itens das 3, mesmo com Rascunho vazio
+      expect(body.count).toBe(2);
+      expect(body.items.map((i: any) => i.slug)).toEqual(expect.arrayContaining(['a', 'c']));
+    });
+
+    it('usa ProjectionExpression para retornar apenas campos necessários', async () => {
+      mockSend.mockResolvedValue({ Items: [] });
+      await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.ProjectionExpression).toContain('slug');
+      expect(cmd.input.ProjectionExpression).toContain('titulo');
+    });
   });
 
   describe('GET /admin/posts/:slug (get one)', () => {

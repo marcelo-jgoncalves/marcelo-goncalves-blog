@@ -72,6 +72,77 @@ describe('getPosts handler', () => {
     });
   });
 
+  describe('/posts/populares', () => {
+    it('uses PopularesPorData GSI with e_popular=1', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A] });
+
+      await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.IndexName).toBe('PopularesPorData');
+      expect(cmd.input.ExpressionAttributeValues[':popular']).toBe(1);
+    });
+
+    it('filters only Publicado status', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A] });
+
+      await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
+    });
+
+    it('returns posts array with status 200', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A, POST_B] });
+
+      const result = await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.posts).toHaveLength(2);
+    });
+
+    it('uses default limit 6', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.Limit).toBe(6);
+    });
+
+    it('respects custom limit from query param', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      await handler(
+        event({ resource: '/posts/populares', queryStringParameters: { limit: '3' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.Limit).toBe(3);
+    });
+
+    it('orders newest first (ScanIndexForward false)', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.ScanIndexForward).toBe(false);
+    });
+
+    it('does NOT fall through to getAllPosts', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
+
+      // getAllPosts dispara 2 queries (data + COUNT); populares dispara apenas 1
+      expect(mockSend).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('/categoria/:slug', () => {
     it('returns posts filtered by category and only Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Items: [POST_A] });
@@ -140,6 +211,36 @@ describe('getPosts handler', () => {
 
       const cmd = mockSend.mock.calls[0][0];
       expect(cmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
+    });
+
+    it('does not set Limit (evita truncação pré-filtro do DynamoDB)', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A] });
+
+      await handler(
+        event({ resource: '/busca', queryStringParameters: { q: 'lambda' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[0][0];
+      // Limit no ScanCommand com FilterExpression lê N itens ANTES de filtrar —
+      // com Limit:9, se os primeiros 9 itens não matcharem, retorna array vazio.
+      expect(cmd.input.Limit).toBeUndefined();
+    });
+
+    it('searches título e resumo com três variantes de capitalização', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      await handler(
+        event({ resource: '/busca', queryStringParameters: { q: 'serverless' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[0][0];
+      expect(cmd.input.ExpressionAttributeValues[':t1']).toBe('serverless');   // lower
+      expect(cmd.input.ExpressionAttributeValues[':t2']).toBe('SERVERLESS');   // upper
+      expect(cmd.input.ExpressionAttributeValues[':t3']).toBe('Serverless');   // title
     });
 
     it('also triggers when queryStringParameters has q', async () => {

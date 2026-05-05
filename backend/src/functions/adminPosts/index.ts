@@ -79,21 +79,22 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
 async function listPosts() {
   const statuses = ["Publicado", "Rascunho", "Programado"];
-  const allItems: any[] = [];
 
-  for (const status of statuses) {
-    const command = new QueryCommand({
-      TableName: TABLE_NAME,
-      IndexName: "StatusPorData",
-      KeyConditionExpression: "#status = :status",
-      ExpressionAttributeNames: { "#status": "status" },
-      ExpressionAttributeValues: { ":status": status },
-      ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
-      ScanIndexForward: false,
-    });
-    const result = await dynamo.send(command);
-    allItems.push(...(result.Items || []));
-  }
+  const results = await Promise.all(
+    statuses.map((status) =>
+      dynamo.send(new QueryCommand({
+        TableName: TABLE_NAME,
+        IndexName: "StatusPorData",
+        KeyConditionExpression: "#status = :status",
+        ExpressionAttributeNames: { "#status": "status" },
+        ExpressionAttributeValues: { ":status": status },
+        ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
+        ScanIndexForward: false,
+      }))
+    )
+  );
+
+  const allItems = results.flatMap((r) => r.Items || []);
 
   return {
     statusCode: 200,

@@ -21,6 +21,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     if (resource.includes("/posts/recentes")) {
       return await getRecentPosts(queryStringParameters, requestId);
     }
+    if (resource.includes("/posts/populares")) {
+      return await getPopularPosts(queryStringParameters, requestId);
+    }
     if (resource.includes("/categoria/") && pathParameters?.slug) {
       return await getPostsByCategory(pathParameters.slug, queryStringParameters, requestId);
     }
@@ -91,13 +94,15 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
     return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
   }
 
-  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 9;
   const nextToken = queryParams?.nextToken;
 
   const tLower = term.toLowerCase();
   const tUpper = term.toUpperCase();
   const tTitle = toTitleCase(term);
 
+  // Sem Limit: o Limit no ScanCommand aplica-se ANTES do FilterExpression,
+  // o que faria o DynamoDB ler apenas N itens e retornar 0 resultados mesmo
+  // havendo posts que correspondam ao termo. O Scan lê a tabela inteira.
   const command = new ScanCommand({
     TableName: TABLE_NAME,
     FilterExpression: `
@@ -111,7 +116,6 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
     ExpressionAttributeValues: {
       ":t1": tLower, ":t2": tUpper, ":t3": tTitle, ":published": "Publicado"
     },
-    Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
@@ -120,6 +124,29 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
 
   logger.info("search_posts_fetched", { requestId, term, count: result.Items?.length ?? 0 });
   return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
+}
+
+async function getPopularPosts(queryParams: any, requestId?: string) {
+  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
+
+  const command = new QueryCommand({
+    TableName: TABLE_NAME,
+    IndexName: "PopularesPorData",
+    KeyConditionExpression: "e_popular = :popular",
+    FilterExpression: "#status = :published",
+    ExpressionAttributeNames: { "#status": "status" },
+    ExpressionAttributeValues: { ":popular": 1, ":published": "Publicado" },
+    ScanIndexForward: false,
+    Limit: limit,
+  });
+
+  const result = await dynamo.send(command);
+  logger.info("popular_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ posts: result.Items || [] }),
+    headers,
+  };
 }
 
 async function getRecentPosts(queryParams: any, requestId?: string) {

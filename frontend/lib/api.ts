@@ -68,8 +68,10 @@ export async function getPostsByCategory(slug: string, nextToken?: string, limit
   return res.json();
 }
 
-export async function getPopularPosts() {
-  const res = await fetch(`${getApiUrl()}/posts/populares`, {
+export async function getPopularPosts(limit: number = 6) {
+  const params = new URLSearchParams();
+  params.set('limit', limit.toString());
+  const res = await fetch(`${getApiUrl()}/posts/populares?${params.toString()}`, {
     next: { revalidate: 300 },
   });
 

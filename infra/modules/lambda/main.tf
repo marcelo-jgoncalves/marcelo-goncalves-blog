@@ -194,6 +194,7 @@ resource "aws_lambda_function" "media_upload" {
   role          = aws_iam_role.media_upload_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/mediaUpload.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/mediaUpload.zip")
@@ -216,6 +217,7 @@ resource "aws_lambda_function" "get_post" {
   role          = aws_iam_role.public_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/getPost.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/getPost.zip")
@@ -238,6 +240,7 @@ resource "aws_lambda_function" "get_author" {
   role          = aws_iam_role.public_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/getAuthor.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/getAuthor.zip")
@@ -259,6 +262,7 @@ resource "aws_lambda_function" "get_posts" {
   role          = aws_iam_role.public_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/getPosts.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/getPosts.zip")
@@ -280,6 +284,7 @@ resource "aws_lambda_function" "admin_posts" {
   role          = aws_iam_role.admin_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/adminPosts.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminPosts.zip")
@@ -302,6 +307,7 @@ resource "aws_lambda_function" "admin_authors" {
   role          = aws_iam_role.admin_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/adminAuthors.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminAuthors.zip")
@@ -324,6 +330,7 @@ resource "aws_lambda_function" "admin_categorias" {
   role          = aws_iam_role.admin_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
+  memory_size   = 512
 
   filename         = "${path.root}/builds/adminCategorias.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminCategorias.zip")
@@ -392,7 +399,7 @@ resource "aws_lambda_function" "post_scheduler" {
   role          = aws_iam_role.scheduler_lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
-  timeout       = 300
+  timeout       = 30
 
   filename         = "${path.root}/builds/postScheduler.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/postScheduler.zip")
