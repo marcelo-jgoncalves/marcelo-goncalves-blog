@@ -1,31 +1,6 @@
 /* frontend/app/servicos/servicos.css */
 
 /* ============================================================
-   HERO — badges internos (hero-subtitle já definido em PageHero.css)
-   ============================================================ */
-.hero-badges {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-}
-
-.hero-badges span {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--dark-700);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hero-badges span i {
-  color: var(--accent);
-  font-size: 0.8rem;
-}
-
-/* ============================================================
    SEÇÕES GENÉRICAS
    ============================================================ */
 .servicos-section {

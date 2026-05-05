@@ -62,18 +62,14 @@ export default function ServicosPage() {
       {/* 1. Hero */}
       <PageHero>
         <h1 className="hero-title">
-          Arquitetura AWS que escala seu negócio{' '}
-          <span className="highlight">sem aumentar a complexidade</span>
+          Arquitetura AWS moderna, segura e escalável
         </h1>
         <p className="hero-subtitle">
-          Arquitetura, modernização e otimização contínua de ambientes AWS para
-          empresas que precisam crescer com segurança, eficiência e previsibilidade.
+          👉 Estratégia e implementação AWS do diagnóstico à evolução contínua.
         </p>
-        <div className="hero-badges">
-          <span><i className="fas fa-check"></i> Arquiteturas Serverless</span>
-          <span><i className="fas fa-check"></i> Automação &amp; DevOps</span>
-          <span><i className="fas fa-check"></i> FinOps &amp; Segurança Cloud</span>
-        </div>
+        <a href="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS" className="btn">
+          Agendar conversa estratégica
+        </a>
       </PageHero>
 
       {/* 2. Como posso ajudar — 3 cards */}
