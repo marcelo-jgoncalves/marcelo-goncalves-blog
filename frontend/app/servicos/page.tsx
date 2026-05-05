@@ -50,6 +50,10 @@ const servicosJsonLd = {
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'FinOps & Otimização de Custos', description: 'Auditoria da fatura AWS, rightsizing e estratégias de compra.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação e DevOps (IaC & CI/CD)', description: 'Pipelines de CI/CD com GitHub Actions e Terraform.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desenvolvimento Serverless', description: 'Backends e APIs com AWS Lambda, API Gateway e DynamoDB.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Observabilidade & Engenharia de Logs', description: 'Métricas, logs e tracing centralizados na AWS com alertas inteligentes.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Segurança em Nuvem', description: 'Auditoria AWS baseada no Well-Architected Framework e melhores práticas de segurança.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Plataforma Interna (Platform Engineering)', description: 'Plataforma interna AWS para autonomia e segurança no provisionamento e deploys.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data Platform Serverless', description: 'Pipelines modernos de dados com arquitetura lakehouse serverless.' } },
     ],
   },
 };
@@ -69,7 +73,7 @@ export default function ServicosPage() {
         </p>
       </PageHero>
 
-      {/* 2. Serviços 1–3 */}
+      {/* 2. Serviços 1–4 */}
       <div className="services-content">
         <div className="service-item">
           <div className="service-icon"><i className="fas fa-cloud"></i></div>
@@ -94,6 +98,14 @@ export default function ServicosPage() {
             <p>Criação de pipelines de CI/CD (GitHub Actions) e automação completa de infraestrutura como código (Terraform). Crio o &quot;botão mágico&quot; que permite à sua equipe fazer deploys seguros e repetíveis.</p>
           </div>
         </div>
+
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-bolt"></i></div>
+          <div className="service-text">
+            <h2>Desenvolvimento Serverless</h2>
+            <p>Construção de backends e APIs de alta performance e custo zero quando ociosos. Especialista em AWS Lambda, API Gateway e DynamoDB para escalar do zero a milhões de usuários sem gerenciar servidores.</p>
+          </div>
+        </div>
       </div>
 
       {/* 3. Prova social — fullwidth, fundo azul profundo */}
@@ -113,18 +125,42 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* 4. Serviço 4 */}
+      {/* 4. Serviços 5–8 */}
       <div className="services-content">
         <div className="service-item">
-          <div className="service-icon"><i className="fas fa-bolt"></i></div>
+          <div className="service-icon"><i className="fas fa-magnifying-glass-chart"></i></div>
           <div className="service-text">
-            <h2>Desenvolvimento Serverless</h2>
-            <p>Construção de backends e APIs de alta performance e custo zero quando ociosos. Especialista em AWS Lambda, API Gateway e DynamoDB para escalar do zero a milhões de usuários sem gerenciar servidores.</p>
+            <h2>Observabilidade & Engenharia de Logs</h2>
+            <p>Implementação de observabilidade completa na AWS com métricas, logs e tracing centralizados. Criação de alertas inteligentes e análise comportamental para detectar falhas e ameaças antes que impactem o negócio.</p>
+          </div>
+        </div>
+
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-shield-halved"></i></div>
+          <div className="service-text">
+            <h2>Segurança em Nuvem</h2>
+            <p>Auditoria completa da sua conta AWS baseada no Well-Architected Framework e melhores práticas de segurança. Identificação de vulnerabilidades, configurações inadequadas e plano de remediação priorizado.</p>
+          </div>
+        </div>
+
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-layer-group"></i></div>
+          <div className="service-text">
+            <h2>Plataforma Interna (Platform Engineering)</h2>
+            <p>Criação de uma plataforma interna na AWS que permite aos desenvolvedores provisionar ambientes e fazer deploys com autonomia e segurança. Menos fricção operacional, mais velocidade de entrega.</p>
+          </div>
+        </div>
+
+        <div className="service-item">
+          <div className="service-icon"><i className="fas fa-database"></i></div>
+          <div className="service-text">
+            <h2>Data Platform Serverless</h2>
+            <p>Desenho e implementação de pipelines modernos de dados usando arquitetura lakehouse serverless. Ingestão, transformação e disponibilização de dados com custo sob demanda e escalabilidade automática.</p>
           </div>
         </div>
       </div>
 
-      {/* 3. CTA final — agendar chamada */}
+      {/* 5. CTA final — agendar chamada */}
       <PageCTA
         title="Vamos trabalhar juntos?"
         body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
