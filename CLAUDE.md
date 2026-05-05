@@ -257,6 +257,12 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 7. **SEO residual** — links sociais reais (#16) e agendamento (#18) — os 2 itens restantes dependem de Marcelo
 8. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
 
+### Performance — pendentes da auditoria (sessão 17)
+9. **GSI projections KEYS_ONLY/INCLUDE** — 5 GSIs com `projection_type = "ALL"` duplicam `conteudo_html` em cada índice. Fix requer recriar tabela Posts. Fazer quando houver volume real.
+10. **getPostsByCategory: Limit + FilterExpression** — mesmo bug do searchPosts; baixo impacto agora, cresce com rascunhos em categorias.
+11. **CloudFront `static/*` TTL explícito** — behavior sem `default_ttl`/`max_ttl`; adicionar por consistência.
+12. **Full-text search (OpenSearch/Algolia)** — searchPosts é full table scan O(n). Avaliar com 500+ posts.
+
 ### Baixa prioridade
 9. ~~Paginação bidirecional~~ ✅ Implementada em artigos e o-projeto
 10. WAF no Admin CloudFront — quando houver tráfego real
