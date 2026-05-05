@@ -1,4 +1,4 @@
-# Auditoria SEO — IA Decifrada Blog
+# Auditoria SEO — Blog Marcelo Gonçalves
 > Gerado em: 2026-04-27 | Auditor: Claude (Staff Engineer)  
 > Base: Next.js 16 App Router — frontend/
 

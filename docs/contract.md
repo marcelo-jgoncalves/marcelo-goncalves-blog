@@ -430,8 +430,8 @@ Quando `NEXT_PUBLIC_SITE_URL` apontar para o domínio definitivo, ambos voltam a
 
 ### SEO audit
 
-Progresso completo em `docs/seo-audit.md`. **16/20 itens implementados.**  
-Itens pendentes dependem de assets externos (favicon, manifest, links sociais reais, ferramenta de agendamento).
+Progresso completo em `docs/seo-audit.md`. **18/20 itens implementados.**  
+Itens pendentes: #16 links sociais reais (aguarda URLs de Marcelo) e #18 ferramenta de agendamento.
 
 ---
 

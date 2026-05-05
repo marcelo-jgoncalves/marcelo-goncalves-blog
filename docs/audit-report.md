@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27 | **Última atualização:** 2026-05-04 (sessão 16)  
+**Data:** 2026-04-27 | **Última atualização:** 2026-05-05 (sessão 17)  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -152,6 +152,15 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [x] ZIPs determinísticos: timestamps normalizados antes de zipar — Terraform só atualiza Lambda quando código muda
 - [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
 - [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
+
+**Sprint 13 — /servicos Reestruturação (Sessão 17) ✅**
+- [x] `/servicos` 4→8 serviços: Observabilidade & Engenharia de Logs, Segurança em Nuvem, Engenharia de Plataforma, Data Platform Serverless adicionados
+- [x] Layout duplo-grupo: serviços 1–4 → `service-proof-fullwidth` (making-of) → serviços 5–8 → `PageCTA`
+- [x] Ícone centralizado acima do título: `service-item` flex-direction column; `.service-icon` margin auto
+- [x] Tokens de ritmo vertical aplicados: `gap: var(--space-2)`, `margin-bottom/padding-bottom: var(--space-4)` em service-item; `padding: var(--space-6)`, `gap: var(--space-3)` na section fullwidth
+- [x] JSON-LD `hasOfferCatalog` atualizado com todos os 8 serviços como Offer+Service aninhados
+- [x] Hero subtitle atualizado; rename "Platform Engineering" → "Engenharia de Plataforma"
+- [ ] AWS Support ticket: elevar Lambda concurrent executions 10→1000 (aguarda Marcelo)
 
 **Sprint 12 — Post page, Mobile SEO, Brand Assets, Admin (Sessão 16) ✅**
 - [x] Post page 13 fixes: `revalidate=60`, `--font-mono`, blockquote `position:relative`, BreadcrumbList com `category.nome`, dead code removed (service injection, console.error), OG image tokens (#3B5F8A), `<time dateTime>`, AdsenseInArticle usa `ADSENSE_CONFIGURED` (não `NODE_ENV`), mobile class corrigida
