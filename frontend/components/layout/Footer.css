@@ -87,8 +87,27 @@
   justify-content: center;
 }
 
+.op-footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: center;
+  padding-bottom: 16px;
+  font-size: 0.8rem;
+}
+
+.op-footer-legal__link {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.op-footer-legal__link:hover {
+  color: white;
+}
+
 .op-copyright {
-  padding-top: 32px;
+  padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.875rem;
   text-align: center;

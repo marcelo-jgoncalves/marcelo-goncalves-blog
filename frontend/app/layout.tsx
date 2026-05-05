@@ -2,12 +2,14 @@
 
 import type { Metadata } from "next";
 import { Inter, DM_Sans, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import SkipLink from "../components/ui/SkipLink";
+import ConsentManager from "../components/consent/ConsentManager";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME, AUTHOR_TWITTER } from "@/lib/config";
 
 const inter = Inter({
@@ -101,6 +103,26 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* Google Consent Mode v2 — deve rodar ANTES de qualquer script de ads */}
+        <Script id="consent-init" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('consent','default',{
+            ad_storage:'denied',
+            ad_user_data:'denied',
+            ad_personalization:'denied',
+            analytics_storage:'denied',
+            wait_for_update:500
+          });
+          window.APP_ENV = (
+            window.location.hostname === 'localhost' ||
+            window.location.hostname.includes('cloudfront.net')
+          ) ? 'dev' : 'prod';
+          if (window.APP_ENV === 'dev') {
+            console.log('[CONSENT INIT] Consent Mode defaults aplicados (all denied)');
+          }
+        `}</Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
@@ -120,6 +142,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <ConsentManager />
       </body>
     </html>
   );

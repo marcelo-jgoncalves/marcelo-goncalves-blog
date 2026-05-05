@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import './Footer.css';
+import ConsentTrigger from '@/components/consent/ConsentTrigger';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -67,6 +68,13 @@ export default function Footer() {
               </a>
             </div>
           </div>
+        </div>
+
+        <div className="op-footer-legal">
+          <Link href="/politica-de-privacidade" className="op-footer-legal__link">Política de Privacidade</Link>
+          <Link href="/politica-de-cookies" className="op-footer-legal__link">Política de Cookies</Link>
+          <Link href="/termos-de-uso" className="op-footer-legal__link">Termos de Uso</Link>
+          <ConsentTrigger />
         </div>
 
         <div className="op-copyright">
