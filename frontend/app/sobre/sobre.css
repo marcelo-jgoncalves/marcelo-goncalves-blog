@@ -193,28 +193,60 @@
 }
 
 /* ═══════════════════════════════════════════
-   CERTIFICAÇÕES — 2 colunas, card minimalista
+   CERTIFICAÇÕES — grid de badges clicáveis
 ═══════════════════════════════════════════ */
 .sobre-certs {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-3);
 }
 
+@media (max-width: 639px) {
+  .sobre-certs { grid-template-columns: repeat(2, 1fr); }
+}
+
 .sobre-cert-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: var(--space-3);
   background: white;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: var(--space-3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 @media (hover: hover) {
   .sobre-cert-card:hover {
+    transform: translateY(-4px);
     box-shadow: var(--shadow-md);
     border-color: var(--accent);
   }
+}
+
+.sobre-cert-badge {
+  height: 110px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.sobre-cert-nome {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--dark-900);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.sobre-cert-nivel {
+  font-size: 0.75rem;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: -4px;
 }

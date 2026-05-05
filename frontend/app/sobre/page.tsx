@@ -1,5 +1,4 @@
 import './sobre.css';
-import Script from 'next/script';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -30,12 +29,37 @@ const FORMACAO = [
   },
 ];
 
-const CREDLY_BADGES = [
-  '5326ba20-c51f-4565-a7fc-36fcc3fccf7d',
-  '3d246d86-7316-43af-9094-f0f3459970ce',
-  '9b4b2ee7-9fd5-4a71-8b4a-40f1d6aac606',
-  'eb295814-0c5c-4961-a685-84c80e779439',
-  '02d3ce05-a8d2-4b85-9dde-b14c22e10397',
+const CERTS = [
+  {
+    id: '5326ba20-c51f-4565-a7fc-36fcc3fccf7d',
+    nome: 'AWS Cloud Practitioner',
+    nivel: 'Foundational',
+    imagem: '/static/badges/pactitioner.png',
+  },
+  {
+    id: '3d246d86-7316-43af-9094-f0f3459970ce',
+    nome: 'AWS Solutions Architect',
+    nivel: 'Associate',
+    imagem: '/static/badges/solutions.png',
+  },
+  {
+    id: '9b4b2ee7-9fd5-4a71-8b4a-40f1d6aac606',
+    nome: 'AWS SysOps Administrator',
+    nivel: 'Associate',
+    imagem: '/static/badges/sysops.png',
+  },
+  {
+    id: 'eb295814-0c5c-4961-a685-84c80e779439',
+    nome: 'HashiCorp Terraform',
+    nivel: 'Certified Associate',
+    imagem: '/static/badges/terraform.png',
+  },
+  {
+    id: '02d3ce05-a8d2-4b85-9dde-b14c22e10397',
+    nome: 'Splunk Core',
+    nivel: 'Certified Power User',
+    imagem: '/static/badges/splunk.png',
+  },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -161,22 +185,29 @@ export default async function SobrePage() {
           </div>
         </div>
 
-        {/* 4. Certificações — 2 colunas, cards minimalistas */}
+        {/* 4. Certificações — grid com badges locais */}
         <div className="sobre-section">
-          <h2 className="sobre-section-title">Certificações AWS</h2>
+          <h2 className="sobre-section-title">Certificações</h2>
           <div className="sobre-certs">
-            {CREDLY_BADGES.map((id) => (
-              <div key={id} className="sobre-cert-card">
-                <div
-                  data-iframe-width="150"
-                  data-iframe-height="270"
-                  data-share-badge-id={id}
-                  data-share-badge-host="https://www.credly.com"
+            {CERTS.map((cert) => (
+              <a
+                key={cert.id}
+                href={`https://www.credly.com/badges/${cert.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sobre-cert-card"
+                aria-label={`Ver credencial: ${cert.nome} — ${cert.nivel}`}
+              >
+                <img
+                  src={cert.imagem}
+                  alt={`${cert.nome} — ${cert.nivel}`}
+                  className="sobre-cert-badge"
                 />
-              </div>
+                <span className="sobre-cert-nome">{cert.nome}</span>
+                <span className="sobre-cert-nivel">{cert.nivel}</span>
+              </a>
             ))}
           </div>
-          <Script src="https://cdn.credly.com/assets/utilities/embed.js" strategy="lazyOnload" />
         </div>
 
         {/* 5. Sobre este blog */}
