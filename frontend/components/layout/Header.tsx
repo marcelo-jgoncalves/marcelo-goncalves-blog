@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import './Header.css';
+import ReadingProgressBar from '@/components/ui/ReadingProgressBar';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -86,6 +87,8 @@ export default function Header() {
           ))}
         </div>
       </nav>
+
+      <ReadingProgressBar />
     </header>
   );
 }
