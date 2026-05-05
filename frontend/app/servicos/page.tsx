@@ -52,7 +52,7 @@ const servicosJsonLd = {
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desenvolvimento Serverless', description: 'Backends e APIs com AWS Lambda, API Gateway e DynamoDB.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Observabilidade & Engenharia de Logs', description: 'Métricas, logs e tracing centralizados na AWS com alertas inteligentes.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Segurança em Nuvem', description: 'Auditoria AWS baseada no Well-Architected Framework e melhores práticas de segurança.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Plataforma Interna (Platform Engineering)', description: 'Plataforma interna AWS para autonomia e segurança no provisionamento e deploys.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Engenharia de Plataforma', description: 'Plataforma interna AWS para autonomia e segurança no provisionamento e deploys.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data Platform Serverless', description: 'Pipelines modernos de dados com arquitetura lakehouse serverless.' } },
     ],
   },
@@ -146,7 +146,7 @@ export default function ServicosPage() {
         <div className="service-item">
           <div className="service-icon"><i className="fas fa-layer-group"></i></div>
           <div className="service-text">
-            <h2>Plataforma Interna (Platform Engineering)</h2>
+            <h2>Engenharia de Plataforma</h2>
             <p>Criação de uma plataforma interna na AWS que permite aos desenvolvedores provisionar ambientes e fazer deploys com autonomia e segurança. Menos fricção operacional, mais velocidade de entrega.</p>
           </div>
         </div>

@@ -113,8 +113,6 @@
    ============================================================ */
 @media (min-width: 768px) {
   .services-content         { padding: var(--space-5) 20px; }
-  .service-item             { flex-direction: row; gap: 40px; text-align: left; }
-  .service-icon             { margin: 0; }
   .service-text h2          { font-size: 2rem; }
   .service-proof-fullwidth h2 { font-size: 2.5rem; }
   .service-proof-fullwidth p  { font-size: 1.2rem; }
