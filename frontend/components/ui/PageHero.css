@@ -2,7 +2,7 @@
 
 .page-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-4) 20px;
+  padding: var(--space-5) 20px;
   text-align: center;
 }
 
