@@ -1,71 +1,75 @@
 /* frontend/app/sobre/sobre.css */
 
-/* ═══════════════════════════════════════════
-   BIO SECTION
-═══════════════════════════════════════════ */
-.sobre-bio {
+.sobre-container {
   padding: var(--space-5) 20px;
 }
 
-.sobre-bio__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ═══════════════════════════════════════════
+   HERO — foto à esquerda, texto à direita
+═══════════════════════════════════════════ */
+.sobre-hero {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-4);
+  align-items: center;
+  text-align: center;
 }
 
-.sobre-bio__avatar {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
+.sobre-photo {
+  width: 240px;
+  height: 240px;
+  border-radius: 12px;
   overflow: hidden;
+  margin: 0 auto;
+  background: var(--accent-light);
   flex-shrink: 0;
-  border: 3px solid var(--accent-light);
-  box-shadow: var(--shadow-md);
 }
 
-.sobre-bio__avatar img {
+.sobre-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.sobre-bio__avatar-placeholder {
+.sobre-photo-placeholder {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent-light);
   color: var(--accent);
-  font-size: 4rem;
+  font-size: 5rem;
 }
 
-.sobre-bio__content {
-  text-align: center;
+.sobre-hero__text h1 {
+  font-size: 2rem;
+  color: var(--accent-dark);
+  margin: 0 0 var(--space-1);
 }
 
-.sobre-bio__content h2 {
-  font-size: 1.8rem;
-  margin-bottom: var(--space-3);
-  color: var(--dark-900);
-}
-
-.sobre-bio__content p {
+.sobre-subtitle {
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1rem;
-  line-height: 1.8;
+  color: var(--accent);
+  margin-bottom: var(--space-3) !important;
+}
+
+.sobre-hero__text p {
+  font-size: 1rem;
   color: var(--dark-700);
   margin-bottom: var(--space-2);
+  line-height: 1.7;
 }
 
-.sobre-bio__social {
+.sobre-social {
   display: flex;
   justify-content: center;
   gap: var(--space-2);
   margin-top: var(--space-3);
 }
 
-.sobre-bio__social a {
+.sobre-social a {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -74,130 +78,159 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sobre-bio__social a:hover {
+.sobre-social a:hover {
   background: var(--accent);
   color: white;
 }
 
 @media (min-width: 768px) {
-  .sobre-bio__inner {
-    flex-direction: row;
-    align-items: flex-start;
+  .sobre-hero {
+    grid-template-columns: 280px 1fr;
+    text-align: left;
+    gap: 48px;
   }
 
-  .sobre-bio__avatar {
-    width: 220px;
-    height: 220px;
-    border-radius: 12px;
+  .sobre-photo {
+    width: 100%;
+    height: 300px;
+    margin: 0;
   }
 
-  .sobre-bio__content { text-align: left; }
-  .sobre-bio__content h2 { font-size: 2.2rem; }
-  .sobre-bio__content p { font-size: 1.05rem; }
-  .sobre-bio__social { justify-content: flex-start; }
+  .sobre-hero__text h1 { font-size: 2.4rem; }
+  .sobre-subtitle { font-size: 1.1rem; }
+  .sobre-hero__text p { font-size: 1.05rem; }
+  .sobre-social { justify-content: flex-start; }
 }
 
 /* ═══════════════════════════════════════════
-   TÍTULO DE SEÇÃO COMPARTILHADO
+   SECTIONS
 ═══════════════════════════════════════════ */
-.sobre-section-title {
+.sobre-section {
+  margin-top: var(--space-5);
+}
+
+.sobre-section h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.8rem;
-  color: var(--dark-900);
-  text-align: center;
-  margin-bottom: var(--space-4);
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
 }
 
-@media (min-width: 768px) {
-  .sobre-section-title { font-size: 2rem; }
+.sobre-section p {
+  font-size: 1.05rem;
+  color: var(--dark-700);
+  line-height: 1.75;
+  margin-bottom: var(--space-2);
+}
+
+.sobre-section p:last-child {
+  margin-bottom: 0;
 }
 
 /* ═══════════════════════════════════════════
-   FORMAÇÃO — mesmo padrão de .category-card
+   FORMAÇÃO — 2 cards lado a lado + 1 wide
 ═══════════════════════════════════════════ */
-.sobre-formacao {
-  background: var(--slate-100);
-  padding: var(--space-5) 20px;
-}
-
-.sobre-formacao-grid {
+.sobre-cards-two {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
 @media (min-width: 640px) {
-  .sobre-formacao-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .sobre-cards-two {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.sobre-formacao-card {
-  background: white;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
+.sobre-card {
+  background: var(--accent-light);
   padding: var(--space-3);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-@media (hover: hover) {
-  .sobre-formacao-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    border-color: var(--accent);
-  }
-}
-
-.sobre-formacao-icon {
-  width: 44px;
-  height: 44px;
-  background-color: var(--accent-light);
   border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-size: 1.1rem;
-  margin-bottom: var(--space-2);
-  flex-shrink: 0;
 }
 
-.sobre-formacao-card h3 {
+.sobre-card strong {
+  display: block;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--dark-900);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.sobre-formacao-card p {
+.sobre-card p {
   font-size: 0.95rem;
-  color: var(--slate-500);
-  line-height: 1.5;
+  color: var(--dark-700);
+  line-height: 1.6;
   margin: 0;
+}
+
+.sobre-card--wide {
+  margin-top: 0;
 }
 
 /* ═══════════════════════════════════════════
    CERTIFICAÇÕES — Credly badges
 ═══════════════════════════════════════════ */
 .sobre-certs {
-  padding: var(--space-5) 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  align-items: center;
+  justify-items: center;
 }
 
-.sobre-certs-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: var(--space-3);
+/* ═══════════════════════════════════════════
+   CTA ESCURO FINAL
+═══════════════════════════════════════════ */
+.sobre-cta {
+  margin-top: var(--space-5);
+  background: var(--accent-dark);
+  color: white;
+  padding: var(--space-4);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.sobre-cta h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: white;
+  margin-bottom: var(--space-2);
+}
+
+.sobre-cta p {
+  color: #dce6f2;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.sobre-cta p:last-of-type {
+  margin-bottom: 0;
+}
+
+.sobre-cta__btn {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding: 12px 26px;
+  background: white;
+  color: var(--accent-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sobre-cta__btn:hover {
+  background: var(--accent-light);
+  color: var(--accent-dark);
 }

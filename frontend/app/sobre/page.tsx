@@ -3,8 +3,6 @@ import Script from 'next/script';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import PageHero from '@/components/ui/PageHero';
-import PageCTA from '@/components/ui/PageCTA';
 import AvatarImage from '@/components/ui/AvatarImage';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
@@ -12,24 +10,6 @@ export const revalidate = 3600;
 
 const AUTOR_ID = 'marcelo-goncalves';
 const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais de 8 anos de experiência, Mestre em Linguística e criador do blog.';
-
-const FORMACAO = [
-  {
-    icon: 'fa-graduation-cap',
-    titulo: 'Licenciatura em Letras',
-    descricao: 'Base acadêmica em linguagem, comunicação e análise textual — a fundação da minha forma de pensar e ensinar.',
-  },
-  {
-    icon: 'fa-microscope',
-    titulo: 'Mestrado em Linguística',
-    descricao: 'Pesquisa aprofundada em linguagem e cognição, com foco na estrutura dos sistemas complexos de comunicação.',
-  },
-  {
-    icon: 'fa-chalkboard',
-    titulo: '15+ Anos como Professor',
-    descricao: 'Ensinar é traduzir o complexo em simples — habilidade central em tudo que faço, do código ao artigo.',
-  },
-];
 
 const CREDLY_BADGES = [
   '5326ba20-c51f-4565-a7fc-36fcc3fccf7d',
@@ -76,11 +56,12 @@ export default async function SobrePage() {
   const linkedinUrl = author.linkedin_url || '#';
   const githubUrl = author.github_url || '#';
   const avatarUrl = author.foto_avatar_url;
+  const nome = author.nome_exibicao || 'Marcelo Gonçalves';
 
   const personJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: author.nome_exibicao || 'Marcelo Gonçalves',
+    name: nome,
     url: `${SITE_URL}/sobre`,
     image: avatarUrl || undefined,
     jobTitle: 'Especialista em AWS & DevOps',
@@ -94,46 +75,35 @@ export default async function SobrePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
-      {/* 1. Hero */}
-      <PageHero>
-        <h1 className="hero-title">
-          Sobre Mim e <span className="highlight">O Projeto</span>
-        </h1>
-        <p className="hero-subtitle">
-          Minha missão é provar que a união da experiência humana em engenharia e linguística com o poder da IA pode criar conteúdo técnico de valor inigualável.
-        </p>
-      </PageHero>
+      <div className="sobre-container container">
 
-      {/* 2. Bio — fullwidth, sem sidebar */}
-      <section className="sobre-bio">
-        <div className="sobre-bio__inner container">
-          <div className="sobre-bio__avatar" aria-label="Foto de Marcelo Gonçalves">
+        {/* HERO — foto à esquerda, texto à direita */}
+        <div className="sobre-hero">
+          <div className="sobre-photo">
             {avatarUrl ? (
-              <AvatarImage src={avatarUrl} alt={author.nome_exibicao || 'Marcelo Gonçalves'} />
+              <AvatarImage src={avatarUrl} alt={`Foto de ${nome}`} />
             ) : (
-              <div className="sobre-bio__avatar-placeholder">
+              <div className="sobre-photo-placeholder">
                 <i className="fa-solid fa-user" aria-hidden="true" />
               </div>
             )}
           </div>
 
-          <div className="sobre-bio__content">
-            <h2>Meu Nome é {author.nome_exibicao || 'Marcelo Gonçalves'}</h2>
+          <div className="sobre-hero__text">
+            <h1>{nome}</h1>
+            <p className="sobre-subtitle">Arquiteto de Cloud • Especialista em AWS • Professor</p>
 
             <p>
-              Eu sou, acima de tudo, um apaixonado por duas áreas que parecem distantes, mas que hoje definem o nosso futuro: <b>sistemas complexos e linguagem.</b>
+              Especialista em arquitetura de sistemas em nuvem com mais de 8 anos de experiência
+              projetando e escalando ambientes na AWS para empresas como <strong>Accenture</strong>,{' '}
+              <strong>Anynines</strong> e <strong>Credisis</strong>.
             </p>
             <p>
-              Minha carreira técnica foi construída sobre uma base de mais de 8 anos como especialista em nuvem. Meu foco sempre foi a <b>automação e a criação de arquiteturas escaláveis na AWS</b>. Tive o privilégio de desenhar e implementar soluções robustas para empresas globais como a <b>Accenture</b> e líderes de tecnologia como <b>Anynines</b> e <b>Credisis</b>. Como engenheiro, minha paixão é construir sistemas que funcionam, que escalam e que são seguros.
-            </p>
-            <p>
-              Mas minha jornada não começou na engenharia. Muito antes de escrever minha primeira linha de Terraform, eu já era <b>professor (uma paixão que exerço há mais de 15 anos)</b> e um acadêmico da palavra. Sou <b>formado em Letras</b> e possuo um <b>Mestrado em Linguística</b>.
-            </p>
-            <p>
-              Este blog nasceu no exato momento em que minhas duas paixões colidiram. Sou o especialista em AWS que entende de arquitetura <i>e</i> o linguista que entende a fundação por trás dos modelos — o professor que pode, de fato, &quot;decifrar&quot; os tópicos mais complexos.
+              Foco em segurança, eficiência de custos e arquiteturas resilientes para ambientes
+              de produção — de startups a operações globais.
             </p>
 
-            <div className="sobre-bio__social">
+            <div className="sobre-social">
               <a href={linkedinUrl} title="LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <i className="fab fa-linkedin-in" aria-hidden="true" />
               </a>
@@ -143,31 +113,36 @@ export default async function SobrePage() {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* 3. Formação — cards estilo category card, lado a lado */}
-      <section className="sobre-formacao">
-        <div className="container">
-          <h2 className="sobre-section-title">Formação</h2>
-          <div className="sobre-formacao-grid">
-            {FORMACAO.map((item) => (
-              <div key={item.titulo} className="sobre-formacao-card">
-                <div className="sobre-formacao-icon">
-                  <i className={`fas ${item.icon}`} aria-hidden="true" />
-                </div>
-                <h3>{item.titulo}</h3>
-                <p>{item.descricao}</p>
-              </div>
-            ))}
+        {/* FORMAÇÃO */}
+        <div className="sobre-section">
+          <h2>Formação</h2>
+
+          <div className="sobre-cards-two">
+            <div className="sobre-card">
+              <strong>Licenciatura em Letras</strong>
+              <p>Graduação com foco em linguagem, comunicação e análise de sistemas complexos de sentido.</p>
+            </div>
+            <div className="sobre-card">
+              <strong>Mestrado em Linguística</strong>
+              <p>Pesquisa aprofundada em cognição e estrutura da linguagem — base que hoje se traduz em clareza técnica.</p>
+            </div>
+          </div>
+
+          <div className="sobre-card sobre-card--wide">
+            <strong>15+ Anos como Professor</strong>
+            <p>
+              Ensinar é a habilidade de transformar complexidade em clareza. Exercida em sala de aula por mais de 15 anos,
+              é o que hoje diferencia cada artigo deste blog.
+            </p>
           </div>
         </div>
-      </section>
 
-      {/* 4. Certificações AWS — Credly badges oficiais */}
-      <section className="sobre-certs">
-        <div className="container">
-          <h2 className="sobre-section-title">Certificações AWS</h2>
-          <div className="sobre-certs-grid">
+        {/* CERTIFICAÇÕES — badges Credly oficiais */}
+        <div className="sobre-section">
+          <h2>Certificações</h2>
+
+          <div className="sobre-certs">
             {CREDLY_BADGES.map((id) => (
               <div
                 key={id}
@@ -178,19 +153,58 @@ export default async function SobrePage() {
               />
             ))}
           </div>
+          <Script src="https://cdn.credly.com/assets/utilities/embed.js" strategy="lazyOnload" />
         </div>
-        <Script src="https://cdn.credly.com/assets/utilities/embed.js" strategy="lazyOnload" />
-      </section>
 
-      {/* 5. CTA para serviços */}
-      <PageCTA
-        title="Vamos trabalhar juntos?"
-        body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
-        linkHref="/servicos"
-        linkText="Ver Serviços de Consultoria →"
-      />
+        {/* SOBRE ESTE BLOG */}
+        <div className="sobre-section">
+          <h2>Sobre este blog</h2>
+          <p>
+            Este blog é onde decisões arquiteturais reais são traduzidas em conteúdo prático e aplicável.
+          </p>
+          <p>
+            Sem superficialidade. Sem teoria desnecessária. Apenas o que funciona em produção — com o
+            custo, a segurança e a escala que os ambientes reais exigem.
+          </p>
+        </div>
 
-      {/* 6. Newsletter */}
+        {/* DIFERENCIAL */}
+        <div className="sobre-section">
+          <h2>Diferencial</h2>
+          <p>Minha base não é apenas engenharia.</p>
+          <p>
+            Sou formado em Letras, com Mestrado em Linguística, e professor há mais de 15 anos.
+            Antes de trabalhar com cloud, eu já trabalhava com sistemas — sistemas de linguagem.
+          </p>
+          <p>
+            <strong>
+              Hoje, com a ascensão dos modelos de linguagem, essas duas áreas convergiram.
+            </strong>
+          </p>
+          <p>
+            Isso me permite enxergar arquitetura de forma estrutural, indo além da implementação técnica
+            e conectando o como ao porquê de cada decisão.
+          </p>
+        </div>
+
+        {/* CTA FINAL */}
+        <div className="sobre-cta">
+          <h3>Auditoria de Arquitetura AWS</h3>
+          <p>
+            Identifique falhas invisíveis na sua infraestrutura antes que elas impactem custo,
+            segurança ou disponibilidade.
+          </p>
+          <p>Minha auditoria é direta, técnica e focada em resultado.</p>
+          <a
+            href={`mailto:marcelo.mjgoncalves@gmail.com?subject=Auditoria%20AWS`}
+            className="sobre-cta__btn"
+          >
+            Solicitar análise
+          </a>
+        </div>
+
+      </div>
+
       <NewsletterCTA />
     </>
   );
