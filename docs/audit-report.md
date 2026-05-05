@@ -1,5 +1,5 @@
 # Relatório de Auditoria Técnica — Blog Marcelo Gonçalves
-**Data:** 2026-04-27 | **Última atualização:** 2026-05-05 (sessão 17)  
+**Data:** 2026-04-27 | **Última atualização:** 2026-05-05 (sessão 18)  
 **Auditor:** Claude (Staff Engineer Mode)  
 **Status:** Sessão 4 encerrada — sistema ao vivo, pipeline verde, pronto para conteúdo  
 **Última atualização:** 2026-04-27
@@ -153,6 +153,19 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 - [x] Build paralelo no cd.yml: `build-backend` ‖ `build-frontend`
 - [ ] AWS Support ticket: elevar Lambda concurrent executions de 10 → 1000 (aguarda Marcelo)
 
+**Sprint 14 — Performance, /sobre, LGPD e CMP (Sessão 18) ✅**
+- [x] Reading progress bar: `ReadingProgressBar.tsx` — scaleX GPU, RAF, passive scroll, post-only, aria-progressbar
+- [x] SuperDestaque CSS fix: estilos migrados de `home.css` para `SuperDestaque.css` próprio
+- [x] Backend perf 6 fixes: memory 512MB (8 Lambdas), getPopularPosts GSI correto, searchPosts Limit removido, adminPosts Promise.all, postScheduler 300→30s, api.ts limit param
+- [x] +12 testes backend, +17 testes frontend consent (total: 108 backend, 62 frontend)
+- [x] /sobre redesign: PageHero + bio grid + formação 3 cards category-style + badges Credly locais (grid 6 colunas nth-child) + seções Diferencial/Blog + sem CTA escuro
+- [x] /servicos: botão CTA no hero (mesmo mailto do CTA final)
+- [x] PopularPostsWidget: 4→5 posts
+- [x] LGPD: 3 páginas criadas (`/politica-de-privacidade`, `/politica-de-cookies`, `/termos-de-uso`) + `legal.css` compartilhado
+- [x] CMP: Consent Mode v2 (`beforeInteractive`), ConsentBanner, ConsentModal (focus trap/ESC/aria), ConsentTrigger, localStorage versioning, footer legal links
+- [ ] AWS Support ticket: elevar Lambda concurrent executions 10 → 1000 (aguarda Marcelo)
+- [ ] Conteúdo definitivo LGPD (aguarda Marcelo)
+
 **Sprint 13 — /servicos Reestruturação (Sessão 17) ✅**
 - [x] `/servicos` 4→8 serviços: Observabilidade & Engenharia de Logs, Segurança em Nuvem, Engenharia de Plataforma, Data Platform Serverless adicionados
 - [x] Layout duplo-grupo: serviços 1–4 → `service-proof-fullwidth` (making-of) → serviços 5–8 → `PageCTA`
@@ -226,9 +239,10 @@ Blog de autoridade sobre IA, AWS e DevOps. Arquitetura 100% serverless na AWS, g
 | CI/CD GitHub Actions | ✅ Verde em develop |
 | PostSchedulerLambda | ✅ ENABLED no EventBridge |
 | Terraform Remote State | ✅ |
-| Testes Unitários | ✅ 157 testes (96 backend + 45 frontend + 16 admin) |
+| Testes Unitários | ✅ 174 testes (108 backend + 62 frontend + 16 admin) |
 | Favicon + Manifest | ✅ Deployados sessão 16 — CloudFront behaviors ativos |
 | SEO world-class | ✅ 18/20 itens (restam social links + agendamento) |
 | Admin CMS completo | ✅ Dirty state, SERP preview, auto reading time, Dashboard filtros |
+| LGPD / CMP | ✅ Consent Mode v2, banner, modal, localStorage, 3 páginas legais (conteúdo aguarda Marcelo) |
 | WAF Admin CloudFront | ❌ Low priority |
 | Ambiente dev/prod isolado | ⚠️ Apenas dev ativo |

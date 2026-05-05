@@ -232,8 +232,10 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 2. ~~**Favicon + Web App Manifest**~~ ✅ Deployados sessão 16 — SEO agora 18/20
 3. **Ferramenta de agendamento** — Calendly ou similar para CTA em /servicos
 4. **`NEXT_PUBLIC_SITE_URL`** — configurar via Terraform quando o domínio definitivo estiver pronto
-5. **Publisher ID AdSense** — quando ativo, trocar `ADSENSE_CONFIGURED = false` → `true` em `AdsenseSidebar.tsx` e descomentar `<ins>`
-6. **AWS Support ticket** — elevar Lambda concurrent executions de 10 → 1000 (conta com limite sandbox; sem isso reloads rápidos retornam `ConcurrentInvocationLimitExceeded`). Support → Service limit increase → Lambda → Concurrent executions → us-east-1 → 1000
+5. **Publisher ID AdSense** — quando ativo: `ADSENSE_CONFIGURED = true` em `AdsenseSidebar.tsx` + descomentar stub AdSense em `frontend/lib/consent.ts → loadScriptsByConsent()`
+6. **AWS Support ticket** — elevar Lambda concurrent executions de 10 → 1000
+7. **Conteúdo definitivo LGPD** — preencher placeholders em `/politica-de-privacidade`, `/politica-de-cookies` e `/termos-de-uso`
+8. **Google Analytics** — quando GA4 configurado, descomentar stub analytics em `frontend/lib/consent.ts → loadScriptsByConsent()` com `G-XXXXXXXXXX` real
 
 ### Notas de pipeline (não-negociável)
 - **Static assets S3 sync sem `--delete`** — arquivos Next.js têm hash de conteúdo; `--delete` causa race condition com 403 pós-deploy. Manter apenas no admin SPA.
@@ -247,27 +249,36 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 - **Tipos centralizados:** `admin/src/types/index.ts` — Post, Categoria, Autor, PostStatus. Não redefinir inline.
 - **Slug:** usar `slugify()` de `admin/src/utils/slug.ts` — não duplicar a lógica.
 
+### CMP — Consent Management (padrões obrigatórios)
+- **Consent Mode v2:** `<Script strategy="beforeInteractive">` em `layout.tsx` seta `ad_storage/analytics_storage: denied` ANTES de qualquer script de ads. **Nunca remover.**
+- **Storage:** `localStorage['cmp_consent_v1']` com campos `{ essential, analytics, ads, timestamp, version }`. `CONSENT_VERSION` em `frontend/lib/consent.ts` — incrementar invalida consents antigos.
+- **Script loader:** stubs comentados em `loadScriptsByConsent()` — descomentar para AdSense e Analytics quando configurados. `Set<string>` previne double-inject.
+- **Event bus Footer→Modal:** Footer dispara `window.dispatchEvent(new CustomEvent('openConsentModal'))`. `ConsentManager` ouve. Não usar prop drilling.
+- **Páginas legais:** `/politica-de-privacidade`, `/politica-de-cookies`, `/termos-de-uso` — CSS compartilhado em `frontend/app/legal.css`. Conteúdo definitivo aguarda Marcelo.
+- **Testes:** `frontend/__tests__/consent.test.ts` com `@jest-environment jsdom` — 17 testes cobrindo storage, versioning e gtag Consent Mode.
+
 ### Componentes de layout reutilizáveis (padrões obrigatórios)
 - **`Pagination`** — componente único em artigos e o-projeto. Deve ficar **fora** do grid de duas colunas (entre `</grid>` e `<NewsletterCTA />`). Botão "← Anterior" funciona sem `totalPages` via cursor stack. "Página X de Y" só aparece quando `totalPages` é passado.
 - **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget.
 - **`home-main` (flex column)** — usar `gap: var(--space-4)` + `margin: 0` nos banners. NUNCA combinar gap + margin nos banners — causa duplo espaçamento e margin collapsing em seções vazias.
 
 ### Próximas entregas técnicas
-6. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
-7. **SEO residual** — links sociais reais (#16) e agendamento (#18) — os 2 itens restantes dependem de Marcelo
-8. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
+9. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
+10. **SEO residual** — links sociais reais (#16) e agendamento (#18) — dependem de Marcelo
+11. **LQIP (blur placeholder)** — campo novo no DynamoDB + imageProcessor salva base64 tiny
+12. **CMP — validar no browser** — testar incognito, DevTools → Application → Storage → `cmp_consent_v1`
 
-### Performance — pendentes da auditoria (sessão 17)
-9. **GSI projections KEYS_ONLY/INCLUDE** — 5 GSIs com `projection_type = "ALL"` duplicam `conteudo_html` em cada índice. Fix requer recriar tabela Posts. Fazer quando houver volume real.
-10. **getPostsByCategory: Limit + FilterExpression** — mesmo bug do searchPosts; baixo impacto agora, cresce com rascunhos em categorias.
-11. **CloudFront `static/*` TTL explícito** — behavior sem `default_ttl`/`max_ttl`; adicionar por consistência.
-12. **Full-text search (OpenSearch/Algolia)** — searchPosts é full table scan O(n). Avaliar com 500+ posts.
+### Performance — pendentes da auditoria (sessão 18)
+13. **GSI projections KEYS_ONLY/INCLUDE** — 5 GSIs com `projection_type = "ALL"` duplicam `conteudo_html`. Fix requer recriar tabela. Fazer com volume real de posts.
+14. **getPostsByCategory: Limit + FilterExpression** — baixo impacto agora, cresce com rascunhos em categorias.
+15. **CloudFront `static/*` TTL explícito** — adicionar `default_ttl`/`max_ttl` por consistência.
+16. **Full-text search (OpenSearch/Algolia)** — searchPosts é full table scan O(n). Avaliar com 500+ posts.
 
 ### Baixa prioridade
-9. ~~Paginação bidirecional~~ ✅ Implementada em artigos e o-projeto
-10. WAF no Admin CloudFront — quando houver tráfego real
-11. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
-12. Preview de imagens no admin (upload pipeline já existe)
+17. ~~Paginação bidirecional~~ ✅ Implementada em artigos e o-projeto
+18. WAF no Admin CloudFront — quando houver tráfego real
+19. Cognito: migrar `ALLOW_USER_PASSWORD_AUTH` → SRP
+20. Preview de imagens no admin (upload pipeline já existe)
 
 ---
 
