@@ -42,7 +42,7 @@
 
 .sobre-bio__text h2 {
   font-size: 1.8rem;
-  color: var(--dark-900);
+  color: var(--accent);
   margin: 0 0 4px;
 }
 
@@ -114,7 +114,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.6rem;
-  color: var(--dark-900);
+  color: var(--accent);
   margin-bottom: var(--space-4);
 }
 
@@ -128,7 +128,9 @@
 .sobre-section p:last-child { margin-bottom: 0; }
 
 /* ═══════════════════════════════════════════
-   FORMAÇÃO — idêntico ao .category-card da home
+   FORMAÇÃO — category card style
+   Grid de 4 colunas: 2 cards ocupam 2 cols cada (linha cheia),
+   3º card ocupa cols 2-3 → centralizado
 ═══════════════════════════════════════════ */
 .sobre-formacao-grid {
   display: grid;
@@ -138,7 +140,17 @@
 
 @media (min-width: 640px) {
   .sobre-formacao-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sobre-formacao-card:nth-child(1),
+  .sobre-formacao-card:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  /* 3º card: colunas 2-3 → centralizado na grade de 4 */
+  .sobre-formacao-card:nth-child(3) {
+    grid-column: 2 / 4;
   }
 }
 
@@ -184,19 +196,33 @@
 }
 
 /* ═══════════════════════════════════════════
-   CERTIFICAÇÕES — grid de badges clicáveis
+   CERTIFICAÇÕES — grid de 6 colunas
+   Linha 1: 3 badges (cada um span 2 cols)
+   Linha 2: 2 badges centralizados (cols 2-3 e 4-5)
 ═══════════════════════════════════════════ */
 .sobre-certs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
 }
 
+@media (min-width: 640px) {
+  .sobre-certs {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .sobre-cert-card:nth-child(1),
+  .sobre-cert-card:nth-child(2),
+  .sobre-cert-card:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  /* Badges 4 e 5: centralizados na grade de 6 cols */
+  .sobre-cert-card:nth-child(4) { grid-column: 2 / 4; }
+  .sobre-cert-card:nth-child(5) { grid-column: 4 / 6; }
+}
 
 .sobre-cert-card {
-  flex: 0 0 200px;
-  max-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
