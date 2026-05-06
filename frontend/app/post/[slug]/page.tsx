@@ -194,20 +194,21 @@ export default async function PostPage({ params }: Props) {
         </div>
       </header>
 
+      {post.imagem_destaque_url && (
+        <div className="featured-image-container">
+          <ResponsiveImage
+            src={post.imagem_destaque_url}
+            alt={post.imagem_destaque_alt_text || post.titulo}
+            priority
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
+            className="featured-image"
+          />
+        </div>
+      )}
+
       <div className="container article-grid">
         <main className="main-content-column">
-            {post.imagem_destaque_url && (
-              <div className="featured-image-container">
-                <ResponsiveImage
-                  src={post.imagem_destaque_url}
-                  alt={post.imagem_destaque_alt_text || post.titulo}
-                  priority
-                  fill
-                  sizes="(max-width: 1023px) calc(100vw - 48px), (max-width: 1200px) 70vw, 823px"
-                  className="featured-image"
-                />
-              </div>
-            )}
             <div className="post-body-wrapper">
                 {post.resumo && (
                   <p className="post-lead">{post.resumo}</p>
