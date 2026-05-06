@@ -1,379 +1,293 @@
-# Relatório Completo — Correção de Ritmo Vertical (Vertical Rhythm Refactor Guide)
+# RELATÓRIO DEFINITIVO — CORREÇÃO DE RITMO VERTICAL (WORLD-CLASS)
 
-> Documento técnico definitivo para implementação de um **sistema world-class de ritmo vertical**.
-> Destinado ao **Claude Code** para execução estruturada das correções.
+## CONTEXTO
 
----
+Este documento contém instruções **determinísticas** para corrigir o ritmo vertical do layout do blog.
 
-## 1. Objetivo
+O objetivo NÃO é apenas reduzir espaçamentos, mas implementar um **Vertical Rhythm System** equivalente aos utilizados por:
 
-Este documento define as ações necessárias para transformar o layout atual do blog em um sistema editorial profissional baseado em:
+* Stripe
+* Linear
+* Vercel
+* Medium
+* Notion
 
-* previsibilidade visual
-* consistência espacial
-* escalabilidade de design system
-* alinhamento perceptivo de leitura
-* arquitetura de layout sustentável
-
-O foco não é ajuste visual isolado.
-
-> Trata-se de uma **refatoração arquitetural de layout**.
+O layout atual já passou pela fase de normalização inicial.
+Agora deve entrar na fase de **sistematização matemática**.
 
 ---
 
-## 2. Diagnóstico Atual
+# 1. PRINCÍPIO FUNDAMENTAL
 
-Após análise do scan arquitetural:
+O layout DEVE seguir uma única escala espacial.
 
-## Situação Geral
-
-✅ Fluxo estrutural restaurado
-✅ Elementos absolutos removidos
-✅ Transform hacks eliminados
-⚠️ Ritmo vertical ainda inexistente
-
-O layout está saudável, porém:
-
-```text
-CORRETO ≠ SISTÊMICO
-```
-
-O problema atual é a ausência de um **motor único de espaçamento**.
-
----
-
-## 3. Problema Sistêmico Nº1 — Multiple Spacing Controllers
-
-Foi detectado que vários elementos controlam spacing simultaneamente.
-
-Exemplo observado:
-
-```text
-section
- ├ padding
- ├ header margin-bottom
- ├ grid gap
- └ card margin-top
-```
-
-Resultado:
-
-* inconsistência
-* gaps negativos
-* desalinhamento perceptivo
-
----
-
-## 4. Correção 1 — Reset Global de Margens
-
-Adicionar imediatamente:
-
-```css
-/* Vertical Rhythm Reset */
-
-h1,h2,h3,h4,h5,h6,
-p,
-ul,
-ol,
-figure {
-  margin-block: 0;
-}
-```
-
-Regra:
-
-> Elementos tipográficos nunca controlam spacing vertical.
-
----
-
-## 5. Correção 2 — Criar o Motor do Layout (.stack)
-
-Este é o componente mais importante do sistema.
-
-Criar:
-
-```css
-.stack > * + * {
-  margin-top: var(--space-4);
-}
-```
-
-Aplicar em:
-
-```html
-<section class="section stack">
-```
-
-ou
-
-```html
-<main class="stack">
-```
-
-Benefícios:
-
-* elimina margens arbitrárias
-* cria ritmo automático
-* estabiliza o layout inteiro
-
----
-
-## 6. Correção 3 — Sections Controlam o Espaçamento
-
-Somente containers definem ritmo.
-
-```css
-.section {
-  padding-block: var(--space-8);
-}
-```
-
-Filhos NÃO podem possuir:
-
-```css
-margin-top
-margin-bottom
-```
-
-Lei fundamental:
-
-```text
-APENAS O PAI ESPAÇA
-```
-
----
-
-## 7. Correção 4 — Implementar Design Tokens
-
-Criar sistema único:
+Criar imediatamente:
 
 ```css
 :root {
-
-  --baseline: 8px;
-
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
   --space-4: 32px;
-  --space-5: 40px;
-  --space-6: 48px;
-  --space-7: 64px;
-  --space-8: 80px;
-  --space-9: 96px;
-  --space-10: 128px;
-
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
 }
 ```
 
-Regra obrigatória:
+REGRAS:
 
-> Nenhum valor hardcoded de spacing é permitido.
+* Nenhum margin/padding fora dessa escala é permitido.
+* Valores como 40, 80, 148, 184, 760 DEVEM ser removidos.
 
 ---
 
-## 8. Correção 5 — Baseline Grid Tipográfico
+# 2. PROBLEMA CRÍTICO IDENTIFICADO
 
-Estabelecer alinhamento perceptivo.
+Hero → Primeiro AdSense possui gap de **184px**.
 
-### Body
+Isso quebra o fluxo editorial.
+
+### Correção obrigatória
 
 ```css
-body {
-  font-size: 18px;
-  line-height: 32px;
+.page-hero {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+
+.hero-title {
+  margin-bottom: var(--space-2);
 }
 ```
 
-32px = múltiplo de 8px.
+Resultado esperado:
+
+Hero → Ad = **64px visuais**
 
 ---
 
-### Headings
+# 3. ERRO GRAVE — SECTION HEADER
+
+Foi identificado gap vertical de aproximadamente **760px** após `.section-header`.
+
+Isso indica:
+
+* margin herdado
+* altura fixa
+* grid/flex mal configurado
+
+### Correção obrigatória
 
 ```css
-h1,h2,h3,h4,h5,h6 {
-  margin:0;
+.section-header {
+  margin-bottom: var(--space-4);
 }
 ```
 
-Headings não criam espaçamento vertical.
+Remover qualquer:
+
+* height fixo
+* min-height
+* margin-bottom maior que 32px
 
 ---
 
-## 9. Correção 6 — Grid Governa Cards
+# 4. SISTEMA EDITORIAL PARA ADSENSE
 
-Cards nunca controlam espaçamento externo.
+Ads devem funcionar como blocos editoriais.
 
-### Remover dos cards:
+Nunca colados ao conteúdo.
 
-```css
-margin-top
-margin-bottom
-```
-
-### Grid correto:
+Aplicar:
 
 ```css
-.posts-grid {
-  display:grid;
-  gap: var(--space-5);
-  align-items:start;
+.adsense-banner-wrapper {
+  margin-block: var(--space-6);
 }
 ```
-
-Regra:
-
-```text
-GRID ESPAÇA
-COMPONENTE NÃO
-```
-
----
-
-## 10. Correção 7 — Sidebar Sticky World-Class
-
-Problema detectado:
-
-Sticky bloqueado por container pai.
-
-Correção:
-
-```css
-.sidebar-wrapper {
-  overflow:visible;
-  height:auto;
-}
-
-.sidebar {
-  position:sticky;
-  top: var(--space-7);
-  align-self:start;
-}
-```
-
----
-
-## 11. Correção 8 — Ordem DOM = Ordem Visual
-
-Detectado uso de reordering.
 
 Remover:
 
 ```css
-order:
-grid-area:
-flex-direction: column-reverse;
+margin-top: 0;
+margin-bottom: 0;
 ```
 
-Regra absoluta:
+Resultado esperado:
 
-```text
-DOM ORDER == VISUAL ORDER
-```
-
-Motivo:
-
-* preserva ritmo
-* melhora acessibilidade
-* evita gaps fantasmas
+Conteúdo
+↓64px
+Ad
+↓64px
+Conteúdo
 
 ---
 
-## 12. Correção 9 — Vertical Rhythm Enforcement
+# 5. NORMALIZAÇÃO DOS POST CARDS
 
-Adicionar proteção permanente:
+Problema detectado:
+
+* gaps inconsistentes (40 / 80 / 148)
+* padding interno excessivo
+
+### Correção
 
 ```css
-* {
-  margin-block-start:0;
-  margin-block-end:0;
+.post-card {
+  margin-bottom: var(--space-5);
+}
+
+.post-card__content {
+  padding: var(--space-3);
 }
 ```
 
-Todo spacing passa a vir do sistema.
+Proibido:
+
+* padding 32px+
+* margens arbitrárias
 
 ---
 
-## 13. Correção 10 — Debug Baseline Overlay
+# 6. SEÇÕES DE CONTEÚDO
 
-Modo auditoria visual:
+Toda SECTION principal deve obedecer:
 
 ```css
-body.debug-rhythm {
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(255,0,0,0.08) 1px,
-      transparent 1px
-    );
-  background-size:100% 8px;
+section {
+  margin-block: var(--space-6);
 }
 ```
 
-Permite verificar alinhamento perfeito.
+Nunca usar:
+
+* spacing manual por elemento interno
+* divs espaçadoras
+* empty spacers
 
 ---
 
-## 14. Ordem Oficial de Implementação
+# 7. SIDEBAR
 
-Executar exatamente nesta sequência:
+Sidebars usam `gap` como único mecanismo de espaçamento entre widgets. Nunca usar `margin-bottom` nos filhos — isso duplica o espaço com o `gap`.
 
-1. Reset global de margens
-2. Introduzir `.stack`
-3. Sections controlam spacing
-4. Implementar tokens
-5. Ajustar tipografia ao baseline
-6. Grid governa cards
-7. Corrigir sidebar sticky
-8. Remover reordering CSS
-9. Ativar enforcement
-10. Validar com overlay baseline
+**Padrão obrigatório:**
 
----
+```css
+/* Desktop: flex column com gap uniforme */
+.home-sidebar,
+.blog-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);   /* 24px entre widgets */
+}
 
-## 15. Métricas Esperadas Após Refatoração
-
-Novo scan deverá indicar:
-
-```text
-outOfFlow: 0
-negativeGaps: ~0
-baselineMisaligned: baixo
-spacingScore médio: 1
+/* Cancela a regra global section { margin-block: 64px } nos filhos */
+.home-sidebar > *,
+.blog-sidebar > * {
+  margin-block: 0;
+}
 ```
 
-Visualmente ocorrerá:
+**Mobile:**
 
-* leitura fluida
-* alinhamento automático
+```css
+/* HomeSidebar: inteiramente oculta no mobile.
+   O conteúdo principal já contém ServiceCallout entre as seções. */
+.home-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .home-sidebar {
+    display: flex;
+  }
+}
+
+/* BlogSidebar: sempre display:none no mobile (não altera) */
+.blog-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .blog-sidebar {
+    display: flex;
+  }
+}
+```
+
+---
+
+# 8. CTA FINAL
+
+CTA deve representar pausa editorial.
+
+```css
+.page-cta {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+}
+```
+
+---
+
+# 9. FOOTER
+
+Footer deve fechar o ritmo.
+
+```css
+.op-footer {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+```
+
+---
+
+# 10. REGRA ABSOLUTA (OBRIGATÓRIA)
+
+A IA executora deve:
+
+1. Escanear TODO o CSS.
+2. Localizar valores fora da escala.
+3. Substituir automaticamente pelo token mais próximo.
+
+Mapeamento obrigatório:
+
+| Valor Atual | Substituir por |
+| ----------- | -------------- |
+| 40px        | 32px           |
+| 48px        | 48px           |
+| 80px        | 64px           |
+| 148px       | 96px           |
+| 184px       | 64px           |
+| 760px       | 32px           |
+
+---
+
+# 11. RESULTADO ESPERADO
+
+Após aplicação:
+
+* ritmo vertical previsível
+* leitura contínua
+* ads integrados ao fluxo
 * sensação editorial premium
-* redução de fadiga visual
-* layout previsível
+* ausência de “buracos visuais”
 
 ---
 
-## 16. Princípios World-Class de Ritmo Vertical
+# 12. CRITÉRIO DE VALIDAÇÃO
 
-1. Nada sai do fluxo.
-2. Apenas containers controlam spacing.
-3. Todo valor segue baseline 8px.
-4. Componentes não competem por espaço.
-5. Tipografia governa percepção visual.
-6. Layout deve parecer invisível.
+O layout está correto quando:
 
----
+* qualquer scroll apresenta espaçamento previsível
+* nenhum bloco parece “isolado”
+* o usuário consegue prever o próximo espaço visual
 
-## 17. Definição Final
-
-Ritmo vertical não é estética.
-
-É **infraestrutura de interface**.
-
-Uma vez implementado:
-
-* o layout deixa de depender de ajustes manuais
-* novos componentes herdam consistência automaticamente
-* o blog passa de layout artesanal para **design system profissional**.
+Se existir dúvida entre dois valores → escolher sempre o menor dentro da escala.
 
 ---
+
+FIM DO DOCUMENTO

@@ -46,12 +46,17 @@ A coluna principal renderiza os seguintes blocos em sequência:
 - **Cabeçalho** (centered, `mb: 40px`):
   - h2: DM Sans 700, 2rem, `#111827`, mb 10
   - p: `#64748B`, 1rem — "O conteúdo mais recente sobre IA e Nuvem"
-- **Grid de posts:** `repeat(2, 1fr)`, gap 24px — exibe os **4 posts mais recentes** via PostCard
-- **Link "Ver todos os artigos →"** abaixo do grid (text-align: right), cor `#3B5F8A`, DM Sans 600, 0.95rem
+- **Grid de posts:** `repeat(2, 1fr)`, gap 24px — exibe os **6 posts mais recentes** via PostCard (3 linhas × 2 cols)
+- **Link "Ver todos os artigos →"** abaixo do grid, cor `#3B5F8A`, DM Sans 600, 1.05rem, ghost pill
+
+#### Entre "Últimos Artigos" e "Populares" (responsive swap)
+- **Mobile (< 1024px):** `<ServiceCallout />` — widget de serviços no fluxo principal
+- **Desktop (≥ 1024px):** `<AdSenseBanner />` — leaderboard 728×90
+- Implementado via `.home-ad-desktop { display:none → block }` + `.home-main > .op-service-callout { display:block → none }`
 
 #### Seção: "Populares & Mais Lidos"
 - **Cabeçalho:** h2 "Populares & Mais Lidos" / p "O conteúdo que a comunidade mais acessou"
-- **Grid de posts:** `repeat(2, 1fr)`, gap 24px — exibe 4 posts populares
+- **Grid de posts:** `repeat(2, 1fr)`, gap 24px — exibe **6 posts populares** (3 linhas × 2 cols)
 
 #### Seção: "Explore nossos Tópicos"
 - **Cabeçalho:** h2 "Explore nossos Tópicos" / p "Navegue pelo conteúdo principal do blog"
@@ -69,9 +74,10 @@ A coluna principal renderiza os seguintes blocos em sequência:
 ### 2b. Coluna Direita (aside — sidebar sticky)
 
 **Comportamento:** `position: sticky`, `top: 104px` (altura do header + gap de respiro)  
-**Layout interno:** `display: flex`, `flex-direction: column`, `gap: 28px`
+**Layout interno:** `display: flex`, `flex-direction: column`, `gap: 28px`  
+**Mobile:** `display: none` — inteiramente oculta. ServiceCallout já aparece no fluxo principal entre as seções de posts.
 
-A sidebar contém **4 widgets** empilhados nesta ordem:
+A sidebar contém **4 widgets** empilhados nesta ordem (apenas desktop ≥ 1024px):
 
 1. SvcCallout — "Precisa de Ajuda?" (dark navy)
 2. PopWidget — "Mais Lidos" (3 posts)
