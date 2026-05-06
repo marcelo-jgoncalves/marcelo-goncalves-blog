@@ -2,7 +2,10 @@
 
 .page-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-7) 20px;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
   text-align: center;
   min-height: 280px;
   display: flex;
@@ -26,7 +29,7 @@
 .page-hero .hero-title {
   font-size: 2rem;
   line-height: 1.15;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
   letter-spacing: -0.03em;
 }
 

@@ -3,7 +3,7 @@
 .super-destaque {
   background-color: var(--dark-900);
   color: white;
-  padding: var(--space-8) 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
   margin: 0;
 }
@@ -26,7 +26,7 @@
 .super-destaque p {
   font-size: 1.1rem;
   color: var(--slate-50);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;

@@ -60,17 +60,14 @@
   --post-heading-top: 3.5rem;
   --post-heading-bottom: 1.5rem;
 
-  /* --- Spacing scale — single source of truth (todos múltiplos de 8) --- */
-  --space-1:  8px;   /* micro: badges, gap inline */
-  --space-2:  16px;  /* pequeno: meta-row, ícone */
-  --space-3:  24px;  /* médio: gap cards, padding widgets */
-  --space-4:  32px;  /* compacto-grande: padding de card */
-  --space-5:  40px;  /* grande: gap grid de cards */
-  --space-6:  48px;  /* seção interna */
-  --space-7:  64px;  /* seção: gap layout main+sidebar */
-  --space-8:  80px;  /* landmark: padding vertical de layouts */
-  --space-9:  96px;  /* macro: hero → conteúdo */
-  --space-10: 128px; /* extremo: espaços editoriais amplos */
+  /* --- Spacing scale — 7 tokens, todos múltiplos de 8 (ritmo-vertical-contract.md) --- */
+  --space-1: 8px;   /* micro: badges, gap inline */
+  --space-2: 16px;  /* pequeno: meta-row, margin ícone */
+  --space-3: 24px;  /* médio: padding interno de card, gap widgets */
+  --space-4: 32px;  /* grande: margin-bottom section-header, padding botão */
+  --space-5: 48px;  /* macro: margin-bottom post-card, gap lista */
+  --space-6: 64px;  /* landmark: margin-block de seções e ads, padding hero */
+  --space-7: 96px;  /* editorial: padding CTA, espaços de pausa máxima */
   --section-min-height: 384px;
 }
 
@@ -151,16 +148,16 @@ img {
 .page-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
-  padding: var(--space-7) var(--space-2);
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-2);
   align-items: start;
 }
 
 @media (min-width: 1024px) {
   .page-layout {
     grid-template-columns: 1fr 300px;
-    gap: var(--space-7);
-    padding: var(--space-7) 0;
+    gap: var(--space-6);
+    padding: var(--space-6) 0;
   }
 }
 
@@ -220,11 +217,18 @@ img {
 }
 
 /* =========================================
-   4. STACK SYSTEM (ritmo-vertical-contract §6)
+   4. RITMO EDITORIAL — §6 Seções
+   ========================================= */
+section {
+  margin-block: var(--space-6);
+}
+
+/* =========================================
+   5. STACK SYSTEM (ritmo-vertical-contract §6)
    Spacing automático entre irmãos sem margin manual.
    ========================================= */
 .stack > * + * {
-  margin-top: var(--stack-space, var(--space-5));
+  margin-top: var(--stack-space, var(--space-4));
 }
 
 /* =========================================

@@ -2,7 +2,7 @@
 
 .adsense-banner-wrapper {
   width: 100%;
-  margin: var(--space-5) 0;
+  margin-block: var(--space-6);
 }
 
 .adsense-placeholder {

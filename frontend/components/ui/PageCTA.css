@@ -1,6 +1,6 @@
 .page-cta {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-8) 20px;
+  padding: var(--space-7) var(--space-2);
   text-align: center;
   min-height: var(--section-min-height);
 }

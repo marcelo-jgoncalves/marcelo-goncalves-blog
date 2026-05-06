@@ -2,7 +2,7 @@
 
 .error-hero {
   background: var(--bg-light-gradient);
-  padding: var(--space-8) 20px;
+  padding: var(--space-6) 20px;
   text-align: center;
   min-height: var(--section-min-height);
 }
@@ -29,7 +29,7 @@
 }
 
 .search-retention-container {
-  padding: var(--space-7) 20px 0 20px;
+  padding: var(--space-6) 20px 0 20px;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -43,6 +43,6 @@
 @media (min-width: 768px) {
   .error-404-text { font-size: 8rem; }
   .error-hero h1 { font-size: 3rem; }
-  .search-retention-container { padding-top: var(--space-7); }
+  .search-retention-container { padding-top: var(--space-6); }
   .retention-title { font-size: 1.8rem; margin-bottom: 30px; }
 }

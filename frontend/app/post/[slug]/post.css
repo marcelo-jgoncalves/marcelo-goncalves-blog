@@ -8,8 +8,8 @@
 .article-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
-  padding: 0 var(--space-3) var(--space-5) var(--space-3);
+  gap: var(--space-4);
+  padding: 0 var(--space-3) var(--space-4) var(--space-3);
 }
 
 .main-content-column {
@@ -20,8 +20,8 @@
 @media (min-width: 1024px) {
   .article-grid {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
-    gap: var(--space-7);
-    padding: var(--space-7) 0;
+    gap: var(--space-6);
+    padding: var(--space-6) 0;
     align-items: start;
   }
 
@@ -38,7 +38,7 @@
   background-color: var(--slate-50);
   width: 100vw; 
   margin-left: calc(-50vw + 50%);
-  padding: var(--space-7) 0 var(--space-8) 0;
+  padding: var(--space-6) 0 var(--space-6) 0;
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   position: relative;
@@ -783,7 +783,7 @@ article th,
   .post-mobile-extras {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 }
 

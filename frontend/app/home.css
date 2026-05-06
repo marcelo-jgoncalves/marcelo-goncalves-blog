@@ -1,57 +1,46 @@
 /* frontend/app/home.css
-   Ritmo vertical conforme ritmo-vertical-contract.md
+   Ritmo vertical conforme ritmo-vertical-contract.md (versão definitiva)
+   Escala: --space-1(8) --space-2(16) --space-3(24) --space-4(32) --space-5(48) --space-6(64) --space-7(96)
    ========================================================================== */
 
-/* --- Layout principal: 2 colunas com sidebar (§10 Sidebar Rhythm) --- */
+/* --- Layout principal: grid main + sidebar --- */
 .home-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
-  padding-top: var(--space-9);   /* §8: Hero ↓ 96px → Conteúdo */
-  padding-bottom: var(--space-8); /* §8: Conteúdo ↓ 80px → Footer */
   align-items: start;
 }
 
-/* §10: Sidebar rhythm — container espaça, sidebar fica sticky */
 @media (min-width: 1024px) {
   .home-layout {
-    grid-template-columns: 1fr 320px; /* §10: sidebar 320px */
-    gap: var(--space-7);             /* §10: gap: 64px */
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-6);
+    padding: var(--space-6) 0;
   }
 }
 
-/* home-main: flex coluna — gap 80px entre banners e seções (§8: ↓ 80px ↓) */
+/* home-main: block flow — permite margin collapsing entre sections e ads */
 .home-main {
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
 }
 
-/* Banners participam do fluxo — gap controla ritmo (§7) */
+/* §6: Sections controlam próprio ritmo via margin-block */
+/* (globals.css já define section { margin-block: var(--space-6) }) */
+
+/* §4: Ads participam do fluxo editorial com mesmo ritmo */
 .home-main > .adsense-banner-wrapper {
-  margin: 0;
+  margin-block: var(--space-6);
 }
 
-/* Regra estrutural §5: container controla spacing, filhos não adicionam margin */
-.home-main > section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-/* --- Section header --- */
+/* §3: Section header — margin-bottom 32px, sem altura fixa */
 .section-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);  /* §7: Tipografia — title ↔ subtitle: 16px */
   text-align: center;
+  margin-bottom: var(--space-4);
 }
 
 .section-header h2 {
   font-size: 2rem;
-  line-height: 1.25; /* §7: h2 line-height */
-  margin: 0;         /* §7: Headings nunca controlam espaçamento vertical */
+  line-height: 1.25;
+  margin-bottom: var(--space-2);
 }
 
 .section-header p {
@@ -61,11 +50,11 @@
   margin: 0;
 }
 
-/* --- Posts grid (§9: Cards World-Class — grid gap: --space-5 = 40px) --- */
+/* --- Posts grid --- */
 .home-posts-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 @media (min-width: 768px) {
@@ -75,6 +64,7 @@
 /* --- Link "ver todos" --- */
 .home-see-all {
   text-align: center;
+  margin-top: var(--space-4);
 }
 
 .home-see-all a {
@@ -99,11 +89,11 @@
   color: #ffffff;
 }
 
-/* --- CTA Newsletter (§8: padding landmark = --space-8 = 80px) --- */
+/* --- CTA Newsletter --- */
 .cta {
   background-color: var(--dark-900);
   color: white;
-  padding: var(--space-8) var(--space-3);
+  padding: var(--space-7) var(--space-3);
   text-align: center;
 }
 
@@ -117,7 +107,7 @@
 .cta p {
   font-size: 1.1rem;
   color: #94A3B8;
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -128,19 +118,18 @@
   .cta h2 { font-size: 2.5rem; }
 }
 
-/* --- Categorias (§9: grid gap --space-3 = 24px) --- */
+/* --- Categorias --- */
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
 }
 
-/* §9: Cards World-Class — padding: --space-4 = 32px */
 .category-card {
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: var(--space-4);
+  padding: var(--space-3);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
@@ -205,7 +194,7 @@
 }
 
 .post-card-skeleton__body {
-  padding: var(--space-4);
+  padding: var(--space-3);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);

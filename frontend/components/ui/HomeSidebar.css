@@ -6,5 +6,9 @@
   gap: var(--space-3);
   height: max-content;
   position: sticky;
-  top: var(--space-9); /* §10: sidebar sticky top = 96px */
+  top: var(--space-7);
+}
+
+.home-sidebar > * {
+  margin-bottom: var(--space-6);
 }

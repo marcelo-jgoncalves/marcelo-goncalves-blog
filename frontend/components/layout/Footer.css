@@ -1,7 +1,7 @@
 /* frontend/components/ui/layout/Footer.css */
 
 .op-footer {
-  padding: 64px 24px 32px;
+  padding: var(--space-6) var(--space-3) var(--space-4);
   background-color: #1F2937;
   color: #cbd5e0;
 }
@@ -9,8 +9,8 @@
 .op-footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-  margin-bottom: 40px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 /* --- ESTILOS MOBILE (Padrão) --- */
 
