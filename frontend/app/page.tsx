@@ -100,8 +100,8 @@ export default function Home() {
 
         <main className="home-main">
 
-          {/* Ad banner — alinhado ao topo da sidebar */}
-          <AdSenseBanner />
+          {/* Ad banner — alinhado ao topo da sidebar; oculto no mobile */}
+          <AdSenseBanner hideOnMobile />
 
           {/* Últimos Artigos */}
           <section aria-labelledby="recentes-heading">

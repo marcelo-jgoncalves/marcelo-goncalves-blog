@@ -75,8 +75,8 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       <div className="page-layout container">
         <main className="op-articles-feed" aria-label="Lista de artigos de engenharia">
 
-          {/* Banner após hero */}
-          <AdSenseBanner />
+          {/* Banner após hero; oculto no mobile */}
+          <AdSenseBanner hideOnMobile />
 
           {posts.length === 0 ? (
             <p className="op-empty-message">Nenhum artigo encontrado no momento.</p>

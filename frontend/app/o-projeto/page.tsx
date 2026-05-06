@@ -75,8 +75,8 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         {/* Coluna Esquerda: Timeline Feed */}
         <div className="main-content-column op-timeline-feed">
 
-          {/* Banner alinhado ao topo da sidebar */}
-          <AdSenseBanner />
+          {/* Banner alinhado ao topo da sidebar; oculto no mobile */}
+          <AdSenseBanner hideOnMobile />
 
           {posts.length === 0 ? (
             <p className="op-empty-state">Nenhuma atualização do projeto publicada ainda.</p>

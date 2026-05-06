@@ -28,3 +28,9 @@
     min-height: 90px;
   }
 }
+
+@media (max-width: 767px) {
+  .adsense-banner-wrapper--hide-mobile {
+    display: none;
+  }
+}
