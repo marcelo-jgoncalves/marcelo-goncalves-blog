@@ -22,17 +22,44 @@
   margin: 0;
 }
 
+/* Regra estrutural: container controla spacing, filhos não adicionam margin vertical */
+.home-main > section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* --- Section header --- */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.section-header p {
+  color: var(--slate-500);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
 /* --- Posts grid dentro do main (2 colunas) --- */
 .home-posts-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: var(--space-3);
 }
 
 /* --- Link "ver todos" --- */
 .home-see-all {
   text-align: center;
-  margin-top: var(--space-3);
 }
 
 .home-see-all a {
@@ -40,11 +67,11 @@
   align-items: center;
   gap: var(--space-1);
   color: var(--accent);
-  font-family: var(--font-display);
+  font-family: var(--font-display), sans-serif;
   font-weight: 600;
   font-size: 1.05rem;
   text-decoration: none;
-  padding: 10px 28px;
+  padding: var(--space-1) var(--space-3);
   border: 1.5px solid var(--accent-light);
   background-color: var(--accent-light);
   border-radius: 6px;
@@ -57,27 +84,11 @@
   color: #ffffff;
 }
 
-/* --- Section header --- */
-.section-header {
-  text-align: center;
-  margin-bottom: var(--space-3);
-}
-
-.section-header h2 {
-  font-size: 2rem;
-  margin-bottom: var(--space-2);
-}
-
-.section-header p {
-  color: var(--slate-500);
-  font-size: 1rem;
-}
-
 /* --- CTA Newsletter --- */
 .cta {
   background-color: var(--dark-900);
   color: white;
-  padding: var(--space-6) 20px;
+  padding: var(--space-6) var(--space-3);
   text-align: center;
 }
 
@@ -102,12 +113,12 @@
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 .category-card {
   background: white;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: var(--space-3);
   text-align: center;
@@ -147,13 +158,13 @@
   font-weight: 700;
   font-size: 1.5rem;
   color: var(--dark-900);
-  margin-bottom: 6px;
+  margin-bottom: var(--space-1);
 }
 
 .category-card p {
   font-size: 1rem;
   color: var(--slate-500);
-  line-height: 1.4;
+  line-height: 1.6;
   margin: 0;
 }
 

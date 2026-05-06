@@ -22,8 +22,8 @@
 .post-card__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10; /* Aproximação limpa do seu 1.57 */
-  background-color: #f3f4f6; /* Esqueleto visual enquanto a imagem carrega */
+  aspect-ratio: 16 / 10;
+  background-color: var(--slate-100);
 }
 
 .post-card__image {
@@ -34,8 +34,8 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 24px; /* Macro-ritmo de 8px (3x8) */
-  gap: 16px; /* Micro-ritmo de 8px (2x8) entre título, texto e botão */
+  padding: var(--space-3);
+  gap: var(--space-2);
 }
 
 .post-card__title {
@@ -59,8 +59,8 @@
 .post-card__excerpt {
   font-size: 1rem; /* 16px */
   line-height: 1.6; /* 25.6px */
-  color: #4b5563;
-  margin: 0; 
+  color: var(--dark-700);
+  margin: 0;
   /* Mobile-First: Padrão de 2 linhas para poupar espaço e manter SEO/UX */
   display: -webkit-box;
   -webkit-line-clamp: 2; 
@@ -81,7 +81,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-1);
   flex-wrap: wrap;
 }
 
