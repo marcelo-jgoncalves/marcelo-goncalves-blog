@@ -53,9 +53,9 @@
 
 .op-mobile-menu {
   position: absolute;
-  top: 100%; 
-  left: -24px; /* Compensa o padding exato da navbar */
-  right: -24px;
+  top: 100%;
+  left: 0;
+  right: 0;
   background-color: #ffffff;
   z-index: 1000;
   display: flex;
