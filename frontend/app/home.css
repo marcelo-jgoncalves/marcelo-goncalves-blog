@@ -24,9 +24,10 @@
   padding-top: var(--space-4);
 }
 
-/* §4: Ads participam do fluxo editorial com mesmo ritmo */
+/* Ads no home-main: margem compacta para não amplificar o espaço com sections */
 .home-main > .adsense-banner-wrapper {
-  margin-block: var(--space-6);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 /* Primeiro filho não recebe margem-top — o padding-top do home-main já posiciona */
