@@ -117,6 +117,7 @@ export default function Home() {
           </section>
 
           <ServiceCallout />
+          <div className="home-ad-desktop"><AdSenseBanner /></div>
 
           {/* Populares & Mais Lidos */}
           <section aria-labelledby="populares-heading">

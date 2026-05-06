@@ -136,6 +136,32 @@
   gap: var(--space-3);
 }
 
+/* --- Mobile-only layout (≥1024px: estado original do desktop) --- */
+
+/* Posts: mobile exibe 6 cards, desktop mostra apenas 4 */
+@media (min-width: 1024px) {
+  .home-posts-grid > *:nth-child(n+5) { display: none; }
+}
+
+/* ServiceCallout no fluxo principal: visível no mobile, oculto no desktop */
+@media (min-width: 1024px) {
+  .home-main > .op-service-callout { display: none; }
+}
+
+/* Banner AdSense entre seções: oculto no mobile, visível no desktop */
+.home-ad-desktop {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .home-ad-desktop {
+    display: block;
+    margin-block: var(--space-4);
+  }
+  .home-ad-desktop > .adsense-banner-wrapper {
+    margin-block: 0;
+  }
+}
+
 /* --- Skeleton de posts (Suspense fallback) --- */
 .post-card-skeleton {
   background: white;
