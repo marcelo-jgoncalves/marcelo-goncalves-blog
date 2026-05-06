@@ -15,6 +15,7 @@
 .main-content-column {
   width: 100%;
   min-width: 0;
+  overflow: hidden;
 }
 
 @media (min-width: 1024px) {
@@ -23,14 +24,6 @@
     gap: var(--space-5);
     padding: var(--space-6) 0;
     align-items: start;
-  }
-
-  /* Desktop: article-grid sem padding horizontal → reset dos negative margins */
-  .article-header {
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .sidebar {
@@ -47,12 +40,10 @@
 }
 
 /* --- 2. HEADER E METADADOS --- */
+/* article-header é filho direto de <article> que já é full-width —
+   margens negativas eram desnecessárias e causavam overflow real */
 .article-header {
   background-color: var(--slate-50);
-  /* Full-bleed via negative margin do padding do .article-grid (--space-3 = 24px)
-     Evita width:100vw que inclui scrollbar e causa overflow horizontal no mobile */
-  margin-left: calc(-1 * var(--space-3));
-  margin-right: calc(-1 * var(--space-3));
   padding: var(--space-6) 0;
   text-align: center;
   border-bottom: 1px solid var(--border-color);
