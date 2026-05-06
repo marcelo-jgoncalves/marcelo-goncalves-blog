@@ -29,14 +29,13 @@
   height: 100% !important;
 }
 
-/* 4. Gestão de Ritmo Vertical (Sagrados 40px) */
+/* 4. Gestão de Ritmo Vertical — espaço simétrico acima e abaixo */
 .adsense-summary-mock {
-  margin-bottom: 40px; /* Espaço entre banner de topo e início do conteúdo */
+  margin-block: var(--space-5);
 }
 
 .post-content .op-adsense-wrapper {
-  margin-bottom: 40px;
-  margin-top: 40px;
+  margin-block: var(--space-5);
 }
 
 /* 5. Desktop: volta ao leaderboard 90px (igual ao AdSenseBanner) */

@@ -654,21 +654,22 @@ pre.code-block,
 .post-footer-safe-zone {
   display: flex;
   flex-direction: column;
-  /* 🚀 RITMO: Mantido os 32px (4 * 8px) que o JSON validou */
-  gap: calc(var(--space-unit) * 4); 
-  margin-top: calc(var(--space-unit) * 4); 
+  gap: var(--space-4);
+  margin-top: var(--space-4);
 }
 
+/* Cancela margens próprias dos filhos — gap é o único responsável */
 .post-footer-safe-zone > * {
   margin-block: 0;
 }
 
-@media (min-width: 768px) {
-  .post-footer-safe-zone {
-    /* 🚀 DESKTOP: 48px (6 * 8px) para respiro amplo */
-    gap: calc(var(--space-unit) * 6); 
-    margin-top: calc(var(--space-unit) * 6);
-  }
+/* Overrides explícitos para componentes com margem própria */
+.post-footer-safe-zone .author-box {
+  margin: 0;
+}
+
+.post-footer-safe-zone .popular-articles-section-wrapper {
+  margin-top: 0;
 }
 
 
