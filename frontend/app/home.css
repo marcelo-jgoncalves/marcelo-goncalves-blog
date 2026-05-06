@@ -14,21 +14,25 @@
   .home-layout {
     grid-template-columns: 1fr 320px;
     gap: var(--space-6);
-    padding: var(--space-6) 0;
+    padding: 0;
   }
 }
 
 /* home-main: block flow — permite margin collapsing entre sections e ads */
 .home-main {
   min-width: 0;
+  padding-top: var(--space-4);
 }
-
-/* §6: Sections controlam próprio ritmo via margin-block */
-/* (globals.css já define section { margin-block: var(--space-6) }) */
 
 /* §4: Ads participam do fluxo editorial com mesmo ritmo */
 .home-main > .adsense-banner-wrapper {
   margin-block: var(--space-6);
+}
+
+/* Primeiro filho não recebe margem-top — o padding-top do home-main já posiciona */
+.home-main > section:first-of-type,
+.home-main > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
 }
 
 /* §3: Section header — margin-bottom 32px, sem altura fixa */
