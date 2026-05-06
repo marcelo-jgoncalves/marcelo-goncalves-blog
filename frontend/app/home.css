@@ -138,11 +138,6 @@
 
 /* --- Mobile-only layout (≥1024px: estado original do desktop) --- */
 
-/* Posts: mobile exibe 6 cards, desktop mostra apenas 4 */
-@media (min-width: 1024px) {
-  .home-posts-grid > *:nth-child(n+5) { display: none; }
-}
-
 /* ServiceCallout no fluxo principal: visível no mobile, oculto no desktop */
 @media (min-width: 1024px) {
   .home-main > .op-service-callout { display: none; }
