@@ -37,7 +37,12 @@
     display: block;
     min-width: 300px;
     position: sticky;
-    top: 96px; /* 🚀 AJUSTE: 12x8 */
+    top: var(--space-7);
+  }
+
+  /* Remove padding-bottom da sidebar — alinha último widget com último card */
+  .article-grid > .blog-sidebar {
+    padding-bottom: 0;
   }
 }
 

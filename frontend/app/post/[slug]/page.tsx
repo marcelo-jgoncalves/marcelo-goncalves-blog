@@ -237,11 +237,15 @@ export default async function PostPage({ params }: Props) {
             </footer>
         </main>
 
-        <BlogSidebar adsenseBlockId="sidebar-300x600">
+        <BlogSidebar
+            adsenseBlockId="sidebar-300x600"
+            showNewsletter={false}
+            showProjeto={true}
+        >
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
-            <ServiceCallout /> 
+            <ServiceCallout />
         </BlogSidebar>
       </div>
       
