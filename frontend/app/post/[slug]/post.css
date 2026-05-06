@@ -17,10 +17,9 @@
   min-width: 0;
 }
 
-/* Reading width — largura visual consistente para todos os elementos
-   do fluxo de leitura (texto, banners, hr, author-box, shares).
-   Mobile e desktop usam o mesmo sistema; no desktop o conteúdo é
-   alinhado à direita (flush com a sidebar) para manter o gap de 32px. */
+/* Reading width — mobile: 720px centrado para comprimento de linha ideal.
+   Desktop: padding-inline de 16px cria alinhamento simétrico; h2 e banners
+   começam no mesmo ponto (16px do edge da coluna), sem assimetria. */
 .post-body-wrapper,
 .post-footer-safe-zone {
   width: 100%;
@@ -31,8 +30,9 @@
 @media (min-width: 1024px) {
   .post-body-wrapper,
   .post-footer-safe-zone {
-    margin-left: auto;
-    margin-right: 0;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: var(--space-2);
   }
 }
 
@@ -275,6 +275,18 @@
   width: 4px;
   background-color: var(--accent);
   border-radius: 2px;
+}
+
+/* Desktop: padding-inline do wrapper já cria o recuo de 16px.
+   Remove padding interno do h2 e move o bar para a área de padding. */
+@media (min-width: 1024px) {
+  .post-content h2 {
+    padding-left: 0;
+  }
+
+  .post-content h2::before {
+    left: calc(-1 * var(--space-2));
+  }
 }
 
 .post-content h3 { font-size: 1.6rem; }
