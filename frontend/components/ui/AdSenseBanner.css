@@ -6,7 +6,7 @@
 }
 
 .adsense-placeholder {
-  min-height: 90px;
+  aspect-ratio: 1 / 1;
   background-color: var(--slate-50);
   border: 1px dashed var(--border-color);
   border-radius: 6px;
@@ -20,4 +20,11 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  .adsense-placeholder {
+    aspect-ratio: auto;
+    min-height: 90px;
+  }
 }
