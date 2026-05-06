@@ -102,6 +102,10 @@
   margin-top: 0;
 }
 
+.op-articles-feed > .op-posts-grid:last-of-type {
+  margin-bottom: 0;
+}
+
 .op-posts-grid {
   display: grid;
   grid-template-columns: 1fr;
