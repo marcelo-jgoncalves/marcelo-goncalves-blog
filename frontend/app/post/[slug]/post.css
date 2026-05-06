@@ -25,6 +25,14 @@
     align-items: start;
   }
 
+  /* Desktop: article-grid sem padding horizontal → reset dos negative margins */
+  .article-header {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .sidebar {
     display: block;
     min-width: 300px;
@@ -36,9 +44,11 @@
 /* --- 2. HEADER E METADADOS --- */
 .article-header {
   background-color: var(--slate-50);
-  width: 100vw; 
-  margin-left: calc(-50vw + 50%);
-  padding: var(--space-6) 0 var(--space-6) 0;
+  /* Full-bleed via negative margin do padding do .article-grid (--space-3 = 24px)
+     Evita width:100vw que inclui scrollbar e causa overflow horizontal no mobile */
+  margin-left: calc(-1 * var(--space-3));
+  margin-right: calc(-1 * var(--space-3));
+  padding: var(--space-6) var(--space-3);
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   position: relative;
