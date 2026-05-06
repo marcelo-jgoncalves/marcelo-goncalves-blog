@@ -24,6 +24,12 @@
   padding-top: var(--space-4);
 }
 
+/* Sobrescreve a regra global section{margin-block:64px} para o contexto do main.
+   32px iguala com a margin dos banners → collapsing resulta em 32px uniformes. */
+.home-main > section {
+  margin-block: var(--space-4);
+}
+
 /* Ads no home-main: margem compacta para não amplificar o espaço com sections */
 .home-main > .adsense-banner-wrapper {
   margin-top: var(--space-4);
