@@ -145,22 +145,14 @@
   .featured-image-container {
     width: 100%;
     margin: calc(-1 * var(--space-5)) auto var(--space-3) auto;
-    height: 512px;
+    height: 384px;
     aspect-ratio: auto;
   }
 }
 
 .featured-image {
-  object-fit: cover; 
-  border-radius: 12px; /* 1.5x8 */
-}
-
-@media (min-width: 768px) {
-  .featured-image-container {
-    height: 512px;
-    aspect-ratio: auto;
-    margin-bottom: var(--space-3);
-  }
+  object-fit: cover;
+  border-radius: 12px;
 }
 /* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
 
