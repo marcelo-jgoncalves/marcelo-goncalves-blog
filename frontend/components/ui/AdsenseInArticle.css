@@ -15,18 +15,18 @@
   overflow: hidden;
 }
 
-/* 2. Unificação de Altura (Mobile-First: 250px para todos) */
+/* 2. Mobile-first: quadrado via aspect-ratio (igual ao AdSenseBanner) */
 .adsense-in-content-mock,
 .adsense-in-feed-mock,
 .adsense-summary-mock {
-  min-height: 250px; /* Corrigido: Removida a linha de 90px que causava o conflito */
+  aspect-ratio: 1 / 1;
   width: 100%;
 }
 
 /* 3. Blindagem Crítica: Força a tag do Google a obedecer o layout */
 .op-adsense-wrapper .adsbygoogle {
   display: block !important;
-  height: 250px !important; /* Garante que o iframe interno preencha o bloco */
+  height: 100% !important;
 }
 
 /* 4. Gestão de Ritmo Vertical (Sagrados 40px) */
@@ -39,12 +39,13 @@
   margin-top: 40px;
 }
 
-/* 5. Comportamento Desktop (Breakpoint de 1024px) */
-@media (min-width: 1024px) {
+/* 5. Desktop: volta ao leaderboard 90px (igual ao AdSenseBanner) */
+@media (min-width: 768px) {
   .adsense-in-content-mock,
   .adsense-summary-mock,
   .adsense-in-feed-mock {
-    min-height: 90px; /* Formato Leaderboard elegante para telas largas */
+    aspect-ratio: auto;
+    min-height: 90px;
   }
 
   .op-adsense-wrapper .adsbygoogle {
