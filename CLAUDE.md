@@ -141,18 +141,22 @@ Layout de referência da home: `docs/design-system/home-layout-description.md`.
 **Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseSidebar.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
 
-### Escala de espaçamento (8px grid)
+### Escala de espaçamento (7 tokens, 8px grid — ritmo-vertical-contract.md)
 ```css
---space-1:  8px   /* Micro: badges, gap inline */
---space-2:  16px  /* Pequeno: meta-row, margin ícone */
---space-3:  24px  /* Médio: gap cards, padding widgets sidebar */
---space-4:  40px  /* Grande: gap seção→grid, margin banners AdSense */
---space-5:  64px  /* Seção: padding vertical de layouts de conteúdo */
---space-6:  80px  /* Landmark: padding de PageHero, CTAs fullwidth */
---section-min-height: 384px  /* min-height de landmarks */
+--space-1: 8px   /* Micro: badges, gap inline */
+--space-2: 16px  /* Pequeno: meta-row, margin ícone */
+--space-3: 24px  /* Médio: gap cards, padding widgets */
+--space-4: 32px  /* Grande: banners, sections no main, gap colunas */
+--space-5: 48px  /* Macro: margin-bottom post-card, gap listas */
+--space-6: 64px  /* Landmark: margin-block de sections, padding hero */
+--space-7: 96px  /* Editorial: padding CTA, sticky top */
+--section-min-height: 384px
 ```
 
-**Regra não-negociável:** componentes usam `--space-1` a `--space-4`. Seções de layout usam `--space-5` e `--space-6`. Nenhum CSS de componente deve ter padding vertical maior que `--space-4`.
+**Regra global:** `section { margin-block: var(--space-6) }` aplicada em `globals.css`.  
+**Exceções obrigatórias** (`margin-block: 0`): `PageHero`, `PageCTA`, `SuperDestaque`, `TechRibbon` e qualquer seção fullwidth com padding próprio.  
+**Sidebars:** filhos diretos com `margin-block: 0` — `gap` do flex é o único responsável pelo ritmo entre widgets.  
+**Colunas editoriais** (home-main, op-articles-feed, op-timeline-feed): sections com `margin-block: var(--space-4)` = 32px (sobrescreve global); banners com `margin: var(--space-4)`; primeiro filho sempre `margin-top: 0`.
 
 ### Logo
 ```
