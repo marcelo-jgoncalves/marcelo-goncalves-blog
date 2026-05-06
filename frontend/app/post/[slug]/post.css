@@ -16,6 +16,16 @@
   width: 100%;
   min-width: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Reading width — todos os elementos do fluxo editorial com mesma largura */
+.post-body-wrapper,
+.post-footer-safe-zone {
+  width: 100%;
+  max-width: 720px;
 }
 
 @media (min-width: 1024px) {
