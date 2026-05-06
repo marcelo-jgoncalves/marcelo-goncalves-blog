@@ -13,6 +13,7 @@ const VARIANTS: Array<{
   format: "avif" | "webp";
   quality: number;
   contentType: string;
+  keySuffix?: string;
 }> = [
   { width: 480,  format: "avif", quality: 65, contentType: "image/avif" },
   { width: 480,  format: "webp", quality: 80, contentType: "image/webp" },
@@ -20,6 +21,8 @@ const VARIANTS: Array<{
   { width: 768,  format: "webp", quality: 80, contentType: "image/webp" },
   { width: 1280, format: "avif", quality: 65, contentType: "image/avif" },
   { width: 1280, format: "webp", quality: 80, contentType: "image/webp" },
+  // LQIP: 20px WebP tiny placeholder — browser upscaling natural blur, sem CSS filter
+  { width: 20,   format: "webp", quality: 20, contentType: "image/webp", keySuffix: "lqip.webp" },
 ];
 
 const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
@@ -55,7 +58,8 @@ export const handler = async (event: S3Event) => {
 
       // 2. Gerar todas as variantes em paralelo (Sharp + S3 upload)
       await Promise.all(
-        VARIANTS.map(async ({ width, format, quality, contentType }) => {
+        VARIANTS.map(async (variant) => {
+          const { width, format, quality, contentType, keySuffix } = variant;
           const outputBuffer = await sharp(inputBuffer)
             .resize({ width, withoutEnlargement: true })
             .toFormat(format, {
@@ -65,7 +69,7 @@ export const handler = async (event: S3Event) => {
             })
             .toBuffer();
 
-          const destKey = `media/${basename}-${width}.${format}`;
+          const destKey = `media/${basename}-${keySuffix ?? `${width}.${format}`}`;
 
           await s3.send(new PutObjectCommand({
             Bucket: DEST_BUCKET,

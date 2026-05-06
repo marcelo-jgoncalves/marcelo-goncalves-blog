@@ -68,6 +68,9 @@ export default function ResponsiveImage({
           inset: 0,
           width: "100%",
           height: "100%",
+          backgroundImage: `url(${basePath}-lqip.webp)`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <source media="(max-width: 480px)" type="image/avif" srcSet={`${basePath}-480.avif`} />

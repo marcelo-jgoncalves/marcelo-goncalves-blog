@@ -49,12 +49,12 @@ describe('imageProcessor', () => {
     mockToBuffer.mockResolvedValue(Buffer.from('processed'));
   });
 
-  it('gera 6 variantes (480/768/1280 × avif/webp) para JPG', async () => {
+  it('gera 7 variantes (480/768/1280 × avif/webp + lqip) para JPG', async () => {
     const { handler } = await import('./index');
     await handler(makeS3Event('photo.jpg'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
 
     const destKeys = putCalls.map((c) => c[0].Key as string);
     expect(destKeys).toContain('media/photo-480.avif');
@@ -63,6 +63,7 @@ describe('imageProcessor', () => {
     expect(destKeys).toContain('media/photo-768.webp');
     expect(destKeys).toContain('media/photo-1280.avif');
     expect(destKeys).toContain('media/photo-1280.webp');
+    expect(destKeys).toContain('media/photo-lqip.webp');
   });
 
   it('gera 6 variantes para JPEG maiúsculo', async () => {
@@ -70,7 +71,7 @@ describe('imageProcessor', () => {
     await handler(makeS3Event('IMG_001.JPEG'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
   });
 
   it('gera 6 variantes para PNG', async () => {
@@ -78,7 +79,7 @@ describe('imageProcessor', () => {
     await handler(makeS3Event('banner.png'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
   });
 
   it('gera 6 variantes para WebP (formato comum em screenshots e edições)', async () => {
@@ -86,7 +87,7 @@ describe('imageProcessor', () => {
     await handler(makeS3Event('screenshot.webp'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
   });
 
   it('gera 6 variantes para HEIC (formato padrão iPhone)', async () => {
@@ -94,7 +95,7 @@ describe('imageProcessor', () => {
     await handler(makeS3Event('iphone-photo.heic'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
   });
 
   it('gera 6 variantes para HEIF', async () => {
@@ -102,7 +103,7 @@ describe('imageProcessor', () => {
     await handler(makeS3Event('photo.heif'));
 
     const putCalls = mockSend.mock.calls.filter((c) => c[0].__type === 'Put');
-    expect(putCalls).toHaveLength(6);
+    expect(putCalls).toHaveLength(7);
   });
 
   it('ignora arquivos sem extensão suportada', async () => {
@@ -131,7 +132,7 @@ describe('imageProcessor', () => {
     const webpCalls = putCalls.filter((c) => (c[0].Key as string).endsWith('.webp'));
 
     expect(avifCalls).toHaveLength(3);
-    expect(webpCalls).toHaveLength(3);
+    expect(webpCalls).toHaveLength(4); // 3 standard + 1 LQIP
     avifCalls.forEach((c) => expect(c[0].ContentType).toBe('image/avif'));
     webpCalls.forEach((c) => expect(c[0].ContentType).toBe('image/webp'));
   });
