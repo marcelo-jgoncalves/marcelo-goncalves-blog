@@ -6,15 +6,25 @@
 } 
 
 @media (min-width: 1024px) {
-  .blog-sidebar { 
-    display: flex; 
+  .blog-sidebar {
+    display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    height: max-content; 
-    position: -webkit-sticky; 
-    position: sticky; 
-    top: 104px; 
+    height: max-content;
+    position: -webkit-sticky;
+    position: sticky;
+    top: var(--space-7);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
   }
+
+  /* Cancela margin-block da regra global section{} nos filhos diretos e na
+     sidebar-dynamic-area — gap do flex é o único responsável pelo ritmo. */
+  .blog-sidebar > *,
+  .sidebar-dynamic-area > * {
+    margin-block: 0;
+  }
+
   .sidebar-dynamic-area {
     width: 100%;
     display: flex;
