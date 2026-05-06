@@ -15,16 +15,24 @@
 .main-content-column {
   width: 100%;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
-/* Reading width — todos os elementos do fluxo editorial com mesma largura */
+/* Reading width: mobile-only — no mobile (sem sidebar) limita a largura
+   da linha e elimina a percepção de banners/boxes mais largos que o texto.
+   No desktop a coluna do grid já provê a constraint; sidebar fica a 32px. */
 .post-body-wrapper,
 .post-footer-safe-zone {
   width: 100%;
   max-width: 720px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  .post-body-wrapper,
+  .post-footer-safe-zone {
+    max-width: 100%;
+    margin-inline: 0;
+  }
 }
 
 @media (min-width: 1024px) {
