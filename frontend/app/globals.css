@@ -57,8 +57,8 @@
   --baseline: 8px;
   --space-unit: 0.5rem;
   --post-block-spacing: 1.5rem;
-  --post-heading-top: 3.5rem;
-  --post-heading-bottom: 1.5rem;
+  --post-heading-top: var(--space-5);
+  --post-heading-bottom: var(--space-3);
 
   /* --- Spacing scale — 7 tokens, todos múltiplos de 8 (ritmo-vertical-contract.md) --- */
   --space-1: 8px;   /* micro: badges, gap inline */

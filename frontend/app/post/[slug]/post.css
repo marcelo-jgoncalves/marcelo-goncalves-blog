@@ -56,17 +56,17 @@
 }
 
 .article-header .container {
-  max-width: 896px; /* 🚀 AJUSTE: 112x8 (Próximo de 900, mas no grid) */
+  max-width: 896px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--space-3);
 }
 
 .article-meta {
-  display: flex; 
-  justify-content: center; 
-  gap: 24px; /* 🚀 AJUSTE: 3x8 */
-  color: var(--slate-500); 
-  font-size: 0.875rem; /* 14px - Padrão de legibilidade meta */
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--slate-500);
+  font-size: 0.875rem;
   flex-wrap: wrap;
 }
 
@@ -80,9 +80,9 @@
 .article-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 2.5rem; 
+  font-size: 2.5rem;
   line-height: 1.2;
-  margin-bottom: 24px; /* 🚀 AJUSTE: 3x8 */
+  margin-bottom: var(--space-3);
   color: var(--dark-900);
 }
 
@@ -98,13 +98,13 @@
   font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   background-color: var(--accent-light);
-  color: var(--accent); 
-  padding: 4px 12px; /* 🚀 AJUSTE: Micro-ritmo */
+  color: var(--accent);
+  padding: 4px 12px;
   border-radius: 4px;
   font-size: 0.75rem;
-  margin-bottom: 16px; 
+  margin-bottom: var(--space-2);
   align-self: flex-start;
   line-height: 1;
 }
@@ -112,25 +112,25 @@
 .post-tag-header {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   background-color: var(--accent);
   color: white;
-  padding: 8px 16px; /* 🚀 AJUSTE: 1:2 ratio */
+  padding: var(--space-1) var(--space-2);
   border-radius: 4px;
   font-size: 0.875rem;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-3);
   text-transform: capitalize;
   transition: opacity 0.2s, transform 0.2s;
 }
 
 /* --- 4. IMAGEM DE DESTAQUE --- */
 .featured-image-container {
-  width: auto; 
+  width: auto;
   max-width: 960px;
-  margin: -48px 24px 24px 24px; 
-  padding: 0; 
-  position: relative; 
-  z-index: 10;   
+  margin: calc(-1 * var(--space-5)) var(--space-3) var(--space-3) var(--space-3);
+  padding: 0;
+  position: relative;
+  z-index: 10;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 12px;
@@ -139,7 +139,7 @@
 @media (min-width: 768px) {
   .featured-image-container {
     width: 100%;
-    margin: -48px auto var(--space-3) auto;
+    margin: calc(-1 * var(--space-5)) auto var(--space-3) auto;
     height: 512px;
     aspect-ratio: auto;
   }
@@ -160,11 +160,11 @@
 /* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
 
 .post-lead {
-  font-size: 1.25rem; 
-  font-weight: 500;   
-  color: var(--dark-900); 
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--dark-900);
   line-height: 1.6;
-  margin-bottom: 2rem !important;
+  margin-bottom: var(--space-4);
 }
 
 
@@ -257,47 +257,66 @@
 .post-content h2 {
   font-size: 2rem;
   position: relative;
-  padding-left: calc(var(--space-unit) * 2); 
+  padding-left: var(--space-2);
 }
 
 .post-content h2::before {
-  content: ''; 
-  position: absolute; 
-  left: 0; 
-  top: var(--space-unit); 
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--space-unit);
   bottom: var(--space-unit);
-  width: 4px; 
-  background-color: var(--accent); 
+  width: 4px;
+  background-color: var(--accent);
   border-radius: 2px;
 }
 
 .post-content h3 { font-size: 1.6rem; }
 .post-content h4 { font-size: 1.35rem; }
-.post-content h5 {
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 
 /* Vídeo centralizado e responsivo */
 .post-content iframe,
 .post-content-part iframe,
 .post-content video,
 .post-content-part video {
-  display: block;       /* Transforma em bloco para aceitar margem */
-  margin: 2rem auto;    /* 'auto' nas laterais centraliza, '2rem' dá espaço vertical */
-  max-width: 100%;      /* Garante que o vídeo nunca seja maior que a tela do celular */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* (Opcional) Uma sombra leve para destaque */
+  display: block;
+  margin: var(--space-4) auto;
+  max-width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Caso o seu editor envolva o vídeo em uma tag <figure> ou <div class="media"> */
+/* YouTube embed (Tiptap) */
+.post-content [data-youtube-video],
+.post-content-part [data-youtube-video] {
+  margin: var(--space-4) 0;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.post-content [data-youtube-video] iframe,
+.post-content-part [data-youtube-video] iframe {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* figure / media wrapper */
 .post-content figure,
 .post-content-part figure,
 .post-content .media {
-  display: flex;        /* Usa Flexbox */
-  justify-content: center; /* Centraliza o conteúdo (o vídeo) dentro da figura */
-  margin: 2rem 0;       /* Espaçamento vertical */
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) 0;
   width: 100%;
+}
+
+/* Separador horizontal (Tiptap HorizontalRule) */
+.post-content hr {
+  border: none;
+  border-top: 2px solid var(--border-color);
+  margin: var(--space-5) 0;
 }
 
 
@@ -391,10 +410,10 @@
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   position: absolute;
-  top: -12px;
-  left: 20px;
+  top: calc(-1 * var(--space-2));
+  left: var(--space-3);
   background: #ffffff;
-  padding: 0 8px;
+  padding: 0 var(--space-1);
   color: var(--blue-600);
   font-size: 0.85rem;
 }
@@ -466,9 +485,8 @@ pre.code-block,
 
 .copy-code-btn {
   position: absolute;
-  /* 🚀 AJUSTE: Posicionamento em 12px (1.5x8) para equilíbrio visual */
-  top: 12px;
-  right: 12px;
+  top: var(--space-2);
+  right: var(--space-2);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
@@ -642,8 +660,7 @@ pre.code-block,
 }
 
 .post-footer-safe-zone > * {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  margin-block: 0;
 }
 
 @media (min-width: 768px) {
@@ -719,7 +736,7 @@ pre.code-block,
 .content-callout {
   display: block !important;
   position: relative;
-  padding: 20px 25px !important;
+  padding: var(--space-3) var(--space-4) !important;
   margin: var(--post-block-spacing) 0 !important;
   border-radius: 8px;
   border-left: 5px solid;
@@ -763,7 +780,7 @@ pre.code-block,
 }
 
 @media (max-width: 768px) {
-  .content-callout { padding: 15px 18px !important; font-size: 1rem; }
+  .content-callout { padding: var(--space-2) var(--space-3) !important; font-size: 1rem; }
 }
 
 /* --- TABELAS (Editor) --- */
@@ -772,20 +789,25 @@ article table,
 .post-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: var(--space-3) 0;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 article th, article td,
 .post-content th, .post-content td {
-  border: 1px solid #d1d5db;
-  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  padding: var(--space-1) var(--space-2);
   text-align: left;
+  white-space: nowrap;
 }
 
 article th,
 .post-content th {
-  background-color: #f3f4f6;
+  background-color: var(--slate-100);
   font-weight: 600;
+  font-family: var(--font-display);
 }
 
 /* Bloco mobile-only: ServiceCallout + NewsletterWidget no footer do artigo */
