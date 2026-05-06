@@ -20,7 +20,7 @@
 @media (min-width: 1024px) {
   .article-grid {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
-    gap: var(--space-6);
+    gap: var(--space-4);
     padding: var(--space-6) 0;
     align-items: start;
   }
