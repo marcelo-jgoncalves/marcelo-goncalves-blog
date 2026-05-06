@@ -10,8 +10,8 @@
   padding-top: var(--space-4);
 }
 
-/* Cancela margin-top herdada da regra global section{} nos filhos diretos */
+/* Cancela toda margin-block herdada da regra global section{} nos filhos diretos.
+   O gap do flex container é o único responsável pelo espaço entre widgets. */
 .home-sidebar > * {
-  margin-block-start: 0;
-  margin-bottom: var(--space-6);
+  margin-block: 0;
 }
