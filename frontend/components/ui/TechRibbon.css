@@ -1,10 +1,11 @@
 /* frontend/components/ui/TechRibbon.css */
 
 .op-tech-ribbon {
-  display: none; /* 1. Esconde no Mobile por padrão */
-  border-top: 1px dashed rgba(0, 0, 0, 0.15); 
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.15); 
-  padding: 24px 0; 
+  display: none;
+  margin-block: 0; /* cancela a regra global section{margin-block:64px} */
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+  padding: var(--space-3) 0;
   background-color: transparent;
   overflow-x: auto;
   white-space: nowrap;
