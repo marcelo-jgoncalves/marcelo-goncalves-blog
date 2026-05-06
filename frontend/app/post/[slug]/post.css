@@ -145,7 +145,7 @@
   .featured-image-container {
     width: 100%;
     margin: calc(-1 * var(--space-5)) auto var(--space-3) auto;
-    height: 384px;
+    height: 448px;
     aspect-ratio: auto;
   }
 }
