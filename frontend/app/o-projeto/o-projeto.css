@@ -34,9 +34,15 @@
     display: grid;
     grid-template-columns: minmax(auto, 2.5fr) minmax(300px, 1fr);
     gap: var(--space-4);
+    align-items: start;
     padding-top: var(--space-4);
     padding-bottom: 0;
     padding-left: clamp(1.5rem, 5vw, 2rem);
     padding-right: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  /* Último widget alinhado visualmente com o último card do timeline */
+  .op-main-layout > .blog-sidebar {
+    padding-bottom: var(--space-7);
   }
 }
