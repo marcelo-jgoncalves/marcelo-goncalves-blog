@@ -13,7 +13,7 @@
 @media (min-width: 1024px) {
   .home-layout {
     grid-template-columns: 1fr 320px;
-    gap: var(--space-6);
+    gap: var(--space-4);
     padding: 0;
   }
 }
