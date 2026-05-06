@@ -21,7 +21,7 @@
   .article-grid {
     grid-template-columns: minmax(0, 2.5fr) minmax(300px, 1fr);
     gap: var(--space-5);
-    padding: var(--space-6) 0;
+    padding: var(--space-5) 0;
     align-items: start;
   }
 
@@ -129,22 +129,19 @@
 }
 
 /* --- 4. IMAGEM DE DESTAQUE --- */
+/* Agora dentro de main-content-column — mesma largura do conteúdo */
 .featured-image-container {
-  width: auto;
-  max-width: 960px;
-  margin: calc(-1 * var(--space-5)) var(--space-3) var(--space-3) var(--space-3);
-  padding: 0;
+  width: 100%;
+  margin: calc(-1 * var(--space-5)) 0 var(--space-3) 0;
   position: relative;
   z-index: 10;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 
 @media (min-width: 768px) {
   .featured-image-container {
-    width: 100%;
-    margin: calc(-1 * var(--space-5)) auto var(--space-3) auto;
     height: 448px;
     aspect-ratio: auto;
   }
@@ -152,7 +149,7 @@
 
 .featured-image {
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 /* --- 5. MIOLO DO CONTEÚDO (.post-content) --- */
 
