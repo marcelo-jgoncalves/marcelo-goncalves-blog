@@ -209,25 +209,27 @@ async function getPostsByCategory(categorySlug: string, queryParams: any, reques
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
+  // Sem FilterExpression: Limit no QueryCommand conta itens ANTES do filtro,
+  // o que causaria retorno de < limit resultados quando há rascunhos na categoria.
+  // Filtramos status em memória — volume por categoria é baixo.
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "CategoriaPorData",
     KeyConditionExpression: "categoria_slug = :cat",
-    FilterExpression: "#status = :published",
-    ExpressionAttributeNames: { "#status": "status" },
-    ExpressionAttributeValues: { ":cat": categorySlug, ":published": "Publicado" },
+    ExpressionAttributeValues: { ":cat": categorySlug },
     ScanIndexForward: false,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
   const result = await dynamo.send(command);
+  const posts = (result.Items || []).filter((item) => item.status === "Publicado");
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
 
-  logger.info("category_posts_fetched", { requestId, categorySlug, count: result.Items?.length ?? 0 });
+  logger.info("category_posts_fetched", { requestId, categorySlug, count: posts.length });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, category: { slug: categorySlug, nome: categorySlug } }),
+    body: JSON.stringify({ posts, nextToken: newNextToken, category: { slug: categorySlug, nome: categorySlug } }),
     headers
   };
 }

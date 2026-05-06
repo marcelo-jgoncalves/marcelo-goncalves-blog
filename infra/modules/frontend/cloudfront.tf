@@ -237,7 +237,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
-  # Regra para imagens públicas (se houver)
+  # Regra para imagens públicas (badges, assets estáticos de /public/static/)
   ordered_cache_behavior {
     path_pattern     = "static/*"
     allowed_methods  = ["GET", "HEAD"]
@@ -252,6 +252,9 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
 
     viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0
+    default_ttl            = 86400    # 1 dia
+    max_ttl                = 31536000 # 1 ano
     compress               = true
   }
 

@@ -158,7 +158,7 @@ describe('getPosts handler', () => {
       expect(body.posts).toHaveLength(1);
     });
 
-    it('uses CategoriaPorData GSI with Publicado filter', async () => {
+    it('uses CategoriaPorData GSI and queries by slug', async () => {
       mockSend.mockResolvedValueOnce({ Items: [] });
       await handler(
         event({ resource: '/categoria/{slug}', pathParameters: { slug: 'devops' } }),
@@ -168,8 +168,36 @@ describe('getPosts handler', () => {
 
       const cmd = mockSend.mock.calls[0][0];
       expect(cmd.input.IndexName).toBe('CategoriaPorData');
-      expect(cmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
       expect(cmd.input.ExpressionAttributeValues[':cat']).toBe('devops');
+    });
+
+    it('sem FilterExpression — evita truncação Limit+Filter no DynamoDB', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });
+      await handler(
+        event({ resource: '/categoria/{slug}', pathParameters: { slug: 'aws' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[0][0];
+      // FilterExpression no QueryCommand faz Limit contar itens ANTES do filtro;
+      // sem ele, Limit conta apenas itens da categoria e filtramos status em memória.
+      expect(cmd.input.FilterExpression).toBeUndefined();
+    });
+
+    it('filtra apenas posts Publicado em memória', async () => {
+      const draft = { slug: 'draft', status: 'Rascunho', titulo: 'Draft' };
+      mockSend.mockResolvedValueOnce({ Items: [POST_A, draft] });
+
+      const result = await handler(
+        event({ resource: '/categoria/{slug}', pathParameters: { slug: 'aws' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.posts).toHaveLength(1);
+      expect(body.posts[0].slug).toBe('post-a');
     });
 
     it('returns nextToken when DynamoDB has more results', async () => {
