@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { getRecentPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
+import CategoryCard from '@/components/ui/CategoryCard';
 import HomeSidebar from '@/components/ui/HomeSidebar';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
@@ -136,36 +137,42 @@ export default function Home() {
               <p>Navegue pelo conteúdo principal do blog</p>
             </div>
             <div className="categories-grid">
-              <Link href="/categoria/inteligencia-artificial" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-brain" aria-hidden="true" /></div>
-                <h3>Inteligência Artificial</h3>
-                <p>Análises de modelos como GPT-4, Llama 3 e o futuro da IA generativa.</p>
-              </Link>
-              <Link href="/categoria/cloud-computing" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-cloud" aria-hidden="true" /></div>
-                <h3>Cloud Computing</h3>
-                <p>Arquitetura serverless, serviços gerenciados e otimização de custos na AWS.</p>
-              </Link>
-              <Link href="/categoria/devops-automacao" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-gears" aria-hidden="true" /></div>
-                <h3>DevOps e Automação</h3>
-                <p>Pipelines de CI/CD, Terraform e infraestrutura como código (IaC).</p>
-              </Link>
-              <Link href="/categoria/seguranca-na-nuvem" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-shield-halved" aria-hidden="true" /></div>
-                <h3>Segurança na Nuvem</h3>
-                <p>Melhores práticas de IAM, redes e proteção de dados em ambientes cloud.</p>
-              </Link>
-              <Link href="/categoria/engenharia-de-software" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-code" aria-hidden="true" /></div>
-                <h3>Engenharia de Software</h3>
-                <p>Design patterns, arquitetura limpa e boas práticas de desenvolvimento.</p>
-              </Link>
-              <Link href="/categoria/noticias-e-mercado" className="category-card">
-                <div className="category-icon"><i className="fa-solid fa-newspaper" aria-hidden="true" /></div>
-                <h3>Notícias & Mercado</h3>
-                <p>As últimas atualizações e o impacto da inteligência artificial nos negócios.</p>
-              </Link>
+              <CategoryCard
+                href="/categoria/inteligencia-artificial"
+                icon="fa-solid fa-brain"
+                title="Inteligência Artificial"
+                description="Análises de modelos como GPT-4, Llama 3 e o futuro da IA generativa."
+              />
+              <CategoryCard
+                href="/categoria/cloud-computing"
+                icon="fa-solid fa-cloud"
+                title="Cloud Computing"
+                description="Arquitetura serverless, serviços gerenciados e otimização de custos na AWS."
+              />
+              <CategoryCard
+                href="/categoria/devops-automacao"
+                icon="fa-solid fa-gears"
+                title="DevOps e Automação"
+                description="Pipelines de CI/CD, Terraform e infraestrutura como código (IaC)."
+              />
+              <CategoryCard
+                href="/categoria/seguranca-na-nuvem"
+                icon="fa-solid fa-shield-halved"
+                title="Segurança na Nuvem"
+                description="Melhores práticas de IAM, redes e proteção de dados em ambientes cloud."
+              />
+              <CategoryCard
+                href="/categoria/engenharia-de-software"
+                icon="fa-solid fa-code"
+                title="Engenharia de Software"
+                description="Design patterns, arquitetura limpa e boas práticas de desenvolvimento."
+              />
+              <CategoryCard
+                href="/categoria/noticias-e-mercado"
+                icon="fa-solid fa-newspaper"
+                title="Notícias & Mercado"
+                description="As últimas atualizações e o impacto da inteligência artificial nos negócios."
+              />
             </div>
           </section>
 
