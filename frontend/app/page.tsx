@@ -11,6 +11,7 @@ import CategoryCard from '@/components/ui/CategoryCard';
 import HomeSidebar from '@/components/ui/HomeSidebar';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
+import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
 export const revalidate = 300;
@@ -52,7 +53,7 @@ function PostsSkeleton() {
 // Componente async isolado — busca seus próprios dados em request-time
 async function RecentPostsSection() {
   const data = await getRecentPosts().catch(() => ({ posts: [] }));
-  const posts = (data.posts || []).slice(0, 4);
+  const posts = (data.posts || []).slice(0, 6);
 
   return (
     <>
@@ -71,7 +72,7 @@ async function RecentPostsSection() {
 // Componente async isolado — busca seus próprios dados em request-time
 async function PopularPostsSection() {
   const data = await getPopularPosts().catch(() => ({ posts: [] }));
-  const posts = (data.posts || []).slice(0, 4);
+  const posts = (data.posts || []).slice(0, 6);
 
   if (posts.length === 0) return null;
 
@@ -115,7 +116,7 @@ export default function Home() {
             </Suspense>
           </section>
 
-          <AdSenseBanner />
+          <ServiceCallout />
 
           {/* Populares & Mais Lidos */}
           <section aria-labelledby="populares-heading">
