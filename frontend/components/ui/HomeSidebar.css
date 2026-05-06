@@ -1,39 +1,23 @@
 /* frontend/components/ui/HomeSidebar.css */
 
+/* Mobile: sidebar oculta — conteúdo principal já tem ServiceCallout */
 .home-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  height: max-content;
-  padding-top: 0;
-  padding-bottom: var(--space-4);
-}
-
-@media (min-width: 1024px) {
-  .home-sidebar {
-    position: sticky;
-    top: var(--space-7);
-    padding-top: var(--space-4);
-  }
-}
-
-/* Cancela toda margin-block herdada da regra global section{} nos filhos diretos.
-   O gap do flex container é o único responsável pelo espaço entre widgets. */
-.home-sidebar > * {
-  margin-block: 0;
-}
-
-/* Widgets visíveis apenas na coluna lateral do desktop */
-.home-sidebar > .popular-widget,
-.home-sidebar > .projeto-widget,
-.home-sidebar > .op-service-callout {
   display: none;
 }
 
 @media (min-width: 1024px) {
-  .home-sidebar > .popular-widget,
-  .home-sidebar > .projeto-widget,
-  .home-sidebar > .op-service-callout {
-    display: block;
+  .home-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: max-content;
+    position: sticky;
+    top: var(--space-7);
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+
+  .home-sidebar > * {
+    margin-block: 0;
   }
 }
