@@ -10,6 +10,8 @@
   padding-top: var(--space-4);
 }
 
+/* Cancela margin-top herdada da regra global section{} nos filhos diretos */
 .home-sidebar > * {
+  margin-block-start: 0;
   margin-bottom: var(--space-6);
 }
