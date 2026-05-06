@@ -1,7 +1,7 @@
 /* frontend/app/sobre/sobre.css */
 
 .sobre-container {
-  padding: var(--space-5) 20px;
+  padding: var(--space-7) 20px;
 }
 
 /* ═══════════════════════════════════════════
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
   text-align: center;
 }
 
@@ -107,7 +107,7 @@
    SECTIONS
 ═══════════════════════════════════════════ */
 .sobre-section {
-  margin-top: var(--space-5);
+  margin-top: var(--space-7);
 }
 
 .sobre-section-title {
@@ -115,7 +115,7 @@
   font-weight: 700;
   font-size: 1.6rem;
   color: var(--accent);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .sobre-section p {

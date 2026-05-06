@@ -58,7 +58,14 @@
       "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/smoke.spec.ts --project=chromium --reporter=line)",
       "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/home-layout.spec.ts --project=chromium --reporter=line)",
       "Bash(PLAYWRIGHT_BASE_URL=https://dsns2wusdrj9z.cloudfront.net npx playwright test e2e/home-layout.spec.ts e2e/smoke.spec.ts --project=chromium --reporter=line)",
-      "Bash(awk '{print $1}')"
+      "Bash(awk '{print $1}')",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "PowerShell(python --version)",
+      "PowerShell(pip show Pillow 2>&1)",
+      "PowerShell(head -3)",
+      "PowerShell(pip install Pillow --quiet 2>&1)",
+      "PowerShell(python -c \"from PIL import Image; print\\('PIL OK'\\)\")"
     ],
     "defaultMode": "bypassPermissions",
     "additionalDirectories": [

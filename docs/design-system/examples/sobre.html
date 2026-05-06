@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Sobre | Marcelo Gonçalves</title>
+
+<style>
+:root {
+  --accent: #3B5F8A;
+  --accent-hover: #2D4F76;
+  --accent-light: #EBF1F8;
+  --accent-dark: #1E3A57;
+
+  --text: #1a1a1a;
+  --text-light: #555;
+  --bg: #ffffff;
+  --max-width: 1100px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.photo {
+  width: 100%;
+  height: 320px;
+  background: #ddd;
+  border-radius: 12px;
+}
+
+/* TITLES */
+h1 {
+  font-size: 2.6rem;
+  margin: 0 0 10px;
+  color: var(--accent-dark);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+}
+
+/* SECTIONS */
+.section {
+  margin-top: 70px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+
+/* CARDS */
+.cards.two {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: var(--accent-light);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* CERTIFICATIONS */
+.certifications {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.certifications img {
+  width: 100%;
+  max-width: 110px;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.certifications img:hover {
+  transform: scale(1.05);
+}
+
+/* CTA */
+.cta {
+  margin-top: 80px;
+  background: var(--accent-dark);
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.cta p {
+  color: #dce6f2;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 26px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.btn:hover {
+  background: var(--accent-hover);
+}
+
+/* RESPONSIVO */
+@media(max-width: 800px){
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .cards.two {
+    grid-template-columns: 1fr;
+  }
+
+  .photo {
+    margin: 0 auto;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="photo">
+      <!-- SUA FOTO AQUI -->
+    </div>
+
+    <div>
+      <h1>Marcelo Gonçalves</h1>
+      <div class="subtitle">Arquiteto de Cloud • Especialista em AWS • Professor</div>
+
+      <p>Especialista em arquitetura de sistemas em nuvem com mais de 8 anos de experiência projetando e escalando ambientes na AWS.</p>
+
+      <p>Foco em segurança, eficiência de custos e arquiteturas resilientes para ambientes de produção.</p>
+    </div>
+  </div>
+
+  <!-- FORMAÇÃO -->
+  <div class="section">
+    <h2>Formação</h2>
+
+    <div class="cards two">
+      <div class="card">
+        <strong>Sistemas de Informação</strong>
+        <p>Graduação com foco em desenvolvimento e arquitetura de sistemas.</p>
+      </div>
+
+      <div class="card">
+        <strong>Pós-graduação em Arquitetura Cloud Computing</strong>
+        <p>Especialização em soluções escaláveis e modernas na nuvem.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <strong>Letras + Mestrado em Linguística</strong>
+      <p>Base analítica voltada para estrutura, interpretação e sistemas complexos.</p>
+    </div>
+  </div>
+
+  <!-- CERTIFICAÇÕES COM BADGES REAIS -->
+  <div class="section">
+    <h2>Certificações</h2>
+
+    <div class="certifications">
+
+      <!-- Substitua pelos links reais da Credly -->
+      <img src="https://images.credly.com/size/110x110/images/.../aws-cloud-practitioner.png" alt="AWS Cloud Practitioner">
+
+      <img src="https://images.credly.com/size/110x110/images/.../solutions-architect.png" alt="AWS Solutions Architect Associate">
+
+      <img src="https://images.credly.com/size/110x110/images/.../sysops.png" alt="AWS SysOps Administrator">
+
+      <img src="https://images.credly.com/size/110x110/images/.../terraform.png" alt="Terraform Associate">
+
+      <img src="https://images.credly.com/size/110x110/images/.../splunk.png" alt="Splunk Certified">
+
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="section">
+    <h2>Sobre este blog</h2>
+
+    <p>Este blog é onde decisões arquiteturais reais são traduzidas em conteúdo prático e aplicável.</p>
+
+    <p>Sem superficialidade. Sem teoria desnecessária. Apenas o que funciona em produção.</p>
+  </div>
+
+  <!-- DIFERENCIAL (ANTES DO CTA) -->
+  <div class="section">
+    <h2>Diferencial</h2>
+
+    <p>Minha base não é apenas engenharia.</p>
+
+    <p>Sou formado em Letras, com Mestrado em Linguística, e professor há mais de 15 anos.</p>
+
+    <p>Antes de trabalhar com cloud, eu já trabalhava com sistemas — sistemas de linguagem.</p>
+
+    <p><strong>Hoje, com a ascensão dos modelos de linguagem, essas duas áreas convergiram.</strong></p>
+
+    <p>Isso me permite enxergar arquitetura de forma estrutural, indo além da implementação técnica.</p>
+  </div>
+
+  <!-- CTA NO FINAL -->
+  <div class="cta">
+    <h3>Auditoria de Arquitetura AWS</h3>
+
+    <p>Identifique falhas invisíveis na sua infraestrutura antes que elas impactem custo, segurança ou disponibilidade.</p>
+
+    <p>Minha auditoria é direta, técnica e focada em resultado.</p>
+
+    <a href="#" class="btn">Solicitar análise</a>
+  </div>
+
+</div>
+
+</body>
+</html>

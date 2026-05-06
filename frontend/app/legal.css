@@ -1,7 +1,7 @@
 /* frontend/app/legal.css — compartilhado entre páginas legais */
 
 .legal-container {
-  padding: var(--space-5) 20px;
+  padding: var(--space-7) 20px;
 }
 
 .legal-content {
@@ -12,7 +12,7 @@
 .legal-updated {
   font-size: 0.875rem;
   color: var(--slate-500);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--border-color);
 }
@@ -22,7 +22,7 @@
   font-weight: 700;
   font-size: 1.25rem;
   color: var(--accent);
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   margin-bottom: var(--space-2);
 }
 

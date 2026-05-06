@@ -108,8 +108,8 @@
    ========================================= */
 
 .popular-widget--mobile-flow {
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-4);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
 }
 
 /* Quando chegamos no Desktop (onde a Sidebar passa a existir) */

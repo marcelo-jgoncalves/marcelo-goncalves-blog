@@ -1,6 +1,6 @@
 .page-cta {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-6) 20px;
+  padding: var(--space-8) 20px;
   text-align: center;
   min-height: var(--section-min-height);
 }
@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-3);
 }
 
 .page-cta__title {
