@@ -41,6 +41,7 @@ describe('apiCall', () => {
       fetchAuthSession: vi.fn().mockResolvedValue({
         tokens: { idToken: { toString: () => mockToken } },
       }),
+      signOut: vi.fn().mockResolvedValue(undefined),
     }))
     // Importa dinamicamente para garantir que os mocks estão aplicados
     const mod = await import('../../services/api')
@@ -50,10 +51,11 @@ describe('apiCall', () => {
   afterEach(() => vi.clearAllMocks())
 
   it('throws when user is not authenticated (no token)', async () => {
+    vi.stubGlobal('window', { location: { href: '' } })
     const { fetchAuthSession } = await import('aws-amplify/auth')
     vi.mocked(fetchAuthSession).mockResolvedValueOnce({ tokens: undefined } as never)
     mockFetch(200, {})
-    await expect(apiCall('/admin/posts')).rejects.toThrow('Usuário não autenticado')
+    await expect(apiCall('/admin/posts')).rejects.toThrow('Sessão expirada')
   })
 
   it('includes Authorization Bearer token in headers', async () => {

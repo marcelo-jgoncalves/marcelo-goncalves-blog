@@ -82,6 +82,14 @@ const previewUrl = computed(() =>
     : ''
 )
 
+// basePath sem extensão → variante 480w para o preview do admin
+const featureImagePreviewUrl = computed(() => {
+  const url = form.value.imagem_destaque_url
+  if (!url) return ''
+  const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
+  return `${base}-480.webp?t=${featureImageCacheBuster.value}`
+})
+
 const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'inteligencia-artificial', nome: 'Inteligência Artificial' },
   { categoria_slug: 'cloud-computing', nome: 'Cloud Computing' },
@@ -374,10 +382,10 @@ function generateSlug() {
             <input v-model="form.imagem_destaque_url" type="text" />
           </div>
 
-          <div v-if="form.imagem_destaque_url" class="image-preview">
-            <img 
-              :src="`${form.imagem_destaque_url}?t=${featureImageCacheBuster}`" 
-              alt="Preview" 
+          <div v-if="featureImagePreviewUrl" class="image-preview">
+            <img
+              :src="featureImagePreviewUrl"
+              alt="Preview da imagem de destaque"
               @error="handleFeatureImageError"
             />
           </div>
