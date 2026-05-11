@@ -97,7 +97,7 @@ export default async function SobrePage() {
             <div className="sobre-hero-meta">
               <div className="sobre-meta-item">
                 <i className="fas fa-cloud" aria-hidden="true" />
-                <span><strong>8+</strong> anos em Cloud</span>
+                <span><strong>10+</strong> anos em Cloud</span>
               </div>
               <div className="sobre-meta-item">
                 <i className="fas fa-chalkboard-user" aria-hidden="true" />
