@@ -3,6 +3,7 @@
 export const revalidate = 3600;
 
 import React from 'react';
+import type { Metadata } from 'next';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
 import BlogSidebar from "../../components/ui/BlogSidebar";
@@ -12,6 +13,7 @@ import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
 import PageHero from '@/components/ui/PageHero';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './o-projeto.css';
 
 export interface ProjectPost {
@@ -31,14 +33,26 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export const metadata = {
-  title: 'O Projeto | Construindo um Blog com IA e Serverless',
-  description: 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.',
+const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
+
+export const metadata: Metadata = {
+  title: { absolute: `O Projeto | ${SITE_NAME}` },
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/o-projeto` },
   openGraph: {
-    title: 'O Projeto | Construindo um Blog com IA',
-    description: 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero.',
+    title: `O Projeto | ${SITE_NAME}`,
+    description: DESCRIPTION,
+    url: `${SITE_URL}/o-projeto`,
     type: 'website',
-  }
+    siteName: SITE_NAME,
+    locale: 'pt_BR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `O Projeto | ${SITE_NAME}`,
+    description: DESCRIPTION,
+    creator: AUTHOR_TWITTER,
+  },
 };
 
 export default async function OProjetoPage({ searchParams }: PageProps) {
@@ -54,8 +68,19 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
   const totalCount: number = data?.totalCount ?? 0;
   const totalPages = totalCount > 0 ? Math.ceil(totalCount / LIMIT) : 0;
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+      { "@type": "ListItem", "position": 2, "name": "O Projeto", "item": `${SITE_URL}/o-projeto` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+
       {/* 1. HERO */}
       <PageHero>
         <h1 className="hero-title">
