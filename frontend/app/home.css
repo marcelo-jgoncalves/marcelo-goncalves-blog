@@ -49,14 +49,14 @@
 }
 
 .section-header h2 {
-  font-size: 2rem;
+  font-size: var(--text-2xl);
   line-height: 1.25;
   margin-bottom: var(--space-2);
 }
 
 .section-header p {
   color: var(--slate-500);
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   margin: 0;
 }
@@ -85,7 +85,7 @@
   color: var(--accent);
   font-family: var(--font-display), sans-serif;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: var(--text-base);
   text-decoration: none;
   padding: var(--space-1) var(--space-3);
   border: 1.5px solid var(--accent-light);
@@ -109,14 +109,14 @@
 }
 
 .cta h2 {
-  font-size: 2rem;
+  font-size: var(--text-2xl);
   margin-bottom: var(--space-2);
   color: white;
   line-height: 1.25;
 }
 
 .cta p {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   color: #94A3B8;
   margin-bottom: var(--space-4);
   max-width: 600px;
@@ -126,7 +126,7 @@
 }
 
 @media (min-width: 768px) {
-  .cta h2 { font-size: 2.5rem; }
+  .cta h2 { font-size: var(--text-3xl); }
 }
 
 /* --- Categorias (estilos do card em CategoryCard.css) --- */

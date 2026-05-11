@@ -22,7 +22,7 @@
 .card-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
   margin-bottom: 10px;
   display: block;
   color: var(--dark-900);
@@ -40,7 +40,7 @@
   background-color: var(--accent-light);
   color: var(--accent);
   border-radius: calc(var(--space-unit) * 1.5); /* 12px (Proporcional ao 64) */
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   /* 🚀 RITMO: Corrigido de 15px para 16px (2x8) */
   margin: 0 auto calc(var(--space-unit) * 2);
 }
@@ -48,7 +48,7 @@
 
 
 .widget-newsletter .card-desc {
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--slate-500); 
   /* 🚀 RITMO: Corrigido de 20px para 24px (3x8) */

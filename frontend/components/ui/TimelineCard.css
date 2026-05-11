@@ -23,7 +23,7 @@
   color: var(--slate-500);
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -68,15 +68,15 @@
   transition: color 0.3s ease;
   color: var(--dark-900);
   text-decoration: none;
-  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  font-size: clamp(var(--text-lg), 5vw, var(--text-xl));
 }
 
 .op-card-body p {
   color: var(--slate-500);
   margin-bottom: 0;
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
-  
+
   /* 🛡️ Truncamento Blindado (PostCSS Safe) */
   display: -webkit-box;
   -webkit-line-clamp: 3;

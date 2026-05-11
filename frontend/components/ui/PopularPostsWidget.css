@@ -8,7 +8,7 @@
 }
 
 .popular-widget__title {
-  font-size: 1.25rem; /* 20px */
+  font-size: var(--text-lg);
   font-weight: 700;
   line-height: 1.2;
   margin: 0;
@@ -67,7 +67,7 @@
 }
 
 .popular-widget__post-title {
-  font-size: 1rem; /* 16px */
+  font-size: var(--text-base);
   font-weight: 600;
   line-height: 1.5; /* 24px - Exato múltiplo de 8! */
   margin: 0;

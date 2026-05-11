@@ -53,6 +53,16 @@
   /* --- Gradients --- */
   --bg-light-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
 
+  /* --- Type scale — 8 passos, base 18px = 1rem (ritmo-vertical-contract.md) --- */
+  --text-xs:   0.75rem;   /*  13.5px — tags, badges, micro labels */
+  --text-sm:   0.875rem;  /* 15.75px — meta, código, eyebrow, copyright */
+  --text-base: 1rem;      /*    18px — corpo principal (body) */
+  --text-lg:   1.125rem;  /*   ~20px — lead, subtítulo, nav, input, descrição */
+  --text-xl:   1.5rem;    /*    27px — h4, card title, widget header, TOC */
+  --text-2xl:  2rem;      /*    36px — h3, h2 editorial (post, sobre, serviços) */
+  --text-3xl:  2.8rem;    /*  50.4px — h1 heroes (hero desktop mantido) */
+  --text-4xl:  3.5rem;    /*    63px — h1 artigo (máximo editorial) */
+
   /* --- Vertical rhythm (8px baseline grid — ritmo-vertical-contract.md) --- */
   --baseline: 8px;
   --space-unit: 0.5rem;

@@ -20,7 +20,7 @@
 
 .op-hero-title {
   color: rgb(45, 55, 72);
-  font-size: 2.5rem;
+  font-size: var(--text-3xl);
   font-weight: 800;
   margin-bottom: var(--space-4);
   letter-spacing: -0.02em;
@@ -41,7 +41,7 @@
   flex: 1;
   border: none;
   padding: 0 var(--space-3);
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   outline: none;
   font-family: inherit;
   text-align: left;

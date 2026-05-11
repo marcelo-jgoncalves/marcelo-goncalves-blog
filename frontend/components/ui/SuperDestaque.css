@@ -22,7 +22,7 @@
 
 .super-destaque h2 {
   font-family: var(--font-display);
-  font-size: 1.9rem;
+  font-size: var(--text-2xl);
   font-weight: 700;
   color: var(--accent-dark);
   line-height: 1.25;
@@ -34,7 +34,7 @@
 }
 
 .super-destaque p {
-  font-size: 1.05rem;
+  font-size: var(--text-base);
   color: var(--dark-700);
   line-height: 1.65;
   max-width: 560px;
@@ -51,7 +51,7 @@
   color: white;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   border-radius: 6px;
   text-decoration: none;
   transition: background-color 0.2s ease, transform 0.2s ease;
@@ -65,5 +65,5 @@
 }
 
 @media (min-width: 768px) {
-  .super-destaque h2 { font-size: 2.2rem; }
+  .super-destaque h2 { font-size: var(--text-3xl); }
 }

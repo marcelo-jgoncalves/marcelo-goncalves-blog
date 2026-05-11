@@ -32,21 +32,21 @@
 
 /* Tamanho Small (Para PostCards e TimelineCards) */
 .category-badge--sm {
-  font-size: 0.75rem; /* 12px */
+  font-size: var(--text-xs);
   padding: 4px 8px;   /* Ritmo de 8px (0.5x e 1x) */
   gap: 4px;           /* Substitui o antigo mr-2 */
 }
 
 /* Tamanho Medium (Para o Cabeçalho da página do Post) */
 .category-badge--md {
-  font-size: 0.875rem; /* 14px */
+  font-size: var(--text-sm);
   padding: 4px 12px;   /* Ritmo de 8px equilibrado */
   gap: 8px;            /* Ritmo de 8px exato */
 }
 
 
 .category-badge--lg {
-  font-size: 1rem;     /* 16px */
+  font-size: var(--text-base);
   padding: 8px 16px;   /* Ritmo de 8px pleno */
   gap: 8px;
 }

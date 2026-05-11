@@ -22,7 +22,7 @@
 }
 
 .op-footer-title {
-  font-size: 1.25rem; /* ~20px (substitui o 19.2px quebrado) */
+  font-size: var(--text-lg);
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 16px; /* Ritmo 8px (substitui os 15px) */
@@ -30,7 +30,7 @@
 }
 
 .op-footer-text {
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .op-footer-link {
-  font-size: 1rem; /* 16px */
+  font-size: var(--text-base);
   color: #cbd5e0;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -93,7 +93,7 @@
   gap: 8px 24px;
   justify-content: center;
   padding-bottom: 16px;
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
 }
 
 .op-footer-legal__link {
@@ -109,7 +109,7 @@
 .op-copyright {
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   text-align: center;
   color: #a0aec0;
 }

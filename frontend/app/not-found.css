@@ -16,13 +16,13 @@
 }
 
 .error-hero h1 {
-  font-size: 2.2rem;
+  font-size: var(--text-2xl);
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
 .error-subtitle {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   color: #555;
   max-width: 600px;
   margin: 0 auto;
@@ -35,14 +35,14 @@
 }
 
 .retention-title {
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   text-align: center;
   margin-bottom: 20px;
 }
 
 @media (min-width: 768px) {
   .error-404-text { font-size: 8rem; }
-  .error-hero h1 { font-size: 3rem; }
+  .error-hero h1 { font-size: var(--text-3xl); }
   .search-retention-container { padding-top: var(--space-6); }
-  .retention-title { font-size: 1.8rem; margin-bottom: 30px; }
+  .retention-title { font-size: var(--text-2xl); margin-bottom: 30px; }
 }

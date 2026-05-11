@@ -2,13 +2,13 @@
 
 /* Tipografia do hero — layout via PageHero */
 .page-hero h1 {
-  font-size: 2.5rem;
+  font-size: var(--text-3xl);
   line-height: 1.2;
   margin-bottom: 30px;
 }
 
 .search-results-subtitle {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   color: #666;
 }
 
@@ -26,7 +26,7 @@
   flex-grow: 1;
   border: none;
   padding: 18px 25px;
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   color: var(--dark-700);
   outline: none;
   text-align: left;
@@ -41,7 +41,7 @@
   background-color: var(--accent);
   color: white;
   padding: 0 30px;
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -55,5 +55,5 @@
 }
 
 @media (min-width: 768px) {
-  .search-hero h1 { font-size: 3.2rem; }
+  .search-hero h1 { font-size: var(--text-4xl); }
 }

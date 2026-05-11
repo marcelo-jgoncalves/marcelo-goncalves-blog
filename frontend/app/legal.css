@@ -10,7 +10,7 @@
 }
 
 .legal-updated {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--slate-500);
   margin-bottom: var(--space-4);
   padding-bottom: var(--space-3);
@@ -20,14 +20,14 @@
 .legal-content h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   color: var(--accent);
   margin-top: var(--space-4);
   margin-bottom: var(--space-2);
 }
 
 .legal-content p {
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--dark-700);
   line-height: 1.75;
   margin-bottom: var(--space-2);
@@ -39,7 +39,7 @@
 }
 
 .legal-content ul li {
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--dark-700);
   line-height: 1.75;
   margin-bottom: 6px;
