@@ -78,13 +78,11 @@ export default async function SobrePage() {
       <section className="sobre-hero">
         <div className="sobre-hero-inner container">
           <div className="sobre-portrait">
-            {avatarUrl ? (
-              <AvatarImage src={avatarUrl} alt={`Foto de ${nome}`} />
-            ) : (
-              <div className="sobre-portrait__placeholder">
-                <i className="fa-solid fa-user" aria-hidden="true" />
-              </div>
-            )}
+            <img
+              src="/static/foto-perfil-oculos.png"
+              alt={`Foto de ${nome}`}
+              className="sobre-portrait__photo"
+            />
           </div>
 
           <div className="sobre-hero-text">
