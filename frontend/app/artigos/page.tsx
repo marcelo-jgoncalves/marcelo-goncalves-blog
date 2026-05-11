@@ -66,8 +66,18 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
   const firstHalf  = posts.slice(0, 6);
   const secondHalf = posts.slice(6);
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+      { "@type": "ListItem", "position": 2, "name": "Artigos", "item": `${SITE_URL}/artigos` },
+    ],
+  };
+
   return (
     <div className="op-artigos-layout-root">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* 1. HERO */}
       <PageHero as="header">
