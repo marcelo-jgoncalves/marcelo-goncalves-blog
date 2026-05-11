@@ -6,35 +6,36 @@
 ═══════════════════════════════════════════════════ */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-5) 0 var(--space-5);
+  padding: var(--space-5) 0 0;   /* sem padding-bottom — foto toca a borda */
   margin-block: 0;
+  overflow: hidden;
 }
 
 .sobre-hero-inner {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-5);
-  align-items: center;
+  align-items: end;    /* foto e texto alinham à base */
+  padding-left: 0;     /* foto rente à borda esquerda */
 }
 
 @media (min-width: 768px) {
   .sobre-hero-inner {
     grid-template-columns: 300px 1fr;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
 }
 
-/* Retrato */
+/* Retrato — sem moldura, base rente à borda inferior da hero */
 .sobre-portrait {
   width: 260px;
-  height: 320px;
-  border-radius: 16px;
+  height: 340px;
+  border-radius: 12px 12px 0 0;
   overflow: hidden;
   background: var(--accent-light);
-  box-shadow: 16px 16px 0 var(--accent-light), 0 20px 40px rgba(30, 58, 95, 0.15);
-  border: 1px solid rgba(59, 95, 138, 0.15);
   margin: 0 auto;
   flex-shrink: 0;
+  align-self: end;
 }
 
 .sobre-portrait img,
@@ -61,7 +62,7 @@
   .sobre-portrait {
     margin: 0;
     width: 300px;
-    height: 380px;
+    height: 420px;
   }
 }
 
@@ -429,13 +430,12 @@
 ═══════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   .sobre-hero {
-    padding: var(--space-4) 0 var(--space-4);
+    padding: var(--space-4) 0 0;
   }
 
   .sobre-portrait {
-    width: 200px;
-    height: 250px;
-    box-shadow: 0 16px 32px rgba(30, 58, 95, 0.15);
+    width: 220px;
+    height: 280px;
   }
 
   .sobre-differential {

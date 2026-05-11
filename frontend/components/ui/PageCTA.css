@@ -75,9 +75,9 @@
   .page-cta--newsletter .page-cta__btn:hover { background-color: var(--accent-hover); }
 }
 
-/* ── VARIANTE: services — dark navy, estilo ServiceCallout ── */
+/* ── VARIANTE: services — mesmo azul da caixa diferencial da /sobre ── */
 .page-cta--services {
-  background-color: var(--accent-dark);
+  background-color: #1A2535;
 }
 
 .page-cta--services .page-cta__title { color: white; }

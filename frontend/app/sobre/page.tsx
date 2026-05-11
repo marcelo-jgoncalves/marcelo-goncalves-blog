@@ -91,10 +91,6 @@ export default async function SobrePage() {
               Marcelo <span className="accent">Gonçalves</span> é<br />
               Engenheiro de Cloud Especialista em AWS &amp; Educador
             </h1>
-            <p className="sobre-hero-subtitle">
-              Possui mais de 10 anos de experiência em computação em nuvem e
-              participação em projetos no Brasil e no exterior.
-            </p>
             <div className="sobre-hero-social">
               <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <i className="fab fa-linkedin-in" aria-hidden="true" />
