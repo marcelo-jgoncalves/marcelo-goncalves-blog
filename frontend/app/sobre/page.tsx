@@ -88,7 +88,6 @@ export default async function SobrePage() {
           </div>
 
           <div className="sobre-hero-text">
-            <div className="sobre-eyebrow">Sobre · Conheça a Jornada</div>
             <h1 className="sobre-hero-name">
               Marcelo <span className="accent">Gonçalves</span>
             </h1>
@@ -97,8 +96,7 @@ export default async function SobrePage() {
             </div>
             <p className="sobre-hero-lede">
               Arquiteto focado em alta disponibilidade e eficiência, com mais de 8 anos de
-              experiência resolvendo desafios técnicos complexos no Brasil e no exterior —
-              e mais de 15 anos traduzindo tecnologia em sala de aula.
+              experiência resolvendo desafios técnicos complexos no Brasil e no exterior.
             </p>
             <div className="sobre-hero-meta">
               <div className="sobre-meta-item">

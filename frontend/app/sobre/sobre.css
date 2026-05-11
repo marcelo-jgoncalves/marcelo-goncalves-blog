@@ -6,7 +6,7 @@
 ═══════════════════════════════════════════════════ */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-6) 0 96px;
+  padding: var(--space-5) 0 var(--space-5);
   margin-block: 0;
 }
 
@@ -407,7 +407,7 @@
 ═══════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   .sobre-hero {
-    padding: var(--space-5) 0 var(--space-5);
+    padding: var(--space-4) 0 var(--space-4);
   }
 
   .sobre-portrait {
