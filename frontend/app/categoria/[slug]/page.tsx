@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostsByCategory } from '@/lib/api';
+import './categoria.css';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
@@ -10,8 +11,8 @@ import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
-// 1. Configuração de Cache (ISR)
-export const revalidate = 60;
+// 1. Configuração de Cache (ISR) — listagens: 300s (contrato ISR)
+export const revalidate = 300;
 
 // 2. Mapa de Metadados (Fallback visual)
 const CATEGORY_META: Record<string, { title: string; description: string }> = {
@@ -142,11 +143,11 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 <PostCard key={post.slug} post={post} />
               ))
             ) : (
-              <div style={{ textAlign: 'center', padding: '40px 0' }}>
-                <p style={{ color: '#666', fontSize: '1.2rem', marginBottom: '20px' }}>
+              <div className="categoria-empty">
+                <p className="categoria-empty__msg">
                   Ainda não publicamos artigos nesta categoria.
                 </p>
-                <Link href="/artigos" style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>
+                <Link href="/artigos" className="categoria-empty__link">
                   Ver todos os artigos &rarr;
                 </Link>
               </div>

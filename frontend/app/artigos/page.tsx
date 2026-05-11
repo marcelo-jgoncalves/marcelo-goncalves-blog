@@ -1,5 +1,6 @@
 /* frontend/app/artigos/page.tsx */
 
+import type { Metadata } from 'next';
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
@@ -8,11 +9,29 @@ import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import PageHero from '@/components/ui/PageHero';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './artigos.css';
 
-export const metadata = {
-  title: 'Todos os Artigos | IA Decifrada',
-  description: 'Explore nosso arquivo completo de tutoriais AWS, análises de IA e engenharia de software.',
+const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software.';
+
+export const metadata: Metadata = {
+  title: { absolute: `Todos os Artigos | ${SITE_NAME}` },
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/artigos` },
+  openGraph: {
+    title: `Todos os Artigos | ${SITE_NAME}`,
+    description: DESCRIPTION,
+    url: `${SITE_URL}/artigos`,
+    type: 'website',
+    siteName: SITE_NAME,
+    locale: 'pt_BR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Todos os Artigos | ${SITE_NAME}`,
+    description: DESCRIPTION,
+    creator: AUTHOR_TWITTER,
+  },
 };
 
 export const revalidate = 300;

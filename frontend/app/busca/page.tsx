@@ -8,13 +8,14 @@ import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
+import { SITE_NAME } from '@/lib/config';
 
 // SEO: Não indexar resultados de busca interna
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const params = await searchParams;
   const term = params.q || 'Busca';
   return {
-    title: `Resultados para "${term}" | IA Decifrada`,
+    title: `Resultados para "${term}" | ${SITE_NAME}`,
     description: `Resultados da busca por ${term}.`,
     robots: 'noindex, follow',
   };
