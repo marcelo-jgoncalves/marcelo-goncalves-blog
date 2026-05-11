@@ -94,10 +94,6 @@ export default async function SobrePage() {
             <div className="sobre-hero-tagline">
               Engenheiro de Cloud &amp; Especialista AWS · Educador
             </div>
-            <p className="sobre-hero-lede">
-              Arquiteto focado em alta disponibilidade e eficiência, com mais de 8 anos de
-              experiência resolvendo desafios técnicos complexos no Brasil e no exterior.
-            </p>
             <div className="sobre-hero-meta">
               <div className="sobre-meta-item">
                 <i className="fas fa-cloud" aria-hidden="true" />
@@ -124,9 +120,10 @@ export default async function SobrePage() {
 
           <h2>Trajetória Profissional</h2>
           <p>
-            Com <strong>mais de 8 anos de experiência</strong> no ecossistema de tecnologia, atuo como
-            Engenheiro de Cloud projetando infraestruturas que sustentam negócios em escala global.
-            Minha carreira é definida pela busca de resiliência, automação e arquiteturas que envelhecem bem.
+            Especialista em <strong>alta disponibilidade e eficiência</strong>, com mais de 8 anos
+            resolvendo desafios técnicos complexos e projetando infraestruturas cloud que sustentam
+            negócios em escala global. Minha carreira é definida pela busca de resiliência,
+            automação e arquiteturas que envelhecem bem.
           </p>
           <p>
             Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, como{' '}
