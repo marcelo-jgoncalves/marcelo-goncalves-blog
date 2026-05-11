@@ -1,11 +1,12 @@
 /* frontend/app/sobre/sobre.css */
 
 /* ═══════════════════════════════════════════════════
-   HERO — 2 colunas: retrato + texto com stats
+   HERO — fullwidth, fora do page-layout
+   margin-block: 0 cancela a regra global section{}
 ═══════════════════════════════════════════════════ */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-6) var(--space-3) 96px;
+  padding: var(--space-6) 0 96px;
   margin-block: 0;
 }
 
@@ -25,8 +26,8 @@
 
 /* Retrato */
 .sobre-portrait {
-  width: 260px;
-  height: 320px;
+  width: 240px;
+  height: 290px;
   border-radius: 14px;
   overflow: hidden;
   background: linear-gradient(160deg, #D0E4F2 0%, #8AAEC8 100%);
@@ -57,11 +58,11 @@
   .sobre-portrait {
     margin: 0;
     width: 300px;
-    height: 380px;
+    height: 370px;
   }
 }
 
-/* Eyebrow — padrão JetBrains Mono com linha à esquerda */
+/* Eyebrow — JetBrains Mono com linha decorativa */
 .sobre-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -83,15 +84,9 @@
   flex-shrink: 0;
 }
 
-.sobre-eyebrow--light {
-  color: #8AAEC8;
-}
+.sobre-eyebrow--light        { color: #8AAEC8; }
+.sobre-eyebrow--light::before { background: var(--accent); }
 
-.sobre-eyebrow--light::before {
-  background: var(--accent);
-}
-
-/* H1 do hero */
 .sobre-hero-name {
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 3.2rem);
@@ -155,84 +150,75 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   MAIN LAYOUT — bio (1fr) + sidebar (320px)
+   CONTENT — usa .page-layout do globals.css
+   Sobrescreve gap e padding-top para este contexto
 ═══════════════════════════════════════════════════ */
-.sobre-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-5);
-  align-items: start;
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
+.sobre-content {
+  /* padding-top reduzido: hero já separa do conteúdo */
+  padding-top: var(--space-5);
 }
 
-@media (min-width: 960px) {
-  .sobre-layout {
-    grid-template-columns: 1fr 320px;
-    gap: 72px;
+@media (min-width: 1024px) {
+  .sobre-content {
+    /* 32px entre coluna e sidebar — padrão do projeto */
+    gap: var(--space-4);
+    padding-top: var(--space-5);
+    padding-bottom: 0;
   }
 }
 
 /* ═══════════════════════════════════════════════════
    BIO — coluna principal
+   margin-block: 0 cancela regra global section{}
 ═══════════════════════════════════════════════════ */
-
-/* Cancela margem global de section */
 .sobre-bio {
   margin-block: 0;
 }
 
-/* H2 com barra esquerda — padrão do post content */
+/* H2 com barra esquerda — mesmo padrão do post content */
 .sobre-bio h2 {
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--dark-900);
-  margin: 0 0 var(--space-3);
-  padding-left: 18px;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-2);
   position: relative;
   line-height: 1.2;
+}
+
+.sobre-bio h2:first-child {
+  margin-top: 0;
 }
 
 .sobre-bio h2::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
-  bottom: 6px;
+  top: 5px;
+  bottom: 5px;
   width: 4px;
   background: var(--accent);
   border-radius: 2px;
 }
 
-.sobre-section-spacer {
-  margin-top: var(--space-5) !important;
-}
-
 .sobre-bio p {
-  font-size: 1.08rem;
+  font-size: 1.05rem;
   line-height: 1.8;
   color: var(--dark-700);
   margin-bottom: var(--space-3);
 }
 
 .sobre-bio p:last-child { margin-bottom: 0; }
-
-.sobre-bio p strong {
-  color: var(--dark-900);
-  font-weight: 600;
-}
-
-.sobre-after-grid {
-  margin-top: var(--space-4) !important;
-}
+.sobre-bio p strong    { color: var(--dark-900); font-weight: 600; }
 
 /* Expertise */
 .sobre-expertise-intro {
   font-family: var(--font-display);
   font-weight: 600;
   color: var(--accent);
-  font-size: 1.05rem;
+  font-size: 1rem;
   margin: var(--space-4) 0 var(--space-3);
   display: flex;
   align-items: center;
@@ -249,12 +235,14 @@
 .sobre-expertise-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
-@media (min-width: 640px) {
+@media (max-width: 599px) {
   .sobre-expertise-grid {
-    gap: var(--space-3);
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
   }
 }
 
@@ -265,7 +253,7 @@
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-1);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -287,6 +275,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  margin-bottom: 4px;
 }
 
 .sobre-expertise-card h4 {
@@ -304,12 +293,14 @@
   margin: 0;
 }
 
-/* Caixa diferencial */
+/* ═══════════════════════════════════════════════════
+   CAIXA DIFERENCIAL + IDIOMAS
+═══════════════════════════════════════════════════ */
 .sobre-differential {
   background: #1A2535;
   color: #CBD5E0;
   border-radius: 14px;
-  padding: var(--space-5) var(--space-5) var(--space-4);
+  padding: var(--space-5);
   margin: var(--space-5) 0;
   position: relative;
   overflow: hidden;
@@ -360,259 +351,69 @@
   letter-spacing: 0.03em;
 }
 
-/* ═══════════════════════════════════════════════════
-   SIDEBAR — sticky no desktop
-═══════════════════════════════════════════════════ */
-.sobre-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+/* Idiomas dentro do bloco diferencial */
+.sobre-lang-block {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (min-width: 960px) {
-  .sobre-sidebar {
-    position: sticky;
-    top: 104px;
-  }
-}
-
-.sobre-widget {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-/* Widget label — JetBrains Mono + linha */
-.sobre-widget-label {
+.sobre-lang-block__label {
+  display: block;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #8AAEC8;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
 }
 
-.sobre-widget-label::before {
-  content: '';
-  width: 24px;
-  height: 2px;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-/* Certificações */
-.sobre-cert-list {
+.sobre-lang-pills {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.sobre-cert-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 12px var(--space-2);
-  display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: var(--space-2);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.sobre-cert-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.08);
-}
-
-.sobre-cert-badge-img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.sobre-cert-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.sobre-cert-info strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--dark-900);
-  line-height: 1.3;
-}
-
-.sobre-cert-info span {
-  font-size: 0.75rem;
-  color: var(--slate-500);
-}
-
-/* Formação */
-.sobre-edu-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.sobre-edu-card {
-  background: var(--accent-light);
-  border: 1px solid rgba(59, 95, 138, 0.14);
-  border-radius: 10px;
-  padding: 12px var(--space-2);
+.sobre-lang-pill {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.sobre-edu-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.1);
-}
-
-.sobre-edu-badge {
-  width: 36px;
-  height: 36px;
+  gap: var(--space-1);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  background: white;
-  border: 1px dashed rgba(59, 95, 138, 0.35);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-.sobre-edu-info { min-width: 0; }
-
-.sobre-edu-info h4 {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--accent-dark);
-  margin: 0 0 2px;
-  line-height: 1.3;
-}
-
-.sobre-edu-info span {
-  font-size: 0.75rem;
-  color: var(--accent-dark);
-  opacity: 0.78;
-  line-height: 1.4;
-}
-
-/* Idiomas */
-.sobre-lang-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.sobre-lang-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 10px var(--space-2);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  padding: 8px var(--space-2);
 }
 
 .sobre-lang-flag {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: 1;
-  flex-shrink: 0;
 }
 
-.sobre-lang-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.sobre-lang-info strong {
+.sobre-lang-pill strong {
   font-family: var(--font-display);
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--dark-900);
+  color: white;
 }
 
-.sobre-lang-info span {
+.sobre-lang-pill span {
   font-size: 0.75rem;
-  color: var(--slate-500);
-}
-
-/* Widget "Vamos conversar?" */
-.sobre-talk-widget {
-  background: var(--dark-900);
-  color: #CBD5E0;
-  border-radius: 12px;
-  padding: var(--space-3);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-.sobre-talk-widget h4 {
-  font-family: var(--font-display);
-  color: white;
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0 0 var(--space-1);
-}
-
-.sobre-talk-widget p {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: #CBD5E0;
-  margin: 0 0 var(--space-2);
-}
-
-.sobre-talk-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  background: var(--accent);
-  color: white;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
-
-.sobre-talk-btn:hover {
-  background: var(--accent-hover);
+  color: #8AAEC8;
 }
 
 /* ═══════════════════════════════════════════════════
-   MOBILE — colapsa para coluna única
+   MOBILE
 ═══════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   .sobre-hero {
-    padding: var(--space-5) var(--space-3) var(--space-5);
+    padding: var(--space-5) 0 var(--space-5);
   }
 
   .sobre-portrait {
-    width: 200px;
-    height: 240px;
+    width: 180px;
+    height: 220px;
     box-shadow: 0 16px 32px rgba(30, 58, 95, 0.15);
-  }
-
-  .sobre-expertise-grid {
-    grid-template-columns: 1fr;
   }
 
   .sobre-differential {
@@ -620,6 +421,6 @@
   }
 
   .sobre-differential::before {
-    font-size: 8rem;
+    font-size: 7rem;
   }
 }

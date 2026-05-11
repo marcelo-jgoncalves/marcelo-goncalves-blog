@@ -2,9 +2,12 @@ import './sobre.css';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import BlogSidebar from '@/components/ui/BlogSidebar';
+import ServiceCallout from '@/components/ui/ServiceCallout';
+import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
+import FormacaoWidget from '@/components/ui/FormacaoWidget';
 import AvatarImage from '@/components/ui/AvatarImage';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
-import Link from 'next/link';
 
 export const revalidate = 3600;
 
@@ -12,25 +15,10 @@ const AUTOR_ID = 'marcelo-goncalves';
 const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais de 8 anos de experiência, Mestre em Linguística e criador do blog.';
 
 const EXPERTISE_AREAS = [
-  { titulo: 'Arquitetura AWS',    descricao: 'Design de soluções seguras e escaláveis seguindo o Well-Architected Framework.', icon: 'fa-cloud' },
-  { titulo: 'DevOps & Automação', descricao: 'Infraestrutura como Código (Terraform) e pipelines de CI/CD eficientes.',          icon: 'fa-gears' },
-  { titulo: 'Serverless',         descricao: 'Arquiteturas orientadas a eventos com Lambda, API Gateway e DynamoDB.',             icon: 'fa-bolt' },
-  { titulo: 'FinOps',             descricao: 'Governança financeira e otimização de custos para máxima eficiência na nuvem.',     icon: 'fa-hand-holding-dollar' },
-];
-
-const FORMACAO = [
-  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação',         subtitulo: 'Graduação · Fundamentos de engenharia.' },
-  { icon: 'fa-cloud',          titulo: 'Pós em Arquitetura Cloud',        subtitulo: 'Especialização em nuvem e escalabilidade.' },
-  { icon: 'fa-book-open',      titulo: 'Graduação em Letras',             subtitulo: 'Base analítica voltada para a linguagem.' },
-  { icon: 'fa-flask',          titulo: 'Mestrado em Linguística',         subtitulo: 'Análise de sistemas complexos e estruturais.' },
-];
-
-const CERTS = [
-  { id: '3d246d86-7316-43af-9094-f0f3459970ce', nome: 'Solutions Architect', nivel: 'Associate',          imagem: '/static/badges/solutions.png',     abbr: 'AWS' },
-  { id: '9b4b2ee7-9fd5-4a71-8b4a-40f1d6aac606', nome: 'SysOps Administrator', nivel: 'Associate',         imagem: '/static/badges/sysops.png',        abbr: 'AWS' },
-  { id: 'eb295814-0c5c-4961-a685-84c80e779439', nome: 'HashiCorp Terraform', nivel: 'Certified Associate', imagem: '/static/badges/terraform.png',     abbr: 'TF'  },
-  { id: '02d3ce05-a8d2-4b85-9dde-b14c22e10397', nome: 'Splunk Core',         nivel: 'Certified Power User',imagem: '/static/badges/splunk.png',        abbr: 'SPLK'},
-  { id: '5326ba20-c51f-4565-a7fc-36fcc3fccf7d', nome: 'Cloud Practitioner',  nivel: 'Foundational',        imagem: '/static/badges/pactitioner.png',   abbr: 'AWS' },
+  { titulo: 'Arquitetura AWS',    descricao: 'Design de soluções seguras e escaláveis seguindo o Well-Architected Framework.', icon: 'fa-cloud'                  },
+  { titulo: 'DevOps & Automação', descricao: 'Infraestrutura como Código (Terraform) e pipelines de CI/CD eficientes.',         icon: 'fa-gears'                  },
+  { titulo: 'Serverless',         descricao: 'Arquiteturas orientadas a eventos com Lambda, API Gateway e DynamoDB.',            icon: 'fa-bolt'                   },
+  { titulo: 'FinOps',             descricao: 'Governança financeira e otimização de custos para máxima eficiência na nuvem.',    icon: 'fa-hand-holding-dollar'    },
 ];
 
 const LANGUAGES = [
@@ -53,12 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: desc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `Sobre Mim | ${nome}`,
-      description: desc,
-      url: canonicalUrl,
-      type: 'profile',
-      siteName: SITE_NAME,
-      locale: 'pt_BR',
+      title: `Sobre Mim | ${nome}`, description: desc, url: canonicalUrl,
+      type: 'profile', siteName: SITE_NAME, locale: 'pt_BR',
       ...(avatarUrl && { images: [{ url: avatarUrl, alt: `Foto de ${nome}` }] }),
     },
     twitter: { card: 'summary_large_image', title: `Sobre Mim | ${nome}`, description: desc, creator: AUTHOR_TWITTER },
@@ -93,7 +77,6 @@ export default async function SobrePage() {
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="sobre-hero">
         <div className="sobre-hero-inner container">
-
           <div className="sobre-portrait">
             {avatarUrl ? (
               <AvatarImage src={avatarUrl} alt={`Foto de ${nome}`} />
@@ -113,9 +96,9 @@ export default async function SobrePage() {
               Engenheiro de Cloud &amp; Especialista AWS · Educador
             </div>
             <p className="sobre-hero-lede">
-              Arquiteto focado em alta disponibilidade e eficiência, com mais de 8 anos de experiência
-              resolvendo desafios técnicos complexos no Brasil e no exterior — e mais de 15 anos
-              traduzindo tecnologia em sala de aula.
+              Arquiteto focado em alta disponibilidade e eficiência, com mais de 8 anos de
+              experiência resolvendo desafios técnicos complexos no Brasil e no exterior —
+              e mais de 15 anos traduzindo tecnologia em sala de aula.
             </p>
             <div className="sobre-hero-meta">
               <div className="sobre-meta-item">
@@ -135,10 +118,12 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── BIO + SIDEBAR ────────────────────────────── */}
-      <div className="sobre-layout container">
+      {/* ── CONTEÚDO + SIDEBAR ─────────────────────── */}
+      <div className="container page-layout sobre-content">
 
+        {/* Coluna principal */}
         <section className="sobre-bio">
+
           <h2>Trajetória Profissional</h2>
           <p>
             Com <strong>mais de 8 anos de experiência</strong> no ecossistema de tecnologia, atuo como
@@ -147,9 +132,9 @@ export default async function SobrePage() {
           </p>
           <p>
             Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, como{' '}
-            <strong>Accenture</strong>, <strong>Anynines</strong> e <strong>Credisis</strong>. Essa atuação
-            internacional me permitiu refinar metodologias que equilibram agilidade técnica com governança
-            corporativa.
+            <strong>Accenture</strong>, <strong>Deutsche Bahn</strong>, <strong>Anynines</strong> e{' '}
+            <strong>Credisis</strong>. Essa atuação internacional me permitiu refinar metodologias que
+            equilibram agilidade técnica com governança corporativa.
           </p>
 
           <p className="sobre-expertise-intro">Áreas em que atuo no dia a dia</p>
@@ -166,13 +151,13 @@ export default async function SobrePage() {
             ))}
           </div>
 
-          <p className="sobre-after-grid">
+          <p>
             Como <strong>professor há mais de 15 anos</strong>, acredito que a tecnologia só atinge seu
             potencial máximo quando é comunicada com clareza. Meu objetivo é mentorar e traduzir conceitos
             complexos para o mercado — uma ponte entre o detalhe da engenharia e a decisão estratégica.
           </p>
 
-          {/* Caixa diferencial */}
+          {/* Caixa diferencial + idiomas */}
           <div className="sobre-differential">
             <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
             <h3>Engenharia encontra linguagem</h3>
@@ -183,90 +168,44 @@ export default async function SobrePage() {
               <em>porquê</em> estratégico.
               <cite>— Marcelo Gonçalves</cite>
             </blockquote>
-          </div>
 
-          <h2 className="sobre-section-spacer">Por que este blog existe</h2>
-          <p>
-            Este blog é onde transformo a prática em conteúdo: análises profundas, tutoriais e
-            bastidores de uma arquitetura serverless construída <em>quase</em> 100% com IA. Cada post
-            é uma oportunidade de mostrar — com código real e decisões justificadas — como a engenharia
-            humana ainda é o que separa um protótipo gerado de um sistema confiável.
-          </p>
-        </section>
-
-        {/* ── SIDEBAR ── */}
-        <aside className="sobre-sidebar">
-
-          {/* Certificações */}
-          <div className="sobre-widget">
-            <div className="sobre-widget-label">Certificações Técnicas</div>
-            <div className="sobre-cert-list">
-              {CERTS.map((cert) => (
-                <a
-                  key={cert.id}
-                  href={`https://www.credly.com/badges/${cert.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="sobre-cert-card"
-                  aria-label={`Ver credencial: ${cert.nome} — ${cert.nivel}`}
-                >
-                  <img src={cert.imagem} alt={cert.abbr} className="sobre-cert-badge-img" />
-                  <div className="sobre-cert-info">
-                    <strong>{cert.nome}</strong>
-                    <span>{cert.nivel}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Formação */}
-          <div className="sobre-widget">
-            <div className="sobre-widget-label">Formação Acadêmica</div>
-            <div className="sobre-edu-list">
-              {FORMACAO.map((item) => (
-                <div key={item.titulo} className="sobre-edu-card">
-                  <div className="sobre-edu-badge">
-                    <i className={`fas ${item.icon}`} aria-hidden="true" />
-                  </div>
-                  <div className="sobre-edu-info">
-                    <h4>{item.titulo}</h4>
-                    <span>{item.subtitulo}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Idiomas */}
-          <div className="sobre-widget">
-            <div className="sobre-widget-label">Idiomas</div>
-            <div className="sobre-lang-list">
-              {LANGUAGES.map((lang) => (
-                <div key={lang.nome} className="sobre-lang-card">
-                  <span className="sobre-lang-flag" aria-hidden="true">{lang.flag}</span>
-                  <div className="sobre-lang-info">
+            {/* Idiomas — parte do bloco diferencial linguístico */}
+            <div className="sobre-lang-block">
+              <span className="sobre-lang-block__label">Idiomas</span>
+              <div className="sobre-lang-pills">
+                {LANGUAGES.map((lang) => (
+                  <div key={lang.nome} className="sobre-lang-pill">
+                    <span className="sobre-lang-flag" aria-hidden="true">{lang.flag}</span>
                     <strong>{lang.nome}</strong>
                     <span>{lang.nivel}</span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* CTA Serviços */}
-          <div className="sobre-talk-widget">
-            <h4>Vamos conversar?</h4>
-            <p>
-              Precisa de apoio em arquitetura AWS, FinOps ou DevOps? Agende uma chamada inicial
-              e veja como posso ajudar.
-            </p>
-            <Link href="/servicos" className="sobre-talk-btn">
-              Ver Serviços →
-            </Link>
-          </div>
+          <h2>Por que este blog existe</h2>
+          <p>
+            Este blog é onde transformo a prática em conteúdo: análises profundas, tutoriais e bastidores
+            de uma arquitetura serverless construída <em>quase</em> 100% com IA. Cada post é uma
+            oportunidade de mostrar — com código real e decisões justificadas — como a engenharia humana
+            ainda é o que separa um protótipo gerado de um sistema confiável.
+          </p>
 
-        </aside>
+        </section>
+
+        {/* Barra lateral do projeto */}
+        <BlogSidebar
+          showPopularPosts={false}
+          showNewsletter={false}
+          showProjeto={false}
+          adsenseBlockId="sobre-sidebar-300x600"
+        >
+          <ServiceCallout />
+          <CertificacoesWidget />
+          <FormacaoWidget />
+        </BlogSidebar>
+
       </div>
 
       <NewsletterCTA />
