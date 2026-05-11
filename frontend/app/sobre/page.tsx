@@ -87,11 +87,13 @@ export default async function SobrePage() {
 
           <div className="sobre-hero-text">
             <h1 className="sobre-hero-name">
-              Marcelo <span className="accent">Gonçalves</span>
+              Marcelo <span className="accent">Gonçalves</span> é<br />
+              Engenheiro de Cloud Especialista AWS &amp; Educador
             </h1>
-            <div className="sobre-hero-tagline">
-              Engenheiro de Cloud &amp; Especialista AWS · Educador
-            </div>
+            <p className="sobre-hero-subtitle">
+              Possui mais de 10 anos de experiência em computação em nuvem e
+              participação em projetos tanto no Brasil como no exterior.
+            </p>
             <div className="sobre-hero-meta">
               <div className="sobre-meta-item">
                 <i className="fas fa-cloud" aria-hidden="true" />
