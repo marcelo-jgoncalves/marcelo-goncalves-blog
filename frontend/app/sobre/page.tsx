@@ -11,6 +11,29 @@ export const revalidate = 3600;
 const AUTOR_ID = 'marcelo-goncalves';
 const FALLBACK_DESC = 'Conheça Marcelo Gonçalves, especialista em AWS com mais de 8 anos de experiência, Mestre em Linguística e criador do blog.';
 
+const EXPERTISE_AREAS = [
+  {
+    titulo: 'Arquitetura AWS',
+    descricao: 'Design de soluções seguras e escaláveis seguindo o Well-Architected Framework.',
+    icon: 'fa-cloud',
+  },
+  {
+    titulo: 'DevOps & Automação',
+    descricao: 'Infraestrutura como Código (Terraform) e pipelines de CI/CD eficientes.',
+    icon: 'fa-code-branch',
+  },
+  {
+    titulo: 'Serverless',
+    descricao: 'Arquiteturas orientadas a eventos com Lambda, API Gateway e DynamoDB.',
+    icon: 'fa-bolt',
+  },
+  {
+    titulo: 'FinOps',
+    descricao: 'Governança financeira e otimização de custos para máxima eficiência na nuvem.',
+    icon: 'fa-chart-line',
+  },
+];
+
 const FORMACAO = [
   {
     icon: 'fa-book-open',
@@ -24,7 +47,7 @@ const FORMACAO = [
   },
   {
     icon: 'fa-cloud',
-    titulo: 'Pós-graduação em Arquitetura Cloud Computing',
+    titulo: 'Pós em Arquitetura Cloud',
     descricao: 'Especialização em soluções escaláveis e modernas na nuvem.',
   },
 ];
@@ -60,6 +83,12 @@ const CERTS = [
     nivel: 'Certified Power User',
     imagem: '/static/badges/splunk.png',
   },
+];
+
+const LANGUAGES = [
+  { nome: 'Português', nivel: 'Nativo', flag: '🇧🇷' },
+  { nome: 'Inglês',    nivel: 'Fluente', flag: '🇺🇸' },
+  { nome: 'Alemão',   nivel: 'Intermediário', flag: '🇩🇪' },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -118,7 +147,7 @@ export default async function SobrePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
-      {/* 1. Hero — mantido da versão anterior */}
+      {/* 1. Hero */}
       <PageHero>
         <h1 className="hero-title">
           Sobre Mim e <span className="highlight">O Projeto</span>
@@ -131,9 +160,9 @@ export default async function SobrePage() {
 
       <div className="sobre-container container">
 
-        {/* 2. Bio — foto à esquerda, texto à direita */}
-        <div className="sobre-bio">
-          <div className="sobre-photo">
+        {/* 2. Profile — foto + nome + tagline */}
+        <section className="sobre-profile">
+          <div className="sobre-profile__photo">
             {avatarUrl ? (
               <AvatarImage src={avatarUrl} alt={`Foto de ${nome}`} />
             ) : (
@@ -143,21 +172,13 @@ export default async function SobrePage() {
             )}
           </div>
 
-          <div className="sobre-bio__text">
-            <h2>{nome}</h2>
-            <p className="sobre-subtitle">Arquiteto de Cloud • Especialista em AWS • Professor</p>
-
+          <div className="sobre-profile__text">
+            <span className="sobre-tagline">Engenheiro de Cloud &amp; Especialista AWS</span>
+            <h2 className="sobre-nome">{nome}</h2>
             <p>
-              Especialista em arquitetura de sistemas em nuvem com mais de 8 anos de experiência
-              projetando e escalando ambientes na AWS para empresas como <strong>Accenture</strong>,{' '}
-              <strong>Anynines</strong> e <strong>Credisis</strong>.
+              Arquiteto focado em alta disponibilidade e eficiência com mais de 8 anos de experiência
+              resolvendo desafios técnicos complexos no ecossistema AWS.
             </p>
-            <p>
-              Antes de trabalhar com cloud, eu já era <strong>professor há mais de 15 anos</strong> e
-              um acadêmico da palavra — formado em Letras, com Mestrado em Linguística. A convergência
-              dessas duas áreas é o que diferencia cada artigo deste blog.
-            </p>
-
             <div className="sobre-social">
               <a href={linkedinUrl} title="LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <i className="fab fa-linkedin-in" aria-hidden="true" />
@@ -167,78 +188,134 @@ export default async function SobrePage() {
               </a>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* 3. Formação — 3 cards lado a lado, estilo category card */}
-        <div className="sobre-section">
-          <h2 className="sobre-section-title">Formação</h2>
-          <div className="sobre-formacao-grid">
-            {FORMACAO.map((item) => (
-              <div key={item.titulo} className="sobre-formacao-card">
-                <div className="sobre-formacao-icon">
-                  <i className={`fas ${item.icon}`} aria-hidden="true" />
-                </div>
-                <h3>{item.titulo}</h3>
-                <p>{item.descricao}</p>
+        {/* 3. Main layout: trajetória + sidebar */}
+        <div className="sobre-layout">
+
+          {/* Coluna principal */}
+          <main className="sobre-main">
+
+            <section className="sobre-section">
+              <h2 className="sobre-section-title">Trajetória Profissional</h2>
+              <p>
+                Com <strong>mais de 8 anos de experiência</strong> no ecossistema de tecnologia, atuo como
+                Engenheiro de Cloud projetando infraestruturas que sustentam negócios em escala. Minha
+                carreira é definida pela busca de resiliência, automação e eficiência.
+              </p>
+              <p>
+                Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, como{' '}
+                <strong>Accenture</strong>, <strong>Anynines</strong> e <strong>Credisis</strong>. Essa
+                atuação internacional me permitiu refinar metodologias que equilibram agilidade técnica com
+                governança corporativa.
+              </p>
+
+              <p className="sobre-expertise-intro">Essas são, resumidamente, as áreas em que atuo:</p>
+
+              <div className="sobre-expertise-grid">
+                {EXPERTISE_AREAS.map((area) => (
+                  <div key={area.titulo} className="sobre-expertise-card">
+                    <i className={`fas ${area.icon}`} aria-hidden="true" />
+                    <h4>{area.titulo}</h4>
+                    <p>{area.descricao}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* 4. Certificações — grid com badges locais */}
-        <div className="sobre-section">
-          <h2 className="sobre-section-title">Certificações</h2>
-          <div className="sobre-certs">
-            {CERTS.map((cert) => (
-              <a
-                key={cert.id}
-                href={`https://www.credly.com/badges/${cert.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sobre-cert-card"
-                aria-label={`Ver credencial: ${cert.nome} — ${cert.nivel}`}
-              >
-                <img
-                  src={cert.imagem}
-                  alt={`${cert.nome} — ${cert.nivel}`}
-                  className="sobre-cert-badge"
-                />
-                <span className="sobre-cert-nome">{cert.nome}</span>
-                <span className="sobre-cert-nivel">{cert.nivel}</span>
-              </a>
-            ))}
-          </div>
-        </div>
+              <p>
+                Como <strong>professor há mais de 15 anos</strong>, acredito que a tecnologia só atinge seu
+                potencial máximo quando é comunicada com clareza. Meu objetivo é mentorar e traduzir
+                conceitos complexos em conteúdo aplicável.
+              </p>
+            </section>
 
-        {/* 5. Sobre este blog */}
-        <div className="sobre-section">
-          <h2 className="sobre-section-title">Sobre este blog</h2>
-          <p>
-            Este blog é onde decisões arquiteturais reais são traduzidas em conteúdo prático e aplicável.
-          </p>
-          <p>
-            Sem superficialidade. Sem teoria desnecessária. Apenas o que funciona em produção — com o
-            custo, a segurança e a escala que os ambientes reais exigem.
-          </p>
-        </div>
+            {/* Caixa do diferencial */}
+            <div className="sobre-differential">
+              <h3>O Diferencial Linguístico</h3>
+              <p>
+                &ldquo;Minha base não é apenas engenharia. Sou formado em Letras, com Mestrado em
+                Linguística. No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura,
+                entender a estrutura da palavra é o que me permite conectar o <em>como</em> técnico ao{' '}
+                <em>porquê</em> estratégico.&rdquo;
+              </p>
+            </div>
 
-        {/* 6. Diferencial */}
-        <div className="sobre-section">
-          <h2 className="sobre-section-title">Diferencial</h2>
-          <p>Minha base não é apenas engenharia.</p>
-          <p>
-            Sou formado em Letras, com Mestrado em Linguística, e professor há mais de 15 anos.
-            Antes de trabalhar com cloud, eu já trabalhava com sistemas — sistemas de linguagem.
-          </p>
-          <p>
-            <strong>
-              Hoje, com a ascensão dos modelos de linguagem, essas duas áreas convergiram.
-            </strong>
-          </p>
-          <p>
-            Isso me permite enxergar arquitetura de forma estrutural, indo além da implementação técnica
-            e conectando o como ao porquê de cada decisão.
-          </p>
+            <section className="sobre-section">
+              <h2 className="sobre-section-title">Sobre este blog</h2>
+              <p>
+                Este blog é onde decisões arquiteturais reais são traduzidas em conteúdo prático e aplicável.
+              </p>
+              <p>
+                Sem superficialidade. Sem teoria desnecessária. Apenas o que funciona em produção — com o
+                custo, a segurança e a escala que os ambientes reais exigem.
+              </p>
+            </section>
+
+          </main>
+
+          {/* Sidebar */}
+          <aside className="sobre-sidebar">
+
+            {/* Certificações */}
+            <div className="sobre-sidebar-group">
+              <span className="sobre-sidebar-label">Certificações Técnicas</span>
+              <div className="sobre-certs-list">
+                {CERTS.map((cert) => (
+                  <a
+                    key={cert.id}
+                    href={`https://www.credly.com/badges/${cert.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sobre-cert-card"
+                    aria-label={`Ver credencial: ${cert.nome} — ${cert.nivel}`}
+                  >
+                    <img
+                      src={cert.imagem}
+                      alt={`${cert.nome} — ${cert.nivel}`}
+                      className="sobre-cert-badge"
+                    />
+                    <div className="sobre-cert-info">
+                      <strong>{cert.nome}</strong>
+                      <span>{cert.nivel}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Formação */}
+            <div className="sobre-sidebar-group">
+              <span className="sobre-sidebar-label">Formação Acadêmica</span>
+              <div className="sobre-edu-list">
+                {FORMACAO.map((item) => (
+                  <div key={item.titulo} className="sobre-edu-card">
+                    <i className={`fas ${item.icon}`} aria-hidden="true" />
+                    <div>
+                      <h4>{item.titulo}</h4>
+                      <p>{item.descricao}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Idiomas */}
+            <div className="sobre-sidebar-group">
+              <span className="sobre-sidebar-label">Idiomas</span>
+              <div className="sobre-lang-list">
+                {LANGUAGES.map((lang) => (
+                  <div key={lang.nome} className="sobre-lang-card">
+                    <span className="sobre-lang-flag" aria-hidden="true">{lang.flag}</span>
+                    <div className="sobre-lang-info">
+                      <strong>{lang.nome}</strong>
+                      <span>{lang.nivel}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </aside>
         </div>
 
       </div>
