@@ -47,16 +47,16 @@
     flex-direction: row;      /* foto à esquerda */
   }
 
-  /* Foto: 280px de largura, começa 20px abaixo do topo, vai até o fim */
+  /* Foto: 320px de largura, pequeno gap no topo, vai até o fim */
   .sobre-hero__portrait {
-    width: 280px;
-    padding-top: 20px;        /* 20px do início da hero */
+    width: 320px;
+    padding-top: 8px;         /* gap mínimo — sem encostar na hero */
     overflow: visible;        /* sem clip no topo */
   }
 
   .sobre-hero__portrait img {
     width: 100%;
-    height: auto;             /* altura natural — determina a hero */
+    height: auto;             /* altura natural — determina a hero, sem crop */
     object-fit: unset;
     object-position: unset;
   }
@@ -64,7 +64,7 @@
   /* Texto: absolutamente posicionado no espaço à direita da foto */
   .sobre-hero__text {
     position: absolute;
-    left: 280px;
+    left: 320px;
     right: 0;
     top: 0;
     bottom: 0;
