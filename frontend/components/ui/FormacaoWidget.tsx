@@ -2,10 +2,10 @@
 import './FormacaoWidget.css';
 
 const FORMACAO = [
-  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação',      subtitulo: 'Graduação · Fundamentos de engenharia.'      },
-  { icon: 'fa-cloud',          titulo: 'Pós em Arquitetura Cloud',     subtitulo: 'Especialização em nuvem e escalabilidade.'   },
-  { icon: 'fa-book-open',      titulo: 'Graduação em Letras',          subtitulo: 'Base analítica voltada para a linguagem.'    },
-  { icon: 'fa-flask',          titulo: 'Mestrado em Linguística',      subtitulo: 'Análise de sistemas complexos e estruturais.'},
+  { icon: 'fa-cloud',          titulo: 'Pós em Arquitetura Cloud',  grau: 'Especialização' },
+  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação',    grau: 'Graduação'      },
+  { icon: 'fa-flask',          titulo: 'Mestrado em Linguística',   grau: 'Mestrado'       },
+  { icon: 'fa-book-open',      titulo: 'Graduação em Letras',       grau: 'Graduação'      },
 ];
 
 export default function FormacaoWidget() {
@@ -26,7 +26,7 @@ export default function FormacaoWidget() {
             </div>
             <div className="formacao-widget__info">
               <strong>{item.titulo}</strong>
-              <span>{item.subtitulo}</span>
+              <span>{item.grau}</span>
             </div>
           </li>
         ))}
