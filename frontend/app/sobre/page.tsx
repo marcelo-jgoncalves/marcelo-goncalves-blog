@@ -1,7 +1,7 @@
 import './sobre.css';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
-import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageCTA from '@/components/ui/PageCTA';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
@@ -208,11 +208,12 @@ export default async function SobrePage() {
 
       </div>
 
-      <div className="sobre-service-cta">
-        <ServiceCallout />
-      </div>
-
-      <NewsletterCTA />
+      <PageCTA
+        title="Vamos trabalhar juntos?"
+        body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
+        linkHref="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"
+        linkText="Entrar em Contato →"
+      />
     </>
   );
 }
