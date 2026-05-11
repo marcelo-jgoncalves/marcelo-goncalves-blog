@@ -1,23 +1,32 @@
-/* frontend/components/ui/SuperDestaque.css */
+/* frontend/components/ui/SuperDestaque.css
+   Estilo: ProjetoWidget escalado para fullwidth */
 
 .super-destaque {
-  background-color: var(--dark-900);
-  color: white;
-  padding: var(--space-6) 20px;
+  background: linear-gradient(150deg, #EBF1F8 0%, #D0E4F2 100%);
+  border-top: 1px solid rgba(59, 95, 138, 0.15);
+  border-bottom: 1px solid rgba(59, 95, 138, 0.15);
+  padding: var(--space-6) var(--space-3);
   text-align: center;
-  margin: 0;
   margin-block: 0;
 }
 
 .super-destaque-inner {
-  padding: 0 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0;
 }
 
 .super-destaque h2 {
-  font-size: 2rem;
-  margin-bottom: var(--space-2);
-  color: white;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--accent-dark);
   line-height: 1.25;
+  margin: 0;
 }
 
 .super-destaque h2 .highlight {
@@ -25,15 +34,36 @@
 }
 
 .super-destaque p {
-  font-size: 1.1rem;
-  color: var(--slate-50);
-  margin-bottom: var(--space-4);
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+  font-size: 1.05rem;
+  color: var(--dark-700);
+  line-height: 1.65;
+  max-width: 560px;
+  margin: 0;
+}
+
+.super-destaque .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--space-5);
+  background-color: var(--accent);
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (hover: hover) {
+  .super-destaque .btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+  }
 }
 
 @media (min-width: 768px) {
-  .super-destaque h2 { font-size: 2.5rem; }
+  .super-destaque h2 { font-size: 2.2rem; }
 }

@@ -50,8 +50,11 @@
 /* ============================================================
    CALLOUT "MAKING OF" — Fullwidth, fundo azul profundo
    ============================================================ */
+/* service-proof-fullwidth — estilo ProjetoWidget escalado para fullwidth */
 .service-proof-fullwidth {
-  background-color: var(--accent-dark); /* #1E3A57 */
+  background: linear-gradient(150deg, #EBF1F8 0%, #D0E4F2 100%);
+  border-top: 1px solid rgba(59, 95, 138, 0.15);
+  border-bottom: 1px solid rgba(59, 95, 138, 0.15);
   padding: var(--space-6) 20px;
   min-height: var(--section-min-height);
   text-align: center;
@@ -68,44 +71,42 @@
 
 .service-proof-fullwidth h2 {
   font-size: 2rem;
-  color: #ffffff;
+  color: var(--accent-dark);
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0;
 }
 
-/* "making of" aparece em azul claro sobre o fundo escuro */
-.service-proof-fullwidth .accent-light {
-  color: var(--accent-light); /* #EBF1F8 */
-}
-
 .service-proof-fullwidth p {
-  color: var(--slate-300); /* #CBD5E1 — branco suavizado */
+  color: var(--dark-700);
   font-size: 1.1rem;
   line-height: 1.6;
   max-width: 580px;
   margin: 0;
 }
 
-/* Botão: fundo branco + texto do azul escuro — máximo contraste */
+/* Botão — mesmo estilo ProjetoWidget */
 .service-proof-btn {
-  display: inline-block;
-  background: #ffffff;
-  color: var(--accent-dark);
-  padding: 14px 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--space-5);
+  background-color: var(--accent);
+  color: white;
   border-radius: 6px;
   font-weight: 700;
   font-family: var(--font-display);
   font-size: 1rem;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 4px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.service-proof-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-  color: var(--accent-dark);
+@media (hover: hover) {
+  .service-proof-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+  }
 }
 
 /* ============================================================

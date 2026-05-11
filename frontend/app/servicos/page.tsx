@@ -119,7 +119,7 @@ export default function ServicosPage() {
         <div className="service-proof-fullwidth__inner">
           <h2>
             Não acredite apenas na minha palavra. Veja o{' '}
-            <em style={{ color: '#000000', fontStyle: 'italic' }}>making of</em>.
+            <em className="accent">making of</em>.
           </h2>
           <p>
             Este blog, da infraestrutura serverless ao frontend Next.js, foi construído
@@ -168,6 +168,7 @@ export default function ServicosPage() {
 
       {/* 5. CTA final — agendar chamada */}
       <PageCTA
+        variant="services"
         title="Vamos trabalhar juntos?"
         body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
         linkHref="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"

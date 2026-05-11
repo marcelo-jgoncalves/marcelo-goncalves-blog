@@ -7,15 +7,17 @@ interface PageCTAProps {
   body: string;
   linkHref: string;
   linkText: string;
+  /** 'newsletter' (padrão) = gradiente claro; 'services' = dark navy como ServiceCallout */
+  variant?: 'newsletter' | 'services';
 }
 
-export default function PageCTA({ title, body, linkHref, linkText }: PageCTAProps) {
+export default function PageCTA({ title, body, linkHref, linkText, variant = 'newsletter' }: PageCTAProps) {
   return (
-    <section className="page-cta">
+    <section className={`page-cta page-cta--${variant}`}>
       <div className="page-cta__inner">
         <h2 className="page-cta__title">{title}</h2>
         <p className="page-cta__body">{body}</p>
-        <Link href={linkHref} className="btn">
+        <Link href={linkHref} className="page-cta__btn">
           {linkText}
         </Link>
       </div>

@@ -209,6 +209,7 @@ export default async function SobrePage() {
       </div>
 
       <PageCTA
+        variant="services"
         title="Vamos trabalhar juntos?"
         body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
         linkHref="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"
