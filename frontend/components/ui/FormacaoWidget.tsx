@@ -15,7 +15,7 @@ export default function FormacaoWidget() {
         <div className="formacao-widget__icon" aria-hidden="true">
           <i className="fas fa-user-graduate" />
         </div>
-        <h3 className="formacao-widget__title">Formação</h3>
+        <h3 className="formacao-widget__title">Formação Acadêmica</h3>
       </div>
 
       <ul className="formacao-widget__list" role="list">

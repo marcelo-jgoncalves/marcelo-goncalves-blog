@@ -52,9 +52,11 @@
 
 .certs-widget__card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  padding: 8px var(--space-1);
+  text-align: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-1);
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
@@ -66,8 +68,8 @@
 }
 
 .certs-widget__badge {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
   border-radius: 6px;
   flex-shrink: 0;
@@ -77,8 +79,6 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  flex: 1;
-  min-width: 0;
 }
 
 .certs-widget__info strong {
@@ -95,13 +95,5 @@
 }
 
 .certs-widget__ext {
-  color: var(--slate-500);
-  font-size: 0.62rem;
-  flex-shrink: 0;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.certs-widget__card:hover .certs-widget__ext {
-  opacity: 1;
+  display: none;
 }
