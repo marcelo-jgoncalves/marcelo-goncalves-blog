@@ -64,16 +64,16 @@
 }
 
 .formacao-widget__badge {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
   background: var(--accent-light);
   border: 1px dashed rgba(59, 95, 138, 0.3);
   color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
 }
 
