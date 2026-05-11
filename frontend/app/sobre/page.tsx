@@ -135,7 +135,7 @@ export default async function SobrePage() {
             equilibram agilidade técnica com governança corporativa.
           </p>
 
-          <p className="sobre-expertise-intro">Áreas em que atuo no dia a dia</p>
+          <h2>Áreas em que atuo no dia a dia</h2>
 
           <div className="sobre-expertise-grid">
             {EXPERTISE_AREAS.map((area) => (
