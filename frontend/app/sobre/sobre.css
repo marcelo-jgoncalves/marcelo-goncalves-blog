@@ -1,68 +1,5 @@
 /* frontend/app/sobre/sobre.css */
 
-/* ═══════════════════════════════════════════════════
-   HERO — fullwidth, fora do page-layout
-   margin-block: 0 cancela a regra global section{}
-═══════════════════════════════════════════════════ */
-.sobre-hero {
-  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-4) 0 0;   /* 32px topo; sem padding-bottom */
-  margin-block: 0;
-  overflow: hidden;
-}
-
-.sobre-hero-inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-5);
-  align-items: start;   /* texto alinha ao topo; portrait estica até o fundo */
-  padding-left: 0;      /* portrait rente à borda esquerda */
-}
-
-@media (min-width: 768px) {
-  .sobre-hero-inner {
-    grid-template-columns: 300px 1fr;
-    gap: var(--space-5);
-  }
-}
-
-/* Retrato — transparente, sem corte, estica até a base da hero */
-.sobre-portrait {
-  width: 100%;
-  min-height: 320px;
-  border-radius: 0;          /* sem bordas arredondadas = sem corte */
-  overflow: hidden;
-  background: transparent;   /* integra com o gradiente da hero */
-  align-self: stretch;       /* preenche toda a altura da linha do grid */
-}
-
-.sobre-portrait img,
-.sobre-portrait__photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left top;   /* preserva lado esquerdo da foto */
-  display: block;
-}
-
-.sobre-portrait__placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5rem;
-  color: white;
-  opacity: 0.55;
-}
-
-@media (min-width: 768px) {
-  .sobre-portrait {
-    width: 100%;
-    min-height: 420px;
-  }
-}
-
 /* Eyebrow — JetBrains Mono com linhas simétricas antes e depois */
 .sobre-eyebrow {
   display: inline-flex;
@@ -89,59 +26,6 @@
 .sobre-eyebrow--light               { color: #8AAEC8; }
 .sobre-eyebrow--light::before,
 .sobre-eyebrow--light::after         { background: var(--accent); }
-
-.sobre-hero-text {
-  text-align: center;
-  align-self: center;            /* centraliza verticalmente na linha do grid */
-  padding-bottom: var(--space-4); /* 32px — ritmo vertical nos ícones sociais */
-}
-
-.sobre-hero-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--dark-900);
-  margin-bottom: var(--space-3);
-}
-
-.sobre-hero-subtitle {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--slate-500);
-  margin-bottom: var(--space-3);
-  max-width: 480px;
-  margin-inline: auto;
-}
-
-/* Ícones sociais na hero */
-.sobre-hero-social {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-2);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border-color);
-}
-
-.sobre-hero-social a {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  color: var(--accent);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.sobre-hero-social a:hover {
-  background: var(--accent);
-  color: white;
-  transform: translateY(-2px);
-}
 
 /* ═══════════════════════════════════════════════════
    CONTENT — usa .page-layout do globals.css
@@ -428,16 +312,6 @@
    MOBILE
 ═══════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  .sobre-hero {
-    padding: var(--space-4) 0 0;
-  }
-
-  .sobre-portrait {
-    width: 100%;
-    min-height: 260px;
-    border-radius: 0;
-  }
-
   .sobre-differential {
     padding: var(--space-4) var(--space-3);
   }

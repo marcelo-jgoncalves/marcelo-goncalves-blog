@@ -1,12 +1,12 @@
 import './sobre.css';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
+import SobreHero from '@/components/ui/SobreHero';
 import PageCTA from '@/components/ui/PageCTA';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
-import AvatarImage from '@/components/ui/AvatarImage';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 export const revalidate = 3600;
@@ -76,35 +76,12 @@ export default async function SobrePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
       {/* ── HERO ─────────────────────────────────────── */}
-      <section className="sobre-hero">
-        <div className="sobre-hero-inner container">
-          <div className="sobre-portrait">
-            <img
-              src="/static/foto-perfil-oculos.png"
-              alt={`Foto de ${nome}`}
-              className="sobre-portrait__photo"
-            />
-          </div>
-
-          <div className="sobre-hero-text">
-            <h1 className="sobre-hero-name">
-              Marcelo <span className="accent">Gonçalves</span> é<br />
-              Engenheiro de Cloud Especialista em AWS &amp; Educador
-            </h1>
-            <div className="sobre-hero-social">
-              <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <i className="fab fa-linkedin-in" aria-hidden="true" />
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <i className="fab fa-instagram" aria-hidden="true" />
-              </a>
-              <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <i className="fab fa-github" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <SobreHero
+        nome={nome}
+        linkedinUrl={linkedinUrl}
+        instagramUrl={instagramUrl}
+        githubUrl={githubUrl}
+      />
 
       {/* ── CONTEÚDO + SIDEBAR ─────────────────────── */}
       <div className="container page-layout sobre-content">
