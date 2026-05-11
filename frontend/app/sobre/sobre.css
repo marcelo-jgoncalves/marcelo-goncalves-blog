@@ -65,7 +65,7 @@
   }
 }
 
-/* Eyebrow — JetBrains Mono com linha decorativa */
+/* Eyebrow — JetBrains Mono com linhas simétricas antes e depois */
 .sobre-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -79,7 +79,8 @@
   margin-bottom: var(--space-2);
 }
 
-.sobre-eyebrow::before {
+.sobre-eyebrow::before,
+.sobre-eyebrow::after {
   content: '';
   width: 28px;
   height: 2px;
@@ -87,8 +88,9 @@
   flex-shrink: 0;
 }
 
-.sobre-eyebrow--light        { color: #8AAEC8; }
-.sobre-eyebrow--light::before { background: var(--accent); }
+.sobre-eyebrow--light               { color: #8AAEC8; }
+.sobre-eyebrow--light::before,
+.sobre-eyebrow--light::after         { background: var(--accent); }
 
 .sobre-hero-text {
   text-align: center;
@@ -113,41 +115,32 @@
   margin-inline: auto;
 }
 
-/* Stats row */
-.sobre-hero-meta {
+/* Ícones sociais na hero */
+.sobre-hero-social {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   padding-top: var(--space-3);
   border-top: 1px solid var(--border-color);
 }
 
-.sobre-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.92rem;
-  color: var(--dark-700);
-}
-
-.sobre-meta-item i {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+.sobre-hero-social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background: var(--accent-light);
   color: var(--accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  flex-shrink: 0;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.sobre-meta-item strong {
-  color: var(--dark-900);
-  font-weight: 700;
-  font-family: var(--font-display);
+.sobre-hero-social a:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-2px);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -341,15 +334,27 @@
   padding: 0;
 }
 
+/* Cite simétrico — linha antes e depois do nome */
 .sobre-differential cite {
-  display: block;
-  margin-top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: var(--space-3);
   font-style: normal;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.85rem;
   color: #8AAEC8;
   letter-spacing: 0.03em;
+}
+
+.sobre-differential cite::before,
+.sobre-differential cite::after {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: #8AAEC8;
+  flex-shrink: 0;
 }
 
 /* Idiomas dentro do bloco diferencial */
@@ -402,6 +407,26 @@
 .sobre-lang-pill span {
   font-size: 0.75rem;
   color: #8AAEC8;
+}
+
+/* Widgets mobile — visíveis apenas quando sidebar está oculta */
+.sobre-mobile-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .sobre-mobile-widgets {
+    display: none;
+  }
+}
+
+/* Service CTA antes do footer */
+.sobre-service-cta {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
 }
 
 /* ═══════════════════════════════════════════════════

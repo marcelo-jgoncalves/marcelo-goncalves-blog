@@ -1,17 +1,14 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import './ReadingProgressBar.css';
 
 export default function ReadingProgressBar() {
-  const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
-  const isPost = pathname.startsWith('/post/');
 
   useEffect(() => {
-    if (!isPost || !barRef.current || !containerRef.current) return;
+    if (!barRef.current || !containerRef.current) return;
 
     const bar = barRef.current;
     const container = containerRef.current;
@@ -37,9 +34,7 @@ export default function ReadingProgressBar() {
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(rafId);
     };
-  }, [isPost]);
-
-  if (!isPost) return null;
+  }, []);
 
   return (
     <div

@@ -52,10 +52,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SobrePage() {
   const authorData = await getAuthor(AUTOR_ID).catch(() => null);
   const author = authorData?.autor || {};
-  const linkedinUrl = author.linkedin_url || '#';
-  const githubUrl   = author.github_url   || '#';
-  const avatarUrl   = author.foto_avatar_url;
-  const nome        = author.nome_exibicao || 'Marcelo Gonçalves';
+  const linkedinUrl  = author.linkedin_url   || '#';
+  const githubUrl    = author.github_url     || '#';
+  const instagramUrl = author.instagram_url  || '#';
+  const avatarUrl    = author.foto_avatar_url;
+  const nome         = author.nome_exibicao  || 'Marcelo Gonçalves';
 
   const personJsonLd = {
     '@context': 'https://schema.org',
@@ -88,25 +89,22 @@ export default async function SobrePage() {
           <div className="sobre-hero-text">
             <h1 className="sobre-hero-name">
               Marcelo <span className="accent">Gonçalves</span> é<br />
-              Engenheiro de Cloud Especialista AWS &amp; Educador
+              Engenheiro de Cloud Especialista em AWS &amp; Educador
             </h1>
             <p className="sobre-hero-subtitle">
               Possui mais de 10 anos de experiência em computação em nuvem e
-              participação em projetos tanto no Brasil como no exterior.
+              participação em projetos no Brasil e no exterior.
             </p>
-            <div className="sobre-hero-meta">
-              <div className="sobre-meta-item">
-                <i className="fas fa-cloud" aria-hidden="true" />
-                <span><strong>10+</strong> anos em Cloud</span>
-              </div>
-              <div className="sobre-meta-item">
-                <i className="fas fa-chalkboard-user" aria-hidden="true" />
-                <span><strong>15+</strong> anos como professor</span>
-              </div>
-              <div className="sobre-meta-item">
-                <i className="fas fa-earth-americas" aria-hidden="true" />
-                <span><strong>BR · EU</strong> projetos</span>
-              </div>
+            <div className="sobre-hero-social">
+              <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <i className="fab fa-linkedin-in" aria-hidden="true" />
+              </a>
+              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <i className="fab fa-instagram" aria-hidden="true" />
+              </a>
+              <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <i className="fab fa-github" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>
@@ -152,6 +150,12 @@ export default async function SobrePage() {
             complexos para o mercado — uma ponte entre o detalhe da engenharia e a decisão estratégica.
           </p>
 
+          {/* Widgets mobile — sidebar está oculta em telas pequenas */}
+          <div className="sobre-mobile-widgets">
+            <CertificacoesWidget />
+            <FormacaoWidget />
+          </div>
+
           {/* Caixa diferencial + idiomas */}
           <div className="sobre-differential">
             <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
@@ -161,7 +165,7 @@ export default async function SobrePage() {
               No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura, entender a
               estrutura da palavra é o que me permite conectar o <em>como</em> técnico ao{' '}
               <em>porquê</em> estratégico.
-              <cite>— Marcelo Gonçalves</cite>
+              <cite>Marcelo Gonçalves</cite>
             </blockquote>
 
             {/* Idiomas — parte do bloco diferencial linguístico */}
@@ -201,6 +205,10 @@ export default async function SobrePage() {
           <FormacaoWidget />
         </BlogSidebar>
 
+      </div>
+
+      <div className="sobre-service-cta container">
+        <ServiceCallout />
       </div>
 
       <NewsletterCTA />
