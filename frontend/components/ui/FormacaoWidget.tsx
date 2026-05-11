@@ -2,10 +2,10 @@
 import './FormacaoWidget.css';
 
 const FORMACAO = [
-  { icon: 'fa-cloud',          titulo: 'Pós em Arquitetura Cloud',  grau: 'Especialização' },
-  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação',    grau: 'Graduação'      },
-  { icon: 'fa-flask',          titulo: 'Mestrado em Linguística',   grau: 'Mestrado'       },
-  { icon: 'fa-book-open',      titulo: 'Graduação em Letras',       grau: 'Graduação'      },
+  { icon: 'fa-cloud',          titulo: 'Arquitetura Cloud',      grau: 'Especialização' },
+  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação', grau: 'Graduação'      },
+  { icon: 'fa-flask',          titulo: 'Linguística Aplicada',   grau: 'Mestrado'       },
+  { icon: 'fa-book-open',      titulo: 'Licenciatura em Letras', grau: 'Graduação'      },
 ];
 
 export default function FormacaoWidget() {
