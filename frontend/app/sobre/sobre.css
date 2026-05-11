@@ -423,10 +423,25 @@
   }
 }
 
-/* Service CTA antes do footer */
+/* Service CTA fullwidth — fundo accent-dark de borda a borda, colado ao footer */
 .sobre-service-cta {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  background-color: var(--accent-dark);
+  margin-block: 0;
+}
+
+.sobre-service-cta .op-service-callout {
+  max-width: 680px;
+  margin: 0 auto;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: var(--space-6) var(--space-3);
+  margin-block: 0;
+}
+
+.sobre-service-cta .op-btn-callout-primary {
+  width: auto;
+  padding: 0 var(--space-5);
 }
 
 /* ═══════════════════════════════════════════════════

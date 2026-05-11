@@ -198,6 +198,7 @@ export default async function SobrePage() {
           showPopularPosts={false}
           showNewsletter={false}
           showProjeto={false}
+          showAdsense={false}
           adsenseBlockId="sobre-sidebar-300x600"
         >
           <ServiceCallout />
@@ -207,7 +208,7 @@ export default async function SobrePage() {
 
       </div>
 
-      <div className="sobre-service-cta container">
+      <div className="sobre-service-cta">
         <ServiceCallout />
       </div>
 

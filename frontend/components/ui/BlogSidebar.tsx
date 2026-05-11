@@ -9,6 +9,7 @@ import './BlogSidebar.css';
 interface BlogSidebarProps {
   children?: React.ReactNode;
   adsenseBlockId?: string;
+  showAdsense?: boolean;
   showPopularPosts?: boolean;
   showNewsletter?: boolean;
   showProjeto?: boolean;
@@ -17,6 +18,7 @@ interface BlogSidebarProps {
 export default function BlogSidebar({
   children,
   adsenseBlockId = "sidebar-300x600",
+  showAdsense = true,
   showPopularPosts = true,
   showNewsletter = true,
   showProjeto = false,
@@ -30,7 +32,7 @@ export default function BlogSidebar({
         </div>
       )}
       {showPopularPosts && <PopularPostsWidget />}
-      <AdsenseSidebar blockId={adsenseBlockId} />
+      {showAdsense && <AdsenseSidebar blockId={adsenseBlockId} />}
       {showProjeto && <ProjetoWidget />}
       {showNewsletter && <NewsletterWidget />}
 
