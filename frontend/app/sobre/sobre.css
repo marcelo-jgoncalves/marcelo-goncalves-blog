@@ -6,7 +6,7 @@
 ═══════════════════════════════════════════════════ */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  padding: var(--space-5) 0 0;   /* sem padding-bottom — foto toca a borda */
+  padding: var(--space-4) 0 0;   /* 32px topo; sem padding-bottom */
   margin-block: 0;
   overflow: hidden;
 }
@@ -41,7 +41,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: left top;   /* preserva lado esquerdo da foto */
   display: block;
 }
 
@@ -92,7 +92,8 @@
 
 .sobre-hero-text {
   text-align: center;
-  padding-bottom: var(--space-5); /* ritmo vertical — ícones distantes da base */
+  align-self: center;            /* centraliza verticalmente na linha do grid */
+  padding-bottom: var(--space-4); /* 32px — ritmo vertical nos ícones sociais */
 }
 
 .sobre-hero-name {
