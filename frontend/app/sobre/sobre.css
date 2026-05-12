@@ -218,9 +218,10 @@
   padding: 0;
 }
 
-/* Cite simétrico — linha antes e depois do nome */
+/* Cite simétrico — linha antes e depois do nome, forçado para nova linha */
 .sobre-differential cite {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   margin-top: var(--space-3);
