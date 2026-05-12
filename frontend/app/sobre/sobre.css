@@ -38,8 +38,6 @@
 
 @media (min-width: 1024px) {
   .sobre-content {
-    /* 32px entre coluna e sidebar — padrão do projeto */
-    gap: var(--space-4);
     padding-top: var(--space-5);
     padding-bottom: 0;
   }

@@ -167,7 +167,7 @@ img {
 @media (min-width: 1024px) {
   .page-layout {
     grid-template-columns: 1fr 300px;
-    gap: var(--space-6);
+    gap: var(--space-4);
     padding: var(--space-6) 0;
   }
 }

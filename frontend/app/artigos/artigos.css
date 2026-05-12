@@ -70,10 +70,6 @@
 }
 
 @media (min-width: 1024px) {
-  .op-artigos-layout-root .page-layout {
-    gap: var(--space-4);
-  }
-
   /* Remove o padding-bottom da sidebar para que o último widget alinhe
      com o último card do feed — o gap do flex já controla o ritmo interno */
   .op-artigos-layout-root .blog-sidebar {
