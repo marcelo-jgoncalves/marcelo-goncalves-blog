@@ -25,7 +25,7 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
         <div className="sobre-hero__text">
           <h1 className="sobre-hero__name">
             Marcelo <span className="accent">Gonçalves</span> é<br />
-            Engenheiro de Cloud Especialista em AWS &amp; Educador
+            Engenheiro Cloud Especialista em AWS &amp; Educador
           </h1>
 
           <div className="sobre-hero__social">

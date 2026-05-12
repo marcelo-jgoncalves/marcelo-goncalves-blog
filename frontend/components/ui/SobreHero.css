@@ -104,7 +104,7 @@
   .sobre-hero__portrait {
     display: block;
     position: absolute;
-    left: var(--space-2);
+    left: calc(var(--space-2) - 59px);
     top: 8px;
     bottom: 0;
   }
