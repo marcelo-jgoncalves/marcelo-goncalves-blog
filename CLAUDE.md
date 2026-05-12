@@ -120,7 +120,7 @@ marcelo-goncalves-blog/
 | `--font-sans` | Inter | Body, parágrafos |
 | `--font-mono` | JetBrains Mono | Código |
 
-**Nunca** usar `Space Grotesk` — foi removido.
+**Nunca** usar `Space Grotesk` — foi removido do frontend e do admin.
 
 ### Paleta
 ```css
@@ -134,12 +134,26 @@ marcelo-goncalves-blog/
 --border-color: #E2E8F0
 ```
 
-**Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos.  
+**Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos do frontend e do admin.  
 Referência completa: `docs/design-system/design-reference.md`.  
 Layout de referência da home: `docs/design-system/home-layout-description.md`.
 
 **Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseSidebar.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
+
+### Escala tipográfica (8 tokens — base 18px frontend / 16px admin)
+```css
+--text-xs:   0.75rem;   /* tags, badges, meta tiny */
+--text-sm:   0.875rem;  /* meta, código, eyebrow, copyright */
+--text-base: 1rem;      /* corpo (body padrão) */
+--text-lg:   1.125rem;  /* lead, subtítulo, nav, input, descrições */
+--text-xl:   1.5rem;    /* h4, card titles, widget headers, TOC */
+--text-2xl:  2rem;      /* h3, h2 editorial (post, sobre, serviços) */
+--text-3xl:  2.8rem;    /* h1 heroes — tamanho preferido do projeto */
+--text-4xl:  3.5rem;    /* h1 artigo (máximo editorial) */
+```
+**Nunca** usar valores de font-size ad-hoc — sempre um dos tokens acima.  
+Exceção permitida: `14px` para código inline (sub-pixel preciso) e `0.9375rem` para código desktop.
 
 ### Escala de espaçamento (7 tokens, 8px grid — ritmo-vertical-contract.md)
 ```css
@@ -186,7 +200,7 @@ Gonçalves  → color: var(--accent)   — DM Sans 700
 | `backend/` | Jest | `npm test` | 96 testes |
 | `frontend/` | Jest | `npm test` | 45 testes |
 | `admin/` | Vitest | `npm test` | 16 testes |
-| `frontend/` | Playwright | `npm run test:e2e` | 7 testes (smoke + home-layout) |
+| `frontend/` | Playwright | `npm run test:e2e` | 37 testes (smoke, home-layout, post, artigos, busca, categoria) |
 
 - `tsconfig.test.json` separado no backend com `"types": ["jest"]`.
 - `npm audit --audit-level=high` roda em cada job de CI. Zero high/critical tolerado.
@@ -243,10 +257,12 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 
 ### Notas de pipeline (não-negociável)
 - **Static assets S3 sync sem `--delete`** — arquivos Next.js têm hash de conteúdo; `--delete` causa race condition com 403 pós-deploy. Manter apenas no admin SPA.
+- **Cache-Control `immutable` em `public/`** — o S3 sync aplica `max-age=31536000, immutable` em todos os assets. Correto para `_next/static/**` (hashed), mas arquivos de `public/` (ex: imagens sem hash no nome) ficam cacheados no browser por 1 ano. Workaround imediato: hard-refresh (Ctrl+Shift+R). Fix pendente (#20 backlog): separar o sync em dois passos.
 - **Semgrep** (`security.yml`) roda em todo push para `develop`/`main` — não remover.
 - **Dependabot** abre PRs toda segunda — revisar e mergear regularmente para manter deps atualizadas.
 
 ### Admin CMS — padrões obrigatórios
+- **Design system unificado:** admin usa os mesmos tokens do frontend — `--accent`, `--dark-900`, `--slate-*`, `--border-color`, `--font-display:'DM Sans'`, `--font-sans:'Inter'`, `--text-*`, `--space-*`. Definidos em `admin/src/assets/main.css`. **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` ou Space Grotesk no admin.
 - **Editor rich text:** usar `RichTextEditor` (Tiptap, já instalado em `admin/src/components/tiptap/`). `QuillEditor` (`@vueup/vue-quill`) **não está instalado** — não usar.
 - **Toasts:** todos os feedbacks de ação via `showToast(msg, type)` — nunca `alert()` ou `window.confirm()` (exceto para guards de navegação).
 - **Dirty state:** formulários de edição devem rastrear mudanças com `JSON.stringify` snapshot + `onBeforeRouteLeave` guard.
