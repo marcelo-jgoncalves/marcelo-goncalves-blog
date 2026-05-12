@@ -1,7 +1,7 @@
 /*frontend/app/layout.tsx */
 
 import type { Metadata } from "next";
-import { Inter, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -18,7 +18,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const interDisplay = Inter({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
@@ -133,7 +133,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+        className={`${inter.variable} ${interDisplay.variable} ${jetbrainsMono.variable}`}
         suppressHydrationWarning={true}
       >
         <SkipLink />

@@ -10,7 +10,6 @@ import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import CategoryCard from '@/components/ui/CategoryCard';
 import HomeSidebar from '@/components/ui/HomeSidebar';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import PageHero from '@/components/ui/PageHero';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
@@ -89,13 +88,40 @@ export default function Home() {
   return (
     <>
       {/* 1. Hero */}
-      <PageHero>
-        <h1 className="hero-title">
-          Desvendando a{' '}
-          <span className="accent">Inteligência Artificial</span>
-          , AWS e DevOps detalhe por detalhe
-        </h1>
-      </PageHero>
+      <section className="home-hero">
+        <div className="container home-hero__grid">
+
+          <div className="home-hero__text">
+            <p className="home-hero__eyebrow">Arquitetura AWS • Serverless • Cloud</p>
+            <h1 className="home-hero__title">
+              Desvendando a{' '}
+              <span className="accent">Inteligência Artificial</span>
+              , AWS e DevOps detalhe por detalhe
+            </h1>
+            <p className="home-hero__desc">
+              Conteúdo técnico, experiências reais e estratégias práticas para construir
+              infraestrutura moderna, segura e escalável na AWS.
+            </p>
+            <div className="home-hero__actions">
+              <Link href="/artigos" className="home-hero__btn-primary">Explorar Artigos</Link>
+              <Link href="/servicos" className="home-hero__btn-secondary">Ver Serviços</Link>
+            </div>
+          </div>
+
+          <div className="home-hero__card">
+            <p className="home-hero__card-label">🚀 O Projeto</p>
+            <h3>Blog construído quase 100% com IA na AWS</h3>
+            <p>
+              Do zero ao deploy: Lambda, DynamoDB, CloudFront, Next.js e Terraform —
+              tudo documentado em tempo real.
+            </p>
+            <Link href="/o-projeto" className="home-hero__card-link">
+              Acompanhe a jornada →
+            </Link>
+          </div>
+
+        </div>
+      </section>
 
       {/* 2. Grid principal + sidebar */}
       <div className="home-layout container">

@@ -121,19 +121,38 @@
     font-size: var(--text-lg);
     color: var(--dark-900);
     text-decoration: none;
-    /* Zero repaint: Animando apenas o que muda na GPU */
-    transition: color 0.2s ease, transform 0.2s ease; 
+    position: relative;
+    transition: color 0.25s ease;
   }
 
-  /* Blindagem contra Sticky Hover em tablets/monitores touch */
+  /* Underline animado — expande da esquerda no hover */
+  .op-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
   @media (hover: hover) {
     .op-nav-link:hover {
       color: var(--accent);
-      transform: translateY(-1px); /* O pulinho elegante está de volta */
+    }
+
+    .op-nav-link:hover::after {
+      width: 100%;
     }
   }
 
   .op-nav-link.op-active {
     color: var(--accent);
+  }
+
+  .op-nav-link.op-active::after {
+    width: 100%;
   }
 }
