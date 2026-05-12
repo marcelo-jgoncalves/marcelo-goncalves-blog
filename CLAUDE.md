@@ -281,6 +281,8 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 - **`Pagination`** — componente único em artigos e o-projeto. Deve ficar **fora** do grid de duas colunas (entre `</grid>` e `<NewsletterCTA />`). Botão "← Anterior" funciona sem `totalPages` via cursor stack. "Página X de Y" só aparece quando `totalPages` é passado.
 - **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget.
 - **`home-main` (flex column)** — usar `gap: var(--space-4)` + `margin: 0` nos banners. NUNCA combinar gap + margin nos banners — causa duplo espaçamento e margin collapsing em seções vazias.
+- **`FullwidthCallout`** — componente único para CTAs fullwidth. Props: `variant` (light/gradient/newsletter/dark), `border`, `size` (md/lg), `icon`, `iconVariant` (light/dark), `title: ReactNode`, `description`, `href`/`ctaText`/`ctaVariant`. `SuperDestaque` e `PageCTA` são thin wrappers sobre ele. **Nunca criar nova seção CTA fullwidth manualmente** — usar este componente.
+- **Grid de 2 colunas (sidebar)** — padrão obrigatório em todas as páginas: `grid-template-columns: 1fr 300px; gap: var(--space-4)`. **Nunca usar `minmax`** para a coluna da sidebar — causa largura inconsistente em telas largas.
 
 ### Próximas entregas técnicas
 9. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
