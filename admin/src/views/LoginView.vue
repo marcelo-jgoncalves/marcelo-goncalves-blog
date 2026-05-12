@@ -54,21 +54,23 @@ async function handleLogin() {
 <style scoped>
 .login-container {
   display: flex; justify-content: center; align-items: center;
-  height: 100vh; background-color: #f8fafc;
+  height: 100vh; background-color: var(--slate-50);
 }
 .login-box {
-  background: white; padding: 40px; border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px;
+  background: white; padding: var(--space-5); border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08); width: 100%; max-width: 400px;
 }
-h2 { text-align: center; color: #232F3E; margin-bottom: 20px; }
-.form-group { margin-bottom: 15px; }
-label { display: block; margin-bottom: 5px; color: #555; }
-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+h2 { text-align: center; color: var(--dark-900); margin-bottom: var(--space-3); }
+.form-group { margin-bottom: var(--space-2); }
+label { display: block; margin-bottom: var(--space-1); color: var(--dark-700); font-size: var(--text-sm); }
+input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: var(--text-base); }
+input:focus { outline: none; border-color: var(--accent); }
 .btn-primary {
-  width: 100%; padding: 12px; background-color: #FF9900;
-  color: #232F3E; border: none; border-radius: 4px;
-  font-weight: bold; cursor: pointer;
+  width: 100%; padding: 12px; background-color: var(--accent);
+  color: white; border: none; border-radius: 4px;
+  font-weight: 700; cursor: pointer; font-family: var(--font-display);
+  font-size: var(--text-base); transition: background-color 0.2s;
 }
-.btn-primary:hover { background-color: #e68a00; }
-.error { color: red; font-size: 0.9rem; text-align: center; margin-bottom: 10px; }
+.btn-primary:hover { background-color: var(--accent-hover); }
+.error { color: #c0392b; font-size: var(--text-sm); text-align: center; margin-bottom: var(--space-1); }
 </style>

@@ -1,20 +1,55 @@
 /* admin/src/assets/main.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import '@fortawesome/fontawesome-free/css/all.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-:root {
-  --aws-dark: #232F3E;
-  --aws-orange: #FF9900;
-  --aws-orange-hover: #e68a00;
-  --gray-100: #f5f5f5;
-  --gray-800: #2D3748;
-  --blue-600: #3182CE;
-  --gray-light: #f8fafc;
-  --gray-border: #e0e0e0;
-  --gray-text: #555;
 
-  --font-body: 'Inter', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
+:root {
+  /* ── Brand ── */
+  --accent:       #3B5F8A;
+  --accent-hover: #2D4F76;
+  --accent-light: #EBF1F8;
+  --accent-dark:  #1E3A57;
+
+  /* ── Dark scale ── */
+  --dark-900: #111827;
+  --dark-800: #1F2937;
+  --dark-700: #374151;
+  --dark-600: #475569;
+
+  /* ── Slate neutrals ── */
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+
+  /* ── Surface ── */
+  --border-color: #E2E8F0;
+  --blue-600:     #3182CE;
+
+  /* ── Fonts ── */
+  --font-sans:    'Inter', sans-serif;
+  --font-display: 'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* ── Type scale — base 16px (admin UI) ── */
+  --text-xs:   0.75rem;   /* 12px */
+  --text-sm:   0.875rem;  /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg:   1.125rem;  /* 18px */
+  --text-xl:   1.5rem;    /* 24px */
+  --text-2xl:  2rem;      /* 32px */
+  --text-3xl:  2.5rem;    /* 40px */
+  --text-4xl:  3rem;      /* 48px */
+
+  /* ── Spacing scale — 8px grid ── */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
 }
 
 * {
@@ -24,16 +59,16 @@
 }
 
 body {
-  font-family: var(--font-body);
-  color: var(--gray-800);
-  background-color: var(--gray-light);
+  font-family: var(--font-sans);
+  color: var(--dark-700);
+  background-color: var(--slate-50);
   line-height: 1.6;
   font-size: 16px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  color: var(--aws-dark);
+  font-family: var(--font-display);
+  color: var(--dark-900);
 }
 
 a {

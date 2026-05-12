@@ -528,7 +528,7 @@ defineExpose({
 <style scoped>
 /* ===== Layout ===== */
 .tiptap-editor-container {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   background: white;
   display: flex;
@@ -536,11 +536,11 @@ defineExpose({
 }
 
 .tiptap-toolbar {
-  padding: 8px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: var(--space-1);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
-  gap: 8px;
-  background: #f9f9f9;
+  gap: var(--space-1);
+  background: var(--slate-50);
   border-radius: 8px 8px 0 0;
   flex-wrap: wrap;
 }
@@ -550,7 +550,7 @@ defineExpose({
   align-items: center;
   justify-content: center;
   padding: 4px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   background: white;
   border-radius: 4px;
   cursor: pointer;
@@ -559,14 +559,14 @@ defineExpose({
 }
 
 .tiptap-toolbar button.is-active {
-  background: #3182ce;
+  background: var(--accent);
   color: white;
-  border-color: #3182ce;
+  border-color: var(--accent);
 }
 
 .divider {
   width: 1px;
-  background: #ddd;
+  background: var(--border-color);
   margin: 0 4px;
 }
 
@@ -579,10 +579,8 @@ defineExpose({
   padding: 0.2rem 0.4rem;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   gap: 0.2rem;
-  
-  /* CRUCIAL: Impede que os botões caiam para a linha de baixo ou vazem */
   white-space: nowrap;
   flex-wrap: nowrap;
 }
@@ -591,8 +589,8 @@ defineExpose({
 .floating-menu-card button {
   border: none;
   background: transparent;
-  color: #4a5568;
-  font-size: 0.9rem;
+  color: var(--dark-600);
+  font-size: var(--text-sm);
   font-weight: 600;
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
@@ -600,25 +598,25 @@ defineExpose({
   display: flex;
   align-items: center;
   transition: all 0.2s;
-  line-height: 1; /* Alinhamento vertical preciso */
+  line-height: 1;
 }
 
 .bubble-menu button:hover,
 .floating-menu-card button:hover {
-  background-color: #edf2f7;
-  color: #2d3748;
+  background-color: var(--slate-100);
+  color: var(--dark-800);
 }
 
 .bubble-menu button.is-active,
 .floating-menu-card button.is-active {
-  background-color: #ebf8ff;
-  color: #3182ce;
+  background-color: var(--accent-light);
+  color: var(--accent);
 }
 
 .menu-divider {
   width: 1px;
   height: 1.25rem;
-  background-color: #cbd5e0;
+  background-color: var(--slate-300);
   margin: 0 0.3rem;
   display: inline-block;
 }
@@ -633,9 +631,9 @@ defineExpose({
 
 /* ===== Loading State ===== */
 .tiptap-loading {
-  padding: 40px;
+  padding: var(--space-5);
   text-align: center;
-  color: #666;
+  color: var(--dark-600);
   font-style: italic;
 }
 
@@ -648,9 +646,9 @@ defineExpose({
 
 /* ===== Code Blocks (Mantido conforme original) ===== */
 :deep(.ProseMirror pre) {
-  background: #232f3e; /* Isso garante o fundo escuro */
+  background: var(--dark-900);
   color: #e2e8f0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   padding: 1.5rem;
   border-radius: 8px;
   margin: 2rem 0;
@@ -659,13 +657,13 @@ defineExpose({
 
 /* ===== Blockquote (Mantido) ===== */
 :deep(.ProseMirror blockquote) {
-  border-left: 5px solid #3182ce;
-  background-color: #f8fafc;
+  border-left: 5px solid var(--accent);
+  background-color: var(--slate-50);
   padding: 1.25rem 1.75rem;
   margin: 1.5rem 0;
   border-radius: 0 8px 8px 0;
   font-style: italic;
-  color: #232f3e;
+  color: var(--dark-900);
 }
 
 /* ===== Horizontal Rule (Divider) ===== */
@@ -675,20 +673,20 @@ defineExpose({
 }
 
 :deep(.ProseMirror hr.ProseMirror-selectednode) {
-  outline: 2px solid #3182ce;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 /* ===== Links ===== */
 :deep(.ProseMirror .content-link) {
-  color: var(--blue-600);
+  color: var(--accent);
   text-decoration: underline;
   font-weight: 500;
   cursor: pointer;
 }
 
 :deep(.ProseMirror .content-link:hover) {
-  color: var(--aws-dark);
+  color: var(--dark-900);
 }
 
 /* ===== Lists ===== */
@@ -716,7 +714,7 @@ defineExpose({
   top: 0.6em;
   width: 8px;
   height: 8px;
-  background-color: #ff9900;
+  background-color: var(--accent);
   border-radius: 50%;
 }
 
@@ -732,7 +730,7 @@ defineExpose({
 }
 
 :deep(.ProseMirror ol li::marker) {
-  color: #ff9900;
+  color: var(--accent);
   font-weight: bold;
 }
 
@@ -747,21 +745,21 @@ defineExpose({
 
 :deep(.callout-warning) {
   background-color: #fffaf0 !important;
-  border-left-color: #ff9900 !important;
+  border-left-color: var(--accent) !important;
   color: #744210 !important;
 }
 
 :deep(.callout-info) {
-  background-color: #ebf8ff !important;
-  border-left-color: #3182ce !important;
-  color: #2c5282 !important;
+  background-color: var(--accent-light) !important;
+  border-left-color: var(--accent) !important;
+  color: var(--accent-dark) !important;
 }
 
 /* ===== Inline Code Styling ===== */
 :deep(.inline-code) {
-  background-color: #edf2f7;
+  background-color: var(--slate-100);
   color: #d53f8c;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85em;
   padding: 0.2em 0.4em;
   border-radius: 4px;
@@ -786,7 +784,7 @@ defineExpose({
 .bubble-menu-table {
   display: flex;
   align-items: center;
-  background-color: #2d3748; /* Fundo escuro (Slate 800) */
+  background-color: var(--dark-800);
   padding: 0.3rem 0.5rem;
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
@@ -809,7 +807,7 @@ defineExpose({
   justify-content: center;
   background: transparent;
   border: none;
-  color: #cbd5e0; /* Cinza claro */
+  color: var(--slate-300);
   padding: 6px;
   border-radius: 4px;
   cursor: pointer;
@@ -819,7 +817,7 @@ defineExpose({
 }
 
 .bubble-menu-table button:hover {
-  background-color: #4a5568; /* Hover mais claro */
+  background-color: var(--dark-600);
   color: #fff;
 }
 
@@ -850,7 +848,7 @@ defineExpose({
 .bubble-menu-table .menu-divider {
   width: 1px;
   height: 20px;
-  background-color: #4a5568; /* Cinza médio */
+  background-color: var(--dark-600);
   margin: 0 2px;
 }
 
@@ -883,12 +881,12 @@ defineExpose({
   min-height: 0 !important;
   padding: 8px 10px !important;
   
-  border: 1px solid #ced4da; /* Borda visível no editor */
+  border: 1px solid var(--border-color);
 }
 
 /* Header estilizado */
 :deep(.ProseMirror table th) {
-  background-color: #f8f9fa;
+  background-color: var(--slate-50);
   font-weight: 600;
   text-align: left;
 }

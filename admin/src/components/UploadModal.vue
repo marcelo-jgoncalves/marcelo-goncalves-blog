@@ -81,13 +81,16 @@ async function handleUpload() {
   background: rgba(0,0,0,0.5); z-index: 1000;
   display: flex; justify-content: center; align-items: center;
 }
-.modal-box { background: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 500px; }
-.modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-.form-group { margin-bottom: 15px; }
-.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.error { color: red; font-size: 0.9rem; }
+.modal-box { background: white; padding: var(--space-3); border-radius: 8px; width: 90%; max-width: 500px; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); }
+.modal-header h2 { font-size: var(--text-xl); color: var(--dark-900); margin: 0; }
+.close-btn { background: none; border: none; font-size: var(--text-xl); cursor: pointer; color: var(--slate-400); }
+.form-group { margin-bottom: var(--space-2); }
+.modal-footer { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-3); }
+.error { color: #c0392b; font-size: var(--text-sm); }
 
-.btn-primary { background: var(--aws-orange); border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-.btn-secondary { background: #e0e0e0; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+.btn-primary { background: var(--accent); color: white; border: none; padding: var(--space-1) var(--space-3); border-radius: 4px; font-weight: 700; cursor: pointer; font-family: var(--font-display); transition: background-color 0.2s; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--slate-100); border: 1px solid var(--border-color); padding: var(--space-1) var(--space-3); border-radius: 4px; cursor: pointer; color: var(--dark-700); transition: background-color 0.2s; }
+.btn-secondary:hover { background: var(--slate-200); }
 </style>

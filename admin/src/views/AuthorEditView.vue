@@ -139,30 +139,33 @@ function onImageUploaded(relativePath: string) {
 </template>
 
 <style scoped>
-.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.editor-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-.form-group { margin-bottom: 20px; }
-label { display: block; font-weight: 600; margin-bottom: 5px; }
-input { width: 100%; padding: 10px; border: 1px solid var(--gray-border); border-radius: 4px; }
-.panel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.panel h3 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
+.editor-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
+.form-group { margin-bottom: var(--space-3); }
+label { display: block; font-weight: 600; margin-bottom: var(--space-1); font-size: var(--text-sm); color: var(--dark-900); }
+input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: var(--text-base); }
+input:focus { outline: none; border-color: var(--accent); }
+.panel { background: white; padding: var(--space-3); border-radius: 8px; margin-bottom: var(--space-3); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.panel h3 { border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-1); margin-bottom: var(--space-2); font-size: var(--text-lg); }
 
 .avatar-preview {
   width: 150px; height: 150px; margin: 0 auto;
   border-radius: 50%; overflow: hidden;
-  background: #f0f0f0; border: 4px solid white;
+  background: var(--slate-100); border: 4px solid white;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   display: flex; align-items: center; justify-content: center;
 }
 .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
-.avatar-placeholder { font-size: 3rem; color: #ccc; }
+.avatar-placeholder { font-size: var(--text-4xl); color: var(--slate-300); }
 
-.btn-primary { background: var(--aws-orange); border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-.btn-outline { background: white; border: 1px solid #ddd; padding: 8px 15px; width: 100%; border-radius: 4px; cursor: pointer; }
+.btn-primary { background: var(--accent); color: white; border: none; padding: var(--space-1) var(--space-3); border-radius: 4px; font-weight: 700; cursor: pointer; font-family: var(--font-display); transition: background-color 0.2s; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-outline { background: white; border: 1px solid var(--border-color); padding: 8px 15px; width: 100%; border-radius: 4px; cursor: pointer; color: var(--dark-700); transition: border-color 0.2s; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
 .toast {
-  position: fixed; top: 20px; right: 20px;
-  padding: 14px 20px; border-radius: 6px; font-weight: 600; color: #fff;
+  position: fixed; top: var(--space-3); right: var(--space-3);
+  padding: var(--space-2) var(--space-3); border-radius: 6px; font-weight: 600; color: #fff;
   z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .toast--success { background: #2d6a4f; }

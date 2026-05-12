@@ -68,61 +68,61 @@ async function handleLogout() {
 .admin-layout {
   display: flex;
   height: 100vh;
-  background-color: var(--gray-light);
+  background-color: var(--slate-50);
 }
 
 /* Sidebar */
 .sidebar {
   width: 260px;
-  background-color: var(--aws-dark);
+  background-color: var(--dark-900);
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: var(--space-3);
   flex-shrink: 0;
 }
 
 .sidebar-logo {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
   font-weight: 700;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-5);
   text-align: center;
-  padding-bottom: 20px;
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.sidebar-logo span { color: var(--aws-orange); }
-.sidebar-logo small { font-size: 0.8rem; opacity: 0.7; font-weight: 400; display: block; margin-top: 5px; }
+.sidebar-logo span { color: var(--accent-light); }
+.sidebar-logo small { font-size: var(--text-sm); opacity: 0.7; font-weight: 400; display: block; margin-top: var(--space-1); }
 
 .sidebar-nav { list-style: none; }
-.sidebar-nav li { margin-bottom: 10px; }
+.sidebar-nav li { margin-bottom: var(--space-1); }
 
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
-  color: #cbd5e0;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
+  color: var(--slate-300);
   text-decoration: none;
   border-radius: 6px;
   transition: all 0.2s;
   font-weight: 500;
 }
-.nav-link:hover { background-color: rgba(255,255,255,0.1); color: white; }
-.nav-link.active { background-color: var(--aws-orange); color: var(--aws-dark); font-weight: 700; }
+.nav-link:hover { background-color: rgba(255,255,255,0.08); color: white; }
+.nav-link.active { background-color: var(--accent); color: white; font-weight: 700; }
 .nav-link i { width: 20px; text-align: center; }
 
-.sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+.sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-3); }
 .btn-logout {
   background: none; border: none; color: #fc8181; cursor: pointer;
-  display: flex; align-items: center; gap: 10px; font-size: 1rem; padding: 10px; width: 100%;
+  display: flex; align-items: center; gap: var(--space-1); font-size: var(--text-base); padding: var(--space-1); width: 100%;
 }
 .btn-logout:hover { color: #feb2b2; }
 
 /* Main Content */
 .main-content {
   flex-grow: 1;
-  padding: 40px;
+  padding: var(--space-5);
   overflow-y: auto;
 }
 </style>
