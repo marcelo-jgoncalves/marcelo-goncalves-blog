@@ -114,9 +114,12 @@ export default function ServicosPage() {
         </div>
       </div>
 
-      {/* 3. Prova social — fullwidth, fundo azul profundo */}
+      {/* 3. Prova social — fullwidth, estilo ProjetoWidget */}
       <section className="service-proof-fullwidth">
         <div className="service-proof-fullwidth__inner">
+          <div className="service-proof-fullwidth__icon" aria-hidden="true">
+            <i className="fas fa-layer-group" />
+          </div>
           <h2>
             Não acredite apenas na minha palavra. Veja o{' '}
             <em className="accent">making of</em>.
