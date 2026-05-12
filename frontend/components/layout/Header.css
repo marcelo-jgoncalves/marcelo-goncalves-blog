@@ -117,7 +117,7 @@
 
   .op-nav-link {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 500;
     font-size: var(--text-lg);
     color: var(--dark-900);
     text-decoration: none;
