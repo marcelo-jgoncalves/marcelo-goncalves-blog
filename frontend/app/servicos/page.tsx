@@ -1,8 +1,8 @@
 import './servicos.css';
-import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import PageHero from '@/components/ui/PageHero';
 import PageCTA from '@/components/ui/PageCTA';
+import FullwidthCallout from '@/components/ui/FullwidthCallout';
 
 export const revalidate = 3600;
 
@@ -114,25 +114,17 @@ export default function ServicosPage() {
         </div>
       </div>
 
-      {/* 3. Prova social — fullwidth, estilo ProjetoWidget */}
-      <section className="service-proof-fullwidth">
-        <div className="service-proof-fullwidth__inner">
-          <div className="service-proof-fullwidth__icon" aria-hidden="true">
-            <i className="fas fa-layer-group" />
-          </div>
-          <h2>
-            Não acredite apenas na minha palavra. Veja o{' '}
-            <em className="accent">making of</em>.
-          </h2>
-          <p>
-            Este blog, da infraestrutura serverless ao frontend Next.js, foi construído
-            com as exatas metodologias que ofereço.
-          </p>
-          <Link href="/o-projeto" className="service-proof-btn">
-            Conheça &quot;O Projeto&quot; →
-          </Link>
-        </div>
-      </section>
+      {/* 3. Prova social — estilo ProjetoWidget */}
+      <FullwidthCallout
+        variant="gradient"
+        border
+        icon="fa-layer-group"
+        iconVariant="dark"
+        title={<>Não acredite apenas na minha palavra. Veja o <em className="accent">making of</em>.</>}
+        description="Este blog, da infraestrutura serverless ao frontend Next.js, foi construído com as exatas metodologias que ofereço."
+        href="/o-projeto"
+        ctaText='Conheça "O Projeto" →'
+      />
 
       {/* 4. Serviços 5–8 */}
       <div className="services-content">
