@@ -1,6 +1,7 @@
 /* frontend/app/artigos/page.tsx */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
@@ -81,7 +82,15 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
       {/* 1. HERO */}
       <PageHero as="header">
+        <p className="op-hero-eyebrow">Biblioteca de Conteúdo</p>
+
         <h1 className="op-hero-title">Explore Nossos Artigos</h1>
+
+        <p className="op-hero-desc">
+          Conteúdo prático sobre AWS, Serverless, DevOps e Arquitetura de Nuvem
+          para profissionais que querem construir soluções modernas.
+        </p>
+
         <form className="op-search-form" action="/busca" method="get" role="search">
           <input
             type="search"
@@ -98,6 +107,14 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             </svg>
           </button>
         </form>
+
+        <nav className="op-hero-tags" aria-label="Filtrar por categoria">
+          <Link href="/categoria/inteligencia-artificial" className="op-hero-tag">IA Generativa</Link>
+          <Link href="/categoria/cloud-computing"         className="op-hero-tag">AWS & Cloud</Link>
+          <Link href="/categoria/devops-automacao"        className="op-hero-tag">DevOps</Link>
+          <Link href="/categoria/seguranca-na-nuvem"      className="op-hero-tag">Segurança</Link>
+          <Link href="/categoria/engenharia-de-software"  className="op-hero-tag">Engenharia</Link>
+        </nav>
       </PageHero>
 
       {/* 2. MAIN LAYOUT */}
