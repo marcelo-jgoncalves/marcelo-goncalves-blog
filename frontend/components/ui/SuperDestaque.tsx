@@ -19,7 +19,11 @@ export default function SuperDestaque({ title, description }: SuperDestaqueProps
     <section className="super-destaque">
       <div className="container">
         <div className="super-destaque-inner">
-          
+
+          <div className="super-destaque__icon" aria-hidden="true">
+            <i className="fas fa-envelope" />
+          </div>
+
           <h2>
             {/* Renderiza o título usando dangerouslySetInnerHTML para aplicar o <span> highlight */}
             <span dangerouslySetInnerHTML={{ __html: title || defaultTitle }} />
