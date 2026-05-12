@@ -1,83 +1,42 @@
 /* frontend/components/ui/SobreHero.css */
 
+/* ── Hero: section fullwidth, foto posicionada absolutamente à esquerda ── */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   margin-block: 0;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
 }
 
-/* ── LAYOUT: foto em fluxo normal + texto absolutamente centralizado ── */
-.sobre-hero__layout {
-  position: relative;
-  display: flex;
-  flex-direction: column;     /* mobile: empilhado */
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* ── FOTO ── */
+/* ── FOTO — absolute, flush left, cobre toda a altura da hero ── */
 .sobre-hero__portrait {
-  width: 100%;                /* mobile: largura total */
-  flex-shrink: 0;
-  background: transparent;
-  overflow: hidden;
+  display: none; /* mobile: oculta — hero é só texto, como outras páginas */
 }
 
-.sobre-hero__portrait img {
-  width: 100%;
-  height: 280px;              /* mobile: altura limitada */
-  display: block;
-  object-fit: cover;
-  object-position: center top;
-}
-
-/* ── TEXTO (mobile: bloco normal) ── */
+/* ── TEXTO — fluxo normal, centralizado na largura total ── */
 .sobre-hero__text {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: var(--space-4) var(--space-3);
   gap: var(--space-4);
-}
-
-/* ── DESKTOP ── */
-@media (min-width: 768px) {
-  .sobre-hero__layout {
-    flex-direction: row;      /* foto à esquerda */
-  }
-
-  /* Foto: 320px de largura, pequeno gap no topo, vai até o fim */
-  .sobre-hero__portrait {
-    width: 320px;
-    padding-top: 8px;         /* gap mínimo — sem encostar na hero */
-    overflow: visible;        /* sem clip no topo */
-  }
-
-  .sobre-hero__portrait img {
-    width: 100%;
-    height: auto;             /* altura natural — determina a hero, sem crop */
-    object-fit: unset;
-    object-position: unset;
-  }
-
-  /* Texto: absolutamente posicionado no espaço à direita da foto */
-  .sobre-hero__text {
-    position: absolute;
-    left: 320px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    justify-content: center;  /* centralizado verticalmente */
-    padding: var(--space-5) var(--space-5);
-    gap: var(--space-4);
-  }
+  padding: 0 var(--space-3);
+  position: relative;
+  z-index: 1;
 }
 
 /* ── TÍTULO ── */
 .sobre-hero__name {
   font-family: var(--font-display);
-  font-size: clamp(var(--text-2xl), 3.5vw, var(--text-3xl));
+  font-size: var(--text-2xl);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -90,9 +49,8 @@
   display: flex;
   justify-content: center;
   gap: var(--space-2);
-  padding-top: var(--space-3);        /* var(--space-3) = 24px */
+  padding-top: var(--space-3);
   border-top: 1px solid var(--border-color);
-  /* Linha centralizada com largura proporcional */
   width: 100%;
   max-width: 220px;
 }
@@ -117,5 +75,37 @@
     background: var(--accent);
     color: white;
     transform: translateY(-2px);
+  }
+}
+
+/* ── DESKTOP ── */
+@media (min-width: 768px) {
+  .sobre-hero {
+    min-height: 480px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Foto: absolute, colada à esquerda da section (fullwidth) */
+  .sobre-hero__portrait {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 320px;
+  }
+
+  .sobre-hero__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  /* Título desktop: mesmo token da PageHero */
+  .sobre-hero__name {
+    font-size: var(--text-3xl);
   }
 }
