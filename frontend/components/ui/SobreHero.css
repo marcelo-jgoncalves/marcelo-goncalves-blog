@@ -1,25 +1,36 @@
 /* frontend/components/ui/SobreHero.css */
 
-/* ── Hero: section fullwidth, foto posicionada absolutamente à esquerda ── */
 .sobre-hero {
   background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  position: relative;
+  overflow: hidden;
+  margin-block: 0;
+}
+
+/*
+  Container interno: mesmo max-width/padding do page-layout.
+  A foto é posicionada absolutamente aqui — borda esquerda do container
+  = borda esquerda do conteúdo principal da página.
+  O texto flutua centralizado dentro desse container.
+*/
+.sobre-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-2);
   min-height: 320px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin-block: 0;
   padding-top: var(--space-6);
   padding-bottom: var(--space-4);
 }
 
-/* ── FOTO — absolute, flush left, cobre toda a altura da hero ── */
+/* ── FOTO: mobile oculta ── */
 .sobre-hero__portrait {
-  display: none; /* mobile: oculta — hero é só texto, como outras páginas */
+  display: none;
 }
 
-/* ── TEXTO — fluxo normal, centralizado na largura total ── */
+/* ── TEXTO: centralizado no container (= centrado como PageHero) ── */
 .sobre-hero__text {
   width: 100%;
   max-width: 760px;
@@ -28,7 +39,6 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  padding: 0 var(--space-3);
   position: relative;
   z-index: 1;
 }
@@ -80,31 +90,31 @@
 
 /* ── DESKTOP ── */
 @media (min-width: 768px) {
-  .sobre-hero {
+  .sobre-hero__inner {
     min-height: 480px;
     padding-top: 0;
     padding-bottom: 0;
   }
 
-  /* Foto: absolute, colada à esquerda da section (fullwidth) */
+  /*
+    Foto: absoluta, borda esquerda do container (= var(--space-2) = 16px do container edge).
+    height: 100% + width: auto — proporção natural da imagem, sem crop em nenhum lado.
+    top: 8px — pequeno respiro em relação ao topo da hero.
+  */
   .sobre-hero__portrait {
     display: block;
     position: absolute;
-    left: 0;
+    left: var(--space-2);
     top: 8px;
     bottom: 0;
-    width: 320px;
   }
 
   .sobre-hero__portrait img {
-    width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: left top;
+    width: auto;
     display: block;
   }
 
-  /* Título desktop: mesmo token da PageHero */
   .sobre-hero__name {
     font-size: var(--text-3xl);
   }
