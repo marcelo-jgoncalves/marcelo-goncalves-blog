@@ -2,9 +2,9 @@
    Estilo: NewsletterWidget escalado para fullwidth */
 
 .super-destaque {
-  background: white;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--accent-light);
+  border-top: 1px solid rgba(59, 95, 138, 0.2);
+  border-bottom: 1px solid rgba(59, 95, 138, 0.2);
   padding: var(--space-6) var(--space-3);
   text-align: center;
   margin-block: 0;

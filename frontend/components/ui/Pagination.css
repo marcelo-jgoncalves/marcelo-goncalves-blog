@@ -37,6 +37,14 @@
     border-color: var(--accent);
     transform: translateY(-2px);
   }
+
+  /* Botão "Próxima →": hover estilo badge de categoria */
+  a.op-page-number[rel="next"]:hover {
+    background-color: var(--accent-light);
+    color: var(--accent);
+    border-color: rgba(59, 95, 138, 0.2);
+    transform: translateY(-2px);
+  }
 }
 
 .op-page-info {
