@@ -41,8 +41,8 @@
     padding-right: clamp(1.5rem, 5vw, 2rem);
   }
 
-  /* Último widget alinhado visualmente com o último card do timeline */
+  /* Remove padding-bottom para que o último widget alinhe com o último card */
   .op-main-layout > .blog-sidebar {
-    padding-bottom: var(--space-7);
+    padding-bottom: 0;
   }
 }

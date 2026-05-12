@@ -7,7 +7,7 @@
   gap: 8px; /* Ritmo de 8px */
   color: var(--accent);
   font-family: var(--font-display), sans-serif;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   font-weight: 600;
   text-decoration: none;
   line-height: 1.5;
@@ -35,9 +35,3 @@
   }
 }
 
-/* Ajuste Mobile-First: No mobile, garantimos que o toque seja centralizado */
-@media (max-width: 768px) {
-  .read-more-link {
-    font-size: 1rem; /* 16px para preservar hierarquia em telas pequenas */
-  }
-}

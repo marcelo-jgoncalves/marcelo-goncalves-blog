@@ -75,6 +75,11 @@
   margin: 0;
 }
 
+/* .accent global aplica var(--accent) — invisível sobre fundo azul */
+.service-proof-fullwidth .accent {
+  color: white;
+}
+
 .service-proof-fullwidth p {
   color: var(--accent-light);
   font-size: var(--text-lg);
