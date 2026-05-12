@@ -63,18 +63,19 @@
   border: 1px solid rgba(59, 95, 138, 0.1);
 }
 
-.formacao-widget__badge {
-  width: 52px;
-  height: 52px;
-  border-radius: 6px;
-  background: var(--accent-light);
-  border: 1px dashed rgba(59, 95, 138, 0.3);
-  color: var(--accent);
+.formacao-widget__logo-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
+  width: 100%;
+  height: 36px;
+}
+
+.formacao-widget__logo {
+  max-width: 88px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
 }
 
 .formacao-widget__info {

@@ -2,10 +2,10 @@
 import './FormacaoWidget.css';
 
 const FORMACAO = [
-  { icon: 'fa-cloud',          titulo: 'Arquitetura Cloud',      grau: 'Especialização' },
-  { icon: 'fa-graduation-cap', titulo: 'Sistemas de Informação', grau: 'Graduação'      },
-  { icon: 'fa-flask',          titulo: 'Linguística Aplicada',   grau: 'Mestrado'       },
-  { icon: 'fa-book-open',      titulo: 'Licenciatura em Letras', grau: 'Graduação'      },
+  { logo: '/static/logos/estacio-logo.png', instituicao: 'Estácio',             titulo: 'Arquitetura Cloud',      grau: 'Especialização' },
+  { logo: '/static/logos/estacio-logo.png', instituicao: 'Estácio',             titulo: 'Sistemas de Informação', grau: 'Graduação'      },
+  { logo: '/static/logos/potsdam-logo.png', instituicao: 'Universität Potsdam', titulo: 'Linguística Aplicada',   grau: 'Mestrado'       },
+  { logo: '/static/logos/ufmg-logo.png',    instituicao: 'UFMG',                titulo: 'Licenciatura em Letras', grau: 'Graduação'      },
 ];
 
 export default function FormacaoWidget() {
@@ -21,8 +21,12 @@ export default function FormacaoWidget() {
       <ul className="formacao-widget__list" role="list">
         {FORMACAO.map((item) => (
           <li key={item.titulo} className="formacao-widget__item">
-            <div className="formacao-widget__badge" aria-hidden="true">
-              <i className={`fas ${item.icon}`} />
+            <div className="formacao-widget__logo-wrap">
+              <img
+                src={item.logo}
+                alt={item.instituicao}
+                className="formacao-widget__logo"
+              />
             </div>
             <div className="formacao-widget__info">
               <strong>{item.titulo}</strong>
