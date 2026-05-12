@@ -1,7 +1,7 @@
 /* frontend/components/ui/ServiceCallout.css */
 
 .op-service-callout {
-  background-color: #1A2535; /* mesmo azul do bloco diferencial da /sobre */
+  background-color: var(--accent);
   color: #ffffff;
   border-radius: 12px;
   padding: 24px;

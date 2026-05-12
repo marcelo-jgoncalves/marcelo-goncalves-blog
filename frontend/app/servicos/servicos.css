@@ -52,9 +52,7 @@
    ============================================================ */
 /* service-proof-fullwidth — estilo ProjetoWidget escalado para fullwidth */
 .service-proof-fullwidth {
-  background: linear-gradient(150deg, #EBF1F8 0%, #D0E4F2 100%);
-  border-top: 1px solid rgba(59, 95, 138, 0.15);
-  border-bottom: 1px solid rgba(59, 95, 138, 0.15);
+  background-color: var(--accent);
   padding: var(--space-6) 20px;
   min-height: var(--section-min-height);
   text-align: center;
@@ -71,29 +69,29 @@
 
 .service-proof-fullwidth h2 {
   font-size: var(--text-2xl);
-  color: var(--accent-dark);
+  color: white;
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0;
 }
 
 .service-proof-fullwidth p {
-  color: var(--dark-700);
+  color: var(--accent-light);
   font-size: var(--text-lg);
   line-height: 1.6;
   max-width: 580px;
   margin: 0;
 }
 
-/* Botão — mesmo estilo ProjetoWidget */
+/* Botão — branco com texto accent-dark, mesmo padrão do ServiceCallout */
 .service-proof-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 48px;
   padding: 0 var(--space-5);
-  background-color: var(--accent);
-  color: white;
+  background-color: white;
+  color: var(--accent-dark);
   border-radius: 6px;
   font-weight: 700;
   font-family: var(--font-display);
@@ -104,7 +102,7 @@
 
 @media (hover: hover) {
   .service-proof-btn:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--accent-light);
     transform: translateY(-2px);
   }
 }
