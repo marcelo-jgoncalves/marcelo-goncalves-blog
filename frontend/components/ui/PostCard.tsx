@@ -58,7 +58,7 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
       <div className="post-card__content">
 
-        {/* Badge + meta na mesma linha */}
+        {/* Badge + data no topo */}
         <div className="post-card__meta-row">
           {categoriaSlug && (
             <CategoryBadge
@@ -68,20 +68,12 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
               size="sm"
             />
           )}
-          {(date || post.tempo_leitura_min) && (
-            <div className="post-card__meta-info" aria-label="Informações do artigo">
-              {date && (
-                <span>
-                  <i className="far fa-calendar-alt" aria-hidden="true" />
-                  {date}
-                </span>
-              )}
-              {post.tempo_leitura_min && (
-                <span>
-                  <i className="far fa-clock" aria-hidden="true" />
-                  {post.tempo_leitura_min} min
-                </span>
-              )}
+          {date && (
+            <div className="post-card__meta-info" aria-label="Data de publicação">
+              <span>
+                <i className="far fa-calendar-alt" aria-hidden="true" />
+                {date}
+              </span>
             </div>
           )}
         </div>
@@ -94,11 +86,19 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
         <p className="post-card__excerpt">{post.resumo}</p>
 
-        <ReadMoreLink
-          href={`/post/${post.slug}`}
-          ariaLabel={`Ler post completo sobre ${post.titulo}`}
-          className="post-card__read-more"
-        />
+        {/* Footer: tempo de leitura (esquerda) + Ler mais (direita) */}
+        <div className="post-card__footer">
+          {post.tempo_leitura_min && (
+            <span className="post-card__read-time" aria-label="Tempo de leitura">
+              <i className="far fa-clock" aria-hidden="true" />
+              {post.tempo_leitura_min} min
+            </span>
+          )}
+          <ReadMoreLink
+            href={`/post/${post.slug}`}
+            ariaLabel={`Ler post completo sobre ${post.titulo}`}
+          />
+        </div>
       </div>
     </article>
   );
