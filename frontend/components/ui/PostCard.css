@@ -5,16 +5,16 @@
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: var(--shadow-md);
-  overflow: hidden; /* Fundamental para a imagem respeitar as bordas arredondadas */
-  height: 100%; /* Garante que os cards estiquem uniformemente em um CSS Grid */
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  height: 100%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 @media (hover: hover) {
   .post-card:hover {
-    transform: translateY(-4px); /* Feedback visual premium */
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-float);
   }
 }
 

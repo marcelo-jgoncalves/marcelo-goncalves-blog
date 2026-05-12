@@ -5,6 +5,7 @@
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: var(--space-3);
+  box-shadow: var(--shadow-soft);
 }
 
 .certs-widget__header {

@@ -1,7 +1,9 @@
 /* frontend/components/ui/SobreHero.css */
 
 .sobre-hero {
-  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
+  background:
+    radial-gradient(ellipse 55% 70% at 80% 35%, rgba(59, 95, 138, 0.05) 0%, transparent 55%),
+    linear-gradient(135deg, #F8FAFC, #F1F5F9);
   overflow: hidden;
   margin-block: 0;
 }

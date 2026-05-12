@@ -44,6 +44,16 @@
   --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
   --shadow-accent: 0 10px 20px rgba(59,95,138,0.22);
 
+  /* --- Premium shadows (accent-tinted — camada estética sessão 25) --- */
+  --shadow-soft:      0 1px 3px rgba(59,95,138,0.07), 0 2px 12px rgba(0,0,0,0.04);
+  --shadow-float:     0 4px 20px rgba(59,95,138,0.11), 0 1px 6px rgba(0,0,0,0.05);
+  --shadow-authority: 0 8px 40px rgba(59,95,138,0.18), 0 2px 12px rgba(0,0,0,0.08);
+
+  /* --- Premium surfaces --- */
+  --surface-glass:    rgba(255, 255, 255, 0.82);
+  --surface-soft:     rgba(248, 250, 252, 0.85);
+  --surface-elevated: #ffffff;
+
   /* --- Surface --- */
   --border-color: #E2E8F0;
   --border-radius-sm: 4px;

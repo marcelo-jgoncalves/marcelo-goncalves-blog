@@ -130,7 +130,7 @@
 @media (hover: hover) {
   .sobre-expertise-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-float);
     border-color: var(--accent);
   }
 }
@@ -169,7 +169,9 @@
    CAIXA DIFERENCIAL + IDIOMAS
 ═══════════════════════════════════════════════════ */
 .sobre-differential {
-  background: #1A2535;
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
+    #1A2535;
   color: #CBD5E0;
   border-radius: 14px;
   padding: var(--space-5);
@@ -180,6 +182,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: var(--shadow-authority);
 }
 
 .sobre-differential::before {

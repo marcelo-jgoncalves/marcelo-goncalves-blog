@@ -1,7 +1,9 @@
 /* frontend/components/ui/PageHero.css */
 
 .page-hero {
-  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
+  background:
+    radial-gradient(ellipse 65% 80% at 25% 50%, rgba(59, 95, 138, 0.06) 0%, transparent 60%),
+    linear-gradient(135deg, #F8FAFC, #F1F5F9);
   margin-block: 0;
   padding-top: var(--space-6);
   padding-bottom: var(--space-4);

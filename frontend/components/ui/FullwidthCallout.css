@@ -19,7 +19,9 @@
 }
 
 .fwc-section[data-variant="gradient"] {
-  background: linear-gradient(150deg, #EBF1F8, #D0E4F2);
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(59, 95, 138, 0.07) 0%, transparent 60%),
+    linear-gradient(150deg, #EBF1F8, #D0E4F2);
   --fwc-title: var(--accent-dark);
   --fwc-desc:  #475569;
 }
@@ -31,9 +33,12 @@
 }
 
 .fwc-section[data-variant="dark"] {
-  background: var(--accent);
+  background:
+    radial-gradient(ellipse 50% 70% at 15% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+    var(--accent);
   --fwc-title: #ffffff;
   --fwc-desc:  var(--slate-300);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 /* ── Borda accent ─────────────────────────────────────────── */
