@@ -91,7 +91,7 @@
 /* ── DESKTOP ── */
 @media (min-width: 768px) {
   .sobre-hero__inner {
-    min-height: 480px;
+    min-height: 380px;
     padding-top: 0;
     padding-bottom: 0;
   }
