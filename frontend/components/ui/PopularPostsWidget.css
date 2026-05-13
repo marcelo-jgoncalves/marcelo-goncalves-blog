@@ -3,10 +3,11 @@
 .popular-widget {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Macro-ritmo (3x8) entre título e lista */
+  gap: var(--space-3);
   background: transparent;
 }
 
+/* Header — título com barra accent */
 .popular-widget__title {
   font-size: var(--text-lg);
   font-weight: 700;
@@ -14,67 +15,119 @@
   margin: 0;
   color: var(--dark-900);
   border-bottom: 2px solid var(--accent);
-  padding-bottom: 8px; /* Micro-ritmo (1x8) */
+  padding-bottom: 8px;
   display: inline-block;
   align-self: flex-start;
+  letter-spacing: -0.01em;
 }
 
+/* Lista — separadores via padding/border nos itens */
 .popular-widget__list {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Macro-ritmo (3x8) entre os posts */
+  gap: 0;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Item — separador editorial entre posts */
 .popular-widget__item {
   display: flex;
   flex-direction: column;
+  padding-bottom: var(--space-3);
 }
 
+.popular-widget__item + .popular-widget__item {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Link — hover lift no item inteiro */
 .popular-widget__link {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Micro-ritmo (2x8) entre imagem e título do post */
+  gap: var(--space-2);
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
 @media (hover: hover) {
+  .popular-widget__link:hover {
+    transform: translateY(-2px);
+  }
+
   .popular-widget__link:hover .popular-widget__post-title {
     color: var(--accent);
   }
+
   .popular-widget__link:hover .popular-widget__image {
-    transform: scale(1.05);
+    transform: scale(1.04);
   }
 }
 
-/* Pilar Performance e CLS: Wrapper de tamanho previsível */
+/* Wrapper da imagem — micro-depth */
 .popular-widget__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 21 / 9; /* Banner raso, gancho visual forte sem roubar altura */
-  border-radius: 8px; /* Ritmo (1x8) */
+  aspect-ratio: 21 / 9;
+  border-radius: 12px;
   overflow: hidden;
-  background-color: #f3f4f6; 
+  background-color: var(--slate-100);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Gradiente sutil no rodapé da imagem */
+.popular-widget__image-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 48px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.18), transparent);
+  pointer-events: none;
+}
+
+/* Rank badge — número sobreposto no canto superior esquerdo */
+.popular-widget__rank {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .popular-widget__image {
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
+  will-change: transform;
 }
 
+/* Título do post — tipografia premium */
 .popular-widget__post-title {
   font-size: var(--text-base);
-  font-weight: 600;
-  line-height: 1.5; /* 24px - Exato múltiplo de 8! */
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
   margin: 0;
-  
-  /* Proteção para Títulos Longos */
+  color: var(--dark-900);
+  transition: color 0.2s ease;
+
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -82,29 +135,29 @@
 }
 
 /* =========================================
-   Skeleton States (Animação de Carregamento)
+   Skeleton
    ========================================= */
 
 .popular-widget__skeleton-pulse {
   animation: popular-skeleton-pulse 1.5s ease-in-out infinite;
-  background-color: #e5e7eb;
+  background-color: var(--slate-100);
 }
 
 .popular-widget__skeleton-text {
-  height: 24px; /* Ritmo de 8px */
+  height: 20px;
   border-radius: 4px;
   margin-top: 8px;
   width: 100%;
 }
 
 @keyframes popular-skeleton-pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0%   { opacity: 1;   }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1;   }
 }
 
 /* =========================================
-   Modificadores de Layout (BEM Modifiers)
+   Modificadores
    ========================================= */
 
 .popular-widget--mobile-flow {
@@ -112,9 +165,8 @@
   margin-bottom: var(--space-4);
 }
 
-/* Quando chegamos no Desktop (onde a Sidebar passa a existir) */
 @media (min-width: 1024px) {
   .popular-widget--mobile-flow {
-    display: none; /* Sai de cena no fluxo principal para evitar duplicação visual */
+    display: none;
   }
 }

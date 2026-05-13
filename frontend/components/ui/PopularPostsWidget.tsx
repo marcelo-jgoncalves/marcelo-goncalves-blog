@@ -44,12 +44,15 @@ async function PopularPostsList() {
 
   return (
     <ul className="popular-widget__list">
-      {topPosts.map((post) => (
+      {topPosts.map((post, index) => (
         <li key={post.slug} className="popular-widget__item">
           <Link href={`/post/${post.slug}`} className="popular-widget__link">
-            
+
             {post.imagem_destaque_url && (
               <div className="popular-widget__image-wrapper">
+                <span className="popular-widget__rank" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
                 <ResponsiveImage
                   src={post.imagem_destaque_url}
                   alt={`Ler artigo: ${post.titulo}`}
@@ -59,7 +62,7 @@ async function PopularPostsList() {
                 />
               </div>
             )}
-            
+
             <h4 className="popular-widget__post-title">{post.titulo}</h4>
           </Link>
         </li>
