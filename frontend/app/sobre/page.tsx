@@ -171,7 +171,7 @@ export default async function SobrePage() {
         <BlogSidebar
           showPopularPosts={false}
           showNewsletter={false}
-          showProjeto={false}
+          showProjeto={true}
           showAdsense={false}
           adsenseBlockId="sobre-sidebar-300x600"
         >
