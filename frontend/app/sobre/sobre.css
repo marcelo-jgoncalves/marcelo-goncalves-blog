@@ -316,6 +316,12 @@
   box-shadow: var(--shadow-authority);
 }
 
+@media (min-width: 1024px) {
+  .sobre-differential {
+    grid-column: 1 / -1;
+  }
+}
+
 .sobre-differential::before {
   content: '\201C';
   position: absolute;

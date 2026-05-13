@@ -149,33 +149,6 @@ export default async function SobrePage() {
             <FormacaoWidget />
           </div>
 
-          {/* Caixa diferencial + idiomas */}
-          <div className="sobre-differential">
-            <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
-            <h3>Engenharia encontra linguagem</h3>
-            <blockquote>
-              Minha base não é apenas engenharia. Sou formado em Letras, com Mestrado em Linguística.
-              No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura, entender a
-              estrutura da palavra é o que me permite conectar o <em>como</em> técnico ao{' '}
-              <em>porquê</em> estratégico.
-              <cite>Marcelo Gonçalves</cite>
-            </blockquote>
-
-            {/* Idiomas */}
-            <div className="sobre-lang-block">
-              <span className="sobre-lang-block__label">Idiomas</span>
-              <div className="sobre-lang-pills">
-                {LANGUAGES.map((lang) => (
-                  <div key={lang.nome} className="sobre-lang-pill">
-                    <span className="sobre-lang-flag" aria-hidden="true">{lang.flag}</span>
-                    <strong>{lang.nome}</strong>
-                    <span>{lang.nivel}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
         </section>
 
         {/* Barra lateral do projeto */}
@@ -189,6 +162,33 @@ export default async function SobrePage() {
           <CertificacoesWidget />
           <FormacaoWidget />
         </BlogSidebar>
+
+        {/* Caixa diferencial — ocupa as 2 colunas do grid no desktop */}
+        <div className="sobre-differential">
+          <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
+          <h3>Engenharia encontra linguagem</h3>
+          <blockquote>
+            Minha base não é apenas engenharia. Sou formado em Letras, com Mestrado em Linguística.
+            No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura, entender a
+            estrutura da palavra é o que me permite conectar o <em>como</em> técnico ao{' '}
+            <em>porquê</em> estratégico.
+            <cite>Marcelo Gonçalves</cite>
+          </blockquote>
+
+          {/* Idiomas */}
+          <div className="sobre-lang-block">
+            <span className="sobre-lang-block__label">Idiomas</span>
+            <div className="sobre-lang-pills">
+              {LANGUAGES.map((lang) => (
+                <div key={lang.nome} className="sobre-lang-pill">
+                  <span className="sobre-lang-flag" aria-hidden="true">{lang.flag}</span>
+                  <strong>{lang.nome}</strong>
+                  <span>{lang.nivel}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
       </div>
 
