@@ -1,6 +1,6 @@
 /* frontend/components/ui/NewsletterWidget.css */
 
-/* Base — usada por outros widgets genéricos */
+/* Base — usada por widgets genéricos simples */
 .sidebar-widget {
   background: white;
   border: 1px solid var(--border-color);
@@ -10,40 +10,28 @@
   box-shadow: var(--shadow-soft);
 }
 
-/* Widget newsletter — premium sobre accent-light */
+/* Widget newsletter — identidade própria: accent-light, arejado, convidativo */
 .widget-newsletter {
   position: relative;
-  overflow: hidden;
   background-color: var(--accent-light);
   color: var(--dark-900);
-  border: 1px solid rgba(59, 95, 138, 0.2);
+  border: 1px solid rgba(59, 95, 138, 0.18);
   border-radius: 16px;
   padding: var(--space-3);
-  box-shadow: var(--shadow-float);
+  box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-/* Glow radial sutil — não competir com o conteúdo */
-.widget-newsletter::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 20% 10%,
-    rgba(59, 95, 138, 0.08),
-    transparent 65%
-  );
-  pointer-events: none;
+  text-align: center;
 }
 
 @media (hover: hover) {
   .widget-newsletter:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-authority);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-float);
   }
 }
 
-/* Ícone — accent sólido para contrastar com fundo accent-light */
+/* Ícone — branco sobre accent-light cria profundidade por elevação
+   O ícone "flutua" acima do fundo através da sombra */
 .widget-newsletter .card-icon-wrapper {
   position: relative;
   display: flex;
@@ -51,18 +39,18 @@
   align-items: center;
   width: 56px;
   height: 56px;
-  background: var(--accent);
-  color: white;
+  background: white;
+  color: var(--accent);
   border-radius: 14px;
   font-size: var(--text-xl);
   margin: 0 auto var(--space-2);
   box-shadow:
-    0 4px 12px rgba(59, 95, 138, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 4px 16px rgba(59, 95, 138, 0.16),
+    0 1px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .card-title {
-  position: relative;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--text-base);
@@ -73,16 +61,13 @@
 }
 
 .widget-newsletter .card-desc {
-  position: relative;
   font-size: var(--text-sm);
   line-height: 1.6;
   color: var(--slate-500);
   margin-bottom: var(--space-3);
 }
 
-/* Botão — mesmo padrão premium dos outros widgets */
 .widget-newsletter .btn-full {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

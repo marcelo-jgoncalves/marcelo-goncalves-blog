@@ -35,7 +35,8 @@
   }
 }
 
-/* Ícone — accent sólido com inner highlight e shadow tinted */
+/* Ícone — accent sólido sobre fundo claro: contraste cria profundidade
+   Sombra tinted + inner highlight reforçam a separação das camadas */
 .projeto-widget__icon {
   position: relative;
   width: 52px;
@@ -49,8 +50,10 @@
   font-size: var(--text-lg);
   margin: 0 auto var(--space-3);
   box-shadow:
-    0 4px 12px rgba(59, 95, 138, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 6px 18px rgba(59, 95, 138, 0.40),
+    0 2px 6px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
   flex-shrink: 0;
 }
 
