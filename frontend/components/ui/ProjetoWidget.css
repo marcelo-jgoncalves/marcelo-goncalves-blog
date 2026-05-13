@@ -35,13 +35,19 @@
   }
 }
 
-/* Ícone — accent sólido sobre fundo claro: contraste cria profundidade
-   Sombra tinted + inner highlight reforçam a separação das camadas */
+/* Ícone — alto relevo (emboss): gradiente topo→base + sombras multicamada
+   Gradiente: topo levemente mais claro → base mais escura simula luz vinda de cima
+   Sombras: ambiente profunda + close shadow + highlight topo + bevel base */
 .projeto-widget__icon {
   position: relative;
   width: 52px;
   height: 52px;
-  background: var(--accent);
+  background: linear-gradient(
+    160deg,
+    #4d7aab 0%,
+    var(--accent) 45%,
+    var(--accent-dark) 100%
+  );
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -50,10 +56,10 @@
   font-size: var(--text-lg);
   margin: 0 auto var(--space-3);
   box-shadow:
-    0 6px 18px rgba(59, 95, 138, 0.40),
-    0 2px 6px rgba(0, 0, 0, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    0 8px 24px rgba(59, 95, 138, 0.50),
+    0 3px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18);
   flex-shrink: 0;
 }
 

@@ -1,6 +1,6 @@
 /* frontend/components/ui/NewsletterWidget.css */
 
-/* Base — usada por widgets genéricos simples */
+/* Base — widgets genéricos simples */
 .sidebar-widget {
   background: white;
   border: 1px solid var(--border-color);
@@ -10,9 +10,9 @@
   box-shadow: var(--shadow-soft);
 }
 
-/* Widget newsletter — identidade própria: accent-light, arejado, convidativo */
+/* Widget newsletter
+   Identidade: accent-light, convidativo, ícone accent (azul) em caixa branca elevada */
 .widget-newsletter {
-  position: relative;
   background-color: var(--accent-light);
   color: var(--dark-900);
   border: 1px solid rgba(59, 95, 138, 0.18);
@@ -30,10 +30,9 @@
   }
 }
 
-/* Ícone — branco sobre accent-light cria profundidade por elevação
-   O ícone "flutua" acima do fundo através da sombra */
+/* Ícone — branco sobre accent-light: flutua por elevação
+   Mantém o ícone na cor accent (identidade) — caixa branca cria contraste */
 .widget-newsletter .card-icon-wrapper {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,9 +44,8 @@
   font-size: var(--text-xl);
   margin: 0 auto var(--space-2);
   box-shadow:
-    0 4px 16px rgba(59, 95, 138, 0.16),
-    0 1px 4px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 4px 14px rgba(59, 95, 138, 0.14),
+    0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .card-title {
@@ -83,7 +81,7 @@
   border-radius: 10px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.25);
+  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.22);
   transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -91,6 +89,6 @@
   .widget-newsletter .btn-full:hover {
     transform: translateY(-2px);
     background-color: var(--accent-hover);
-    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.35);
+    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.32);
   }
 }
