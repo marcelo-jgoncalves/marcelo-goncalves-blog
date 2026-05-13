@@ -1,9 +1,5 @@
 /* frontend/components/ui/AuthorBox.css */
 
-/* ==========================================================================
-   AUTHOR BOX (8px Grid & Mobile-First)
-   ========================================================================== */
-
 .author-box {
   display: flex;
   flex-direction: column;
@@ -11,13 +7,14 @@
   text-align: center;
   gap: var(--space-3);
   padding: var(--space-3);
-  background-color: var(--slate-50);
+  background: white;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
   margin-block: var(--space-5);
 }
 
-/* --- Avatar & Imagem --- */
+/* Avatar com anel accent-light */
 .author-avatar {
   flex-shrink: 0;
   width: 72px;
@@ -26,6 +23,10 @@
   overflow: hidden;
   background-color: var(--border-color);
   position: relative;
+  box-shadow:
+    0 0 0 3px var(--accent-light),
+    0 0 0 4px rgba(59, 95, 138, 0.2),
+    var(--shadow-soft);
 }
 
 .author-avatar-img {
@@ -33,7 +34,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  
 }
 
 .author-avatar-placeholder {
@@ -46,7 +46,7 @@
   color: var(--slate-500);
 }
 
-/* --- Informações & Tipografia --- */
+/* Tipografia */
 .author-text-flow {
   font-size: var(--text-base);
   line-height: 1.6;
@@ -56,14 +56,15 @@
 .author-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-unit); /* 8px */
+  gap: var(--space-1);
 }
 
 .author-name-runin {
   font-size: var(--text-lg);
   font-weight: 700;
   color: var(--dark-900);
-  margin-right: var(--space-unit); /* 8px */
+  letter-spacing: -0.01em;
+  margin-right: var(--space-1);
 }
 
 .author-bio-content {
@@ -77,47 +78,49 @@
   margin: 0;
 }
 
-/* --- Redes Sociais --- */
+/* Social — ícones com elevação e hover premium */
 .author-social {
   display: flex;
   justify-content: center;
-  gap: calc(var(--space-unit) * 2); /* 16px */
-  margin-top: var(--space-unit); /* 8px */
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .author-social a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(var(--space-unit) * 5); /* 40px */
-  height: calc(var(--space-unit) * 5); /* 40px */
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: #ffffff;
-  color: var(--dark-900);
+  background-color: white;
+  border: 1px solid var(--border-color);
+  color: var(--dark-700);
   text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease, color 0.25s ease,
+              transform 0.25s ease, box-shadow 0.25s ease,
+              border-color 0.25s ease;
+  box-shadow: var(--shadow-soft);
 }
 
 @media (hover: hover) {
   .author-social a:hover {
     background-color: var(--accent);
-    color: #ffffff;
-    transform: translateY(-2px);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.3);
   }
 }
 
-/* ==========================================================================
-   DESKTOP (Tablet & Up)
-   ========================================================================== */
-
+/* Desktop */
 @media (min-width: 768px) {
   .author-box {
     flex-direction: row;
     align-items: flex-start;
     text-align: left;
-    padding: 24px;
-    gap: 24px;
+    padding: var(--space-4);
+    gap: var(--space-3);
   }
 
   .author-social {

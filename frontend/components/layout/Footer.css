@@ -70,12 +70,31 @@
   font-size: var(--text-base);
   color: #cbd5e0;
   text-decoration: none;
-  transition: color 0.2s ease;
+  position: relative;
+  transition: color 0.25s ease;
+  align-self: flex-start;
+}
+
+/* Underline animado — mesmo padrão do nav desktop */
+.op-footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
 @media (hover: hover) {
   .op-footer-link:hover {
-    color: var(--accent);
+    color: white;
+  }
+
+  .op-footer-link:hover::after {
+    width: 100%;
   }
 }
 
