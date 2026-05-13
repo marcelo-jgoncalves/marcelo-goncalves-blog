@@ -37,13 +37,14 @@
 @media (min-width: 1024px) {
   .sobre-content {
     padding-top: var(--space-5);
-    padding-bottom: var(--space-4);
+    padding-bottom: 0;
   }
 
   .sobre-content > .blog-sidebar {
     position: -webkit-sticky;
     position: sticky;
     top: var(--space-7);
+    padding-bottom: 0;
   }
 }
 

@@ -145,21 +145,6 @@ export default async function SobrePage() {
             ))}
           </div>
 
-          {/* CTA Serviços */}
-          <FullwidthCallout
-            variant="navy"
-            rounded
-            icon="fa-headset"
-            iconVariant="dark"
-            size="md"
-            title="Precisa de ajuda com cloud ou IA?"
-            description="Arquitetura AWS, automação, DevOps, serverless e otimização de custos — com foco em resultados reais."
-            href="/servicos"
-            ctaText="Conheça Meus Serviços"
-            ctaVariant="white"
-            maxWidth="600px"
-          />
-
           {/* Widgets mobile — sidebar oculta em telas pequenas */}
           <div className="sobre-mobile-widgets">
             <CertificacoesWidget />
@@ -181,7 +166,21 @@ export default async function SobrePage() {
 
       </div>
 
-      {/* Diferencial — fora do grid, sem interferência da sidebar sticky */}
+      {/* CTA Serviços — fullwidth, fora do grid */}
+      <FullwidthCallout
+        variant="navy"
+        icon="fa-headset"
+        iconVariant="dark"
+        size="md"
+        title="Precisa de ajuda com cloud ou IA?"
+        description="Arquitetura AWS, automação, DevOps, serverless e otimização de custos — com foco em resultados reais."
+        href="/servicos"
+        ctaText="Conheça Meus Serviços"
+        ctaVariant="white"
+        maxWidth="600px"
+      />
+
+      {/* Diferencial — fora do grid */}
       <div className="container sobre-differential-outer">
         <div className="sobre-differential">
           <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
