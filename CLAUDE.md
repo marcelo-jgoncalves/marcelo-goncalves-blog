@@ -283,6 +283,10 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 - **`home-main` (flex column)** — usar `gap: var(--space-4)` + `margin: 0` nos banners. NUNCA combinar gap + margin nos banners — causa duplo espaçamento e margin collapsing em seções vazias.
 - **`FullwidthCallout`** — componente único para CTAs fullwidth e inline. Props: `variant` (light/gradient/newsletter/dark/navy), `border`, `size` (md/lg), `rounded` (border-radius 14px — uso dentro de container), `maxWidth`, `icon`, `iconVariant` (light/dark), `title: ReactNode`, `description`, `href`/`ctaText`/`ctaVariant`. `SuperDestaque` e `PageCTA` são thin wrappers sobre ele. **Nunca criar nova seção CTA manualmente** — usar este componente. CTA fullwidth de página = `variant="dark"`; CTA inline dentro de container = `variant="navy" rounded`.
 - **Grid de 2 colunas (sidebar)** — padrão obrigatório em todas as páginas: `grid-template-columns: 1fr 300px; gap: var(--space-4)`. **Nunca usar `minmax`** para a coluna da sidebar — causa largura inconsistente em telas largas.
+- **`PostCard` meta row** — layout obrigatório: `post-card__meta-left` (data + tempo leitura juntos, esq) · `post-card__read-more` (dir, inline). `ReadMoreLink` não é usado no PostCard. Meta sempre renderiza. Texto: `X min leitura` (não `X min`).
+- **Post page `h2` numeração** — feita via CSS counter (`counter-reset` em `.post-content`, `::before` com `decimal-leading-zero`). Não requer mudança no Tiptap nem no TSX. Nunca adicionar números manualmente no conteúdo.
+- **`AuthorBox`** — card dark com `background: var(--accent)`, avatar quadrado `border-radius: 20/24px`, eyebrow "Sobre o autor" `font-mono`. TSX não muda — só CSS.
+- **`TOC` desktop** — itens como cards individuais (`border-radius: 12px`, `border: 1px solid border-color`). Estado ativo via `.toc-active` com `background: var(--accent); color: white`.
 
 ### Próximas entregas técnicas
 9. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria
