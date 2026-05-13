@@ -6,6 +6,7 @@ import PageCTA from '@/components/ui/PageCTA';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
+import FullwidthCallout from '@/components/ui/FullwidthCallout';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 export const revalidate = 3600;
@@ -117,16 +118,30 @@ export default async function SobrePage() {
             {EXPERTISE_AREAS.map((area, index) => (
               <div
                 key={area.titulo}
-                className={`sobre-expertise-card${index !== 1 ? ' sobre-expertise-card--light' : ''}`}
+                className={`sobre-expertise-card${index === 2 ? ' sobre-expertise-card--service' : ' sobre-expertise-card--light'}`}
               >
-                <span className="sobre-expertise-num" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                <div className="sobre-expertise-num-frame" aria-hidden="true">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                </div>
                 <h4>{area.titulo}</h4>
                 <p>{area.descricao}</p>
               </div>
             ))}
           </div>
+
+          {/* CTA Serviços — abaixo das áreas de atuação */}
+          <FullwidthCallout
+            variant="dark"
+            icon="fa-headset"
+            iconVariant="dark"
+            size="md"
+            title="Precisa de ajuda com cloud ou IA?"
+            description="Arquitetura AWS, automação, DevOps, serverless e otimização de custos — com foco em resultados reais."
+            href="/servicos"
+            ctaText="Conheça Meus Serviços"
+            ctaVariant="white"
+            maxWidth="600px"
+          />
 
           {/* Widgets mobile — sidebar está oculta em telas pequenas */}
           <div className="sobre-mobile-widgets">

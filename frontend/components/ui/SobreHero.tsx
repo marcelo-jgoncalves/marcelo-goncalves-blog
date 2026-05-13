@@ -13,29 +13,18 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
     <section className="sobre-hero" aria-label={`Perfil de ${nome}`}>
       <div className="sobre-hero__inner">
 
-        {/* Foto com moldura */}
-        <div className="sobre-hero__portrait" aria-hidden="true">
-          <div className="sobre-hero__portrait-glow" />
-          <div className="sobre-hero__portrait-frame">
-            <img src="/static/foto-perfil-oculos.png" alt="" />
-          </div>
-        </div>
-
-        {/* Texto */}
+        {/* Texto — esquerda */}
         <div className="sobre-hero__text">
           <p className="sobre-hero__eyebrow">Engenharia Cloud · AWS · DevOps · Educação</p>
 
           <h1 className="sobre-hero__name">
-            Marcelo <span className="accent">Gonçalves</span>
+            Marcelo <span className="accent">Gonçalves</span> é Engenheiro Cloud
+            especialista em AWS, DevOps e arquiteturas resilientes.
           </h1>
 
           <p className="sobre-hero__lead">
-            Engenheiro Cloud especialista em AWS, automação e arquiteturas resilientes.
-          </p>
-
-          <p className="sobre-hero__body">
-            Transformando experiência prática em conteúdo técnico profundo sobre cloud,
-            DevOps, serverless e engenharia de plataformas modernas.
+            Transformando experiência prática em conteúdo técnico sobre cloud,
+            automação e desenvolvimento serverless.
           </p>
 
           <div className="sobre-hero__actions">
@@ -53,6 +42,14 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
             <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <i className="fab fa-github" aria-hidden="true" />
             </a>
+          </div>
+        </div>
+
+        {/* Foto com moldura — direita */}
+        <div className="sobre-hero__portrait" aria-hidden="true">
+          <div className="sobre-hero__portrait-glow" />
+          <div className="sobre-hero__portrait-frame">
+            <img src="/static/foto-perfil-oculos.png" alt="" />
           </div>
         </div>
 

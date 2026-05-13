@@ -9,6 +9,7 @@
     linear-gradient(135deg, #F8FAFC, #F1F5F9);
 }
 
+/* Grid mobile: 1 coluna, texto em cima */
 .sobre-hero__inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -16,58 +17,26 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
-  align-items: center;
+  align-items: end; /* alinha pela base — foto toca a base do hero */
 }
 
-/* ── FOTO ── */
-.sobre-hero__portrait {
-  display: none;
-  position: relative;
-  justify-content: flex-start;
-}
-
-.sobre-hero__portrait-glow {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: rgba(59, 95, 138, 0.10);
-  filter: blur(48px);
-  pointer-events: none;
-}
-
-/* Moldura da foto */
-.sobre-hero__portrait-frame {
-  position: relative;
-  z-index: 1;
-  border-radius: 24px;
-  border: 2px solid rgba(59, 95, 138, 0.18);
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(235,241,248,0.8));
-  box-shadow:
-    0 20px 60px rgba(15, 23, 42, 0.14),
-    0 0 0 6px rgba(59, 95, 138, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  overflow: hidden;
-  display: inline-flex;
-}
-
-.sobre-hero__portrait-frame img {
-  height: 420px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-}
-
-/* ── TEXTO ── */
+/* ── TEXTO (coluna esquerda no desktop) ── */
 .sobre-hero__text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
   gap: var(--space-2);
+  text-align: left;
+}
+
+/* Centraliza no mobile */
+@media (max-width: 899px) {
+  .sobre-hero__text {
+    align-items: center;
+    text-align: center;
+  }
+  .sobre-hero__actions { justify-content: center; }
+  .sobre-hero__social  { justify-content: center; max-width: 220px; }
 }
 
 /* ── EYEBROW — igual ao da home hero ── */
@@ -83,30 +52,20 @@
 /* ── TÍTULO ── */
 .sobre-hero__name {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.05em;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   color: var(--dark-900);
   margin: 0;
 }
 
-/* ── LEAD + BODY ── */
+/* ── LEAD ── */
 .sobre-hero__lead {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--dark-900);
-  max-width: 520px;
-  margin: 0;
-}
-
-.sobre-hero__body {
   font-size: var(--text-base);
   line-height: 1.7;
   color: var(--slate-500);
-  max-width: 480px;
+  max-width: 520px;
   margin: 0;
 }
 
@@ -115,7 +74,6 @@
   display: flex;
   gap: var(--space-2);
   flex-wrap: wrap;
-  justify-content: center;
   margin-top: var(--space-1);
 }
 
@@ -172,12 +130,10 @@
 /* ── ÍCONES SOCIAIS ── */
 .sobre-hero__social {
   display: flex;
-  justify-content: center;
   gap: var(--space-1);
   padding-top: var(--space-2);
   border-top: 1px solid var(--border-color);
   width: 100%;
-  max-width: 220px;
 }
 
 .sobre-hero__social a {
@@ -207,42 +163,86 @@
   }
 }
 
-/* ── DESKTOP ── */
+/* ── FOTO (coluna direita no desktop) ── */
+.sobre-hero__portrait {
+  display: none;
+  position: relative;
+}
+
+.sobre-hero__portrait-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(59, 95, 138, 0.10);
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Moldura da foto — sem espaço branco na base */
+.sobre-hero__portrait-frame {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  border: 2px solid rgba(59, 95, 138, 0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(235,241,248,0.8));
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.14),
+    0 0 0 6px rgba(59, 95, 138, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  /* Sem padding interno: a imagem enche até a base */
+  display: flex;
+  align-items: flex-end;
+}
+
+.sobre-hero__portrait-frame img {
+  display: block;
+  width: 100%;
+  /* cover: preenche o frame sem espaço transparente */
+  object-fit: cover;
+  object-position: top center;
+  height: 420px;
+}
+
+/* ── DESKTOP (≥ 900px) ── */
 @media (min-width: 900px) {
   .sobre-hero {
     padding: var(--space-6) 0;
+    padding-bottom: 0; /* foto toca a base da section */
   }
 
+  /* Texto esquerda (1fr) | Foto direita (380px) */
   .sobre-hero__inner {
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 1fr 380px;
     gap: var(--space-5);
-    min-height: 440px;
+    align-items: end;
+    padding-bottom: 0;
   }
 
   .sobre-hero__portrait {
     display: flex;
     align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .sobre-hero__portrait-frame {
+    width: 100%;
   }
 
   .sobre-hero__portrait-frame img {
-    height: 460px;
-  }
-
-  .sobre-hero__text {
-    align-items: flex-start;
-    text-align: left;
+    height: 480px;
   }
 
   .sobre-hero__name {
-    font-size: var(--text-4xl);
+    font-size: var(--text-3xl);
   }
 
-  .sobre-hero__actions {
-    justify-content: flex-start;
-  }
-
-  .sobre-hero__social {
-    justify-content: flex-start;
-    max-width: none;
+  .sobre-hero__text {
+    padding-bottom: var(--space-6); /* respiro na base do texto */
   }
 }
