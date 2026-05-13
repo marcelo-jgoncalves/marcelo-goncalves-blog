@@ -42,11 +42,23 @@
     padding-bottom: var(--space-4);
   }
 
-  /* Sticky explícito para garantir comportamento igual às demais páginas */
+  /* Sidebar ocupa a altura total da linha do grid */
   .sobre-content > .blog-sidebar {
     position: -webkit-sticky;
     position: sticky;
     top: var(--space-7);
+    align-self: stretch;
+    height: 100%;
+  }
+
+  /* Área dinâmica cresce para preencher o espaço disponível */
+  .sobre-content > .blog-sidebar > .sidebar-dynamic-area {
+    flex: 1;
+  }
+
+  /* Último widget (FormacaoWidget) desce ao fundo via margin-top: auto */
+  .sobre-content > .blog-sidebar > .sidebar-dynamic-area > *:last-child {
+    margin-top: auto;
   }
 }
 
