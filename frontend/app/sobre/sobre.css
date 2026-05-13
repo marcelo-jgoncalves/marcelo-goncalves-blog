@@ -397,12 +397,12 @@
 
 /* Wrapper externo — fora do grid, evita sobreposição com sidebar sticky */
 .sobre-differential-outer {
-  padding: 0 var(--space-2) var(--space-4);
+  padding: var(--space-4) var(--space-2) var(--space-4);
 }
 
 @media (min-width: 1024px) {
   .sobre-differential-outer {
-    padding: 0 0 var(--space-4);
+    padding: var(--space-4) 0 var(--space-4);
   }
 }
 
