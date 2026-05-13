@@ -10,6 +10,7 @@ type FwcCtaVariant  = 'accent' | 'white';
 interface FullwidthCalloutProps {
   variant?:     FwcVariant;      // preset de cores, default: 'light'
   border?:      boolean;         // borda accent topo/base, default: false
+  rounded?:     boolean;         // border-radius 14px, para uso dentro de container, default: false
   size?:        'md' | 'lg';    // padding: md=space-6, lg=space-7, default: 'md'
   maxWidth?:    string;          // max-width do inner, default: '680px'
   icon?:        string;          // classe FA sem prefixo, ex: 'fa-envelope'
@@ -24,6 +25,7 @@ interface FullwidthCalloutProps {
 export default function FullwidthCallout({
   variant     = 'light',
   border      = false,
+  rounded     = false,
   size        = 'md',
   maxWidth    = '680px',
   icon,
@@ -39,6 +41,7 @@ export default function FullwidthCallout({
       className="fwc-section"
       data-variant={variant}
       data-border={String(border)}
+      data-rounded={String(rounded)}
       data-size={size}
     >
       <div className="fwc-inner" style={{ maxWidth }}>

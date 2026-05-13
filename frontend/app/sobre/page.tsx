@@ -148,6 +148,7 @@ export default async function SobrePage() {
           {/* CTA Serviços — abaixo das áreas de atuação */}
           <FullwidthCallout
             variant="navy"
+            rounded
             icon="fa-headset"
             iconVariant="dark"
             size="md"

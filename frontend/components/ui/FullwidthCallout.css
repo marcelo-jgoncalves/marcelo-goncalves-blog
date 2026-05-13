@@ -50,6 +50,12 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+/* ── Radius — para uso dentro de container (não edge-to-edge) */
+.fwc-section[data-rounded="true"] {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
 /* ── Borda accent ─────────────────────────────────────────── */
 .fwc-section[data-border="true"] {
   border-top:    1px solid rgba(59, 95, 138, 0.2);
