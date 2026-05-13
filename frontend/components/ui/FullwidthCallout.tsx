@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import './FullwidthCallout.css';
 
-type FwcVariant    = 'light' | 'gradient' | 'newsletter' | 'dark';
+type FwcVariant    = 'light' | 'gradient' | 'newsletter' | 'dark' | 'navy';
 type FwcIconVariant = 'light' | 'dark';
 type FwcCtaVariant  = 'accent' | 'white';
 

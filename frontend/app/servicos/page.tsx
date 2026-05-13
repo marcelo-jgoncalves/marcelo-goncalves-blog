@@ -65,7 +65,6 @@ export default function ServicosPage() {
 
       {/* 1. Hero */}
       <PageHero>
-        <p className="hero-eyebrow">Consultoria Especializada</p>
         <h1 className="hero-title">
           Consultoria em AWS, DevOps, FinOps e <span className="highlight">Serverless</span>
         </h1>

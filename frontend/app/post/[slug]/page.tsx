@@ -12,7 +12,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 // Componentes UI
 import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
-import SuperDestaque from '@/components/ui/SuperDestaque'; 
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
 import PopularPostsSection from '@/components/ui/PopularPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
@@ -249,7 +249,7 @@ export default async function PostPage({ params }: Props) {
         </BlogSidebar>
       </div>
       
-      <SuperDestaque />
+      <NewsletterCTA />
     </article>
   );
 }

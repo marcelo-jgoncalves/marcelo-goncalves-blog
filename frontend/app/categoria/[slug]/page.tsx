@@ -125,7 +125,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
       {/* Hero da Categoria */}
       <PageHero>
-        <p className="hero-eyebrow">Conteúdo por Categoria</p>
         <h1>
           Artigos na Categoria: <span className="highlight">{meta.title}</span>
         </h1>

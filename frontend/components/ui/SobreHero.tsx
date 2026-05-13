@@ -15,8 +15,6 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
 
         {/* Texto — esquerda */}
         <div className="sobre-hero__text">
-          <p className="sobre-hero__eyebrow">Engenharia Cloud · AWS · DevOps · Educação</p>
-
           <h1 className="sobre-hero__name">
             Marcelo <span className="accent">Gonçalves</span> é Engenheiro Cloud
             especialista em AWS e arquiteturas resilientes.

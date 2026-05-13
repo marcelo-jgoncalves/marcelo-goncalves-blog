@@ -41,6 +41,15 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+.fwc-section[data-variant="navy"] {
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
+    #1A2535;
+  --fwc-title: #ffffff;
+  --fwc-desc:  #CBD5E0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
 /* ── Borda accent ─────────────────────────────────────────── */
 .fwc-section[data-border="true"] {
   border-top:    1px solid rgba(59, 95, 138, 0.2);

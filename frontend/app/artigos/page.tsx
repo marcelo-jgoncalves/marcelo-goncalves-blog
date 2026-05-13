@@ -82,8 +82,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
       {/* 1. HERO */}
       <PageHero as="header">
-        <p className="op-hero-eyebrow">Biblioteca de Conteúdo</p>
-
         <h1 className="op-hero-title">Explore Nossos Artigos</h1>
 
         <p className="op-hero-desc">

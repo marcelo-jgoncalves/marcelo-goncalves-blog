@@ -92,7 +92,6 @@ export default function Home() {
         <div className="container home-hero__grid">
 
           <div className="home-hero__text">
-            <p className="home-hero__eyebrow">Arquitetura AWS • Serverless • Cloud</p>
             <h1 className="home-hero__title">
               Desvendando a{' '}
               <span className="accent">Inteligência Artificial</span>

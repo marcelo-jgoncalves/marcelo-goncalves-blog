@@ -18,14 +18,14 @@ const DEFAULT_DESC = 'Acompanhe a jornada, os desafios e os custos reais de cons
 export default function SuperDestaque({ title, description }: SuperDestaqueProps) {
   return (
     <FullwidthCallout
-      variant="light"
-      border
+      variant="navy"
       icon="fa-envelope"
-      iconVariant="light"
+      iconVariant="dark"
       title={title ?? DEFAULT_TITLE}
       description={description ?? DEFAULT_DESC}
       href="/o-projeto"
       ctaText='Conheça "O Projeto" →'
+      ctaVariant="white"
     />
   );
 }

@@ -83,7 +83,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
       {/* 1. HERO */}
       <PageHero>
-        <p className="hero-eyebrow">Bastidores & Documentação</p>
         <h1 className="hero-title">
           O Projeto: Construindo um Blog <span className="accent">quase</span> 100% com IA
         </h1>

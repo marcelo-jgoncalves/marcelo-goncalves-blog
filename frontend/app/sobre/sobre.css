@@ -23,9 +23,9 @@
   flex-shrink: 0;
 }
 
-.sobre-eyebrow--light               { color: #8AAEC8; }
+.sobre-eyebrow--light               { color: rgba(255, 255, 255, 0.75); }
 .sobre-eyebrow--light::before,
-.sobre-eyebrow--light::after         { background: var(--accent); }
+.sobre-eyebrow--light::after         { background: rgba(255, 255, 255, 0.45); }
 
 /* ═══════════════════════════════════════════════════
    CONTENT — usa .page-layout do globals.css
@@ -302,12 +302,11 @@
 ═══════════════════════════════════════════════════ */
 .sobre-differential {
   background:
-    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
-    #1A2535;
+    radial-gradient(ellipse 50% 70% at 15% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+    var(--accent);
   color: #CBD5E0;
   border-radius: 14px;
   padding: var(--space-5);
-  margin: var(--space-5) 0;
   position: relative;
   overflow: hidden;
   text-align: center;
