@@ -19,12 +19,12 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
 
           <h1 className="sobre-hero__name">
             Marcelo <span className="accent">Gonçalves</span> é Engenheiro Cloud
-            especialista em AWS, DevOps e arquiteturas resilientes.
+            especialista em AWS e arquiteturas resilientes.
           </h1>
 
           <p className="sobre-hero__lead">
             Transformando experiência prática em conteúdo técnico sobre cloud,
-            automação e desenvolvimento serverless.
+            DevOps, FinOps e desenvolvimento serverless.
           </p>
 
           <div className="sobre-hero__actions">

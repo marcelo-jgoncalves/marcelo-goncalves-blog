@@ -89,13 +89,13 @@
   pointer-events: none;
 }
 
-/* H2 com barra lateral inline — branca sobre fundo escuro */
+/* H2 com barra lateral inline */
 .sobre-bio-card h2 {
   position: relative;
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   font-weight: 800;
-  color: white;
+  color: white;            /* mesmo que .sobre-differential h3 */
   margin: 0 0 var(--space-3);
   letter-spacing: -0.04em;
   line-height: 1.15;
@@ -110,7 +110,7 @@
   flex-shrink: 0;
   width: 4px;
   height: 36px;
-  background: rgba(255, 255, 255, 0.55);
+  background: #8AAEC8;     /* mesma cor do cite do bloco diferencial */
   border-radius: 2px;
 }
 
@@ -118,12 +118,12 @@
   position: relative;
   font-size: var(--text-lg);
   line-height: 2;
-  color: rgba(255, 255, 255, 0.88);
+  color: #CBD5E0;          /* mesma cor do body text do bloco diferencial */
   margin-bottom: var(--space-2);
 }
 
 .sobre-bio-card p:last-child { margin-bottom: 0; }
-.sobre-bio-card p strong     { color: white; font-weight: 700; }
+.sobre-bio-card p strong     { color: white; font-weight: 600; } /* destaque igual ao diferencial */
 
 /* H2 fora do card (áreas de atuação — sem glass card) */
 .sobre-bio > h2 {

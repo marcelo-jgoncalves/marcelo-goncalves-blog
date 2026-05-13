@@ -203,30 +203,29 @@
 .sobre-hero__portrait-frame img {
   display: block;
   width: 100%;
-  /* cover: preenche o frame sem espaço transparente */
   object-fit: cover;
   object-position: top center;
   height: 420px;
+  /* Espelha a foto para que o rosto aponte para o texto à esquerda */
+  transform: scaleX(-1);
 }
 
 /* ── DESKTOP (≥ 900px) ── */
 @media (min-width: 900px) {
   .sobre-hero {
     padding: var(--space-6) 0;
-    padding-bottom: 0; /* foto toca a base da section */
   }
 
   /* Texto esquerda (1fr) | Foto direita (380px) */
   .sobre-hero__inner {
     grid-template-columns: 1fr 380px;
     gap: var(--space-5);
-    align-items: end;
-    padding-bottom: 0;
+    align-items: center; /* foto e texto alinhados verticalmente ao centro */
   }
 
   .sobre-hero__portrait {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
   }
 
@@ -240,9 +239,5 @@
 
   .sobre-hero__name {
     font-size: var(--text-3xl);
-  }
-
-  .sobre-hero__text {
-    padding-bottom: var(--space-6); /* respiro na base do texto */
   }
 }
