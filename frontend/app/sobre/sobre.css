@@ -397,10 +397,14 @@
   box-shadow: var(--shadow-authority);
 }
 
+/* Wrapper externo — fora do grid, evita sobreposição com sidebar sticky */
+.sobre-differential-outer {
+  padding: 0 var(--space-2) var(--space-4);
+}
+
 @media (min-width: 1024px) {
-  .sobre-differential {
-    grid-column: 1 / -1;
-    grid-row: 2;
+  .sobre-differential-outer {
+    padding: 0 0 var(--space-4);
   }
 }
 

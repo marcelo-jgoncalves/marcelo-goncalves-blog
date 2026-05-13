@@ -179,7 +179,10 @@ export default async function SobrePage() {
           <FormacaoWidget />
         </BlogSidebar>
 
-        {/* Caixa diferencial — ocupa as 2 colunas do grid no desktop */}
+      </div>
+
+      {/* Diferencial — fora do grid, sem interferência da sidebar sticky */}
+      <div className="container sobre-differential-outer">
         <div className="sobre-differential">
           <div className="sobre-eyebrow sobre-eyebrow--light">O Diferencial</div>
           <h3>Engenharia encontra linguagem</h3>
@@ -205,7 +208,6 @@ export default async function SobrePage() {
             </div>
           </div>
         </div>
-
       </div>
 
       <NewsletterCTA />
