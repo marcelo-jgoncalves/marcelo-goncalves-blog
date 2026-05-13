@@ -27,16 +27,10 @@
 .sobre-eyebrow--light::before,
 .sobre-eyebrow--light::after         { background: rgba(255, 255, 255, 0.45); }
 
-/* Sidebar items — ocultos no mobile, visíveis via sobre-mobile-widgets */
-.sobre-sidebar-certs,
-.sobre-sidebar-formacao { display: none; }
-
 /* ═══════════════════════════════════════════════════
    CONTENT — usa .page-layout do globals.css
-   Sobrescreve gap e padding-top para este contexto
 ═══════════════════════════════════════════════════ */
 .sobre-content {
-  /* padding-top reduzido: hero já separa do conteúdo */
   padding-top: var(--space-5);
 }
 
@@ -46,26 +40,10 @@
     padding-bottom: var(--space-4);
   }
 
-  /* Grid de 4 itens — alinhamento garantido pelo grid engine */
-  .sobre-bio            { grid-column: 1; grid-row: 1; }
-  .sobre-bio-cta        { grid-column: 1; grid-row: 2; }
-
-  .sobre-sidebar-certs {
-    grid-column: 2;
-    grid-row: 1;
-    display: block;
+  .sobre-content > .blog-sidebar {
     position: -webkit-sticky;
     position: sticky;
     top: var(--space-7);
-    align-self: start;
-    height: max-content;
-  }
-
-  .sobre-sidebar-formacao {
-    grid-column: 2;
-    grid-row: 2;
-    display: block;
-    align-self: start;
   }
 }
 
