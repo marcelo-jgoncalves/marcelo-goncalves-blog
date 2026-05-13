@@ -400,6 +400,7 @@
 @media (min-width: 1024px) {
   .sobre-differential {
     grid-column: 1 / -1;
+    grid-row: 2;
   }
 }
 

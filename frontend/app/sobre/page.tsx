@@ -91,7 +91,6 @@ export default async function SobrePage() {
 
           {/* Trajetória — glass card */}
           <div className="sobre-bio-card">
-            <span className="sobre-bio-card__eyebrow">Carreira</span>
             <h2>Trajetória Profissional</h2>
             <p>
               Especialista em <strong>alta disponibilidade e eficiência</strong>, com mais de 8 anos
@@ -114,8 +113,8 @@ export default async function SobrePage() {
             {/* Stats — rodapé do card */}
             <div className="sobre-bio-card__stats">
               <div className="sobre-bio-card__stat">
-                <span className="sobre-bio-card__stat-num">8+</span>
-                <span className="sobre-bio-card__stat-label">Anos de Exp.</span>
+                <span className="sobre-bio-card__stat-num">10+</span>
+                <span className="sobre-bio-card__stat-label">Exp. AWS</span>
               </div>
               <div className="sobre-bio-card__stat">
                 <span className="sobre-bio-card__stat-num">3+</span>
