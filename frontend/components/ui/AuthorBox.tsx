@@ -18,14 +18,14 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
 
   return (
     <section className="author-box" itemScope itemType="https://schema.org/Person" aria-label={`Sobre o autor: ${autor.nome_exibicao}`}>
-      
+
       <div className="author-avatar">
         {autor.foto_avatar_url ? (
-          <Image 
-            src={autor.foto_avatar_url} 
+          <Image
+            src={autor.foto_avatar_url}
             alt={autor.foto_avatar_alt_text || `Foto de ${autor.nome_exibicao}`}
-            width={80}
-            height={80}
+            width={88}
+            height={88}
             itemProp="image"
             className="author-avatar-img"
           />
@@ -37,15 +37,15 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
       </div>
 
       <div className="author-info">
+        <div className="author-eyebrow">Sobre o autor</div>
         <div className="author-text-flow">
             <strong className="author-name-runin" itemProp="name">
               {autor.nome_exibicao}
             </strong>
-            
-            <div 
-              className="author-bio-content" 
+            <div
+              className="author-bio-content"
               itemProp="description"
-              dangerouslySetInnerHTML={{ __html: autor.bio }} 
+              dangerouslySetInnerHTML={{ __html: autor.bio }}
             />
         </div>
         <nav className="author-social" aria-label={`Redes sociais de ${autor.nome_exibicao}`}>

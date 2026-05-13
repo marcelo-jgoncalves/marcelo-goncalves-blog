@@ -211,7 +211,10 @@ export default async function PostPage({ params }: Props) {
         <main className="main-content-column">
             <div className="post-body-wrapper">
                 {post.resumo && (
-                  <p className="post-lead">{post.resumo}</p>
+                  <div className="post-intro-card">
+                    <div className="post-intro-eyebrow">Introdução</div>
+                    <p className="post-lead">{post.resumo}</p>
+                  </div>
                 )}
                 
                 {headings.length > 0 && (
