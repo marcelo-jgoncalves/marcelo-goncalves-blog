@@ -1,11 +1,11 @@
 // frontend/components/ui/ResponsiveImage.tsx
 //
 // Serve imagens responsivas de forma transparente:
-// - URL legada (termina em .webp/.jpg/.png): renderiza <Image> do Next.js (retrocompatível)
 // - Base path sem extensão (novo formato): renderiza <picture> com AVIF + WebP em 3 tamanhos
 //   Browser escolhe automaticamente o melhor formato + tamanho para o viewport.
-
-import Image from "next/image";
+// - Prop `lqip`: data URI inline (ex: "data:image/webp;base64,...") usada como
+//   background-image de blur placeholder enquanto a imagem real carrega. Zero
+//   requisição HTTP extra — sem risco de 403 para posts sem lqip gerado.
 
 interface ResponsiveImageProps {
   src: string;
@@ -15,6 +15,7 @@ interface ResponsiveImageProps {
   sizes?: string;
   className?: string;
   style?: React.CSSProperties;
+  lqip?: string; // data URI inline do blur placeholder (imagem_lqip_base64)
 }
 
 /**
@@ -35,13 +36,12 @@ export default function ResponsiveImage({
   sizes,
   className,
   style,
+  lqip,
 }: ResponsiveImageProps) {
   if (!src) return null;
 
   const basePath = toBasePath(src);
 
-  // Novo formato: src é o basePath sem extensão
-  // Ex: "https://cdn.../media/1234-uuid-nome"
   // Variantes geradas pelo imageProcessor:
   //   {basePath}-480.avif  |  {basePath}-480.webp
   //   {basePath}-768.avif  |  {basePath}-768.webp
@@ -68,9 +68,13 @@ export default function ResponsiveImage({
           inset: 0,
           width: "100%",
           height: "100%",
-          backgroundImage: `url(${basePath}-lqip.webp)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          // lqip é uma data URI inline — zero HTTP request, zero risco de 403.
+          // Ausente: sem background (degradação silenciosa para posts sem lqip).
+          ...(lqip && {
+            backgroundImage: `url(${lqip})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }),
         }}
       >
         <source media="(max-width: 480px)" type="image/avif" srcSet={`${basePath}-480.avif`} />

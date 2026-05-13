@@ -10,6 +10,7 @@ interface PopularPost {
   slug: string;
   titulo: string;
   imagem_destaque_url?: string;
+  imagem_lqip_base64?: string;
 }
 
 interface PopularPostsWidgetProps {
@@ -59,6 +60,7 @@ async function PopularPostsList() {
                   fill
                   sizes="(max-width: 1023px) 100vw, 350px"
                   className="popular-widget__image"
+                  lqip={post.imagem_lqip_base64}
                 />
               </div>
             )}

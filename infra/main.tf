@@ -90,4 +90,6 @@ module "media" {
   log_retention_days  = var.log_retention_days
   enable_xray_tracing = var.enable_xray_tracing
   assets_bucket_name  = module.frontend.s3_bucket_name
+  posts_table_arn     = module.dynamodb.posts_table_arn
+  posts_table_name    = module.dynamodb.posts_table_name
 }

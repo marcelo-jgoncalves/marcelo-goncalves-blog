@@ -11,6 +11,7 @@ interface PostCardProps {
     titulo: string;
     resumo: string;
     imagem_destaque_url: string;
+    imagem_lqip_base64?: string;
     categoria_slug: string;
     categoria?: {
       nome_exibicao: string;
@@ -54,6 +55,7 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="post-card__image"
             priority={isPriority}
+            lqip={post.imagem_lqip_base64}
           />
         )}
         {categoriaSlug && (

@@ -44,6 +44,11 @@ resource "aws_iam_policy" "processor_policy" {
         ]
       },
       {
+        Action   = ["dynamodb:Scan", "dynamodb:UpdateItem"],
+        Effect   = "Allow",
+        Resource = var.posts_table_arn
+      },
+      {
         Action   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords", "xray:GetSamplingRules", "xray:GetSamplingTargets"]
         Effect   = "Allow"
         Resource = "*"
@@ -73,6 +78,7 @@ resource "aws_lambda_function" "image_processor" {
   environment {
     variables = {
       DESTINATION_BUCKET = var.assets_bucket_name
+      POSTS_TABLE        = var.posts_table_name
       LOG_LEVEL          = var.log_level
       XRAY_ENABLED       = tostring(var.enable_xray_tracing)
     }

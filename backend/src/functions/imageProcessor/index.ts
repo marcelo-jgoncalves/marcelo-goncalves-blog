@@ -1,12 +1,18 @@
 // backend/src/functions/imageProcessor/index.ts
 import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { S3Event } from "aws-lambda";
 import sharp from "sharp";
 import { Readable } from "stream";
 import { logger } from "../../common/logger";
 
 const s3 = new S3Client({});
+const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+
 const DEST_BUCKET = process.env.DESTINATION_BUCKET;
+// POSTS_TABLE é lida em runtime (não no carregamento do módulo) para permitir
+// que testes configurem/removam a variável por caso individualmente.
 
 const VARIANTS: Array<{
   width: number;
@@ -34,6 +40,60 @@ const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
   });
 };
 
+/**
+ * Salva o base64 do LQIP no campo imagem_lqip_base64 dos posts que usam esta imagem.
+ * Usa Scan com FilterExpression contains(imagem_destaque_url, basename) — eficiente
+ * para a escala atual do blog (~20 posts). Se nenhum post encontrado (imagem ainda não
+ * associada), loga aviso e encerra silenciosamente.
+ */
+async function saveLqipToPost(basename: string, lqipBase64: string): Promise<void> {
+  const postsTable = process.env.POSTS_TABLE; // lida em runtime para facilitar testes
+  if (!postsTable) {
+    logger.debug("lqip_dynamo_skip", { reason: "POSTS_TABLE_not_set" });
+    return;
+  }
+
+  let matchingSlugs: string[] = [];
+
+  try {
+    const result = await dynamo.send(new ScanCommand({
+      TableName: postsTable,
+      FilterExpression: "contains(imagem_destaque_url, :basename)",
+      ExpressionAttributeValues: { ":basename": basename },
+      ProjectionExpression: "slug",
+    }));
+
+    matchingSlugs = (result.Items || [])
+      .map((item) => item.slug as string)
+      .filter(Boolean);
+
+  } catch (err) {
+    logger.warn("lqip_dynamo_scan_error", { basename, error: (err as Error).message });
+    return;
+  }
+
+  if (matchingSlugs.length === 0) {
+    logger.debug("lqip_dynamo_no_match", { basename });
+    return;
+  }
+
+  await Promise.all(
+    matchingSlugs.map(async (slug) => {
+      try {
+        await dynamo.send(new UpdateCommand({
+          TableName: postsTable,
+          Key: { slug },
+          UpdateExpression: "SET imagem_lqip_base64 = :lqip",
+          ExpressionAttributeValues: { ":lqip": lqipBase64 },
+        }));
+        logger.info("lqip_dynamo_saved", { slug, basename });
+      } catch (err) {
+        logger.warn("lqip_dynamo_update_error", { slug, basename, error: (err as Error).message });
+      }
+    })
+  );
+}
+
 export const handler = async (event: S3Event) => {
   logger.debug("image_processor_triggered", { recordCount: event.Records.length });
 
@@ -57,6 +117,9 @@ export const handler = async (event: S3Event) => {
       logger.info("image_processor_start", { srcKey, variants: VARIANTS.length });
 
       // 2. Gerar todas as variantes em paralelo (Sharp + S3 upload)
+      // Captura o buffer do LQIP para salvar o base64 no DynamoDB
+      let lqipBuffer: Buffer | null = null;
+
       await Promise.all(
         VARIANTS.map(async (variant) => {
           const { width, format, quality, contentType, keySuffix } = variant;
@@ -79,9 +142,20 @@ export const handler = async (event: S3Event) => {
             CacheControl: "public, max-age=31536000, immutable",
           }));
 
+          // Captura o buffer do LQIP para reutilizar como base64
+          if (keySuffix === "lqip.webp") {
+            lqipBuffer = outputBuffer;
+          }
+
           logger.debug("variant_saved", { destKey, width, format, bytes: outputBuffer.length });
         })
       );
+
+      // 3. Salvar base64 do LQIP no DynamoDB (não-bloqueante: erro não falha o handler)
+      if (lqipBuffer) {
+        const lqipBase64 = `data:image/webp;base64,${(lqipBuffer as Buffer).toString("base64")}`;
+        await saveLqipToPost(basename, lqipBase64);
+      }
 
       logger.info("image_processor_done", {
         srcKey,

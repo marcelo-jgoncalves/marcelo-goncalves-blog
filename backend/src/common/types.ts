@@ -7,6 +7,7 @@ export interface Post {
   resumo: string;
   imagem_destaque_url: string;
   imagem_destaque_alt_text: string; // Acessibilidade (Blueprint v1.7)
+  imagem_lqip_base64?: string;     // data URI inline para blur placeholder (LQIP)
   categoria_slug: string;
   autor_id: string;
   status: 'Publicado' | 'Rascunho' | 'Programado';
