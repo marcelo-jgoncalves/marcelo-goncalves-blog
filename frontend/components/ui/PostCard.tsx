@@ -1,6 +1,5 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
-import ReadMoreLink from './ReadMoreLink';
 import CategoryBadge from './CategoryBadge';
 import ResponsiveImage from './ResponsiveImage';
 import './PostCard.css';
@@ -80,9 +79,9 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
         <p className="post-card__excerpt">{post.resumo}</p>
 
-        {/* Meta: data (esquerda) + tempo leitura (direita) */}
-        {(date || post.tempo_leitura_min) && (
-          <div className="post-card__meta">
+        {/* Meta: data + tempo leitura (esquerda) · ler mais (direita) */}
+        <div className="post-card__meta">
+          <div className="post-card__meta-left">
             {date && (
               <span className="post-card__meta-item">
                 <i className="far fa-calendar-alt" aria-hidden="true" />
@@ -92,16 +91,18 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
             {post.tempo_leitura_min && (
               <span className="post-card__meta-item">
                 <i className="far fa-clock" aria-hidden="true" />
-                {post.tempo_leitura_min} min
+                {post.tempo_leitura_min} min leitura
               </span>
             )}
           </div>
-        )}
-
-        <ReadMoreLink
-          href={`/post/${post.slug}`}
-          ariaLabel={`Ler post completo sobre ${post.titulo}`}
-        />
+          <Link
+            href={`/post/${post.slug}`}
+            className="post-card__read-more"
+            aria-label={`Ler post completo sobre ${post.titulo}`}
+          >
+            ler mais <span aria-hidden="true">→</span>
+          </Link>
+        </div>
 
       </div>
     </article>

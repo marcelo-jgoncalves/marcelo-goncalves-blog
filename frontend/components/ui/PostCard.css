@@ -107,12 +107,12 @@
   }
 }
 
-/* ── Meta: data (esquerda) + tempo (direita) ─────── */
+/* ── Meta: data + tempo (esquerda) · ler mais (direita) */
 .post-card__meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
   font-size: var(--text-xs);
   color: #94a3b8;
   padding-top: var(--space-2);
@@ -120,13 +120,41 @@
   margin-top: auto;
 }
 
+.post-card__meta-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
 .post-card__meta-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
+  white-space: nowrap;
 }
 
 .post-card__meta-item i {
   color: #cbd5e1;
   font-size: var(--text-xs);
+}
+
+.post-card__read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .post-card__read-more:hover {
+    color: var(--accent-hover);
+  }
 }
