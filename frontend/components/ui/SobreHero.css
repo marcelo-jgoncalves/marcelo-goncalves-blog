@@ -45,6 +45,37 @@
   z-index: 1;
 }
 
+/* ── EYEBROW PILL ── */
+.sobre-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 95, 138, 0.18);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--dark-900);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.8); }
+}
+
+.sobre-hero__eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
 /* ── TÍTULO ── */
 .sobre-hero__name {
   font-family: var(--font-display);
@@ -68,10 +99,12 @@
 }
 
 .sobre-hero__social a {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--accent-light);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(59, 95, 138, 0.18);
   color: var(--accent);
   display: inline-flex;
   align-items: center;
@@ -79,14 +112,16 @@
   font-size: var(--text-base);
   text-decoration: none;
   flex-shrink: 0;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 @media (hover: hover) {
   .sobre-hero__social a:hover {
     background: var(--accent);
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.25);
   }
 }
 

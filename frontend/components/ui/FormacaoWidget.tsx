@@ -11,30 +11,43 @@ const FORMACAO = [
 export default function FormacaoWidget() {
   return (
     <div className="formacao-widget">
+
+      {/* Header */}
       <div className="formacao-widget__header">
         <div className="formacao-widget__icon" aria-hidden="true">
           <i className="fas fa-user-graduate" />
         </div>
-        <h3 className="formacao-widget__title">Formação Acadêmica</h3>
+        <p className="formacao-widget__subtitle">Base Acadêmica</p>
+        <h3 className="formacao-widget__title">Formação</h3>
       </div>
 
+      {/* Lista */}
       <ul className="formacao-widget__list" role="list">
         {FORMACAO.map((item) => (
           <li key={item.titulo} className="formacao-widget__item">
+
+            {/* Logo — esquerda */}
             <div className="formacao-widget__logo-wrap">
               <img
                 src={item.logo}
                 alt={item.instituicao}
                 className="formacao-widget__logo"
+                width={44}
+                height={44}
               />
             </div>
+
+            {/* Texto — direita */}
             <div className="formacao-widget__info">
+              <span className="formacao-widget__grau">{item.grau}</span>
               <strong>{item.titulo}</strong>
-              <span>{item.grau}</span>
+              <em>{item.instituicao}</em>
             </div>
+
           </li>
         ))}
       </ul>
+
     </div>
   );
 }

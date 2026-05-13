@@ -106,11 +106,14 @@ export default async function SobrePage() {
           <h2>Áreas em que atuo no dia a dia</h2>
 
           <div className="sobre-expertise-grid">
-            {EXPERTISE_AREAS.map((area) => (
-              <div key={area.titulo} className="sobre-expertise-card">
-                <div className="sobre-expertise-ico">
-                  <i className={`fas ${area.icon}`} aria-hidden="true" />
-                </div>
+            {EXPERTISE_AREAS.map((area, index) => (
+              <div
+                key={area.titulo}
+                className={`sobre-expertise-card${index === 2 ? ' sobre-expertise-card--dark' : ''}`}
+              >
+                <span className="sobre-expertise-num" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
                 <h4>{area.titulo}</h4>
                 <p>{area.descricao}</p>
               </div>
