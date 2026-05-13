@@ -27,6 +27,10 @@
 .sobre-eyebrow--light::before,
 .sobre-eyebrow--light::after         { background: rgba(255, 255, 255, 0.45); }
 
+/* Sidebar items — ocultos no mobile, visíveis via sobre-mobile-widgets */
+.sobre-sidebar-certs,
+.sobre-sidebar-formacao { display: none; }
+
 /* ═══════════════════════════════════════════════════
    CONTENT — usa .page-layout do globals.css
    Sobrescreve gap e padding-top para este contexto
@@ -42,26 +46,26 @@
     padding-bottom: var(--space-4);
   }
 
-  /* Sidebar ocupa a altura total da linha do grid.
-     height:auto sobrescreve o max-content do BlogSidebar.css,
-     permitindo que align-self:stretch funcione (spec: stretch só
-     redimensiona itens com height:auto). */
-  .sobre-content > .blog-sidebar {
+  /* Grid de 4 itens — alinhamento garantido pelo grid engine */
+  .sobre-bio            { grid-column: 1; grid-row: 1; }
+  .sobre-bio-cta        { grid-column: 1; grid-row: 2; }
+
+  .sobre-sidebar-certs {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
     position: -webkit-sticky;
     position: sticky;
     top: var(--space-7);
-    align-self: stretch;
-    height: auto;
+    align-self: start;
+    height: max-content;
   }
 
-  /* Área dinâmica cresce para preencher o espaço disponível */
-  .sobre-content > .blog-sidebar > .sidebar-dynamic-area {
-    flex: 1;
-  }
-
-  /* Último widget (FormacaoWidget) desce ao fundo via margin-top: auto */
-  .sobre-content > .blog-sidebar > .sidebar-dynamic-area > *:last-child {
-    margin-top: auto;
+  .sobre-sidebar-formacao {
+    grid-column: 2;
+    grid-row: 2;
+    display: block;
+    align-self: start;
   }
 }
 

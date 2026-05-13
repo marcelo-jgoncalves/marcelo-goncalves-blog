@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import SobreHero from '@/components/ui/SobreHero';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import BlogSidebar from '@/components/ui/BlogSidebar';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
 import FullwidthCallout from '@/components/ui/FullwidthCallout';
@@ -145,7 +144,21 @@ export default async function SobrePage() {
             ))}
           </div>
 
-          {/* CTA Serviços — abaixo das áreas de atuação */}
+          {/* Widgets mobile — sidebar oculta em telas pequenas */}
+          <div className="sobre-mobile-widgets">
+            <CertificacoesWidget />
+            <FormacaoWidget />
+          </div>
+
+        </section>
+
+        {/* Row 1 / Col 2 — Certificações (desktop) */}
+        <div className="sobre-sidebar-certs">
+          <CertificacoesWidget />
+        </div>
+
+        {/* Row 2 / Col 1 — CTA navy */}
+        <div className="sobre-bio-cta">
           <FullwidthCallout
             variant="navy"
             rounded
@@ -159,26 +172,12 @@ export default async function SobrePage() {
             ctaVariant="white"
             maxWidth="600px"
           />
+        </div>
 
-          {/* Widgets mobile — sidebar está oculta em telas pequenas */}
-          <div className="sobre-mobile-widgets">
-            <CertificacoesWidget />
-            <FormacaoWidget />
-          </div>
-
-        </section>
-
-        {/* Barra lateral do projeto */}
-        <BlogSidebar
-          showPopularPosts={false}
-          showNewsletter={false}
-          showProjeto={false}
-          showAdsense={false}
-          adsenseBlockId="sobre-sidebar-300x600"
-        >
-          <CertificacoesWidget />
+        {/* Row 2 / Col 2 — Formação (desktop) — alinhado com CTA navy */}
+        <div className="sobre-sidebar-formacao">
           <FormacaoWidget />
-        </BlogSidebar>
+        </div>
 
       </div>
 
