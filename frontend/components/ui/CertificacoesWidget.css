@@ -4,7 +4,7 @@
 .certs-widget {
   position: relative;
   overflow: hidden;
-  padding: 28px;
+  padding: var(--space-3);
   border-radius: 24px;
   background: linear-gradient(
     180deg,
@@ -68,7 +68,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--slate-500);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .certs-widget__title {
@@ -97,8 +97,8 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 20px;
-  padding: 20px;
+  gap: var(--space-2);
+  padding: var(--space-2);
   border-radius: 20px;
   text-decoration: none;
   color: inherit;
@@ -142,7 +142,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* Provider label */
@@ -172,13 +172,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
+  margin-top: var(--space-1);
 }
 
 .certs-widget__level {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: var(--space-1);
   border-radius: 999px;
   background: var(--accent-light);
   color: var(--accent-dark);

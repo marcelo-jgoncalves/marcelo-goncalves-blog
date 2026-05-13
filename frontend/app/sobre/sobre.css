@@ -4,7 +4,7 @@
 .sobre-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 700;
@@ -112,7 +112,7 @@
   line-height: 1.15;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-2);
 }
 
 .sobre-bio-card h2::before {
@@ -140,7 +140,7 @@
 .sobre-bio-card__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 700;
@@ -215,7 +215,7 @@
   line-height: 1.15;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-2);
 }
 
 .sobre-bio > h2::before {
@@ -234,8 +234,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-4);
 }
 
 @media (max-width: 599px) {
@@ -446,7 +444,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1);
   margin-top: var(--space-3);
   font-style: normal;
   font-family: var(--font-display);
@@ -497,7 +495,7 @@
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  padding: 10px var(--space-2);
+  padding: var(--space-1) var(--space-2);
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
