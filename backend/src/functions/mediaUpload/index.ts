@@ -34,7 +34,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     // Normaliza extensão para minúsculas — S3 filter_suffix é case-sensitive,
     // então "foto.JPG" e "foto.jpg" precisam ter o mesmo comportamento.
     const nome_normalizado = nome_arquivo.replace(/\.[^.]+$/, (ext: string) => ext.toLowerCase());
-    const key = `${Date.now()}-${Math.random().toString(36).substring(7)}-${nome_normalizado}`;
+
+    // Prefixo de data UTC (YYYY/MM/DD) gerado no momento do upload —
+    // organiza o bucket por data automaticamente sem nenhuma ação manual.
+    const now    = new Date();
+    const year   = now.getUTCFullYear();
+    const month  = String(now.getUTCMonth() + 1).padStart(2, "0");
+    const day    = String(now.getUTCDate()).padStart(2, "0");
+    const key    = `${year}/${month}/${day}/${Date.now()}-${Math.random().toString(36).substring(7)}-${nome_normalizado}`;
 
     // Cria o comando de PUT
     const command = new PutObjectCommand({

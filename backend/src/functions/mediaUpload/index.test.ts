@@ -49,6 +49,13 @@ describe('mediaUpload', () => {
     expect(body.basePath).not.toMatch(/\.(webp|jpg|jpeg|png|heic|heif)$/);
   });
 
+  it('basePath inclui prefixo de data YYYY/MM/DD', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'foto.jpg', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
+    const { basePath } = JSON.parse(res!.body);
+    // Formato: media/YYYY/MM/DD/timestamp-random-nome
+    expect(basePath).toMatch(/^media\/\d{4}\/\d{2}\/\d{2}\//);
+  });
+
   it('basePath termina com o nome base do arquivo (sem extensão)', async () => {
     const res = await handler(makeEvent({ nome_arquivo: 'minha-foto.png', tipo_arquivo: 'image/png' }), ctx, jest.fn());
     const { basePath } = JSON.parse(res!.body);
@@ -59,7 +66,6 @@ describe('mediaUpload', () => {
   it('normaliza extensão maiúscula JPG → jpg no basePath', async () => {
     const res = await handler(makeEvent({ nome_arquivo: 'PHOTO.JPG', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
     const { basePath } = JSON.parse(res!.body);
-    // A chave normalizada não deve conter .JPG maiúsculo
     expect(basePath).not.toContain('.JPG');
     expect(basePath).toMatch(/PHOTO$/);
   });
