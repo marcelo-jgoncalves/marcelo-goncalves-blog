@@ -7,7 +7,9 @@
    HOME HERO — dois eixos (esq: copy + CTAs / dir: featured card)
    ========================================================================== */
 .home-hero {
-  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  background:
+    radial-gradient(ellipse 65% 80% at 25% 50%, rgba(59, 95, 138, 0.06) 0%, transparent 60%),
+    linear-gradient(135deg, #F8FAFC, #F1F5F9);
   margin-block: 0;
   padding: var(--space-7) 0 var(--space-6);
 }
