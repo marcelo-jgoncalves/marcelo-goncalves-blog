@@ -9,7 +9,6 @@
     linear-gradient(135deg, #F8FAFC, #F1F5F9);
 }
 
-/* Container com glass card interno */
 .sobre-hero__inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -40,14 +39,26 @@
   pointer-events: none;
 }
 
-.sobre-hero__portrait img {
+/* Moldura da foto */
+.sobre-hero__portrait-frame {
   position: relative;
   z-index: 1;
+  border-radius: 24px;
+  border: 2px solid rgba(59, 95, 138, 0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(235,241,248,0.8));
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.14),
+    0 0 0 6px rgba(59, 95, 138, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  display: inline-flex;
+}
+
+.sobre-hero__portrait-frame img {
   height: 420px;
   width: auto;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 20px 40px rgba(15, 23, 42, 0.14));
 }
 
 /* ── TEXTO ── */
@@ -59,35 +70,14 @@
   gap: var(--space-2);
 }
 
-/* ── EYEBROW PILL ── */
+/* ── EYEBROW — igual ao da home hero ── */
 .sobre-hero__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(59, 95, 138, 0.18);
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(8px);
   font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--dark-900);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.6; transform: scale(0.8); }
-}
-
-.sobre-hero__eyebrow-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-  animation: pulse-dot 2s ease-in-out infinite;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
 }
 
 /* ── TÍTULO ── */
@@ -118,6 +108,65 @@
   color: var(--slate-500);
   max-width: 480px;
   margin: 0;
+}
+
+/* ── BOTÕES CTA ── */
+.sobre-hero__actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-1);
+}
+
+.sobre-hero__btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--space-4);
+  background-color: var(--accent);
+  color: white;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(59, 95, 138, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+@media (hover: hover) {
+  .sobre-hero__btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: var(--accent-hover);
+    box-shadow: 0 12px 30px rgba(59, 95, 138, 0.32);
+  }
+}
+
+.sobre-hero__btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--dark-900);
+  background: white;
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+@media (hover: hover) {
+  .sobre-hero__btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
 }
 
 /* ── ÍCONES SOCIAIS ── */
@@ -175,7 +224,7 @@
     align-items: flex-end;
   }
 
-  .sobre-hero__portrait img {
+  .sobre-hero__portrait-frame img {
     height: 460px;
   }
 
@@ -186,6 +235,10 @@
 
   .sobre-hero__name {
     font-size: var(--text-4xl);
+  }
+
+  .sobre-hero__actions {
+    justify-content: flex-start;
   }
 
   .sobre-hero__social {

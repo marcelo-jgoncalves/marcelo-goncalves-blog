@@ -3,7 +3,7 @@ import './CertificacoesWidget.css';
 
 const CERTS = [
   { id: '3d246d86-7316-43af-9094-f0f3459970ce', provider: 'AWS Certified',  nome: 'Solutions Architect',  nivel: 'Associate',            imagem: '/static/badges/solutions.png'   },
-  { id: '9b4b2ee7-9fd5-4a71-8b4a-40f1d6aac606', provider: 'AWS Certified',  nome: 'SysOps Administrator', nivel: 'Associate',            imagem: '/static/badges/sysops.png'      },
+  { id: '9b4b2ee7-9fd5-4a71-8b4a-40f1d6aac606', provider: 'AWS Certified',  nome: 'SysOps Admin',         nivel: 'Associate',            imagem: '/static/badges/sysops.png'      },
   { id: 'eb295814-0c5c-4961-a685-84c80e779439', provider: 'HashiCorp',       nome: 'Terraform',            nivel: 'Certified Associate',  imagem: '/static/badges/terraform.png'   },
   { id: '02d3ce05-a8d2-4b85-9dde-b14c22e10397', provider: 'Splunk',          nome: 'Splunk Core',          nivel: 'Certified Power User', imagem: '/static/badges/splunk.png'      },
   { id: '5326ba20-c51f-4565-a7fc-36fcc3fccf7d', provider: 'AWS Certified',  nome: 'Cloud Practitioner',   nivel: 'Foundational',         imagem: '/static/badges/pactitioner.png' },
@@ -18,7 +18,6 @@ export default function CertificacoesWidget() {
         <div className="certs-widget__icon-wrap" aria-hidden="true">
           <i className="fas fa-certificate" />
         </div>
-        <p className="certs-widget__subtitle">Credenciais Técnicas</p>
         <h3 className="certs-widget__title">Certificações</h3>
       </div>
 

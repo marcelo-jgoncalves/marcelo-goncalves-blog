@@ -4,7 +4,6 @@ import { getAuthor } from '@/lib/api';
 import SobreHero from '@/components/ui/SobreHero';
 import PageCTA from '@/components/ui/PageCTA';
 import BlogSidebar from '@/components/ui/BlogSidebar';
-import ServiceCallout from '@/components/ui/ServiceCallout';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
@@ -118,7 +117,7 @@ export default async function SobrePage() {
             {EXPERTISE_AREAS.map((area, index) => (
               <div
                 key={area.titulo}
-                className={`sobre-expertise-card${index === 2 ? ' sobre-expertise-card--dark' : ''}`}
+                className={`sobre-expertise-card${index !== 1 ? ' sobre-expertise-card--light' : ''}`}
               >
                 <span className="sobre-expertise-num" aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
@@ -172,7 +171,6 @@ export default async function SobrePage() {
           showAdsense={false}
           adsenseBlockId="sobre-sidebar-300x600"
         >
-          <ServiceCallout />
           <CertificacoesWidget />
           <FormacaoWidget />
         </BlogSidebar>

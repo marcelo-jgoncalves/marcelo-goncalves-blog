@@ -13,18 +13,17 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
     <section className="sobre-hero" aria-label={`Perfil de ${nome}`}>
       <div className="sobre-hero__inner">
 
-        {/* Foto */}
+        {/* Foto com moldura */}
         <div className="sobre-hero__portrait" aria-hidden="true">
           <div className="sobre-hero__portrait-glow" />
-          <img src="/static/foto-perfil-oculos.png" alt="" />
+          <div className="sobre-hero__portrait-frame">
+            <img src="/static/foto-perfil-oculos.png" alt="" />
+          </div>
         </div>
 
         {/* Texto */}
         <div className="sobre-hero__text">
-          <div className="sobre-hero__eyebrow">
-            <span className="sobre-hero__eyebrow-dot" aria-hidden="true" />
-            Engenharia Cloud · AWS · DevOps · Educação
-          </div>
+          <p className="sobre-hero__eyebrow">Engenharia Cloud · AWS · DevOps · Educação</p>
 
           <h1 className="sobre-hero__name">
             Marcelo <span className="accent">Gonçalves</span>
@@ -38,6 +37,11 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
             Transformando experiência prática em conteúdo técnico profundo sobre cloud,
             DevOps, serverless e engenharia de plataformas modernas.
           </p>
+
+          <div className="sobre-hero__actions">
+            <a href="/servicos" className="sobre-hero__btn-primary">Conheça Meu Trabalho</a>
+            <a href="/artigos" className="sobre-hero__btn-secondary">Ver Artigos Técnicos</a>
+          </div>
 
           <div className="sobre-hero__social">
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
