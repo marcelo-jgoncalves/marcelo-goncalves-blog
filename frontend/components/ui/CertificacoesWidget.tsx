@@ -39,8 +39,8 @@ export default function CertificacoesWidget() {
                   src={cert.imagem}
                   alt={`${cert.nome} — ${cert.nivel}`}
                   className="certs-widget__badge"
-                  width={64}
-                  height={64}
+                  width={80}
+                  height={80}
                 />
               </div>
 
@@ -50,12 +50,8 @@ export default function CertificacoesWidget() {
                 <h4 className="certs-widget__name">{cert.nome}</h4>
                 <div className="certs-widget__level-wrap">
                   <span className="certs-widget__level">{cert.nivel}</span>
-                  <span className="certs-widget__dot" aria-hidden="true" />
                 </div>
               </div>
-
-              {/* Seta externa */}
-              <i className="fas fa-arrow-up-right-from-square certs-widget__ext" aria-hidden="true" />
             </a>
           </li>
         ))}

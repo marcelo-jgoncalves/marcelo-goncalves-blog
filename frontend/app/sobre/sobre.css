@@ -56,45 +56,78 @@
 ═══════════════════════════════════════════════════ */
 .sobre-bio {
   margin-block: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-/* H2 com barra esquerda — mesmo padrão do post content */
-.sobre-bio h2 {
+/* Glass card para cada bloco de conteúdo da bio */
+.sobre-bio-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 24px;
+  padding: var(--space-4);
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+}
+
+/* H2 com barra lateral inline */
+.sobre-bio-card h2 {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--dark-900);
-  margin-top: var(--space-5);
-  margin-bottom: var(--space-3);
-  padding-left: var(--space-2);
-  position: relative;
-  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.sobre-bio h2:first-child {
-  margin-top: 0;
-}
-
-.sobre-bio h2::before {
+.sobre-bio-card h2::before {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 5px;
-  bottom: 5px;
+  display: block;
+  flex-shrink: 0;
   width: 4px;
+  height: 36px;
   background: var(--accent);
   border-radius: 2px;
 }
 
-.sobre-bio p {
+.sobre-bio-card p {
   font-size: var(--text-base);
-  line-height: 1.8;
+  line-height: 1.85;
   color: var(--dark-700);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
 }
 
-.sobre-bio p:last-child { margin-bottom: 0; }
-.sobre-bio p strong    { color: var(--dark-900); font-weight: 600; }
+.sobre-bio-card p:last-child { margin-bottom: 0; }
+.sobre-bio-card p strong     { color: var(--dark-900); font-weight: 600; }
+
+/* H2 fora do card (áreas de atuação — sem glass card) */
+.sobre-bio > h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--dark-900);
+  margin: 0;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sobre-bio > h2::before {
+  content: '';
+  display: block;
+  flex-shrink: 0;
+  width: 4px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 2px;
+}
 
 /* Expertise — sem estilo próprio; usa o h2 padrão do sobre-bio */
 

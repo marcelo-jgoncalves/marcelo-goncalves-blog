@@ -89,21 +89,30 @@ export default async function SobrePage() {
         {/* Coluna principal */}
         <section className="sobre-bio">
 
-          <h2>Trajetória Profissional</h2>
-          <p>
-            Especialista em <strong>alta disponibilidade e eficiência</strong>, com mais de 8 anos
-            resolvendo desafios técnicos complexos e projetando infraestruturas cloud que sustentam
-            negócios em escala global. Minha carreira é definida pela busca de resiliência,
-            automação e arquiteturas que envelhecem bem.
-          </p>
-          <p>
-            Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, como{' '}
-            <strong>Accenture</strong>, <strong>Deutsche Bahn</strong>, <strong>Anynines</strong> e{' '}
-            <strong>Credisis</strong>. Essa atuação internacional me permitiu refinar metodologias que
-            equilibram agilidade técnica com governança corporativa.
-          </p>
+          {/* Trajetória — glass card */}
+          <div className="sobre-bio-card">
+            <h2>Trajetória Profissional</h2>
+            <p>
+              Especialista em <strong>alta disponibilidade e eficiência</strong>, com mais de 8 anos
+              resolvendo desafios técnicos complexos e projetando infraestruturas cloud que sustentam
+              negócios em escala global. Minha carreira é definida pela busca de resiliência,
+              automação e arquiteturas que envelhecem bem.
+            </p>
+            <p>
+              Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, como{' '}
+              <strong>Accenture</strong>, <strong>Deutsche Bahn</strong>, <strong>Anynines</strong> e{' '}
+              <strong>Credisis</strong>. Essa atuação internacional me permitiu refinar metodologias que
+              equilibram agilidade técnica com governança corporativa.
+            </p>
+            <p>
+              Como <strong>professor há mais de 15 anos</strong>, acredito que a tecnologia só atinge seu
+              potencial máximo quando é comunicada com clareza — uma ponte entre o detalhe da engenharia
+              e a decisão estratégica.
+            </p>
+          </div>
 
-          <h2>Áreas em que atuo no dia a dia</h2>
+          {/* Áreas de atuação */}
+          <h2>Áreas em que atuo</h2>
 
           <div className="sobre-expertise-grid">
             {EXPERTISE_AREAS.map((area, index) => (
@@ -119,12 +128,6 @@ export default async function SobrePage() {
               </div>
             ))}
           </div>
-
-          <p>
-            Como <strong>professor há mais de 15 anos</strong>, acredito que a tecnologia só atinge seu
-            potencial máximo quando é comunicada com clareza. Meu objetivo é mentorar e traduzir conceitos
-            complexos para o mercado — uma ponte entre o detalhe da engenharia e a decisão estratégica.
-          </p>
 
           {/* Widgets mobile — sidebar está oculta em telas pequenas */}
           <div className="sobre-mobile-widgets">
@@ -144,7 +147,7 @@ export default async function SobrePage() {
               <cite>Marcelo Gonçalves</cite>
             </blockquote>
 
-            {/* Idiomas — parte do bloco diferencial linguístico */}
+            {/* Idiomas */}
             <div className="sobre-lang-block">
               <span className="sobre-lang-block__label">Idiomas</span>
               <div className="sobre-lang-pills">
@@ -158,14 +161,6 @@ export default async function SobrePage() {
               </div>
             </div>
           </div>
-
-          <h2>Por que este blog existe</h2>
-          <p>
-            Este blog é onde transformo a prática em conteúdo: análises profundas, tutoriais e bastidores
-            de uma arquitetura serverless construída <em>quase</em> 100% com IA. Cada post é uma
-            oportunidade de mostrar — com código real e decisões justificadas — como a engenharia humana
-            ainda é o que separa um protótipo gerado de um sistema confiável.
-          </p>
 
         </section>
 

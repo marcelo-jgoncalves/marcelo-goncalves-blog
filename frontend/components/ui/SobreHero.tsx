@@ -11,17 +11,15 @@ interface SobreHeroProps {
 export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }: SobreHeroProps) {
   return (
     <section className="sobre-hero" aria-label={`Perfil de ${nome}`}>
-      {/*
-        Container interno alinha foto e texto com o mesmo max-width da página.
-        A foto é posicionada absolutamente a partir da borda esquerda desse container
-        (= onde começa o conteúdo principal). O texto é centrado na largura total.
-      */}
       <div className="sobre-hero__inner">
 
+        {/* Foto */}
         <div className="sobre-hero__portrait" aria-hidden="true">
+          <div className="sobre-hero__portrait-glow" />
           <img src="/static/foto-perfil-oculos.png" alt="" />
         </div>
 
+        {/* Texto */}
         <div className="sobre-hero__text">
           <div className="sobre-hero__eyebrow">
             <span className="sobre-hero__eyebrow-dot" aria-hidden="true" />
@@ -29,9 +27,17 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
           </div>
 
           <h1 className="sobre-hero__name">
-            Marcelo <span className="accent">Gonçalves</span> é<br />
-            Engenheiro Cloud Especialista<br />em AWS &amp; Educador
+            Marcelo <span className="accent">Gonçalves</span>
           </h1>
+
+          <p className="sobre-hero__lead">
+            Engenheiro Cloud especialista em AWS, automação e arquiteturas resilientes.
+          </p>
+
+          <p className="sobre-hero__body">
+            Transformando experiência prática em conteúdo técnico profundo sobre cloud,
+            DevOps, serverless e engenharia de plataformas modernas.
+          </p>
 
           <div className="sobre-hero__social">
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">

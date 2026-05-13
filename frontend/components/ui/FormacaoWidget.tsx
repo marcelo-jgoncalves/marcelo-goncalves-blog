@@ -14,36 +14,26 @@ export default function FormacaoWidget() {
 
       {/* Header */}
       <div className="formacao-widget__header">
-        <div className="formacao-widget__icon" aria-hidden="true">
-          <i className="fas fa-user-graduate" />
-        </div>
-        <p className="formacao-widget__subtitle">Base Acadêmica</p>
-        <h3 className="formacao-widget__title">Formação</h3>
+        <p className="formacao-widget__subtitle">Formação</p>
+        <h3 className="formacao-widget__title">Base acadêmica multidisciplinar</h3>
       </div>
 
       {/* Lista */}
       <ul className="formacao-widget__list" role="list">
         {FORMACAO.map((item) => (
           <li key={item.titulo} className="formacao-widget__item">
-
-            {/* Logo — esquerda */}
-            <div className="formacao-widget__logo-wrap">
+            <span className="formacao-widget__grau">{item.grau}</span>
+            <strong className="formacao-widget__titulo">{item.titulo}</strong>
+            <div className="formacao-widget__inst">
               <img
                 src={item.logo}
                 alt={item.instituicao}
                 className="formacao-widget__logo"
-                width={44}
-                height={44}
+                width={20}
+                height={20}
               />
+              <span>{item.instituicao}</span>
             </div>
-
-            {/* Texto — direita */}
-            <div className="formacao-widget__info">
-              <span className="formacao-widget__grau">{item.grau}</span>
-              <strong>{item.titulo}</strong>
-              <em>{item.instituicao}</em>
-            </div>
-
           </li>
         ))}
       </ul>
