@@ -57,24 +57,6 @@
   z-index: 1;
 }
 
-/* Override glass sobre o CategoryBadge no contexto de overlay */
-.post-card__category-overlay .category-badge {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-color: transparent;
-  color: var(--accent-dark);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-@media (hover: hover) {
-  .post-card__category-overlay .category-badge:hover {
-    background: rgba(255, 255, 255, 1);
-    color: var(--accent);
-    transform: none;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
-  }
-}
 
 /* ── Conteúdo ────────────────────────────────────── */
 .post-card__content {
