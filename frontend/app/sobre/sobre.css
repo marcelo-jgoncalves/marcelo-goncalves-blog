@@ -61,13 +61,13 @@
   gap: var(--space-4);
 }
 
-/* Bloco trajetória — mesma cor do bloco diferencial + efeito radial */
+/* Bloco trajetória — accent-dark + efeito radial */
 .sobre-bio-card {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
-    #1A2535;
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.07) 0%, transparent 55%),
+    var(--accent-dark);
   border: none;
   border-radius: 24px;
   padding: var(--space-4);

@@ -53,9 +53,9 @@
 .sobre-hero__name {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--dark-900);
   margin: 0;
 }
