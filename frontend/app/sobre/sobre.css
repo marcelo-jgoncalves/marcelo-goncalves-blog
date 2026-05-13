@@ -39,7 +39,7 @@
 @media (min-width: 1024px) {
   .sobre-content {
     padding-top: var(--space-5);
-    padding-bottom: 0;
+    padding-bottom: var(--space-4);
   }
 
   /* Sticky explícito para garantir comportamento igual às demais páginas */

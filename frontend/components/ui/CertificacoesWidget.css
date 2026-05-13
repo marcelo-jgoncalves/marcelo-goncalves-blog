@@ -158,12 +158,13 @@
 /* Nome da certificação */
 .certs-widget__name {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   color: var(--dark-900);
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Level pill */

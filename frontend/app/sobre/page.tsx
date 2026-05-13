@@ -2,7 +2,7 @@ import './sobre.css';
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import SobreHero from '@/components/ui/SobreHero';
-import PageCTA from '@/components/ui/PageCTA';
+import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
@@ -131,7 +131,7 @@ export default async function SobrePage() {
 
           {/* CTA Serviços — abaixo das áreas de atuação */}
           <FullwidthCallout
-            variant="dark"
+            variant="navy"
             icon="fa-headset"
             iconVariant="dark"
             size="md"
@@ -192,13 +192,7 @@ export default async function SobrePage() {
 
       </div>
 
-      <PageCTA
-        variant="services"
-        title="Vamos trabalhar juntos?"
-        body="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
-        linkHref="mailto:marcelo.mjgoncalves@gmail.com?subject=Consultoria%20AWS"
-        linkText="Entrar em Contato →"
-      />
+      <NewsletterCTA />
     </>
   );
 }
