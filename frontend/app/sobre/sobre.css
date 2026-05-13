@@ -42,13 +42,16 @@
     padding-bottom: var(--space-4);
   }
 
-  /* Sidebar ocupa a altura total da linha do grid */
+  /* Sidebar ocupa a altura total da linha do grid.
+     height:auto sobrescreve o max-content do BlogSidebar.css,
+     permitindo que align-self:stretch funcione (spec: stretch só
+     redimensiona itens com height:auto). */
   .sobre-content > .blog-sidebar {
     position: -webkit-sticky;
     position: sticky;
     top: var(--space-7);
     align-self: stretch;
-    height: 100%;
+    height: auto;
   }
 
   /* Área dinâmica cresce para preencher o espaço disponível */
