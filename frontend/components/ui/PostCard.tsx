@@ -43,6 +43,8 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
   return (
     <article className="post-card">
+
+      {/* Imagem com badge overlay */}
       <div className="post-card__image-wrapper">
         {post.imagem_destaque_url && (
           <ResponsiveImage
@@ -54,29 +56,19 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
             priority={isPriority}
           />
         )}
-      </div>
-
-      <div className="post-card__content">
-
-        {/* Badge + data no topo */}
-        <div className="post-card__meta-row">
-          {categoriaSlug && (
+        {categoriaSlug && (
+          <div className="post-card__category-overlay">
             <CategoryBadge
               nome={categoriaNome}
               slug={categoriaSlug}
               icone_fa={post.categoria?.icone_fa}
               size="sm"
             />
-          )}
-          {date && (
-            <div className="post-card__meta-info" aria-label="Data de publicação">
-              <span>
-                <i className="far fa-calendar-alt" aria-hidden="true" />
-                {date}
-              </span>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
+
+      <div className="post-card__content">
 
         <h3 className="post-card__title">
           <Link href={`/post/${post.slug}`} className="post-card__title-link">
@@ -86,19 +78,29 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
         <p className="post-card__excerpt">{post.resumo}</p>
 
-        {/* Footer: tempo de leitura (esquerda) + Ler mais (direita) */}
-        <div className="post-card__footer">
-          {post.tempo_leitura_min && (
-            <span className="post-card__read-time" aria-label="Tempo de leitura">
-              <i className="far fa-clock" aria-hidden="true" />
-              {post.tempo_leitura_min} min
-            </span>
-          )}
-          <ReadMoreLink
-            href={`/post/${post.slug}`}
-            ariaLabel={`Ler post completo sobre ${post.titulo}`}
-          />
-        </div>
+        {/* Meta: data (esquerda) + tempo leitura (direita) */}
+        {(date || post.tempo_leitura_min) && (
+          <div className="post-card__meta">
+            {date && (
+              <span className="post-card__meta-item">
+                <i className="far fa-calendar-alt" aria-hidden="true" />
+                {date}
+              </span>
+            )}
+            {post.tempo_leitura_min && (
+              <span className="post-card__meta-item">
+                <i className="far fa-clock" aria-hidden="true" />
+                {post.tempo_leitura_min} min
+              </span>
+            )}
+          </div>
+        )}
+
+        <ReadMoreLink
+          href={`/post/${post.slug}`}
+          ariaLabel={`Ler post completo sobre ${post.titulo}`}
+        />
+
       </div>
     </article>
   );
