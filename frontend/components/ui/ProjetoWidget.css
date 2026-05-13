@@ -1,46 +1,80 @@
 /* frontend/components/ui/ProjetoWidget.css */
 
 .projeto-widget {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(150deg, #EBF1F8, #D0E4F2);
   border: 1px solid rgba(59, 95, 138, 0.2);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 28px 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-float);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* Glow radial — profundidade premium */
+.projeto-widget::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 80% 15%,
+    rgba(59, 95, 138, 0.12),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .projeto-widget:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-authority);
+  }
+}
+
+/* Ícone — accent sólido com inner highlight e shadow tinted */
 .projeto-widget__icon {
-  width: 48px;
-  height: 48px;
+  position: relative;
+  width: 52px;
+  height: 52px;
   background: var(--accent);
-  border-radius: var(--border-radius-lg);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: var(--text-lg);
-  margin: 0 auto var(--space-2);
+  margin: 0 auto var(--space-3);
+  box-shadow:
+    0 4px 12px rgba(59, 95, 138, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
 }
 
 .projeto-widget__title {
+  position: relative;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--text-base);
-  color: #1E3A5F;
+  color: var(--accent-dark);
   margin: 0 0 var(--space-1);
+  letter-spacing: -0.01em;
 }
 
 .projeto-widget__desc {
+  position: relative;
   font-size: var(--text-sm);
-  color: #475569;
+  color: var(--slate-500);
   line-height: 1.6;
   margin: 0 0 var(--space-3);
 }
 
+/* Botão — mesmo padrão do ServiceCallout */
 .projeto-widget__btn {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,13 +86,15 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--text-sm);
-  border-radius: 6px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.25);
+  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 @media (hover: hover) {
   .projeto-widget__btn:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.35);
   }
 }
