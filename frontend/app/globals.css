@@ -27,6 +27,9 @@
   --slate-400: #94A3B8;
   --slate-500: #64748B;
 
+  /* --- Warm background (avaliação — protótipo postagem) --- */
+  --bg-warm: #f8f4ee;
+
   /* --- Callout colors --- */
   --blue-light: #ebf8ff;
   --orange-light: #fffaf0;
@@ -109,7 +112,7 @@ body {
   font-family: var(--font-sans);
   font-size: 18px;
   color: var(--dark-700);
-  background-color: #ffffff;
+  background-color: var(--bg-warm);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -117,13 +120,21 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--dark-900);
-  font-weight: 700;
   margin: 0;
 }
 
-h1 { line-height: 1.2; }
-h2 { line-height: 1.25; }
-h3 { line-height: 1.3; }
+h1, h2, h3 {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+h4, h5, h6 {
+  font-weight: 700;
+}
+
+h1 { line-height: 1.05; }
+h2 { line-height: 1.1; }
+h3 { line-height: 1.15; }
 
 a {
   color: inherit;
