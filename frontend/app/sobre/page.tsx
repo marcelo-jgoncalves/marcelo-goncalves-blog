@@ -23,8 +23,8 @@ const EXPERTISE_AREAS = [
 
 const LANGUAGES = [
   { nome: 'Português', nivel: 'Nativo',       flag: '🇧🇷' },
-  { nome: 'Inglês',    nivel: 'Fluente',       flag: '🇺🇸' },
-  { nome: 'Alemão',    nivel: 'Intermediário', flag: '🇩🇪' },
+  { nome: 'Inglês',    nivel: 'Avançado',  flag: '🇺🇸' },
+  { nome: 'Alemão',    nivel: 'Avançado',  flag: '🇩🇪' },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
