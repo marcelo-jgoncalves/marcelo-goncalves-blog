@@ -190,12 +190,12 @@ img {
   padding: var(--space-2) var(--space-4);
   background-color: var(--accent);
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 1rem;
   border: none;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.25s ease;
 }
 
 .btn:hover {
@@ -209,9 +209,9 @@ img {
   background-color: transparent;
   display: inline-block;
   padding: var(--space-2) var(--space-4);
-  border-radius: 6px;
+  border-radius: 10px;
   font-weight: 600;
-  transition: all 0.3s;
+  transition: all 0.25s ease;
 }
 
 .btn-outline {

@@ -113,18 +113,18 @@
   }
 }
 
-/* Expertise cards — mesmo padrão visual do CategoryCard da home */
+/* Expertise cards */
 .sobre-expertise-card {
   background: white;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: var(--space-3);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 @media (hover: hover) {
@@ -133,13 +133,17 @@
     box-shadow: var(--shadow-float);
     border-color: var(--accent);
   }
+
+  .sobre-expertise-card:hover .sobre-expertise-ico {
+    transform: scale(1.08);
+  }
 }
 
 .sobre-expertise-ico {
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   background-color: var(--accent-light);
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,6 +151,8 @@
   font-size: var(--text-lg);
   margin-bottom: var(--space-2);
   flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 2px 6px rgba(59, 95, 138, 0.1);
+  transition: transform 0.25s ease;
 }
 
 .sobre-expertise-card h4 {
@@ -272,10 +278,18 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  padding: 8px var(--space-2);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px var(--space-2);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .sobre-lang-pill:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
 }
 
 .sobre-lang-flag {
