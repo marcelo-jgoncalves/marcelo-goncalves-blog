@@ -1582,7 +1582,7 @@ button { font: inherit; cursor: pointer; }
 .widget--popular .widget-title {
   padding-bottom: 22px;
   border-bottom: 1px solid var(--rule);
-  margin-bottom: 0;
+  margin-bottom: var(--space-4);
   color: var(--accent);
 }
 .widget--popular .popular-cat {
@@ -1593,6 +1593,9 @@ button { font: inherit; cursor: pointer; }
   list-style: none;
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
 }
 .popular-list li::before,
 .popular-list li::after { content: none !important; }
@@ -1602,14 +1605,12 @@ button { font: inherit; cursor: pointer; }
   grid-template-columns: 64px 1fr;
   gap: 12px;
   align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--rule);
+  padding: 0;
   color: inherit;
   text-decoration: none;
   overflow: hidden;
   transition: transform 0.2s ease;
 }
-.popular-list li:last-child .popular-link { border-bottom: none; }
 
 @media (hover: hover) {
   .popular-link:hover { transform: translateX(2px); }
