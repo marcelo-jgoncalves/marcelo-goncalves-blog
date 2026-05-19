@@ -16,6 +16,38 @@
 
 ---
 
+## 1.5. Paleta de Cores — Display & Typography (Sessão 31)
+
+### Decisão de Cor para Títulos e Subtítulos
+
+**Mudança executada:**
+- **Antes:** Navy escuro (`#0A0E1A` — ink original)
+- **Depois:** Marrom escuro (`#2E2A26` — --t-display)
+- **Variável CSS:** `--t-display: #2E2A26`
+
+**Aplicações:**
+- `--t-display` cor de todos os H1, H2, H3
+- `.article-title` (H1 artigo)
+- `.post-content h2` (H2 seção)
+- `.post-content h3` (H3 subseção)
+- `.widget-title` (títulos de widget sidebar)
+- `.widget-desc` (descrições em widgets)
+- `.popular-post-title` (títulos ranking)
+- `.related__card-title` (títulos cards relacionados)
+- Qualquer elemento com `color: var(--t-display)` ou `color: #2E2A26`
+
+**Motivo:**
+- Navy (#0A0E1A) é muito escuro, pouco legível em backgrounds warm (#FAF8F3)
+- Marrom (#2E2A26) mantém contraste forte mas com tom editorial mais quente
+- Harmoniza com paleta warm ivory + petrol do protótipo
+
+**Impacto Visual:**
+- Headings ganham tom mais editorial, menos técnico
+- Melhor legibilidade em backgrounds paper/ivory
+- Alinhamento com design system warm (sessão 30)
+
+---
+
 ## 2. Hierarquia de Tamanhos Identificada
 
 ### Display / Headings Principais
