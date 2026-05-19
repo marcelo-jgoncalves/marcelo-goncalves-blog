@@ -1304,7 +1304,7 @@ button { font: inherit; cursor: pointer; }
 }
 .widget--toc .widget-title {
   color: var(--paper);
-  margin-bottom: 0;
+  margin-bottom: var(--space-4);
 }
 
 .toc-list {
@@ -1314,6 +1314,7 @@ button { font: inherit; cursor: pointer; }
   list-style: none;
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
 }
 .toc-list li { position: relative; }
 .toc-list li::before,
@@ -1322,7 +1323,7 @@ button { font: inherit; cursor: pointer; }
 .toc-list a {
   position: relative;
   display: block;
-  padding: 9px 0 9px 12px;
+  padding: 0 0 0 12px;
   border-left: 2px solid transparent;
   color: var(--paper);
   font-family: var(--sans);
@@ -1344,8 +1345,9 @@ button { font: inherit; cursor: pointer; }
 }
 
 .toc-progress {
-  margin-top: 22px;
-  padding-top: 18px;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(91,139,150,0.30);
   font-family: var(--mono);
   font-size: 0.75rem;
   letter-spacing: 0.14em;
