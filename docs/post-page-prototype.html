@@ -486,8 +486,11 @@ button { font: inherit; cursor: pointer; }
   line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--t-display);
-  margin: var(--s-7) 0 var(--s-4);
+  margin: var(--s-7) 0 0;
   text-wrap: balance;
+}
+.post-content h2 + p {
+  margin-top: var(--space-content);
 }
 .post-content h2::before {
   content: counter(h2-counter, decimal-leading-zero);
@@ -516,8 +519,11 @@ button { font: inherit; cursor: pointer; }
   font-size: 1.125rem;
   line-height: 1.8;
   color: var(--t-body);
-  margin-bottom: var(--s-4);
+  margin: 0;
   font-feature-settings: 'ss01', 'cv11';
+}
+.post-content p + p {
+  margin-top: var(--space-content);
 }
 
 /* ───── First-paragraph treatment (replaces serif drop cap) ───── */
