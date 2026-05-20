@@ -14,12 +14,14 @@ import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
-import PopularPostsSection from '@/components/ui/PopularPostsSection';
+import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
 import ShareButtons from '@/components/ui/ShareButtons';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import NewsletterWidget from '@/components/ui/NewsletterWidget';
+import ShareWidget from '@/components/ui/ShareWidget';
+import NewsletterSidebarWidget from '@/components/ui/NewsletterSidebarWidget';
 
 export const revalidate = 60;
 
@@ -164,12 +166,11 @@ export default async function PostPage({ params }: Props) {
       <header className="article-header">
         <div className="container">
           {category ? (
-            <Link 
-              href={`/categoria/${category.categoria_slug}`} 
-              className="post-tag-header hover:opacity-80 transition-opacity" 
-              style={{ textDecoration: 'none' }}
-            >              
-              {category.icone_fa && <i className={`${category.icone_fa} mr-2`} aria-hidden="true"></i>}
+            <Link
+              href={`/categoria/${category.categoria_slug}`}
+              className="post-tag-header"
+            >
+              {category.icone_fa && <i className={`${category.icone_fa}`} aria-hidden="true" />}
               {category.nome_exibicao}
             </Link>
           ) : (
@@ -177,42 +178,41 @@ export default async function PostPage({ params }: Props) {
               {post.categoria_slug || 'Artigo'}
             </span>
           )}
-          
+
           <h1 className="article-title">{post.titulo}</h1>
-          
+
           <div className="article-meta">
-            {/* 🚀 ZERO REGRESSÃO: Autor agora é dinâmico e consistente com a AuthorBox */}
-            <span><i className="fas fa-user-circle" aria-hidden="true"></i> Por {autorNome}</span>
+            <span><i className="fas fa-user-circle" aria-hidden="true" /> Por <span className="meta-author-name">{autorNome}</span></span>
             <span>
-                <i className="far fa-calendar-alt" aria-hidden="true"></i>
-                <time dateTime={post.data_publicacao}>
-                  {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
-                </time>
+              <i className="far fa-calendar-alt" aria-hidden="true" />
+              <time dateTime={post.data_publicacao} className="meta-date">
+                {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
+              </time>
             </span>
-            <span><i className="far fa-clock" aria-hidden="true"></i> {post.tempo_leitura_min || 5} min de leitura</span>
+            <span><i className="far fa-clock" aria-hidden="true" /> <span className="meta-time">{post.tempo_leitura_min || 5} min de leitura</span></span>
           </div>
         </div>
-      </header>
 
-      {post.imagem_destaque_url && (
-        <div className="featured-image-container">
-          <ResponsiveImage
-            src={post.imagem_destaque_url}
-            alt={post.imagem_destaque_alt_text || post.titulo}
-            priority
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
-            className="featured-image"
-          />
-        </div>
-      )}
+        {post.imagem_destaque_url && (
+          <div className="featured-image-container">
+            <ResponsiveImage
+              src={post.imagem_destaque_url}
+              alt={post.imagem_destaque_alt_text || post.titulo}
+              priority
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
+              className="featured-image"
+            />
+          </div>
+        )}
+      </header>
 
       <div className="container article-grid">
         <main className="main-content-column">
             <div className="post-body-wrapper">
                 {post.resumo && (
                   <div className="post-intro-card">
-                    <div className="post-intro-eyebrow">Introdução</div>
+                    <div className="eyebrow eyebrow--lined" style={{ marginBottom: 'var(--space-content)' }}>Introdução</div>
                     <p className="post-lead">{post.resumo}</p>
                   </div>
                 )}
@@ -233,10 +233,10 @@ export default async function PostPage({ params }: Props) {
                   <ServiceCallout />
                   <NewsletterWidget />
                 </div>
-                
+
                 <ShareButtons title={post.titulo} slug={post.slug} />
-                <AuthorBox authorId={post.autor_id} /> 
-                <PopularPostsSection limit={4} variant="post" /> 
+                <AuthorBox authorId={post.autor_id} />
+                <RelatedPostsSection />
             </footer>
         </main>
 
@@ -248,10 +248,11 @@ export default async function PostPage({ params }: Props) {
             {headings.length > 0 && (
                 <TOC headings={headings} variant="desktop" />
             )}
+            <NewsletterSidebarWidget />
             <ServiceCallout />
         </BlogSidebar>
       </div>
-      
+
       <NewsletterCTA />
     </article>
   );
