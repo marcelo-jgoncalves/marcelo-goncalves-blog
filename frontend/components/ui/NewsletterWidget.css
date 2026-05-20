@@ -10,17 +10,31 @@
   box-shadow: var(--shadow-soft);
 }
 
-/* Widget newsletter
-   Identidade: accent-light, convidativo, ícone accent (azul) em caixa branca elevada */
+/* Widget newsletter — dark accent background (protótipo)
+   Newsletter em card escuro com accent background */
 .widget-newsletter {
-  background-color: var(--accent-light);
-  color: var(--dark-900);
-  border: 1px solid rgba(59, 95, 138, 0.18);
+  background-color: var(--accent);
+  color: #ffffff;
   border-radius: 16px;
-  padding: var(--space-3);
-  box-shadow: var(--shadow-soft);
+  padding: 28px 26px 26px;
+  box-shadow: 0 8px 32px rgba(15,76,92,0.28);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.widget-newsletter::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(91, 139, 150, 0.20);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 @media (hover: hover) {
@@ -30,39 +44,41 @@
   }
 }
 
-/* Ícone — branco sobre accent-light: flutua por elevação
-   Mantém o ícone na cor accent (identidade) — caixa branca cria contraste */
+/* Ícone — caixa branca com ícone branco no fundo escuro */
 .widget-newsletter .card-icon-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 56px;
   height: 56px;
-  background: white;
-  color: var(--accent);
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: 12px;
   font-size: var(--text-xl);
-  margin: 0 auto var(--space-2);
-  box-shadow:
-    0 4px 14px rgba(59, 95, 138, 0.14),
-    0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 0 auto var(--space-3);
+  position: relative;
+  z-index: 1;
 }
 
 .card-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-base);
+  font-size: var(--text-xl);
   letter-spacing: -0.01em;
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-3);
   display: block;
-  color: var(--dark-900);
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
 }
 
 .widget-newsletter .card-desc {
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  color: var(--slate-500);
-  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
 }
 
 .widget-newsletter .btn-full {
@@ -70,25 +86,26 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 48px;
+  height: 56px;
   padding: 0;
-  background-color: var(--accent);
-  color: #ffffff;
+  background-color: #ffffff;
+  color: var(--accent);
   text-decoration: none;
   font-weight: 700;
   font-family: var(--font-display);
-  font-size: var(--text-sm);
-  border-radius: 10px;
+  font-size: var(--text-lg);
+  border-radius: 16px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.22);
+  box-shadow: 0 12px 30px rgba(15, 22, 35, 0.22);
   transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 
 @media (hover: hover) {
   .widget-newsletter .btn-full:hover {
-    transform: translateY(-2px);
-    background-color: var(--accent-hover);
-    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.32);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(15, 22, 35, 0.30);
   }
 }
