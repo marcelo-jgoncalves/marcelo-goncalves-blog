@@ -1,140 +1,260 @@
 /* frontend/components/ui/PopularPostsWidget.css */
 
-/* ── Container ─────────────────────────────────────────── */
+/* ── CONTAINER PRINCIPAL — PAINEL PREMIUM EDITORIAL ────────────────────────── */
 .popular-widget {
   display: flex;
   flex-direction: column;
   gap: 0;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 28px 26px 26px;
-  box-shadow: 0 2px 16px rgba(15,76,92,0.07), 0 1px 4px rgba(15,76,92,0.04);
+  padding: 48px 40px;
+  border-radius: 34px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.55),
+      rgba(255,255,255,.28)
+    );
+  backdrop-filter: blur(18px);
+  border:
+    1px solid rgba(255,255,255,.45);
+  box-shadow:
+    0 10px 40px rgba(16,24,40,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
 }
 
-/* ── Eyebrow — pill badge */
+/* Textura sutil (grain) */
+.popular-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.15) 1px,
+      transparent 1px
+    );
+  background-size: 4px 4px;
+  opacity: .15;
+}
+
+/* ── FUNDO ATMOSFÉRICO COM RADIAL GRADIENTS ────────────── */
+.popular-widget::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle,
+      rgba(49,91,146,.12) 0%,
+      transparent 70%
+    );
+  filter: blur(50px);
+}
+
+/* Segundo gradient atmosférico (âmbar) */
+.popular-widget {
+  --amber-gradient: radial-gradient(
+    circle,
+    rgba(218,123,38,.08) 0%,
+    transparent 70%
+  );
+}
+
+.popular-widget::after {
+  box-shadow:
+    inset 500px 500px 800px
+    radial-gradient(
+      circle at bottom right,
+      rgba(218,123,38,.08) 0%,
+      transparent 70%
+    );
+}
+
+/* ── LABEL "MAIS LIDOS" ────────────────────────────────── */
 .popular-widget .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 400;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-1);
+  color: #4f6f98;
+  position: relative;
+  z-index: 1;
 }
 
 .popular-widget .eyebrow::before {
-  content: '';
-  width: 24px;
+  width: 32px;
   height: 1px;
-  background: var(--accent);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(49,91,146,.9),
+      rgba(49,91,146,.1)
+    );
   flex-shrink: 0;
 }
 
-/* ── Título ────────────────────────────────────────────── */
+/* ── TÍTULO PRINCIPAL ─────────────────────────────────── */
 .popular-widget__title {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: clamp(52px, 6vw, 72px);
   font-weight: 800;
-  letter-spacing: -0.05em;
-  line-height: 1.05;
+  line-height: .92;
+  letter-spacing: -.06em;
   color: var(--text-default);
-  margin: 0;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--border-subtle);
+  margin: 0 0 32px 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-/* ── Lista ─────────────────────────────────────────────── */
+/* Segunda linha do título com tom diferente */
+.popular-widget__title {
+  color: #264d73;
+}
+
+/* ── LISTA ─────────────────────────────────────────────── */
 .popular-widget__list {
   display: flex;
   flex-direction: column;
   list-style: none;
   padding: 0;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── Item / Link ───────────────────────────────────────── */
+/* ── DIVISÓRIAS ATMOSFÉRICAS ───────────────────────────── */
 .popular-widget__link {
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 12px;
-  align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border-subtle);
-  color: inherit;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.2s ease;
+  border-bottom:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(49,91,146,.16),
+      transparent
+    );
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .popular-widget__list li:last-child .popular-widget__link {
   border-bottom: none;
 }
 
+/* ── ITEM / LINK ───────────────────────────────────────── */
+.popular-widget__link {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 26px 0;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  overflow: visible;
+  transition: all .45s cubic-bezier(.22,1,.36,1);
+}
+
 @media (hover: hover) {
   .popular-widget__link:hover {
-    transform: translateX(2px);
+    transform: translateX(10px);
   }
 
-  .popular-widget__link:hover .popular-widget__post-title {
-    color: var(--text-default);
+  .popular-widget__link:hover .popular-widget__rank {
+    transform: scale(1.04);
+    opacity: .9;
+  }
+
+  .popular-widget__link:hover .category-tag {
+    transform: translateY(-2px);
   }
 }
 
-/* ── Número de ranking — elemento tipográfico ─────────── */
+/* ── NÚMERO — WATERMARK EDITORIAL ──────────────────────── */
 .popular-widget__rank {
   font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 3rem;
-  letter-spacing: -0.06em;
-  color: var(--accent);
-  opacity: 0.18;
+  font-weight: 800;
+  font-size: 64px;
+  letter-spacing: -.08em;
   line-height: 1;
   text-align: left;
   flex-shrink: 0;
   user-select: none;
-  transition: opacity 0.2s ease;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(28,53,80,.12);
+  transition: all .45s cubic-bezier(.22,1,.36,1);
 }
 
 .popular-widget__link:hover .popular-widget__rank {
-  opacity: 0.35;
+  color: #17324b;
+  -webkit-text-stroke: 0;
 }
 
-/* ── Corpo (categoria + título) ────────────────────────── */
+/* ── CORPO (CATEGORIA + TÍTULO) ────────────────────────── */
 .popular-widget__body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   min-width: 0;
+  flex: 1;
 }
 
-.popular-widget__category {
-  font-family: var(--font-display);
-  font-size: var(--text-xs);
+/* ── TAGS EM FROSTED PILLS ─────────────────────────────── */
+.popular-widget .category-tag {
+  padding: 8px 14px !important;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.65),
+      rgba(255,255,255,.35)
+    ) !important;
+  backdrop-filter: blur(12px);
+  border:
+    1px solid rgba(255,255,255,.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.6),
+    0 6px 20px rgba(49,91,146,.06);
+  font-size: 12px;
+  letter-spacing: .14em;
+  color: #46668f !important;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--accent);
-  line-height: 1;
+  transition: all .45s cubic-bezier(.22,1,.36,1);
 }
 
+/* ── TÍTULO DO POST ────────────────────────────────────── */
 .popular-widget__post-title {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.012em;
-  color: var(--text-default);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -.03em;
+  color: #33567d;
   margin: 0;
-  transition: color 0.2s ease;
+  transition: all .45s cubic-bezier(.22,1,.36,1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-wrap: pretty;
+}
+
+.popular-widget__link:hover .popular-widget__post-title {
+  color: #17324b;
+  font-weight: 700;
 }
 
 /* ── "Ver todos" link ──────────────────────────────────── */
@@ -144,17 +264,27 @@
   gap: 6px;
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid var(--dark-warm-border);
+  border-top:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(49,91,146,.16),
+      transparent
+    );
+  border-top-width: 1px;
+  border-top-style: solid;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-sm);
-  color: var(--accent);
+  color: #33567d;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all .45s cubic-bezier(.22,1,.36,1);
+  position: relative;
+  z-index: 1;
 }
 
 .popular-widget__all:hover {
-  color: var(--accent);
+  color: #17324b;
 }
 
 .popular-widget__arr {
@@ -164,11 +294,21 @@
 /* ── Skeleton ──────────────────────────────────────────── */
 .popular-widget__item--skeleton {
   display: grid;
-  grid-template-columns: 40px 1fr;
+  grid-template-columns: 80px 1fr;
   gap: 14px;
-  align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--dark-warm-border);
+  align-items: flex-start;
+  padding: 26px 0;
+  border-bottom:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(49,91,146,.16),
+      transparent
+    );
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  position: relative;
+  z-index: 1;
 }
 
 .popular-widget__item--skeleton:last-child {
@@ -176,32 +316,37 @@
 }
 
 .popular-widget__skeleton-rank {
-  width: 32px;
-  height: 32px;
+  width: 64px;
+  height: 64px;
   border-radius: 6px;
 }
 
 .popular-widget__skeleton-body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 10px;
   flex: 1;
 }
 
 .popular-widget__skeleton-line {
-  border-radius: 4px;
+  border-radius: 8px;
   height: 14px;
 }
 
 .popular-widget__skeleton-pulse {
   animation: popular-skeleton-pulse 1.5s ease-in-out infinite;
-  background-color: var(--slate-100);
+  background: linear-gradient(
+    90deg,
+    rgba(49,91,146,.08),
+    rgba(49,91,146,.16),
+    rgba(49,91,146,.08)
+  );
 }
 
 @keyframes popular-skeleton-pulse {
-  0%   { opacity: 1;   }
-  50%  { opacity: 0.4; }
-  100% { opacity: 1;   }
+  0%   { opacity: 0.6;  }
+  50%  { opacity: 1;    }
+  100% { opacity: 0.6;  }
 }
 
 /* ── Modificador mobile flow ───────────────────────────── */
@@ -213,5 +358,41 @@
 @media (min-width: 1024px) {
   .popular-widget--mobile-flow {
     display: none;
+  }
+}
+
+/* ── RESPONSIVIDADE MOBILE ─────────────────────────────── */
+@media(max-width: 540px) {
+  .popular-widget {
+    padding: 32px 24px;
+  }
+
+  .popular-widget__title {
+    font-size: clamp(36px, 5vw, 52px);
+    margin-bottom: 24px;
+  }
+
+  .popular-widget__link {
+    grid-template-columns: 60px 1fr;
+    gap: 12px;
+    padding: 18px 0;
+  }
+
+  .popular-widget__rank {
+    font-size: 48px;
+    letter-spacing: -.08em;
+  }
+
+  .popular-widget__post-title {
+    font-size: 16px;
+  }
+
+  .category-tag {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .eyebrow::before {
+    width: 24px;
   }
 }
