@@ -1,0 +1,268 @@
+/* PostFooter — Share + Author Card (com paleta oficial do projeto) */
+
+/* ═════════════════════════════════════════════════════════════════
+   CONTAINER PRINCIPAL
+   ═════════════════════════════════════════════════════════════════ */
+.postFooter {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(17, 24, 39, 0.02),
+    0 10px 32px rgba(59, 95, 138, 0.06);
+  position: relative;
+  margin-top: 112px;
+}
+
+.postFooter::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   SHARE STRIP
+   ═════════════════════════════════════════════════════════════════ */
+.share {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 24px 16px 28px;
+  border-bottom: 1px dashed #e2e8f0;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  line-height: 1;
+}
+
+.label::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: #e2e8f0;
+  display: inline-block;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.sbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(17, 24, 39, 0.7);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sbtn i {
+  font-size: 0.875rem;
+}
+
+.sbtn:hover {
+  background: #ebf1f8;
+  color: var(--accent);
+}
+
+.sbtnCopy {
+  border: 1px solid #e2e8f0;
+}
+
+.sbtnCopy:hover {
+  border-color: var(--accent);
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   AUTHOR SECTION
+   ═════════════════════════════════════════════════════════════════ */
+.author {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 28px 32px 28px 36px;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(59, 95, 138, 0.025) 0%,
+    rgba(59, 95, 138, 0.05) 100%
+  );
+  border-left: 4px solid var(--accent);
+  box-shadow:
+    0 2px 16px rgba(59, 95, 138, 0.07),
+    0 1px 4px rgba(59, 95, 138, 0.04);
+}
+
+/* ─────── AVATAR ─────── */
+.avatar {
+  width: 76px;
+  height: 76px;
+  flex: none;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+    linear-gradient(
+      140deg,
+      #1e3a57 0%,
+      var(--accent) 55%,
+      #8aaec8 100%
+    );
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 800;
+  font-size: 1.375rem;
+  letter-spacing: 0.01em;
+  box-shadow:
+    0 0 0 4px #ffffff,
+    0 0 0 5px rgba(59, 95, 138, 0.18),
+    0 10px 28px rgba(59, 95, 138, 0.22);
+  position: relative;
+}
+
+.avatar::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #166534;
+  border: 3px solid #ffffff;
+}
+
+/* ─────── BIO / INFO ─────── */
+.info p {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: rgba(17, 24, 39, 0.7);
+  max-width: 520px;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.authorName {
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.005em;
+}
+
+.profileLink {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(59, 95, 138, 0.3);
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.profileLink:hover {
+  color: #1e3a57;
+  border-bottom-color: #1e3a57;
+}
+
+/* ─────── ACTIONS / SOCIAL ─────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-left: 28px;
+  align-self: stretch;
+}
+
+.netLabel {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(17, 24, 39, 0.7);
+}
+
+.nets {
+  display: flex;
+  gap: 6px;
+}
+
+.net {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  color: var(--accent);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.net:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 95, 138, 0.22);
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE
+   ═════════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .author {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 24px;
+  }
+
+  .actions {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: none;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+    align-self: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

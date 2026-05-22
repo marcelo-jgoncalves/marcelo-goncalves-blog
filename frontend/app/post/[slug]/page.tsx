@@ -10,18 +10,16 @@ import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 // Componentes UI
-import AuthorBox from '@/components/ui/AuthorBox';
 import TOC from '@/components/ui/TOC';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import AdsenseInArticle from '@/components/ui/AdsenseInArticle'; 
+import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
-import CopyCodeLogic from '@/components/ui/CopyCodeLogic'; 
-import ShareButtons from '@/components/ui/ShareButtons';
+import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import BlogSidebar from '@/components/ui/BlogSidebar';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import NewsletterWidget from '@/components/ui/NewsletterWidget';
-import ShareWidget from '@/components/ui/ShareWidget';
 import NewsletterSidebarWidget from '@/components/ui/NewsletterSidebarWidget';
+import PostFooter from '@/components/post/PostFooter';
 
 export const revalidate = 60;
 
@@ -234,8 +232,20 @@ export default async function PostPage({ params }: Props) {
                   <NewsletterWidget />
                 </div>
 
-                <ShareButtons title={post.titulo} slug={post.slug} />
-                <AuthorBox authorId={post.autor_id} />
+                <PostFooter
+                  author={{
+                    name: autorNome,
+                    bio: autor?.bio || 'é Engenheiro Cloud especialista em AWS e DevOps.',
+                    avatarInitials: 'MG',
+                    profileUrl: '/sobre',
+                  }}
+                  shareUrls={{
+                    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`,
+                    twitter: `https://x.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.titulo)}`,
+                    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${post.titulo} - ${canonicalUrl}`)}`,
+                    currentPageUrl: canonicalUrl,
+                  }}
+                />
                 <RelatedPostsSection />
             </footer>
         </main>
