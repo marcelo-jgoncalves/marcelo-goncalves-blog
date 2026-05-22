@@ -7,7 +7,6 @@
   padding: var(--space-4);
   box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  text-align: center;
   position: relative;
   overflow: hidden;
   display: flex;
