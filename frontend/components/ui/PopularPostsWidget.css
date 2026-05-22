@@ -88,7 +88,7 @@
   flex-direction: column;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 var(--space-3) 0;
   position: relative;
   z-index: 1;
 }
