@@ -29,7 +29,7 @@
 /* Título */
 .projeto-widget__title {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.2;
