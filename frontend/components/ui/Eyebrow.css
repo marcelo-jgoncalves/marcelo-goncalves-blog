@@ -21,7 +21,7 @@
   background: linear-gradient(
     90deg,
     currentColor,
-    rgba(0, 0, 0, 0.1)
+    transparent
   );
   flex-shrink: 0;
 }
