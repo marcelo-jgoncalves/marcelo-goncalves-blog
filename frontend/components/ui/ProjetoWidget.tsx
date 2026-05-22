@@ -7,7 +7,7 @@ export default function ProjetoWidget() {
   return (
     <div className="projeto-widget">
       <Eyebrow text="O Projeto" color="white" />
-      <h3 className="projeto-widget__title">Acompanhe o desenvolvimento desta plataforma detalhe por detalhe</h3>
+      <h3 className="projeto-widget__title">Acompanhe a construção desta plataforma detalhe a detalhe</h3>
       <p className="projeto-widget__desc">
         Uma série contínua sobre infraestrutura, arquitetura, automações e desenvolvimento com IA — documentando cada etapa do projeto na prática.
       </p>
