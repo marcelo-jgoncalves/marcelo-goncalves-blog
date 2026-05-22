@@ -12,14 +12,27 @@
 /* Widget newsletter — dark accent background (protótipo)
    Newsletter em card escuro com accent background */
 .widget-newsletter {
-  background: var(--accent);
+  background-color: var(--accent);
   color: #ffffff;
   border-radius: 16px;
-  padding: var(--space-4);
+  padding: 28px 26px 26px;
   box-shadow: 0 8px 32px rgba(15,76,92,0.28);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
+}
+
+.widget-newsletter::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(91, 139, 150, 0.20);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 /* Eyebrow — usando componente reutilizável */
