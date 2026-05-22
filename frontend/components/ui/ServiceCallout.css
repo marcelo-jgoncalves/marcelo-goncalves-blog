@@ -13,6 +13,21 @@
   box-shadow: var(--neu-raised);
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.op-service-callout::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(235, 241, 248, 0.12);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 /* Título — mesmo padrão do nl-widget__title */

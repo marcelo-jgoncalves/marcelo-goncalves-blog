@@ -31,41 +31,18 @@
   opacity: .15;
 }
 
-/* ── FUNDO ATMOSFÉRICO COM RADIAL GRADIENTS ────────────── */
+/* ── FUNDO ATMOSFÉRICO — BLOB CIRCULAR ────────────── */
 .popular-widget::after {
   content: '';
   position: absolute;
-  top: -20%;
-  left: -10%;
-  width: 500px;
-  height: 500px;
+  top: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(49, 91, 146, 0.20);
+  filter: blur(60px);
   pointer-events: none;
-  background:
-    radial-gradient(
-      circle,
-      rgba(49,91,146,.12) 0%,
-      transparent 70%
-    );
-  filter: blur(50px);
-}
-
-/* Segundo gradient atmosférico (âmbar) */
-.popular-widget {
-  --amber-gradient: radial-gradient(
-    circle,
-    rgba(218,123,38,.08) 0%,
-    transparent 70%
-  );
-}
-
-.popular-widget::after {
-  box-shadow:
-    inset 500px 500px 800px
-    radial-gradient(
-      circle at bottom right,
-      rgba(218,123,38,.08) 0%,
-      transparent 70%
-    );
 }
 
 /* ── TÍTULO PRINCIPAL ─────────────────────────────────── */

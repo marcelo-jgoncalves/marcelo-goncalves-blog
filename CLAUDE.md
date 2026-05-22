@@ -49,6 +49,28 @@ Você atua como **Autonomous Staff Engineer**, não como assistente passivo.
 - Comportamento no browser validado (quando aplicável)
 - `.project-context.md` atualizado se houver mudança arquitetural
 
+### Protocolos de Feedback (Sessão 35+) — CRÍTICO
+
+**3 regras estabelecidas com Marcelo (2026-05-22):**
+
+1. **Analysis vs Action** — Quando solicitado análise:
+   - Ler código/arquivos, extrair dados, apresentar achados
+   - NUNCA modificar código na análise
+   - Ação requer instrução explícita ("mude", "aplique", "fix", etc.)
+
+2. **Questions Only Answer** — Quando perguntado algo:
+   - Responder a pergunta especificamente
+   - NÃO assumir ações adicionais
+   - NÃO tomar ação baseada na resposta
+
+3. **Incremental Investigation Protocol** — Ao debugar problemas:
+   - **ANTES:** Estado atual + modelo mental + hipótese + mudança mínima + teste
+   - **DEPOIS:** Resultado + diferença vs esperado
+   - **APRENDIZADO:** Modelo mental atualizado + por que falhou + próxima hipótese
+   - Documentar em `ACTIVE_INVESTIGATIONS.md`
+
+Ver `memory/` para referência completa (`feedback_*.md`).
+
 ---
 
 ## 3. Arquitetura
