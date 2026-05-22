@@ -34,15 +34,12 @@
   height: 200px;
   border-radius: 50%;
   background: rgba(91, 139, 150, 0.20);
-  filter: blur(60px);
   pointer-events: none;
 }
 
 /* Eyebrow — usando componente reutilizável */
 .widget-newsletter .eyebrow {
   justify-content: flex-start;
-  position: relative;
-  z-index: 1;
 }
 
 
