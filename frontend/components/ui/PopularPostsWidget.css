@@ -5,22 +5,12 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 48px 40px;
-  border-radius: 34px;
+  padding: var(--space-4);
+  border-radius: 16px;
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.55),
-      rgba(255,255,255,.28)
-    );
-  backdrop-filter: blur(18px);
-  border:
-    1px solid rgba(255,255,255,.45);
-  box-shadow:
-    0 10px 40px rgba(16,24,40,.08),
-    inset 0 1px 0 rgba(255,255,255,.65);
+  background: var(--bg-widget);
+  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
 }
 
 /* Textura sutil (grain) */
@@ -78,41 +68,15 @@
     );
 }
 
-/* ── LABEL "MAIS LIDOS" ────────────────────────────────── */
-.popular-widget .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  font-size: 14px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: #4f6f98;
-  position: relative;
-  z-index: 1;
-}
-
-.popular-widget .eyebrow::before {
-  width: 32px;
-  height: 1px;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(49,91,146,.9),
-      rgba(49,91,146,.1)
-    );
-  flex-shrink: 0;
-}
-
 /* ── TÍTULO PRINCIPAL ─────────────────────────────────── */
 .popular-widget__title {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: var(--text-3xl);
   font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.04em;
-  color: #264d73;
-  margin: 0 0 24px 0;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+  color: var(--heading-color);
+  margin: 0 0 var(--space-3) 0;
   padding: 0;
   position: relative;
   z-index: 1;
@@ -129,35 +93,55 @@
   z-index: 1;
 }
 
-/* ── DIVISÓRIAS ATMOSFÉRICAS ───────────────────────────── */
-.popular-widget__link {
-  border-bottom:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(49,91,146,.16),
-      transparent
-    );
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-}
-
-.popular-widget__list li:last-child .popular-widget__link {
-  border-bottom: none;
+/* ── NÚMERO — WATERMARK EDITORIAL ──────────────────────── */
+.number {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--accent);
+  opacity: 0.18;
+  display: block;
+  transition: all .45s cubic-bezier(.22,1,.36,1);
+  user-select: none;
 }
 
 /* ── ITEM / LINK ───────────────────────────────────────── */
 .popular-widget__link {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 14px;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   padding: 26px 0;
   color: inherit;
   text-decoration: none;
   position: relative;
   overflow: visible;
   transition: all .45s cubic-bezier(.22,1,.36,1);
+  border-bottom: 1px solid transparent;
+}
+
+.popular-widget__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(49,91,146,.02) 8%,
+      rgba(49,91,146,.12) 50%,
+      rgba(49,91,146,.02) 92%,
+      transparent 100%
+    );
+  pointer-events: none;
+}
+
+.popular-widget__list li:last-child .popular-widget__link::after {
+  display: none;
 }
 
 @media (hover: hover) {
@@ -165,34 +149,25 @@
     transform: translateX(10px);
   }
 
-  .popular-widget__link:hover .popular-widget__rank {
+  .popular-widget__link:hover .number {
     transform: scale(1.04);
-    opacity: .9;
+    opacity: .92;
+  }
+
+  .popular-widget__link:hover .number {
+    color: var(--heading-color);
+  }
+
+  .popular-widget__link:hover .popular-widget__post-title {
+    color: var(--heading-color);
   }
 
   .popular-widget__link:hover .category-tag {
     transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.82),
+      0 10px 24px rgba(49,91,146,.10);
   }
-}
-
-/* ── NÚMERO — WATERMARK EDITORIAL ──────────────────────── */
-.popular-widget__rank {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 64px;
-  letter-spacing: -.08em;
-  line-height: 1;
-  text-align: left;
-  flex-shrink: 0;
-  user-select: none;
-  color: transparent;
-  -webkit-text-stroke: 2px rgba(28,53,80,.12);
-  transition: all .45s cubic-bezier(.22,1,.36,1);
-}
-
-.popular-widget__link:hover .popular-widget__rank {
-  color: #17324b;
-  -webkit-text-stroke: 0;
 }
 
 /* ── CORPO (CATEGORIA + TÍTULO) ────────────────────────── */
@@ -206,25 +181,45 @@
 
 /* ── TAGS EM FROSTED PILLS ─────────────────────────────── */
 .popular-widget .category-tag {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
   padding: 8px 14px !important;
   border-radius: 999px;
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,.65),
-      rgba(255,255,255,.35)
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.38)
     ) !important;
   backdrop-filter: blur(12px);
   border:
-    1px solid rgba(255,255,255,.5);
+    1px solid rgba(255,255,255,.52);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.6),
+    inset 0 1px 0 rgba(255,255,255,.72),
     0 6px 20px rgba(49,91,146,.06);
   font-size: 12px;
-  letter-spacing: .14em;
-  color: #46668f !important;
   font-weight: 600;
-  transition: all .45s cubic-bezier(.22,1,.36,1);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #46668f !important;
+  position: relative;
+  overflow: hidden;
+  transition: all .38s cubic-bezier(.22,1,.36,1);
+}
+
+/* Iluminação interna sutil da pill */
+.popular-widget .category-tag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.22),
+      transparent 60%
+    );
+  pointer-events: none;
 }
 
 /* ── TÍTULO DO POST ────────────────────────────────────── */
@@ -234,7 +229,7 @@
   font-weight: 400;
   line-height: 1.4;
   letter-spacing: -.03em;
-  color: #33567d;
+  color: var(--accent);
   margin: 0;
   transition: all .45s cubic-bezier(.22,1,.36,1);
   display: -webkit-box;
@@ -244,10 +239,6 @@
   text-wrap: pretty;
 }
 
-.popular-widget__link:hover .popular-widget__post-title {
-  color: #17324b;
-  font-weight: 700;
-}
 
 /* ── "Ver todos" link ──────────────────────────────────── */
 .popular-widget__all {
@@ -256,15 +247,6 @@
   gap: 6px;
   margin-top: 20px;
   padding-top: 16px;
-  border-top:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(49,91,146,.16),
-      transparent
-    );
-  border-top-width: 1px;
-  border-top-style: solid;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-sm);
@@ -273,6 +255,26 @@
   transition: all .45s cubic-bezier(.22,1,.36,1);
   position: relative;
   z-index: 1;
+  border-top: 1px solid transparent;
+}
+
+.popular-widget__all::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(49,91,146,.02) 8%,
+      rgba(49,91,146,.12) 50%,
+      rgba(49,91,146,.02) 92%,
+      transparent 100%
+    );
+  pointer-events: none;
 }
 
 .popular-widget__all:hover {
@@ -285,32 +287,43 @@
 
 /* ── Skeleton ──────────────────────────────────────────── */
 .popular-widget__item--skeleton {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 14px;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   padding: 26px 0;
-  border-bottom:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(49,91,146,.16),
-      transparent
-    );
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
   position: relative;
   z-index: 1;
+  border-bottom: 1px solid transparent;
 }
 
-.popular-widget__item--skeleton:last-child {
-  border-bottom: none;
+.popular-widget__item--skeleton::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(49,91,146,.02) 8%,
+      rgba(49,91,146,.12) 50%,
+      rgba(49,91,146,.02) 92%,
+      transparent 100%
+    );
+  pointer-events: none;
+}
+
+.popular-widget__item--skeleton:last-child::after {
+  display: none;
 }
 
 .popular-widget__skeleton-rank {
-  width: 64px;
+  width: 92px;
   height: 64px;
   border-radius: 6px;
+  flex-shrink: 0;
 }
 
 .popular-widget__skeleton-body {
