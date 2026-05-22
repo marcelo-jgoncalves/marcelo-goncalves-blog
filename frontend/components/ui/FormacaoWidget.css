@@ -19,7 +19,7 @@
 .formacao-widget__title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: var(--text-xl);
+  font-size: var(--text-3xl);
   letter-spacing: -0.04em;
   line-height: 1.15;
   color: var(--dark-900);
