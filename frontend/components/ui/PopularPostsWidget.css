@@ -396,8 +396,4 @@
     padding: 6px 10px;
     font-size: 11px;
   }
-
-  .eyebrow::before {
-    width: 24px;
-  }
 }
