@@ -1,0 +1,221 @@
+Especificação técnica · CTA Newsletter (Opção D · Coral)
+Documento de handoff para implementação. Todas as cores estão listadas com hex, função semântica e contexto de uso.
+
+1. Container do CTA
+background: #3B5F8A /* --blue */
+border-radius: 18px
+overflow: hidden
+padding: 64px 56px
+display: grid (2 colunas: 1.1fr / 0.9fr, gap 56px, items center)
+Overlay decorativo (pseudo-elemento ::before, position absolute, inset 0, pointer-events none):
+
+background:
+radial-gradient(55% 70% at 100% 0%, rgba(218,123,38,.18), transparent 60%),
+radial-gradient(45% 80% at 0% 100%, rgba(30,55,76,.45), transparent 70%);
+Glow superior direito em Ember 18% + glow inferior esquerdo em Navy 45%. Cria profundidade sem alterar a leitura da cor
+base.
+
+2. Coluna esquerda — conteúdo editorial
+2.1 Eyebrow ("Newsletter semanal")
+color: #FEF6E6 /* --cream */
+font-family: JetBrains Mono
+font-size: 11px
+letter-spacing: 0.22em
+text-transform: uppercase
+Hairline antes do texto (pseudo ::before, 28px × 1px):
+
+background: #FEF6E6 com opacity: 0.65
+2.2 Headline H3
+color: #FEF6E6 /* --cream */
+font-family: Inter
+font-weight: 700
+font-size: 36px
+line-height: 1.1
+letter-spacing: -0.025em
+max-width: 460px
+2.3 Trecho em itálico — <em> dentro da headline ("muito mais?")
+  color: #E89B8E /* Coral · accent principal */
+  font-style: italic
+  font-weight: 700
+  Esta é a única cor saturada no bloco de texto. É o ponto focal tipográfico do CTA.
+
+  2.4 Parágrafo de apoio
+  color: #FEF6E6 /* --cream */
+  font-size: 15.5px
+  line-height: 1.6
+  max-width: 440px
+  2.5 Stats (2.4k inscritos · 42 edições · 0 spam)
+  Container:
+
+  border-top: 1px solid rgba(254,246,230,0.18) /* Cream 18% */
+  padding-top: 18px
+  margin-top: 14px
+  display: flex (gap 24px)
+  font-family: JetBrains Mono
+  font-size: 11px
+  letter-spacing: 0.06em
+  text-transform: uppercase
+  Números (<b>):
+
+    color: #FEF6E6 /* --cream */
+    font-family: Inter
+    font-weight: 700
+    font-size: 17px
+    letter-spacing: -0.01em
+    Labels ("inscritos", "edições", "spam"):
+
+    color: rgba(254,246,230,0.7) /* Cream 70% */
+    3. Coluna direita — formulário
+    3.1 Container do form (input + botão)
+    display: flex
+    background: #FEF6E6 /* --cream */
+    border: transparent /* IMPORTANTE — sem borda; o cream encosta direto no coral do botão */
+    border-radius: 10px
+    overflow: hidden
+    box-shadow: 0 10px 24px rgba(17,38,55,0.22)
+    3.2 Input de e-mail
+    background: transparent /* herda o cream do form */
+    border: none
+    outline: none
+    padding: 18px 20px
+    font-family: Inter
+    font-size: 15px
+    color: #112637 /* --ink — texto digitado */
+    Placeholder ("seu@email.com"):
+
+    color: #6F8AA8 /* --steel */
+    3.3 Botão "Inscrever-se" — dois estados
+    Estado DESABILITADO (default, antes do consent ser marcado)
+    background: #F0CCC4 /* Coral pálido */
+    color: #B47D72 /* Coral-marrom apagado */
+    cursor: not-allowed
+    border: none
+    padding: 0 28px
+    font-family: Inter
+    font-weight: 600
+    font-size: 14.5px
+    display: inline-flex (align-items center, gap 8px)
+    transition: background 0.2s, color 0.2s
+    Estado HABILITADO (após <input type="checkbox"> do consent ser marcado)
+    background: #E89B8E /* Coral cheio · accent principal */
+    color: #FEF6E6 /* --cream */
+    cursor: pointer
+    Hover (apenas no estado habilitado)
+    background: #F2B0A4 /* Coral claro */
+    Seta → interna ao botão:
+
+    font-family: JetBrains Mono
+    Lógica de ativação: o botão começa com atributo disabled. Um event listener no checkbox de consent (onchange) faz
+    button.disabled = !checkbox.checked. O CSS button:not(:disabled) aplica o estilo do estado habilitado.
+
+    4. Caixa de consent LGPD
+    4.1 Container (<label> clicável envolvendo o checkbox e o texto)
+      display: flex (gap 12px, align-items flex-start)
+      padding: 14px 16px
+      background: rgba(255,255,255,0.08)
+      border: 1px solid rgba(255,255,255,0.14)
+      border-radius: 10px
+      cursor: pointer
+      user-select: none
+      transition: background 0.2s, border-color 0.2s
+      Hover:
+
+      background: rgba(255,255,255,0.12)
+      border-color: rgba(255,255,255,0.22)
+      4.2 Checkbox custom (<input type="checkbox">)
+      Reset nativo:
+
+      appearance: none
+      -webkit-appearance: none
+      Estado vazio:
+
+      width: 18px
+      height: 18px
+      margin-top: 1px
+      flex: none
+      border: 1.5px solid rgba(255,255,255,0.45)
+      border-radius: 4px
+      background: rgba(255,255,255,0.06)
+      cursor: pointer
+      display: grid (place-items center)
+      transition: background 0.15s, border-color 0.15s
+      Hover:
+
+      border-color: #FFFFFF
+      Marcado (:checked):
+
+      background: #FEF6E6 /* --cream */
+      border-color: #FEF6E6 /* --cream */
+      Check (pseudo ::after dentro do checkbox marcado):
+
+      content: ""
+      width: 10px
+      height: 6px
+      border-left: 2px solid #1E374C /* --navy */
+      border-bottom: 2px solid #1E374C /* --navy */
+      transform: rotate(-45deg) translate(1px, -1px)
+      4.3 Texto do label ("Quero receber a newsletter...")
+      color: #FEF6E6 /* --cream */
+      font-family: Inter
+      font-size: 13px
+      line-height: 1.5
+      4.4 Link "Política de Privacidade" dentro do label
+      color: #E89B8E /* Coral */
+      font-weight: 600
+      text-decoration: none
+      border-bottom: 1px solid rgba(232,155,142,0.5) /* Coral 50% — underline customizado */
+      Hover:
+
+      color: #F2B0A4 /* Coral claro */
+      border-bottom-color: #F2B0A4
+      5. Linha de trust ("Sem spam · Cancele com 1 clique · Toda terça, 9h")
+      display: flex (align-items center, gap 12px, flex-wrap wrap)
+      font-family: JetBrains Mono
+      font-size: 10.5px
+      letter-spacing: 0.14em
+      text-transform: uppercase
+      color: rgba(254,246,230,0.7) /* Cream 70% — texto secundário */
+      Separadores • entre os 3 itens:
+
+      width: 3px
+      height: 3px
+      border-radius: 50%
+      background: rgba(254,246,230,0.25) /* Cream 25% */
+      Check ✓ antes de "Sem spam" e "Cancele com 1 clique":
+
+      color: #E89B8E /* Coral · accent reforçando o sistema */
+      6. Resumo da paleta usada
+      Token / Cor Hex Usado em
+      --blue #3B5F8A Background do card
+      --navy #1E374C Glow inferior; check icon do checkbox marcado
+      --ember #DA7B26 (18%) Glow superior do card
+      --cream #FEF6E6 Toda a tipografia, fundo do form, checkbox marcado, ícone interno
+      --ink #112637 Texto digitado no input
+      --steel #6F8AA8 Placeholder do input
+      Coral (novo) #E89B8E Em "muito mais?", botão habilitado, link política, check ícones
+      Coral claro (novo) #F2B0A4 Hover do botão e do link
+      Coral pálido (novo) #F0CCC4 Botão desabilitado bg
+      Coral-marrom apagado (novo) #B47D72 Botão desabilitado texto
+      4 cores novas introduzidas além do design system existente, todas na família Coral. Recomendação: registrar
+      #E89B8E como token --coral no sistema, e derivar as variações (--coral-light, --coral-pale, --coral-muted) com
+      color-mix() ou variáveis CSS, para padronizar.
+
+      7. Comportamento JavaScript
+      const checkbox = document.querySelector('.consent input[type="checkbox"]');
+      const submit = document.querySelector('button[type="submit"]');
+
+      submit.disabled = true; // default
+
+      checkbox.addEventListener('change', () => {
+      submit.disabled = !checkbox.checked;
+      });
+      Critério de aceite LGPD: o botão NUNCA pode ser submetido sem o consent marcado. Validação obrigatória client-side
+      + server-side.
+
+      8. Acessibilidade
+      O <label> envolve o <input type="checkbox"> e o texto — clique em qualquer área marca/desmarca.
+        O botão desabilitado mantém contraste mínimo de 3:1 entre #F0CCC4 (bg) e #B47D72 (texto) → ~4.2:1, ✓ WCAG AA
+        Large Text.
+        Botão habilitado: #E89B8E (bg) com #FEF6E6 (texto) → ~2.6:1 → abaixo do WCAG AA. Atenção do dev: considerar
+        texto Navy #1E374C no botão se acessibilidade for crítica (contraste sobe pra 6.5:1).
+        O link "Política de Privacidade" tem underline (não depende só de cor pra ser identificado).

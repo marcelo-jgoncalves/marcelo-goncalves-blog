@@ -116,23 +116,83 @@ marcelo-goncalves-blog/
 ### Fontes
 | Variável CSS | Fonte | Uso |
 |---|---|---|
-| `--font-display` | DM Sans | Headings, UI, botões, nav |
+| `--font-display` | Inter | Headings, UI, botões, nav |
 | `--font-sans` | Inter | Body, parágrafos |
 | `--font-mono` | JetBrains Mono | Código |
 
-**Nunca** usar `Space Grotesk` — foi removido do frontend e do admin.
+**Nunca** usar `Space Grotesk` ou `DM Sans` — foram removidos do frontend e do admin.
 
-### Paleta
+### Paleta base
 ```css
---accent: #3B5F8A        /* Classic Blue — CTA, links, ativo */
+--accent: #3B5F8A        /* Classic Blue — CTA, links, ativo, eyebrow lines */
 --accent-hover: #2D4F76
 --accent-light: #EBF1F8
 --accent-dark: #1E3A57   /* Navy profundo — ServiceCallout, service-proof-fullwidth */
---dark-900: #111827      /* Headings */
---dark-700: #374151      /* Body text */
---slate-50:  #F8FAFC     /* Page bg */
+--accent-10: rgba(59, 95, 138, 0.10)  /* frames subtis, hovers, box H2 */
+--accent-18: rgba(59, 95, 138, 0.18)  /* bordas de tag */
+--dark-900: #111827      /* Headings global (fora do tema warm) */
+--dark-700: #374151      /* Body text global */
+--slate-50:  #F8FAFC     /* bg fallback */
 --border-color: #E2E8F0
 ```
+
+### Sistema editorial (sessão 30) — cores semânticas
+```css
+/* Superfícies */
+--surface-page:     #EEF3FA;  /* fundo das páginas */
+--surface-elevated: #E6EEF8;  /* hero/nav — levemente mais escuro */
+--surface-card:     #F5F8FC;  /* cards e widgets — degrau acima da página */
+--surface-inset:    #E0ECF7;  /* th, tint de callout warning */
+
+/* Bordas */
+--border-subtle:  #DDE8F3;   /* separadores internos leves */
+--border-default: #C8D9EE;   /* = --dark-warm-border — bordas padrão de cards */
+--border-strong:  #A3BDD9;   /* inputs enfatizados */
+
+/* Texto semântico */
+--text-ghost:   rgba(30, 55, 76, 0.40);  /* placeholder, disabled */
+--text-muted:   rgba(30, 55, 76, 0.65);  /* = --dark-warm-muted */
+--text-body:    rgba(30, 55, 76, 0.80);  /* = --dark-warm-body */
+--text-default: #1E374C;                 /* navy — TODOS os headings e títulos de card */
+--text-heading: #3B5F8A;                 /* = --accent */
+
+/* Links de conteúdo editorial */
+--link:       #3182CE;   /* links dentro de artigos */
+--link-hover: #1E374C;   /* hover → navy */
+
+/* Neumorphism — elevação soft (base: #EEF3FA) */
+--neu-raised:  8px 8px 20px rgba(59,95,138,0.10), -8px -8px 20px rgba(255,255,255,0.80);
+--neu-soft:    4px 4px 12px rgba(59,95,138,0.08), -4px -4px 12px rgba(255,255,255,0.70);
+--neu-subtle:  2px 2px 8px  rgba(59,95,138,0.06), -2px -2px 8px  rgba(255,255,255,0.60);
+--neu-inset:   inset 3px 3px 8px rgba(59,95,138,0.10), inset -3px -3px 8px rgba(255,255,255,0.70);
+
+/* Coral scale — NewsletterCTA */
+--coral: #E89B8E;  --coral-light: #F2B0A4;  --coral-pale: #F0CCC4;  --coral-muted: #B47D72;
+
+/* Tema warm / post page */
+--bg-warm: #EEF3FA;  --bg-warm-strong: #E6EEF8;  /* paleta azul-fria */
+--accent-warm: #da7b26;   /* amber — ícones meta */
+--dark-warm: #1E374C;     /* navy — texto primário (= --text-default) */
+--dark-warm-border:    #C8D9EE;               /* borda padrão do projeto */
+--dark-warm-separator: rgba(30, 55, 76, 0.12);
+--dark-warm-muted:     rgba(30, 55, 76, 0.65);
+--dark-warm-body:      rgba(30, 55, 76, 0.80);
+
+/* Code theme */
+--code-inline-bg: #edf2f7   --code-inline-color: #d53f8c
+--code-header-bg: #19212c   --code-header-text:  #a0aec0
+
+/* Callout semantic */
+--callout-info-text: #2c5282   --callout-warning-text: #744210
+```
+
+**Regra de reserva da cor accent:** `var(--accent)` = `#3B5F8A` é usado **apenas** para:
+- Box numerador H2 (background sólido via `--accent-10`)
+- TOC item ativo (border-left + texto claro)
+- Links editoriais de conteúdo
+- Eyebrow lines (`::before`)
+- CTAs, botões e tags de categoria
+**Nunca** usar `--accent` em cor de título/heading — usar `--text-default` (#1E374C navy).
 
 **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos do frontend e do admin.  
 Referência completa: `docs/design-system/design-reference.md`.  
@@ -141,35 +201,40 @@ Layout de referência da home: `docs/design-system/home-layout-description.md`.
 **Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseSidebar.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
 
-### Escala tipográfica (8 tokens — base 18px frontend / 16px admin)
+### Escala tipográfica (9 tokens — base 18px frontend / 16px admin)
 ```css
---text-xs:   0.75rem;   /* tags, badges, meta tiny */
---text-sm:   0.875rem;  /* meta, código, eyebrow, copyright */
---text-base: 1rem;      /* corpo (body padrão) */
---text-lg:   1.125rem;  /* lead, subtítulo, nav, input, descrições */
---text-xl:   1.5rem;    /* h4, card titles, widget headers, TOC */
---text-2xl:  2rem;      /* h3, h2 editorial (post, sobre, serviços) */
---text-3xl:  2.8rem;    /* h1 heroes — tamanho preferido do projeto */
---text-4xl:  3.5rem;    /* h1 artigo (máximo editorial) */
+--text-xs:    0.75rem;   /* tags, badges, meta tiny */
+--text-sm:    0.875rem;  /* meta, código, eyebrow, copyright */
+--text-base:  1rem;      /* corpo (body padrão) */
+--text-lg:    1.125rem;  /* lead, subtítulo, nav, input, descrições */
+--text-xl:    1.5rem;    /* h4, card titles, widget headers, TOC */
+--text-2xl:   2rem;      /* h3, h2 editorial (post, sobre, serviços) */
+--text-2-5xl: 2.25rem;   /* h2 seção de postagem (match protótipo) */
+--text-3xl:   2.8rem;    /* h1 heroes — tamanho preferido do projeto */
+--text-4xl:   3.5rem;    /* h1 artigo (máximo editorial) */
 ```
 **Nunca** usar valores de font-size ad-hoc — sempre um dos tokens acima.  
 Exceção permitida: `14px` para código inline (sub-pixel preciso) e `0.9375rem` para código desktop.
 
-### Escala de espaçamento (7 tokens, 8px grid — ritmo-vertical-contract.md)
+### Escala de espaçamento (10 tokens, 8px grid — ritmo-vertical-contract.md)
 ```css
---space-1: 8px   /* Micro: badges, gap inline */
---space-2: 16px  /* Pequeno: meta-row, margin ícone */
---space-3: 24px  /* Médio: gap cards, padding widgets */
---space-4: 32px  /* Grande: banners, sections no main, gap colunas */
---space-5: 48px  /* Macro: margin-bottom post-card, gap listas */
---space-6: 64px  /* Landmark: margin-block de sections, padding hero */
---space-7: 96px  /* Editorial: padding CTA, sticky top */
+--space-1:       8px   /* Micro: badges, gap inline, eyebrow→título widget */
+--space-2:       16px  /* Pequeno: meta-row, margin ícone */
+--space-3:       24px  /* Médio: padding interno de card, título→descrição widget */
+--space-4:       32px  /* Grande: gap widgets sidebar, título→lista/botões widget */
+--space-content: 40px  /* Corpo: gap parágrafos, eyebrow→conteúdo, badge→H1 */
+--space-5:       48px  /* Macro: gap coluna/sidebar, margin-bottom post-card */
+--space-6:       64px  /* Landmark: padding vertical de seções */
+--space-breath:  80px  /* Respiro: hero-pb, meta→imagem, separação de blocos */
+--space-7:       96px  /* Editorial: entre seções H2, hero-pt */
+--space-epic:    112px /* Épico: transição conteúdo→autor no post */
 --section-min-height: 384px
 ```
 
 **Regra global:** `section { margin-block: var(--space-6) }` aplicada em `globals.css`.  
 **Exceções obrigatórias** (`margin-block: 0`): `PageHero`, `PageCTA`, `SuperDestaque`, `TechRibbon` e qualquer seção fullwidth com padding próprio.  
-**Sidebars:** filhos diretos com `margin-block: 0` — `gap` do flex é o único responsável pelo ritmo entre widgets.  
+**Sidebars:** filhos diretos com `margin-block: 0` — `gap` do flex é o único responsável pelo ritmo entre widgets. Gap entre widgets = `var(--space-4)` (32px).  
+**Ritmo interno de widget sidebar:** eyebrow → título = `--space-1` (8px); título → corpo/lista = `--space-4` (32px); corpo → botões = `--space-4` (32px).  
 **Colunas editoriais** (home-main, op-articles-feed, op-timeline-feed): sections com `margin-block: var(--space-4)` = 32px (sobrescreve global); banners com `margin: var(--space-4)`; primeiro filho sempre `margin-top: 0`.
 
 ### Logo
@@ -279,14 +344,19 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 
 ### Componentes de layout reutilizáveis (padrões obrigatórios)
 - **`Pagination`** — componente único em artigos e o-projeto. Deve ficar **fora** do grid de duas colunas (entre `</grid>` e `<NewsletterCTA />`). Botão "← Anterior" funciona sem `totalPages` via cursor stack. "Página X de Y" só aparece quando `totalPages` é passado.
-- **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget.
+- **`BlogSidebar`** — props: `showPopularPosts` (default true), `showNewsletter` (default true). Children renderizam no topo (área dinâmica). Ordem fixa: children → PopularPostsWidget → AdsenseSidebar → NewsletterWidget. Gap entre widgets = `var(--space-4)` (32px). Sticky top = `calc(var(--space-7) + var(--space-4))` = 128px.
+- **`ShareWidget`** — sidebar widget com `background: var(--accent)` e botões glass. Props: `title`, `slug`. Client component. **Removido da sidebar da post page** (sessão 30) — `ShareButtons` no rodapé da coluna principal permanece.
+- **`NewsletterSidebarWidget`** — sidebar widget com `background: var(--accent)` azul, texto cream, formulário (e-mail + checkbox LGPD + botão). Client component. CSS em `NewsletterSidebarWidget.css`.
 - **`home-main` (flex column)** — usar `gap: var(--space-4)` + `margin: 0` nos banners. NUNCA combinar gap + margin nos banners — causa duplo espaçamento e margin collapsing em seções vazias.
 - **`FullwidthCallout`** — componente único para CTAs fullwidth e inline. Props: `variant` (light/gradient/newsletter/dark/navy), `border`, `size` (md/lg), `rounded` (border-radius 14px — uso dentro de container), `maxWidth`, `icon`, `iconVariant` (light/dark), `title: ReactNode`, `description`, `href`/`ctaText`/`ctaVariant`. `SuperDestaque` e `PageCTA` são thin wrappers sobre ele. **Nunca criar nova seção CTA manualmente** — usar este componente. CTA fullwidth de página = `variant="dark"`; CTA inline dentro de container = `variant="navy" rounded`.
-- **Grid de 2 colunas (sidebar)** — padrão obrigatório em todas as páginas: `grid-template-columns: 1fr 300px; gap: var(--space-4)`. **Nunca usar `minmax`** para a coluna da sidebar — causa largura inconsistente em telas largas.
-- **`PostCard` meta row** — layout obrigatório: `post-card__meta-left` (data + tempo leitura juntos, esq) · `post-card__read-more` (dir, inline). `ReadMoreLink` não é usado no PostCard. Meta sempre renderiza. Texto: `X min leitura` (não `X min`).
-- **Post page `h2` numeração** — feita via CSS counter (`counter-reset` em `.post-content`, `::before` com `decimal-leading-zero`). Não requer mudança no Tiptap nem no TSX. Nunca adicionar números manualmente no conteúdo.
-- **`AuthorBox`** — card dark com `background: var(--accent)`, avatar quadrado `border-radius: 20/24px`, eyebrow "Sobre o autor" `font-mono`. TSX não muda — só CSS.
-- **`TOC` desktop** — itens como cards individuais (`border-radius: 12px`, `border: 1px solid border-color`). Estado ativo via `.toc-active` com `background: var(--accent); color: white`.
+- **Grid de 2 colunas (sidebar)** — padrão obrigatório em todas as páginas: `grid-template-columns: 1fr var(--sidebar-width); gap: var(--space-4)`. `--sidebar-width: 340px` definido em globals.css. **Nunca usar `minmax`** para a coluna da sidebar — causa largura inconsistente em telas largas.
+- **`PostCard`** (sessão 30) — `<Link>` wrapper direto, sem `<article>` intermediário. Background `var(--surface-card)`, `border-radius: 20px`, `box-shadow: var(--neu-raised)`. Sem imagem, sem meta row, sem categoria overlay. Título: navy → hover accent. CTA "Ler artigo →" com `margin-top: auto`.
+- **Post page `h2` numeração** — feita via CSS counter (`counter-reset` em `.post-content`, `::before` com `decimal-leading-zero`). Box: `48×48px, background: var(--accent-10), border-radius: 16px, color: var(--accent)`. Não requer mudança no Tiptap nem no TSX.
+- **`AuthorBox`** — card dark com `background: var(--dark-warm)` = `#1E374C` (navy), avatar quadrado `border-radius: 24px`, eyebrow "Sobre o autor" `font-mono`, `::before` blob azul `blur(60px)`. TSX não muda — só CSS.
+- **`TOC` desktop** — container `background: #1E374C` navy, `::before` blob azul como AuthorBox. Eyebrow em `rgba(138,180,232,0.90)`. Items default `#ffffff`; item ativo `rgba(138,180,232,0.90)` + `border-left: 2px solid` mesma cor.
+- **`RelatedPostsSection`** (sessão 30) — posicionada DENTRO de `post-footer-safe-zone` após `<AuthorBox>`. 4 posts em grid `repeat(2,1fr)`. Cards: `surface-card` + `neu-raised`, sem imagem.
+- **Eyebrows de widgets** — padrão único: traço `::before` (`width: 24px; height: 1px; background: currentColor`) + texto uppercase, `font-size: var(--text-sm)`, `font-weight: 400`. Sem pill/badge.
+- **`NewsletterCTA`** — fullwidth com `background: var(--accent)`, overlay `::before` (ember + navy gradients). Grid 2 colunas: texto (eyebrow, H2 cream + `<em>` navy, desc, stats) + form (input cream, botão coral `#E89B8E`). Reescrito baseado em `prot-pre-footer-CTAs.html` opção D.
 
 ### Próximas entregas técnicas
 9. **Testes E2E Playwright** — expandir cobertura: post individual, artigos, busca, categoria

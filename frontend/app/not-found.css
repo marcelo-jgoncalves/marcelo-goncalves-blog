@@ -1,7 +1,7 @@
 /* frontend/app/not-found.css */
 
 .error-hero {
-  background: var(--bg-light-gradient);
+  background: var(--bg-warm-strong);
   padding: var(--space-6) 20px;
   text-align: center;
   min-height: var(--section-min-height);

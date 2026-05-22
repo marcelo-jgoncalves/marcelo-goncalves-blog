@@ -1,0 +1,201 @@
+/* frontend/app/home.css
+   Ritmo vertical conforme ritmo-vertical-contract.md (versão definitiva)
+   Escala: --space-1(8) --space-2(16) --space-3(24) --space-4(32) --space-5(48) --space-6(64) --space-7(96)
+   ========================================================================== */
+
+/* --- Layout principal: grid main + sidebar --- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .home-layout {
+    grid-template-columns: 1fr 300px;
+    gap: var(--space-4);
+    padding: 0;
+  }
+}
+
+/* home-main: block flow — permite margin collapsing entre sections e ads */
+.home-main {
+  min-width: 0;
+  padding-top: var(--space-4);
+}
+
+/* Sobrescreve a regra global section{margin-block:64px} para o contexto do main.
+   32px iguala com a margin dos banners → collapsing resulta em 32px uniformes. */
+.home-main > section {
+  margin-block: var(--space-4);
+}
+
+/* Ads no home-main: margem compacta para não amplificar o espaço com sections */
+.home-main > .adsense-banner-wrapper {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+/* Primeiro filho não recebe margem-top — o padding-top do home-main já posiciona */
+.home-main > section:first-of-type,
+.home-main > .adsense-banner-wrapper:first-child {
+  margin-top: 0;
+}
+
+/* §3: Section header — margin-bottom 32px, sem altura fixa */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.section-header h2 {
+  font-size: var(--text-2xl);
+  line-height: 1.25;
+  margin-bottom: var(--space-2);
+}
+
+.section-header p {
+  color: var(--slate-500);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- Posts grid --- */
+.home-posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .home-posts-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- Link "ver todos" --- */
+.home-see-all {
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+.home-see-all a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--accent);
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: var(--text-base);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-3);
+  border: 1.5px solid var(--accent-light);
+  background-color: var(--accent-light);
+  border-radius: 6px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.home-see-all a:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* --- CTA Newsletter --- */
+.cta {
+  background-color: var(--dark-900);
+  color: white;
+  padding: var(--space-7) var(--space-3);
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+  color: white;
+  line-height: 1.25;
+}
+
+.cta p {
+  font-size: var(--text-lg);
+  color: #94A3B8;
+  margin-bottom: var(--space-4);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .cta h2 { font-size: var(--text-3xl); }
+}
+
+/* --- Categorias (estilos do card em CategoryCard.css) --- */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+/* --- Mobile-only layout (≥1024px: estado original do desktop) --- */
+
+/* ServiceCallout no fluxo principal: visível no mobile, oculto no desktop */
+@media (min-width: 1024px) {
+  .home-main > .op-service-callout { display: none; }
+}
+
+/* Banner AdSense entre seções: oculto no mobile, visível no desktop */
+.home-ad-desktop {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .home-ad-desktop {
+    display: block;
+    margin-block: var(--space-4);
+  }
+  .home-ad-desktop > .adsense-banner-wrapper {
+    margin-block: 0;
+  }
+}
+
+/* --- Skeleton de posts (Suspense fallback) --- */
+.post-card-skeleton {
+  background: white;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.post-card-skeleton__image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--slate-100);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.post-card-skeleton__body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.post-card-skeleton__line {
+  height: 14px;
+  background: var(--slate-100);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.post-card-skeleton__line--title {
+  height: 22px;
+  width: 85%;
+}
+
+.post-card-skeleton__line--short {
+  width: 50%;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}

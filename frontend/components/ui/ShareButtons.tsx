@@ -54,7 +54,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             aria-label="Compartilhar artigo no X (antigo Twitter)"
             title="Compartilhar no X"
           >
-            <i className="fab fa-twitter" aria-hidden="true"></i>
+            <i className="fab fa-x-twitter" aria-hidden="true"></i>
           </a>
 
           {/* Novo Botão Interativo de Copiar Link */}

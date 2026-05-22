@@ -1,0 +1,308 @@
+/* NewsletterCTA — Opção D · Coral (prot-pre-footer-CTAs) */
+
+.nl-cta {
+  background: var(--accent);
+  padding: 64px 0;
+  margin-block: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Overlay gradiente decorativo */
+.nl-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 70% at 100% 0%,   var(--accent-18), transparent 60%),
+    radial-gradient(45% 80% at 0%  100%,  rgba(30, 55, 76, 0.45),  transparent 70%);
+}
+
+/* ── Grid 2 colunas ────────────────────────────────────── */
+.nl-cta__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+  position: relative;
+}
+
+/* ── Coluna esquerda ───────────────────────────────────── */
+.nl-cta__left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.nl-cta__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FEF6E6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nl-cta__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: rgba(254, 246, 230, 0.65);
+  flex-shrink: 0;
+}
+
+.nl-cta__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #FEF6E6;
+  margin: 0;
+  max-width: 460px;
+}
+
+.nl-cta__title em {
+  font-style: italic;
+  font-weight: 700;
+  color: var(--dark-warm);
+}
+
+.nl-cta__desc {
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #FEF6E6;
+  max-width: 440px;
+  margin: 0;
+}
+
+.nl-cta__stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 14px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(254, 246, 230, 0.18);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(254, 246, 230, 0.70);
+}
+
+.nl-cta__stat b {
+  font-family: var(--font-display);
+  color: #FEF6E6;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  margin-right: 6px;
+}
+
+/* ── Coluna direita ────────────────────────────────────── */
+.nl-cta__right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.nl-cta__right form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Input + botão */
+.nl-cta__input-row {
+  display: flex;
+  background: #FEF6E6;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(17, 38, 55, 0.22);
+}
+
+.nl-cta__input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 18px 20px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: #112637;
+}
+
+.nl-cta__input::placeholder {
+  color: #6F8AA8;
+}
+
+.nl-cta__btn {
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 0 28px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nl-cta__btn:disabled {
+  background: var(--coral-pale);
+  color: var(--coral-muted);
+  cursor: not-allowed;
+}
+
+.nl-cta__btn:not(:disabled) {
+  background: var(--coral);
+  color: #FEF6E6;
+}
+
+.nl-cta__btn:not(:disabled):hover {
+  background: var(--coral-light);
+}
+
+.nl-cta__arrow {
+  font-family: var(--font-mono);
+}
+
+/* Consent */
+.nl-cta__consent {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.nl-cta__consent:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.nl-cta__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.nl-cta__checkbox:hover {
+  border-color: #ffffff;
+}
+
+.nl-cta__checkbox:checked {
+  background: #FEF6E6;
+  border-color: #FEF6E6;
+}
+
+.nl-cta__checkbox:checked::after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid #1E374C;
+  border-bottom: 2px solid #1E374C;
+  transform: rotate(-45deg) translate(1px, -1px);
+  display: block;
+}
+
+.nl-cta__consent-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1.5;
+  color: #FEF6E6;
+}
+
+.nl-cta__consent-label a {
+  color: var(--coral);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 155, 142, 0.50);
+}
+
+.nl-cta__consent-label a:hover {
+  color: var(--coral-light);
+  border-bottom-color: var(--coral-light);
+}
+
+/* Trust */
+.nl-cta__trust {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(254, 246, 230, 0.70);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nl-cta__sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(254, 246, 230, 0.25);
+  flex-shrink: 0;
+}
+
+.nl-cta__check {
+  color: var(--coral);
+}
+
+/* Sucesso */
+.nl-cta__success {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  padding: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: #FEF6E6;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ── Responsivo ────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .nl-cta {
+    padding: 48px 0;
+  }
+
+  .nl-cta__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .nl-cta__title {
+    font-size: var(--text-xl);
+    max-width: 100%;
+  }
+
+  .nl-cta__desc {
+    max-width: 100%;
+  }
+}

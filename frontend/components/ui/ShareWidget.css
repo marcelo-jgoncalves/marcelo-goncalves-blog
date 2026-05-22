@@ -1,0 +1,100 @@
+/* frontend/components/ui/ShareWidget.css */
+
+.share-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--accent);
+  border-radius: 16px;
+  padding: var(--space-4);
+  box-shadow: 0 8px 32px rgba(59, 95, 138, 0.28);
+}
+
+/* Eyebrow — pill badge */
+.share-widget__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.70);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+}
+
+.share-widget__eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: rgba(255,255,255,0.40);
+  flex-shrink: 0;
+}
+
+/* Título — mesmo padrão do nl-widget__title */
+.share-widget__title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  color: #F5F8FC;
+  margin: 0 0 var(--space-3);
+}
+
+/* Descrição */
+.share-widget__description {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
+}
+
+/* Grid de botões */
+.share-widget__buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+}
+
+/* Botão base */
+.share-widget__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: #F5F8FC;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.share-widget__btn i {
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .share-widget__btn:hover {
+    background: rgba(255,255,255,0.24);
+    border-color: rgba(255,255,255,0.35);
+    transform: translateY(-2px);
+  }
+}
+
+/* Estado "copiado" */
+.share-widget__btn--copied {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.30);
+}
+
+.share-widget__btn--copied i {
+  color: #22c55e;
+}

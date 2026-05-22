@@ -1,0 +1,303 @@
+# PostFooter — Snippet HTML + CSS
+
+Para colar em um protótipo estático. Não usa React, JS de framework, nem build step.
+
+---
+
+## 1. No `
+
+<head>` (se ainda não tiver)
+
+    ```html
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    ```
+
+    > ⚠️ Font Awesome **6.5.2+** é obrigatório — versões anteriores não têm `fa-x-twitter`.
+
+    ---
+
+    ## 2. CSS
+
+    Cole no seu `<style>
+        ` ou arquivo `.css`. Se as variáveis `--ivory`,
+        `--petrol`,
+        etc. já existirem no `:root` do projeto,
+        **remova o bloco `:root` daqui** para evitar duplicação. ```css:root {
+            --ivory: #FAF8F3;
+            --petrol: #0F4C5C;
+            --petrol-deep: #073642;
+            --petrol-mid: #5B8B96;
+            --petrol-soft: #E3ECEE;
+            --ink: #0A0E1A;
+            --moss: #3F6B47;
+            --line: rgba(10, 14, 26, .10);
+            --muted: rgba(10, 14, 26, .55);
+            --muted-strong: rgba(10, 14, 26, .70);
+
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+   PostFooter — share + author bound card
+   ═══════════════════════════════════════════════════════ */
+        .post-footer {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 0 rgba(10, 14, 26, .02), 0 10px 32px rgba(15, 76, 92, .06);
+            position: relative;
+        }
+
+        .post-footer::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--petrol);
+        }
+
+        /* ── Share strip ───────────────────────────────────────── */
+        .post-footer .share {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px 24px 16px 28px;
+            border-bottom: 1px dashed var(--line);
+            flex-wrap: wrap;
+        }
+
+        .post-footer .share .label {
+            font-family: var(--font-mono);
+            font-size: .6875rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-footer .share .label::after {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--line);
+            display: inline-block;
+        }
+
+        .post-footer .share .btns {
+            display: flex;
+            gap: 4px;
+            align-items: center
+        }
+
+        .post-footer .sbtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 34px;
+            padding: 0 12px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: .8125rem;
+            font-weight: 500;
+            color: var(--muted-strong);
+            text-decoration: none;
+            transition: background-color .15s ease, color .15s ease;
+        }
+
+        .post-footer .sbtn i {
+            font-size: .875rem
+        }
+
+        .post-footer .sbtn:hover {
+            background: var(--petrol-soft);
+            color: var(--petrol)
+        }
+
+        .post-footer .sbtn--copy {
+            margin-left: auto;
+            border: 1px solid var(--line);
+        }
+
+        .post-footer .sbtn--copy:hover {
+            border-color: var(--petrol)
+        }
+
+        /* ── Author body ───────────────────────────────────────── */
+        .post-footer .author {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 28px;
+            align-items: center;
+            padding: 28px 32px 28px 36px;
+            background: linear-gradient(180deg,
+                    rgba(15, 76, 92, .025) 0%,
+                    rgba(15, 76, 92, .05) 100%);
+        }
+
+        /* Avatar */
+        .post-footer .avatar {
+            width: 76px;
+            height: 76px;
+            flex: none;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .18) 0%, transparent 55%),
+                linear-gradient(140deg, var(--petrol-deep) 0%, var(--petrol) 55%, var(--petrol-mid) 100%);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--ivory);
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 1.375rem;
+            letter-spacing: .01em;
+            box-shadow:
+                0 0 0 4px #fff,
+                0 0 0 5px rgba(15, 76, 92, .18),
+                0 10px 28px rgba(15, 76, 92, .22);
+            position: relative;
+        }
+
+        /* Active dot — opcional */
+        .post-footer .avatar::after {
+            content: "";
+            position: absolute;
+            right: -2px;
+            bottom: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--moss);
+            border: 3px solid #fff;
+        }
+
+        /* Bio */
+        .post-footer .info p {
+            font-size: .9375rem;
+            line-height: 1.65;
+            color: rgba(10, 14, 26, .70);
+            max-width: 520px;
+        }
+
+        .post-footer .info .author-name {
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -.005em;
+        }
+
+        .post-footer .info .profile-link {
+            color: var(--petrol);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(15, 76, 92, .30);
+            white-space: nowrap;
+            transition: border-color .2s ease, color .2s ease;
+        }
+
+        .post-footer .info .profile-link:hover {
+            color: var(--petrol-deep);
+            border-bottom-color: var(--petrol-deep);
+        }
+
+        /* Actions column (redes) */
+        .post-footer .actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-left: 28px;
+            border-left: 1px solid rgba(10, 14, 26, .08);
+            align-self: stretch;
+        }
+
+        .post-footer .actions .net-label {
+            font-family: var(--font-mono);
+            font-size: .6875rem;
+            font-weight: 500;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--muted-strong);
+        }
+
+        .post-footer .actions .nets {
+            display: flex;
+            gap: 6px
+        }
+
+        .post-footer .actions .net {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            border: 1px solid rgba(10, 14, 26, .10);
+            color: var(--petrol);
+            font-size: .9375rem;
+            text-decoration: none;
+            transition:
+                border-color .2s ease,
+                color .2s ease,
+                background-color .2s ease,
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .post-footer .actions .net:hover {
+            background: var(--petrol);
+            border-color: var(--petrol);
+            color: var(--ivory);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 76, 92, .22);
+        }
+
+        /* ── Responsivo ────────────────────────────────────────── */
+        @media (max-width: 720px) {
+            .post-footer .author {
+                grid-template-columns: 1fr;
+                text-align: left;
+                gap: 20px;
+            }
+
+            .post-footer .actions {
+                padding-left: 0;
+                padding-top: 20px;
+                border-left: none;
+                border-top: 1px solid rgba(10, 14, 26, .08);
+                align-self: auto;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
+
+        ``` --- ## 3. HTML ```html <div class="post-footer">< !-- Share strip --><div class="share"><span class="label">Compartilhar</span><div class="btns"><a href="#" class="sbtn" aria-label="Compartilhar no LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i>LinkedIn </a><a href="#" class="sbtn" aria-label="Compartilhar no X"><i class="fab fa-x-twitter" aria-hidden="true"></i>Twitter </a><a href="#" class="sbtn" aria-label="Compartilhar no WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i>WhatsApp </a></div><button type="button" class="sbtn sbtn--copy" aria-label="Copiar link do artigo"><i class="fas fa-link" aria-hidden="true"></i>Copiar link </button></div>< !-- Author body --><section class="author" aria-label="Sobre o autor"><div class="avatar" aria-hidden="true">MG</div><div class="info"><p><strong class="author-name">Marcelo Gonçalves</strong>é Engenheiro Cloud especialista em AWS e DevOps. <a href="/sobre" class="profile-link">Veja o perfil</a>. </p></div><div class="actions"><span class="net-label">Acompanhe nas redes</span><div class="nets"><a href="#" class="net" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a><a href="#" class="net" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a><a href="#" class="net" aria-label="X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a></div></div></section></div>``` --- ## 4. JS opcional (feedback do "Copiado") Se quiser que o botão "Copiar link" troque para "Copiado ✓" por 1.4s ao clicar: ```html <script>document.querySelectorAll('.post-footer .sbtn--copy').forEach(btn=> {
+                btn.addEventListener('click', ()=> {
+                        const url=window.location.href;
+                        navigator.clipboard?.writeText(url);
+                        const original=btn.innerHTML;
+                        btn.innerHTML='<i class="fas fa-check" aria-hidden="true"></i>Copiado';
+
+                        setTimeout(()=> {
+                                btn.innerHTML=original;
+                            }
+
+                            , 1400);
+                    });
+            });
+        </script>``` Sem isso,
+        o botão fica funcional visualmente (hover etc.) mas não copia nada. --- ## 5. Personalizar | Quero… | O que mudar | |-----------------------------------------|----------------------------------------------------------------| | Remover o ponto verde do avatar | apagar o bloco `.post-footer .avatar::after` | | Fundo branco puro na área do autor | remover a `background:` do `.post-footer .author` | | Trocar as iniciais "MG" | editar o texto dentro de `<div class="avatar">…</div>` | | Trocar a bio | editar o `<p>` dentro de `.info` | | Adicionar/remover redes sociais | adicionar/remover blocos `<a class="net">` dentro de `.nets` | | Remover o card e deixar inline | apagar o `.post-footer` wrapper e os `::before`+box-shadow |

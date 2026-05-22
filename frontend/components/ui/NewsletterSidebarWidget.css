@@ -1,0 +1,187 @@
+/* frontend/components/ui/NewsletterSidebarWidget.css */
+
+.nl-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--accent);
+  border-radius: 16px;
+  padding: var(--space-4);
+  box-shadow: 0 8px 32px rgba(59, 95, 138, 0.28);
+}
+
+/* Eyebrow — pill badge */
+.nl-widget__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.70);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+}
+
+.nl-widget__badge::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: rgba(255,255,255,0.40);
+  flex-shrink: 0;
+}
+
+/* Título */
+.nl-widget__title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  color: #F5F8FC;
+  margin: 0 0 var(--space-3);
+}
+
+/* Descrição */
+.nl-widget__description {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 var(--space-4);
+}
+
+/* Form */
+.nl-widget__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Input e-mail */
+.nl-widget__input {
+  width: 100%;
+  height: 64px;
+  border-radius: 16px;
+  border: none;
+  background: rgba(255,255,255,0.90);
+  padding: 0 20px;
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  color: var(--accent);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.nl-widget__input::placeholder {
+  color: var(--text-muted);
+}
+
+.nl-widget__input:focus {
+  border-color: rgba(255,255,255,0.40);
+}
+
+/* Label (checkbox row) */
+.nl-widget__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Wrapper do checkbox customizado */
+.nl-widget__checkbox-wrap {
+  position: relative;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Input real — visualmente oculto */
+.nl-widget__checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Box visual */
+.nl-widget__checkbox-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+/* Ícone check */
+.nl-widget__check-icon {
+  width: 12px;
+  height: 12px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* Checked state via sibling selector */
+.nl-widget__checkbox-input:checked + .nl-widget__checkbox-box {
+  background: #F5F8FC;
+  border-color: #F5F8FC;
+}
+
+.nl-widget__checkbox-input:checked + .nl-widget__checkbox-box .nl-widget__check-icon {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Link política de privacidade */
+.nl-widget__policy-link {
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nl-widget__policy-link:hover {
+  text-decoration: underline;
+}
+
+/* Botão */
+.nl-widget__btn {
+  width: 100%;
+  height: 64px;
+  border-radius: 16px;
+  border: none;
+  background: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.80);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  cursor: not-allowed;
+  opacity: 1;
+  box-shadow: 0 12px 30px rgba(26, 49, 65, 0.22);
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+}
+
+.nl-widget__btn--active {
+  background: rgba(255,255,255,0.90);
+  color: var(--accent);
+  cursor: pointer;
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .nl-widget__btn--active:hover {
+    transform: translateY(-3px);
+  }
+}

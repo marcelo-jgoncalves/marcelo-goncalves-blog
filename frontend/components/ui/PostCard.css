@@ -3,18 +3,29 @@
 .post-card {
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 18px;
-  box-shadow: var(--shadow-soft);
   overflow: hidden;
+  border-radius: 20px;
+  border: none;
+  background: var(--surface-card);
+  text-decoration: none;
+  color: inherit;
   height: 100%;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: var(--neu-raised);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 @media (hover: hover) {
   .post-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+    box-shadow: 12px 12px 32px rgba(59, 95, 138, 0.14), -4px -4px 16px rgba(255, 255, 255, 0.90);
+  }
+
+  .post-card:hover .post-card__title {
+    color: var(--accent);
+  }
+
+  .post-card:hover .post-card__image {
+    transform: scale(1.04);
   }
 }
 
@@ -22,139 +33,72 @@
 .post-card__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  background-color: var(--slate-100);
+  height: 224px;
   overflow: hidden;
-}
-
-/* Gradiente no rodapé da imagem */
-.post-card__image-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 64px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.22), transparent);
-  pointer-events: none;
+  flex-shrink: 0;
 }
 
 .post-card__image {
   object-fit: cover;
-  transition: transform 0.6s ease;
-  will-change: transform;
+  transition: transform 0.4s ease;
 }
 
-@media (hover: hover) {
-  .post-card:hover .post-card__image {
-    transform: scale(1.06);
-  }
-}
-
-/* ── Badge overlay sobre a imagem ───────────────── */
-.post-card__category-overlay {
-  position: absolute;
-  bottom: 14px;
-  left: 14px;
-  z-index: 1;
-}
-
-
-/* ── Conteúdo ────────────────────────────────────── */
+/* ── Corpo ───────────────────────────────────────── */
 .post-card__content {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  padding: var(--space-3);
-  gap: 12px;
+  flex: 1;
+  padding: var(--space-4);
+}
+
+.post-card__category {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
 }
 
 .post-card__title {
-  font-size: var(--text-xl);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 900;
   margin: 0;
   line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--dark-900);
-}
-
-.post-card__title-link {
-  text-decoration: none;
-  color: inherit;
+  letter-spacing: -0.05em;
+  color: var(--heading-color);
   transition: color 0.2s ease;
-}
 
-@media (hover: hover) {
-  .post-card__title-link:hover {
-    color: var(--accent);
-  }
-}
-
-.post-card__excerpt {
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color: var(--slate-500);
-  margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-@media (min-width: 768px) {
-  .post-card__excerpt {
-    -webkit-line-clamp: 3;
-  }
+.post-card__excerpt {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.78;
+  color: var(--dark-warm-muted);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* ── Meta: data + tempo (esquerda) · ler mais (direita) */
-.post-card__meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-xs);
-  color: #94a3b8;
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--border-color);
+.post-card__cta {
+  display: block;
   margin-top: auto;
-}
-
-.post-card__meta-left {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-  min-width: 0;
-}
-
-.post-card__meta-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  white-space: nowrap;
-}
-
-.post-card__meta-item i {
-  color: #cbd5e1;
-  font-size: var(--text-xs);
-}
-
-.post-card__read-more {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
+  padding-top: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 900;
   color: var(--accent);
-  font-weight: 700;
-  font-size: var(--text-xs);
-  text-decoration: none;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
-}
-
-@media (hover: hover) {
-  .post-card__read-more:hover {
-    color: var(--accent-hover);
-  }
 }

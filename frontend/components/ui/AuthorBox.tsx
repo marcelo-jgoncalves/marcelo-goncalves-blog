@@ -20,20 +20,14 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
     <section className="author-box" itemScope itemType="https://schema.org/Person" aria-label={`Sobre o autor: ${autor.nome_exibicao}`}>
 
       <div className="author-avatar">
-        {autor.foto_avatar_url ? (
-          <Image
-            src={autor.foto_avatar_url}
-            alt={autor.foto_avatar_alt_text || `Foto de ${autor.nome_exibicao}`}
-            width={88}
-            height={88}
-            itemProp="image"
-            className="author-avatar-img"
-          />
-        ) : (
-          <div className="author-avatar-placeholder" aria-hidden="true">
-            <i className="fas fa-user"></i>
-          </div>
-        )}
+        <Image
+          src={autor.foto_avatar_url || '/static/foto-perfil-oculos.png'}
+          alt={autor.foto_avatar_alt_text || `Foto de ${autor.nome_exibicao}`}
+          width={120}
+          height={120}
+          itemProp="image"
+          className="author-avatar-img"
+        />
       </div>
 
       <div className="author-info">

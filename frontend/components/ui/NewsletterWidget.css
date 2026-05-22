@@ -5,37 +5,29 @@
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: var(--space-3);
-  text-align: center;
+  padding: var(--space-4);
   box-shadow: var(--shadow-soft);
 }
 
 /* Widget newsletter — dark accent background (protótipo)
    Newsletter em card escuro com accent background */
 .widget-newsletter {
-  background-color: var(--accent);
+  background: var(--accent);
   color: #ffffff;
   border-radius: 16px;
-  padding: 28px 26px 26px;
+  padding: var(--space-4);
   box-shadow: 0 8px 32px rgba(15,76,92,0.28);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-.widget-newsletter::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: rgba(91, 139, 150, 0.20);
-  filter: blur(60px);
-  pointer-events: none;
+/* Eyebrow — usando componente reutilizável */
+.widget-newsletter .eyebrow {
+  margin-bottom: 0;
+  justify-content: flex-start;
 }
+
 
 @media (hover: hover) {
   .widget-newsletter:hover {

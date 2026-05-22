@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400;1,14..32,500;1,14..32,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
 /* ═══════════════════════════════════════════════════════════════════
@@ -49,6 +50,7 @@
   --rule:         #E5DFD3;
   --rule-soft:    #F0EBE0;
   --rule-strong:  #C8BFB0;
+  --line:         rgba(10, 14, 26, .10);  /* Hairline cinza-petróleo */
 
   /* Typography — Inter + JetBrains Mono (sem serif) */
   --display:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -65,6 +67,7 @@
   --s-7:  64px;
   --s-8:  96px;
   --s-9:  128px;
+  --space-content: 40px;
 
   /* Layout */
   --container:    1280px;
@@ -205,6 +208,10 @@ button { font: inherit; cursor: pointer; }
   max-width: 896px;
   margin: 0 auto;
   padding: 0 var(--s-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 /* Categoria como pill (accent-tint bg + accent text) */
@@ -220,7 +227,8 @@ button { font: inherit; cursor: pointer; }
   text-transform: uppercase;
   letter-spacing: 0.05em;
   line-height: 1;
-  margin-bottom: var(--space-content);
+  margin: 0;
+  margin-bottom: 24px;
   transition: background .2s;
 }
 .article-category:hover { background: var(--accent-soft); }
@@ -233,7 +241,8 @@ button { font: inherit; cursor: pointer; }
   line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--t-display);
-  margin-bottom: var(--space-content);
+  margin: 0;
+  margin-bottom: 8px;
   text-wrap: balance;
 }
 
@@ -246,6 +255,7 @@ button { font: inherit; cursor: pointer; }
   flex-wrap: wrap;
   color: var(--t-meta);
   font-size: 0.9375rem;
+  margin: 0;
 }
 .article-meta > span {
   display: inline-flex;
@@ -278,7 +288,7 @@ button { font: inherit; cursor: pointer; }
    ═══════════════════════════════════════════════════════════════════ */
 .featured {
   max-width: 960px;
-  margin: var(--s-8) auto 0;
+  margin: var(--space-content) auto 0;
   padding: 0 var(--s-4);
   position: relative;
   z-index: 1;
@@ -389,10 +399,9 @@ button { font: inherit; cursor: pointer; }
   font-size: 1.375rem;
   font-weight: 500;
   font-style: italic;
-  line-height: 1.6;
-  letter-spacing: -0.03em;
+  line-height: 1.8;
+  letter-spacing: normal;
   color: var(--t-display);
-  text-wrap: balance;
 }
 .lead__text em {
   font-style: normal;
@@ -487,20 +496,28 @@ button { font: inherit; cursor: pointer; }
   letter-spacing: -0.05em;
   color: var(--t-display);
   margin: var(--s-7) 0 0;
-  text-wrap: balance;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
 }
 .post-content h2 + p {
   margin-top: var(--space-content);
 }
 .post-content h2::before {
   content: counter(h2-counter, decimal-leading-zero);
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: var(--accent);
+  color: #ffffff;
   font-family: var(--mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  color: var(--accent);
-  margin-bottom: var(--s-2);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
 }
 
 /* ───── H3 ───── */
@@ -1039,13 +1056,6 @@ button { font: inherit; cursor: pointer; }
 /* ═══════════════════════════════════════════════════════════════════
    POST FOOTER (share, author, related)
    ═══════════════════════════════════════════════════════════════════ */
-.post-footer {
-  margin-top: var(--s-7);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-7);
-}
-
 /* ───── Share ───── */
 .share {
   display: flex;
@@ -1053,8 +1063,6 @@ button { font: inherit; cursor: pointer; }
   gap: 14px;
   flex-wrap: wrap;
   padding: var(--s-4) 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
 }
 .share__label {
   font-family: var(--mono);
@@ -1088,105 +1096,221 @@ button { font: inherit; cursor: pointer; }
   opacity: 0.7;
 }
 
-/* ───── Author box — paleta protótipo + estrutura projeto original ───── */
-.author-box {
-  position: relative;
+/* ═══════════════════════════════════════════════════════════
+   PostFooter — share + author bound card (de postFooter.html)
+   ═══════════════════════════════════════════════════════════ */
+.post-footer {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-  padding: var(--s-5);
+  box-shadow: 0 1px 0 rgba(10, 14, 26, .02), 0 10px 32px rgba(15, 76, 92, .06);
+  position: relative;
   margin-top: var(--space-epic);
-  background: var(--surface);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px -8px rgba(15,76,92,0.20);
 }
 
-.author-box::before {
-  content: '';
+.post-footer::before {
+  content: "";
   position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: rgba(15, 76, 92, 0.08);
-  filter: blur(60px);
-  pointer-events: none;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
 }
 
-.author-box__avatar {
-  flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-  border: none;
-  position: relative;
-}
-
-.author-box__eyebrow {
-  font-family: var(--mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--t-subtle);
-  margin: 0;
-}
-
-.author-box__name {
-  font-family: var(--display);
-  font-size: 1.375rem;
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  color: var(--t-display);
-  margin: 0;
-}
-
-.author-box__bio {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--t-meta);
-  margin: 0;
-}
-
-.author-box__links {
-  display: flex;
-  gap: var(--s-2);
-  margin: 0;
-}
-
-.author-box__link {
+/* Share strip */
+.post-footer .share {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(15, 76, 92, 0.08);
-  border: 1px solid rgba(15, 76, 92, 0.15);
-  color: var(--accent);
+  gap: 18px;
+  padding: 16px 24px 16px 28px;
+  border-bottom: 1px dashed var(--rule);
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.post-footer .share .label {
+  font-family: var(--mono);
+  font-size: .6875rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--t-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  line-height: 1;
+}
+
+.post-footer .share .label::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--rule);
+  display: inline-block;
+}
+
+.post-footer .share .btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.post-footer .sbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: .8125rem;
+  font-weight: 500;
+  color: rgba(10, 14, 26, .70);
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: background-color .15s ease, color .15s ease;
 }
 
-@media (hover: hover) {
-  .author-box__link:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--surface);
-    transform: translateY(-2px);
-  }
+.post-footer .sbtn i {
+  font-size: .875rem;
 }
 
-@media (min-width: 768px) {
-  .author-box {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--s-5);
-  }
+.post-footer .sbtn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.post-footer .sbtn--copy {
+  border: 1px solid var(--rule);
+}
+
+.post-footer .sbtn--copy:hover {
+  border-color: var(--accent);
+}
+
+/* Author body */
+.post-footer .author {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 28px 32px 28px 36px;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(15, 76, 92, .025) 0%, rgba(15, 76, 92, .05) 100%);
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 16px rgba(15,76,92,0.07), 0 1px 4px rgba(15,76,92,0.04);
+}
+
+/* Avatar */
+.post-footer .avatar {
+  width: 76px;
+  height: 76px;
+  flex: none;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .18) 0%, transparent 55%), linear-gradient(140deg, var(--accent-deep) 0%, var(--accent) 55%, var(--accent-mid) 100%);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #FAF8F3;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1.375rem;
+  letter-spacing: .01em;
+  box-shadow: 0 0 0 4px #fff, 0 0 0 5px rgba(15, 76, 92, .18), 0 10px 28px rgba(15, 76, 92, .22);
+  position: relative;
+}
+
+/* Active dot */
+.post-footer .avatar::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--moss);
+  border: 3px solid #fff;
+}
+
+/* Bio */
+.post-footer .info p {
+  font-size: .9375rem;
+  line-height: 1.65;
+  color: rgba(10, 14, 26, .70);
+  max-width: 520px;
+  margin: 0;
+}
+
+.post-footer .info .author-name {
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -.005em;
+}
+
+.post-footer .info .profile-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(15, 76, 92, .30);
+  white-space: nowrap;
+  transition: border-color .2s ease, color .2s ease;
+}
+
+.post-footer .info .profile-link:hover {
+  color: var(--accent-deep);
+  border-bottom-color: var(--accent-deep);
+}
+
+/* Actions column */
+.post-footer .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-left: 28px;
+  align-self: stretch;
+}
+
+.post-footer .actions .net-label {
+  font-family: var(--mono);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(10, 14, 26, .70);
+}
+
+.post-footer .actions .nets {
+  display: flex;
+  gap: 6px;
+}
+
+.post-footer .actions .net {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid rgba(10, 14, 26, .10);
+  color: var(--accent);
+  font-size: .9375rem;
+  text-decoration: none;
+  transition: border-color .2s ease, color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.post-footer .actions .net:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FAF8F3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 76, 92, .22);
 }
 
 
@@ -2569,49 +2693,34 @@ button { font: inherit; cursor: pointer; }
         </div>
         <!-- /.post-content -->
 
-        <!-- POST FOOTER — Apenas Compartilhamento -->
-        <footer class="post-footer">
-
-          <!-- Share -->
-          <div class="share">
-            <span class="share__label">Compartilhar</span>
-            <a href="#" class="share__btn">
-              <svg class="share__btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
-              LinkedIn
-            </a>
-            <a href="#" class="share__btn">
-              <svg class="share__btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              Twitter
-            </a>
-            <a href="#" class="share__btn">
-              <svg class="share__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007 0l4-4a5 5 0 00-7-7l-1 1M14 11a5 5 0 00-7 0l-4 4a5 5 0 007 7l1-1"/></svg>
-              Copiar link
-            </a>
-          </div>
-
-          <!-- Author box -->
-          <div class="author-box">
-            <div class="author-box__avatar">
-              <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; background: linear-gradient(135deg, #0F4C5C 0%, #073642 100%);"><rect width="120" height="120" fill="url(#grad)"/><text x="60" y="70" text-anchor="middle" font-size="48" font-weight="bold" fill="rgba(255,255,255,0.8)" font-family="Inter, sans-serif">MG</text><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0F4C5C;stop-opacity:1" /><stop offset="100%" style="stop-color:#073642;stop-opacity:1" /></linearGradient></defs></svg>
+          <!-- Post Footer: Share + Author -->
+          <div class="post-footer">
+            <!-- Share strip -->
+            <div class="share">
+              <span class="label">Compartilhar</span>
+              <div class="btns">
+                <a href="#" class="sbtn" aria-label="Compartilhar no LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i>LinkedIn</a>
+                <a href="#" class="sbtn" aria-label="Compartilhar no X"><i class="fab fa-x-twitter" aria-hidden="true"></i>Twitter</a>
+                <a href="#" class="sbtn" aria-label="Compartilhar no WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i>WhatsApp</a>
+                <button type="button" class="sbtn sbtn--copy" aria-label="Copiar link do artigo"><i class="fas fa-link" aria-hidden="true"></i>Copiar link</button>
+              </div>
             </div>
-            <div>
-              <div class="author-box__eyebrow">Sobre o autor</div>
-              <div class="author-box__name">Marcelo Gonçalves</div>
-              <p class="author-box__bio">
-                Engenheiro Cloud especialista em AWS, serverless e arquiteturas resilientes. 10+ anos construindo sistemas distribuídos para empresas no Brasil, EUA e Europa.
-              </p>
-              <nav class="author-box__links">
-                <a href="#" class="author-box__link" aria-label="LinkedIn">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
-                </a>
-                <a href="#" class="author-box__link" aria-label="GitHub">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="#" class="author-box__link" aria-label="Consultoria">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </a>
-              </nav>
-            </div>
+
+            <!-- Author body -->
+            <section class="author" aria-label="Sobre o autor">
+              <div class="avatar" aria-hidden="true">MG</div>
+              <div class="info">
+                <p><strong class="author-name">Marcelo Gonçalves</strong> é Engenheiro Cloud especialista em AWS e DevOps. <a href="/sobre" class="profile-link">Veja o perfil</a>.</p>
+              </div>
+              <div class="actions">
+                <span class="net-label">Acompanhe nas redes</span>
+                <div class="nets">
+                  <a href="#" class="net" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                  <a href="#" class="net" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                  <a href="#" class="net" aria-label="X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </section>
           </div>
 
           <!-- Related posts -->
@@ -2668,8 +2777,6 @@ button { font: inherit; cursor: pointer; }
               </a>
             </div>
           </div>
-
-        </footer>
       </div>
     </main>
 

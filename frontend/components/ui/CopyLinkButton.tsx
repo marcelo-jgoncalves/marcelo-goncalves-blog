@@ -30,7 +30,7 @@ export default function CopyLinkButton({ url }: CopyLinkButtonProps) {
       aria-label={copied ? "Link copiado com sucesso" : "Copiar link do artigo"}
       title={copied ? "Copiado!" : "Copiar Link"}
     >
-      <i className={`fas ${copied ? 'fa-check' : 'fa-link'}`} aria-hidden="true"></i>
+      <i className={copied ? 'fas fa-check' : 'far fa-copy'} aria-hidden="true"></i>
     </button>
   );
 }

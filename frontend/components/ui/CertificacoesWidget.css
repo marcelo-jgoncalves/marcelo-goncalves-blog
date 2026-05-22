@@ -5,16 +5,12 @@
   position: relative;
   overflow: hidden;
   padding: var(--space-3);
-  border-radius: 24px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.97),
-    rgba(255, 255, 255, 0.92)
-  );
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow:
-    0 10px 40px rgba(15, 23, 42, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  background: var(--bg-widget);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--dark-warm-border);
+  box-shadow: 0 20px 60px rgba(26, 49, 65, 0.05);
 }
 
 /* Glow accent no canto superior direito */
@@ -99,7 +95,7 @@
   align-items: flex-start;
   gap: var(--space-2);
   padding: var(--space-2);
-  border-radius: 20px;
+  border-radius: 16px;
   text-decoration: none;
   color: inherit;
   background: linear-gradient(

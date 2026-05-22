@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Artigos Populares · Widget — MarceloGonçalves</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:  #FEF6E6;
+    --paper:  #FAF3E3;
+    --sand:   #F1E8D2;
+    --line:   #E6DCC2;
+    --navy:   #1E374C;
+    --blue:   #3B5F8A;
+    --ember:  #DA7B26;
+    --ink:    #112637;
+    --slate:  #29465F;
+    --steel:  #6F8AA8;
+
+    --font:   'Inter', sans-serif;
+    --mono:   'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;line-height:1.6;
+  }
+
+  /* ─── layout ─────────────────────────────────────── */
+  .wrap{
+    max-width:1200px;margin:0 auto;padding:64px 32px 120px;
+    display:grid;grid-template-columns:1fr 300px;gap:64px;
+    align-items:start;
+  }
+
+  /* ─── article (context filler) ───────────────────── */
+  article{max-width:680px}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ember);display:flex;align-items:center;gap:12px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--ember)}
+  article h1{
+    font-family:var(--font);font-weight:800;font-size:44px;letter-spacing:-.03em;
+    line-height:1.06;color:var(--navy);margin-bottom:18px;
+  }
+  article .lede{
+    font-size:18px;line-height:1.55;color:var(--slate);margin-bottom:28px;max-width:600px;
+  }
+  article .meta{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--steel);
+    padding-bottom:32px;border-bottom:1px solid var(--line);margin-bottom:40px;
+  }
+  article h2{
+    font-family:var(--font);font-weight:800;font-size:26px;letter-spacing:-.022em;
+    color:var(--navy);line-height:1.2;margin-top:48px;margin-bottom:16px;
+  }
+  article h2:first-of-type{margin-top:0}
+  article p{
+    font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:18px;max-width:640px;
+  }
+  article p b{color:var(--navy);font-weight:600}
+  article a{color:var(--blue);border-bottom:1px solid rgba(59,95,138,.3)}
+
+  /* ─── WIDGET · Artigos populares ─────────────────── */
+  .popular{
+    position:sticky;top:32px;
+    background:var(--cream);border:1px solid var(--line);border-radius:14px;
+    padding:28px 26px 26px;
+  }
+  .popular .pop-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ember);margin-bottom:14px;
+  }
+  .popular .pop-tag::before{content:"";width:24px;height:1px;background:var(--ember)}
+  .popular h3{
+    font-family:var(--font);font-weight:800;font-size:24px;letter-spacing:-.025em;
+    color:var(--navy);line-height:1.05;margin-bottom:22px;
+  }
+
+  .popular .items{display:flex;flex-direction:column}
+  .popular .it{
+    display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line);
+    color:inherit;text-decoration:none;transition:transform .2s;
+  }
+  .popular .it:last-child{border-bottom:none}
+  .popular .it:hover{transform:translateX(2px)}
+
+  .popular .it .rank{
+    font-family:var(--font);font-weight:800;font-size:30px;letter-spacing:-.03em;
+    color:var(--ember);line-height:1;text-align:left;
+  }
+  .popular .it .body{
+    display:flex;flex-direction:column;gap:6px;min-width:0;
+  }
+  .popular .it .cat{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--steel);font-weight:500;
+  }
+  .popular .it .t{
+    font-family:var(--font);font-weight:700;font-size:15px;letter-spacing:-.012em;
+    color:var(--navy);line-height:1.3;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .popular .it:hover .t{color:var(--blue)}
+
+  .popular .all{
+    display:inline-flex;align-items:center;gap:6px;margin-top:20px;
+    padding-top:16px;border-top:1px solid var(--line);
+    font-family:var(--font);font-weight:600;font-size:13px;color:var(--blue);
+    text-decoration:none;transition:color .2s;
+  }
+  .popular .all:hover{color:var(--navy)}
+  .popular .all .arr{font-family:var(--mono)}
+
+  /* ─── responsive: widget on top on narrow screens ─── */
+  @media (max-width: 900px){
+    .wrap{grid-template-columns:1fr;gap:32px}
+    .popular{position:relative;top:0;order:-1}
+    article h1{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <!-- Article placeholder for context -->
+    <article>
+      <div class="eyebrow">Fundamentos · IA generativa</div>
+      <h1>Como criar prompts perfeitos para qualquer modelo de IA</h1>
+      <p class="lede">Um guia prático em 8 passos para tirar respostas melhores de qualquer LLM &mdash; sem matemática, sem hype, com exemplos reais que você pode adaptar agora.</p>
+      <div class="meta">9 MIN DE LEITURA · 17 MAI '26 · POR MARCELO GONÇALVES</div>
+
+      <h2>Seja claro e específico</h2>
+      <p>Um prompt vago gera uma resposta vaga. Modelos como ChatGPT, Claude e Gemini não são <b>oráculos</b> &mdash; eles são <b>preditores estatísticos</b>. Quanto mais sinal você dá, melhor a previsão. Comece dizendo exatamente o que você quer: o tipo de saída, o tom, o tamanho.</p>
+      <p>Compare: "me ajude com produtividade" vs. "liste 5 técnicas de produtividade que funcionam para quem trabalha em casa, em até 3 frases por técnica". A segunda versão restringe o espaço de resposta &mdash; e por isso recebe um resultado utilizável de primeira.</p>
+
+      <h2>Defina o formato da resposta</h2>
+      <p>Pedir o formato é metade da batalha. Lista? Tabela? Parágrafo corrido? JSON? Markdown? Diga. O modelo segue formato muito melhor do que segue conteúdo &mdash; é uma das instruções que ele "obedece" com mais consistência.</p>
+      <p>Em workflows reais isso é especialmente importante: se você vai colar a resposta em outro sistema, pedir o formato certo evita pós-processamento manual.</p>
+
+      <h2>Forneça contexto</h2>
+      <p>A IA não sabe o que está acontecendo na sua vida ou no seu projeto, então é importante fornecer um <b>contexto relevante</b>. Quem é o público? Qual o objetivo? Qual o estado atual? O modelo trabalha com o que você der &mdash; e só com isso.</p>
+    </article>
+
+    <!-- ─── WIDGET ─────────────────────────────────── -->
+    <aside class="popular">
+      <div class="pop-tag">Mais lidos</div>
+      <h3>Artigos populares</h3>
+
+      <div class="items">
+
+        <a class="it" href="#">
+          <span class="rank">01</span>
+          <div class="body">
+            <span class="cat">Inteligência artificial</span>
+            <div class="t">Como criar prompts perfeitos para qualquer modelo de IA</div>
+          </div>
+        </a>
+
+        <a class="it" href="#">
+          <span class="rank">02</span>
+          <div class="body">
+            <span class="cat">Tutoriais AWS</span>
+            <div class="t">Deploy de uma aplicação Node em ECS Fargate, do zero</div>
+          </div>
+        </a>
+
+        <a class="it" href="#">
+          <span class="rank">03</span>
+          <div class="body">
+            <span class="cat">DevOps</span>
+            <div class="t">Pipelines de CI/CD que não te traem na sexta-feira</div>
+          </div>
+        </a>
+
+        <a class="it" href="#">
+          <span class="rank">04</span>
+          <div class="body">
+            <span class="cat">Análise</span>
+            <div class="t">Por que os LLMs alucinam — e o que isso significa</div>
+          </div>
+        </a>
+
+        <a class="it" href="#">
+          <span class="rank">05</span>
+          <div class="body">
+            <span class="cat">Fundamentos</span>
+            <div class="t">O que é um embedding, na real (sem matemática)</div>
+          </div>
+        </a>
+
+      </div>
+
+      <a class="all" href="#">Ver todos os artigos <span class="arr">→</span></a>
+    </aside>
+
+  </div>
+
+</body>
+</html>

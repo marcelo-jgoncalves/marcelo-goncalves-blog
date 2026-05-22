@@ -1,106 +1,64 @@
 /* frontend/components/ui/ServiceCallout.css */
 
 .op-service-callout {
-  position: relative;
-  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
-  color: #ffffff;
-  border-radius: 18px;
-  overflow: hidden;
-  padding: 30px 24px;
-  text-align: center;
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.10);
-  width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  gap: 0;
+  background: var(--heading-color);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+  border-left: 3px solid var(--accent);
+  padding: var(--space-4);
+  box-shadow: var(--neu-raised);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Glow radial premium — overlay sem alterar DOM */
-.op-service-callout::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 20% 15%,
-    rgba(255, 255, 255, 0.22),
-    transparent 60%
-  );
-  opacity: 0.65;
-  pointer-events: none;
+/* Título — mesmo padrão do nl-widget__title */
+.op-callout-title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  color: var(--bg-widget);
+  margin: 0 0 var(--space-3);
+  text-wrap: pretty;
 }
 
-@media (hover: hover) {
-  .op-service-callout:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.25);
-  }
+/* Descrição — mesmo padrão do nl-widget__description */
+.op-callout-desc {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.80);
+  margin: 0 0 var(--space-4);
 }
 
-.op-callout-icon-box {
-  position: relative; /* fica acima do ::before */
-  width: 58px;
-  height: 58px;
-  background-color: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--accent-light);
-  border-radius: 14px;
+/* Botão — mesmo padrão do nl-widget__btn--active */
+.op-btn-callout-primary {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
-  flex-shrink: 0;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
-}
-
-.op-callout-title {
-  position: relative;
+  width: 100%;
+  height: 64px;
+  background: var(--bg-widget);
+  color: var(--heading-color);
+  text-decoration: none;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 10px 0;
-  line-height: 1.2;
-}
-
-.op-callout-desc {
-  position: relative;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  color: rgba(255, 255, 255, 0.92);
-  line-height: 1.6;
-  margin: 0 0 22px 0;
-}
-
-/* Botão: fundo branco + texto accent — máximo contraste */
-.op-btn-callout-primary {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 48px;
-  background-color: #ffffff;
-  color: var(--accent-dark);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: var(--text-base);
-  font-family: var(--font-display);
-  border-radius: 10px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(26, 49, 65, 0.22);
+  transition: transform 0.3s ease;
 }
 
 @media (hover: hover) {
   .op-btn-callout-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
+    color: var(--heading-color);
+    font-weight: 700;
   }
-}
-
-.op-btn-callout-primary:active {
-  transform: translateY(0);
 }

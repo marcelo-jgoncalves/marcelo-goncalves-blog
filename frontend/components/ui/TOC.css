@@ -1,48 +1,54 @@
 /* ==========================================================================
-   TOC COMPONENT (8px Grid & Strict Scope Isolation)
+   TOC COMPONENT — Prototype style (prot-TOC.html)
    ========================================================================== */
 
 /* 1. Container principal (Desktop) */
 .toc-wrapper.toc-desktop {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: var(--space-4);
-  box-shadow: var(--shadow-soft);
+  background: var(--bg-widget);
+  border-radius: 16px;
+  padding: 28px 26px 32px;
+  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
   text-align: left;
   margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+.toc-wrapper.toc-desktop::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(59, 95, 138, 0.20);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
-/* 2. Título */
+
+/* 3. Título */
 .toc-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  color: var(--dark-900);
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  color: var(--heading-color);
   margin: 0 0 var(--space-3);
   padding: 0;
-  font-size: var(--text-base);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-  border-bottom: none;
 }
 
-.toc-title i {
-  color: var(--accent);
-  font-size: var(--text-xs);
-}
-
-/* 3. Lista — cada item como card individual */
+/* 4. Lista */
 .toc-list {
+  position: relative;
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
 }
+
 
 .toc-list li {
   margin: 0;
@@ -50,53 +56,93 @@
   position: relative;
 }
 
-.toc-list li::before,
-.toc-list li::after {
+/* Reset: nenhum ::before/::after do globals.css */
+.toc-wrapper.toc-desktop .toc-list li::before,
+.toc-wrapper.toc-desktop .toc-list li::after {
   content: none !important;
   display: none;
 }
 
-.toc-list a {
+/* 5. Item link */
+.toc-wrapper.toc-desktop .toc-list a {
+  position: relative;
   display: block;
-  padding: var(--space-2) var(--space-2);
-  color: var(--dark-700);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  background: var(--slate-50);
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
+  padding: 9px 0 9px 12px;
+  border-left: 2px solid transparent;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
   line-height: 1.4;
+  text-decoration: none;
+  background: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 @media (hover: hover) {
-  .toc-list a:hover {
-    background: var(--accent-light);
-    color: var(--accent);
-    border-color: rgba(59, 95, 138, 0.25);
-    transform: translateX(2px);
+  .toc-wrapper.toc-desktop .toc-list a:hover {
+    color: var(--heading-color);
+    font-weight: 700;
   }
+
 }
 
-/* Item ativo */
-.toc-list a.toc-active {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
+/* 6. Active */
+.toc-wrapper.toc-desktop .toc-list a.toc-active {
+  color: var(--heading-color);
   font-weight: 700;
+  border-left: 2px solid var(--heading-color);
+}
+
+
+/* 7. Barra de progresso */
+.toc-progress {
+  margin-top: 22px;
+  padding-top: 18px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toc-progress__bar {
+  flex: 1;
+  height: 2px;
+  background: rgba(59, 95, 138, 0.15);
+  border-radius: 1px;
+  margin-left: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.toc-progress__bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--p, 0%);
+  background: var(--heading-color);
+  transition: width 0.3s ease;
 }
 
 /* ==========================================================================
-   MOBILE ACCORDION (Alinhamento Lateral e Grid 8px Corrigidos)
+   MOBILE ACCORDION
    ========================================================================== */
-   
+
 .toc-wrapper.toc-mobile {
-  background-color: var(--slate-50); /* Fundo sutil de widget */
-  border: 1px solid var(--border-color);
-  border-radius: calc(var(--space-unit) * 1.5); /* 12px de curva, igual aos outros */
-  /* Macro-ritmo de 32px na base para afastar do texto do post */
-  margin: 0 0 calc(var(--space-unit) * 4) 0; 
+  background-color: var(--bg-widget);
+  border: 1px solid var(--dark-warm-border);
+  border-radius: 16px;
+  margin: 0 0 var(--space-4) 0;
   overflow: hidden;
 }
 
@@ -104,35 +150,34 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Separa o título (esquerda) da seta (direita) */
-  padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 3); /* 24px lateral */
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
   background: transparent;
   border: none;
   cursor: pointer;
-  text-align: left; /* 🚀 RESET: Anula centralização padrão de botões */
+  text-align: left;
 }
 
 .toc-mobile-title {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 🚀 FORÇA À ESQUERDA: Previne que o flexbox centralize o conteúdo */
+  justify-content: flex-start;
   font-weight: 700;
-  color: var(--dark-900);
+  color: var(--accent);
   font-family: var(--font-display);
   font-size: var(--text-lg);
-  margin: 0; /* 🚀 RESET: Remove margens fantasmas */
+  margin: 0;
   padding: 0;
 }
 
 .toc-mobile-title .toc-icon {
-  /* 🚀 MATEMÁTICA ESTRITA: Topo 0, Direita 12px, Baixo 0, ESQUERDA 0 */
-  margin: 0 calc(var(--space-unit) * 1.5) 0 0; 
+  margin: 0 12px 0 0;
   color: var(--accent);
 }
 
 .toc-chevron {
   transition: transform 0.3s ease;
-  color: var(--dark-900);
+  color: var(--accent);
   font-size: var(--text-lg);
 }
 
@@ -140,7 +185,6 @@
   transform: rotate(180deg);
 }
 
-/* Animação suave da sanfona */
 .toc-mobile-content {
   display: grid;
   grid-template-rows: 0fr;
@@ -156,20 +200,32 @@
 }
 
 .toc-wrapper.toc-mobile .toc-list {
-  padding: 0 0 calc(var(--space-unit) * 2) 0; /* 16px de respiro no final da lista */
+  padding: 0 0 var(--space-2) 0;
 }
 
 .toc-wrapper.toc-mobile .toc-list a {
-  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 3); 
-  border-left: none;
-  border-bottom: 1px solid var(--border-color); /* Linha divisória suave */
+  display: block;
+  padding: 12px var(--space-3);
+  color: var(--dark-warm-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.4;
+  text-decoration: none;
+  border-bottom: 1px solid var(--dark-warm-border);
+  background: none;
+  transition: color 0.2s ease;
 }
 
 .toc-wrapper.toc-mobile .toc-list li:last-child a {
-  border-bottom: none; 
+  border-bottom: none;
 }
 
 .toc-wrapper.toc-mobile .toc-list a:hover {
-  background-color: rgba(255, 255, 255, 0.5);
   color: var(--accent);
+}
+
+.toc-wrapper.toc-mobile .toc-list a.toc-active {
+  color: var(--accent);
+  font-weight: 700;
 }

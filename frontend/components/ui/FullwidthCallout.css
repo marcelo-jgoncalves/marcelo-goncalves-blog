@@ -52,7 +52,7 @@
 
 /* ── Radius — para uso dentro de container (não edge-to-edge) */
 .fwc-section[data-rounded="true"] {
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
 }
 

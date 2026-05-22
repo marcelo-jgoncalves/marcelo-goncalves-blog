@@ -3,7 +3,7 @@
 .page-hero {
   background:
     radial-gradient(ellipse 65% 80% at 25% 50%, rgba(59, 95, 138, 0.06) 0%, transparent 60%),
-    linear-gradient(135deg, #F8FAFC, #F1F5F9);
+    var(--bg-warm-strong);
   margin-block: 0;
   padding-top: var(--space-6);
   padding-bottom: var(--space-4);
@@ -30,15 +30,16 @@
 
 /* --- Tipografia compartilhada --- */
 .page-hero .hero-title {
-  font-size: var(--text-2xl);
-  line-height: 1.15;
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.07em;
   margin-bottom: var(--space-2);
-  letter-spacing: -0.03em;
 }
 
 @media (min-width: 768px) {
   .page-hero .hero-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-4xl);
   }
 }
 
