@@ -24,6 +24,7 @@
 /* Eyebrow — usando componente reutilizável */
 .projeto-widget .eyebrow {
   margin-bottom: 0;
+  justify-content: flex-start;
 }
 
 /* Título */
