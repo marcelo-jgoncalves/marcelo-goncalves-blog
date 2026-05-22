@@ -7,9 +7,9 @@ export default function ProjetoWidget() {
   return (
     <div className="projeto-widget">
       <Eyebrow text="O Projeto" color="white" />
-      <h3 className="projeto-widget__title">Veja como este blog foi construído</h3>
+      <h3 className="projeto-widget__title">Acompanhe a construção desta plataforma</h3>
       <p className="projeto-widget__desc">
-        Do zero na AWS, quase 100% com IA. Uma jornada técnica documentada em tempo real.
+        Uma série contínua sobre infraestrutura, arquitetura, automações e desenvolvimento com IA — documentando cada etapa do projeto na prática.
       </p>
       <Link href="/o-projeto" className="projeto-widget__btn">
         Acompanhe a Jornada
