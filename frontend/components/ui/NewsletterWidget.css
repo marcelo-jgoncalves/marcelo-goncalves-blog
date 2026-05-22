@@ -41,6 +41,8 @@
 /* Eyebrow — usando componente reutilizável */
 .widget-newsletter .eyebrow {
   justify-content: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 
