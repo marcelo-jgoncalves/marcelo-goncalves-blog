@@ -74,7 +74,8 @@
 
   /* Aliases — Para compatibilidade backward */
   --text-ghost:        rgba(30, 55, 76, 0.40);   /* placeholder, disabled */
-  --text-default:      #1E374C;                  /* = --dark-warm (navy) */
+  --heading-color:     #1E374C;                  /* títulos, subtítulos, headings */
+  --text-default:      #1E374C;                  /* = --dark-warm (navy) — deprecated, use --heading-color */
   --text-heading:      #3B5F8A;                  /* = --accent */
 
   /* ─────────────────────────────────────
@@ -460,44 +461,7 @@ img {
    4. EYEBROW — Padrão único (ritmo-vertical §Widgets)
    traço ::before (24px) + texto uppercase, font-mono ou display
    ========================================= */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);              /* 16px entre traço + texto */
-  font-family: var(--font-display); /* DM Sans */
-  font-size: var(--text-sm);        /* 0.875rem */
-  font-weight: 400;                 /* Não bold — leve */
-  text-transform: uppercase;
-  letter-spacing: 0.22em;           /* Espaço das letras */
-  color: currentColor;              /* Herda do pai */
-  margin-bottom: var(--space-1);    /* 8px → espaço para título */
-}
-
-/* Traço antes do eyebrow */
-.eyebrow::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: currentColor;
-  flex-shrink: 0;
-}
-
-/* Variantes de cor */
-.eyebrow--accent {
-  color: var(--accent);
-}
-
-.eyebrow--light {
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.eyebrow--dark {
-  color: var(--text-primary);
-}
-
-.eyebrow--muted {
-  color: var(--text-muted);
-}
+/* Eyebrow styles moved to Eyebrow.css component */
 
 /* =========================================
    4. RITMO EDITORIAL — §6 Seções
