@@ -4,7 +4,7 @@
 .popular-widget {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--space-1);
   padding: var(--space-4);
   border-radius: 16px;
   position: relative;
