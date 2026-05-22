@@ -6,7 +6,7 @@ import './NewsletterWidget.css';
 
 export default function NewsletterWidget() {
   return (
-    <div className="sidebar-widget widget-newsletter">
+    <div className="widget-newsletter">
       <Eyebrow text="Newsletter" color="white" />
       <div className="card-icon-wrapper">
         <i className="far fa-envelope"></i>
