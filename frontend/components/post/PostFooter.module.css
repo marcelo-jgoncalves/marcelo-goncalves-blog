@@ -12,7 +12,6 @@
     0 1px 0 rgba(17, 24, 39, 0.02),
     0 10px 32px rgba(59, 95, 138, 0.06);
   position: relative;
-  margin-top: 112px;
 }
 
 .postFooter::before {
