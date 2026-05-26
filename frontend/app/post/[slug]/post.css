@@ -752,7 +752,7 @@ pre.code-block,
 .post-footer-safe-zone {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-content);
   margin-top: var(--space-content);
 }
 
