@@ -294,44 +294,46 @@ article .post-tag-header,
 .post-content em,
 .post-content i { font-style: italic; }
 
+/* ── Propriedades compartilhadas — fonte e COR são donos únicos aqui ── */
 .post-content h2,
 .post-content h3,
-.post-content h4 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--text-default);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin-top: var(--space-content);
-  margin-bottom: var(--post-heading-bottom);
-  scroll-margin-top: 96px;
-}
-
+.post-content h4,
 .post-content h5 {
   font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--text-default);
-  line-height: 1.3;
+  color: var(--text-default);        /* único lugar — alterar aqui muda todos */
+  scroll-margin-top: 96px;
   margin-top: var(--space-content);
   margin-bottom: var(--post-heading-bottom);
-  scroll-margin-top: 96px;
-  font-size: var(--text-lg);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
+/* ── h2 — layout flex + numerador (propriedades exclusivas) ── */
 .post-content h2 {
-  font-family: var(--font-display);
   font-size: 2.25rem;
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.05em;
-  color: var(--text-default);
   margin: var(--space-content) 0 0;
   display: flex;
   align-items: center;
   gap: var(--space-3);
   counter-increment: post-section;
+}
+
+/* ── h3, h4 ── */
+.post-content h3,
+.post-content h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* ── h5 — eyebrow style ── */
+.post-content h5 {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .post-content h2 + p {
