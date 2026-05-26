@@ -163,7 +163,7 @@
 /* ─────── BIO / INFO ─────── */
 .info p {
   font-family: var(--font-display);
-  font-size: var(--body-text-size);
+  font-size: 0.9375rem;
   font-weight: var(--body-text-weight);
   letter-spacing: var(--body-text-spacing);
   line-height: 1.65;
@@ -205,7 +205,7 @@
 
 .netLabel {
   font-family: var(--font-display);
-  font-size: var(--body-text-size);
+  font-size: 0.9375rem;
   font-weight: var(--body-text-weight);
   letter-spacing: var(--body-text-spacing);
   text-transform: uppercase;
