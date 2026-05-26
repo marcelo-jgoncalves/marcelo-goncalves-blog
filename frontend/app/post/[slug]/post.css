@@ -753,7 +753,7 @@ pre.code-block,
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  margin-top: var(--space-epic);
+  margin-top: var(--space-content);
 }
 
 /* Cancela margens próprias dos filhos — gap é o único responsável */
