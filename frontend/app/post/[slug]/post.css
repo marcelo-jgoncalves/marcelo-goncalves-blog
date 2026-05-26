@@ -306,7 +306,7 @@ article .post-tag-header,
   color: var(--heading-color);
   line-height: 1.25;
   letter-spacing: -0.02em;
-  margin-top: var(--post-heading-top);
+  margin-top: var(--space-content);
   margin-bottom: var(--post-heading-bottom);
   scroll-margin-top: 96px;
 }
@@ -316,7 +316,7 @@ article .post-tag-header,
   font-weight: 700;
   color: var(--heading-color);
   line-height: 1.3;
-  margin-top: var(--post-heading-top); 
+  margin-top: var(--space-content);
   margin-bottom: var(--post-heading-bottom);
   scroll-margin-top: 96px;
   font-size: var(--text-lg);
@@ -331,7 +331,7 @@ article .post-tag-header,
   line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--text-primary);
-  margin: var(--space-7) 0 0;
+  margin: var(--space-content) 0 0;
   display: flex;
   align-items: center;
   gap: var(--space-3);
