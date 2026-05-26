@@ -92,13 +92,6 @@
   color: var(--accent);
 }
 
-.sbtnCopy {
-  border: 1px solid #e2e8f0;
-}
-
-.sbtnCopy:hover {
-  border-color: var(--accent);
-}
 
 /* ═════════════════════════════════════════════════════════════════
    AUTHOR SECTION
