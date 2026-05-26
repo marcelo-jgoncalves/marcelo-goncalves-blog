@@ -369,7 +369,7 @@ article .post-tag-header,
 .post-content video,
 .post-content-part video {
   display: block;
-  margin: var(--space-4) auto;
+  margin: var(--post-block-spacing) auto;
   max-width: 100%;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -377,7 +377,7 @@ article .post-tag-header,
 /* YouTube embed (Tiptap) */
 .post-content [data-youtube-video],
 .post-content-part [data-youtube-video] {
-  margin: var(--space-4) 0;
+  margin: var(--post-block-spacing) 0;
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
@@ -480,7 +480,7 @@ article .post-tag-header,
 /* Blockquote */
 .post-content blockquote {
   position: relative;
-  margin: var(--space-5) 0;
+  margin: var(--post-block-spacing) 0;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
   background: var(--surface-card);
   border: none;
