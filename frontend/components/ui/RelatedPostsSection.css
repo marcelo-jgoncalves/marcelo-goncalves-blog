@@ -2,7 +2,7 @@
 
 /* ── Seção fullwidth ───────────────────────────────── */
 .related-posts-section {
-  padding: var(--space-5) 0 0;
+  padding: var(--space-content) 0 0;
   margin: 0;
 }
 
