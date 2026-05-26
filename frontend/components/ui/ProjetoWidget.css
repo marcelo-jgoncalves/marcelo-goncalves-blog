@@ -74,7 +74,7 @@
   font-weight: var(--body-text-weight);
   letter-spacing: var(--body-text-spacing);
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.8);
+  color: #F5F8FC;
   margin: 0;
   margin-bottom: var(--space-4);
   position: relative;
