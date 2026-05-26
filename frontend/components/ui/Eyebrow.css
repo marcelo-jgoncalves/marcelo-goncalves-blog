@@ -5,10 +5,10 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 400;
+  font-size: var(--body-text-size);
+  font-weight: var(--body-text-weight);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--body-text-spacing);
   margin-bottom: 12px;
   position: relative;
   z-index: 1;

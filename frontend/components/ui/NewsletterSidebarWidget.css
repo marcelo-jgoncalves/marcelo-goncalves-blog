@@ -15,7 +15,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: rgba(255,255,255,0.70);
+  color: #F5F8FC;
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: 400;
@@ -46,10 +46,11 @@
 /* Descrição */
 .nl-widget__description {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 400;
+  font-size: var(--body-text-size);
+  font-weight: var(--body-text-weight);
+  letter-spacing: var(--body-text-spacing);
   line-height: 1.8;
-  color: rgba(255,255,255,0.65);
+  color: #F5F8FC;
   margin: 0 0 var(--space-4);
 }
 
@@ -92,7 +93,7 @@
   font-family: var(--font-display);
   font-size: var(--text-sm);
   line-height: 1.7;
-  color: rgba(255,255,255,0.65);
+  color: #F5F8FC;
   cursor: pointer;
   user-select: none;
 }

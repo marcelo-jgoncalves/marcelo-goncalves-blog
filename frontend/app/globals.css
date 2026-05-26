@@ -179,6 +179,14 @@
   --text-4xl:          3.5rem;      /*    63px — h1 artigo (máximo) */
 
   /* ─────────────────────────────────────
+     TEXT BODY STANDARD — Padrão tipográfico para corpo (Session 36+)
+     Aplicável: post-content, widgets sidebar, TOC, newsletter, etc.
+     ───────────────────────────────────── */
+  --body-text-size:    17px;        /* font-size padrão */
+  --body-text-weight:  400;         /* font-weight padrão */
+  --body-text-spacing: 0.02em;      /* letter-spacing padrão */
+
+  /* ─────────────────────────────────────
      BORDER RADIUS (design-reference.md §4)
      ───────────────────────────────────── */
   --radius-sm:         4px;         /* tags, badges, syntax code */

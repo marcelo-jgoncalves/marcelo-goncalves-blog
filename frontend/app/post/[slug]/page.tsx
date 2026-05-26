@@ -172,9 +172,9 @@ export default async function PostPage({ params }: Props) {
               {category.nome_exibicao}
             </Link>
           ) : (
-            <span className="post-tag">
+            <Link href={`/categoria/${post.categoria_slug}`} className="post-tag">
               {post.categoria_slug || 'Artigo'}
-            </span>
+            </Link>
           )}
 
           <h1 className="article-title">{post.titulo}</h1>
