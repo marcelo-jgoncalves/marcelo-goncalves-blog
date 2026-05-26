@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Eyebrow from '@/components/ui/Eyebrow';
 import styles from './PostFooter.module.css';
 
 export interface PostFooterProps {
@@ -39,7 +40,9 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
     <div className={styles.postFooter}>
       {/* SHARE STRIP */}
       <div className={styles.share}>
-        <span className={styles.label}>Compartilhar</span>
+        <div className={styles.label}>
+          Compartilhar
+        </div>
         <div className={styles.btns}>
           <a
             href={shareUrls.linkedin}
@@ -59,7 +62,6 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
             rel="noopener noreferrer"
           >
             <i className="fab fa-x-twitter"></i>
-            X
           </a>
           <a
             href={shareUrls.whatsapp}

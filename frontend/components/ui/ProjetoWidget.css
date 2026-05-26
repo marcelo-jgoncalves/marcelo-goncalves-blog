@@ -1,7 +1,7 @@
 /* frontend/components/ui/ProjetoWidget.css */
 
 .projeto-widget {
-  background: var(--accent);
+  background: var(--accent-press);
   color: #ffffff;
   border-radius: 16px;
   padding: var(--space-4);
@@ -12,6 +12,32 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+.projeto-widget::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(235, 241, 248, 0.12);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.projeto-widget::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(235, 241, 248, 0.12);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 @media (hover: hover) {

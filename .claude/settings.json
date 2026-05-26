@@ -65,7 +65,8 @@
       "PowerShell(pip show Pillow 2>&1)",
       "PowerShell(head -3)",
       "PowerShell(pip install Pillow --quiet 2>&1)",
-      "PowerShell(python -c \"from PIL import Image; print\\('PIL OK'\\)\")"
+      "PowerShell(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Edit(/.claude/skills/verifier-frontend-nextjs/**)"
     ],
     "defaultMode": "bypassPermissions",
     "additionalDirectories": [

@@ -19,6 +19,7 @@
   --accent-light:      #8AAEC8;  /* ícones secundários, gradientes placeholder */
   --accent-soft:       #D0E4F2;  /* bordas suaves, separadores */
   --accent-muted:      #EBF1F8;  /* fundo badges, ícones categoria, hover ghost button */
+  --accent-petrol:     #0F4C5C;  /* teal petrol — variante escura */
 
   /* Alpha scales */
   --accent-10:         rgba(59, 95, 138, 0.10);  /* frames subtis, hovers */

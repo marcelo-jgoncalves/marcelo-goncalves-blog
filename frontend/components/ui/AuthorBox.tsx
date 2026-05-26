@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { getAuthor } from '@/lib/api';
+import Eyebrow from './Eyebrow';
 import './AuthorBox.css'; 
 
 interface AuthorBoxProps {
@@ -31,7 +32,9 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
       </div>
 
       <div className="author-info">
-        <div className="author-eyebrow">Sobre o autor</div>
+        <div className="author-eyebrow">
+          <Eyebrow text="Sobre o autor" color="rgba(138, 180, 232, 0.90)" />
+        </div>
         <div className="author-text-flow">
             <strong className="author-name-runin" itemProp="name">
               {autor.nome_exibicao}

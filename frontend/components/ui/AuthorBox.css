@@ -80,7 +80,7 @@
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 1.15;
-  color: white;
+  color: var(--text-default);
   display: block;
 }
 
@@ -93,7 +93,7 @@
 
 .author-bio-content {
   font-size: var(--text-lg);
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--accent);
   line-height: 1.75;
 }
 
