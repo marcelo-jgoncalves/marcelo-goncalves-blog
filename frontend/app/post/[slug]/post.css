@@ -259,14 +259,14 @@ article .post-tag-header,
 
 
 .post-content p { 
-  margin-bottom: var(--post-block-spacing); 
+  margin-bottom: var(--space-content); 
 }
 
 .post-content img {
   max-width: 100%;
   height: auto;
   display: block;
-  margin: var(--post-block-spacing) auto; 
+  margin: var(--space-content) auto; 
   border-radius: 8px;
 }
 
@@ -369,7 +369,7 @@ article .post-tag-header,
 .post-content video,
 .post-content-part video {
   display: block;
-  margin: var(--post-block-spacing) auto;
+  margin: var(--space-content) auto;
   max-width: 100%;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -377,7 +377,7 @@ article .post-tag-header,
 /* YouTube embed (Tiptap) */
 .post-content [data-youtube-video],
 .post-content-part [data-youtube-video] {
-  margin: var(--post-block-spacing) 0;
+  margin: var(--space-content) 0;
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
@@ -414,7 +414,7 @@ article .post-tag-header,
 /* --- 6. LISTAS E CITAÇÕES --- */
 .post-content ul, 
 .post-content ol { 
-  margin-bottom: var(--post-block-spacing); 
+  margin-bottom: var(--space-content); 
   padding-left: 0; 
   list-style: none;
 }
@@ -435,7 +435,7 @@ article .post-tag-header,
 .post-content ul { list-style: none; }
 
 .post-content ul li { 
-  padding-left: var(--post-block-spacing); 
+  padding-left: var(--space-content); 
 }
 
 .post-content ul li::before {
@@ -480,7 +480,7 @@ article .post-tag-header,
 /* Blockquote */
 .post-content blockquote {
   position: relative;
-  margin: var(--post-block-spacing) 0;
+  margin: var(--space-content) 0;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
   background: var(--surface-card);
   border: none;
@@ -535,7 +535,7 @@ pre.code-block,
   padding: calc(var(--space-unit) * 2); 
   font-size: var(--text-sm);
   border-radius: 8px;
-  margin-bottom: var(--post-block-spacing); 
+  margin-bottom: var(--space-content); 
   overflow-x: auto;
   color: var(--slate-200);
   font-family: var(--font-mono);
@@ -555,14 +555,14 @@ pre.code-block,
   pre.code-block, 
   .post-content pre {
     /* 🚀 DESKTOP: 24px (3x8) para alinhar com o padding da página */
-    padding: var(--post-block-spacing);
+    padding: var(--space-content);
     font-size: 0.9375rem; /* 15px */
   }
 }
 
 .code-wrapper {
   position: relative;
-  margin-bottom: var(--post-block-spacing);
+  margin-bottom: var(--space-content);
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--dark-900);
@@ -711,7 +711,7 @@ pre.code-block,
 .summary-ads-wrapper {
   /* 🚀 CORREÇÃO CLS: De 100px para 104px (13 * 8px) */
   min-height: 104px; 
-  margin: var(--post-block-spacing) 0; 
+  margin: var(--space-content) 0; 
   clear: both;
 }
 
@@ -719,7 +719,7 @@ pre.code-block,
 .adsense-placeholder-box {
   /* 🚀 CORREÇÃO CLS: De 250px para 256px (32 * 8px) */
   min-height: 256px; 
-  margin: var(--post-block-spacing) 0; 
+  margin: var(--space-content) 0; 
 }
 
 @media (min-width: 768px) {
@@ -740,7 +740,7 @@ pre.code-block,
 
 .post-content-part p {
   /* 🚀 UNIFICAÇÃO: Removemos os 16px fixos para usar os 24px do root */
-  margin-bottom: var(--post-block-spacing); 
+  margin-bottom: var(--space-content); 
   line-height: 1.75; 
 }
 
@@ -781,7 +781,7 @@ pre.code-block,
   align-items: center;
   justify-content: center;
   gap: calc(var(--space-unit) * 2);
-  padding: var(--post-block-spacing) 0;
+  padding: var(--space-content) 0;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -826,7 +826,7 @@ pre.code-block,
   .share-section {
     flex-direction: row;
     /* 🚀 DESKTOP: 24px (3 * 8px) para respiro amplo */
-    gap: var(--post-block-spacing);
+    gap: var(--space-content);
   }
 }
 
@@ -837,7 +837,7 @@ pre.code-block,
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4) !important;
-  margin: var(--post-block-spacing) 0 !important;
+  margin: var(--space-content) 0 !important;
   border-radius: 16px;
   border: 1px solid;
   line-height: 1.7;
@@ -905,7 +905,7 @@ article table,
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin: var(--post-block-spacing) 0;
+  margin: var(--space-content) 0;
   display: block;
   overflow: auto;
   -webkit-overflow-scrolling: touch;

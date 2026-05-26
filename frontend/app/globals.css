@@ -245,7 +245,6 @@
   /* Utilities */
   --baseline:          8px;
   --space-unit:        0.5rem;
-  --post-block-spacing: var(--space-content);
   --post-heading-top:   var(--space-7);
   --post-heading-bottom: var(--space-content);
   --section-min-height: 384px;
