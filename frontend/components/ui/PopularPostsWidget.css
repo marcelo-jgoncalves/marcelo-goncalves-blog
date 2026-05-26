@@ -11,6 +11,7 @@
   overflow: hidden;
   background: var(--bg-widget);
   box-shadow: none;
+  border: 1px solid var(--border-default);
 }
 
 /* Textura sutil (grain) */
