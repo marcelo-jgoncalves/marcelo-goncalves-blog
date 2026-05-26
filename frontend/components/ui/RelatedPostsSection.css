@@ -2,7 +2,6 @@
 
 /* ── Seção fullwidth ───────────────────────────────── */
 .related-posts-section {
-  border-top: 1px solid var(--dark-warm-border);
   padding: var(--space-5) 0 0;
   margin: 0;
 }
