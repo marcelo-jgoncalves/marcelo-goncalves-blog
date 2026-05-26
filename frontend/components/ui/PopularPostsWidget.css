@@ -162,7 +162,7 @@
   align-items: center;
   width: max-content;
   padding: 8px 14px !important;
-  border-radius: 999px;
+  border-radius: 8px;
   background:
     linear-gradient(
       180deg,
