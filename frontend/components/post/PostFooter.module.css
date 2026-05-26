@@ -205,7 +205,7 @@
 
 .netLabel {
   font-family: var(--font-display);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: var(--body-text-weight);
   letter-spacing: var(--body-text-spacing);
   text-transform: uppercase;
