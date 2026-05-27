@@ -172,7 +172,7 @@
   --text-sm:           0.875rem;    /* 15.75px — meta, código, eyebrow, copyright */
   --text-base:         1rem;        /*    18px — corpo principal (body) */
   --text-lg:           1.125rem;    /*   ~20px — lead, subtítulo, nav, input, descrição */
-  --text-xl:           1.5rem;      /*    27px — h4, card title, widget header, TOC */
+  --text-xl:           1.25rem;     /*    22px — h4, card title, widget header, TOC */
   --text-2xl:          2rem;        /*    36px — h3, h2 editorial (post, sobre, serviços) */
   --text-2-5xl:        2.25rem;     /*  40.5px — h2 seção de postagem */
   --text-3xl:          2.8rem;      /*  50.4px — h1 heroes */

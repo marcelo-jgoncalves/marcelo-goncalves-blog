@@ -224,7 +224,7 @@ article .post-tag-header,
 }
 
 .post-lead {
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-style: italic;
   margin: 0;
 }
