@@ -203,10 +203,10 @@
 /* ── TÍTULO DO POST ────────────────────────────────────── */
 .popular-widget__post-title {
   font-family: var(--font-display);
-  font-size: var(--body-text-size);
-  font-weight: var(--body-text-weight);
+  font-size: var(--text-base);
+  font-weight: 400;
   line-height: 1.4;
-  letter-spacing: var(--body-text-spacing);
+  letter-spacing: 0.02em;
   color: var(--accent);
   margin: 0;
   transition: all .45s cubic-bezier(.22,1,.36,1);

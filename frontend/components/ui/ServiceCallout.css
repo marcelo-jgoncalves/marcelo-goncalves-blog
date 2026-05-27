@@ -57,9 +57,9 @@
 /* Descrição — mesmo padrão do nl-widget__description */
 .op-callout-desc {
   font-family: var(--font-display);
-  font-size: var(--body-text-size);
-  font-weight: var(--body-text-weight);
-  letter-spacing: var(--body-text-spacing);
+  font-size: var(--text-base);
+  font-weight: 400;
+  letter-spacing: 0.02em;
   line-height: 1.8;
   color: #F5F8FC;
   margin: 0 0 var(--space-4);
