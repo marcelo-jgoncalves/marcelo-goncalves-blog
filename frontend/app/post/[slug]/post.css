@@ -247,11 +247,7 @@ article .post-tag-header,
   counter-reset: post-section;
 }
 
-@media (min-width: 768px) {
-  .post-content {
-    font-size: 17px;
-  }
-}
+
 
 
 .post-content p { 
