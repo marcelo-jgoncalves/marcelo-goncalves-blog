@@ -39,7 +39,7 @@
 @media (min-width: 1024px) {
   .article-grid {
     grid-template-columns: 1fr var(--sidebar-width);
-    gap: var(--space-5);
+    gap: var(--space-3);
     padding: var(--space-content) 0;
     align-items: start;
   }
