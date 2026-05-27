@@ -1,6 +1,7 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
 import ResponsiveImage from './ResponsiveImage';
+import CategoryTag from './CategoryTag';
 import './PostCard.css';
 
 interface PostCardProps {
@@ -48,10 +49,10 @@ export default function PostCard({ post, isPriority = false }: PostCardProps) {
 
       <div className="post-card__content">
         {categoriaNome && (
-          <span className="post-card__category">{categoriaNome}</span>
+          <CategoryTag text={categoriaNome} />
         )}
 
-        <h3 className="post-card__title">{post.titulo}</h3>
+        <h3 className="post-card__title" title={post.titulo}>{post.titulo}</h3>
 
         {post.resumo && (
           <p className="post-card__excerpt">{post.resumo}</p>

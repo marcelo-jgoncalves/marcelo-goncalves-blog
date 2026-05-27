@@ -51,20 +51,14 @@
   padding: var(--space-4);
 }
 
-.post-card__category {
-  font-family: var(--font-display);
-  font-size: var(--text-xs);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--accent);
+.post-card__content .category-tag {
   margin-bottom: var(--space-2);
 }
 
 .post-card__title {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 900;
+  font-weight: 700;
   margin: 0;
   line-height: 1.25;
   letter-spacing: -0.05em;
@@ -72,7 +66,7 @@
   transition: color 0.2s ease;
 
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -95,8 +89,8 @@
 
 .post-card__cta {
   display: block;
-  margin-top: auto;
-  padding-top: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: 0;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 900;

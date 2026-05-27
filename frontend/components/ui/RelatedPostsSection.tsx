@@ -5,6 +5,7 @@
 
 import Link from 'next/link';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import CategoryTag from '@/components/ui/CategoryTag';
 import { getPopularPosts } from '@/lib/api';
 import './RelatedPostsSection.css';
 
@@ -39,11 +40,9 @@ function RelatedPostCard({ post }: { post: RelatedPost }) {
       )}
       <div className="related-card__body">
         {post.categoria_slug && (
-          <span className="related-card__category">
-            {slugToName(post.categoria_slug)}
-          </span>
+          <CategoryTag text={slugToName(post.categoria_slug)} />
         )}
-        <h3 className="related-card__title">{post.titulo}</h3>
+        <h3 className="related-card__title" title={post.titulo}>{post.titulo}</h3>
         {post.resumo && (
           <p className="related-card__desc">{post.resumo}</p>
         )}

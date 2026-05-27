@@ -7,12 +7,19 @@
   background: var(--bg-widget);
   border-radius: 16px;
   padding: 28px 26px 32px;
-  box-shadow: none;
-  border: 1px solid var(--border-default);
+  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
   text-align: left;
   margin: 0;
   position: relative;
   overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) {
+  .toc-wrapper.toc-desktop:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-float);
+  }
 }
 .toc-wrapper.toc-desktop::before {
   content: '';

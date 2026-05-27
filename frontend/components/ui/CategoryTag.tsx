@@ -9,7 +9,7 @@ interface CategoryTagProps {
 export default function CategoryTag({
   text,
   color = 'var(--accent)',
-  backgroundColor = 'var(--accent-10)'
+  backgroundColor = '#ffffff'
 }: CategoryTagProps) {
   return (
     <span className="category-tag" style={{ color, backgroundColor }}>

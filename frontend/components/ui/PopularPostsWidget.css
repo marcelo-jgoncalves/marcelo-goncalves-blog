@@ -10,8 +10,7 @@
   position: relative;
   overflow: hidden;
   background: var(--bg-widget);
-  box-shadow: none;
-  border: 1px solid var(--border-default);
+  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
 }
 
 /* Textura sutil (grain) */
