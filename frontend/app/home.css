@@ -175,8 +175,6 @@
 
 @media (min-width: 1024px) {
   .home-layout {
-    grid-template-columns: 1fr var(--sidebar-width);
-    gap: var(--space-4);
     padding: 0;
   }
 }

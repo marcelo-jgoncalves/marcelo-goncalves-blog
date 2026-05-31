@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { getAllPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
-import BlogSidebar from '@/components/ui/BlogSidebar';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
-import ServiceCallout from '@/components/ui/ServiceCallout';
 import PageHero from '@/components/ui/PageHero';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
@@ -149,9 +147,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
         </main>
 
-        <BlogSidebar adsenseBlockId="artigos-sidebar-primary">
-          <ServiceCallout />
-        </BlogSidebar>
       </div>
 
       <Pagination

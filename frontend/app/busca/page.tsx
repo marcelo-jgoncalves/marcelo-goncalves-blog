@@ -6,8 +6,6 @@ import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
-import BlogSidebar from '@/components/ui/BlogSidebar';
-import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_NAME } from '@/lib/config';
 
 // SEO: Não indexar resultados de busca interna
@@ -71,9 +69,6 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
               </div>
               <Pagination nextToken={nextPageToken} basePath="/busca" />
             </main>
-            <BlogSidebar showPopularPosts={false}>
-              <ServiceCallout />
-            </BlogSidebar>
           </div>
         </>
       ) : (
@@ -121,9 +116,6 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
                 ) : null}
               </div>
             </main>
-            <BlogSidebar showPopularPosts={false}>
-              <ServiceCallout />
-            </BlogSidebar>
           </div>
         </>
       )}

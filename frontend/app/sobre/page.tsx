@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import SobreHero from '@/components/ui/SobreHero';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
-import BlogSidebar from '@/components/ui/BlogSidebar';
 import CertificacoesWidget from '@/components/ui/CertificacoesWidget';
 import FormacaoWidget from '@/components/ui/FormacaoWidget';
 import FullwidthCallout from '@/components/ui/FullwidthCallout';
@@ -167,17 +166,6 @@ export default async function SobrePage() {
           </div>
 
         </section>
-
-        <BlogSidebar
-          showPopularPosts={false}
-          showNewsletter={false}
-          showProjeto={false}
-          showAdsense={false}
-          adsenseBlockId="sobre-sidebar-300x600"
-        >
-          <CertificacoesWidget />
-          <FormacaoWidget />
-        </BlogSidebar>
 
       </div>
 

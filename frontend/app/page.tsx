@@ -8,7 +8,6 @@ import { getRecentPosts, getPopularPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import CategoryCard from '@/components/ui/CategoryCard';
-import HomeSidebar from '@/components/ui/HomeSidebar';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
@@ -122,7 +121,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. Grid principal + sidebar */}
+      {/* 2. Grid principal */}
       <div className="home-layout container">
 
         <main className="home-main">
@@ -204,8 +203,6 @@ export default function Home() {
           </section>
 
         </main>
-
-        <HomeSidebar />
 
       </div>
 

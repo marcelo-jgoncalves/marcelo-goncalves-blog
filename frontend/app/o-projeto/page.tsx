@@ -6,8 +6,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { getProjectPosts } from "../../lib/api";
 import Pagination from "../../components/ui/Pagination";
-import BlogSidebar from "../../components/ui/BlogSidebar";
-import ServiceCallout from "../../components/ui/ServiceCallout";
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import TechRibbon from "../../components/ui/TechRibbon";
 import TimelineCard from "../../components/ui/TimelineCard";
@@ -116,10 +114,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           )}
         </div>
 
-        {/* Coluna Direita: Sidebar */}
-        <BlogSidebar>
-          <ServiceCallout />
-        </BlogSidebar>
       </main>
 
       <Pagination

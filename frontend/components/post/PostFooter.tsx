@@ -17,13 +17,15 @@ export interface PostFooterProps {
     whatsapp: string;
     currentPageUrl: string;
   };
+  showShare?: boolean;
+  showAuthor?: boolean;
 }
 
 function stripHtmlTags(html: string): string {
   return html.replace(/<[^>]*>/g, '');
 }
 
-export default function PostFooter({ author, shareUrls }: PostFooterProps) {
+export default function PostFooter({ author, shareUrls, showShare = true, showAuthor = true }: PostFooterProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = async () => {
@@ -39,10 +41,8 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
   return (
     <div className={styles.postFooter}>
       {/* SHARE STRIP */}
-      <div className={styles.share}>
-        <div className={styles.label}>
-          Compartilhar
-        </div>
+      {showShare && <div className={styles.share}>
+        <Eyebrow text="Compartilhar" />
         <div className={styles.btns}>
           <a
             href={shareUrls.linkedin}
@@ -82,10 +82,10 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
             {copied ? 'Copiado' : 'Copiar link'}
           </button>
         </div>
-      </div>
+      </div>}
 
       {/* AUTHOR SECTION */}
-      <section className={styles.author}>
+      {showAuthor && <section className={styles.author}>
         <div className={styles.avatar} aria-hidden="true">
           {author.avatarInitials}
         </div>
@@ -132,7 +132,7 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
             </a>
           </div>
         </div>
-      </section>
+      </section>}
     </div>
   );
 }

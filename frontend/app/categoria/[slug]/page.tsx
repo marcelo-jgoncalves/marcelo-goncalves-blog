@@ -7,8 +7,6 @@ import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
-import BlogSidebar from '@/components/ui/BlogSidebar';
-import ServiceCallout from '@/components/ui/ServiceCallout';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 
 // 1. Configuração de Cache (ISR) — listagens: 300s (contrato ISR)
@@ -155,9 +153,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           </div>
         </main>
 
-        <BlogSidebar>
-          <ServiceCallout />
-        </BlogSidebar>
       </div>
 
       <Pagination nextToken={nextPageToken} basePath={`/categoria/${slug}`} />

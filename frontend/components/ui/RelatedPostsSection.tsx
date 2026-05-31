@@ -16,6 +16,8 @@ interface RelatedPost {
   categoria_slug?: string;
   imagem_destaque_url?: string;
   imagem_lqip_base64?: string;
+  tempo_leitura_min?: number;
+  data_publicacao?: string;
 }
 
 function slugToName(slug?: string): string {
@@ -43,10 +45,20 @@ function RelatedPostCard({ post }: { post: RelatedPost }) {
           <CategoryTag text={slugToName(post.categoria_slug)} />
         )}
         <h3 className="related-card__title" title={post.titulo}>{post.titulo}</h3>
-        {post.resumo && (
-          <p className="related-card__desc">{post.resumo}</p>
-        )}
-        <span className="related-card__cta">Ler artigo →</span>
+        <div className="related-card__meta">
+          {post.tempo_leitura_min && (
+            <span className="related-card__meta-item">
+              <i className="far fa-clock" aria-hidden="true" />
+              {post.tempo_leitura_min} min
+            </span>
+          )}
+          {post.data_publicacao && (
+            <span className="related-card__meta-item">
+              <i className="far fa-calendar" aria-hidden="true" />
+              {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );
@@ -54,8 +66,8 @@ function RelatedPostCard({ post }: { post: RelatedPost }) {
 
 export default async function RelatedPostsSection() {
   // TODO: substituir por getPostsByCategory(categoriaSlug, { limit: 4 })
-  const { posts } = await getPopularPosts(4).catch(() => ({ posts: [] }));
-  const related: RelatedPost[] = (posts || []).slice(0, 4);
+  const { posts } = await getPopularPosts(6).catch(() => ({ posts: [] }));
+  const related: RelatedPost[] = (posts || []).slice(0, 6);
 
   if (related.length === 0) return null;
 

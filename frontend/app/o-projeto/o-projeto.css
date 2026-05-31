@@ -31,18 +31,9 @@
 
 @media (min-width: 1024px) {
   .op-main-layout {
-    display: grid;
-    grid-template-columns: 1fr var(--sidebar-width);
-    gap: var(--space-4);
-    align-items: start;
     padding-top: var(--space-4);
     padding-bottom: 0;
     padding-left: clamp(1.5rem, 5vw, 2rem);
     padding-right: clamp(1.5rem, 5vw, 2rem);
-  }
-
-  /* Remove padding-bottom para que o último widget alinhe com o último card */
-  .op-main-layout > .blog-sidebar {
-    padding-bottom: 0;
   }
 }

@@ -10,15 +10,10 @@ import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 // Componentes UI
-import TOC from '@/components/ui/TOC';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
-import BlogSidebar from '@/components/ui/BlogSidebar';
-import ServiceCallout from '@/components/ui/ServiceCallout';
-import NewsletterWidget from '@/components/ui/NewsletterWidget';
-import NewsletterSidebarWidget from '@/components/ui/NewsletterSidebarWidget';
 import PostFooter from '@/components/post/PostFooter';
 
 export const revalidate = 60;
@@ -81,7 +76,7 @@ export default async function PostPage({ params }: Props) {
   }
 
   const { post, category } = data;
-  const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
+  const { contentHtml } = await processFullPostContent(post.conteudo_html);
 
   // 🚀 ARQUITETURA: Busca o autor dinamicamente para garantir consistência em toda a página
   const authorData = await getAuthor(post.autor_id || 'marcelo-goncalves');
@@ -180,87 +175,82 @@ export default async function PostPage({ params }: Props) {
           <h1 className="article-title">{post.titulo}</h1>
 
           <div className="article-meta">
-            <span><i className="fas fa-user-circle" aria-hidden="true" /> Por <span className="meta-author-name">{autorNome}</span></span>
-            <span>
-              <i className="far fa-calendar-alt" aria-hidden="true" />
+            <div className="meta-who">
+              <div className="meta-avatar" aria-hidden="true">MG</div>
+              <div>
+                <div className="meta-author-name">{autorNome}</div>
+                <div className="meta-author-role">Cloud Engineer · AWS</div>
+              </div>
+            </div>
+            <span className="meta-dot" aria-hidden="true" />
+            <span className="meta-item">
+              <i className="far fa-calendar" aria-hidden="true" />
               <time dateTime={post.data_publicacao} className="meta-date">
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
               </time>
             </span>
-            <span><i className="far fa-clock" aria-hidden="true" /> <span className="meta-time">{post.tempo_leitura_min || 5} min de leitura</span></span>
+            <span className="meta-dot" aria-hidden="true" />
+            <span className="meta-item">
+              <i className="far fa-clock" aria-hidden="true" />
+              <span className="meta-time">{post.tempo_leitura_min || 5} min de leitura</span>
+            </span>
           </div>
         </div>
 
-        {post.imagem_destaque_url && (
-          <div className="featured-image-container">
-            <ResponsiveImage
-              src={post.imagem_destaque_url}
-              alt={post.imagem_destaque_alt_text || post.titulo}
-              priority
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
-              className="featured-image"
-            />
-          </div>
-        )}
       </header>
 
       <div className="container article-grid">
         <main className="main-content-column">
             <div className="post-body-wrapper">
-                {post.resumo && (
-                  <div className="post-intro-card">
-                    <div className="eyebrow" style={{ color: 'var(--accent)' }}>Introdução</div>
-                    <p className="post-lead">{post.resumo}</p>
+                {post.imagem_destaque_url && (
+                  <div className="featured-image-container">
+                    <ResponsiveImage
+                      src={post.imagem_destaque_url}
+                      alt={post.imagem_destaque_alt_text || post.titulo}
+                      priority
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 960px, 960px"
+                      className="featured-image"
+                    />
                   </div>
                 )}
-                
-                {headings.length > 0 && (
-                    <TOC headings={headings} variant="mobile" />
-                )}
+                <div className="post-body-content">
+                  {post.resumo && (
+                    <div className="post-intro-card">
+                      <div className="eyebrow" style={{ color: 'var(--accent)' }}>Introdução</div>
+                      <p className="post-lead">{post.resumo}</p>
+                    </div>
+                  )}
 
-                <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
-                
-                <div className="post-content">
-                  {renderFinalContent()}
+                  <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
+
+                  <div className="post-content">
+                    {renderFinalContent()}
+                  </div>
+
+                  <PostFooter
+                    author={{
+                      name: autorNome,
+                      bio: autor?.bio || 'é Engenheiro Cloud especialista em AWS e DevOps.',
+                      avatarInitials: 'MG',
+                      profileUrl: '/sobre',
+                    }}
+                    shareUrls={{
+                      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`,
+                      twitter: `https://x.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.titulo)}`,
+                      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${post.titulo} - ${canonicalUrl}`)}`,
+                      currentPageUrl: canonicalUrl,
+                    }}
+                  />
                 </div>
             </div>
 
-            <footer className="post-footer-safe-zone mt-8">
-                <div className="post-mobile-extras">
-                  <ServiceCallout />
-                  <NewsletterWidget />
-                </div>
-
-                <PostFooter
-                  author={{
-                    name: autorNome,
-                    bio: autor?.bio || 'é Engenheiro Cloud especialista em AWS e DevOps.',
-                    avatarInitials: 'MG',
-                    profileUrl: '/sobre',
-                  }}
-                  shareUrls={{
-                    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`,
-                    twitter: `https://x.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.titulo)}`,
-                    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${post.titulo} - ${canonicalUrl}`)}`,
-                    currentPageUrl: canonicalUrl,
-                  }}
-                />
-                <RelatedPostsSection />
-            </footer>
         </main>
 
-        <BlogSidebar
-            adsenseBlockId="sidebar-300x600"
-            showNewsletter={false}
-            showProjeto={true}
-        >
-            {headings.length > 0 && (
-                <TOC headings={headings} variant="desktop" />
-            )}
-            <NewsletterSidebarWidget />
-            <ServiceCallout />
-        </BlogSidebar>
+      </div>
+
+      <div className="related-posts-outer">
+        <RelatedPostsSection />
       </div>
 
       <NewsletterCTA />

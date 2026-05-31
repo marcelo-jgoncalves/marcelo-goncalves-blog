@@ -523,18 +523,11 @@
   color: #8AAEC8;
 }
 
-/* Widgets mobile — visíveis apenas quando sidebar está oculta */
 .sobre-mobile-widgets {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   margin-bottom: var(--space-4);
-}
-
-@media (min-width: 1024px) {
-  .sobre-mobile-widgets {
-    display: none;
-  }
 }
 
 
