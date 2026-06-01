@@ -3,6 +3,7 @@
 .category-tag {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 8px;
   background: var(--accent);
   color: #fff;
