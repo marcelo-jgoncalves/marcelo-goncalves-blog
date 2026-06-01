@@ -1,31 +1,32 @@
-/* frontend/components/ui/layout/Header.css */
+/* frontend/components/layout/Header.css */
 
 .op-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: var(--bg-warm-nav);
-  height: 88px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  height: 64px;
   border-bottom: 1px solid rgba(26, 49, 65, 0.08);
 }
 
 .op-navbar {
-  position: relative; /* Âncora para o menu mobile absoluto */
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 24px; /* Substitui o 25px para cravar no Macro-ritmo (3 x 8px) */
+  padding: 0 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Tipografia do Logo */
 .op-logo {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.03em;
   text-decoration: none;
   color: var(--dark-900);
 }
@@ -34,7 +35,12 @@
   color: var(--accent);
 }
 
-/* --- MOBILE FIRST --- */
+/* Newsletter CTA — hidden on mobile */
+.op-nav-cta {
+  display: none;
+}
+
+/* --- MOBILE --- */
 
 .op-mobile-btn {
   display: flex;
@@ -44,11 +50,11 @@
   border: none;
   cursor: pointer;
   color: var(--dark-900);
-  padding: 8px; /* Micro-ritmo: 1x8 */
+  padding: 8px;
 }
 
 .op-nav-links {
-  display: none; /* Escondido por padrão */
+  display: none;
 }
 
 .op-mobile-menu {
@@ -56,20 +62,22 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: var(--bg-warm-menu);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  
-  /* Animação original preservada */
+
   opacity: 0;
   visibility: hidden;
-  transform: translateY(16px); /* 2x8px */
+  transform: translateY(16px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-  
-  padding: 24px; /* 3x8px */
-  gap: 16px; /* 2x8px */
-  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+
+  padding: 24px;
+  gap: 16px;
+  box-shadow: 0 8px 24px rgba(26, 37, 53, 0.10);
+  border-bottom: 1px solid rgba(26, 49, 65, 0.08);
 }
 
 .op-mobile-menu.op-active {
@@ -80,23 +88,54 @@
 
 .op-nav-link-mobile {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--dark-warm);
   text-decoration: none;
-  padding: 16px 0;
+  padding: 14px 0;
   font-size: var(--text-lg);
   border-bottom: 1px solid var(--border-color);
   transition: color 0.2s ease;
 }
 
+.op-nav-link-mobile:hover,
 .op-nav-link-mobile.op-active {
   color: var(--accent);
 }
 
+.op-nav-cta-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  text-decoration: none;
+  margin-top: 4px;
+  transition: background-color 0.2s ease;
+  border-bottom: none;
+}
+
+.op-nav-cta-mobile:hover {
+  background: var(--accent-hover);
+}
+
 /* --- DESKTOP --- */
 @media (min-width: 768px) {
+  .op-header {
+    height: 76px;
+  }
+
+  .op-navbar {
+    padding: 0 32px;
+  }
+
   .op-logo {
-    font-size: var(--text-2xl);
+    font-size: 1.4rem;
   }
 
   .op-mobile-btn,
@@ -104,51 +143,63 @@
     display: none !important;
   }
 
-  /* O contêiner que alinha os links no desktop (com gap de 32px) */
   .op-nav-links {
     display: flex;
-    gap: 32px; /* Macro-ritmo (4 x 8px) */
+    gap: 36px;
     align-items: center;
   }
 
   .op-nav-link {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: var(--text-lg);
+    font-size: 1rem;
     color: var(--dark-warm);
     text-decoration: none;
     position: relative;
-    transition: color 0.25s ease;
+    padding: 4px 0;
+    transition: color 0.2s ease;
   }
 
-  /* Underline animado — expande da esquerda no hover */
   .op-nav-link::after {
     content: '';
     position: absolute;
-    bottom: -6px;
     left: 0;
-    width: 0;
+    right: 100%;
+    bottom: -2px;
     height: 2px;
     background: var(--accent);
     border-radius: 2px;
-    transition: width 0.3s ease;
+    transition: right 0.25s ease;
   }
 
-  @media (hover: hover) {
-    .op-nav-link:hover {
-      color: var(--accent);
-    }
-
-    .op-nav-link:hover::after {
-      width: 100%;
-    }
-  }
-
+  .op-nav-link:hover,
   .op-nav-link.op-active {
     color: var(--accent);
   }
 
+  .op-nav-link:hover::after,
   .op-nav-link.op-active::after {
-    width: 100%;
+    right: 0;
+  }
+
+  .op-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .op-nav-cta:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
   }
 }

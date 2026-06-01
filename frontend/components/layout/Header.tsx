@@ -51,8 +51,17 @@ export default function Header() {
           ))}
         </div>
 
+        {/* Newsletter CTA — desktop only */}
+        <Link
+          href="/newsletter"
+          className="op-nav-cta"
+          prefetch={false}
+        >
+          Newsletter <i className="fas fa-arrow-right" aria-hidden="true" />
+        </Link>
+
         {/* Botão Mobile */}
-        <button 
+        <button
           className="op-mobile-btn" 
           onClick={toggleMenu}
           aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
@@ -85,6 +94,14 @@ export default function Header() {
               {link.name}
             </Link>
           ))}
+          <Link
+            href="/newsletter"
+            className="op-nav-cta-mobile"
+            onClick={closeMenu}
+            prefetch={false}
+          >
+            Newsletter <i className="fas fa-arrow-right" aria-hidden="true" />
+          </Link>
         </div>
       </nav>
 
