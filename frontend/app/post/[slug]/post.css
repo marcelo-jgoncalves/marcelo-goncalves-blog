@@ -175,33 +175,10 @@
 }
 
 /* --- 3. BADGES (TAGS) --- */
-.post-tag,
-.post-tag-header {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--accent);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  border: none;
-  box-shadow: 0 6px 18px rgba(59, 95, 138, 0.28);
+.article-header .category-tag {
   margin-bottom: var(--space-4);
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-@media (hover: hover) {
-  .post-tag:hover,
-  .post-tag-header:hover {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-  }
+  padding: 8px 16px;
+  box-shadow: 0 6px 18px rgba(59, 95, 138, 0.28);
 }
 
 /* Tag dot removed — proto uses text only */

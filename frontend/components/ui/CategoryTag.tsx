@@ -1,19 +1,31 @@
+import Link from 'next/link';
 import './CategoryTag.css';
 
 interface CategoryTagProps {
   text: string;
-  color?: string;
-  backgroundColor?: string;
+  icon?: string;
+  href?: string;
 }
 
-export default function CategoryTag({
-  text,
-  color = 'var(--accent)',
-  backgroundColor = '#ffffff'
-}: CategoryTagProps) {
-  return (
-    <span className="category-tag" style={{ color, backgroundColor }}>
+export default function CategoryTag({ text, icon, href }: CategoryTagProps) {
+  const content = (
+    <>
+      {icon && <i className={icon} aria-hidden="true" />}
       {text}
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className="category-tag">
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <span className="category-tag">
+      {content}
     </span>
   );
 }

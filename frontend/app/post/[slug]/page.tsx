@@ -1,13 +1,11 @@
 import './post.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-
 import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import CategoryTag from '@/components/ui/CategoryTag';
 
 // Componentes UI
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -158,19 +156,11 @@ export default async function PostPage({ params }: Props) {
 
       <header className="article-header">
         <div className="container">
-          {category ? (
-            <Link
-              href={`/categoria/${category.categoria_slug}`}
-              className="post-tag-header"
-            >
-              {category.icone_fa && <i className={`${category.icone_fa}`} aria-hidden="true" />}
-              {category.nome_exibicao}
-            </Link>
-          ) : (
-            <Link href={`/categoria/${post.categoria_slug}`} className="post-tag">
-              {post.categoria_slug || 'Artigo'}
-            </Link>
-          )}
+          <CategoryTag
+            href={`/categoria/${category?.categoria_slug || post.categoria_slug}`}
+            icon={category?.icone_fa}
+            text={category?.nome_exibicao || post.categoria_slug || 'Artigo'}
+          />
 
           <h1 className="article-title">{post.titulo}</h1>
 
