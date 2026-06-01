@@ -6,6 +6,7 @@ import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CategoryTag from '@/components/ui/CategoryTag';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 // Componentes UI
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -156,6 +157,13 @@ export default async function PostPage({ params }: Props) {
 
       <header className="article-header">
         <div className="container">
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Artigos', href: '/artigos' },
+            ...(category || post.categoria_slug ? [{
+              label: category?.nome_exibicao || post.categoria_slug || '',
+            }] : []),
+          ]} />
           <CategoryTag
             href={`/categoria/${category?.categoria_slug || post.categoria_slug}`}
             icon={category?.icone_fa}
