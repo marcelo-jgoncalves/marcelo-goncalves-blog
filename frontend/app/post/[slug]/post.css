@@ -57,7 +57,7 @@
 /* --- 2. HEADER E METADADOS --- */
 .article-header {
   background: linear-gradient(180deg, var(--bg-warm-strong) 0%, var(--bg-warm) 100%);
-  padding: var(--space-7) 0 72px;
+  padding: var(--space-7) 0 112px;
   text-align: center;
   border-bottom: none;
   position: relative;
