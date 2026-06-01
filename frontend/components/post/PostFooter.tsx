@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Eyebrow from '@/components/ui/Eyebrow';
 import styles from './PostFooter.module.css';
 
 export interface PostFooterProps {
@@ -42,7 +41,7 @@ export default function PostFooter({ author, shareUrls, showShare = true, showAu
     <div className={styles.postFooter}>
       {/* SHARE STRIP */}
       {showShare && <div className={styles.share}>
-        <Eyebrow text="Compartilhar" />
+        <span className={styles.shareLabel}>Compartilhar</span>
         <div className={styles.btns}>
           <a
             href={shareUrls.linkedin}
@@ -62,6 +61,7 @@ export default function PostFooter({ author, shareUrls, showShare = true, showAu
             rel="noopener noreferrer"
           >
             <i className="fab fa-x-twitter"></i>
+            Twitter
           </a>
           <a
             href={shareUrls.whatsapp}
@@ -73,15 +73,15 @@ export default function PostFooter({ author, shareUrls, showShare = true, showAu
             <i className="fab fa-whatsapp"></i>
             WhatsApp
           </a>
-          <button
-            className={`${styles.sbtn} ${styles.sbtnCopy}`}
-            onClick={handleCopyLink}
-            aria-label="Copiar link do artigo"
-          >
-            <i className="fas fa-link"></i>
-            {copied ? 'Copiado' : 'Copiar link'}
-          </button>
         </div>
+        <button
+          className={`${styles.sbtn} ${styles.sbtnCopy}`}
+          onClick={handleCopyLink}
+          aria-label="Copiar link do artigo"
+        >
+          <i className="fas fa-link"></i>
+          {copied ? 'Copiado' : 'Copiar link'}
+        </button>
       </div>}
 
       {/* AUTHOR SECTION */}
