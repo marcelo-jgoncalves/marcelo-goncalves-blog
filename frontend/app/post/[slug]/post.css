@@ -170,7 +170,6 @@
   letter-spacing: -0.035em;
   color: var(--text-default);
   margin: 28px auto 0;
-  max-width: 14ch;
   text-wrap: balance;
 }
 
