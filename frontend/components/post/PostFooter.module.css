@@ -8,7 +8,7 @@
   border: 1px solid var(--border-default);
   border-radius: 16px;
   overflow: hidden;
-  margin-top: 56px;
+  margin-top: 40px;
   position: relative;
   box-shadow: 0 1px 0 rgba(26, 37, 53, 0.02), 0 8px 28px rgba(26, 37, 53, 0.08);
 }
