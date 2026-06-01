@@ -123,29 +123,44 @@ export default async function PostPage({ params }: Props) {
   };
 
   const renderFinalContent = () => {
-    // ... [MANTENHA A SUA LÓGICA ORIGINAL DO renderFinalContent AQUI INTACTA] ...
-    const parts = contentHtml.split(/(<div id="inject-.*-placeholder"><\/div>)/);
-
-    return parts.map((part, index) => {
-      if (part === '<div id="inject-ads-placeholder"></div>') {
+    const renderParts = (html: string, keyPrefix: string) => {
+      if (!html.trim()) return null;
+      const parts = html.split(/(<div id="inject-.*-placeholder"><\/div>)/);
+      return parts.map((part, index) => {
+        if (part === '<div id="inject-ads-placeholder"></div>') {
+          return (
+            <div key={`${keyPrefix}-inject-ads-${index}`} className="my-8">
+              <AdsenseInArticle blockId="post-in-article-300x250" variant="in-content" />
+            </div>
+          );
+        }
+        if (part.trim() === '') return null;
         return (
-          <div key="inject-ads" className="my-8">
-            <AdsenseInArticle blockId="post-in-article-300x250" variant="in-content" />
-          </div>
+          <div
+            key={`${keyPrefix}-${index}`}
+            className="post-content-part"
+            dangerouslySetInnerHTML={{ __html: part }}
+            suppressHydrationWarning={true}
+          />
         );
-      }
+      });
+    };
 
-      if (part.trim() === '') return null;
+    const firstParaEnd = contentHtml.indexOf('</p>');
+    if (firstParaEnd === -1) {
+      return renderParts(contentHtml, 'content');
+    }
 
-      return (
-        <div 
-          key={`content-part-${index}`} 
-          className="post-content-part" 
-          dangerouslySetInnerHTML={{ __html: part }} 
-          suppressHydrationWarning={true} 
-        />
-      );
-    });
+    const htmlBefore = contentHtml.slice(0, firstParaEnd + 4);
+    const htmlAfter = contentHtml.slice(firstParaEnd + 4);
+
+    return (
+      <>
+        {renderParts(htmlBefore, 'before')}
+        <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
+        {renderParts(htmlAfter, 'after')}
+      </>
+    );
   };
 
   return (
@@ -219,8 +234,6 @@ export default async function PostPage({ params }: Props) {
                       <p className="post-lead">{post.resumo}</p>
                     </div>
                   )}
-
-                  <AdsenseInArticle blockId="summary-leaderboard-728x90" variant="summary-divider" />
 
                   <div className="post-content">
                     {renderFinalContent()}
