@@ -61,7 +61,7 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.25;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
   color: var(--heading-color);
   transition: color 0.2s ease;
 
