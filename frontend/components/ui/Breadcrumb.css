@@ -1,7 +1,7 @@
 /* frontend/components/ui/Breadcrumb.css */
 
 .breadcrumb {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
