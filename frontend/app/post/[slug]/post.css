@@ -516,43 +516,31 @@
   .post-content ul li { padding-left: 25px; }
 }
 
-/* Blockquote */
+/* Blockquote / pull quote */
 .post-content blockquote {
-  position: relative;
-  margin: var(--space-4) 0;
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
-  background: var(--surface-card);
-  border: none;
-  border-left: 3px solid var(--accent);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
+  margin: 48px 0;
+  padding: 8px 0 8px 32px;
+  border-left: 4px solid var(--accent);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .post-content blockquote p {
-  font-size: var(--text-lg);
-  line-height: 1.75;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
   font-style: italic;
-  color: var(--heading-color);
+  line-height: 1.4;
+  color: var(--dark-warm);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 768px) {
   .post-content blockquote p {
-    font-size: var(--text-xl);
+    font-size: 1.5rem;
   }
-}
-
-.post-content blockquote::before {
-  content: "\f10d";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  position: absolute;
-  top: calc(-1 * var(--space-2));
-  left: var(--space-3);
-  background: var(--surface-card);
-  padding: 0 var(--space-1);
-  color: var(--accent);
-  font-size: var(--text-sm);
 }
 /* --- 7. BLOCOS DE CÓDIGO E BOTÃO COPY (Precisão de 8px) --- */
 
@@ -851,34 +839,50 @@ pre.code-block,
 /* --- CALLOUTS (Tiptap) --- */
 
 .content-callout {
-  display: flex !important;
+  display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) !important;
-  margin: var(--space-4) 0 !important;
-  border-radius: 8px;
-  border: 1px solid;
-  line-height: 1.7;
-  font-size: var(--text-lg);
-  overflow-wrap: break-word;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-left: 4px solid var(--accent);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin: 36px 0;
+  box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
+  font-size: 1rem;
+  line-height: 1.65;
   color: var(--dark-warm-body);
+  overflow-wrap: break-word;
 }
 
 .content-callout .callout-label-container {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 900;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  color: var(--accent);
   user-select: none;
   pointer-events: none;
 }
 
+.content-callout .callout-icon {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(59, 95, 138, 0.10);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+}
+
 .content-callout .callout-content-area {
   display: block;
+  padding-left: 42px;
 }
 
 .content-callout p,
@@ -888,32 +892,26 @@ pre.code-block,
   padding: 0 !important;
 }
 
-.callout-info {
-  background: var(--surface-card) !important;
-  border-color: transparent !important;
-  box-shadow: var(--neu-soft);
-}
-
-.callout-info .callout-label-container {
-  color: var(--accent);
-}
-
+/* Warning variant — amber accent */
 .callout-warning {
-  background: var(--surface-inset) !important;
-  border-color: transparent !important;
-  box-shadow: var(--neu-inset);
+  border-left-color: var(--accent-warm);
 }
 
 .callout-warning .callout-label-container {
-  color: var(--accent);
+  color: var(--accent-warm);
+}
+
+.callout-warning .callout-icon {
+  background: rgba(218, 123, 38, 0.10);
 }
 
 @media (max-width: 768px) {
-  .content-callout { padding: var(--space-3) !important; }
-}
-
-@media (min-width: 768px) {
-  .content-callout { font-size: var(--text-xl); }
+  .content-callout {
+    padding: 16px 18px;
+  }
+  .content-callout .callout-content-area {
+    padding-left: 0;
+  }
 }
 
 /* --- TABELAS (Editor) --- */
