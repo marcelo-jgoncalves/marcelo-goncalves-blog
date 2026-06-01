@@ -3,6 +3,7 @@
 .breadcrumb {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
