@@ -1,0 +1,185 @@
+/* ShareRail — vertical sticky share component */
+
+/* ── Desktop: coluna vertical à direita da leitura ── */
+.shareRail {
+  position: fixed;
+  top: 120px;
+  /* 480px = metade do reading (960px) + 36px gap */
+  left: calc(50% + 480px + 36px);
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.shareRail.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Label vertical ── */
+.cap {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-ghost);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin-bottom: 2px;
+  user-select: none;
+}
+
+/* ── Linha vertical ── */
+.stem {
+  width: 1px;
+  height: 20px;
+  background: var(--border-default);
+}
+
+/* ── Botões ── */
+.rbtn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  color: var(--accent);
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.rbtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 95, 138, 0.22);
+  color: #ffffff;
+}
+
+.linkedin:hover { background: #0A66C2; border-color: #0A66C2; }
+.x:hover        { background: #000000; border-color: #000000; }
+.copy:hover     { background: var(--accent); border-color: var(--accent); }
+
+.copied {
+  background: #3F6B47 !important;
+  border-color: #3F6B47 !important;
+  color: #ffffff !important;
+}
+
+/* ── Separador horizontal ── */
+.rsep {
+  width: 20px;
+  height: 1px;
+  background: var(--border-default);
+  margin: 3px 0;
+}
+
+/* ── Tooltip ── */
+.tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: var(--dark-warm);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  box-shadow: 0 6px 18px rgba(26, 37, 53, 0.18);
+  z-index: 110;
+}
+
+/* Seta apontando para a direita (em direção ao botão) */
+.tip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: var(--dark-warm);
+}
+
+.rbtn:hover .tip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── Mobile / narrow: barra horizontal no bottom ── */
+@media (max-width: 1200px) {
+  .shareRail,
+  .shareRail.visible {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0;
+    left: 0 !important;
+    right: 0;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border-default);
+    padding: 10px 16px;
+    box-shadow: 0 -6px 24px rgba(26, 37, 53, 0.08);
+    z-index: 900;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .cap {
+    writing-mode: horizontal-tb;
+    transform: none;
+    letter-spacing: 0.18em;
+    margin-bottom: 0;
+    align-self: center;
+  }
+
+  .stem { display: none; }
+  .rsep { display: none; }
+
+  /* Tooltip aponta para baixo no mobile */
+  .tip {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .tip::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-left-color: transparent;
+    border-top-color: var(--dark-warm);
+  }
+
+  .rbtn:hover .tip {
+    transform: translateX(-50%) translateY(0);
+  }
+}

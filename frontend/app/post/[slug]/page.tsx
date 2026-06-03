@@ -14,6 +14,7 @@ import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import PostFooter from '@/components/post/PostFooter';
+import ShareRail from '@/components/post/ShareRail';
 
 export const revalidate = 60;
 
@@ -169,6 +170,13 @@ export default async function PostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       
       <CopyCodeLogic />
+
+      <ShareRail
+        currentPageUrl={canonicalUrl}
+        linkedinUrl={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`}
+        twitterUrl={`https://x.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.titulo)}`}
+        title={post.titulo}
+      />
 
       <header className="article-header">
         <div className="container">
