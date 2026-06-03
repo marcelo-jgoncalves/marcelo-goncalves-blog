@@ -257,8 +257,6 @@ export default async function PostPage({ params }: Props) {
                     shareUrls={{
                       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`,
                       twitter: `https://x.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.titulo)}`,
-                      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${post.titulo} - ${canonicalUrl}`)}`,
-                      currentPageUrl: canonicalUrl,
                     }}
                   />
                 </div>
