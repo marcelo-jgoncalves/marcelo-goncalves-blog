@@ -42,7 +42,7 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
           <div className={styles.nets}>
             <a
               href={shareUrls.linkedin}
-              className={styles.net}
+              className={`${styles.net} ${styles.linkedin}`}
               aria-label="LinkedIn"
               target="_blank"
               rel="noopener noreferrer"
@@ -51,7 +51,7 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
             </a>
             <a
               href="#"
-              className={styles.net}
+              className={`${styles.net} ${styles.instagram}`}
               aria-label="Instagram"
               title="Em breve"
               onClick={(e) => e.preventDefault()}
@@ -60,7 +60,7 @@ export default function PostFooter({ author, shareUrls }: PostFooterProps) {
             </a>
             <a
               href={shareUrls.twitter}
-              className={styles.net}
+              className={`${styles.net} ${styles.x}`}
               aria-label="X (Twitter)"
               target="_blank"
               rel="noopener noreferrer"

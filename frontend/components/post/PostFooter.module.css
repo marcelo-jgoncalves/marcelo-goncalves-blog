@@ -129,31 +129,34 @@
 }
 
 .net {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
   display: grid;
   place-items: center;
   background: #ffffff;
   border: 1px solid var(--border-default);
   color: var(--accent);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   text-decoration: none;
+  box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
   transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    background-color 0.2s ease,
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .net:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 95, 138, 0.22);
+  box-shadow: 0 8px 20px rgba(59, 95, 138, 0.22);
+  color: #ffffff;
 }
+
+.linkedin:hover  { background: #0A66C2; border-color: #0A66C2; }
+.instagram:hover { background: #E1306C; border-color: #E1306C; }
+.x:hover         { background: #000000; border-color: #000000; }
 
 /* ═════════════════════════════════════════════════════════════════
    RESPONSIVIDADE MOBILE
