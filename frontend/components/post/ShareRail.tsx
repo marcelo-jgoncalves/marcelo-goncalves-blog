@@ -1,5 +1,5 @@
 'use client';
-
+// ShareRail — sticky share component
 import { useState, useEffect } from 'react';
 import styles from './ShareRail.module.css';
 
@@ -15,7 +15,14 @@ export default function ShareRail({ currentPageUrl, linkedinUrl, twitterUrl, tit
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 300);
+    const onScroll = () => {
+      const scrolled = window.scrollY > 300;
+      const footer = document.getElementById('post-footer');
+      const reachedEnd = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight
+        : false;
+      setVisible(scrolled && !reachedEnd);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
@@ -36,9 +43,6 @@ export default function ShareRail({ currentPageUrl, linkedinUrl, twitterUrl, tit
       className={`${styles.shareRail} ${visible ? styles.visible : ''}`}
       aria-label="Compartilhar artigo"
     >
-      <span className={styles.cap}>Compartilhar</span>
-      <div className={styles.stem} aria-hidden="true" />
-
       <a
         href={linkedinUrl}
         className={`${styles.rbtn} ${styles.linkedin}`}

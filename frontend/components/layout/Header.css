@@ -4,9 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  background: #ffffff;
   height: 64px;
   border-bottom: 1px solid rgba(26, 49, 65, 0.08);
 }
@@ -62,9 +60,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: #ffffff;
   z-index: 1000;
   display: flex;
   flex-direction: column;

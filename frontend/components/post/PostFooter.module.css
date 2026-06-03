@@ -1,4 +1,4 @@
-/* PostFooter — Share + Author (protótipo postagem-modernizada) */
+/* PostFooter — Author box */
 
 /* ═════════════════════════════════════════════════════════════════
    CONTAINER
@@ -22,84 +22,6 @@
   bottom: 0;
   width: 4px;
   background: var(--accent);
-}
-
-
-/* ═════════════════════════════════════════════════════════════════
-   SHARE STRIP
-   ═════════════════════════════════════════════════════════════════ */
-.share {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 16px 24px 16px 28px;
-  border-bottom: 1px dashed var(--border-default);
-  flex-wrap: wrap;
-}
-
-/* Label mono com traço após o texto */
-.shareLabel {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.shareLabel::after {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--border-default);
-}
-
-.btns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  flex: 1;
-}
-
-.sbtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 34px;
-  padding: 0 12px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 8px;
-  font-family: var(--font-display);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.sbtn i {
-  font-size: 0.875rem;
-}
-
-.sbtn:hover {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-/* Botão "Copiar link" — empurrado para a direita */
-.sbtnCopy {
-  margin-left: auto;
-  border: 1px solid var(--border-default);
-}
-
-.sbtnCopy:hover {
-  border-color: var(--accent);
 }
 
 

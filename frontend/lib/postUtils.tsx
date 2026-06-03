@@ -73,7 +73,19 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
 
   // Injeção Inteligente de Anúncios
   const $body = $('body');
-  const directChildren = $body.children(); // Apenas filhos diretos para manter a estrutura
+
+  // Tiptap às vezes envolve o conteúdo em múltiplos <div> aninhados.
+  // Descemos até encontrar um container com mais de 1 filho.
+  let $container = $body;
+  let depth = 0;
+  while (depth < 5) {
+    const children = $container.children();
+    if (children.length !== 1 || !children.first().is('div, article, section, main')) break;
+    $container = children.first() as unknown as typeof $body;
+    depth++;
+  }
+
+  const directChildren = $container.children();
   const totalChildren = directChildren.length;
 
   // Injeção do AdSense no meio do post
