@@ -1,0 +1,129 @@
+import { processFullPostContent } from '@/lib/postUtils';
+
+// Shiki é pesado e irrelevante para estes testes — mock simples que devolve o bloco original
+jest.mock('shiki', () => ({
+  createHighlighter: jest.fn().mockResolvedValue({
+    codeToHtml: (_code: string, _opts: unknown) => '<pre><code>mocked</code></pre>',
+  }),
+}));
+
+const PLACEHOLDER = '<div id="inject-ads-placeholder"></div>';
+
+// ─── helpers ─────────────────────────────────────────────────────────────────
+
+/** Gera HTML plano com n seções (h2 + p) precedidas de um parágrafo de intro. */
+function flatHtml(sections: number): string {
+  const intro = '<p>Introdução.</p>';
+  const body = Array.from({ length: sections }, (_, i) =>
+    `<h2>Seção ${i + 1}</h2><p>Conteúdo ${i + 1}a.</p><p>Conteúdo ${i + 1}b.</p>`
+  ).join('');
+  return intro + body;
+}
+
+/** Envolve HTML em um único wrapper. */
+const wrap = (tag: string, html: string) => `<${tag}>${html}</${tag}>`;
+
+// ─── injeção de placeholder ───────────────────────────────────────────────────
+
+describe('injeção do inject-ads-placeholder', () => {
+  it('injeta no HTML plano (múltiplos filhos diretos do body)', async () => {
+    const { contentHtml } = await processFullPostContent(flatHtml(5));
+    expect(contentHtml).toContain(PLACEHOLDER);
+  });
+
+  it('injeta quando o conteúdo está dentro de <article> (caso real do Tiptap)', async () => {
+    const { contentHtml } = await processFullPostContent(wrap('article', flatHtml(5)));
+    expect(contentHtml).toContain(PLACEHOLDER);
+  });
+
+  it('injeta quando o conteúdo está dentro de <div>', async () => {
+    const { contentHtml } = await processFullPostContent(wrap('div', flatHtml(5)));
+    expect(contentHtml).toContain(PLACEHOLDER);
+  });
+
+  it('injeta com wrapper duplo <div><article>', async () => {
+    const { contentHtml } = await processFullPostContent(wrap('div', wrap('article', flatHtml(5))));
+    expect(contentHtml).toContain(PLACEHOLDER);
+  });
+
+  it('injeta exatamente uma vez mesmo em posts longos', async () => {
+    const { contentHtml } = await processFullPostContent(wrap('article', flatHtml(9)));
+    const count = (contentHtml.match(/inject-ads-placeholder/g) || []).length;
+    expect(count).toBe(1);
+  });
+
+  it('o placeholder pode ser encontrado pelo regex do renderFinalContent', async () => {
+    const { contentHtml } = await processFullPostContent(wrap('article', flatHtml(5)));
+    const regex = /(<div id="inject-.*-placeholder"><\/div>)/;
+    expect(regex.test(contentHtml)).toBe(true);
+  });
+});
+
+// ─── casos em que NÃO deve injetar ───────────────────────────────────────────
+
+describe('não injeta quando o conteúdo é insuficiente', () => {
+  it('não injeta com apenas 2 elementos (guarda do último elemento)', async () => {
+    const html = '<p>Para 1.</p><p>Para 2.</p>';
+    const { contentHtml } = await processFullPostContent(html);
+    expect(contentHtml).not.toContain(PLACEHOLDER);
+  });
+
+  it('não injeta com 3 elementos onde o do meio é heading e o último é guarda', async () => {
+    const html = '<p>Intro.</p><h2>Título</h2><p>Final.</p>';
+    const { contentHtml } = await processFullPostContent(html);
+    expect(contentHtml).not.toContain(PLACEHOLDER);
+  });
+});
+
+// ─── pula headings e imagens no midpoint ─────────────────────────────────────
+
+describe('pula headings e imagens no midpoint', () => {
+  it('pula heading no midpoint e injeta após o próximo elemento elegível', async () => {
+    // 6 elementos: p p h2 p p p → TARGET=3 (h2), pula para p[4]
+    const html = '<p>a</p><p>b</p><h2>Mid</h2><p>c</p><p>d</p><p>e</p>';
+    const { contentHtml } = await processFullPostContent(html);
+    expect(contentHtml).toContain(PLACEHOLDER);
+    // O placeholder deve aparecer APÓS o h2, não antes
+    const h2Pos = contentHtml.indexOf('<h2');
+    const phPos = contentHtml.indexOf(PLACEHOLDER);
+    expect(phPos).toBeGreaterThan(h2Pos);
+  });
+
+  it('pula figura com imagem no midpoint', async () => {
+    const html =
+      '<p>a</p><p>b</p>' +
+      '<figure><img src="x.jpg" alt=""></figure>' +
+      '<p>c</p><p>d</p><p>e</p>';
+    const { contentHtml } = await processFullPostContent(html);
+    expect(contentHtml).toContain(PLACEHOLDER);
+    const figPos = contentHtml.indexOf('<figure');
+    const phPos = contentHtml.indexOf(PLACEHOLDER);
+    expect(phPos).toBeGreaterThan(figPos);
+  });
+});
+
+// ─── extração de headings ─────────────────────────────────────────────────────
+
+describe('extração de headings (TOC)', () => {
+  it('extrai texto e id do h2', async () => {
+    const { headings } = await processFullPostContent('<p>intro</p><h2>Meu Título</h2><p>body</p><p>x</p>');
+    expect(headings).toHaveLength(1);
+    expect(headings[0].text).toBe('Meu Título');
+    expect(headings[0].id).toBe('meu-titulo');
+  });
+
+  it('normaliza acentos no id', async () => {
+    const { headings } = await processFullPostContent('<p>a</p><h2>Configuração Avançada</h2><p>b</p><p>c</p>');
+    expect(headings[0].id).toBe('configuracao-avancada');
+  });
+
+  it('retorna array vazio quando não há h2', async () => {
+    const { headings } = await processFullPostContent('<p>Sem headings.</p>');
+    expect(headings).toHaveLength(0);
+  });
+
+  it('injeta id no elemento h2 do HTML de saída', async () => {
+    const { contentHtml } = await processFullPostContent('<p>a</p><h2>Seção Um</h2><p>b</p><p>c</p>');
+    expect(contentHtml).toContain('<h2 id="secao-um"');
+  });
+});
