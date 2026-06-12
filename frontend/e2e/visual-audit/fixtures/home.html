@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<title>MarceloGonçalves — Engenharia, IA e Automação</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("fc1dc634-bce2-4fdd-b2f6-adc1e26a6257") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("6187c6e5-a45e-4a83-856d-2ed69fbcea27") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("35a93720-03d3-4dc4-a3e3-cc75c7fe32eb") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("0dd4ad68-de74-4508-a7ab-d919ba3b0c1c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("b1d7089e-c18a-4549-ba81-3fa564340b09") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("3f67b040-f74c-4f19-96f5-5424f2bc751a") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("22d07354-afe2-4e9b-9aba-590a27477b88") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("7c74a1cb-b97d-4299-bac1-717d5027c6ac") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("ab417607-177f-44d1-a026-8735c27acde8") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("c556a45c-af18-4e53-abaf-be926b0931b6") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("44c3babd-3637-475c-a8b3-4bb670456964") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("d8582f70-2f81-4225-bc13-b2004424578f") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("36a3749c-e6eb-4301-a164-dbc89edd49e3") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("7c74a1cb-b97d-4299-bac1-717d5027c6ac") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("ab417607-177f-44d1-a026-8735c27acde8") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("c556a45c-af18-4e53-abaf-be926b0931b6") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("44c3babd-3637-475c-a8b3-4bb670456964") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("d8582f70-2f81-4225-bc13-b2004424578f") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("36a3749c-e6eb-4301-a164-dbc89edd49e3") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("7c74a1cb-b97d-4299-bac1-717d5027c6ac") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("ab417607-177f-44d1-a026-8735c27acde8") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("c556a45c-af18-4e53-abaf-be926b0931b6") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("44c3babd-3637-475c-a8b3-4bb670456964") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("d8582f70-2f81-4225-bc13-b2004424578f") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("36a3749c-e6eb-4301-a164-dbc89edd49e3") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+
+
+<style>
+  :root{
+    --petrol:#0F4C5C; --petrol-deep:#08323D; --petrol-soft:#5B8B96;
+    --ink:#0C2027; --slate:#3C5A64; --steel:#7E969E;
+    --ivory:#FAF8F3; --surface:#FFFFFF; --sand:#F0ECE2; --line:#E4DDD0;
+    --clay:#C9603C; --clay-hover:#A94C2D; --clay-soft:#F3DDD0;
+    --moss:#3F6B47;
+    --font:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ivory);color:var(--ink);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:18px}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--clay-soft);color:var(--clay-hover)}
+
+  /* ── reading progress ── */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;
+    background:linear-gradient(90deg,var(--petrol),var(--clay))}
+
+  /* ── nav ── */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(250,248,243,.88);
+    backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:0 32px;height:68px;
+    display:flex;align-items:center;justify-content:space-between;gap:32px}
+  .brand{font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:center}
+  .brand .b2{color:var(--petrol)}
+  .brand .tick{width:6px;height:6px;border-radius:50%;background:var(--clay);margin:0 0 6px 4px;align-self:flex-end}
+  nav.menu{display:flex;gap:30px}
+  nav.menu a{font-size:14.5px;color:var(--slate);font-weight:500;transition:color .2s}
+  nav.menu a:hover{color:var(--ink)}
+  nav.menu a.active{color:var(--petrol);font-weight:600}
+  .nav-cta{display:inline-flex;align-items:center;gap:9px;background:var(--petrol);color:#fff;
+    font-weight:600;font-size:14px;padding:11px 18px;border-radius:10px;transition:background .2s,transform .15s}
+  .nav-cta:hover{background:var(--petrol-deep);transform:translateY(-1px)}
+  .nav-cta .arrow{font-family:var(--mono)}
+  @media(max-width:860px){nav.menu{display:none}}
+
+  /* ── hero ── */
+  .hero{background:var(--petrol-deep);color:var(--ivory);position:relative;isolation:isolate}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;
+    background:
+      radial-gradient(55% 70% at 100% 0%,rgba(201,96,60,.28),transparent 55%),
+      radial-gradient(40% 55% at 0% 100%,rgba(91,139,150,.18),transparent 60%),
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/100% 80px,
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/80px 100%;
+    -webkit-mask-image:radial-gradient(ellipse at 65% 25%,#000 30%,transparent 78%);
+            mask-image:radial-gradient(ellipse at 65% 25%,#000 30%,transparent 78%)}
+  .hero-in{position:relative;z-index:1;max-width:1240px;margin:0 auto;
+    padding:88px 40px 0;display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:center}
+  .hero-left{display:flex;flex-direction:column;gap:0}
+
+  .ey{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.65);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+  .ey::before{content:"";width:30px;height:1px;background:var(--clay)}
+
+  .hero h1{font-weight:800;font-size:clamp(2.4rem,4.2vw,3.4rem);line-height:1.04;
+    letter-spacing:-.045em;color:#fff;max-width:600px;text-wrap:balance;margin-bottom:20px}
+  .hero h1 em{font-style:italic;color:var(--petrol-soft)}
+  .hero .sub{font-size:1.0625rem;line-height:1.7;color:rgba(250,248,243,.62);max-width:510px;margin-bottom:30px}
+
+  .hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+  .hpill{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.75);
+    transition:background .2s,color .2s;cursor:pointer}
+  .hpill:hover{background:rgba(255,255,255,.13);color:#fff}
+  .hpill.hpill--active{background:rgba(201,96,60,.18);border-color:rgba(201,96,60,.4);color:var(--clay)}
+
+  .hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .btn-clay-hero{display:inline-flex;align-items:center;gap:10px;background:var(--clay);color:#fff;
+    font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;
+    box-shadow:0 8px 22px rgba(201,96,60,.35);transition:background .2s,transform .2s}
+  .btn-clay-hero:hover{background:var(--clay-hover);transform:translateY(-2px)}
+  .btn-clay-hero .arrow{font-family:var(--mono)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:8px;
+    font-weight:600;font-size:14.5px;color:rgba(255,255,255,.75);
+    border:1px solid rgba(255,255,255,.18);padding:13px 20px;border-radius:12px;
+    transition:color .2s,border-color .2s,transform .2s}
+  .btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
+
+  /* ── hero featured card ── */
+  .hero-right{display:flex;align-items:stretch}
+  .hero-feature{
+    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
+    border-radius:20px;padding:0;overflow:hidden;display:flex;flex-direction:column;
+    flex:1;box-shadow:0 32px 64px -32px rgba(0,0,0,.5);
+    transition:transform .2s,box-shadow .2s}
+  .hero-feature:hover{transform:translateY(-3px);box-shadow:0 40px 72px -32px rgba(0,0,0,.65)}
+  .hf-cover{
+    aspect-ratio:16/9;position:relative;overflow:hidden;
+    background:linear-gradient(145deg,rgba(201,96,60,.35) 0%,rgba(15,76,92,.6) 50%,rgba(8,50,61,.85) 100%)}
+  .hf-cover::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/100% 44px,
+               linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/44px 100%;
+    opacity:.55}
+  .hf-cover-tag{position:absolute;bottom:14px;left:16px;z-index:1;
+    background:var(--clay);color:#fff;font-family:var(--mono);font-size:10px;
+    font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+  .hf-badge{position:absolute;top:14px;right:14px;z-index:1;
+    background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-family:var(--mono);
+    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;
+    border-radius:999px;border:1px solid rgba(255,255,255,.2)}
+  .hf-body{padding:26px 28px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .hf-title{font-weight:800;font-size:1.35rem;line-height:1.22;letter-spacing:-.025em;color:#fff}
+  .hf-excerpt{font-size:14.5px;line-height:1.65;color:rgba(250,248,243,.62);flex:1}
+  .hf-foot{display:flex;align-items:center;justify-content:space-between;
+    padding-top:16px;border-top:1px solid rgba(255,255,255,.1);margin-top:4px}
+  .hf-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;
+    color:rgba(255,255,255,.45);display:flex;align-items:center;gap:10px}
+  .hf-meta span + span::before{content:"·";margin-right:4px;opacity:.5}
+  .hf-read{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:13.5px;
+    color:var(--clay);font-family:var(--mono);transition:gap .2s,color .2s}
+  .hero-feature:hover .hf-read{gap:11px;color:var(--clay-soft)}
+
+  /* ── stats strip ── */
+  .stats-strip{
+    position:relative;z-index:1;max-width:1240px;margin:0 auto;
+    display:flex;padding:0 40px;border-top:1px solid rgba(255,255,255,.09);margin-top:56px}
+  .stat-item{flex:1;padding:26px 28px;display:flex;flex-direction:column;gap:4px;
+    border-right:1px solid rgba(255,255,255,.08)}
+  .stat-item:first-child{padding-left:0}
+  .stat-item:last-child{border-right:none}
+  .stat-item .v{font-weight:800;font-size:1.75rem;letter-spacing:-.035em;color:#fff;line-height:1}
+  .stat-item .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:rgba(255,255,255,.48);margin-top:2px}
+
+  /* ── shared section layout ── */
+  .home-section{padding:96px 0}
+  .home-section--sand{background:var(--sand)}
+  .home-section--surface{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+
+  .sec-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:48px;flex-wrap:wrap}
+  .sec-head-row .left{display:flex;flex-direction:column;gap:0}
+  .sec-ey{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--clay);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .sec-ey::before{content:"";width:30px;height:1px;background:var(--clay)}
+  .sec-t{font-weight:800;font-size:clamp(1.75rem,2.8vw,2.25rem);letter-spacing:-.035em;color:var(--ink);line-height:1.1}
+  .sec-desc{font-size:1.0625rem;line-height:1.65;color:var(--slate);max-width:520px;margin-top:10px}
+  .sec-link{font-family:var(--font);font-weight:600;font-size:14px;color:var(--petrol);
+    display:inline-flex;align-items:center;gap:7px;flex:none;
+    border-bottom:1px solid rgba(15,76,92,.25);padding-bottom:2px;
+    transition:gap .2s,border-color .2s}
+  .sec-link:hover{gap:11px;border-color:var(--petrol)}
+
+  /* ── mais lidos ── */
+  .ml-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+
+  .ml-feature{display:flex;flex-direction:column;gap:0}
+  .ml-rank-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--clay);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .ml-rank-label::before{content:"";width:22px;height:1px;background:var(--clay)}
+
+  .ml-card{background:var(--petrol);border-radius:18px;overflow:hidden;position:relative;isolation:isolate;
+    display:flex;flex-direction:column;flex:1;transition:transform .22s,box-shadow .22s;box-shadow:0 4px 12px rgba(8,50,61,.12)}
+  .ml-card:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(8,50,61,.22)}
+  .ml-card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:
+      radial-gradient(55% 60% at 88% 12%,rgba(201,96,60,.32),transparent 58%),
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/100% 52px,
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/52px 100%;
+    -webkit-mask-image:radial-gradient(ellipse at 70% 20%,#000 28%,transparent 72%);
+            mask-image:radial-gradient(ellipse at 70% 20%,#000 28%,transparent 72%)}
+  .ml-card-inner{position:relative;z-index:1;padding:32px 34px 28px;display:flex;flex-direction:column;gap:14px;flex:1}
+  .ml-num-bg{
+    position:absolute;right:20px;top:-10px;
+    font-weight:900;font-size:9rem;line-height:1;letter-spacing:-.08em;
+    color:#fff;opacity:.06;z-index:0;user-select:none;pointer-events:none;font-family:var(--font)}
+  .ml-card-cat{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .ml-card-title{font-weight:800;font-size:1.35rem;line-height:1.22;letter-spacing:-.025em;color:#fff;text-wrap:balance}
+  .ml-card-excerpt{font-size:14.5px;line-height:1.65;color:rgba(250,248,243,.62)}
+  .ml-card-foot{display:flex;align-items:center;justify-content:space-between;
+    padding-top:16px;border-top:1px solid rgba(255,255,255,.1);margin-top:auto}
+  .ml-card-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;
+    color:rgba(255,255,255,.42);display:flex;gap:12px}
+  .ml-card-read{font-weight:700;font-size:13px;color:var(--clay);font-family:var(--mono);
+    display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+  .ml-card:hover .ml-card-read{gap:10px}
+
+  .ml-list{display:flex;flex-direction:column;gap:0;background:var(--surface);
+    border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .ml-item{display:flex;align-items:flex-start;gap:18px;padding:22px 24px;
+    border-bottom:1px solid var(--line);transition:background .18s;cursor:pointer}
+  .ml-item:last-child{border-bottom:none}
+  .ml-item:hover{background:var(--sand)}
+  .ml-item:hover .ml-item-arrow{opacity:1;transform:translateX(3px)}
+  .ml-item-num{flex:none;font-family:var(--mono);font-weight:600;font-size:11px;
+    letter-spacing:.08em;color:var(--clay);width:24px;text-align:right;margin-top:2px}
+  .ml-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+  .ml-item-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+  .ml-item-title{font-weight:700;font-size:15px;letter-spacing:-.015em;color:var(--petrol);
+    line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .ml-item-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--steel);display:flex;gap:10px;margin-top:2px}
+  .ml-item-arrow{flex:none;font-family:var(--mono);font-weight:600;font-size:14px;color:var(--petrol);
+    opacity:0;transition:opacity .18s,transform .18s;align-self:center}
+
+  /* ── postagens recentes ── */
+  .posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .post-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:0 2px 4px rgba(12,32,39,.03);
+    transition:transform .2s,box-shadow .2s}
+  .post-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(12,32,39,.09)}
+  .post-card .pc-img{aspect-ratio:16/10;position:relative;display:flex;align-items:flex-end;padding:14px}
+  .post-card .pc-img.t-petrol{background:linear-gradient(150deg,#0F4C5C 0%,#08323D 100%)}
+  .post-card .pc-img.t-soft{background:linear-gradient(150deg,#5B8B96 0%,#0F4C5C 100%)}
+  .post-card .pc-img.t-clay{background:linear-gradient(150deg,#C9603C 0%,#A94C2D 100%)}
+  .post-card .pc-img.t-deep{background:linear-gradient(150deg,#08323D 0%,#0C2027 100%)}
+  .post-card .pc-img.t-moss{background:linear-gradient(150deg,#3F6B47 0%,#0F4C5C 100%)}
+  .post-card .pc-img.t-teal{background:linear-gradient(150deg,#3A7A88 0%,#0F4C5C 100%)}
+  .post-card .pc-img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.18));pointer-events:none}
+  .pc-img .tag{position:relative;z-index:1;background:var(--ivory);border-radius:999px;
+    padding:5px 12px;font-weight:600;font-size:11.5px;color:var(--petrol);
+    box-shadow:0 2px 8px rgba(0,0,0,.14)}
+  .post-card .pc-body{padding:20px 22px 14px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .pc-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay)}
+  .pc-title{font-weight:800;font-size:17.5px;letter-spacing:-.02em;color:var(--petrol);line-height:1.22;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pc-excerpt{font-size:13.5px;line-height:1.6;color:var(--slate);flex:1}
+  .post-card .pc-foot{margin-top:auto;padding:12px 22px 16px;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--mono);font-size:11px;color:var(--steel);letter-spacing:.04em}
+  .pc-foot .more{font-family:var(--font);font-weight:700;font-size:13px;color:var(--petrol)}
+
+  .posts-cta{display:flex;justify-content:center;margin-top:44px}
+  .btn-outline-petrol{display:inline-flex;align-items:center;gap:10px;
+    font-weight:600;font-size:15px;color:var(--petrol);
+    border:1.5px solid rgba(15,76,92,.35);padding:14px 28px;border-radius:12px;
+    background:transparent;transition:background .2s,color .2s,border-color .2s,transform .15s}
+  .btn-outline-petrol:hover{background:var(--petrol);color:#fff;border-color:var(--petrol);transform:translateY(-1px)}
+  .btn-outline-petrol .arrow{font-family:var(--mono)}
+
+  /* ── ia section (dark) ── */
+  .ia-section{background:var(--petrol);color:var(--ivory);position:relative;overflow:hidden;isolation:isolate;
+    padding:96px 0}
+  .ia-section::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;
+    background:
+      radial-gradient(50% 65% at 100% 0%,rgba(201,96,60,.3),transparent 55%),
+      radial-gradient(42% 55% at 0% 100%,rgba(91,139,150,.22),transparent 60%),
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/100% 76px,
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/76px 100%;
+    -webkit-mask-image:radial-gradient(ellipse at 55% 30%,#000 28%,transparent 78%);
+            mask-image:radial-gradient(ellipse at 55% 30%,#000 28%,transparent 78%)}
+  .ia-section .wrap{position:relative;z-index:1}
+
+  .ia-sec-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:48px;flex-wrap:wrap}
+  .ia-ey{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.65);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .ia-ey::before{content:"";width:30px;height:1px;background:var(--clay)}
+  .ia-title{font-weight:800;font-size:clamp(1.75rem,2.8vw,2.25rem);letter-spacing:-.035em;color:#fff;line-height:1.1}
+  .ia-desc{font-size:1.0625rem;line-height:1.65;color:rgba(250,248,243,.62);max-width:520px;margin-top:10px}
+  .ia-link{font-weight:600;font-size:14px;color:rgba(255,255,255,.8);
+    display:inline-flex;align-items:center;gap:7px;flex:none;
+    border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:2px;transition:gap .2s,color .2s,border-color .2s}
+  .ia-link:hover{gap:11px;color:#fff;border-color:rgba(255,255,255,.5)}
+
+  .ia-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:stretch}
+  .ia-big{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:16px;
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:transform .2s,box-shadow .2s;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+  .ia-big:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.32)}
+  .ia-big-cover{aspect-ratio:16/9;position:relative;overflow:hidden;
+    background:linear-gradient(145deg,rgba(201,96,60,.4) 0%,rgba(8,50,61,.8) 60%,rgba(8,50,61,1) 100%)}
+  .ia-big-cover::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/100% 44px,
+               linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/44px 100%;
+    opacity:.55}
+  .ia-big-cover-tag{position:absolute;bottom:14px;left:16px;z-index:1;
+    background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);font-family:var(--mono);
+    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;
+    border-radius:999px;border:1px solid rgba(255,255,255,.2)}
+  .ia-big-body{padding:26px 28px 22px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .ia-big-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--clay)}
+  .ia-big-title{font-weight:800;font-size:1.35rem;letter-spacing:-.025em;line-height:1.22;color:#fff}
+  .ia-big-excerpt{font-size:14.5px;line-height:1.65;color:rgba(250,248,243,.62);flex:1}
+  .ia-big-foot{display:flex;align-items:center;justify-content:space-between;
+    padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+  .ia-big-meta{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.4);display:flex;gap:10px;letter-spacing:.04em}
+  .ia-read{font-weight:700;font-size:13px;color:var(--clay);font-family:var(--mono);
+    display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+  .ia-big:hover .ia-read,.ia-small:hover .ia-read{gap:10px}
+
+  .ia-stack{display:flex;flex-direction:column;gap:10px;height:100%}
+  .ia-small{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:14px;
+    padding:16px 20px;display:flex;flex-direction:column;gap:8px;flex:1;
+    transition:transform .2s,background .2s;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .ia-small:hover{transform:translateY(-2px);background:rgba(255,255,255,.09)}
+  .ia-small-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--clay)}
+  .ia-small-title{font-weight:800;font-size:1.05rem;letter-spacing:-.02em;line-height:1.28;color:#fff}
+  .ia-small-foot{display:flex;align-items:center;justify-content:space-between;
+    padding-top:10px;border-top:1px solid rgba(255,255,255,.09);margin-top:auto}
+  .ia-small-meta{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.38);display:flex;gap:9px;letter-spacing:.04em}
+
+  /* ── o projeto section ── */
+  .projeto-section{background:var(--sand);border-top:1px solid var(--line)}
+  .projeto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:36px}
+  .projeto-cta-strip{
+    background:var(--petrol);border-radius:16px;padding:30px 40px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    position:relative;overflow:hidden;isolation:isolate}
+  .projeto-cta-strip::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.55;
+    background:radial-gradient(55% 120% at 100% 50%,rgba(201,96,60,.3),transparent 60%)}
+  .projeto-cta-strip > *{position:relative;z-index:1}
+  .projeto-cta-left{display:flex;flex-direction:column;gap:6px}
+  .projeto-cta-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(255,255,255,.55);display:flex;align-items:center;gap:8px}
+  .projeto-cta-label .dot{width:7px;height:7px;border-radius:50%;background:var(--moss);box-shadow:0 0 0 3px rgba(63,107,71,.25)}
+  .projeto-cta-title{font-weight:800;font-size:1.35rem;letter-spacing:-.025em;color:#fff;line-height:1.2}
+  .projeto-cta-stats{display:flex;gap:28px;margin-top:10px}
+  .projeto-cta-stat{display:flex;flex-direction:column;gap:3px}
+  .projeto-cta-stat .pv{font-weight:800;font-size:1.4rem;letter-spacing:-.03em;color:#fff;line-height:1}
+  .projeto-cta-stat .pl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  .btn-clay-strip{display:inline-flex;align-items:center;gap:10px;background:var(--clay);color:#fff;
+    font-weight:600;font-size:15px;padding:14px 26px;border-radius:12px;flex:none;
+    box-shadow:0 8px 20px rgba(201,96,60,.35);transition:background .2s,transform .2s}
+  .btn-clay-strip:hover{background:var(--clay-hover);transform:translateY(-2px)}
+  .btn-clay-strip .arrow{font-family:var(--mono)}
+
+  /* ── newsletter ── */
+  .nl-section{padding:0}
+  .nl-card{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:72px 40px;display:grid;grid-template-columns:1.15fr 1fr;gap:80px;align-items:center}
+  .nl-left .nl-ey{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--clay);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .nl-left .nl-ey::before{content:"";width:30px;height:1px;background:var(--clay)}
+  .nl-left h2{font-weight:800;font-size:clamp(1.6rem,2.6vw,2rem);letter-spacing:-.035em;color:var(--ink);line-height:1.12;text-wrap:balance}
+  .nl-left p{font-size:1rem;line-height:1.65;color:var(--slate);margin-top:12px;max-width:420px}
+  .nl-right{display:flex;flex-direction:column;gap:14px}
+  .nl-form{display:flex;gap:10px}
+  .nl-input{flex:1;height:52px;padding:0 18px;background:var(--ivory);border:1.5px solid var(--line);
+    border-radius:11px;font-family:var(--font);font-size:15px;color:var(--ink);
+    transition:border-color .2s,box-shadow .2s;outline:none}
+  .nl-input::placeholder{color:var(--steel)}
+  .nl-input:focus{border-color:rgba(15,76,92,.4);box-shadow:0 0 0 3px rgba(15,76,92,.1)}
+  .nl-submit{height:52px;padding:0 22px;background:var(--petrol);color:#fff;border:none;cursor:pointer;
+    font-family:var(--font);font-weight:600;font-size:15px;border-radius:11px;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:background .2s,transform .15s;white-space:nowrap}
+  .nl-submit:hover{background:var(--petrol-deep);transform:translateY(-1px)}
+  .nl-submit .arrow{font-family:var(--mono)}
+  .nl-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--steel);
+    display:flex;align-items:center;gap:8px}
+  .nl-note .dot{width:5px;height:5px;border-radius:50%;background:var(--moss)}
+
+  /* ── CTA assessoria ── */
+  .cta-adv{background:var(--petrol);color:var(--ivory);position:relative;overflow:hidden;isolation:isolate}
+  .cta-adv::before{content:"";position:absolute;inset:0;opacity:.55;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(50% 70% at 100% 0%,rgba(201,96,60,.32),transparent 55%),
+      radial-gradient(40% 60% at 0% 100%,rgba(91,139,150,.2),transparent 60%),
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/100% 80px,
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/80px 100%;
+    -webkit-mask-image:radial-gradient(ellipse at 70% 30%,#000 30%,transparent 80%);
+            mask-image:radial-gradient(ellipse at 70% 30%,#000 30%,transparent 80%)}
+  .cta-adv-in{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:88px 40px;
+    display:grid;grid-template-columns:1.06fr .94fr;gap:60px;align-items:center}
+  .cta-adv .ey2{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.72);display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .cta-adv .ey2::before{content:"";width:30px;height:1px;background:var(--clay)}
+  .cta-adv h2{font-weight:800;font-size:clamp(2rem,3.6vw,2.75rem);line-height:1.06;letter-spacing:-.04em;color:#fff;max-width:500px}
+  .cta-adv h2 em{font-style:italic;color:var(--petrol-soft)}
+  .cta-adv .desc{font-size:1.0625rem;line-height:1.6;color:rgba(250,248,243,.66);max-width:440px;margin-top:18px}
+  .cta-adv .points{display:flex;flex-direction:column;gap:13px;margin-top:26px}
+  .cta-adv .points li{list-style:none;display:flex;align-items:flex-start;gap:12px;
+    font-size:15px;line-height:1.5;color:rgba(250,248,243,.9)}
+  .cta-adv .points li .ck{flex:none;width:22px;height:22px;border-radius:7px;margin-top:1px;
+    background:rgba(201,96,60,.2);color:#E8A582;display:flex;align-items:center;justify-content:center}
+  .cta-adv .points li .ck svg{width:13px;height:13px}
+  .cta-adv .points li b{color:#fff;font-weight:600}
+  .adv-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;
+    padding:34px 34px 30px;backdrop-filter:blur(4px);box-shadow:0 24px 60px -28px rgba(0,0,0,.55)}
+  .adv-card .tagline{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:rgba(255,255,255,.6);display:flex;align-items:center;gap:9px;margin-bottom:18px}
+  .adv-card .tagline .dot{width:7px;height:7px;border-radius:50%;background:var(--moss);
+    box-shadow:0 0 0 3px rgba(63,107,71,.25)}
+  .adv-card h3{font-weight:800;font-size:1.4rem;letter-spacing:-.025em;color:#fff;line-height:1.2}
+  .adv-card .sub{font-size:14.5px;line-height:1.6;color:rgba(250,248,243,.66);margin-top:10px}
+  .adv-card .svc{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 26px}
+  .adv-card .svc span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    padding:7px 12px;border-radius:999px}
+  .adv-card .btn-adv{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    background:var(--clay);color:#fff;border:none;cursor:pointer;text-decoration:none;
+    height:56px;border-radius:13px;font-family:var(--font);font-weight:600;font-size:15.5px;
+    box-shadow:0 12px 26px -8px rgba(201,96,60,.55);transition:background .2s,transform .2s}
+  .adv-card .btn-adv:hover{background:var(--clay-hover);transform:translateY(-2px)}
+  .adv-card .btn-adv .arrow{font-family:var(--mono)}
+  .adv-card .reassure{text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:16px}
+  @media(max-width:840px){.cta-adv-in{grid-template-columns:1fr;gap:44px}}
+
+  /* ── footer ── */
+  footer.site{position:relative;background:var(--petrol-deep);color:#A8C0C6;overflow:hidden;isolation:isolate}
+  footer.site::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:2;
+    background:linear-gradient(90deg,transparent,var(--petrol-soft) 30%,var(--clay) 70%,transparent)}
+  footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:
+      radial-gradient(46% 70% at 88% 0%,rgba(201,96,60,.22),transparent 58%),
+      radial-gradient(40% 60% at 6% 12%,rgba(91,139,150,.16),transparent 60%),
+      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 76px,
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/76px 100%;
+    -webkit-mask-image:radial-gradient(ellipse at 60% 0%,#000 35%,transparent 85%);
+            mask-image:radial-gradient(ellipse at 60% 0%,#000 35%,transparent 85%)}
+  .foot-in{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 40px 26px}
+  .foot-lead{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+    padding:60px 0 40px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+  .foot-lead .manifesto{font-family:var(--font);font-weight:800;font-size:clamp(1.5rem,2.6vw,2.1rem);
+    line-height:1.18;letter-spacing:-.03em;color:#fff;max-width:560px;text-wrap:balance}
+  .foot-lead .manifesto em{font-style:italic;color:var(--petrol-soft)}
+  .to-top{flex:none;display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);color:#fff;
+    font-family:var(--font);font-weight:600;font-size:13.5px;padding:13px 20px;border-radius:999px;
+    transition:background .2s,border-color .2s,transform .2s}
+  .to-top:hover{background:var(--clay);border-color:var(--clay);transform:translateY(-2px)}
+  .to-top svg{width:15px;height:15px}
+  .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:48px;
+    padding:48px 0 44px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .foot-brand .b{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.02em}
+  .foot-brand .b .b2{color:var(--petrol-soft)}
+  .foot-brand p{font-size:14px;line-height:1.65;color:#8FAAB1;max-width:300px;margin-top:16px}
+  .foot-brand .badge{display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#A8C0C6;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:7px 13px;border-radius:999px}
+  .foot-brand .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--moss);
+    box-shadow:0 0 0 3px rgba(63,107,71,.25)}
+  .foot-col h5{font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:20px}
+  .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .foot-col ul li a{display:inline-flex;align-items:center;font-size:14px;color:#8FAAB1;transition:color .2s}
+  .foot-col ul li a:hover{color:#fff}
+  .foot-col .contact{display:flex;align-items:center;gap:10px;font-size:14px;color:#8FAAB1;margin-bottom:20px;transition:color .2s}
+  .foot-col .contact:hover{color:#fff}
+  .foot-col .contact .ic{flex:none;width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+  .foot-col .contact .ic svg{width:16px;height:16px;opacity:.85}
+  .foot-soc{display:flex;gap:9px}
+  .foot-soc a{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);color:#A8C0C6;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .foot-soc a:hover{background:var(--clay);border-color:var(--clay);color:#fff;transform:translateY(-2px)}
+  .foot-soc a svg{width:17px;height:17px}
+  .foot-watermark{position:relative;margin-top:28px;text-align:center;line-height:.8;white-space:nowrap;
+    font-family:var(--font);font-weight:900;letter-spacing:-.055em;
+    font-size:clamp(2rem,8.6vw,6.8rem);color:transparent;
+    background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.01));
+    -webkit-background-clip:text;background-clip:text;user-select:none;pointer-events:none}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;
+    margin-top:8px;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:11px;color:#5E7A82;letter-spacing:.06em}
+  .foot-bottom .links{display:flex;gap:22px}
+  .foot-bottom .links a:hover{color:#fff}
+
+  /* ── responsive ── */
+  @media(max-width:1040px){
+    .ml-grid{grid-template-columns:1fr}
+    .ia-grid{grid-template-columns:1fr}
+    .ia-stack{flex-direction:column;height:auto}
+    .nl-card{grid-template-columns:1fr;gap:40px;padding:56px 40px}
+    .foot-top{grid-template-columns:1fr 1fr;gap:36px 32px}
+    .foot-brand{grid-column:1 / -1}
+  }
+  @media(max-width:860px){
+    .hero-in{grid-template-columns:1fr;gap:40px;padding-top:64px}
+    .posts-grid{grid-template-columns:1fr 1fr}
+    .projeto-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:680px){
+    .stats-strip{flex-wrap:wrap}
+    .stat-item{flex:1 1 40%;border-right:none;border-bottom:1px solid rgba(255,255,255,.08);padding:20px 0}
+    .posts-grid{grid-template-columns:1fr}
+    .projeto-grid{grid-template-columns:1fr}
+    .projeto-cta-strip{flex-direction:column;align-items:flex-start;gap:20px}
+    .ia-stack{flex-direction:column}
+    .nl-form{flex-direction:column}
+    .nl-submit{width:100%;justify-content:center}
+    .foot-top{grid-template-columns:1fr}
+    .wrap{padding:0 20px}
+    .stats-strip{padding:0 20px}
+    .hero-in{padding-left:20px;padding-right:20px}
+    .cta-adv-in{padding:88px 20px}
+    .foot-in{padding:0 20px 20px}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ── NAV ── -->
+<header class="nav" data-audit="header">
+  <div class="nav-in" data-audit="header-nav-in">
+    <a class="brand" href="#" data-audit="header-brand">
+      <span>Marcelo</span><span class="b2">Gonçalves</span><span class="tick"></span>
+    </a>
+    <nav class="menu" data-audit="header-menu">
+      <a href="#" class="active">Home</a>
+      <a href="#">Artigos</a>
+      <a href="O Projeto.html">O Projeto</a>
+      <a href="#">Serviços</a>
+      <a href="#">Sobre</a>
+    </nav>
+    <a class="nav-cta" href="#assessoria" data-audit="header-cta">Assessoria <span class="arrow">→</span></a>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero" data-screen-label="Hero" data-audit="home-hero">
+  <div class="hero-in" data-audit="home-hero-in">
+    <div class="hero-left">
+      <div class="ey">Blog · Engenharia &amp; IA · Build in Public</div>
+      <h1>Engenharia, IA e AWS — <em>na prática,</em> sem filtro</h1>
+      <p class="sub">Decisões reais de arquitetura, custos expostos, código em produção. Um blog construído do zero — e documentado em cada passo.</p>
+      <div class="hero-pills">
+        <span class="hpill hpill--active">IA Aplicada</span>
+        <span class="hpill">DevOps</span>
+        <span class="hpill">Cloud · AWS</span>
+        <span class="hpill">Engenharia</span>
+        <span class="hpill">Bastidores</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn-clay-hero" href="#">Ver todos os artigos <span class="arrow">→</span></a>
+        <a class="btn-ghost" href="O Projeto.html">O Projeto →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <article class="hero-feature" data-screen-label="Destaque Hero" data-audit="home-hero-feature">
+        <div class="hf-cover">
+          <span class="hf-badge">Em destaque</span>
+          <span class="hf-cover-tag">Tutoriais · IA</span>
+        </div>
+        <div class="hf-body">
+          <h2 class="hf-title">Como construir prompts poderosos para IAs como GPT ou Gemini</h2>
+          <p class="hf-excerpt">Um bom prompt não é uma pergunta — é uma instrução estratégica. O método de quatro princípios para extrair respostas precisas, no formato certo, todas as vezes.</p>
+          <div class="hf-foot">
+            <div class="hf-meta">
+              <span>Marcelo Gonçalves</span>
+              <span>07 DEZ 2025</span>
+              <span>5 min</span>
+            </div>
+            <a class="hf-read" href="Pagina de Postagem.html">Ler artigo →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="stats-strip" data-audit="home-stats-strip">
+    <div class="stat-item"><span class="v">50+</span><span class="l">Artigos publicados</span></div>
+    <div class="stat-item"><span class="v">4</span><span class="l">Categorias</span></div>
+    <div class="stat-item"><span class="v">~100%</span><span class="l">Construído com IA</span></div>
+    <div class="stat-item"><span class="v">12 mo</span><span class="l">Em produção</span></div>
+  </div>
+</section>
+
+<!-- ── MAIS LIDOS ── -->
+<section class="home-section" id="mais-lidos" data-screen-label="Mais Lidos">
+  <div class="wrap">
+    <div class="sec-head-row">
+      <div class="left">
+        <div class="sec-ey">Mais lidos</div>
+        <h2 class="sec-t">Os que mais engajaram</h2>
+        <p class="sec-desc">Os artigos que mais geraram leitura, debate e compartilhamentos — um bom ponto de partida.</p>
+      </div>
+      <a class="sec-link" href="#">Ver ranking completo →</a>
+    </div>
+    <div class="ml-grid" data-audit="home-ml-grid">
+
+      <!-- #1 featured -->
+      <div class="ml-feature">
+        <div class="ml-rank-label">Mais lido · #1</div>
+        <article class="ml-card" data-audit="home-ml-card">
+          <div class="ml-num-bg">01</div>
+          <div class="ml-card-inner">
+            <span class="ml-card-cat">Tutoriais · IA</span>
+            <h3 class="ml-card-title">Como construir prompts poderosos para IAs como GPT ou Gemini</h3>
+            <p class="ml-card-excerpt">O método de quatro princípios que uso no dia a dia: clareza, formato, contexto e iteração. Extraia respostas precisas — da arquitetura ao copywriting.</p>
+            <div class="ml-card-foot">
+              <div class="ml-card-meta"><span>07 DEZ 2025</span><span>5 min de leitura</span></div>
+              <a class="ml-card-read" href="Pagina de Postagem.html">Ler →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- #2 featured -->
+      <div class="ml-feature">
+        <div class="ml-rank-label">Mais lido · #2</div>
+        <article class="ml-card">
+          <div class="ml-num-bg">02</div>
+          <div class="ml-card-inner">
+            <span class="ml-card-cat">DevOps</span>
+            <h3 class="ml-card-title">CI/CD na AWS sem clicar no console</h3>
+            <p class="ml-card-excerpt">Tudo em IaC: ECS, RDS e CloudFront provisionados por código, do brief ao deploy. O pipeline que roda por baixo de cada post.</p>
+            <div class="ml-card-foot">
+              <div class="ml-card-meta"><span>28 NOV 2025</span><span>8 min de leitura</span></div>
+              <a class="ml-card-read" href="#">Ler →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- #3–5 list -->
+      <div class="ml-list" data-audit="home-ml-list">
+        <a class="ml-item" href="#">
+          <span class="ml-item-num">03</span>
+          <div class="ml-item-body">
+            <span class="ml-item-cat">Bastidores</span>
+            <span class="ml-item-title">O que a IA quebrou (e o que ela acelerou)</span>
+            <div class="ml-item-meta"><span>21 NOV 2025</span><span>7 min</span></div>
+          </div>
+          <span class="ml-item-arrow">→</span>
+        </a>
+        <a class="ml-item" href="#">
+          <span class="ml-item-num">04</span>
+          <div class="ml-item-body">
+            <span class="ml-item-cat">Engenharia</span>
+            <span class="ml-item-title">Refatorando a stack depois do primeiro trimestre</span>
+            <div class="ml-item-meta"><span>25 JAN 2026</span><span>8 min</span></div>
+          </div>
+          <span class="ml-item-arrow">→</span>
+        </a>
+        <a class="ml-item" href="#">
+          <span class="ml-item-num">05</span>
+          <div class="ml-item-body">
+            <span class="ml-item-cat">Bastidores</span>
+            <span class="ml-item-title">Os primeiros 30 dias e os custos reais na AWS</span>
+            <div class="ml-item-meta"><span>14 DEZ 2025</span><span>6 min</span></div>
+          </div>
+          <span class="ml-item-arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── POSTAGENS RECENTES ── -->
+<section class="home-section home-section--surface" id="recentes" data-screen-label="Postagens Recentes">
+  <div class="wrap">
+    <div class="sec-head-row">
+      <div class="left">
+        <div class="sec-ey">Postagens recentes</div>
+        <h2 class="sec-t">Direto do forno</h2>
+        <p class="sec-desc">Os últimos artigos publicados — decisões tomadas, erros cometidos e aprendizados registrados em tempo real.</p>
+      </div>
+      <a class="sec-link" href="#">Todos os artigos →</a>
+    </div>
+    <div class="posts-grid" data-audit="home-posts-grid">
+
+      <article class="post-card" data-audit="home-post-card">
+        <div class="pc-img t-soft"><span class="tag">Engenharia</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Bastidores</span>
+          <span class="pc-title">Dashboard público: expondo métricas reais do blog</span>
+          <span class="pc-excerpt">Tráfego, custo AWS e receita — ao vivo, visíveis para qualquer visitante. Como construí o painel e por que a transparência radical importa.</span>
+        </div>
+        <div class="pc-foot"><span>01 FEV 2026</span><span class="more">Ler →</span></div>
+      </article>
+
+      <article class="post-card">
+        <div class="pc-img t-petrol"><span class="tag">DevOps</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Engenharia</span>
+          <span class="pc-title">Refatorando a stack depois do primeiro trimestre</span>
+          <span class="pc-excerpt">O que mudei após três meses em produção: o que estava certo, o que estava errado, e o que faria diferente hoje.</span>
+        </div>
+        <div class="pc-foot"><span>25 JAN 2026</span><span class="more">Ler →</span></div>
+      </article>
+
+      <article class="post-card">
+        <div class="pc-img t-clay"><span class="tag">Bastidores</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Monetização</span>
+          <span class="pc-title">Três meses de AdSense: o que realmente rendeu</span>
+          <span class="pc-excerpt">Números reais de receita após 90 dias. Posicionamento dos blocos, impacto na leitura e se valeu a pena.</span>
+        </div>
+        <div class="pc-foot"><span>18 JAN 2026</span><span class="more">Ler →</span></div>
+      </article>
+
+      <article class="post-card">
+        <div class="pc-img t-teal"><span class="tag">Infraestrutura</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Bastidores</span>
+          <span class="pc-title">Como automatizei o envio de newsletter com Amazon SES</span>
+          <span class="pc-excerpt">Da escolha do SES à automação completa: templates, segmentação e rastreamento de abertura sem plataforma de terceiros.</span>
+        </div>
+        <div class="pc-foot"><span>11 JAN 2026</span><span class="more">Ler →</span></div>
+      </article>
+
+      <article class="post-card">
+        <div class="pc-img t-deep"><span class="tag">Engenharia</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Engenharia</span>
+          <span class="pc-title">O sistema de comentários que construí do zero</span>
+          <span class="pc-excerpt">Por que decidi não usar Disqus ou Utterances. A arquitetura de um sistema simples, com moderação e sem dependência externa.</span>
+        </div>
+        <div class="pc-foot"><span>04 JAN 2026</span><span class="more">Ler →</span></div>
+      </article>
+
+      <article class="post-card">
+        <div class="pc-img t-moss"><span class="tag">Cloud · AWS</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">Infraestrutura</span>
+          <span class="pc-title">Monitoramento sem gastar: CloudWatch e alertas no Free Tier</span>
+          <span class="pc-excerpt">Como configurar alertas de custo, performance e disponibilidade sem sair do tier gratuito da AWS. Tudo em código.</span>
+        </div>
+        <div class="pc-foot"><span>21 DEZ 2025</span><span class="more">Ler →</span></div>
+      </article>
+
+    </div>
+    <div class="posts-cta">
+      <a class="btn-outline-petrol" href="#">Ver todos os artigos <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── POSTS SOBRE IA ── -->
+<section class="ia-section" id="ia" data-screen-label="Posts sobre IA">
+  <div class="wrap">
+    <div class="ia-sec-head-row">
+      <div class="left">
+        <div class="ia-ey">Inteligência Artificial</div>
+        <h2 class="ia-title">IA aplicada — sem hype</h2>
+        <p class="ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
+      </div>
+      <a class="ia-link" href="#">Ver todos os posts de IA →</a>
+    </div>
+    <div class="ia-grid" data-audit="home-ia-grid">
+
+      <!-- big card -->
+      <article class="ia-big" data-audit="home-ia-big">
+        <div class="ia-big-cover">
+          <span class="ia-big-cover-tag">IA Aplicada · Prompts</span>
+        </div>
+        <div class="ia-big-body">
+          <span class="ia-big-cat">Tutoriais · IA</span>
+          <h3 class="ia-big-title">Como construir prompts poderosos para IAs como GPT ou Gemini</h3>
+          <p class="ia-big-excerpt">O método de quatro princípios — clareza, formato, contexto e iteração — que transforma pedidos vagos em resultados precisos e reutilizáveis em produção.</p>
+          <div class="ia-big-foot">
+            <div class="ia-big-meta"><span>07 DEZ 2025</span><span>5 min</span></div>
+            <a class="ia-read" href="Pagina de Postagem.html">Ler artigo →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- stacked small cards -->
+      <div class="ia-stack">
+        <article class="ia-small" data-audit="home-ia-small">
+          <span class="ia-small-cat">IA Aplicada</span>
+          <h3 class="ia-small-title">O que a IA quebrou (e o que ela acelerou)</h3>
+          <div class="ia-small-foot">
+            <div class="ia-small-meta"><span>21 NOV 2025</span><span>7 min</span></div>
+            <a class="ia-read" href="#">Ler →</a>
+          </div>
+        </article>
+        <article class="ia-small">
+          <span class="ia-small-cat">IA Aplicada · AWS</span>
+          <h3 class="ia-small-title">A stack escolhida: Next.js, AWS e IA como copiloto real</h3>
+          <div class="ia-small-foot">
+            <div class="ia-small-meta"><span>14 NOV 2025</span><span>6 min</span></div>
+            <a class="ia-read" href="#">Ler →</a>
+          </div>
+        </article>
+        <article class="ia-small">
+          <span class="ia-small-cat">IA Aplicada · Bastidores</span>
+          <h3 class="ia-small-title">GPT-4 vs. Gemini: o teste que fiz em produção</h3>
+          <div class="ia-small-foot">
+            <div class="ia-small-meta"><span>03 JAN 2026</span><span>5 min</span></div>
+            <a class="ia-read" href="#">Ler →</a>
+          </div>
+        </article>
+        <article class="ia-small">
+          <span class="ia-small-cat">IA Aplicada</span>
+          <h3 class="ia-small-title">Automação com IA: tarefas que terceirizei para o modelo</h3>
+          <div class="ia-small-foot">
+            <div class="ia-small-meta"><span>18 JAN 2026</span><span>6 min</span></div>
+            <a class="ia-read" href="#">Ler →</a>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── O PROJETO ── -->
+<section class="home-section projeto-section" id="projeto" data-screen-label="O Projeto">
+  <div class="wrap">
+    <div class="sec-head-row">
+      <div class="left">
+        <div class="sec-ey">O Projeto · Build in Public</div>
+        <h2 class="sec-t">Bastidores em tempo real</h2>
+        <p class="sec-desc">Cada decisão, cada erro, cada custo — documentados ao vivo. Um registro honesto de como se constrói uma plataforma editorial com AWS e IA.</p>
+      </div>
+      <a class="sec-link" href="O Projeto.html">Ver toda a jornada →</a>
+    </div>
+    <div class="projeto-grid" data-audit="home-projeto-grid">
+      <article class="post-card">
+        <div class="pc-img t-petrol"><span class="tag">Bastidores</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">O Projeto</span>
+          <span class="pc-title">Por que vou construir este blog em público</span>
+          <span class="pc-excerpt">A decisão de abrir o processo inteiro — da stack ao custo — e o que espero aprender com isso. O ponto de partida de tudo.</span>
+        </div>
+        <div class="pc-foot"><span>07 NOV 2025</span><span class="more">Ler →</span></div>
+      </article>
+      <article class="post-card">
+        <div class="pc-img t-deep"><span class="tag">Bastidores</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">O Projeto</span>
+          <span class="pc-title">Os primeiros 30 dias e os custos reais na AWS</span>
+          <span class="pc-excerpt">Quanto custou cada serviço no primeiro mês. Onde esperava gastar mais e onde fui surpreendido — com os números reais na tela.</span>
+        </div>
+        <div class="pc-foot"><span>14 DEZ 2025</span><span class="more">Ler →</span></div>
+      </article>
+      <article class="post-card">
+        <div class="pc-img t-soft"><span class="tag">Bastidores</span></div>
+        <div class="pc-body">
+          <span class="pc-cat">O Projeto</span>
+          <span class="pc-title">Dashboard público: expondo métricas reais do blog</span>
+          <span class="pc-excerpt">Tráfego, custo AWS e receita — ao vivo, visíveis para qualquer visitante. A transparência radical na prática.</span>
+        </div>
+        <div class="pc-foot"><span>01 FEV 2026</span><span class="more">Ler →</span></div>
+      </article>
+    </div>
+    <div class="projeto-cta-strip" data-audit="home-projeto-cta-strip">
+      <div class="projeto-cta-left">
+        <div class="projeto-cta-label"><span class="dot"></span>Em produção · Fase 1</div>
+        <div class="projeto-cta-title">Acompanhe a jornada completa</div>
+        <div class="projeto-cta-stats">
+          <div class="projeto-cta-stat"><span class="pv">12</span><span class="pl">Posts publicados</span></div>
+          <div class="projeto-cta-stat"><span class="pv">~100%</span><span class="pl">Com IA</span></div>
+          <div class="projeto-cta-stat"><span class="pv">12 mo</span><span class="pl">Em produção</span></div>
+        </div>
+      </div>
+      <a class="btn-clay-strip" href="O Projeto.html">Ver O Projeto <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ASSESSORIA ── -->
+<section class="cta-adv" id="assessoria" data-screen-label="CTA Assessoria">
+  <div class="cta-adv-in" data-audit="home-cta-adv-in">
+    <div class="left">
+      <div class="ey2">Serviços · Consultoria</div>
+      <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
+      <p class="desc">Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.</p>
+      <ul class="points">
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span></li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Automação e <b>CI/CD</b> de ponta a ponta em código</span></li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Adoção de <b>IA</b> com foco em resultado, não em hype</span></li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="adv-card" data-audit="home-adv-card">
+        <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
+        <h3>Conheça todos os serviços</h3>
+        <p class="sub">Arquitetura, DevOps, FinOps, Serverless e mais — veja como posso ajudar o seu projeto.</p>
+        <div class="svc">
+          <span>Cloud · AWS</span><span>DevOps</span><span>IA aplicada</span><span>Mentoria</span>
+        </div>
+        <a class="btn-adv" href="Serviços.html">Ver todos os serviços <span class="arrow">→</span></a>
+        <div class="reassure">10 frentes de atuação · diagnóstico gratuito</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site" data-audit="footer">
+  <div class="foot-in" data-audit="footer-in">
+    <div class="foot-lead" data-audit="footer-lead">
+      <div class="manifesto" data-audit="footer-manifesto">Engenharia, IA e automação — <em>decifradas</em> por quem constrói em produção.</div>
+      <button class="to-top" id="toTop" type="button" aria-label="Voltar ao topo" data-audit="footer-to-top">
+        Voltar ao topo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>
+      </button>
+    </div>
+    <div class="foot-top" data-audit="footer-top">
+      <div class="foot-brand" data-audit="footer-brand">
+        <div class="b">Marcelo<span class="b2">Gonçalves</span></div>
+        <p>Tutoriais, bastidores e decisões reais de um blog construído do zero na AWS, quase 100% com IA.</p>
+        <span class="badge"><span class="dot"></span>No ar · construído com IA</span>
+      </div>
+      <div class="foot-col" data-audit="footer-col">
+        <h5>Categorias</h5>
+        <ul>
+          <li><a href="#">Inteligência Artificial</a></li>
+          <li><a href="#">DevOps</a></li>
+          <li><a href="#">Cloud · AWS</a></li>
+          <li><a href="#">Engenharia</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Links Rápidos</h5>
+        <ul>
+          <li><a href="#">Todos os Artigos</a></li>
+          <li><a href="O Projeto.html">O Projeto</a></li>
+          <li><a href="#">Serviços</a></li>
+          <li><a href="#">Sobre</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Contato</h5>
+        <a class="contact" href="mailto:contato@marcelogoncalves.com" data-audit="footer-contact">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></span>
+          contato@marcelogoncalves.com
+        </a>
+        <div class="foot-soc" data-audit="footer-soc">
+          <a href="#" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z"></path></svg></a>
+          <a href="#" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="#" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-7-6.1 7H2l8-9.2L1.5 2h7l4.8 6.4zm-2.4 18h1.9L7.6 4H5.6z"></path></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-watermark" aria-hidden="true" data-audit="footer-watermark">MarceloGonçalves</div>
+    <div class="foot-bottom" data-audit="footer-bottom">
+      <span>© 2026 Marcelo Gonçalves · Todos os direitos reservados</span>
+      <div class="links"><a href="#">Privacidade</a><a href="#">Termos</a><a href="#">RSS</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="progress" id="progress2" style="display:none"></div>
+
+<script>
+  // reading progress
+  const prog = document.getElementById('progress');
+  document.addEventListener('scroll', function() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }, { passive: true });
+
+  // to top
+  document.getElementById('toTop').addEventListener('click', function() {
+    document.documentElement.scrollTop = 0;
+  });
+
+  // newsletter
+  function handleNL(e) {
+    e.preventDefault();
+    const inp = document.getElementById('nlInput');
+    const btn = e.target.querySelector('.nl-submit');
+    btn.textContent = '✓ Inscrito!';
+    btn.style.background = 'var(--moss)';
+    inp.value = '';
+    inp.disabled = true;
+    setTimeout(function() {
+      btn.innerHTML = 'Assinar <span class="arrow">→</span>';
+      btn.style.background = '';
+      inp.disabled = false;
+    }, 3200);
+  }
+
+  // category pill filter (visual only)
+  document.querySelectorAll('.hpill').forEach(function(p) {
+    p.addEventListener('click', function() {
+      document.querySelectorAll('.hpill').forEach(function(x) { x.classList.remove('hpill--active'); });
+      p.classList.add('hpill--active');
+    });
+  });
+</script>
+
+
+</body></html>

@@ -234,6 +234,89 @@ img {
   padding: 0 var(--space-2);
 }
 
+/* Wrap — container do redesign 2026 (Petrol/Clay/Ivory) */
+.wrap {
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: 0 var(--wrap-pad-h);
+}
+
+@media (max-width: 680px) {
+  .wrap {
+    padding: 0 var(--wrap-pad-h-mobile);
+  }
+}
+
+/* Section head row — padrão de cabeçalho de seção do redesign 2026 */
+.sec-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: var(--sechead-gap);
+  flex-wrap: wrap;
+}
+
+.sec-head-row .left {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sec-ey {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sec-ey::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.sec-t {
+  font-weight: 800;
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  letter-spacing: -.035em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.sec-desc {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--slate);
+  max-width: 520px;
+  margin-top: 10px;
+}
+
+.sec-link {
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--petrol);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  border-bottom: 1px solid rgba(15, 76, 92, .25);
+  padding-bottom: 2px;
+  transition: gap .2s, border-color .2s;
+}
+
+.sec-link:hover {
+  gap: 11px;
+  border-color: var(--petrol);
+}
+
 .highlight,
 .accent {
   color: var(--clay);

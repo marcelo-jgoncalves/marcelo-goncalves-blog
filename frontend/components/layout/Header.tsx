@@ -1,5 +1,4 @@
-/* frontend/components/ui/layout/Header.tsx */
-
+/* frontend/components/layout/Header.tsx */
 
 'use client';
 
@@ -29,44 +28,38 @@ export default function Header() {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="op-header">
-      {/* 1. ADIÇÃO: aria-label para identificar a Landmark */}
-      <nav className="op-navbar" aria-label="Navegação Principal">
-        <Link href="/" className="op-logo" onClick={closeMenu}>
-          Marcelo<span>Gonçalves</span>
+    <header className="site-header" data-audit="header">
+      <div className="nav-in" data-audit="header-nav-in">
+        <Link href="/" className="brand" onClick={closeMenu} data-audit="header-brand">
+          <span>Marcelo</span><span className="b2">Gonçalves</span><span className="tick" aria-hidden="true" />
         </Link>
 
         {/* Menu Desktop */}
-        <div className="op-nav-links">
+        <nav className="menu" aria-label="Navegação Principal" data-audit="header-menu">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               prefetch={false}
-              className={`op-nav-link ${isActive(link.href) ? 'op-active' : ''}`}
+              className={isActive(link.href) ? 'active' : ''}
               aria-current={isActive(link.href) ? 'page' : undefined}
             >
               {link.name}
             </Link>
           ))}
-        </div>
+        </nav>
 
-        {/* Newsletter CTA — desktop only */}
-        <Link
-          href="/newsletter"
-          className="op-nav-cta"
-          prefetch={false}
-        >
-          Newsletter <i className="fas fa-arrow-right" aria-hidden="true" />
+        {/* CTA — desktop only */}
+        <Link href="/servicos" className="nav-cta" prefetch={false} data-audit="header-cta">
+          Assessoria <span className="arrow">→</span>
         </Link>
 
         {/* Botão Mobile */}
         <button
-          className="op-mobile-btn" 
+          className="nav-mobile-btn"
           onClick={toggleMenu}
-          aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
           aria-expanded={isMenuOpen}
-          /* ADIÇÃO: Controla o foco em dispositivos leitores de tela */
           aria-controls="mobile-menu-dropdown"
         >
           {isMenuOpen ? (
@@ -79,7 +72,7 @@ export default function Header() {
         {/* Menu Mobile */}
         <div
           id="mobile-menu-dropdown"
-          className={`op-mobile-menu ${isMenuOpen ? 'op-active' : ''}`}
+          className={`nav-mobile-menu ${isMenuOpen ? 'is-active' : ''}`}
           aria-hidden={!isMenuOpen}
         >
           {NAV_LINKS.map((link) => (
@@ -88,22 +81,17 @@ export default function Header() {
               href={link.href}
               prefetch={false}
               onClick={closeMenu}
-              className={`op-nav-link-mobile ${isActive(link.href) ? 'op-active' : ''}`}
+              className={isActive(link.href) ? 'active' : ''}
               aria-current={isActive(link.href) ? 'page' : undefined}
             >
               {link.name}
             </Link>
           ))}
-          <Link
-            href="/newsletter"
-            className="op-nav-cta-mobile"
-            onClick={closeMenu}
-            prefetch={false}
-          >
-            Newsletter <i className="fas fa-arrow-right" aria-hidden="true" />
+          <Link href="/servicos" className="nav-cta-mobile" onClick={closeMenu} prefetch={false}>
+            Assessoria <span className="arrow">→</span>
           </Link>
         </div>
-      </nav>
+      </div>
 
       <ReadingProgressBar />
     </header>

@@ -1,25 +1,22 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
-import ResponsiveImage from './ResponsiveImage';
-import CategoryTag from './CategoryTag';
 import './PostCard.css';
+import { formatDateShort } from '@/lib/format';
+
+const GRADIENT_VARIANTS = ['t-soft', 't-petrol', 't-clay', 't-teal', 't-deep', 't-moss'] as const;
 
 interface PostCardProps {
   post: {
     slug: string;
     titulo: string;
-    resumo: string;
-    imagem_destaque_url: string;
-    imagem_lqip_base64?: string;
+    resumo?: string;
     categoria_slug: string;
     categoria?: {
       nome_exibicao: string;
-      icone_fa?: string;
     };
     data_publicacao?: string;
-    tempo_leitura_min?: number;
   };
-  isPriority?: boolean;
+  dataAudit?: string;
 }
 
 function slugToName(slug?: string): string {
@@ -27,40 +24,33 @@ function slugToName(slug?: string): string {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-export default function PostCard({ post, isPriority = false }: PostCardProps) {
+function gradientVariant(slug: string): string {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+  }
+  return GRADIENT_VARIANTS[hash % GRADIENT_VARIANTS.length];
+}
+
+export default function PostCard({ post, dataAudit }: PostCardProps) {
   const categoriaNome = post.categoria?.nome_exibicao || slugToName(post.categoria_slug);
 
   return (
-    <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo}>
-
-      {post.imagem_destaque_url && (
-        <div className="post-card__image-wrapper">
-          <ResponsiveImage
-            src={post.imagem_destaque_url}
-            alt={`Imagem de capa: ${post.titulo}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="post-card__image"
-            priority={isPriority}
-            lqip={post.imagem_lqip_base64}
-          />
-        </div>
-      )}
-
-      <div className="post-card__content">
-        {categoriaNome && (
-          <CategoryTag text={categoriaNome} />
-        )}
-
-        <h3 className="post-card__title" title={post.titulo}>{post.titulo}</h3>
-
-        {post.resumo && (
-          <p className="post-card__excerpt">{post.resumo}</p>
-        )}
-
-        <span className="post-card__cta">Ler artigo →</span>
+    <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo} data-audit={dataAudit}>
+      <div className={`pc-img ${gradientVariant(post.slug)}`}>
+        {categoriaNome && <span className="tag">{categoriaNome}</span>}
       </div>
 
+      <div className="pc-body">
+        {categoriaNome && <span className="pc-cat">{categoriaNome}</span>}
+        <span className="pc-title" title={post.titulo}>{post.titulo}</span>
+        {post.resumo && <span className="pc-excerpt">{post.resumo}</span>}
+      </div>
+
+      <div className="pc-foot">
+        <span>{formatDateShort(post.data_publicacao)}</span>
+        <span className="more">Ler →</span>
+      </div>
     </Link>
   );
 }

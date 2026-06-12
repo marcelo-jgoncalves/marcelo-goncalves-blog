@@ -1,98 +1,115 @@
 /* frontend/components/ui/PostCard.css */
 
 .post-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: 20px;
-  border: none;
-  background: var(--surface);
+  height: 100%;
+  box-shadow: 0 2px 4px rgba(12, 32, 39, .03);
+  transition: transform .2s, box-shadow .2s;
   text-decoration: none;
   color: inherit;
-  height: 100%;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 @media (hover: hover) {
   .post-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 12px 12px 32px rgba(15, 76, 92, 0.14), -4px -4px 16px rgba(255, 255, 255, 0.90);
-  }
-
-  .post-card:hover .post-card__title {
-    color: var(--petrol);
-  }
-
-  .post-card:hover .post-card__image {
-    transform: scale(1.04);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(12, 32, 39, .09);
   }
 }
 
-/* ── Imagem ─────────────────────────────────────── */
-.post-card__image-wrapper {
+/* ── imagem (gradiente) ── */
+.post-card .pc-img {
+  aspect-ratio: 16 / 10;
   position: relative;
-  width: 100%;
-  height: 224px;
-  overflow: hidden;
-  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
 }
 
-.post-card__image {
-  object-fit: cover;
-  transition: transform 0.4s ease;
+.post-card .pc-img.t-petrol { background: linear-gradient(150deg, #0F4C5C 0%, #08323D 100%); }
+.post-card .pc-img.t-soft   { background: linear-gradient(150deg, #5B8B96 0%, #0F4C5C 100%); }
+.post-card .pc-img.t-clay   { background: linear-gradient(150deg, #C9603C 0%, #A94C2D 100%); }
+.post-card .pc-img.t-deep   { background: linear-gradient(150deg, #08323D 0%, #0C2027 100%); }
+.post-card .pc-img.t-moss   { background: linear-gradient(150deg, #3F6B47 0%, #0F4C5C 100%); }
+.post-card .pc-img.t-teal   { background: linear-gradient(150deg, #3A7A88 0%, #0F4C5C 100%); }
+
+.post-card .pc-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, .18));
+  pointer-events: none;
 }
 
-/* ── Corpo ───────────────────────────────────────── */
-.post-card__content {
+.post-card .pc-img .tag {
+  position: relative;
+  z-index: 1;
+  background: var(--ivory);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-weight: 600;
+  font-size: 11.5px;
+  color: var(--petrol);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
+}
+
+/* ── corpo ── */
+.post-card .pc-body {
+  padding: 20px 22px 14px;
   display: flex;
   flex-direction: column;
+  gap: 9px;
   flex: 1;
-  padding: var(--space-4);
 }
 
-.post-card__content .category-tag {
-  margin-bottom: var(--space-2);
+.post-card .pc-cat {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
 }
 
-.post-card__title {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  transition: color 0.2s ease;
-
+.post-card .pc-title {
+  font-weight: 800;
+  font-size: 17.5px;
+  letter-spacing: -.02em;
+  color: var(--petrol);
+  line-height: 1.22;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.post-card__excerpt {
-  margin: var(--space-3) 0 0;
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 400;
-  line-height: 1.78;
+.post-card .pc-excerpt {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--slate);
+  flex: 1;
+}
+
+/* ── rodapé ── */
+.post-card .pc-foot {
+  margin-top: auto;
+  padding: 12px 22px 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
   color: var(--steel);
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  /* autoprefixer: ignore next */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  letter-spacing: .04em;
 }
 
-.post-card__cta {
-  display: block;
-  margin-top: var(--space-3);
-  padding-top: 0;
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 900;
+.post-card .pc-foot .more {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13px;
   color: var(--petrol);
 }
