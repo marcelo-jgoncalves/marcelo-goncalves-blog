@@ -71,6 +71,21 @@ Você atua como **Autonomous Staff Engineer**, não como assistente passivo.
 
 Ver `memory/` para referência completa (`feedback_*.md`).
 
+### Regra de Bash — UMA operação por chamada (CRÍTICO)
+
+Nunca usar `&&`, `||`, `;`, `$()`, `&` final ou `>` em um único comando Bash — dispara prompt de permissão mesmo com `bypassPermissions` ativo.
+
+| Padrão proibido | Padrão correto |
+|---|---|
+| `cd "..." && npm run dev` | Chamada 1: `cd "..."` / Chamada 2: `npm run dev` |
+| `cd "..." && npm test` | Chamada 1: `cd "..."` / Chamada 2: `npm test` |
+| `cd "..." && terraform plan` | Chamada 1: `cd "..."` / Chamada 2: `terraform plan` |
+| `sleep 8 && curl ...` | Chamada 1: `sleep 8` / Chamada 2: `curl ...` |
+| `npm run dev > file.log &` | Chamada com `run_in_background: true`, sem `&` e sem `>` |
+| `cmd1 && cmd2 && cmd3` | 3 chamadas separadas |
+
+Ver `memory/feedback_bash_commands.md` para todos os padrões com exemplos.
+
 ---
 
 ## 3. Arquitetura

@@ -49,15 +49,29 @@ Monorepo (workspaces)
 
 ### Start All Servers
 
-```bash
-# Terminal 1: Frontend (Next.js + HMR on :3000)
-cd frontend && npm run dev
+**IMPORTANTE:** Nunca usar `&&` para encadear comandos — dispara prompt de permissão mesmo com bypassPermissions.
+Padrão correto: `cd` em chamada separada, depois `npm run dev` com `run_in_background: true`.
 
-# Terminal 2: Admin (Vue + Vite on :5173)  
-cd admin && npm run dev
+```
+# Chamada Bash 1 — navegar para o workspace:
+cd "c:\Users\Usuario\Desktop\projects\marcelo-goncalves-blog\frontend"
+
+# Chamada Bash 2 — iniciar servidor (run_in_background: true, sem & e sem >):
+npm run dev
+
+# Para admin, mesma sequência:
+# Chamada 3:
+cd "c:\Users\Usuario\Desktop\projects\marcelo-goncalves-blog\admin"
+# Chamada 4:
+npm run dev
 
 # Backend runs on AWS Lambda (no local dev server)
 # API Gateway: https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1
+```
+
+**Verificar se servidor subiu:** após `run_in_background` notificar, fazer chamada separada:
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
 ```
 
 ### Frontend (`http://localhost:3000`)
