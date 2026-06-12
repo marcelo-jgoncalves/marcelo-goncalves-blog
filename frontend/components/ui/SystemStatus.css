@@ -3,10 +3,10 @@
 /* Bloco Principal (BEM: Block) */
 .system-status-box {
   background: #ffffff;
-  border: 1px solid var(--gray-300, #e2e8f0);
+  border: 1px solid var(--line, var(--line));
   border-radius: var(--radius-lg, 12px);
   padding: 24px; /* Macro-ritmo de 3x 8px */
-  box-shadow: var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.05));
+  box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.05));
   text-align: left;
 }
 
@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px; /* Ritmo 2x 8px */
-  border-bottom: 1px solid var(--gray-300, #e2e8f0);
+  border-bottom: 1px solid var(--line, var(--line));
   padding-bottom: 8px; /* Ritmo 1x 8px */
 }
 
@@ -24,7 +24,7 @@
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--slate-500);
+  color: var(--steel);
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
@@ -52,7 +52,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px; /* Ritmo 2x 8px */
-  color: var(--dark-900);
+  color: var(--ink);
 }
 
 .system-status-row {
@@ -73,9 +73,9 @@
 }
 
 /* Modificadores de Cores (BEM: Modifiers via classe extra) */
-.system-status-icon-version { color: var(--blue-600, #3182ce); }
-.system-status-icon-env     { color: var(--accent); }
-.system-status-icon-region  { color: var(--slate-500); }
+.system-status-icon-version { color: var(--petrol); }
+.system-status-icon-env     { color: var(--petrol); }
+.system-status-icon-region  { color: var(--steel); }
 .system-status-icon-uptime  { color: #ecc94b; }
 
 .system-status-value-normal {

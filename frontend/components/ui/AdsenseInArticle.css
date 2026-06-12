@@ -55,7 +55,7 @@
 
 /* 6. Estilo do Mock (Somente Ambiente de Desenvolvimento) */
 .op-adsense-dev-mock {
-  background-color: #f8fafc;
+  background-color: var(--sand);
   border: 1px dashed #cbd5e1;
   color: #64748b;
   font-family: var(--font-display);

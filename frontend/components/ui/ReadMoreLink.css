@@ -5,7 +5,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px; /* Ritmo de 8px */
-  color: var(--accent);
+  color: var(--petrol);
   font-family: var(--font-display), sans-serif;
   font-size: var(--text-base);
   font-weight: 600;
@@ -27,7 +27,7 @@
 /* Modificadores e Estados */
 @media (hover: hover) {
   .read-more-link:hover {
-    color: var(--accent-hover);
+    color: var(--petrol-deep);
   }
 
   .read-more-link:hover .read-more-link__icon {

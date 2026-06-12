@@ -14,7 +14,7 @@
   margin-bottom: var(--space-4);
   text-align: center;
   padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 
 .service-item:last-child {
@@ -26,12 +26,12 @@
 .service-icon {
   width: 70px;
   height: 70px;
-  background-color: var(--accent-light);
+  background-color: rgba(15, 76, 92, 0.08);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--petrol);
   font-size: 2rem;
   margin: 0 auto;
   flex-shrink: 0;

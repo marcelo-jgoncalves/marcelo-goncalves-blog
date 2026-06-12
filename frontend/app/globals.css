@@ -5,165 +5,80 @@
 
 /* =========================================
    0. VARIÁVEIS E TOKENS (:root)
-   Sistema de design unificado — Session 30+ (design-reference.md + ritmo-vertical-contract.md)
+   Redesign 2026 — paleta Petrol / Clay / Ivory (specs/ESPECIFICACAO-*.md)
    ========================================= */
 :root {
   /* ─────────────────────────────────────
-     BRAND — Accent & Dark
+     PALETA — Petrol / Clay / Ivory
+     Declarada de forma idêntica nas 7 especificações do redesign
+     (Home, Post, Artigos, Sobre, Serviços, O Projeto, 404)
      ───────────────────────────────────── */
-
-  /* Accent — Classic Blue (#3B5F8A) — CTAs, links, tags, ativo, eyebrow lines */
-  --accent:            #3B5F8A;
-  --accent-hover:      #2D4F76;
-  --accent-press:      #1E3A57;
-  --accent-light:      #8AAEC8;  /* ícones secundários, gradientes placeholder */
-  --accent-soft:       #D0E4F2;  /* bordas suaves, separadores */
-  --accent-muted:      #EBF1F8;  /* fundo badges, ícones categoria, hover ghost button */
-  --accent-petrol:     #0F4C5C;  /* teal petrol — variante escura */
-
-  /* Alpha scales */
-  --accent-10:         rgba(59, 95, 138, 0.10);  /* frames subtis, hovers */
-  --accent-18:         rgba(59, 95, 138, 0.18);  /* bordas de tag */
-
-  /* Dark — Near Black (#111827) */
-  --dark-900:          #111827;  /* fundo seções dark, code blocks, texto primário */
-  --dark-800:          #1F2937;  /* superfícies dark, footer */
-  --dark-700:          #374151;  /* hover em superfícies escuras, texto corpo */
-  --dark-600:          #475569;  /* texto secondary, bio autor */
-
-  /* Legacy aliases (warm theme) */
-  --accent-warm:       #da7b26;  /* amber — dot, ícones meta, detalhes */
-  --dark-warm:         #1E374C;  /* navy escuro — texto primário tema warm */
-  --dark-warm-border:  #C8D9EE;  /* borda padrão */
-  --dark-warm-separator: rgba(30, 55, 76, 0.12);
-  --dark-warm-muted:   rgba(30, 55, 76, 0.65);
-  --dark-warm-body:    rgba(30, 55, 76, 0.80);
+  --petrol:        #0F4C5C;
+  --petrol-deep:   #08323D;
+  --petrol-soft:   #5B8B96;
+  --ink:           #0C2027;
+  --slate:         #3C5A64;
+  --steel:         #7E969E;
+  --ivory:         #FAF8F3;
+  --surface:       #FFFFFF;
+  --sand:          #F0ECE2;
+  --line:          #E4DDD0;
+  --clay:          #C9603C;
+  --clay-hover:    #A94C2D;
+  --clay-soft:     #F3DDD0;
+  --moss:          #3F6B47;
 
   /* ─────────────────────────────────────
-     NEUTRALS — Slate Scale (4 ou 10 passos)
+     LAYOUT
      ───────────────────────────────────── */
-
-  /* Compact neutral scale (legacy) */
-  --slate-50:          #F8FAFC;
-  --slate-100:         #F1F5F9;
-  --slate-200:         #E2E8F0;
-  --slate-300:         #CBD5E1;
-  --slate-400:         #94A3B8;
-  --slate-500:         #64748B;
-
-  /* Full neutral scale (design-reference.md) — Use `--neutral-*` for new work */
-  --neutral-50:        #F8FAFC;   /* background páginas, fundo labels */
-  --neutral-100:       #F1F5F9;   /* background inputs, inline code */
-  --neutral-200:       #E2E8F0;   /* bordas inputs, divisores */
-  --neutral-300:       #CBD5E1;   /* bordas secundárias */
-  --neutral-400:       #94A3B8;   /* placeholders, labels seção */
-  --neutral-500:       #6B7280;   /* texto muted (metadata, captions) */
-  --neutral-600:       #475569;   /* texto secondary, bio */
-  --neutral-700:       #374151;   /* texto corpo, UI */
-  --neutral-800:       #1F2937;   /* superfície dark */
-  --neutral-900:       #111827;   /* texto primário, headings */
+  --read:              720px;       /* largura de leitura — post page */
 
   /* ─────────────────────────────────────
-     TEXT — Semantic (design-reference.md)
+     TYPOGRAPHY — Famílias
      ───────────────────────────────────── */
-  --text-primary:      #111827;   /* headings, logo */
-  --text-body:         #374151;   /* prosa, UI labels — USAR ESTE para corpo */
-  --text-secondary:    #475569;   /* UI small, excerpt */
-  --text-muted:        #6B7280;   /* metadata, captions, timestamps */
-  --text-placeholder:  #94A3B8;   /* input placeholder */
-  --text-invert:       #FFFFFF;   /* sobre fundo escuro */
-
-  /* Aliases — Para compatibilidade backward */
-  --text-ghost:        rgba(30, 55, 76, 0.40);   /* placeholder, disabled */
-  --heading-color:     #1E374C;                  /* títulos, subtítulos, headings */
-  --text-default:      #1E374C;                  /* = --dark-warm (navy) — deprecated, use --heading-color */
-  --text-heading:      #3B5F8A;                  /* = --accent */
-
-  /* ─────────────────────────────────────
-     SURFACES — Editorial System (Session 30)
-     ───────────────────────────────────── */
-  --surface-page:      #EEF3FA;   /* fundo das páginas */
-  --surface-elevated:  #E6EEF8;   /* hero/nav — levemente mais escuro */
-  --surface-card:      #F5F8FC;   /* cards/widgets — degrau acima da página */
-  --surface-inset:     #E0ECF7;   /* fundos bloco interno — th, tint callout */
-  --surface-glass:     rgba(255, 255, 255, 0.82);
-  --surface-soft:      rgba(248, 250, 252, 0.85);
-
-  /* Legacy aliases */
-  --paper:             #FAF8F3;   /* ivory quente — backgrounds protótipo */
-  --bg-warm:           #EEF3FA;   /* = --surface-page */
-  --bg-widget:         #EEF3FA;   /* widgets/cards sidebar */
-  --bg-warm-strong:    #E6EEF8;   /* = --surface-elevated */
-  --bg-warm-nav:       #E6EEF8;   /* header sticky */
-  --bg-warm-menu:      #E6EEF8;   /* mobile menu */
-
-  /* ─────────────────────────────────────
-     BORDERS — Semantic
-     ───────────────────────────────────── */
-  --border-subtle:     #DDE8F3;   /* separadores internos, divisores leves */
-  --border-default:    #C8D9EE;   /* bordas padrão cards */
-  --border-strong:     #A3BDD9;   /* inputs, bordas enfatizadas */
-  --border-color:      #E2E8F0;   /* fallback genérico */
-
-  /* ─────────────────────────────────────
-     SEPARATORS
-     ───────────────────────────────────── */
-  --separator-light:   rgba(30, 55, 76, 0.06);
-  --separator:         rgba(30, 55, 76, 0.12);
-
-  /* ─────────────────────────────────────
-     SEMANTIC — Links & Callouts (design-reference.md)
-     ───────────────────────────────────── */
-  --link:              #3182CE;   /* links editoriais */
-  --link-hover:        #1E374C;   /* hover → navy */
-
-  /* Info / Warning / Danger (design-reference.md §2 Semânticas) */
-  --info-bg:           #EEF4FB;
-  --info-border:       #9DBFE0;
-  --info-text:         #1E3A5F;
-  --callout-info-text: #2c5282;
-
-  --warning-bg:        #FFFBEB;
-  --warning-border:    #FDE68A;
-  --warning-text:      #78350F;
-  --callout-warning-text: #744210;
-
-  --danger-bg:         #FEF2F2;
-  --danger-border:     #FECACA;
-  --danger-text:       #7F1D1D;
-  --error-input:       #EF4444;
-
-  --success-bg:        #DCFCE7;
-  --success-text:      #166534;
-
-  /* Coral scale — newsletter CTA (prot-pre-footer-CTAs) */
-  --coral:             #E89B8E;   /* accent principal */
-  --coral-light:       #F2B0A4;   /* hover */
-  --coral-pale:        #F0CCC4;   /* disabled bg */
-  --coral-muted:       #B47D72;   /* disabled texto */
-
-  /* ─────────────────────────────────────
-     CODE THEME
-     ───────────────────────────────────── */
-  --code-inline-bg:    #edf2f7;
-  --code-inline-color: #d53f8c;
-  --code-header-bg:    #19212c;
-  --code-header-text:  #a0aec0;
-
-  /* Syntax highlighting (design-reference.md) */
-  --code-keyword:      #8AAEC8;   /* import, const, etc. */
-  --code-string:       #86EFAC;   /* strings */
-  --code-function:     #7DD3FC;   /* function names */
-  --code-comment:      #475569;   /* comments */
-
-  /* ─────────────────────────────────────
-     TYPOGRAPHY — Famílias (design-reference.md §3)
-     ───────────────────────────────────── */
-  /* IMPORTANTE: --font-display deve ser DM Sans (headings/UI), não Inter */
-  --font-display:      'DM Sans', 'Inter', sans-serif;  /* headings, botões, nav, labels */
+  --font:              'Inter', system-ui, sans-serif;
+  --mono:              'JetBrains Mono', ui-monospace, monospace;
+  --font-display:      'Inter', sans-serif;  /* headings, botões, nav, labels */
   --font-sans:         'Inter', sans-serif;             /* body, prosa, inputs */
   --font-body:         'Inter', sans-serif;             /* alias de --font-sans */
   --font-mono:         'JetBrains Mono', monospace;
+
+  /* ─────────────────────────────────────
+     ESCALA DE ESPAÇAMENTO — Redesign 2026, base 4px
+     Fonte: specs/Especificação de Espaçamento.html — "fonte única de verdade"
+     Nunca usar valores fora desta escala sem aprovação explícita.
+     ───────────────────────────────────── */
+  --sp-1:    4px;   /* micro — pontos, separadores finos */
+  --sp-2:    8px;   /* xs — gap de ícone/label, padding de badge */
+  --sp-3:   12px;   /* sm — gap de nav links, gap de lista no footer */
+  --sp-4:   16px;   /* base — margin-top de texto secundário, badge margin */
+  --sp-5:   20px;   /* md — gap de grid especialidade, margin de badge */
+  --sp-6:   24px;   /* lg — gap de botão, padding nav h */
+  --sp-7:   32px;   /* xl — inset compacto de card, hero-actions margin */
+  --sp-8:   40px;   /* 2xl — padding horizontal do wrap */
+  --sp-9:   48px;   /* 3xl — margin-bottom do sec-head, padding XL de card */
+  --sp-10:  64px;   /* 4xl — padding seção apertada / hero postagem */
+  --sp-11:  80px;   /* 5xl — padding seção accent/band escura */
+  --sp-12:  96px;   /* 6xl — padding canônico de seção */
+  --sp-13: 128px;   /* 7xl — padding-top do layout de postagem */
+
+  /* ── aliases semânticos (usados no código) ── */
+  --gap-grid:           22px;          /* gap entre cards em grade padrão */
+  --gap-grid-sm:        20px;          /* gap entre cards em grids de especialidade */
+  --eyebrow-gap:        14px;          /* eyebrow → título */
+  --title-gap:          10px;          /* título → descrição */
+  --sechead-gap:        var(--sp-9);   /* 48px — cabeçalho de seção → conteúdo (left-aligned) */
+  --sechead-center-gap: 56px;          /* cabeçalho de seção → conteúdo (centered) */
+  --nav-height:         68px;          /* altura do nav sticky */
+  --wrap-max:           1240px;        /* max-width padrão das páginas */
+  --wrap-max-narrow:    1180px;        /* max-width estreito (postagem, O Projeto) */
+  --wrap-pad-h:         var(--sp-8);   /* 40px — padding horizontal do wrap */
+  --wrap-pad-h-mobile:  20px;          /* padding horizontal no mobile (<680px) */
+  --section-pad:        var(--sp-12); /* 96px — padding vertical de seção padrão */
+  --section-accent:     var(--sp-11); /* 80px — padding seções accent/dark band */
+  --section-cta:        88px;          /* padding vertical de CTAs */
+  --hero-top:           88px;          /* padding-top canônico do hero */
+  --stats-top:          56px;          /* margin-top do stats strip dentro do hero */
 
   /* ─────────────────────────────────────
      TYPE SCALE — 9 tokens, base 18px (ritmo-vertical-contract.md §1)
@@ -179,7 +94,6 @@
   --text-4xl:          3.5rem;      /*    63px — h1 artigo (máximo) */
 
   /* ─────────────────────────────────────
-  /* ─────────────────────────────────────
      BORDER RADIUS (design-reference.md §4)
      ───────────────────────────────────── */
   --radius-sm:         4px;         /* tags, badges, syntax code */
@@ -194,35 +108,18 @@
   --border-radius-lg:  12px;
 
   /* ─────────────────────────────────────
-     SHADOWS (design-reference.md §5 + premium layer Session 25)
+     SHADOWS — genéricas (preto/ink)
      ───────────────────────────────────── */
-  /* Base shadows */
   --shadow-sm:         0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md:         0 5px 15px rgba(0,0,0,0.05);
   --shadow-lg:         0 10px 20px rgba(0,0,0,0.1);
   --shadow-xl:         0 20px 40px rgba(0,0,0,0.12);
-  --shadow-accent:     0 10px 20px rgba(59,95,138,0.22);
-
-  /* Premium shadows (accent-tinted — Session 25) */
-  --shadow-soft:       0 1px 3px rgba(59,95,138,0.07), 0 2px 12px rgba(0,0,0,0.04);
-  --shadow-float:      0 4px 20px rgba(59,95,138,0.11), 0 1px 6px rgba(0,0,0,0.05);
-  --shadow-authority:  0 8px 40px rgba(59,95,138,0.18), 0 2px 12px rgba(0,0,0,0.08);
 
   /* ─────────────────────────────────────
-     NEUMORPHISM — Elevação soft (base: #EEF3FA)
-     ───────────────────────────────────── */
-  --neu-raised:        8px 8px 20px rgba(59, 95, 138, 0.10), -8px -8px 20px rgba(255, 255, 255, 0.80);
-  --neu-soft:          4px 4px 12px rgba(59, 95, 138, 0.08), -4px -4px 12px rgba(255, 255, 255, 0.70);
-  --neu-subtle:        2px 2px 8px rgba(59, 95, 138, 0.06), -2px -2px 8px rgba(255, 255, 255, 0.60);
-  --neu-inset:         inset 3px 3px 8px rgba(59, 95, 138, 0.10), inset -3px -3px 8px rgba(255, 255, 255, 0.70);
-
-  /* ─────────────────────────────────────
-     GRADIENTS
-     ───────────────────────────────────── */
-  --bg-light-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-
-  /* ─────────────────────────────────────
-     SPACING SCALE — 10 tokens, múltiplos de 8 (ritmo-vertical-contract.md §1)
+     SPACING SCALE (LEGACY — sessão 30) — 10 tokens, múltiplos de 8
+     Superseded por --sp-1.. --sp-13 (base 4px) acima. Mantido apenas
+     porque ainda consumido por .container/.page-layout/.btn/section/etc.
+     Remover conforme componentes forem migrados para --sp-*.
      ───────────────────────────────────── */
   --space-1:           8px;        /* micro: badges, gap inline, eyebrow→título widget */
   --space-2:           16px;       /* pequeno: meta-row, margin ícone, gap card */
@@ -263,16 +160,16 @@ body {
   overflow-x: hidden;
   font-family: var(--font-sans);
   font-size: 18px;
-  color: var(--text-body);          /* #374151 — cor semântica oficial */
-  background-color: var(--surface-page);  /* #EEF3FA */
+  color: var(--ink);
+  background-color: var(--ivory);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings — DM Sans (--font-display), cor navy (#1E374C) não accent */
+/* Headings — Inter (--font-display), cor ink (#0C2027) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);  /* DM Sans */
-  color: var(--text-primary);        /* #111827 (dark) — NOT accent */
+  font-family: var(--font-display);
+  color: var(--ink);
   margin: 0;
   font-weight: 700;
 }
@@ -306,15 +203,15 @@ h5, h6 {
   font-weight: 600;
 }
 
-/* Links — Accent (#3B5F8A) com hover navy (#1E374C) */
+/* Links — Petrol (#0F4C5C) com hover Clay (#C9603C) */
 a {
-  color: var(--link);                /* #3182CE */
+  color: var(--petrol);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--link-hover);          /* #1E374C */
+  color: var(--clay);
 }
 
 ul, ol {
@@ -339,7 +236,7 @@ img {
 
 .highlight,
 .accent {
-  color: var(--dark-warm);
+  color: var(--clay);
 }
 
 /* Visibilidade responsiva */
@@ -375,7 +272,7 @@ img {
   align-items: center;
   gap: var(--space-2);             /* 16px entre ícone + texto */
   padding: 11px 26px;              /* tamanho padrão (--btn) */
-  background-color: var(--accent);
+  background-color: var(--clay);
   color: #ffffff;
   border-radius: var(--radius-md); /* 6px */
   font-family: var(--font-display);
@@ -388,8 +285,8 @@ img {
 
 .btn:hover {
   transform: translateY(-2px);
-  background-color: var(--accent-hover);
-  box-shadow: var(--shadow-accent);
+  background-color: var(--clay-hover);
+  box-shadow: 0 10px 20px rgba(201, 96, 60, 0.22);
 }
 
 /* Button sizes */
@@ -403,16 +300,16 @@ img {
   font-size: 1.05rem;
 }
 
-/* Outline variant — Accent border */
+/* Outline variant — Clay border */
 .btn-outline {
   background-color: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
+  border: 2px solid var(--clay);
+  color: var(--clay);
   font-family: var(--font-display);
 }
 
 .btn-outline:hover {
-  background-color: var(--accent);
+  background-color: var(--clay);
   color: #ffffff;
   transform: translateY(-2px);
 }
@@ -420,13 +317,13 @@ img {
 /* Outline Dark variant */
 .btn-outline-dark {
   background-color: transparent;
-  border: 2px solid var(--text-primary);
-  color: var(--text-primary);
+  border: 2px solid var(--ink);
+  color: var(--ink);
   font-family: var(--font-display);
 }
 
 .btn-outline-dark:hover {
-  background-color: var(--text-primary);
+  background-color: var(--ink);
   color: #ffffff;
   transform: translateY(-2px);
 }
@@ -435,11 +332,11 @@ img {
 .btn-ghost {
   background-color: transparent;
   border: none;
-  color: var(--accent);
+  color: var(--clay);
 }
 
 .btn-ghost:hover {
-  background-color: var(--accent-muted);  /* #EBF1F8 */
+  background-color: var(--clay-soft);
   transform: translateY(-2px);
 }
 
@@ -452,7 +349,7 @@ img {
 
 .btn-white:hover {
   background-color: white;
-  color: var(--text-primary);
+  color: var(--ink);
   transform: translateY(-2px);
 }
 

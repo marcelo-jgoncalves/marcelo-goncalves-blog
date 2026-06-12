@@ -9,7 +9,7 @@
   gap: 16px; /* Ritmo 2x 8px */
   padding: 24px 0; /* Ritmo 3x 8px */
   margin: 0;
-  border-top: 1px solid var(--dark-warm-border);
+  border-top: 1px solid var(--line);
   width: 100%;
 }
 
@@ -30,7 +30,7 @@
   line-height: 1.1;
   font-weight: 900;
   letter-spacing: -0.05em;
-  color: var(--dark-warm);
+  color: var(--ink);
   margin: 0;
   text-align: left;
 }
@@ -73,15 +73,15 @@
 
 /* Botão copiar — mesmo estilo do share-widget__btn */
 .share-buttons-copy {
-  background: var(--accent-10);
-  border: 1px solid var(--accent-18);
-  color: var(--accent);
+  background: rgba(15, 76, 92, 0.10);
+  border: 1px solid rgba(15, 76, 92, 0.18);
+  color: var(--petrol);
   border-radius: 16px;
 }
 
 .share-buttons-copy.copied {
-  background: rgba(59, 95, 138, 0.15);
-  border-color: rgba(59, 95, 138, 0.30);
+  background: rgba(15, 76, 92, 0.15);
+  border-color: rgba(15, 76, 92, 0.30);
   color: #22c55e;
 } 
 
@@ -95,6 +95,6 @@
 
 /* Acessibilidade de Teclado */
 .share-buttons-btn:focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--petrol);
   outline-offset: 4px;
 }

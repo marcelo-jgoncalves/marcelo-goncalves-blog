@@ -4,8 +4,8 @@
 .formacao-widget {
   padding: var(--space-3);
   border-radius: 16px;
-  background: var(--accent-light);
-  border: 1px solid rgba(59, 95, 138, 0.12);
+  background: rgba(15, 76, 92, 0.08);
+  border: 1px solid rgba(15, 76, 92, 0.12);
   box-shadow:
     0 10px 40px rgba(15, 23, 42, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -22,7 +22,7 @@
   font-size: var(--text-3xl);
   letter-spacing: -0.04em;
   line-height: 1.15;
-  color: var(--dark-900);
+  color: var(--ink);
   margin: 0;
 }
 
@@ -52,7 +52,7 @@
 @media (hover: hover) {
   .formacao-widget__item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(59, 95, 138, 0.10);
+    box-shadow: 0 8px 24px rgba(15, 76, 92, 0.10);
   }
 }
 
@@ -61,7 +61,7 @@
   font-weight: 700;
   letter-spacing: 0.20em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--petrol);
   line-height: 1;
 }
 
@@ -71,6 +71,6 @@
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  color: var(--dark-900);
+  color: var(--ink);
 }
 

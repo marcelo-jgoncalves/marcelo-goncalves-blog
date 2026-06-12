@@ -22,7 +22,7 @@
 .op-artigos-layout-root .page-hero {
   padding-top: var(--space-7);
   padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 
 /* Eyebrow — mesmo padrão do home hero */
@@ -31,12 +31,12 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--petrol);
   margin-bottom: var(--space-2);
 }
 
 .op-hero-title {
-  color: var(--accent);
+  color: var(--petrol);
   font-size: var(--text-3xl);
   font-weight: 800;
   line-height: 0.92;
@@ -51,7 +51,7 @@
 /* Descrição abaixo do título */
 .op-hero-desc {
   font-size: var(--text-lg);
-  color: var(--slate-500);
+  color: var(--steel);
   line-height: 1.6;
   max-width: 720px;
   margin: 0 auto var(--space-4);
@@ -80,7 +80,7 @@
 
 .op-search-btn {
   width: 80px;
-  background-color: var(--accent);
+  background-color: var(--petrol);
   color: white;
   border: none;
   cursor: pointer;
@@ -91,7 +91,7 @@
 }
 
 .op-search-btn:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--petrol-deep);
 }
 
 /* Category filter tags */
@@ -105,20 +105,20 @@
 
 .op-hero-tag {
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--slate-500);
+  color: var(--steel);
   text-decoration: none;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 @media (hover: hover) {
   .op-hero-tag:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--petrol);
+    color: var(--petrol);
   }
 }
 

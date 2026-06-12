@@ -1,11 +1,11 @@
 /* frontend/components/ui/ProjetoWidget.css */
 
 .projeto-widget {
-  background: var(--accent-press);
+  background: var(--petrol-deep);
   color: #ffffff;
   border-radius: 16px;
   padding: var(--space-4);
-  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
+  box-shadow: 0 8px 32px rgba(12, 32, 39, 0.32);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -43,7 +43,7 @@
 @media (hover: hover) {
   .projeto-widget:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-float);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -91,7 +91,7 @@
   height: 56px;
   padding: 0;
   background-color: #ffffff;
-  color: var(--accent);
+  color: var(--petrol);
   text-decoration: none;
   font-weight: 700;
   font-family: var(--font-display);

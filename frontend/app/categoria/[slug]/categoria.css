@@ -19,13 +19,13 @@
 }
 
 .categoria-empty__msg {
-  color: var(--slate-500);
+  color: var(--steel);
   font-size: 1.1rem;
   margin-bottom: var(--space-3);
 }
 
 .categoria-empty__link {
-  color: var(--accent);
+  color: var(--petrol);
   font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
@@ -33,5 +33,5 @@
 }
 
 .categoria-empty__link:hover {
-  color: var(--accent-hover);
+  color: var(--petrol-deep);
 }

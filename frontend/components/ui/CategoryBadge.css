@@ -5,9 +5,9 @@
   align-items: center;
   justify-content: center;
   
-  background-color: var(--accent-light);
-  color: var(--accent);
-  border: 1px solid rgba(59, 95, 138, 0.2);
+  background-color: rgba(15, 76, 92, 0.08);
+  color: var(--petrol);
+  border: 1px solid rgba(15, 76, 92, 0.2);
   
   font-family: var(--font-display);
   font-weight: 600;
@@ -21,10 +21,10 @@
 /* Interação Acessível (Mobile-First Hover) */
 @media (hover: hover) {
   .category-badge:hover {
-    background-color: var(--accent);
+    background-color: var(--petrol);
     color: #ffffff;
     transform: translateY(-2px); /* Micro-interação premium */
-    box-shadow: 0 4px 6px -1px rgba(59, 95, 138, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(15, 76, 92, 0.2);
   }
 }
 

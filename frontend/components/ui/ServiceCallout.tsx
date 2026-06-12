@@ -7,7 +7,7 @@ import './ServiceCallout.css';
 export default function ServiceCallout() {
   return (
     <section className="op-service-callout" aria-labelledby="op-callout-title">
-      <Eyebrow text="Consultoria" color="var(--bg-widget)" />
+      <Eyebrow text="Consultoria" color="var(--surface)" />
 
       <h3 id="op-callout-title" className="op-callout-title">
         Precisa de ajuda <br /> com seu projeto, aplicação ou ambiente?

@@ -1,7 +1,7 @@
 /* NewsletterCTA — Opção D · Coral (prot-pre-footer-CTAs) */
 
 .nl-cta {
-  background: var(--accent);
+  background: var(--petrol);
   padding: 64px 0;
   margin-block: 0;
   position: relative;
@@ -15,8 +15,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(55% 70% at 100% 0%,   var(--accent-18), transparent 60%),
-    radial-gradient(45% 80% at 0%  100%,  rgba(30, 55, 76, 0.45),  transparent 70%);
+    radial-gradient(55% 70% at 100% 0%,   rgba(15, 76, 92, 0.18), transparent 60%),
+    radial-gradient(45% 80% at 0%  100%,  rgba(12, 32, 39, 0.45),  transparent 70%);
 }
 
 /* ── Grid 2 colunas ────────────────────────────────────── */
@@ -68,7 +68,7 @@
 .nl-cta__title em {
   font-style: italic;
   font-weight: 700;
-  color: var(--dark-warm);
+  color: var(--ink);
 }
 
 .nl-cta__desc {
@@ -157,18 +157,18 @@
 }
 
 .nl-cta__btn:disabled {
-  background: var(--coral-pale);
-  color: var(--coral-muted);
+  background: var(--clay-soft);
+  color: var(--clay-hover);
   cursor: not-allowed;
 }
 
 .nl-cta__btn:not(:disabled) {
-  background: var(--coral);
+  background: var(--clay);
   color: #FEF6E6;
 }
 
 .nl-cta__btn:not(:disabled):hover {
-  background: var(--coral-light);
+  background: var(--clay);
 }
 
 .nl-cta__arrow {
@@ -223,8 +223,8 @@
   content: "";
   width: 10px;
   height: 6px;
-  border-left: 2px solid #1E374C;
-  border-bottom: 2px solid #1E374C;
+  border-left: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
   transform: rotate(-45deg) translate(1px, -1px);
   display: block;
 }
@@ -237,15 +237,15 @@
 }
 
 .nl-cta__consent-label a {
-  color: var(--coral);
+  color: var(--clay);
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid rgba(232, 155, 142, 0.50);
+  border-bottom: 1px solid rgba(201, 96, 60, 0.50);
 }
 
 .nl-cta__consent-label a:hover {
-  color: var(--coral-light);
-  border-bottom-color: var(--coral-light);
+  color: var(--clay);
+  border-bottom-color: var(--clay);
 }
 
 /* Trust */
@@ -270,7 +270,7 @@
 }
 
 .nl-cta__check {
-  color: var(--coral);
+  color: var(--clay);
 }
 
 /* Sucesso */

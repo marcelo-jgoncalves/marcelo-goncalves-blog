@@ -5,7 +5,7 @@ interface EyebrowProps {
   color?: string;
 }
 
-export default function Eyebrow({ text, color = 'var(--accent)' }: EyebrowProps) {
+export default function Eyebrow({ text, color = 'var(--petrol)' }: EyebrowProps) {
   return (
     <span className="eyebrow" style={{ color }}>
       {text}

@@ -37,7 +37,7 @@ export default function RootOgImage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h1
             style={{
-              color: '#f8fafc',
+              color: 'var(--sand)',
               fontSize: '64px',
               fontWeight: 800,
               lineHeight: 1.1,

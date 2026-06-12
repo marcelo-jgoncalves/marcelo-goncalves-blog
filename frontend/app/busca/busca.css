@@ -18,7 +18,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   background: white;
 }
 
@@ -27,7 +27,7 @@
   border: none;
   padding: 18px 25px;
   font-size: var(--text-lg);
-  color: var(--dark-700);
+  color: var(--slate);
   outline: none;
   text-align: left;
 }
@@ -38,7 +38,7 @@
 
 .search-button {
   border: none;
-  background-color: var(--accent);
+  background-color: var(--petrol);
   color: white;
   padding: 0 30px;
   font-size: var(--text-lg);
@@ -51,7 +51,7 @@
 }
 
 .search-button:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--petrol-deep);
 }
 
 @media (min-width: 768px) {

@@ -11,24 +11,24 @@
 
 .legal-updated {
   font-size: var(--text-sm);
-  color: var(--slate-500);
+  color: var(--steel);
   margin-bottom: var(--space-4);
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 
 .legal-content h2 {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--text-lg);
-  color: var(--accent);
+  color: var(--petrol);
   margin-top: var(--space-4);
   margin-bottom: var(--space-2);
 }
 
 .legal-content p {
   font-size: var(--text-base);
-  color: var(--dark-700);
+  color: var(--slate);
   line-height: 1.75;
   margin-bottom: var(--space-2);
 }
@@ -40,16 +40,16 @@
 
 .legal-content ul li {
   font-size: var(--text-base);
-  color: var(--dark-700);
+  color: var(--slate);
   line-height: 1.75;
   margin-bottom: 6px;
 }
 
 .legal-content a {
-  color: var(--accent);
+  color: var(--petrol);
   text-decoration: underline;
 }
 
 .legal-content a:hover {
-  color: var(--accent-hover);
+  color: var(--petrol-deep);
 }

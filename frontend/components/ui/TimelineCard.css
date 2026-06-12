@@ -2,11 +2,11 @@
 
 .op-project-card {
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.28s ease, box-shadow 0.28s ease;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -15,7 +15,7 @@
 @media (hover: hover) {
   .op-project-card:hover {
     transform: translateY(-6px);
-    box-shadow: var(--shadow-float);
+    box-shadow: var(--shadow-md);
   }
 
   .op-project-card:hover .op-card-image img {
@@ -23,19 +23,19 @@
   }
 
   .op-project-card:hover .op-card-body h2 a {
-    color: var(--accent);
+    color: var(--petrol);
   }
 }
 
 /* Header — eyebrow do card */
 .op-card-header {
-  background: var(--slate-50);
+  background: var(--sand);
   padding: 14px 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--slate-500);
+  color: var(--steel);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-xs);
@@ -43,17 +43,17 @@
   letter-spacing: 0.08em;
 }
 
-.op-card-header i { color: var(--accent); }
+.op-card-header i { color: var(--petrol); }
 
 /* Imagem */
 .op-card-image {
   display: block;
   width: 100%;
   height: 200px;
-  background-color: var(--slate-100);
+  background-color: var(--sand);
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 
 .op-card-image img {
@@ -93,13 +93,13 @@
 .op-card-body h2 a {
   display: block;
   transition: color 0.25s ease;
-  color: var(--dark-900);
+  color: var(--ink);
   text-decoration: none;
   font-size: clamp(var(--text-lg), 5vw, var(--text-xl));
 }
 
 .op-card-body p {
-  color: var(--slate-500);
+  color: var(--steel);
   margin-bottom: 0;
   font-size: var(--text-base);
   line-height: 1.6;

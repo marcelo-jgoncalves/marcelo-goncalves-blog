@@ -4,10 +4,10 @@
   overflow: hidden;
   margin-block: 0;
   padding: 0;
-  border-bottom: 1px solid var(--dark-warm-border);
+  border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(ellipse 55% 70% at 80% 35%, rgba(59, 95, 138, 0.05) 0%, transparent 55%),
-    var(--bg-warm-strong);
+    radial-gradient(ellipse 55% 70% at 80% 35%, rgba(15, 76, 92, 0.05) 0%, transparent 55%),
+    var(--sand);
 }
 
 /* Grid mobile: 1 coluna, texto em cima */
@@ -46,7 +46,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--petrol);
   margin: 0;
 }
 
@@ -57,7 +57,7 @@
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.07em;
-  color: var(--accent);
+  color: var(--petrol);
   margin: 0;
 }
 
@@ -69,7 +69,7 @@
 .sobre-hero__lead {
   font-size: var(--text-base);
   line-height: 1.7;
-  color: var(--slate-500);
+  color: var(--steel);
   max-width: 520px;
   margin: 0;
 }
@@ -88,22 +88,22 @@
   justify-content: center;
   height: 48px;
   padding: 0 var(--space-4);
-  background-color: var(--accent);
+  background-color: var(--petrol);
   color: white;
   border-radius: 10px;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-base);
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(59, 95, 138, 0.25);
+  box-shadow: 0 8px 24px rgba(15, 76, 92, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
 @media (hover: hover) {
   .sobre-hero__btn-primary:hover {
     transform: translateY(-2px);
-    background-color: var(--accent-hover);
-    box-shadow: 0 12px 30px rgba(59, 95, 138, 0.32);
+    background-color: var(--petrol-deep);
+    box-shadow: 0 12px 30px rgba(15, 76, 92, 0.32);
   }
 }
 
@@ -113,21 +113,21 @@
   justify-content: center;
   height: 48px;
   padding: 0 var(--space-4);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 10px;
   text-decoration: none;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-base);
-  color: var(--dark-900);
+  color: var(--ink);
   background: white;
   transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 @media (hover: hover) {
   .sobre-hero__btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--petrol);
+    color: var(--petrol);
     transform: translateY(-2px);
   }
 }
@@ -137,7 +137,7 @@
   display: flex;
   gap: var(--space-1);
   padding-top: var(--space-2);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--line);
   width: 100%;
 }
 
@@ -147,8 +147,8 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(59, 95, 138, 0.18);
-  color: var(--accent);
+  border: 1px solid rgba(15, 76, 92, 0.18);
+  color: var(--petrol);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -161,10 +161,10 @@
 
 @media (hover: hover) {
   .sobre-hero__social a:hover {
-    background: var(--accent);
+    background: var(--petrol);
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(59, 95, 138, 0.25);
+    box-shadow: 0 8px 20px rgba(15, 76, 92, 0.25);
   }
 }
 
@@ -182,7 +182,7 @@
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: rgba(59, 95, 138, 0.10);
+  background: rgba(15, 76, 92, 0.10);
   filter: blur(48px);
   pointer-events: none;
   z-index: 0;

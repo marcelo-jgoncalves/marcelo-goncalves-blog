@@ -7,9 +7,9 @@
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
-  background: var(--surface-card);
+  background: var(--surface);
   border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(30, 55, 76, 0.32);
+  box-shadow: 0 8px 32px rgba(12, 32, 39, 0.32);
 }
 
 /* Blob desfocado — canto superior direito, igual ao protótipo */
@@ -21,7 +21,7 @@
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: rgba(59, 95, 138, 0.20);
+  background: rgba(15, 76, 92, 0.20);
   filter: blur(60px);
   pointer-events: none;
 }
@@ -33,9 +33,9 @@
   height: 120px;
   border-radius: 20px;
   overflow: hidden;
-  background-color: rgba(59, 95, 138, 0.08);
+  background-color: rgba(15, 76, 92, 0.08);
   position: relative;
-  border: 1px solid rgba(59, 95, 138, 0.15);
+  border: 1px solid rgba(15, 76, 92, 0.15);
 }
 
 .author-avatar-img {
@@ -52,7 +52,7 @@
   width: 100%;
   height: 100%;
   font-size: var(--text-2xl);
-  color: rgba(59, 95, 138, 0.5);
+  color: rgba(15, 76, 92, 0.5);
 }
 
 /* Info — lado direito no desktop */
@@ -70,7 +70,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: var(--accent);
+  color: var(--petrol);
 }
 
 /* Nome */
@@ -80,7 +80,7 @@
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 1.15;
-  color: var(--text-default);
+  color: var(--ink);
   display: block;
 }
 
@@ -93,7 +93,7 @@
 
 .author-bio-content {
   font-size: var(--text-lg);
-  color: var(--accent);
+  color: var(--petrol);
   line-height: 1.75;
 }
 
@@ -116,17 +116,17 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(59, 95, 138, 0.08);
-  border: 1px solid rgba(59, 95, 138, 0.15);
-  color: var(--accent);
+  background: rgba(15, 76, 92, 0.08);
+  border: 1px solid rgba(15, 76, 92, 0.15);
+  color: var(--petrol);
   text-decoration: none;
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 @media (hover: hover) {
   .author-social a:hover {
-    background: rgba(59, 95, 138, 0.15);
-    border-color: rgba(59, 95, 138, 0.30);
+    background: rgba(15, 76, 92, 0.15);
+    border-color: rgba(15, 76, 92, 0.30);
     transform: translateY(-2px);
   }
 }

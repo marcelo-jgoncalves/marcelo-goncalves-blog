@@ -12,7 +12,7 @@
 
 .reading-progress__bar {
   height: 100%;
-  background-color: var(--accent);
+  background-color: var(--petrol);
   transform-origin: left center;
   transform: scaleX(0);
   will-change: transform;

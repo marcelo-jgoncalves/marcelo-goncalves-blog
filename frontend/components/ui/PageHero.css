@@ -2,8 +2,8 @@
 
 .page-hero {
   background:
-    radial-gradient(ellipse 65% 80% at 25% 50%, rgba(59, 95, 138, 0.06) 0%, transparent 60%),
-    var(--bg-warm-strong);
+    radial-gradient(ellipse 65% 80% at 25% 50%, rgba(15, 76, 92, 0.06) 0%, transparent 60%),
+    var(--sand);
   margin-block: 0;
   padding-top: var(--space-6);
   padding-bottom: var(--space-4);
@@ -45,7 +45,7 @@
 
 .page-hero .hero-subtitle {
   font-size: var(--text-lg);
-  color: var(--slate-500);
+  color: var(--steel);
   margin-bottom: var(--space-4);
   line-height: 1.6;
 }
@@ -56,7 +56,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--petrol);
   margin-bottom: var(--space-2);
   display: block;
 }

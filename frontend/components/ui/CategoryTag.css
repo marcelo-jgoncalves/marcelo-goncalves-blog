@@ -5,7 +5,7 @@
   align-items: center;
   align-self: flex-start;
   gap: 8px;
-  background: var(--accent);
+  background: var(--petrol);
   color: #fff;
   padding: 6px 14px;
   border-radius: 999px;
@@ -16,13 +16,13 @@
   letter-spacing: 0.18em;
   white-space: nowrap;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(59, 95, 138, 0.22);
+  box-shadow: 0 4px 12px rgba(15, 76, 92, 0.22);
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 @media (hover: hover) {
   .category-tag:hover {
-    background: var(--accent-hover);
+    background: var(--petrol-deep);
     transform: translateY(-1px);
   }
 }

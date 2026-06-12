@@ -13,9 +13,9 @@
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-sm);
-  color: var(--dark-900);
+  color: var(--ink);
   padding: 10px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 10px;
   transition: background-color 0.25s ease, color 0.25s ease,
               border-color 0.25s ease, transform 0.25s ease,
@@ -26,33 +26,33 @@
 }
 
 .op-page-number--disabled {
-  color: var(--slate-400);
-  border-color: var(--slate-200);
+  color: var(--steel);
+  border-color: var(--line);
   pointer-events: none;
   cursor: default;
 }
 
 /* "Próxima →": estado padrão estilo badge de categoria */
 a.op-page-number[rel="next"] {
-  background-color: var(--accent-light);
-  color: var(--accent);
-  border-color: rgba(59, 95, 138, 0.2);
+  background-color: rgba(15, 76, 92, 0.08);
+  color: var(--petrol);
+  border-color: rgba(15, 76, 92, 0.2);
 }
 
 @media (hover: hover) {
   .op-page-number:not(.op-page-number--disabled):hover {
-    background-color: var(--accent);
+    background-color: var(--petrol);
     color: white;
-    border-color: var(--accent);
+    border-color: var(--petrol);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(59, 95, 138, 0.25);
+    box-shadow: 0 6px 16px rgba(15, 76, 92, 0.25);
   }
 }
 
 .op-page-info {
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  color: var(--slate-500);
+  color: var(--steel);
   padding: 10px 16px;
   white-space: nowrap;
 }

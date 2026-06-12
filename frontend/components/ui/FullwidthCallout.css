@@ -13,40 +13,40 @@
 
 /* ── Variantes — tokens de cor em cascata ─────────────────── */
 .fwc-section[data-variant="light"] {
-  background: var(--accent-light);
-  --fwc-title: var(--dark-900);
-  --fwc-desc:  var(--slate-500);
+  background: rgba(15, 76, 92, 0.08);
+  --fwc-title: var(--ink);
+  --fwc-desc:  var(--steel);
 }
 
 .fwc-section[data-variant="gradient"] {
   background:
-    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(59, 95, 138, 0.07) 0%, transparent 60%),
-    linear-gradient(150deg, #EBF1F8, #D0E4F2);
-  --fwc-title: var(--accent-dark);
-  --fwc-desc:  #475569;
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(15, 76, 92, 0.07) 0%, transparent 60%),
+    linear-gradient(150deg, var(--sand), var(--clay-soft));
+  --fwc-title: var(--petrol-deep);
+  --fwc-desc:  var(--slate);
 }
 
 .fwc-section[data-variant="newsletter"] {
-  background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-  --fwc-title: var(--dark-900);
-  --fwc-desc:  var(--dark-700);
+  background: linear-gradient(135deg, var(--sand), #F1F5F9);
+  --fwc-title: var(--ink);
+  --fwc-desc:  var(--slate);
 }
 
 .fwc-section[data-variant="dark"] {
   background:
     radial-gradient(ellipse 50% 70% at 15% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
-    var(--accent);
+    var(--petrol);
   --fwc-title: #ffffff;
-  --fwc-desc:  var(--slate-300);
+  --fwc-desc:  var(--line);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .fwc-section[data-variant="navy"] {
   background:
     radial-gradient(ellipse 60% 50% at 90% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 55%),
-    #1A2535;
+    var(--ink);
   --fwc-title: #ffffff;
-  --fwc-desc:  #CBD5E0;
+  --fwc-desc:  var(--line);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -58,8 +58,8 @@
 
 /* ── Borda accent ─────────────────────────────────────────── */
 .fwc-section[data-border="true"] {
-  border-top:    1px solid rgba(59, 95, 138, 0.2);
-  border-bottom: 1px solid rgba(59, 95, 138, 0.2);
+  border-top:    1px solid rgba(15, 76, 92, 0.2);
+  border-bottom: 1px solid rgba(15, 76, 92, 0.2);
 }
 
 /* ── Container interno ────────────────────────────────────── */
@@ -85,12 +85,12 @@
 }
 
 .fwc-icon[data-icon-variant="light"] {
-  background: var(--accent-light);
-  color: var(--accent);
+  background: rgba(15, 76, 92, 0.08);
+  color: var(--petrol);
 }
 
 .fwc-icon[data-icon-variant="dark"] {
-  background: var(--accent);
+  background: var(--petrol);
   color: white;
 }
 
@@ -99,17 +99,17 @@
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   font-weight: 700;
-  color: var(--fwc-title, var(--dark-900));
+  color: var(--fwc-title, var(--ink));
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0;
 }
 
-.fwc-title .highlight { color: var(--accent); }
+.fwc-title .highlight { color: var(--petrol); }
 
 .fwc-desc {
   font-size: var(--text-lg);
-  color: var(--fwc-desc, var(--slate-500));
+  color: var(--fwc-desc, var(--steel));
   line-height: 1.65;
   max-width: 560px;
   margin: 0;
@@ -131,23 +131,23 @@
 }
 
 .fwc-btn[data-cta-variant="accent"] {
-  background-color: var(--accent);
+  background-color: var(--petrol);
   color: white;
 }
 
 .fwc-btn[data-cta-variant="white"] {
   background-color: white;
-  color: var(--accent-dark);
+  color: var(--petrol-deep);
 }
 
 @media (hover: hover) {
   .fwc-btn[data-cta-variant="accent"]:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--petrol-deep);
     transform: translateY(-2px);
   }
 
   .fwc-btn[data-cta-variant="white"]:hover {
-    background-color: var(--accent-light);
+    background-color: rgba(15, 76, 92, 0.08);
     transform: translateY(-2px);
   }
 }

@@ -25,7 +25,7 @@
 
 .op-empty-state {
   text-align: center;
-  color: var(--slate-500);
+  color: var(--steel);
   padding: var(--space-4) 0;
 }
 

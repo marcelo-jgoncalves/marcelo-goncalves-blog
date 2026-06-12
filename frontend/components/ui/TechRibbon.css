@@ -38,7 +38,7 @@
   display: block;
   width: 40px;
   height: 2px;
-  background-color: var(--accent);
+  background-color: var(--petrol);
   margin: 8px auto 0 auto; /* Já estava no Grid */
 }
 

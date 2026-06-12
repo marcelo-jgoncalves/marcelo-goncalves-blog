@@ -3,16 +3,16 @@
 /* Base — widgets genéricos simples */
 .sidebar-widget {
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 16px;
   padding: var(--space-4);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Widget newsletter — dark accent background (protótipo)
    Newsletter em card escuro com accent background */
 .widget-newsletter {
-  background-color: var(--accent);
+  background-color: var(--petrol);
   color: #ffffff;
   border-radius: 16px;
   padding: 28px 26px 26px;
@@ -60,7 +60,7 @@
 @media (hover: hover) {
   .widget-newsletter:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-float);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -109,7 +109,7 @@
   height: 56px;
   padding: 0;
   background-color: #ffffff;
-  color: var(--accent);
+  color: var(--petrol);
   text-decoration: none;
   font-weight: 700;
   font-family: var(--font-display);

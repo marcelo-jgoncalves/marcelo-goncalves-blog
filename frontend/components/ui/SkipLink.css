@@ -6,8 +6,8 @@
   left: 24px; /* Ritmo 3x 8px (corrigido de 20px) */
   transform: translateY(-150%); /* Tira da tela pela GPU em vez de usar top: -80px */
   
-  background-color: var(--accent);
-  color: var(--dark-900);
+  background-color: var(--petrol);
+  color: var(--ink);
   
   padding: 16px 24px; /* Ritmo 8px (corrigido de 12px 20px) */
   border-radius: 8px; /* Ritmo 8px (corrigido de 6px) */
@@ -18,7 +18,7 @@
   
   /* Pilar #3: Performance - Animamos apenas 'transform' para evitar reflows no navegador */
   transition: transform 0.3s ease-out; 
-  box-shadow: var(--shadow-hover, 0 10px 15px -3px rgba(0, 0, 0, 0.08));
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.08));
 }
 
 .skip-link-btn:focus {

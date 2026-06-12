@@ -87,7 +87,7 @@ export default function TOC({ headings, variant }: TOCProps) {
 
   return (
     <nav className="toc-wrapper toc-desktop desktop-only" aria-label="Índice do artigo">
-      <Eyebrow text="Navegação" color="var(--accent)" />
+      <Eyebrow text="Navegação" color="var(--petrol)" />
       <h2 className="toc-title">Neste artigo</h2>
       <ul className="toc-list">
         {headings.map((heading) => (

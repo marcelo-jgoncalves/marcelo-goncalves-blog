@@ -238,7 +238,7 @@ export default async function PostPage({ params }: Props) {
                 <div className="post-body-content">
                   {post.resumo && (
                     <div className="post-intro-card">
-                      <div className="eyebrow" style={{ color: 'var(--accent)' }}>Introdução</div>
+                      <div className="eyebrow" style={{ color: 'var(--petrol)' }}>Introdução</div>
                       <p className="post-lead">{post.resumo}</p>
                     </div>
                   )}
