@@ -3,6 +3,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { Categoria } from "../../common/types";
 
 const TABLE_NAME = process.env.CATEGORIAS_TABLE;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -75,7 +76,7 @@ async function getCategoria(slug: string, requestId: string) {
   return { statusCode: 200, body: JSON.stringify(result.Item), headers };
 }
 
-async function saveCategoria(data: { categoria_slug: string; nome: string; descricao?: string }, requestId: string) {
+async function saveCategoria(data: Categoria, requestId: string) {
   if (!data.categoria_slug || !data.nome) {
     return { statusCode: 400, body: JSON.stringify({ message: "categoria_slug and nome are required" }), headers };
   }

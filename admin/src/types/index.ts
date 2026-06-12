@@ -17,12 +17,15 @@ export interface Post {
   e_projeto: boolean | 0 | 1
   tempo_leitura_min: number
   autor_id: string
+  topico?: string
+  variante_card?: string
 }
 
 export interface Categoria {
   categoria_slug: string
   nome: string
   descricao?: string
+  macro_areas?: string[]
 }
 
 export interface Autor {

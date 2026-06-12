@@ -9,6 +9,7 @@ import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
 import { slugify } from '../utils/slug'
+import { CARD_VARIANTS } from '../utils/taxonomy'
 
 const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
   'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr']
@@ -41,7 +42,9 @@ const form = ref({
   status: 'Rascunho',
   tempo_leitura_min: 5,
   data_publicacao: '',
-  autor_id: ''
+  autor_id: '',
+  topico: '',
+  variante_card: ''
 })
 
 const isEditing = computed(() => route.params.slug !== undefined)
@@ -151,9 +154,11 @@ onMounted(async () => {
 
       form.value = {
         ...data,
-        conteudo_html: data.conteudo_html || '', 
+        conteudo_html: data.conteudo_html || '',
         e_popular: !!data.e_popular,
-        e_projeto: !!data.e_projeto
+        e_projeto: !!data.e_projeto,
+        topico: data.topico || '',
+        variante_card: data.variante_card || ''
       }
     } catch (error) {
       showToast('Erro ao carregar post', 'error')
@@ -357,6 +362,19 @@ function generateSlug() {
                 :key="cat.categoria_slug"
                 :value="cat.categoria_slug"
               >{{ cat.nome }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tópico (eyebrow do card)</label>
+            <input v-model="form.topico" type="text" placeholder="Ex: Bastidores, Monetização..." />
+          </div>
+          <div class="form-group">
+            <label>Variante visual do card</label>
+            <select v-model="form.variante_card">
+              <option value="">Padrão (definida pela categoria)</option>
+              <option v-for="variant in CARD_VARIANTS" :key="variant.value" :value="variant.value">
+                {{ variant.label }}
+              </option>
             </select>
           </div>
           <div class="checkbox-group">

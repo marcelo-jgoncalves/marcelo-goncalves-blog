@@ -6,7 +6,9 @@ import BubbleMenuExtension from '@tiptap/extension-bubble-menu'
 import FloatingMenuExtension from '@tiptap/extension-floating-menu'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
-import { Callout } from './Callout'
+import { Callout, CALLOUT_DEFAULTS, type CalloutType } from './Callout'
+import { PullQuote } from './tiptap/PullQuote'
+import { ClosingFlourish } from './tiptap/ClosingFlourish'
 import { SmartImage } from './tiptap/SmartImage'
 import Code from '@tiptap/extension-code'
 import Table from '@tiptap/extension-table'
@@ -103,6 +105,8 @@ const editorExtensions = [
     defaultLanguage: 'python',
   }),
   Callout,
+  PullQuote,
+  ClosingFlourish,
   SmartImage.configure({
     inline: false, 
     allowBase64: true,
@@ -161,13 +165,57 @@ const setLink = () => {
   editorInstance.value.chain().focus().extendMarkRange('link').setLink({ href: finalUrl }).run()
 }
 
-const addCallout = (type: 'info' | 'warning') => {
+const addCallout = (type: CalloutType) => {
   editorInstance.value
     ?.chain()
     .focus()
     .insertContent({
       type: 'callout',
       attrs: { type },
+      content: [{ type: 'text', text: 'Escreva aqui o conteúdo do callout.' }],
+    })
+    .run()
+}
+
+const editCalloutTitle = () => {
+  if (!editorInstance.value?.isActive('callout')) return
+  const attrs = editorInstance.value.getAttributes('callout')
+  const type = (attrs.type || 'info') as CalloutType
+  const current = attrs.title || CALLOUT_DEFAULTS[type]?.title || ''
+  const title = window.prompt('Título do callout:', current)
+  if (title === null) return
+  editorInstance.value.chain().focus().updateAttributes('callout', { title: title || null }).run()
+}
+
+const setPullQuote = () => {
+  editorInstance.value
+    ?.chain()
+    .focus()
+    .insertContent({
+      type: 'pullQuote',
+      content: [{ type: 'text', text: 'Escreva a citação em destaque aqui.' }],
+    })
+    .run()
+}
+
+const editPullQuoteCite = () => {
+  if (!editorInstance.value?.isActive('pullQuote')) return
+  const current = editorInstance.value.getAttributes('pullQuote').cite || ''
+  const cite = window.prompt('Atribuição da citação (ex: — princípio nº 3):', current)
+  if (cite === null) return
+  editorInstance.value.chain().focus().updateAttributes('pullQuote', { cite: cite || null }).run()
+}
+
+const setClosingFlourish = () => {
+  editorInstance.value
+    ?.chain()
+    .focus()
+    .insertContent({
+      type: 'closingFlourish',
+      content: [
+        { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Pronto para começar?' }] },
+        { type: 'paragraph', content: [{ type: 'text', text: 'Escreva aqui a conclusão do artigo.' }] },
+      ],
     })
     .run()
 }
@@ -176,6 +224,24 @@ const setHorizontalRule = () => {
   editorInstance.value?.chain().focus().setHorizontalRule().run()
 }
 /* END BLOCK: Custom Commands */
+
+/* BLOCK: Code Block Language */
+const CODE_LANGUAGES = [
+  { value: 'python', label: 'Python' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'javascript', label: 'JavaScript' },
+  { value: 'bash', label: 'Bash' },
+  { value: 'terraform', label: 'Terraform' },
+  { value: 'yaml', label: 'YAML' },
+  { value: 'json', label: 'JSON' },
+  { value: 'sql', label: 'SQL' },
+]
+
+const setCodeLanguage = (event: Event) => {
+  const language = (event.target as HTMLSelectElement).value
+  editorInstance.value?.chain().focus().updateAttributes('codeBlock', { language }).run()
+}
+/* END BLOCK: Code Block Language */
 
 /* BLOCK: New Media Commands */
 const addYoutubeVideo = () => {
@@ -256,6 +322,16 @@ defineExpose({
         title="Bloco de Código"
       >&lt;/&gt;</button>
 
+      <select
+        v-if="editorInstance.isActive('codeBlock')"
+        class="lang-select"
+        :value="editorInstance.getAttributes('codeBlock').language"
+        @change="setCodeLanguage"
+        title="Linguagem do bloco de código"
+      >
+        <option v-for="lang in CODE_LANGUAGES" :key="lang.value" :value="lang.value">{{ lang.label }}</option>
+      </select>
+
       <button
         type="button"
         @click="editorInstance.chain().focus().toggleBlockquote().run()"
@@ -298,11 +374,24 @@ defineExpose({
 
       <div class="divider"></div>
 
-      <button type="button" @click="addCallout('info')" title="Dica">ℹ️</button>
-      <button type="button" @click="addCallout('warning')" title="Atenção">⚠️</button>
+      <button type="button" @click="addCallout('info')" :class="{ 'is-active': editorInstance.isActive('callout', { type: 'info' }) }" title="Callout: Saiba mais"><i class="fas fa-circle-info"></i></button>
+      <button type="button" @click="addCallout('warn')" :class="{ 'is-active': editorInstance.isActive('callout', { type: 'warn' }) }" title="Callout: Atenção"><i class="fas fa-triangle-exclamation"></i></button>
+      <button type="button" @click="addCallout('error')" :class="{ 'is-active': editorInstance.isActive('callout', { type: 'error' }) }" title="Callout: Evite"><i class="fas fa-circle-xmark"></i></button>
+      <button type="button" @click="addCallout('ok')" :class="{ 'is-active': editorInstance.isActive('callout', { type: 'ok' }) }" title="Callout: Boa prática"><i class="fas fa-circle-check"></i></button>
+      <button type="button" @click="addCallout('tip')" :class="{ 'is-active': editorInstance.isActive('callout', { type: 'tip' }) }" title="Callout: Dica de bastidor"><i class="fas fa-lightbulb"></i></button>
+      <button type="button" @click="editCalloutTitle" :disabled="!editorInstance.isActive('callout')" title="Editar título do callout"><i class="fas fa-pen"></i></button>
 
       <div class="divider"></div>
-      
+
+      <button type="button" @click="setPullQuote" :class="{ 'is-active': editorInstance.isActive('pullQuote') }" title="Citação em destaque"><i class="fas fa-quote-left"></i></button>
+      <button type="button" @click="editPullQuoteCite" :disabled="!editorInstance.isActive('pullQuote')" title="Editar atribuição da citação"><i class="fas fa-signature"></i></button>
+
+      <div class="divider"></div>
+
+      <button type="button" @click="setClosingFlourish" title="Bloco de encerramento"><i class="fas fa-flag-checkered"></i></button>
+
+      <div class="divider"></div>
+
       <button
         type="button"
         @click="setHorizontalRule"
@@ -503,9 +592,17 @@ defineExpose({
 
         <div class="menu-divider"></div>
 
-        <button type="button" @click="addCallout('info')" title="Dica">ℹ️</button>
-        <button type="button" @click="addCallout('warning')" title="Atenção">⚠️</button>
-        
+        <button type="button" @click="addCallout('info')" title="Callout: Saiba mais"><i class="fas fa-circle-info"></i></button>
+        <button type="button" @click="addCallout('warn')" title="Callout: Atenção"><i class="fas fa-triangle-exclamation"></i></button>
+        <button type="button" @click="addCallout('error')" title="Callout: Evite"><i class="fas fa-circle-xmark"></i></button>
+        <button type="button" @click="addCallout('ok')" title="Callout: Boa prática"><i class="fas fa-circle-check"></i></button>
+        <button type="button" @click="addCallout('tip')" title="Callout: Dica de bastidor"><i class="fas fa-lightbulb"></i></button>
+
+        <div class="menu-divider"></div>
+
+        <button type="button" @click="setPullQuote" title="Citação em destaque"><i class="fas fa-quote-left"></i></button>
+        <button type="button" @click="setClosingFlourish" title="Bloco de encerramento"><i class="fas fa-flag-checkered"></i></button>
+
         <div class="menu-divider"></div>
 
         <button
@@ -562,6 +659,21 @@ defineExpose({
   background: var(--accent);
   color: white;
   border-color: var(--accent);
+}
+
+.tiptap-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lang-select {
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
 }
 
 .divider {
@@ -734,25 +846,139 @@ defineExpose({
   font-weight: bold;
 }
 
-/* ===== Callouts ===== */
-:deep(.content-callout) {
-  display: block !important;
-  padding: 20px 25px !important;
-  margin: 1.5em 0 0.5em 0 !important;
-  border-radius: 8px;
-  border-left: 5px solid;
+/* ===== Callouts (redesign 2026 — specs/ESPECIFICACAO-POSTAGEM.md) ===== */
+:deep(.ProseMirror .callout),
+:deep(.ProseMirror .tip) {
+  display: flex !important;
+  gap: 18px;
+  align-items: flex-start;
+  background: #FFFFFF;
+  border: 1px solid #E4DDD0;
+  border-left: 4px solid #0F4C5C;
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin: 1.6em 0;
 }
 
-:deep(.callout-warning) {
-  background-color: #fffaf0 !important;
-  border-left-color: var(--accent) !important;
-  color: #744210 !important;
+:deep(.ProseMirror .callout .ic),
+:deep(.ProseMirror .tip .ic) {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 18px;
+  background: rgba(15, 76, 92, 0.1);
+  color: #0F4C5C;
 }
 
-:deep(.callout-info) {
-  background-color: var(--accent-light) !important;
-  border-left-color: var(--accent) !important;
-  color: var(--accent-dark) !important;
+:deep(.ProseMirror .callout .c),
+:deep(.ProseMirror .tip .c) {
+  min-width: 0;
+}
+
+:deep(.ProseMirror .callout .t),
+:deep(.ProseMirror .tip .t) {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #0F4C5C;
+}
+
+:deep(.ProseMirror .callout .c p),
+:deep(.ProseMirror .tip .c p) {
+  margin: 0 !important;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Warning — clay accent */
+:deep(.ProseMirror .callout.warn) {
+  border-left-color: #C9603C;
+  background: #FCF6F1;
+}
+:deep(.ProseMirror .callout.warn .ic) { background: #F3DDD0; color: #A94C2D; }
+:deep(.ProseMirror .callout.warn .t) { color: #A94C2D; }
+
+/* Error — red accent */
+:deep(.ProseMirror .callout.error) {
+  border-left-color: #A33A2B;
+  background: #FBF0EE;
+}
+:deep(.ProseMirror .callout.error .ic) { background: #F4D9D4; color: #A33A2B; }
+:deep(.ProseMirror .callout.error .t) { color: #A33A2B; }
+
+/* Ok — moss accent */
+:deep(.ProseMirror .callout.ok) {
+  border-left-color: #3F6B47;
+  background: #F1F5F0;
+}
+:deep(.ProseMirror .callout.ok .ic) { background: #DCE8DD; color: #3F6B47; }
+:deep(.ProseMirror .callout.ok .t) { color: #3F6B47; }
+
+/* Tip — clay accent, standalone class */
+:deep(.ProseMirror .tip) {
+  border-left-color: #C9603C;
+}
+:deep(.ProseMirror .tip .ic) { background: #F3DDD0; color: #A94C2D; }
+:deep(.ProseMirror .tip .t) { color: #C9603C; }
+
+/* ===== Pull Quote (.pull) ===== */
+:deep(.ProseMirror .pull) {
+  margin: 1.8em 0;
+  padding: 8px 0 8px 28px;
+  border-left: 3px solid #C9603C;
+}
+
+:deep(.ProseMirror .pull p) {
+  margin: 0 !important;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 500;
+  font-style: italic;
+  color: #0F4C5C;
+  letter-spacing: -0.015em;
+}
+
+:deep(.ProseMirror .pull .cite) {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: #7E969E;
+  margin-top: 14px;
+  font-style: normal;
+}
+
+/* ===== Closing Flourish (.closing) ===== */
+:deep(.ProseMirror .closing) {
+  margin-top: 1.8em;
+  padding: 30px 32px;
+  background: #0F4C5C;
+  border-radius: 16px;
+  color: #FAF8F3;
+}
+
+:deep(.ProseMirror .closing h3) {
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+:deep(.ProseMirror .closing p) {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(250, 248, 243, 0.72);
+  max-width: 520px;
+  margin: 0 !important;
 }
 
 /* ===== Inline Code Styling ===== */

@@ -2,6 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { categoriesApi } from '../services/api'
 import { slugify } from '../utils/slug'
+import { MACRO_AREAS } from '../utils/taxonomy'
 import type { Categoria } from '../types'
 
 // --- Estado ---
@@ -21,7 +22,8 @@ function showToast(message: string, type: 'success' | 'error' | 'warning' = 'suc
 const defaultForm: Categoria = {
   nome: '',
   categoria_slug: '',
-  descricao: ''
+  descricao: '',
+  macro_areas: []
 }
 const form = ref<Categoria>({ ...defaultForm })
 
@@ -55,7 +57,8 @@ watch(() => form.value.nome, (newName) => {
 const openModal = (category?: Categoria) => {
   if (category) {
     editingSlug.value = category.categoria_slug
-    form.value = JSON.parse(JSON.stringify(category))
+    form.value = { ...defaultForm, ...JSON.parse(JSON.stringify(category)) }
+    if (!form.value.macro_areas) form.value.macro_areas = []
   } else {
     editingSlug.value = null
     form.value = { ...defaultForm }
@@ -210,6 +213,21 @@ const handleDelete = async (slug: string) => {
               placeholder="Descrição opcional da categoria"
               :disabled="isSaving"
             ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Áreas <small>(usadas nos filtros de Artigos)</small></label>
+            <div class="checkbox-row">
+              <label v-for="area in MACRO_AREAS" :key="area.value" class="checkbox-pill">
+                <input
+                  type="checkbox"
+                  :value="area.value"
+                  v-model="form.macro_areas"
+                  :disabled="isSaving"
+                >
+                {{ area.label }}
+              </label>
+            </div>
           </div>
         </div>
 
@@ -377,6 +395,18 @@ tr:hover { background-color: var(--slate-50); }
   color: var(--slate-400);
   cursor: not-allowed;
 }
+
+.checkbox-row { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.checkbox-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 999px;
+  font-size: var(--text-sm); font-weight: 500; color: var(--dark-700);
+  cursor: pointer; user-select: none; transition: 0.2s;
+}
+.checkbox-pill:has(input:checked) {
+  background: var(--accent-light); border-color: var(--accent); color: var(--accent);
+}
+.checkbox-pill input { width: auto; margin: 0; }
 
 .input-group { display: flex; align-items: center; }
 .input-addon {

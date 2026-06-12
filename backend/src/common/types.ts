@@ -19,6 +19,8 @@ export interface Post {
   e_projeto: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
   meta_titulo_seo?: string; // SEO (Blueprint v1.7)
   meta_descricao_seo?: string; // SEO (Blueprint v1.7)
+  topico?: string; // eyebrow exibido no card (pc-cat) — pode diferir da categoria
+  variante_card?: string; // variante visual do card (gradiente): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
 }
 
 export interface Autor {
@@ -30,4 +32,11 @@ export interface Autor {
   linkedin_url: string;
   github_url: string;
   instagram_url?: string;
+}
+
+export interface Categoria {
+  categoria_slug: string;
+  nome: string;
+  descricao?: string;
+  macro_areas?: string[]; // agrupamento usado nos filtros de Artigos: ia | devops | cloud | eng | bastidores
 }
