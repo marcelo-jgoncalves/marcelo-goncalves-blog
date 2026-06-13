@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './PostFooter.module.css';
 
 export interface PostFooterProps {
@@ -9,67 +7,54 @@ export interface PostFooterProps {
     avatarInitials: string;
     profileUrl: string;
   };
-  shareUrls: {
-    linkedin: string;
-    twitter: string;
+  social?: {
+    linkedin_url?: string;
+    github_url?: string;
+    instagram_url?: string;
   };
 }
+
+const AUTHOR_ROLE = 'Engenheiro Cloud Sênior & Arquiteto AWS';
 
 function stripHtmlTags(html: string): string {
   return html.replace(/<[^>]*>/g, '');
 }
 
-export default function PostFooter({ author, shareUrls }: PostFooterProps) {
+export default function PostFooter({ author, social }: PostFooterProps) {
+  const hasSocial = social && (social.linkedin_url || social.github_url || social.instagram_url);
+
   return (
-    <div id="post-footer" className={styles.postFooter}>
-      <section className={styles.author}>
-        <div className={styles.avatar} aria-hidden="true">
-          {author.avatarInitials}
-        </div>
-        <div className={styles.info}>
-          <p>
-            <strong className={styles.authorName}>{author.name}</strong>
-            {' '}
-            {stripHtmlTags(author.bio)}{' '}
-            <a href={author.profileUrl} className={styles.profileLink}>
-              Veja o perfil
-            </a>
-            .
-          </p>
-        </div>
-        <div className={styles.actions}>
-          <span className={styles.netLabel}>Acompanhe nas redes</span>
-          <div className={styles.nets}>
-            <a
-              href={shareUrls.linkedin}
-              className={`${styles.net} ${styles.linkedin}`}
-              aria-label="LinkedIn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fab fa-linkedin-in"></i>
-            </a>
-            <a
-              href="#"
-              className={`${styles.net} ${styles.instagram}`}
-              aria-label="Instagram"
-              title="Em breve"
-              onClick={(e) => e.preventDefault()}
-            >
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a
-              href={shareUrls.twitter}
-              className={`${styles.net} ${styles.x}`}
-              aria-label="X (Twitter)"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fab fa-x-twitter"></i>
-            </a>
+    <div className={styles.authorbox} data-audit="post-authorbox">
+      <div className={styles.av} aria-hidden="true">{author.avatarInitials}</div>
+      <div className={styles.abBody}>
+        <div className={styles.abName}><b>{author.name}</b> é {AUTHOR_ROLE}</div>
+        <p>
+          {stripHtmlTags(author.bio)}{' '}
+          <a href={author.profileUrl} className={styles.abLink}>Veja o perfil completo →</a>
+        </p>
+      </div>
+      {hasSocial && (
+        <div className={styles.abSocial}>
+          <span className={styles.sl}>Acompanhe nas redes</span>
+          <div className={styles.row}>
+            {social?.linkedin_url && (
+              <a href={social.linkedin_url} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer author">
+                <i className="fab fa-linkedin-in" aria-hidden="true" />
+              </a>
+            )}
+            {social?.github_url && (
+              <a href={social.github_url} aria-label="GitHub" target="_blank" rel="noopener noreferrer author">
+                <i className="fab fa-github" aria-hidden="true" />
+              </a>
+            )}
+            {social?.instagram_url && (
+              <a href={social.instagram_url} aria-label="Instagram" target="_blank" rel="noopener noreferrer author">
+                <i className="fab fa-instagram" aria-hidden="true" />
+              </a>
+            )}
           </div>
         </div>
-      </section>
+      )}
     </div>
   );
 }

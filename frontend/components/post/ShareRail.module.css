@@ -1,185 +1,76 @@
-/* ShareRail — vertical sticky share component */
+/* ShareRail — sticky share column (3rd grid track of .postLayout) */
 
-/* ── Desktop: coluna vertical à direita da leitura ── */
-.shareRail {
-  position: fixed;
-  top: 120px;
-  /* 480px = metade do reading (960px) + 36px gap */
-  left: calc(50% + 480px + 36px);
-  width: 56px;
+.share {
+  position: sticky;
+  top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+  grid-column: 3;
 }
 
-.shareRail.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ── Label vertical ── */
-.cap {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--steel);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  margin-bottom: 2px;
-  user-select: none;
-}
-
-/* ── Linha vertical ── */
-.stem {
-  width: 1px;
-  height: 20px;
-  background: var(--line);
-}
-
-/* ── Botões ── */
-.rbtn {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  background: #ffffff;
+.shareBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--surface);
   border: 1px solid var(--line);
-  color: var(--petrol);
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
-  cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+  cursor: pointer;
+  transition: transform 0.15s, color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.rbtn:hover {
+.shareBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(15, 76, 92, 0.22);
-  color: #ffffff;
+  color: var(--petrol);
+  border-color: var(--petrol-soft);
 }
 
-.linkedin:hover { background: #0A66C2; border-color: #0A66C2; }
-.x:hover        { background: #000000; border-color: #000000; }
-.copy:hover     { background: var(--petrol); border-color: var(--petrol); }
-
-.copied {
-  background: #3F6B47 !important;
-  border-color: #3F6B47 !important;
-  color: #ffffff !important;
+@media (max-width: 1080px) {
+  .share {
+    grid-column: 2;
+  }
 }
 
-/* ── Separador horizontal ── */
-.rsep {
-  width: 20px;
-  height: 1px;
-  background: var(--line);
-  margin: 3px 0;
+@media (max-width: 720px) {
+  .share {
+    display: none;
+  }
 }
 
-/* ── Tooltip ── */
-.tip {
-  position: absolute;
-  right: calc(100% + 12px);
-  top: 50%;
-  transform: translateY(-50%) translateX(6px);
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate(-50%, 20px);
   background: var(--ink);
-  color: #ffffff;
-  font-family: var(--font-display);
-  font-size: 0.72rem;
+  color: #fff;
+  font-size: 14px;
   font-weight: 500;
-  white-space: nowrap;
-  padding: 6px 10px;
-  border-radius: 8px;
-  pointer-events: none;
+  padding: 13px 22px;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(12, 32, 39, 0.4);
   opacity: 0;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  box-shadow: 0 6px 18px rgba(26, 37, 53, 0.18);
-  z-index: 110;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Seta apontando para a direita (em direção ao botão) */
-.tip::after {
-  content: '';
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-left-color: var(--ink);
-}
-
-.rbtn:hover .tip {
+.toast.show {
   opacity: 1;
-  transform: translateY(-50%) translateX(0);
+  transform: translate(-50%, 0);
 }
 
-/* ── Mobile / narrow: barra horizontal no bottom ── */
-@media (max-width: 1200px) {
-  .shareRail,
-  .shareRail.visible {
-    position: fixed !important;
-    top: auto !important;
-    bottom: 0;
-    left: 0 !important;
-    right: 0;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid var(--line);
-    padding: 10px 16px;
-    box-shadow: 0 -6px 24px rgba(26, 37, 53, 0.08);
-    z-index: 900;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .cap {
-    writing-mode: horizontal-tb;
-    transform: none;
-    letter-spacing: 0.18em;
-    margin-bottom: 0;
-    align-self: center;
-  }
-
-  .stem { display: none; }
-  .rsep { display: none; }
-
-  /* Tooltip aponta para baixo no mobile */
-  .tip {
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: calc(100% + 8px);
-    transform: translateX(-50%) translateY(-4px);
-  }
-
-  .tip::after {
-    left: 50%;
-    top: 100%;
-    transform: translateX(-50%);
-    border-left-color: transparent;
-    border-top-color: var(--ink);
-  }
-
-  .rbtn:hover .tip {
-    transform: translateX(-50%) translateY(0);
-  }
+.toastCk {
+  color: #9BD5A8;
 }
