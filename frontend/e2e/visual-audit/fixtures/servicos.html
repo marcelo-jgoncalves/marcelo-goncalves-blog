@@ -562,7 +562,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--ivory);color:var(--ink);font-family:var(--font);
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6}
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:18px}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--clay-soft);color:var(--clay-hover)}
 
@@ -940,8 +940,8 @@
 </header>
 
 <!-- ── HERO ── -->
-<section class="hero" data-screen-label="Hero">
-  <div class="hero-in">
+<section class="hero" data-screen-label="Hero" data-audit="svc-hero">
+  <div class="hero-in" data-audit="svc-hero-in">
     <div class="hero-left">
       <div class="ey">Serviços · Consultoria</div>
       <h1>Consultoria em AWS, DevOps, FinOps e <em>Serverless</em></h1>
@@ -951,14 +951,14 @@
         <a class="btn-ghost" href="#servicos">Ver serviços ↓</a>
       </div>
     </div>
-    <div class="hero-panel">
+    <div class="hero-panel" data-audit="svc-hero-panel">
       <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
       <div class="hp-row"><span class="hp-v clay">30 min</span><span class="hp-l">Diagnóstico inicial gratuito</span></div>
       <div class="hp-row"><span class="hp-v">24h</span><span class="hp-l">Tempo de resposta</span></div>
       <div class="hp-row"><span class="hp-v">100%</span><span class="hp-l">Remoto · sem compromisso</span></div>
     </div>
   </div>
-  <div class="stats-strip">
+  <div class="stats-strip" data-audit="svc-stats-strip">
     <div class="stat-item"><span class="v">10</span><span class="l">Frentes de atuação</span></div>
     <div class="stat-item"><span class="v">AWS</span><span class="l">Especialização cloud</span></div>
     <div class="stat-item"><span class="v">IaC</span><span class="l">Tudo em código</span></div>
@@ -969,16 +969,16 @@
 <!-- ── SERVIÇOS ── -->
 <section class="section" id="servicos" data-screen-label="Serviços">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head" data-audit="svc-sec-head">
       <div class="sec-ey">O que eu faço</div>
       <h2 class="sec-t">Engenharia de ponta a ponta na nuvem</h2>
       <p class="sec-desc">Dez frentes de atuação que cobrem o ciclo completo — da estratégia com IA à operação otimizada, segura e observável.</p>
     </div>
 
-    <div class="svc-grid">
+    <div class="svc-grid" data-audit="svc-grid-1">
 
       <!-- 01 — IA Aplicada (destaque) -->
-      <article class="svc-card wide">
+      <article class="svc-card wide" data-audit="svc-card-wide">
         <div class="svc-wide-media">
           <div class="svc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M12 8V4M9 4h6"></path><circle cx="9" cy="14" r="1.2"></circle><circle cx="15" cy="14" r="1.2"></circle><path d="M2 13v3M22 13v3"></path></svg>
@@ -1038,7 +1038,7 @@
 
 <!-- ── MAKING OF ── -->
 <section class="makingof" data-screen-label="Making Of">
-  <div class="makingof-in">
+  <div class="makingof-in" data-audit="svc-makingof-in">
     <div class="mo-left">
       <div class="mo-ey">Prova viva</div>
       <h2>Não acredite apenas na minha palavra. Veja o <em>making of</em>.</h2>
@@ -1046,7 +1046,7 @@
       <a class="mo-cta" href="O Projeto.html">Conheça "O Projeto" <span class="arrow">→</span></a>
     </div>
     <div class="mo-right">
-      <div class="proof-card">
+      <div class="proof-card" data-audit="svc-proof-card">
         <div class="proof-label"><span class="dot"></span>Construído em público</div>
         <div class="proof-stack">
           <div class="proof-item">
@@ -1074,7 +1074,7 @@
 <!-- ── SERVIÇOS (continuação) ── -->
 <section class="section" style="padding-top:64px" data-screen-label="Mais Serviços">
   <div class="wrap">
-    <div class="svc-grid">
+    <div class="svc-grid" data-audit="svc-grid-2">
 
       <!-- 05 -->
       <article class="svc-card">
@@ -1090,7 +1090,7 @@
       </article>
 
       <!-- 06 — destaque -->
-      <article class="svc-card feat">
+      <article class="svc-card feat" data-audit="svc-card-feat">
         <div class="svc-top">
           <div class="svc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .9-8.9 6 6 0 0 0-11.6-1.4A4 4 0 0 0 6 19h11.5z"></path></svg>
@@ -1116,7 +1116,7 @@
       </article>
 
       <!-- 08 — Transformação Digital (destaque) -->
-      <article class="svc-card wide alt">
+      <article class="svc-card wide alt" data-audit="svc-card-wide-alt">
         <div class="svc-wide-media">
           <div class="svc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
@@ -1181,7 +1181,7 @@
 
 <!-- ── CTA FINAL ── -->
 <section class="cta-final" id="contato" data-screen-label="CTA Contato">
-  <div class="cta-final-in">
+  <div class="cta-final-in" data-audit="svc-cta-final-in">
     <div class="cf-left">
       <div class="ey">Vamos começar</div>
       <h2>Vamos trabalhar <em>juntos</em>?</h2>
@@ -1192,7 +1192,7 @@
         <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Resposta em até <b>24h</b>, 100% remoto</span></li>
       </ul>
     </div>
-    <div class="cf-card">
+    <div class="cf-card" data-audit="svc-cf-card">
       <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
       <h3>Vamos conversar sobre o seu</h3>
       <p class="sub">Conte o desafio e eu retorno com um plano objetivo. Diagnóstico inicial gratuito.</p>
