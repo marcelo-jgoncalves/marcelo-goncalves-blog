@@ -17,6 +17,7 @@ interface PostCardProps {
     data_publicacao?: string;
   };
   dataAudit?: string;
+  dataCat?: string;
 }
 
 function slugToName(slug?: string): string {
@@ -32,11 +33,11 @@ function gradientVariant(slug: string): string {
   return GRADIENT_VARIANTS[hash % GRADIENT_VARIANTS.length];
 }
 
-export default function PostCard({ post, dataAudit }: PostCardProps) {
+export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
   const categoriaNome = post.categoria?.nome_exibicao || slugToName(post.categoria_slug);
 
   return (
-    <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo} data-audit={dataAudit}>
+    <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo} data-audit={dataAudit} data-cat={dataCat}>
       <div className={`pc-img ${gradientVariant(post.slug)}`}>
         {categoriaNome && <span className="tag">{categoriaNome}</span>}
       </div>

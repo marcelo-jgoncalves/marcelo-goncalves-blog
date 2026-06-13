@@ -562,7 +562,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--ivory);color:var(--ink);font-family:var(--font);
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6}
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:18px}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--clay-soft);color:var(--clay-hover)}
 
@@ -977,8 +977,8 @@
 </header>
 
 <!-- ── HERO ── -->
-<section class="hero" data-screen-label="Hero Artigos">
-  <div class="hero-in">
+<section class="hero" data-screen-label="Hero Artigos" data-audit="art-hero">
+  <div class="hero-in" data-audit="art-hero-in">
     <div class="hero-left">
       <div class="ey">Arquivo · Todos os artigos</div>
       <h1>Tudo que escrevi, reunido <em>num só lugar</em></h1>
@@ -997,7 +997,7 @@
       </div>
     </div>
     <div class="hero-right">
-      <a class="proj-card" href="O Projeto.html" data-screen-label="CTA O Projeto">
+      <a class="proj-card" href="O Projeto.html" data-screen-label="CTA O Projeto" data-audit="art-proj-card">
         <div class="proj-label"><span class="dot"></span>Construído em público</div>
         <h2>Veja como este blog foi <em>construído</em></h2>
         <p class="pc-sub">Da infra serverless ao deploy — cada decisão documentada e os custos expostos, quase tudo com IA.</p>
@@ -1013,7 +1013,7 @@
 </section>
 
 <!-- ── FILTROS (sticky) ── -->
-<div class="filterbar" data-screen-label="Filtros">
+<div class="filterbar" data-screen-label="Filtros" data-audit="art-filterbar">
   <div class="filterbar-in">
     <div class="chips" id="chips">
       <button class="chip active" data-filter="all">Todos</button>
@@ -1038,8 +1038,8 @@
 </div>
 
 <!-- ── MASTHEAD (revista) ── -->
-<section class="wrap masthead" data-screen-label="Destaque">
-  <article class="feature">
+<section class="wrap masthead" data-screen-label="Destaque" data-audit="art-masthead">
+  <article class="feature" data-audit="art-feature">
     <a class="f-cover" href="Pagina de Postagem.html" aria-label="Abrir artigo em destaque">
       <span class="f-badge">★ Em destaque</span>
       <span class="slot">imagem de capa · 720×760</span>
@@ -1059,8 +1059,8 @@
     </div>
   </article>
 
-  <div class="twoup">
-    <a class="mini" href="#">
+  <div class="twoup" data-audit="art-twoup">
+    <a class="mini" href="#" data-audit="art-mini">
       <div class="m-cover t-soft"></div>
       <div class="m-body">
         <span class="m-cat">DevOps</span>
@@ -1089,7 +1089,7 @@
     <a class="sec-link" href="#">Ver índice por ano →</a>
   </div>
 
-  <div class="posts-grid art-grid" id="grid">
+  <div class="posts-grid art-grid" id="grid" data-audit="art-grid">
 
     <article class="post-card" data-cat="eng bastidores">
       <a class="pc-img t-soft" href="#"><span class="tag">Engenharia</span></a>
@@ -1155,7 +1155,7 @@
 </section>
 
 <!-- ── CLÁSSICOS DO BLOG ── -->
-<section class="readband" data-screen-label="Mais Lidos">
+<section class="readband" data-screen-label="Mais Lidos" data-audit="art-readband">
   <div class="wrap">
     <div class="rb-head">
       <div>
@@ -1164,7 +1164,7 @@
       </div>
       <a class="rb-link" href="#">Ver ranking completo →</a>
     </div>
-    <div class="rb-list">
+    <div class="rb-list" data-audit="art-rb-list">
       <a class="rb-item" href="Pagina de Postagem.html">
         <span class="rb-num">01</span>
         <div class="rb-body">
@@ -1207,7 +1207,7 @@
 
 <!-- ── GRADE PRINCIPAL — 2ª metade ── -->
 <section class="wrap section after-sticky section-end" data-screen-label="Grade de Artigos — Continuação">
-  <div class="posts-grid art-grid" id="grid2">
+  <div class="posts-grid art-grid" id="grid2" data-audit="art-grid2">
 
     <article class="post-card" data-cat="ia">
       <a class="pc-img t-clay" href="Pagina de Postagem.html"><span class="tag">Inteligência Artificial</span></a>
@@ -1282,8 +1282,8 @@
 </section>
 
 <!-- ── ASSESSORIA CTA ── -->
-<section class="cta-adv" id="assessoria" data-screen-label="Assessoria">
-  <div class="cta-adv-in">
+<section class="cta-adv" id="assessoria" data-screen-label="Assessoria" data-audit="art-cta-adv">
+  <div class="cta-adv-in" data-audit="art-cta-adv-in">
     <div class="cta-left">
       <div class="cta-ey">Assessoria &amp; Consultoria</div>
       <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
@@ -1294,7 +1294,7 @@
         <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span>Adoção de <b>IA</b> com foco em resultado, não em hype</span></li>
       </ul>
     </div>
-    <div class="adv-card">
+    <div class="adv-card" data-audit="art-adv-card">
       <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
       <h3>Vamos conversar sobre o seu</h3>
       <p class="sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
