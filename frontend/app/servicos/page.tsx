@@ -66,6 +66,8 @@ const CHECK_ICON = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
 );
 
+const PHOTO_URL = '/static/foto-perfil-oculos-servicos.png';
+
 export default function ServicosPage() {
   return (
     <>
@@ -85,6 +87,13 @@ export default function ServicosPage() {
           </div>
 
           <div className="svc-hero-panel" data-audit="svc-hero-panel">
+            <div className="svc-hp-profile">
+              <img className="svc-hp-avatar" src={PHOTO_URL} alt={AUTHOR_NAME} width={56} height={56} />
+              <div className="svc-hp-profile-txt">
+                <span className="svc-hp-name">{AUTHOR_NAME}</span>
+                <span className="svc-hp-role">Arquiteto Cloud &amp; IA</span>
+              </div>
+            </div>
             <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
             <div className="svc-hp-row">
               <span className="svc-hp-v svc-clay">30 min</span>
