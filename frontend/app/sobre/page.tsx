@@ -63,11 +63,11 @@ const LANGUAGES = [
 ];
 
 const CERTS = [
-  { tile: 'SA', issuer: 'AWS Certified', name: 'Solutions Architect – Associate', accent: true },
-  { tile: 'SO', issuer: 'AWS Certified', name: 'SysOps Administrator – Associate' },
-  { tile: 'TF', issuer: 'HashiCorp', name: 'Terraform Associate' },
-  { tile: 'CP', issuer: 'AWS Certified', name: 'Cloud Practitioner' },
-  { tile: 'SP', issuer: 'Splunk', name: 'Power User' },
+  { tile: 'SA', issuer: 'AWS Certified', name: 'Solutions Architect – Associate', badge: '/static/badges/solutions.png', accent: true },
+  { tile: 'SO', issuer: 'AWS Certified', name: 'SysOps Administrator – Associate', badge: '/static/badges/sysops.png' },
+  { tile: 'TF', issuer: 'HashiCorp', name: 'Terraform Associate', badge: '/static/badges/terraform.png' },
+  { tile: 'CP', issuer: 'AWS Certified', name: 'Cloud Practitioner', badge: '/static/badges/pactitioner.png' },
+  { tile: 'SP', issuer: 'Splunk', name: 'Power User', badge: '/static/badges/splunk.png' },
 ];
 
 const ACAD_ITEMS = [
@@ -303,7 +303,7 @@ export default async function SobrePage() {
             {CERTS.map((cert) => (
               <div className={`sobre-cert-card${cert.accent ? ' sobre-accent' : ''}`} key={cert.tile}>
                 <div className="sobre-cert-top">
-                  <div className="sobre-cert-tile">{cert.tile}</div>
+                  <img className="sobre-cert-badge" src={cert.badge} alt={`Selo de certificação ${cert.name}`} width={64} height={64} />
                   <span className="sobre-cert-verified">{CHECK_ICON}Verificada</span>
                 </div>
                 <div className="sobre-cert-body">

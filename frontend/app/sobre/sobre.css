@@ -223,12 +223,8 @@
 }
 .sobre-cert-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -12px rgba(12,32,39,.12); border-color: rgba(15,76,92,.22); }
 .sobre-cert-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.sobre-cert-tile {
-  width: 52px; height: 52px; border-radius: 13px; background: var(--petrol); color: #fff;
-  font-family: var(--mono); font-weight: 600; font-size: 15px; letter-spacing: .02em;
-  display: flex; align-items: center; justify-content: center; flex: none;
-}
-.sobre-cert-card.sobre-accent .sobre-cert-tile { background: var(--clay); }
+.sobre-cert-badge { width: 64px; height: 64px; object-fit: contain; flex: none; }
+.sobre-cert-card.sobre-accent { border-color: var(--clay); }
 .sobre-cert-verified { font-family: var(--mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--moss); display: flex; align-items: center; gap: 6px; }
 .sobre-cert-verified svg { width: 13px; height: 13px; }
 .sobre-cert-body { display: flex; flex-direction: column; gap: 4px; }
