@@ -564,7 +564,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--ivory);color:var(--ink);font-family:var(--font);
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6}
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;font-size:18px}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--clay-soft);color:var(--clay-hover)}
 
@@ -958,8 +958,8 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
 </header>
 
 <!-- ── HERO ── -->
-<section class="hero" data-screen-label="Hero">
-  <div class="hero-in">
+<section class="hero" data-screen-label="Hero" data-audit="sobre-hero">
+  <div class="hero-in" data-audit="sobre-hero-in">
     <div class="hero-left">
       <div class="hero-label">Sobre · Marcelo Gonçalves</div>
       <h1>Engenheiro Cloud que <em>traduz</em> complexidade em arquitetura resiliente.</h1>
@@ -988,13 +988,13 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
       </div>
     </div>
     <div class="hero-right">
-      <div class="photo-frame">
+      <div class="photo-frame" data-audit="sobre-photo-frame">
         <img id="marcelo-photo" class="pf-slot" src="18e6902e-7a4d-4bf4-8297-0d196ab94403" alt="Marcelo Gonçalves">
         <div class="pf-tag"><span class="dot"></span>Engenheiro Cloud · AWS</div>
       </div>
     </div>
   </div>
-  <div class="hero-stats">
+  <div class="hero-stats" data-audit="sobre-hero-stats">
     <div class="hstat"><span class="v">10+</span><span class="l">Anos de experiência</span></div>
     <div class="hstat"><span class="v">8+</span><span class="l">Anos com AWS</span></div>
     <div class="hstat"><span class="v">3+</span><span class="l">Países</span></div>
@@ -1005,7 +1005,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
 <!-- ── TRAJETÓRIA ── -->
 <section class="traj" data-screen-label="Trajetória">
   <div class="wrap">
-    <div class="traj-grid">
+    <div class="traj-grid" data-audit="sobre-traj-grid">
       <div class="traj-left">
         <div class="eyebrow">Trajetória</div>
         <h2 class="sec-t">Uma carreira entre o código e a sala de aula</h2>
@@ -1013,7 +1013,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
         <p>Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, refinando metodologias que equilibram agilidade técnica com governança corporativa — uma atuação internacional que molda como penso arquitetura até hoje.</p>
 
       </div>
-      <div class="traj-quote">
+      <div class="traj-quote" data-audit="sobre-traj-quote">
         <div class="tq-mark">“</div>
         <p class="tq-text">A tecnologia só atinge seu potencial máximo quando é comunicada com <em>clareza</em> — uma ponte entre o detalhe da engenharia e a decisão estratégica.</p>
         <div class="tq-foot">
@@ -1028,7 +1028,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
         </div>
       </div>
     </div>
-    <div class="traj-companies">
+    <div class="traj-companies" data-audit="sobre-traj-companies">
       <div class="tc-wrapper">
         <div class="eyebrow" style="color:var(--clay);margin-bottom:10px">Experiência</div>
         <div class="tc-label">Empresas que marcaram a <span style="color:var(--clay)">trajetória</span></div>
@@ -1060,9 +1060,9 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
       <h2 class="sec-t">Áreas em que atuo</h2>
       <p class="sec-desc">Da arquitetura à operação do dia a dia — onde aplico engenharia para construir e sustentar nuvem com eficiência.</p>
     </div>
-    <div class="areas-grid">
+    <div class="areas-grid" data-audit="sobre-areas-grid">
 
-      <div class="area-card feat">
+      <div class="area-card feat" data-audit="sobre-area-feat">
         <span class="ac-cat">Nuvem Empresarial</span>
         <div class="ac-title">Arquitetura AWS</div>
         <p class="ac-desc">Design de soluções seguras e escaláveis seguindo o Well-Architected Framework. Multi-region, alta disponibilidade, governança e segurança desde o primeiro commit.</p>
@@ -1110,7 +1110,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
 
 <!-- ── DIFERENCIAL ── -->
 <section class="dif" data-screen-label="Diferencial">
-  <div class="wrap">
+  <div class="wrap" data-audit="sobre-dif-wrap">
     <div class="dif-ey">O Diferencial</div>
     <h2 class="dif-title">Engenharia encontra <em>linguagem</em></h2>
     <p class="dif-quote">Minha base não é apenas engenharia. Sou formado em Letras, com Mestrado em Linguística. No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura, entender a estrutura da palavra é o que me permite conectar o <em>como</em> técnico ao <em>porquê</em> estratégico.</p>
@@ -1132,7 +1132,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
       <h2 class="sec-t">Certificações</h2>
       <p class="sec-desc">Credenciais que validam na prática o que aplico no dia a dia — da arquitetura de soluções à automação de infraestrutura e observabilidade.</p>
     </div>
-    <div class="certs-grid">
+    <div class="certs-grid" data-audit="sobre-certs-grid">
 
       <div class="cert-card accent">
         <div class="cert-top">
@@ -1203,7 +1203,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
 <!-- ── BASE ACADÊMICA ── -->
 <section class="acad" data-screen-label="Base Acadêmica">
   <div class="wrap">
-    <div class="acad-card">
+    <div class="acad-card" data-audit="sobre-acad-card">
       <div class="acad-left">
         <div class="eyebrow">Formação</div>
         <h2 class="sec-t">Base acadêmica multidisciplinar</h2>
@@ -1233,7 +1233,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
 
 <!-- ── CTA ASSESSORIA ── -->
 <section class="cta-adv" id="assessoria" data-screen-label="CTA Assessoria">
-  <div class="cta-adv-in">
+  <div class="cta-adv-in" data-audit="sobre-cta-adv-in">
     <div class="left">
       <div class="ey2">Assessoria &amp; Consultoria</div>
       <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
@@ -1254,7 +1254,7 @@ footer.site::after{content:"";position:absolute;inset:0;z-index:0;pointer-events
       </ul>
     </div>
     <div class="right">
-      <div class="adv-card">
+      <div class="adv-card" data-audit="sobre-adv-card">
         <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
         <h3>Vamos conversar sobre o seu</h3>
         <p class="sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
