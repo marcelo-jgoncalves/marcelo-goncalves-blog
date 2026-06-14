@@ -561,7 +561,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--ivory);color:var(--ink);font-family:var(--font);
+  body{background:var(--ivory);color:var(--ink);font-family:var(--font);font-size:18px;
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--clay-soft);color:var(--clay-hover)}
@@ -899,8 +899,8 @@
 </header>
 
 <!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-in">
+<section class="hero" data-audit="op-hero">
+  <div class="hero-in" data-audit="op-hero-in">
     <div class="hero-left">
       <div class="ey">O Projeto · Build in Public</div>
       <h1>Construindo este blog em público, <em>do zero</em></h1>
@@ -913,7 +913,7 @@
         <span class="status-badge"><span class="dot"></span>Em produção · Fase 1</span>
       </div>
     </div>
-    <div class="hero-stat">
+    <div class="hero-stat" data-audit="op-hero-stat">
       <div class="hstat-item">
         <span class="big">12</span>
         <span class="cap">posts publicados</span>
@@ -924,7 +924,7 @@
       </div>
     </div>
   </div>
-  <div class="stats-strip">
+  <div class="stats-strip" data-audit="op-stats-strip">
     <div class="stat-item">
       <span class="v">12</span>
       <span class="l">Posts publicados</span>
@@ -948,7 +948,7 @@
 <main>
 
   <!-- SOBRE O PROJETO -->
-  <div class="about-strip">
+  <div class="about-strip" data-audit="op-about-strip">
     <div class="left">
       <div class="ey2">O que é isso</div>
       <h2>Um blog que documenta a própria construção</h2>
@@ -963,7 +963,7 @@
       </p>
     </div>
     <div class="right">
-      <div class="principle">
+      <div class="principle" data-audit="op-principle">
         <div class="tile">01</div>
         <div class="txt">
           <div class="t">Transparência radical</div>
@@ -996,7 +996,7 @@
 
   <!-- TIMELINE DE POSTS -->
   <section class="section" id="timeline">
-    <div class="sec-header">
+    <div class="sec-header" data-audit="op-sec-header">
       <div>
         <div class="sec-eyebrow">A jornada</div>
         <h2 class="sec-title">Tudo que foi documentado</h2>
@@ -1021,8 +1021,8 @@
       </div>
     </div>
 
-    <div class="roadmap-grid">
-      <div class="rm-card doing">
+    <div class="roadmap-grid" data-audit="op-roadmap-grid">
+      <div class="rm-card doing" data-audit="op-rm-card">
         <div class="rm-top">
           <span class="rm-num">E-01</span>
           <span class="rm-status s-doing"><span class="sdot"></span>Em andamento</span>
@@ -1082,8 +1082,8 @@
 </main>
 
 <!-- CTA ASSESSORIA -->
-<section class="cta-adv" id="assessoria">
-    <div class="cta-adv-in">
+<section class="cta-adv" id="assessoria" data-audit="op-cta-adv">
+    <div class="cta-adv-in" data-audit="op-cta-adv-in">
       <div class="left">
         <div class="ey">Assessoria &amp; Consultoria</div>
         <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
@@ -1095,7 +1095,7 @@
         </ul>
       </div>
       <div class="right">
-        <div class="adv-card">
+        <div class="adv-card" data-audit="op-adv-card">
           <div class="tagline"><span class="dot"></span>Disponível para novos projetos</div>
           <h3>Vamos conversar sobre o seu</h3>
           <p class="sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
@@ -1193,7 +1193,7 @@
       ? '<span class="tl-badge latest-tag">Mais recente</span>'
       : '<span class="tl-badge pub">Publicado</span>';
     return '<div class="tl-entry ' + p.type + '">'
-      + '<div class="tl-card">'
+      + '<div class="tl-card"' + (p.num === '01' ? ' data-audit="op-tl-card"' : '') + '>'
       + '<div class="tl-num-bg">' + p.num + '</div>'
       + '<div class="tl-card-top"><span class="tl-cat">' + p.cat + '</span>' + badge + '</div>'
       + '<h3>' + p.title + '</h3>'
