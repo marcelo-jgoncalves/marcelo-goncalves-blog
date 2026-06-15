@@ -4,6 +4,35 @@ Arquivo para rastrear investigações em progresso. Ajuda a manter continuidade 
 
 ---
 
+## ✅ Resolvida: Imagens das postagens não aparecem (imagens inline no corpo do post)
+
+**Status:** ✅ RESOLVIDA — Tentativa #1
+**Data:** 2026-06-15
+
+### ANTES
+- **Estado atual:** usuário reportou "nem localmente nem diretamente pela url do cloudfront as imagens das postagens não estão aparecendo" — relato separado do fix anterior (`/sobre`), referindo-se a posts (`/post/[slug]`).
+- **Modelo mental:** capa do post (`.post-cover-frame`) usa `ResponsiveImage` (OK por design). Imagens inline no corpo vêm de `conteudo_html` (HTML bruto do Tiptap, renderizado via `dangerouslySetInnerHTML` em `.post-content`), processado por `processFullPostContent()` (`frontend/lib/postUtils.tsx`).
+- **Hipótese:** mesma causa raiz do fix anterior (URL "bare" sem sufixo de variante → 403 → ORB). Para confirmar, escaneei `conteudo_html` de todos os posts via `aws dynamodb scan` (profile `claude-dev`, tabela `marcelo-goncalves-blog-dev-posts`).
+- **Dado concreto:** 3 posts têm `<img>` no corpo — `testeerroedicao`, `teste-com-imagem-no-corpo`, `nononon-nonononono` — todos com `src="https://dsns2wusdrj9z.cloudfront.net/media/{id}.webp"` (SEM sufixo `-1280`). Os outros 10 posts têm 0 `<img>` no corpo (não é bug — simplesmente não têm imagens inline).
+- **Teste:** Playwright em `localhost:3000/post/nononon-nonononono`, checando `.post-content img` → `naturalWidth: 0`, `requestfailed: net::ERR_BLOCKED_BY_ORB` na URL bare. Confirmado.
+- **Causa raiz do dado:** `EditorView.vue:228-230` (`onImageUploaded`) já gera `${baseUrl}-1280.webp` corretamente para uploads novos — esses 3 posts são dados antigos, salvos antes desse fix (ou inseridos por outro fluxo), com a URL bare persistida em `conteudo_html`.
+- **Mudança mínima:** em vez de migrar dados (re-editar 3 posts), corrigir na renderização — `processFullPostContent()` já usa cheerio para manipular o DOM do post. Adicionado `normalizeMediaImageSrc()` (export em `postUtils.tsx`): para `<img src>` que aponta para `/media/...` SEM sufixo `-480/-768/-1280`, insere `-1280` antes da extensão (mesma variante que `ResponsiveImage`/`EditorView` usam). URLs já corretas (com sufixo) ou fora de `/media/` não são alteradas. Aplicado em `$('img').each(...)` logo após o `cheerio.load()`.
+
+### DEPOIS
+- **Resultado:** os 3 posts renderizam a imagem inline corretamente, local e (por construção — mesma lógica server-side) via CloudFront:
+  - `nononon-nonononono`: `naturalWidth: 612, naturalHeight: 377`, src reescrito para `...-1280.webp`, `failed: none`.
+  - `teste-com-imagem-no-corpo`: `naturalWidth: 1280, naturalHeight: 731`, `failed: none` (falhas do YouTube embed são ruído não relacionado).
+  - `testeerroedicao`: `naturalWidth: 1024, naturalHeight: 512`, `failed: none`.
+- **Diff vs esperado:** nenhum.
+- **Validação:** 5 novos testes unitários em `__tests__/postUtils.test.ts` (normalização de URL + integração via `processFullPostContent`) — 81/81 testes do frontend passam. `tsc --noEmit` limpo.
+
+### APRENDIZADO
+- **Terceira ocorrência da mesma causa raiz** (URL "bare" do CloudFront sem sufixo de variante → 403 → ORB), agora dentro de HTML bruto persistido (`conteudo_html`), não numa prop de componente — por isso a correção foi na camada de processamento server-side (`processFullPostContent`), não num componente React.
+- Como `EditorView.vue` já grava `-1280.webp` corretamente para uploads novos, a correção em `postUtils.tsx` é principalmente uma rede de segurança para os 3 posts antigos com dado legado — mas também protege contra qualquer URL bare colada manualmente no editor.
+- "Imagens das postagens" (este relato) ≠ "cards"/"foto do hero" (relato anterior) — são bugs distintos com a mesma causa raiz, em locais diferentes do código.
+
+---
+
 ## ✅ Resolvida: Imagens não aparecem (/sobre — foto do hero)
 
 **Status:** ✅ RESOLVIDA — Tentativa #1

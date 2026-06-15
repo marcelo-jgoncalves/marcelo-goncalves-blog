@@ -13,6 +13,18 @@ export interface ProcessedPost {
   headings: Heading[];
 }
 
+// Imagens inline antigas foram salvas com a URL "base" (sem sufixo de variante),
+// que nunca existe no bucket de assets — só -480/-768/-1280 existem. Normaliza
+// para a variante desktop (-1280), igual ao que o admin grava em uploads novos.
+const MEDIA_IMG_RE = /^(https?:\/\/[^"'?]*\/media\/[^"'?]+?)(-(?:480|768|1280))?\.(avif|webp|jpe?g|png|gif)(\?[^"']*)?$/i;
+
+export function normalizeMediaImageSrc(src: string): string {
+  const match = src.match(MEDIA_IMG_RE);
+  if (!match) return src;
+  const [, base, sizeSuffix, ext, query = ''] = match;
+  if (sizeSuffix) return src;
+  return `${base}-1280.${ext}${query}`;
+}
 
 export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
@@ -51,8 +63,15 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
     }
   }
 
- const $ = cheerio.load(preProcessedHtml, { 
-    xmlMode: false 
+ const $ = cheerio.load(preProcessedHtml, {
+    xmlMode: false
+  });
+
+  // Corrige <img src> de imagens inline salvas com URL "base" sem variante
+  $('img').each((_, elem) => {
+    const $el = $(elem);
+    const src = $el.attr('src');
+    if (src) $el.attr('src', normalizeMediaImageSrc(src));
   });
 
   // Extração de Headings (TOC) via DOM

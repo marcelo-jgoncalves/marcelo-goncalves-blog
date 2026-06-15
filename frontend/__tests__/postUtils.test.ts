@@ -1,4 +1,4 @@
-import { processFullPostContent } from '@/lib/postUtils';
+import { processFullPostContent, normalizeMediaImageSrc } from '@/lib/postUtils';
 
 // Shiki é pesado e irrelevante para estes testes — mock simples que devolve o bloco original
 jest.mock('shiki', () => ({
@@ -99,6 +99,45 @@ describe('pula headings e imagens no midpoint', () => {
     const figPos = contentHtml.indexOf('<figure');
     const phPos = contentHtml.indexOf(PLACEHOLDER);
     expect(phPos).toBeGreaterThan(figPos);
+  });
+});
+
+// ─── normalização de <img src> de imagens inline ─────────────────────────────
+
+describe('normalizeMediaImageSrc', () => {
+  it('adiciona -1280 em URL de /media/ sem sufixo de variante', () => {
+    const src = 'https://dsns2wusdrj9z.cloudfront.net/media/1770091876478-ub9q0e-tools.webp';
+    expect(normalizeMediaImageSrc(src)).toBe(
+      'https://dsns2wusdrj9z.cloudfront.net/media/1770091876478-ub9q0e-tools-1280.webp'
+    );
+  });
+
+  it('mantém URL que já tem sufixo -1280', () => {
+    const src = 'https://dsns2wusdrj9z.cloudfront.net/media/abc-1280.webp';
+    expect(normalizeMediaImageSrc(src)).toBe(src);
+  });
+
+  it('mantém URL que já tem sufixo -480 ou -768', () => {
+    expect(normalizeMediaImageSrc('https://dsns2wusdrj9z.cloudfront.net/media/abc-480.avif'))
+      .toBe('https://dsns2wusdrj9z.cloudfront.net/media/abc-480.avif');
+    expect(normalizeMediaImageSrc('https://dsns2wusdrj9z.cloudfront.net/media/abc-768.webp'))
+      .toBe('https://dsns2wusdrj9z.cloudfront.net/media/abc-768.webp');
+  });
+
+  it('não altera URLs que não são de /media/', () => {
+    const src = '/static/foto-perfil-oculos.png';
+    expect(normalizeMediaImageSrc(src)).toBe(src);
+  });
+
+  it('processFullPostContent corrige <img src> de /media/ sem variante no HTML final', async () => {
+    const html =
+      '<p>a</p><p>b</p>' +
+      '<img src="https://dsns2wusdrj9z.cloudfront.net/media/abc.webp" alt="teste">' +
+      '<p>c</p><p>d</p>';
+    const { contentHtml } = await processFullPostContent(html);
+    expect(contentHtml).toContain(
+      'src="https://dsns2wusdrj9z.cloudfront.net/media/abc-1280.webp"'
+    );
   });
 });
 
