@@ -102,7 +102,6 @@
   grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
   gap: var(--sp-9);
   padding: var(--sp-9) 0 44px;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
 }
 
 .site-footer .foot-brand .b {
@@ -241,25 +240,6 @@
 .site-footer .foot-soc a svg {
   width: 17px;
   height: 17px;
-}
-
-/* ── watermark ── */
-.site-footer .foot-watermark {
-  position: relative;
-  margin-top: var(--sp-6);
-  text-align: center;
-  line-height: .8;
-  white-space: nowrap;
-  font-family: var(--font);
-  font-weight: 900;
-  letter-spacing: -.055em;
-  font-size: clamp(2rem, 8.6vw, 6.8rem);
-  color: transparent;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .01));
-  -webkit-background-clip: text;
-  background-clip: text;
-  user-select: none;
-  pointer-events: none;
 }
 
 /* ── bottom ── */

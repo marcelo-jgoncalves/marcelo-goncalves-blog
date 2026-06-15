@@ -317,6 +317,26 @@ img {
   border-color: var(--petrol);
 }
 
+/* ── section header CTA — clay button variant ── */
+.sec-link.sec-link-clay,
+.home-ia-link.sec-link-clay {
+  background: var(--clay);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  transition: background .2s, transform .15s;
+}
+
+.sec-link.sec-link-clay:hover,
+.home-ia-link.sec-link-clay:hover {
+  background: var(--clay-hover);
+  color: #fff;
+  border-color: transparent;
+  gap: 7px;
+  transform: translateY(-1px);
+}
+
 .highlight,
 .accent {
   color: var(--clay);

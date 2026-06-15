@@ -156,7 +156,7 @@ export default async function Home() {
                 <h2 className="sec-t">Os que mais engajaram</h2>
                 <p className="sec-desc">Os artigos que mais geraram leitura, debate e compartilhamentos — um bom ponto de partida.</p>
               </div>
-              <Link className="sec-link" href="/artigos">Ver ranking completo →</Link>
+              <Link className="sec-link sec-link-clay" href="/artigos">Ver ranking completo →</Link>
             </div>
             <div className="home-ml-grid" data-audit="home-ml-grid">
               {mlFeature1 && (
@@ -231,7 +231,7 @@ export default async function Home() {
               <h2 className="sec-t">Direto do forno</h2>
               <p className="sec-desc">Os últimos artigos publicados — decisões tomadas, erros cometidos e aprendizados registrados em tempo real.</p>
             </div>
-            <Link className="sec-link" href="/artigos">Todos os artigos →</Link>
+            <Link className="sec-link sec-link-clay" href="/artigos">Todos os artigos →</Link>
           </div>
           <div className="home-posts-grid" data-audit="home-posts-grid">
             {recent.map((post: HomePost, i: number) => (
@@ -254,7 +254,7 @@ export default async function Home() {
                 <h2 className="home-ia-title">IA aplicada — sem hype</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
-              <Link className="home-ia-link" href="/categoria/inteligencia-artificial">Ver todos os posts de IA →</Link>
+              <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Ver todos os posts de IA →</Link>
             </div>
             <div className="home-ia-grid" data-audit="home-ia-grid">
               {iaBig && (

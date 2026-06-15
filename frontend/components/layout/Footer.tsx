@@ -89,8 +89,6 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="foot-watermark" aria-hidden="true" data-audit="footer-watermark">MarceloGonçalves</div>
-
         <div className="foot-bottom" data-audit="footer-bottom">
           <span>© {currentYear} Marcelo Gonçalves · Todos os direitos reservados</span>
           <div className="links">
