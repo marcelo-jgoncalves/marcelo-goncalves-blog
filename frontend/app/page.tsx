@@ -153,7 +153,7 @@ export default async function Home() {
             <div className="sec-head-row">
               <div className="left">
                 <div className="sec-ey">Mais lidos</div>
-                <h2 className="sec-t">Os que mais engajaram</h2>
+                <h2 className="sec-t">Posts que mais engajaram</h2>
                 <p className="sec-desc">Os artigos que mais geraram leitura, debate e compartilhamentos — um bom ponto de partida.</p>
               </div>
               <Link className="sec-link sec-link-clay" href="/artigos">Ranking completo →</Link>
@@ -229,7 +229,7 @@ export default async function Home() {
             <div className="left">
               <div className="sec-ey">Postagens recentes</div>
               <h2 className="sec-t">Direto do forno</h2>
-              <p className="sec-desc">Os últimos artigos publicados — decisões tomadas, erros cometidos e aprendizados registrados em tempo real.</p>
+              <p className="sec-desc">Últimos artigos publicados.<br />Problemas reais. Soluções aplicadas. Aprendizados compartilhados.</p>
             </div>
             <Link className="sec-link sec-link-clay" href="/artigos">Todos os artigos →</Link>
           </div>
