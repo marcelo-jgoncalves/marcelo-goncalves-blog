@@ -4,6 +4,35 @@ Arquivo para rastrear investigações em progresso. Ajuda a manter continuidade 
 
 ---
 
+## ✅ Resolvida: PostCard e destaques da home sem imagem + regressão e2e em /artigos
+
+**Status:** ✅ RESOLVIDA — Tentativa #1
+**Data:** 2026-06-15
+
+### ANTES
+- **Estado atual:** usuário pediu "com excessão dos cards de /o-projeto, todos os cards devem exibir sua respectiva imagem" e, em seguida, "na home, a imagem da postagem de destaque na hero e também a imagem da postagem de destaque de IA também tem que ser mostradas".
+- **Modelo mental:** `PostCard` (sessão 30) foi redesenhado para NÃO mostrar imagem (gradiente `GRADIENT_VARIANTS` por slug, decorativo). `/o-projeto` não usa `PostCard` (markup próprio `op-tl-card`/`op-rm-card`/`op-adv-card`) — exclusão do usuário já é automática. Home tem dois destaques com markup próprio (`.home-hf-cover` no hero, `.home-ia-big-cover` na seção IA) que também só tinham gradiente + tags, sem `<img>`.
+- **Mudança mínima:**
+  - `PostCard.tsx`: dentro de `.pc-img`, renderiza `<ResponsiveImage src={post.imagem_destaque_url} fill lqip={post.imagem_lqip_base64}>` quando `imagem_destaque_url` existe; gradiente permanece como fallback/background para posts sem imagem.
+  - `app/page.tsx`: `HomePost` ganha `imagem_destaque_url`, `imagem_destaque_alt_text`, `imagem_lqip_base64`. `.home-hf-cover` (hero) e `.home-ia-big-cover` (big IA) ganham o mesmo `<ResponsiveImage fill>` condicional — hero com `priority` (LCP). Tags/badges já tinham `z-index: 1`, então continuam visíveis sobre a imagem.
+- **Teste:** script Playwright temporário (`check-home-images.mjs`, removido após uso) — `naturalWidth` de `.home-hf-cover img` e `.home-ia-big-cover img` + screenshots.
+
+### DEPOIS
+- **Resultado:** ambas as imagens (`naturalWidth: 612`) renderizam corretamente, com tags/badges sobrepostos. PostCard renderiza imagem real em `/`, `/artigos`, `/busca`, `/categoria/[slug]`, `RelatedPostsSection`, `PopularPostsSection`, not-found — confirmado via screenshot em sessão anterior (gradiente preservado como fallback).
+- **Regressão detectada:** `e2e/artigos.spec.ts` (`beforeEach` com `page.goto('/artigos', { waitUntil: 'networkidle' })` compartilhado por 11 testes) passou a falhar sob paralelismo padrão do Playwright local (6 workers) — cada `/artigos` agora carrega ~12 imagens reais via CloudFront, e `networkidle` nunca estabiliza dentro de 30s com 6 page-loads concorrentes.
+- **Mudança mínima (teste):** `beforeEach` trocado de `waitUntil: 'networkidle'` para `waitUntil: 'load'` (padrão já usado na maioria de `home-layout.spec.ts`; `networkidle` é anti-pattern reconhecido do Playwright para páginas com atividade de rede contínua).
+- **Validação:**
+  - `--project=chromium --workers=1` e `--project=firefox --workers=1` (replica `workers: process.env.CI ? 1 : undefined` do `playwright.config.ts`, ou seja, o que roda no CI): **11/11 passam** em ambos (22.5s / 27.3s).
+  - Com 6 workers locais (chromium+firefox, 22 testes), `'load'` sozinho NÃO elimina as falhas (18/22 falham, igual a `networkidle`) — confirmando que o estouro de 30s é artefato de alta concorrência contra `next dev`/Turbopack local, não um problema do CI (que usa `workers: 1`).
+  - 81/81 testes Jest do frontend, `tsc --noEmit` limpo.
+  - `e2e/post.spec.ts` (9/9) e `e2e/smoke.spec.ts` (2/2) também passam com `--workers=1`.
+
+### APRENDIZADO
+- `networkidle` é frágil para páginas com muitos recursos externos (imagens via CloudFront) sob paralelismo — `'load'` é a escolha recomendada e mais robusta; nenhuma asserção em `artigos.spec.ts` depende de imagens carregadas, então a troca é segura.
+- **Débito técnico pré-existente descoberto (não corrigido nesta sessão):** ao rodar a suíte e2e mais ampla para validar este fix, `e2e/home-layout.spec.ts` (5/5), `e2e/busca.spec.ts` (2/11) e `e2e/categoria.spec.ts` (3/9) falham procurando seletores de um DOM antigo (`.home-sidebar`, `.home-layout`, `.categories-grid`, `.cta`, `.post-card__meta-row`, `.page-hero`, `.hero-title`, `.blog-sidebar`, `.op-header`) que não existem mais após os rewrites "redesign 2026". Confirmado via `git stash` que `home-layout.spec.ts` já falha (5/5) no HEAD do `develop`, sem relação com esta mudança. Precisa de sessão dedicada para atualizar esses specs ao DOM atual.
+
+---
+
 ## ✅ Resolvida: Imagens das postagens não aparecem (imagens inline no corpo do post)
 
 **Status:** ✅ RESOLVIDA — Tentativa #1

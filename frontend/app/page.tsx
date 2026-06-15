@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
@@ -51,6 +52,9 @@ interface HomePost {
   };
   data_publicacao?: string;
   tempo_leitura_min?: number;
+  imagem_destaque_url?: string;
+  imagem_destaque_alt_text?: string;
+  imagem_lqip_base64?: string;
 }
 
 function categoryName(post: HomePost): string {
@@ -104,6 +108,15 @@ export default async function Home() {
             {heroFeature && (
               <article className="home-hero-feature" data-audit="home-hero-feature">
                 <div className="home-hf-cover">
+                  {heroFeature.imagem_destaque_url && (
+                    <ResponsiveImage
+                      src={heroFeature.imagem_destaque_url}
+                      alt={heroFeature.imagem_destaque_alt_text || heroFeature.titulo}
+                      fill
+                      priority
+                      lqip={heroFeature.imagem_lqip_base64}
+                    />
+                  )}
                   <span className="home-hf-badge">Em destaque</span>
                   <span className="home-hf-cover-tag">{categoryName(heroFeature)}</span>
                 </div>
@@ -247,6 +260,14 @@ export default async function Home() {
               {iaBig && (
                 <article className="home-ia-big" data-audit="home-ia-big">
                   <div className="home-ia-big-cover">
+                    {iaBig.imagem_destaque_url && (
+                      <ResponsiveImage
+                        src={iaBig.imagem_destaque_url}
+                        alt={iaBig.imagem_destaque_alt_text || iaBig.titulo}
+                        fill
+                        lqip={iaBig.imagem_lqip_base64}
+                      />
+                    )}
                     <span className="home-ia-big-cover-tag">{categoryName(iaBig)}</span>
                   </div>
                   <div className="home-ia-big-body">

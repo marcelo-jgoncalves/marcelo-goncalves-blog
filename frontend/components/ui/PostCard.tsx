@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import './PostCard.css';
 import { formatDateShort } from '@/lib/format';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 const GRADIENT_VARIANTS = ['t-soft', 't-petrol', 't-clay', 't-teal', 't-deep', 't-moss'] as const;
 
@@ -15,6 +16,9 @@ interface PostCardProps {
       nome_exibicao: string;
     };
     data_publicacao?: string;
+    imagem_destaque_url?: string;
+    imagem_destaque_alt_text?: string;
+    imagem_lqip_base64?: string;
   };
   dataAudit?: string;
   dataCat?: string;
@@ -39,6 +43,14 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
   return (
     <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo} data-audit={dataAudit} data-cat={dataCat}>
       <div className={`pc-img ${gradientVariant(post.slug)}`}>
+        {post.imagem_destaque_url && (
+          <ResponsiveImage
+            src={post.imagem_destaque_url}
+            alt={post.imagem_destaque_alt_text || post.titulo}
+            fill
+            lqip={post.imagem_lqip_base64}
+          />
+        )}
         {categoriaNome && <span className="tag">{categoriaNome}</span>}
       </div>
 

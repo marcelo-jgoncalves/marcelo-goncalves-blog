@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('página /artigos', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/artigos', { waitUntil: 'networkidle' });
+    await page.goto('/artigos', { waitUntil: 'load' });
   });
 
   test('hero existe com título e busca', async ({ page }) => {
