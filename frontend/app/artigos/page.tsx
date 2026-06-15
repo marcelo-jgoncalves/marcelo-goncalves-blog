@@ -6,6 +6,7 @@ import { getAllPosts, getPopularPosts, getRecentPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import ArtigosFilters from '@/components/ui/ArtigosFilters';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './artigos.css';
@@ -42,6 +43,9 @@ interface ArtigoPost {
   categoria?: { nome_exibicao: string };
   data_publicacao?: string;
   tempo_leitura_min?: number;
+  imagem_destaque_url?: string;
+  imagem_destaque_alt_text?: string;
+  imagem_lqip_base64?: string;
 }
 
 function categoryName(post: ArtigoPost): string {
@@ -151,6 +155,15 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         <section className="wrap art-masthead" data-audit="art-masthead">
           <article className="art-feature" data-audit="art-feature">
             <Link className="art-f-cover" href={`/post/${feature.slug}`} aria-label="Abrir artigo em destaque">
+              {feature.imagem_destaque_url && (
+                <ResponsiveImage
+                  src={feature.imagem_destaque_url}
+                  alt={feature.imagem_destaque_alt_text || feature.titulo}
+                  fill
+                  priority
+                  lqip={feature.imagem_lqip_base64}
+                />
+              )}
               <span className="art-f-badge">★ Em destaque</span>
               <span className="art-f-cover-tag">{categoryName(feature)}</span>
             </Link>
@@ -178,7 +191,16 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
                   href={`/post/${post.slug}`}
                   data-audit={i === 0 ? 'art-mini' : undefined}
                 >
-                  <div className={`art-m-cover ${i === 0 ? 't-soft' : 't-clay'}`}></div>
+                  <div className={`art-m-cover ${i === 0 ? 't-soft' : 't-clay'}`}>
+                    {post.imagem_destaque_url && (
+                      <ResponsiveImage
+                        src={post.imagem_destaque_url}
+                        alt={post.imagem_destaque_alt_text || post.titulo}
+                        fill
+                        lqip={post.imagem_lqip_base64}
+                      />
+                    )}
+                  </div>
                   <div className="art-m-body">
                     <span className="art-m-cat">{categoryName(post)}</span>
                     <span className="art-m-title">{post.titulo}</span>

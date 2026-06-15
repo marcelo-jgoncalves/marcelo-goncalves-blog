@@ -4,6 +4,26 @@ Arquivo para rastrear investigações em progresso. Ajuda a manter continuidade 
 
 ---
 
+## ✅ Resolvida: Masthead de /artigos (3 cards) sem imagem
+
+**Status:** ✅ RESOLVIDA — Tentativa #1
+**Data:** 2026-06-15
+
+### ANTES
+- **Estado atual:** usuário reportou "na página de artigos, os três cards do primeiro widget também estão sem imagens" — sequência do fix anterior (PostCard + home hero/IA).
+- **Modelo mental:** `art-masthead` em `frontend/app/artigos/page.tsx` contém 3 cards com markup próprio (não usam `PostCard`): 1 `.art-feature`/`.art-f-cover` (Link, com badge "★ Em destaque" + tag de categoria) e 2 `.art-twoup`/`.art-m-cover` (divs com gradiente `t-soft`/`t-clay`). Todos os 3 vêm de `recent = getRecentPosts(3)`, mesmo shape de `imagem_destaque_url`/`imagem_lqip_base64` já usado em `HomePost`.
+- **Mudança mínima:** mesmo padrão já validado na home — `ArtigoPost` ganha `imagem_destaque_url`, `imagem_destaque_alt_text`, `imagem_lqip_base64`; `.art-f-cover` e cada `.art-m-cover` ganham `<ResponsiveImage fill lqip={...}>` condicional (feature com `priority`, minis lazy), mantendo gradiente/badges como fallback (`z-index: 1` já existente nos badges/tags garante visibilidade sobre a imagem).
+- **Teste:** script Playwright temporário (`check-artigos-masthead.mjs`, removido após uso) — `naturalWidth` de `.art-f-cover img` + `.art-m-cover img` (2x) e visibilidade de `.art-f-badge`/`.art-f-cover-tag`.
+
+### DEPOIS
+- **Resultado:** feature `naturalWidth: 612`, mini[0] `naturalWidth: 1280`, mini[1] `naturalWidth: 612` — todas as 3 imagens carregam. Badge e tag permanecem visíveis sobre a imagem do feature card. Screenshot confirma visual correto nas 3 posições do masthead.
+- **Validação:** `tsc --noEmit` limpo, 81/81 testes Jest, `e2e/artigos.spec.ts` 11/11 (`--project=chromium --workers=1`).
+
+### APRENDIZADO
+- Padrão `<ResponsiveImage fill lqip>` + fallback de gradiente + overlay com `z-index: 1` é agora reutilizado em 3 lugares (`PostCard.pc-img`, home `.home-hf-cover`/`.home-ia-big-cover`, artigos `.art-f-cover`/`.art-m-cover`) sem nenhuma mudança de CSS — a convenção `position: relative; overflow: hidden` + pseudo-elementos decorativos sem z-index é suficiente para acomodar a imagem em qualquer container existente.
+
+---
+
 ## ✅ Resolvida: PostCard e destaques da home sem imagem + regressão e2e em /artigos
 
 **Status:** ✅ RESOLVIDA — Tentativa #1
