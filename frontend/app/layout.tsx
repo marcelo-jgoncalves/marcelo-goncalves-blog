@@ -2,7 +2,6 @@
 
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -104,7 +103,10 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         {/* Google Consent Mode v2 — deve rodar ANTES de qualquer script de ads */}
-        <Script id="consent-init" strategy="beforeInteractive">{`
+        <script
+          id="consent-init"
+          dangerouslySetInnerHTML={{
+            __html: `
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           window.gtag = gtag;
@@ -122,7 +124,9 @@ export default function RootLayout({
           if (window.APP_ENV === 'dev') {
             console.log('[CONSENT INIT] Consent Mode defaults aplicados (all denied)');
           }
-        `}</Script>
+        `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}

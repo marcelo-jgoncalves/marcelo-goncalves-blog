@@ -9,3 +9,5 @@ export const SITE_NAME = 'Marcelo Gonçalves';
 export const SITE_DESCRIPTION = 'Blog de autoridade sobre IA, AWS e Engenharia de Software por Marcelo Gonçalves. Análises profundas, tutoriais práticos e as últimas notícias do mundo tech.';
 export const AUTHOR_NAME = 'Marcelo Gonçalves';
 export const AUTHOR_TWITTER = '@marcelogoncalves';
+export const AUTHOR_LINKEDIN_URL = 'https://www.linkedin.com/in/marcelo-jgoncalves';
+export const AUTHOR_GITHUB_URL = 'https://github.com/marcelo-jgoncalves';

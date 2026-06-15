@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
-import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
@@ -264,8 +264,8 @@ export default async function PostPage({ params }: Props) {
             profileUrl: '/sobre',
           }}
           social={{
-            linkedin_url: autor?.linkedin_url,
-            github_url: autor?.github_url,
+            linkedin_url: autor?.linkedin_url || AUTHOR_LINKEDIN_URL,
+            github_url: autor?.github_url || AUTHOR_GITHUB_URL,
             instagram_url: autor?.instagram_url,
           }}
         />
