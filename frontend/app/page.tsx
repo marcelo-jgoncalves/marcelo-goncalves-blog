@@ -156,7 +156,7 @@ export default async function Home() {
                 <h2 className="sec-t">Os que mais engajaram</h2>
                 <p className="sec-desc">Os artigos que mais geraram leitura, debate e compartilhamentos — um bom ponto de partida.</p>
               </div>
-              <Link className="sec-link sec-link-clay" href="/artigos">Ver ranking completo →</Link>
+              <Link className="sec-link sec-link-clay" href="/artigos">Ranking completo →</Link>
             </div>
             <div className="home-ml-grid" data-audit="home-ml-grid">
               {mlFeature1 && (
@@ -173,7 +173,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
                           <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`}>Ler →</Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`}>Ler artigo →</Link>
                       </div>
                     </div>
                   </article>
@@ -193,7 +193,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
                           <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`}>Ler →</Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`}>Ler artigo →</Link>
                       </div>
                     </div>
                   </article>
@@ -254,7 +254,7 @@ export default async function Home() {
                 <h2 className="home-ia-title">IA aplicada — sem hype</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
-              <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Ver todos os posts de IA →</Link>
+              <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
             </div>
             <div className="home-ia-grid" data-audit="home-ia-grid">
               {iaBig && (
@@ -295,7 +295,7 @@ export default async function Home() {
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <Link className="home-ia-read" href={`/post/${post.slug}`}>Ler →</Link>
+                        <Link className="home-ia-read" href={`/post/${post.slug}`}>Ler artigo →</Link>
                       </div>
                     </article>
                   ))}

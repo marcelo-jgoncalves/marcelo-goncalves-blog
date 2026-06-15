@@ -62,7 +62,7 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
 
       <div className="pc-foot">
         <span>{formatDateShort(post.data_publicacao)}</span>
-        <span className="more">Ler →</span>
+        <span className="more">Ler artigo →</span>
       </div>
     </Link>
   );
