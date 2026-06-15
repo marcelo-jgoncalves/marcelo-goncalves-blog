@@ -90,7 +90,7 @@ export default async function Home() {
         <div className="home-hero-in" data-audit="home-hero-in">
           <div className="home-hero-left">
             <div className="home-hero-ey">Blog · Engenharia &amp; IA · Build in Public</div>
-            <h1>Engenharia, IA e AWS — <em>na prática,</em> sem filtro</h1>
+            <h1>Engenharia, Inteligência Artificial e AWS na prática</h1>
             <p className="home-hero-sub">Decisões reais de arquitetura, custos expostos, código em produção. Um blog construído do zero — e documentado em cada passo.</p>
             <div className="home-hero-pills">
               {HERO_PILLS.map((pill) => (
