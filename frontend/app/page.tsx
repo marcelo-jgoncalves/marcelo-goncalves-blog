@@ -38,8 +38,8 @@ const HERO_PILLS = [
 const STATS = [
   { v: '50+', l: 'Artigos publicados' },
   { v: '4', l: 'Categorias' },
-  { v: '~100%', l: 'Construído com IA' },
-  { v: '12 mo', l: 'Em produção' },
+  { v: '100%', l: 'conteúdo original' },
+  { v: 'Casos reais', l: 'Do problema à solução' },
 ];
 
 interface HomePost {
