@@ -31,7 +31,7 @@ export default function Header() {
     <header className="site-header" data-audit="header">
       <div className="nav-in" data-audit="header-nav-in">
         <Link href="/" className="brand" onClick={closeMenu} data-audit="header-brand">
-          <span>Marcelo</span><span className="b2">Gonçalves</span><span className="tick" aria-hidden="true" />
+          <span>Marcelo</span><span className="b2">Gonçalves</span>
         </Link>
 
         {/* Menu Desktop */}

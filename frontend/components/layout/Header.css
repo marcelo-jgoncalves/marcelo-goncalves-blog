@@ -37,15 +37,6 @@
   color: var(--petrol);
 }
 
-.site-header .brand .tick {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--clay);
-  margin: 0 0 6px 4px;
-  align-self: flex-end;
-}
-
 /* ── menu desktop ── */
 .site-header .menu {
   display: flex;
