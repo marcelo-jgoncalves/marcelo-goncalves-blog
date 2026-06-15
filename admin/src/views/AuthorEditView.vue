@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { authorsApi } from '../services/api'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
@@ -57,6 +57,14 @@ async function save() {
 function onImageUploaded(relativePath: string) {
   form.value.foto_avatar_url = `${ASSETS_URL}/${relativePath}`
 }
+
+// basePath sem extensão → variante 480w para o preview do admin
+const avatarPreviewUrl = computed(() => {
+  const url = form.value.foto_avatar_url
+  if (!url) return ''
+  const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
+  return `${base}-480.webp`
+})
 </script>
 
 <template>
@@ -114,7 +122,7 @@ function onImageUploaded(relativePath: string) {
         <div class="panel">
           <h3>Foto de Perfil</h3>
           <div class="avatar-preview">
-            <img v-if="form.foto_avatar_url" :src="form.foto_avatar_url" alt="Avatar" />
+            <img v-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="Avatar" />
             <div v-else class="avatar-placeholder"><i class="fas fa-user"></i></div>
           </div>
 

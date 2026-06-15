@@ -4,6 +4,30 @@ Arquivo para rastrear investigações em progresso. Ajuda a manter continuidade 
 
 ---
 
+## ✅ Resolvida: Imagens não aparecem (/sobre — foto do hero)
+
+**Status:** ✅ RESOLVIDA — Tentativa #1
+**Data:** 2026-06-15
+
+### ANTES
+- **Estado atual:** usuário reportou "as imagens não estão aparecendo, nem nos cards nem a minha foto no hero da página sobre" (localhost:3000, dev server rodando).
+- **Modelo mental:** `ResponsiveImage` (`frontend/components/ui/ResponsiveImage.tsx`) é o padrão obrigatório para imagens de conteúdo — faz `toBasePath()` (strip de extensão) e monta `<picture>` com variantes `-480/-768/-1280.avif/.webp` geradas pelo imageProcessor.
+- **Hipótese:** `app/sobre/page.tsx:177` renderizava `<img src={fotoUrl}>` (raw `<img>`, não `ResponsiveImage`), onde `fotoUrl = author.foto_avatar_url` é uma URL "bare" (`.../media/1765152117835-mq4gxg-foto-perfil-at.webp`) que não corresponde a nenhum objeto real no S3 (só existem variantes `-480/-768/-1280`). CloudFront retorna 403 → Chrome bloqueia via ORB (`net::ERR_BLOCKED_BY_ORB`) → `naturalWidth: 0`.
+- **Mudança mínima:** trocar o `<img>` raw por `<ResponsiveImage className="sobre-pf-slot" src={author.foto_avatar_url} alt={nome} priority />` quando `author.foto_avatar_url` existe; manter `<img src={FALLBACK_PHOTO}>` (PNG local sem variantes) no caso contrário. Removida a variável `fotoUrl` (não usada mais).
+- **Teste:** Playwright contra `localhost:3000/sobre`, lendo `naturalWidth`/`naturalHeight`/`currentSrc` de `.sobre-pf-slot` + listener `requestfailed`.
+
+### DEPOIS
+- **Resultado:** `naturalWidth: 1280, naturalHeight: 1300, src: '.../media/1765152117835-mq4gxg-foto-perfil-at-1280.avif'`, `failed requests: none`. Screenshot confirma foto renderizando corretamente (espelhada via `scaleX(-1)`, conforme design).
+- **Diff vs esperado:** nenhum — comportamento exatamente o previsto pela hipótese.
+
+### APRENDIZADO
+- **Causa raiz confirmada:** qualquer `<img src={...foto_avatar_url}>` ou `<img src={...imagem_destaque_url}>` que use a URL "bare" do DynamoDB diretamente (sem `ResponsiveImage`/`toBasePath()`) vai 403 no CloudFront, pois o imageProcessor só grava variantes com sufixo `-480/-768/-1280`.
+- **Segunda ocorrência da mesma causa raiz:** `admin/src/views/AuthorEditView.vue:117` (preview do avatar no card "Foto de Perfil") tinha o mesmo padrão (`<img :src="form.foto_avatar_url">`). Corrigido aplicando o mesmo padrão já usado em `EditorView.vue` (`featureImagePreviewUrl`): computed `avatarPreviewUrl` = basePath + `-480.webp`.
+- **"Cards" do relato do usuário:** nenhum outro `<img>` em `/sobre` (cards de empresas, cards de certificação — confirmados OK via screenshot), `/servicos`, PostCard (`/`, `/artigos`, `/o-projeto` — gradiente por design, sem imagem) ou na página de post (via `ResponsiveImage`, OK) apresentou problema em localhost. O card mais provável referenciado é o preview "Foto de Perfil" no admin (`AuthorEditView.vue`), já corrigido junto. Caso o usuário se refira a outro local, será necessário levantar nova hipótese.
+- **Validação:** `tsc --noEmit` limpo (frontend + admin), testes unitários 76/76 (frontend) e 16/16 (admin). `npm run lint` no frontend falha com erro pré-existente de tooling ("Invalid project directory... frontend\lint") não relacionado — confirmado reproduzível mesmo com `git stash` (HEAD limpo). `npm run lint` no admin tem 23 erros pré-existentes (nenhum introduzido por esta mudança — `AuthorEditView.vue:50` `catch (error: any)` já existia antes).
+
+---
+
 ## 🔍 Investigação Ativa: Eyebrow Gradient em NewsletterWidget
 
 **Status:** ⏸️ PAUSADA — Deixar para próxima sessão

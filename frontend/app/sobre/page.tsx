@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import './sobre.css';
 
 export const revalidate = 3600;
@@ -116,7 +117,6 @@ export default async function SobrePage() {
   const linkedinUrl = author.linkedin_url || '#';
   const githubUrl = author.github_url || '#';
   const instagramUrl = author.instagram_url || '#';
-  const fotoUrl = author.foto_avatar_url || FALLBACK_PHOTO;
   const nome = author.nome_exibicao || AUTHOR_NAME;
 
   const personJsonLd = {
@@ -174,7 +174,11 @@ export default async function SobrePage() {
           </div>
           <div className="sobre-hero-right">
             <div className="sobre-photo-frame" data-audit="sobre-photo-frame">
-              <img className="sobre-pf-slot" src={fotoUrl} alt={nome} />
+              {author.foto_avatar_url ? (
+                <ResponsiveImage className="sobre-pf-slot" src={author.foto_avatar_url} alt={nome} priority />
+              ) : (
+                <img className="sobre-pf-slot" src={FALLBACK_PHOTO} alt={nome} />
+              )}
               <div className="sobre-pf-tag"><span className="sobre-dot" />Engenheiro Cloud · AWS</div>
             </div>
           </div>
