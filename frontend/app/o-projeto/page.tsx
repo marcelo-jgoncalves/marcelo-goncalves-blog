@@ -218,6 +218,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
               nextToken={nextPageToken}
               currentPageToken={nextToken}
               prevTokens={prevTokens}
+              scrollToId="timeline"
             />
           </div>
         </section>
