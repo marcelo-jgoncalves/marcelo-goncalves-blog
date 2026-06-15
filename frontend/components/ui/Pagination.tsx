@@ -52,7 +52,7 @@ export default function Pagination({
     <nav className="op-pagination" aria-label="Paginação de postagens">
 
       {prevUrl ? (
-        <Link href={prevUrl} className="op-page-number" rel="prev" aria-label="Página anterior">
+        <Link href={prevUrl} className="op-page-number" rel="prev" aria-label="Página anterior" scroll={false}>
           ← Anterior
         </Link>
       ) : (
@@ -68,7 +68,7 @@ export default function Pagination({
       )}
 
       {nextUrl ? (
-        <Link href={nextUrl} className="op-page-number" rel="next" aria-label="Próxima página">
+        <Link href={nextUrl} className="op-page-number" rel="next" aria-label="Próxima página" scroll={false}>
           Próxima →
         </Link>
       ) : (
