@@ -99,8 +99,7 @@ export default async function Home() {
               ))}
             </div>
             <div className="home-hero-actions">
-              <Link href="/artigos" className="home-btn-clay-hero">Todos os artigos <span className="arrow">→</span></Link>
-              <Link href="/o-projeto" className="home-btn-ghost">Projeto da plataforma →</Link>
+              <Link href="/artigos" className="home-btn-ghost">Todos os artigos →</Link>
             </div>
           </div>
           <div className="home-hero-right">
