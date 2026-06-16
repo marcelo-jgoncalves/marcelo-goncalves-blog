@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
@@ -308,42 +309,7 @@ export default async function Home() {
         </section>
       )}
 
-      {/* CTA Assessoria */}
-      <section className="home-cta-adv" id="assessoria">
-        <div className="home-cta-adv-in" data-audit="home-cta-adv-in">
-          <div className="home-cta-content">
-            <div className="home-cta-ey">Serviços · Consultoria</div>
-            <h2>Precisa de ajuda com seu projeto?</h2>
-            <p className="home-cta-desc">O que você lê aqui, aplicado ao seu negócio. Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.</p>
-            <ul className="home-cta-points">
-              <li>
-                <span className="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
-                <span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>
-              </li>
-              <li>
-                <span className="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
-                <span>Automação e <b>CI/CD</b> de ponta a ponta em código</span>
-              </li>
-              <li>
-                <span className="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
-                <span>Adoção de <b>IA</b> com foco em resultado, não em hype</span>
-              </li>
-            </ul>
-          </div>
-          <div className="home-cta-card-wrap">
-            <div className="home-adv-card" data-audit="home-adv-card">
-              <div className="home-adv-tagline"><span className="dot" />Disponível para novos projetos</div>
-              <h3>Clique abaixo e conheça os serviços</h3>
-              <p className="home-adv-sub">Arquitetura, DevOps, FinOps, Serverless e mais. Veja como posso te ajudar.</p>
-              <div className="home-adv-svc">
-                <span>Cloud · AWS</span><span>DevOps</span><span>IA aplicada</span><span>Mentoria</span>
-              </div>
-              <Link className="home-btn-adv" href="/servicos">Ver todos os serviços <span className="arrow">→</span></Link>
-              <div className="home-adv-reassure">10 frentes de atuação · diagnóstico gratuito</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaAssessoria />
     </>
   );
 }

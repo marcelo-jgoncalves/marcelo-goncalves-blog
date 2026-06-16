@@ -9,6 +9,7 @@ import ArtigosFilters from '@/components/ui/ArtigosFilters';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import './artigos.css';
 
 const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software — quase 100% construído com IA.';
@@ -307,43 +308,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         </div>
       </section>
 
-      {/* ASSESSORIA CTA */}
-      <section className="art-cta-adv" id="assessoria" data-audit="art-cta-adv">
-        <div className="art-cta-adv-in" data-audit="art-cta-adv-in">
-          <div className="art-cta-left">
-            <div className="art-cta-ey">Assessoria &amp; Consultoria</div>
-            <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
-            <p className="art-cta-desc">Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.</p>
-            <ul className="art-cta-points">
-              <li>
-                <span className="art-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>
-              </li>
-              <li>
-                <span className="art-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Automação e <b>CI/CD</b> de ponta a ponta em código</span>
-              </li>
-              <li>
-                <span className="art-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Adoção de <b>IA</b> com foco em resultado, não em hype</span>
-              </li>
-            </ul>
-          </div>
-          <div className="art-adv-card" data-audit="art-adv-card">
-            <div className="art-adv-tagline"><span className="art-dot"></span>Disponível para novos projetos</div>
-            <h3>Vamos conversar sobre o seu</h3>
-            <p className="art-adv-sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
-            <div className="art-svc-tags">
-              <span>Cloud · AWS</span>
-              <span>DevOps</span>
-              <span>IA aplicada</span>
-              <span>Mentoria</span>
-            </div>
-            <Link className="art-btn-adv" href="/servicos">Conhecer a assessoria <span className="art-arrow">→</span></Link>
-            <div className="art-reassure">Resposta em até 24h · sem compromisso</div>
-          </div>
-        </div>
-      </section>
+      <CtaAssessoria />
     </>
   );
 }
