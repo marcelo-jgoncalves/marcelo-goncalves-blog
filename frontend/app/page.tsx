@@ -295,7 +295,7 @@ export default async function Home() {
               <div className="left">
                 <div className="sec-ey">O Projeto · Build in Public</div>
                 <h2 className="sec-t">Bastidores em tempo real</h2>
-                <p className="sec-desc">Acompanhe cada decisão, cada erro e acerto, cada custo sendo documentado &quot;ao vivo&quot;. Um registro honesto sobre a construção uma plataforma editorial moderna usando as melhores práticas de engenheria.</p>
+                <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
               <Link className="sec-link" href="/o-projeto">Ver toda a jornada →</Link>
             </div>
