@@ -297,24 +297,12 @@ export default async function Home() {
                 <h2 className="sec-t">Bastidores da plataforma</h2>
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
-              <Link className="sec-link" href="/o-projeto">Ver toda a jornada →</Link>
+              <Link className="home-btn-clay-hero" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
             </div>
             <div className="home-projeto-grid" data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
-            </div>
-            <div className="home-projeto-cta-strip" data-audit="home-projeto-cta-strip">
-              <div className="home-projeto-cta-left">
-                <div className="home-projeto-cta-label"><span className="dot" />Em produção · Fase 1</div>
-                <div className="home-projeto-cta-title">Acompanhe a jornada completa</div>
-                <div className="home-projeto-cta-stats">
-                  <div className="home-projeto-cta-stat"><span className="pv">12</span><span className="pl">Posts publicados</span></div>
-                  <div className="home-projeto-cta-stat"><span className="pv">~100%</span><span className="pl">Com IA</span></div>
-                  <div className="home-projeto-cta-stat"><span className="pv">12 mo</span><span className="pl">Em produção</span></div>
-                </div>
-              </div>
-              <Link className="home-btn-clay-strip" href="/o-projeto">Ver O Projeto <span className="arrow">→</span></Link>
             </div>
           </div>
         </section>
