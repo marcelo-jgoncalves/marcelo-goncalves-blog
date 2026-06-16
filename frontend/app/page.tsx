@@ -75,7 +75,6 @@ export default async function Home() {
   const ia: HomePost[] = iaData?.posts || [];
   const projeto: HomePost[] = projetoData?.posts || [];
 
-  const heroFeature = popular[0] || recent[0];
   const mlFeature1 = popular[0];
   const mlFeature2 = popular[1];
   const mlList = popular.slice(2, 5);
@@ -105,35 +104,32 @@ export default async function Home() {
             </div>
           </div>
           <div className="home-hero-right">
-            {heroFeature && (
-              <article className="home-hero-feature" data-audit="home-hero-feature">
-                <div className="home-hf-cover">
-                  {heroFeature.imagem_destaque_url && (
-                    <ResponsiveImage
-                      src={heroFeature.imagem_destaque_url}
-                      alt={heroFeature.imagem_destaque_alt_text || heroFeature.titulo}
-                      fill
-                      priority
-                      lqip={heroFeature.imagem_lqip_base64}
-                    />
-                  )}
-                  <span className="home-hf-badge">Em destaque</span>
-                  <span className="home-hf-cover-tag">{categoryName(heroFeature)}</span>
+            <div className="home-proj-panel" data-audit="home-proj-panel">
+              <div className="home-pp-tagline">
+                <span className="home-pp-dot" />
+                Build in Public · Em produção
+              </div>
+              <h2 className="home-pp-title">Acompanhe a construção desta plataforma</h2>
+              <div className="home-pp-grid">
+                <div className="home-pp-stat">
+                  <span className="home-pp-v">100%</span>
+                  <span className="home-pp-l">Serverless</span>
                 </div>
-                <div className="home-hf-body">
-                  <h2 className="home-hf-title">{heroFeature.titulo}</h2>
-                  {heroFeature.resumo && <p className="home-hf-excerpt">{heroFeature.resumo}</p>}
-                  <div className="home-hf-foot">
-                    <div className="home-hf-meta">
-                      <span>{AUTHOR_NAME}</span>
-                      <span>{formatDateShort(heroFeature.data_publicacao)}</span>
-                      <span>{heroFeature.tempo_leitura_min || 5} min</span>
-                    </div>
-                    <Link className="home-hf-read" href={`/post/${heroFeature.slug}`}>Ler artigo →</Link>
-                  </div>
+                <div className="home-pp-stat">
+                  <span className="home-pp-v">INFRA</span>
+                  <span className="home-pp-l">como código</span>
                 </div>
-              </article>
-            )}
+                <div className="home-pp-stat">
+                  <span className="home-pp-v">AWS</span>
+                  <span className="home-pp-l">10+ Serviços</span>
+                </div>
+                <div className="home-pp-stat">
+                  <span className="home-pp-v">IA</span>
+                  <span className="home-pp-l">como copiloto</span>
+                </div>
+              </div>
+              <Link href="/o-projeto" className="home-pp-cta">Ver o projeto →</Link>
+            </div>
           </div>
         </div>
         <div className="home-stats-strip" data-audit="home-stats-strip">
