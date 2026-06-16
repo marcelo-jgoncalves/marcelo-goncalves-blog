@@ -30,7 +30,7 @@ export default function Footer() {
       <div className="foot-in" data-audit="footer-in">
         <div className="foot-lead" data-audit="footer-lead">
           <div className="manifesto" data-audit="footer-manifesto">
-            Engenharia, IA e automação decifradas por quem vive isso.
+            Engenharia, IA e automação decifradas por quem<br /><em>vive isso.</em>
           </div>
           <button type="button" className="to-top" onClick={scrollToTop} aria-label="Voltar ao topo" data-audit="footer-to-top">
             Voltar ao topo
