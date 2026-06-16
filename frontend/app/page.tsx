@@ -313,8 +313,8 @@ export default async function Home() {
         <div className="home-cta-adv-in" data-audit="home-cta-adv-in">
           <div className="home-cta-content">
             <div className="home-cta-ey">Serviços · Consultoria</div>
-            <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
-            <p className="home-cta-desc">Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.</p>
+            <h2>Quer esse nível de rigor no seu projeto? <em>O que você lê aqui, aplicado ao seu negócio.</em></h2>
+            <p className="home-cta-desc">Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.</p>
             <ul className="home-cta-points">
               <li>
                 <span className="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
