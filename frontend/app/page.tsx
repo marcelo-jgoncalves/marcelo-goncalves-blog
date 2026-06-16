@@ -333,7 +333,7 @@ export default async function Home() {
           <div className="home-cta-card-wrap">
             <div className="home-adv-card" data-audit="home-adv-card">
               <div className="home-adv-tagline"><span className="dot" />Disponível para novos projetos</div>
-              <h3>Conheça todos os meus serviços</h3>
+              <h3>Clique no botão abaixo e saiba como eu posso te ajudar!</h3>
               <p className="home-adv-sub">Arquitetura, DevOps, FinOps, Serverless e mais — veja como posso ajudar o seu projeto.</p>
               <div className="home-adv-svc">
                 <span>Cloud · AWS</span><span>DevOps</span><span>IA aplicada</span><span>Mentoria</span>
