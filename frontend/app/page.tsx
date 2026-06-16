@@ -313,7 +313,7 @@ export default async function Home() {
         <div className="home-cta-adv-in" data-audit="home-cta-adv-in">
           <div className="home-cta-content">
             <div className="home-cta-ey">Serviços · Consultoria</div>
-            <h2>Quer esse nível de rigor no seu projeto?</h2>
+            <h2>Precisa de ajuda com seu projeto?</h2>
             <p className="home-cta-desc">O que você lê aqui, aplicado ao seu negócio. Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.</p>
             <ul className="home-cta-points">
               <li>
