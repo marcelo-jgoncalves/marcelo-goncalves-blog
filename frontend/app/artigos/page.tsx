@@ -114,7 +114,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
           <div className="art-hero-left">
             <div className="art-ey">Arquivo · Todos os artigos</div>
             <h1>Tudo que escrevi, reunido <em>num só lugar</em></h1>
-            <p className="art-sub">Tutoriais, bastidores e decisões reais de um blog construído do zero na AWS — quase 100% com IA. Busque, filtre e vá fundo.</p>
+            <p className="art-sub">Tutoriais, bastidores e soluções para problemas reais. Do dia a dia com AWS e IA ao processo de construção deste blog.</p>
 
             <form className="art-search" action="/busca" method="get" role="search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
