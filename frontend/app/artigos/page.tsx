@@ -167,9 +167,39 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       {/* FILTROS (sticky) */}
       <ArtigosFilters categories={CATEGORIES} totalCount={totalCount} renderedCount={posts.length} />
 
-      {/* MASTHEAD (mini cards) */}
-      {twoup.length > 0 && (
+      {/* MASTHEAD (destaque + mini cards) */}
+      {(feature || twoup.length > 0) && (
         <section className="wrap art-masthead" data-audit="art-masthead">
+          {feature && (
+            <Link className="art-feature" href={`/post/${feature.slug}`} data-audit="art-feature">
+              <div className="art-f-cover">
+                {feature.imagem_destaque_url && (
+                  <ResponsiveImage
+                    src={feature.imagem_destaque_url}
+                    alt={feature.imagem_destaque_alt_text || feature.titulo}
+                    fill
+                    priority
+                    lqip={feature.imagem_lqip_base64}
+                  />
+                )}
+                <span className="art-f-badge">Em destaque</span>
+                <span className="art-f-cover-tag">{categoryName(feature)}</span>
+              </div>
+              <div className="art-f-body">
+                <div className="art-f-cat">{categoryName(feature)}</div>
+                <h2>{feature.titulo}</h2>
+                {feature.resumo && <p>{feature.resumo}</p>}
+                <div className="art-f-foot">
+                  <div className="art-f-avatar">MG</div>
+                  <div className="art-f-who">
+                    <span className="art-f-name">Marcelo Gonçalves</span>
+                    <span className="art-f-meta">{formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min</span>
+                  </div>
+                  <span className="art-f-read">Ler artigo →</span>
+                </div>
+              </div>
+            </Link>
+          )}
           <div className="art-twoup" data-audit="art-twoup">
             {twoup.map((post, i) => (
               <Link
