@@ -135,7 +135,7 @@ export default async function Home() {
               <div className="left">
                 <div className="sec-ey">Mais lidos</div>
                 <h2 className="sec-t">Posts que mais engajaram</h2>
-                <p className="sec-desc">Os artigos que mais geraram leitura, debate e compartilhamentos — um bom ponto de partida.</p>
+                <p className="sec-desc">Os que mais geraram leitura, debate e compartilhamentos. Comece por aqui.</p>
               </div>
               <Link className="sec-link sec-link-clay" href="/artigos">Ranking completo →</Link>
             </div>
