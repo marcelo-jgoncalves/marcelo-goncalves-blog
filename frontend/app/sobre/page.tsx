@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import './sobre.css';
 
 export const revalidate = 3600;
@@ -355,45 +356,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── CTA ASSESSORIA ── */}
-      <section className="sobre-cta-adv" id="assessoria">
-        <div className="sobre-cta-adv-in" data-audit="sobre-cta-adv-in">
-          <div className="sobre-cta-adv-left">
-            <div className="sobre-ey2">Assessoria &amp; Consultoria</div>
-            <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
-            <p className="sobre-cta-desc">Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.</p>
-            <ul className="sobre-cta-points">
-              <li>
-                <span className="sobre-ck">{CHECK_ICON}</span>
-                <span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>
-              </li>
-              <li>
-                <span className="sobre-ck">{CHECK_ICON}</span>
-                <span>Automação e <b>CI/CD</b> de ponta a ponta em código</span>
-              </li>
-              <li>
-                <span className="sobre-ck">{CHECK_ICON}</span>
-                <span>Adoção de <b>IA</b> com foco em resultado, não em hype</span>
-              </li>
-            </ul>
-          </div>
-          <div className="sobre-cta-adv-right">
-            <div className="sobre-adv-card" data-audit="sobre-adv-card">
-              <div className="sobre-adv-tagline"><span className="sobre-dot" />Disponível para novos projetos</div>
-              <h3>Vamos conversar sobre o seu</h3>
-              <p className="sobre-adv-sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
-              <div className="sobre-adv-svc">
-                <span>Cloud · AWS</span>
-                <span>DevOps</span>
-                <span>IA aplicada</span>
-                <span>Mentoria</span>
-              </div>
-              <Link className="sobre-btn-adv" href="/servicos">Conhecer a assessoria <span className="sobre-arrow">→</span></Link>
-              <div className="sobre-reassure">Resposta em até 24h · sem compromisso</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaAssessoria />
     </>
   );
 }

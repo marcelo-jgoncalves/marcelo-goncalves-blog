@@ -8,6 +8,7 @@ import { getProjectPosts } from '@/lib/api';
 import Pagination from '@/components/ui/Pagination';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import './o-projeto.css';
 
 const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
@@ -253,45 +254,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
       </div>
 
-      {/* CTA ASSESSORIA */}
-      <section className="op-cta-adv" id="assessoria" data-audit="op-cta-adv">
-        <div className="op-cta-adv-in" data-audit="op-cta-adv-in">
-          <div>
-            <div className="op-cta-ey">Assessoria &amp; Consultoria</div>
-            <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
-            <p className="op-cta-desc">Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.</p>
-            <ul className="op-points">
-              <li>
-                <span className="op-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>
-              </li>
-              <li>
-                <span className="op-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Automação e <b>CI/CD</b> de ponta a ponta em código</span>
-              </li>
-              <li>
-                <span className="op-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg></span>
-                <span>Adoção de <b>IA</b> com foco em resultado, não em hype</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div className="op-adv-card" data-audit="op-adv-card">
-              <div className="op-tagline"><span className="op-tagline-dot"></span>Disponível para novos projetos</div>
-              <h3>Vamos conversar sobre o seu</h3>
-              <p className="op-adv-sub">Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.</p>
-              <div className="op-svc">
-                <span>Cloud · AWS</span>
-                <span>DevOps</span>
-                <span>IA aplicada</span>
-                <span>Mentoria</span>
-              </div>
-              <Link className="op-btn-adv" href="/servicos">Conhecer a assessoria <span className="op-arrow">→</span></Link>
-              <div className="op-reassure">Resposta em até 24h · sem compromisso</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaAssessoria />
     </>
   );
 }
