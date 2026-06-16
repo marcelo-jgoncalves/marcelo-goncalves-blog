@@ -89,7 +89,7 @@ export default async function Home() {
         <div className="home-hero-in" data-audit="home-hero-in">
           <div className="home-hero-left">
             <div className="home-hero-ey">Blog · Engenharia &amp; IA · Build in Public</div>
-            <h1>Engenharia, <em>Inteligência Artificial</em> e AWS na prática.</h1>
+            <h1>Engenharia, <em>Inteligência Artificial</em> e AWS na prática</h1>
             <p className="home-hero-sub">Cada post nasce de um problema real. Custo, performance, automação e os desafios de quem constrói na nuvem.</p>
             <div className="home-hero-pills">
               {HERO_PILLS.map((pill) => (
@@ -232,7 +232,7 @@ export default async function Home() {
             <div className="home-ia-sec-head-row">
               <div className="left">
                 <div className="home-ia-ey">Inteligência Artificial</div>
-                <h2 className="home-ia-title">IA aplicada, sem hype.</h2>
+                <h2 className="home-ia-title">IA aplicada, sem hype</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
               <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
