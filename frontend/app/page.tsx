@@ -232,7 +232,7 @@ export default async function Home() {
             <div className="home-ia-sec-head-row">
               <div className="left">
                 <div className="home-ia-ey">Inteligência Artificial</div>
-                <h2 className="home-ia-title">IA aplicada — sem hype</h2>
+                <h2 className="home-ia-title">IA aplicada, sem hype.</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
               <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
