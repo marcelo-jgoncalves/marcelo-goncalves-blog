@@ -39,7 +39,7 @@ const STATS = [
   { v: '50+', l: 'Artigos publicados' },
   { v: '4', l: 'Categorias' },
   { v: '100%', l: 'conteúdo original' },
-  { v: 'Casos reais', l: 'Do problema à solução' },
+  { v: 'Casos Reais', l: 'Do problema à solução' },
 ];
 
 interface HomePost {
@@ -109,7 +109,7 @@ export default async function Home() {
               <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
               <div className="home-pp-stats">
                 <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
-                <div className="home-pp-stat"><span className="home-pp-v">INFRA</span><span className="home-pp-l">como código</span></div>
+                <div className="home-pp-stat"><span className="home-pp-v">Infra</span><span className="home-pp-l">como código</span></div>
                 <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
                 <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
               </div>
