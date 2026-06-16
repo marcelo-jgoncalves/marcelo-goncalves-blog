@@ -352,6 +352,130 @@
   font-family: var(--mono);
 }
 
+/* ── Hero — compact feature card (replaces proj card) ── */
+.art-hf-card {
+  background: rgba(255, 255, 255, .055);
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  box-shadow: 0 32px 64px -32px rgba(0, 0, 0, .5);
+  transition: transform .2s, box-shadow .2s;
+}
+
+@media (hover: hover) {
+  .art-hf-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 40px 72px -32px rgba(0, 0, 0, .65);
+  }
+}
+
+.art-hf-cover {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(201, 96, 60, .35) 0%, rgba(15, 76, 92, .6) 50%, rgba(8, 50, 61, .85) 100%);
+}
+
+.art-hf-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  background: rgba(255, 255, 255, .1);
+  color: rgba(255, 255, 255, .85);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .2);
+}
+
+.art-hf-cover-tag {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  z-index: 1;
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.art-hf-body {
+  padding: 26px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.art-hf-title {
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1.22;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+
+.art-hf-excerpt {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .62);
+  flex: 1;
+}
+
+.art-hf-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  margin-top: 4px;
+}
+
+.art-hf-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  color: rgba(255, 255, 255, .45);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.art-hf-meta span + span::before {
+  content: "·";
+  margin-right: 4px;
+  opacity: .5;
+}
+
+.art-hf-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--clay);
+  font-family: var(--mono);
+  text-decoration: none;
+  transition: gap .2s, color .2s;
+}
+
+.art-hf-card:hover .art-hf-read {
+  gap: 11px;
+  color: var(--clay-soft);
+}
+
 /* ==========================================================================
    FILTROS (sticky)
    ========================================================================== */

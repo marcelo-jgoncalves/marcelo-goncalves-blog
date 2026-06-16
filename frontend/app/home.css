@@ -310,21 +310,53 @@
   color: var(--clay-soft);
 }
 
-/* ── Hero — project panel ── */
+/* ── Hero — project panel (mirrors art-proj-card exactly) ── */
 .home-proj-panel {
-  background: rgba(255, 255, 255, .055);
-  border: 1px solid rgba(255, 255, 255, .13);
-  border-radius: 20px;
-  padding: 32px 30px;
+  position: relative;
   flex: 1;
+  color: var(--ivory);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 20px;
+  padding: 32px 34px;
+  overflow: hidden;
+  isolation: isolate;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6);
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  box-shadow: 0 32px 64px -32px rgba(0, 0, 0, .5);
-  backdrop-filter: blur(4px);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
 }
 
-.home-pp-tagline {
+@media (hover: hover) {
+  .home-proj-panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 40px 80px -32px rgba(0, 0, 0, .7);
+  }
+}
+
+.home-proj-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .5;
+  background:
+    radial-gradient(62% 70% at 88% 8%, rgba(201, 96, 60, .34), transparent 58%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 48px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 78% 14%, #000 30%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 78% 14%, #000 30%, transparent 82%);
+}
+
+.home-proj-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-pp-label {
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: .16em;
@@ -333,53 +365,68 @@
   display: flex;
   align-items: center;
   gap: 9px;
+  margin-bottom: 20px;
 }
 
 .home-pp-dot {
-  display: inline-block;
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--moss);
   box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
-  animation: pp-pulse 2.4s ease-in-out infinite;
+  animation: home-pp-pulse 2.4s ease-in-out infinite;
   flex: none;
 }
 
-@keyframes pp-pulse {
+@keyframes home-pp-pulse {
   0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
   50%       { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
 }
 
-.home-pp-title {
-  font-size: var(--text-2xl);
-  font-weight: 700;
+.home-proj-panel h2 {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -.03em;
   color: #fff;
-  line-height: 1.25;
-  margin: 0;
+  line-height: 1.18;
+  margin-bottom: 10px;
 }
 
-.home-pp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: rgba(255, 255, 255, .1);
-  border-radius: 14px;
-  overflow: hidden;
-  flex: 1;
+.home-pc-sub {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .64);
+  margin-bottom: 22px;
+  max-width: 320px;
+}
+
+.home-pp-stats {
+  display: flex;
+  margin-bottom: 24px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
 .home-pp-stat {
-  background: rgba(255, 255, 255, .03);
-  padding: 22px 20px;
+  flex: 1;
+  padding: 16px 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  border-right: 1px solid rgba(255, 255, 255, .08);
+}
+
+.home-pp-stat:not(:first-child) {
+  padding-left: 18px;
+}
+
+.home-pp-stat:last-child {
+  border-right: none;
 }
 
 .home-pp-v {
   font-weight: 800;
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   letter-spacing: -.03em;
   color: #fff;
   line-height: 1;
@@ -387,30 +434,35 @@
 
 .home-pp-l {
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .14em;
+  font-size: 9px;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(255, 255, 255, .48);
 }
 
-.home-pp-cta {
-  display: inline-flex;
+.home-pp-btn {
+  margin-top: auto;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: var(--text-sm);
-  color: rgba(255, 255, 255, .8);
-  text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, .2);
-  border-radius: 10px;
-  padding: 11px 20px;
-  transition: background .2s, color .2s;
-  align-self: flex-start;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--clay);
+  color: #fff;
+  height: 54px;
+  border-radius: 13px;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
+  transition: background .2s;
 }
 
-.home-pp-cta:hover {
-  background: rgba(255, 255, 255, .1);
-  color: #fff;
+.home-proj-panel:hover .home-pp-btn {
+  background: var(--clay-hover);
+}
+
+.home-pp-arrow {
+  font-family: var(--mono);
 }
 
 /* ── Hero — stats strip ── */

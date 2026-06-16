@@ -104,32 +104,18 @@ export default async function Home() {
             </div>
           </div>
           <div className="home-hero-right">
-            <div className="home-proj-panel" data-audit="home-proj-panel">
-              <div className="home-pp-tagline">
-                <span className="home-pp-dot" />
-                Build in Public · Em produção
+            <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
+              <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
+              <h2>Acompanhe a construção desta plataforma</h2>
+              <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
+              <div className="home-pp-stats">
+                <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
+                <div className="home-pp-stat"><span className="home-pp-v">INFRA</span><span className="home-pp-l">como código</span></div>
+                <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
+                <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
               </div>
-              <h2 className="home-pp-title">Acompanhe a construção desta plataforma</h2>
-              <div className="home-pp-grid">
-                <div className="home-pp-stat">
-                  <span className="home-pp-v">100%</span>
-                  <span className="home-pp-l">Serverless</span>
-                </div>
-                <div className="home-pp-stat">
-                  <span className="home-pp-v">INFRA</span>
-                  <span className="home-pp-l">como código</span>
-                </div>
-                <div className="home-pp-stat">
-                  <span className="home-pp-v">AWS</span>
-                  <span className="home-pp-l">10+ Serviços</span>
-                </div>
-                <div className="home-pp-stat">
-                  <span className="home-pp-v">IA</span>
-                  <span className="home-pp-l">como copiloto</span>
-                </div>
-              </div>
-              <Link href="/o-projeto" className="home-pp-cta">Ver o projeto →</Link>
-            </div>
+              <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow">→</span></span>
+            </Link>
           </div>
         </div>
         <div className="home-stats-strip" data-audit="home-stats-strip">

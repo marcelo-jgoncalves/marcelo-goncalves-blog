@@ -132,17 +132,34 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
           </div>
 
           <div className="art-hero-right">
-            <Link className="art-proj-card" href="/o-projeto" aria-label="Conhecer O Projeto" data-audit="art-proj-card">
-              <div className="art-proj-label"><span className="art-dot"></span>Construído em público</div>
-              <h2>Veja como este blog foi <em>construído</em></h2>
-              <p className="art-pc-sub">Da infra serverless ao deploy — cada decisão documentada e os custos expostos, quase tudo com IA.</p>
-              <div className="art-proj-stats">
-                <div className="art-proj-stat"><span className="art-v art-clay">~100%</span><span className="art-l">Com IA</span></div>
-                <div className="art-proj-stat"><span className="art-v">100%</span><span className="art-l">Serverless</span></div>
-                <div className="art-proj-stat"><span className="art-v">12 mo</span><span className="art-l">Em produção</span></div>
-              </div>
-              <span className="art-proj-btn">Conhecer O Projeto <span className="art-arrow">→</span></span>
-            </Link>
+            {feature && (
+              <article className="art-hf-card" data-audit="art-hero-feature">
+                <div className="art-hf-cover">
+                  {feature.imagem_destaque_url && (
+                    <ResponsiveImage
+                      src={feature.imagem_destaque_url}
+                      alt={feature.imagem_destaque_alt_text || feature.titulo}
+                      fill
+                      priority
+                      lqip={feature.imagem_lqip_base64}
+                    />
+                  )}
+                  <span className="art-hf-badge">Em destaque</span>
+                  <span className="art-hf-cover-tag">{categoryName(feature)}</span>
+                </div>
+                <div className="art-hf-body">
+                  <h2 className="art-hf-title">{feature.titulo}</h2>
+                  {feature.resumo && <p className="art-hf-excerpt">{feature.resumo}</p>}
+                  <div className="art-hf-foot">
+                    <div className="art-hf-meta">
+                      <span>{formatDateShort(feature.data_publicacao)}</span>
+                      <span>{feature.tempo_leitura_min || 5} min</span>
+                    </div>
+                    <Link className="art-hf-read" href={`/post/${feature.slug}`}>Ler artigo →</Link>
+                  </div>
+                </div>
+              </article>
+            )}
           </div>
         </div>
       </section>
@@ -150,69 +167,38 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       {/* FILTROS (sticky) */}
       <ArtigosFilters categories={CATEGORIES} totalCount={totalCount} renderedCount={posts.length} />
 
-      {/* MASTHEAD (destaque) */}
-      {feature && (
+      {/* MASTHEAD (mini cards) */}
+      {twoup.length > 0 && (
         <section className="wrap art-masthead" data-audit="art-masthead">
-          <article className="art-feature" data-audit="art-feature">
-            <Link className="art-f-cover" href={`/post/${feature.slug}`} aria-label="Abrir artigo em destaque">
-              {feature.imagem_destaque_url && (
-                <ResponsiveImage
-                  src={feature.imagem_destaque_url}
-                  alt={feature.imagem_destaque_alt_text || feature.titulo}
-                  fill
-                  priority
-                  lqip={feature.imagem_lqip_base64}
-                />
-              )}
-              <span className="art-f-badge">★ Em destaque</span>
-              <span className="art-f-cover-tag">{categoryName(feature)}</span>
-            </Link>
-            <div className="art-f-body">
-              <span className="art-f-cat">{categoryName(feature)}</span>
-              <h2>{feature.titulo}</h2>
-              {feature.resumo && <p>{feature.resumo}</p>}
-              <div className="art-f-foot">
-                <div className="art-f-avatar">MG</div>
-                <div className="art-f-who">
-                  <span className="art-f-name">{AUTHOR_NAME}</span>
-                  <span className="art-f-meta">{formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min</span>
+          <div className="art-twoup" data-audit="art-twoup">
+            {twoup.map((post, i) => (
+              <Link
+                key={post.slug}
+                className="art-mini"
+                href={`/post/${post.slug}`}
+                data-audit={i === 0 ? 'art-mini' : undefined}
+              >
+                <div className={`art-m-cover ${i === 0 ? 't-soft' : 't-clay'}`}>
+                  {post.imagem_destaque_url && (
+                    <ResponsiveImage
+                      src={post.imagem_destaque_url}
+                      alt={post.imagem_destaque_alt_text || post.titulo}
+                      fill
+                      lqip={post.imagem_lqip_base64}
+                    />
+                  )}
                 </div>
-                <Link className="art-f-read" href={`/post/${feature.slug}`}>Ler artigo →</Link>
-              </div>
-            </div>
-          </article>
-
-          {twoup.length > 0 && (
-            <div className="art-twoup" data-audit="art-twoup">
-              {twoup.map((post, i) => (
-                <Link
-                  key={post.slug}
-                  className="art-mini"
-                  href={`/post/${post.slug}`}
-                  data-audit={i === 0 ? 'art-mini' : undefined}
-                >
-                  <div className={`art-m-cover ${i === 0 ? 't-soft' : 't-clay'}`}>
-                    {post.imagem_destaque_url && (
-                      <ResponsiveImage
-                        src={post.imagem_destaque_url}
-                        alt={post.imagem_destaque_alt_text || post.titulo}
-                        fill
-                        lqip={post.imagem_lqip_base64}
-                      />
-                    )}
+                <div className="art-m-body">
+                  <span className="art-m-cat">{categoryName(post)}</span>
+                  <span className="art-m-title">{post.titulo}</span>
+                  <div className="art-m-foot">
+                    <span>{formatDateShort(post.data_publicacao)} · {post.tempo_leitura_min || 5} min</span>
+                    <span className="art-more">Ler →</span>
                   </div>
-                  <div className="art-m-body">
-                    <span className="art-m-cat">{categoryName(post)}</span>
-                    <span className="art-m-title">{post.titulo}</span>
-                    <div className="art-m-foot">
-                      <span>{formatDateShort(post.data_publicacao)} · {post.tempo_leitura_min || 5} min</span>
-                      <span className="art-more">Ler →</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+                </div>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 
