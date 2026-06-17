@@ -30,7 +30,11 @@
   display: grid;
   grid-template-columns: var(--ph-cols);
   gap: var(--ph-gap);
-  align-items: center;
+  align-items: start;
+}
+
+.page-hero-right {
+  align-self: center;
 }
 
 .page-hero-left {
