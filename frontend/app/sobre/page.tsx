@@ -6,6 +6,7 @@ import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import PageHero from '@/components/ui/PageHero';
 import './sobre.css';
 
 export const revalidate = 3600;
@@ -138,59 +139,50 @@ export default async function SobrePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
       {/* ── HERO ── */}
-      <section className="sobre-hero" data-audit="sobre-hero">
-        <div className="sobre-hero-in" data-audit="sobre-hero-in">
-          <div className="sobre-hero-left">
-            <div className="sobre-hero-label">Sobre · {nome}</div>
-            <h1 className="sobre-hero-title">
-              Engenheiro Cloud que <em>traduz</em> complexidade em arquitetura resiliente.
-            </h1>
-            <p className="sobre-hero-sub">
-              Mais de uma década resolvendo desafios de infraestrutura em escala global — e
-              transformando essa prática em conteúdo técnico sobre cloud, DevOps, FinOps e
-              serverless.
-            </p>
-            <div className="sobre-hero-tags">
-              <span>AWS</span>
-              <span>DevOps</span>
-              <span>FinOps</span>
-              <span>Serverless</span>
-              <span>IA Aplicada</span>
-            </div>
-            <div className="sobre-hero-actions">
-              <a className="sobre-btn-clay" href="#assessoria">Trabalhe comigo <span className="sobre-arrow">→</span></a>
-              <Link className="sobre-btn-ghost" href="/artigos">Ver artigos técnicos →</Link>
-            </div>
-            <div className="sobre-hero-socials">
-              <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z" /></svg>
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
-              </a>
-              <a href={githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" /></svg>
-              </a>
-            </div>
+      <PageHero
+        className="sobre-hero"
+        dataAudit="sobre-hero"
+        eyebrow={`Sobre · ${nome}`}
+        title={<>Engenheiro Cloud que <em>traduz</em> complexidade em arquitetura resiliente.</>}
+        subtitle="Mais de uma década resolvendo desafios de infraestrutura em escala global — e transformando essa prática em conteúdo técnico sobre cloud, DevOps, FinOps e serverless."
+        right={
+          <div className="sobre-photo-frame" data-audit="sobre-photo-frame">
+            {author.foto_avatar_url ? (
+              <ResponsiveImage className="sobre-pf-slot" src={author.foto_avatar_url} alt={nome} priority />
+            ) : (
+              <img className="sobre-pf-slot" src={FALLBACK_PHOTO} alt={nome} />
+            )}
+            <div className="sobre-pf-tag"><span className="sobre-dot" />Engenheiro Cloud · AWS</div>
           </div>
-          <div className="sobre-hero-right">
-            <div className="sobre-photo-frame" data-audit="sobre-photo-frame">
-              {author.foto_avatar_url ? (
-                <ResponsiveImage className="sobre-pf-slot" src={author.foto_avatar_url} alt={nome} priority />
-              ) : (
-                <img className="sobre-pf-slot" src={FALLBACK_PHOTO} alt={nome} />
-              )}
-              <div className="sobre-pf-tag"><span className="sobre-dot" />Engenheiro Cloud · AWS</div>
-            </div>
+        }
+        statsStrip={
+          <div className="sobre-hero-stats" data-audit="sobre-hero-stats">
+            <div className="sobre-hstat"><span className="v">10+</span><span className="l">Anos de experiência</span></div>
+            <div className="sobre-hstat"><span className="v">8+</span><span className="l">Anos com AWS</span></div>
+            <div className="sobre-hstat"><span className="v">3+</span><span className="l">Países</span></div>
+            <div className="sobre-hstat"><span className="v">15+</span><span className="l">Anos de ensino</span></div>
           </div>
+        }
+      >
+        <div className="sobre-hero-tags">
+          <span>AWS</span><span>DevOps</span><span>FinOps</span><span>Serverless</span><span>IA Aplicada</span>
         </div>
-        <div className="sobre-hero-stats" data-audit="sobre-hero-stats">
-          <div className="sobre-hstat"><span className="v">10+</span><span className="l">Anos de experiência</span></div>
-          <div className="sobre-hstat"><span className="v">8+</span><span className="l">Anos com AWS</span></div>
-          <div className="sobre-hstat"><span className="v">3+</span><span className="l">Países</span></div>
-          <div className="sobre-hstat"><span className="v">15+</span><span className="l">Anos de ensino</span></div>
+        <div className="sobre-hero-actions">
+          <a className="sobre-btn-clay" href="#assessoria">Trabalhe comigo <span className="sobre-arrow">→</span></a>
+          <Link className="sobre-btn-ghost" href="/artigos">Ver artigos técnicos →</Link>
         </div>
-      </section>
+        <div className="sobre-hero-socials">
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z" /></svg>
+          </a>
+          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
+          </a>
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" /></svg>
+          </a>
+        </div>
+      </PageHero>
 
       {/* ── TRAJETÓRIA ── */}
       <section className="sobre-traj">

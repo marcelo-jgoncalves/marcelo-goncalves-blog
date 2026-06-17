@@ -9,11 +9,13 @@
 
 /* ── Hero ── */
 .home-hero {
-  background: var(--petrol-deep);
-  color: var(--ivory);
-  position: relative;
-  isolation: isolate;
+  --ph-cols:    1.1fr 0.9fr;
+  --ph-gap:     64px;
+  --ph-h1-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  --ph-sub-max: 510px;
 }
+
+.home-hero h1 { letter-spacing: -.045em; }
 
 .home-hero::before {
   content: "";
@@ -29,67 +31,6 @@
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
   -webkit-mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
   mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
-}
-
-.home-hero-in {
-  position: relative;
-  z-index: 1;
-  max-width: var(--wrap-max);
-  margin: 0 auto;
-  padding: var(--hero-top) var(--wrap-pad-h) 0;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 64px;
-  align-items: center;
-}
-
-.home-hero-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.home-hero-ey {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .65);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.home-hero-ey::before {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--clay);
-}
-
-.home-hero h1 {
-  font-weight: 800;
-  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
-  line-height: 1.04;
-  letter-spacing: -.045em;
-  color: #fff;
-  max-width: 600px;
-  text-wrap: balance;
-  margin-bottom: 20px;
-}
-
-.home-hero h1 em {
-  font-style: italic;
-  color: var(--petrol-soft);
-}
-
-.home-hero-sub {
-  font-size: 1.0625rem;
-  line-height: 1.7;
-  color: rgba(250, 248, 243, .62);
-  max-width: 510px;
-  margin-bottom: 30px;
 }
 
 .home-hero-pills {
@@ -174,7 +115,7 @@
 }
 
 /* ── Hero — card em destaque ── */
-.home-hero-right {
+.home-hero .page-hero-right {
   display: flex;
   align-items: stretch;
 }
@@ -1223,7 +1164,7 @@
 }
 
 @media (max-width: 860px) {
-  .home-hero-in {
+  .home-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: 40px;
     padding-top: 64px;
@@ -1270,7 +1211,7 @@
     flex-direction: column;
   }
 
-  .home-hero-in {
+  .home-hero .page-hero-in {
     padding-left: var(--wrap-pad-h-mobile);
     padding-right: var(--wrap-pad-h-mobile);
   }

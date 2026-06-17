@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './servicos.css';
+import PageHero from '@/components/ui/PageHero';
 
 const TITLE = `Consultoria em AWS, DevOps, FinOps e IA | ${SITE_NAME}`;
 const DESCRIPTION = 'Consultoria especializada em arquitetura AWS, DevOps, FinOps, segurança, observabilidade e IA aplicada — da estratégia ao deploy em produção.';
@@ -74,18 +75,13 @@ export default function ServicosPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicosJsonLd) }} />
 
       {/* HERO */}
-      <section className="svc-hero" data-audit="svc-hero">
-        <div className="svc-hero-in" data-audit="svc-hero-in">
-          <div className="svc-hero-left">
-            <div className="svc-ey">Serviços · Consultoria</div>
-            <h1>Consultoria em AWS, DevOps, FinOps e <em>Serverless</em></h1>
-            <p className="svc-sub">Adote arquiteturas escaláveis com a mesma engenharia que move este blog — da decisão de stack ao deploy em produção.</p>
-            <div className="svc-hero-actions">
-              <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
-              <a className="svc-btn-ghost" href="#servicos">Ver serviços ↓</a>
-            </div>
-          </div>
-
+      <PageHero
+        className="svc-hero"
+        dataAudit="svc-hero"
+        eyebrow="Serviços · Consultoria"
+        title={<>Consultoria em AWS, DevOps, FinOps e <em>Serverless</em></>}
+        subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog — da decisão de stack ao deploy em produção."
+        right={
           <div className="svc-hero-panel" data-audit="svc-hero-panel">
             <div className="svc-hp-profile">
               <img className="svc-hp-avatar" src={PHOTO_URL} alt={AUTHOR_NAME} width={56} height={56} />
@@ -95,28 +91,25 @@ export default function ServicosPage() {
               </div>
             </div>
             <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
-            <div className="svc-hp-row">
-              <span className="svc-hp-v svc-clay">30 min</span>
-              <span className="svc-hp-l">Diagnóstico inicial gratuito</span>
-            </div>
-            <div className="svc-hp-row">
-              <span className="svc-hp-v">24h</span>
-              <span className="svc-hp-l">Tempo de resposta</span>
-            </div>
-            <div className="svc-hp-row">
-              <span className="svc-hp-v">100%</span>
-              <span className="svc-hp-l">Remoto · sem compromisso</span>
-            </div>
+            <div className="svc-hp-row"><span className="svc-hp-v svc-clay">30 min</span><span className="svc-hp-l">Diagnóstico inicial gratuito</span></div>
+            <div className="svc-hp-row"><span className="svc-hp-v">24h</span><span className="svc-hp-l">Tempo de resposta</span></div>
+            <div className="svc-hp-row"><span className="svc-hp-v">100%</span><span className="svc-hp-l">Remoto · sem compromisso</span></div>
           </div>
+        }
+        statsStrip={
+          <div className="svc-stats-strip" data-audit="svc-stats-strip">
+            <div className="svc-stat-item"><span className="svc-v">10</span><span className="svc-l">Frentes de atuação</span></div>
+            <div className="svc-stat-item"><span className="svc-v">AWS</span><span className="svc-l">Especialização cloud</span></div>
+            <div className="svc-stat-item"><span className="svc-v">IaC</span><span className="svc-l">Tudo em código</span></div>
+            <div className="svc-stat-item"><span className="svc-v">FinOps</span><span className="svc-l">Custo sob controle</span></div>
+          </div>
+        }
+      >
+        <div className="svc-hero-actions">
+          <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
+          <a className="svc-btn-ghost" href="#servicos">Ver serviços ↓</a>
         </div>
-
-        <div className="svc-stats-strip" data-audit="svc-stats-strip">
-          <div className="svc-stat-item"><span className="svc-v">10</span><span className="svc-l">Frentes de atuação</span></div>
-          <div className="svc-stat-item"><span className="svc-v">AWS</span><span className="svc-l">Especialização cloud</span></div>
-          <div className="svc-stat-item"><span className="svc-v">IaC</span><span className="svc-l">Tudo em código</span></div>
-          <div className="svc-stat-item"><span className="svc-v">FinOps</span><span className="svc-l">Custo sob controle</span></div>
-        </div>
-      </section>
+      </PageHero>
 
       {/* SERVIÇOS — PARTE 1 */}
       <section className="svc-section" id="servicos">

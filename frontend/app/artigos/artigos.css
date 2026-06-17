@@ -15,10 +15,10 @@
    HERO (escuro)
    ========================================================================== */
 .art-hero {
-  background: var(--petrol-deep);
-  color: var(--ivory);
-  position: relative;
-  isolation: isolate;
+  --ph-cols:    1.08fr .92fr;
+  --ph-pad:     88px 40px 76px;
+  --ph-h1-size: clamp(2.3rem, 4vw, 3.3rem);
+  --ph-sub-max: 500px;
 }
 
 .art-hero::before {
@@ -35,68 +35,6 @@
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
   -webkit-mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
   mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
-}
-
-.art-hero-in {
-  position: relative;
-  z-index: 1;
-  max-width: var(--wrap-max);
-  margin: 0 auto;
-  padding: 88px 40px 76px;
-  display: grid;
-  grid-template-columns: 1.08fr .92fr;
-  gap: 60px;
-  align-items: center;
-}
-
-.art-hero-left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.art-ey {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .65);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.art-ey::before {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--clay);
-}
-
-.art-hero h1 {
-  font-weight: 800;
-  font-size: clamp(2.3rem, 4vw, 3.3rem);
-  line-height: 1.05;
-  letter-spacing: -.04em;
-  color: #fff;
-  max-width: 560px;
-  text-wrap: balance;
-  margin-bottom: 20px;
-}
-
-.art-hero h1 em {
-  font-style: italic;
-  color: var(--petrol-soft);
-}
-
-.art-sub {
-  font-size: 1.075rem;
-  line-height: 1.65;
-  color: rgba(250, 248, 243, .64);
-  max-width: 500px;
-  margin-bottom: 30px;
 }
 
 /* search */
@@ -186,7 +124,7 @@
 }
 
 /* ── hero · CTA O Projeto ── */
-.art-hero-right {
+.art-hero .page-hero-right {
   display: flex;
   align-items: stretch;
 }
@@ -851,11 +789,9 @@
   border-top: 1px solid var(--line);
 }
 
-.art-m-foot .art-more {
-  font-family: var(--font);
-  font-weight: 700;
+.art-m-foot .ler-artigo {
   font-size: 12.5px;
-  color: var(--petrol);
+  --ler-artigo-color: var(--petrol);
 }
 
 /* ==========================================================================
@@ -1294,7 +1230,7 @@
 }
 
 @media (max-width: 900px) {
-  .art-hero-in {
+  .art-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: 40px;
     padding-top: 64px;
@@ -1353,7 +1289,7 @@
     padding-bottom: 2px;
   }
 
-  .art-hero-in {
+  .art-hero .page-hero-in {
     padding-left: 20px;
     padding-right: 20px;
   }

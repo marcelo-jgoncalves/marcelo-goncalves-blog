@@ -10,6 +10,7 @@ import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
+import PageHero from '@/components/ui/PageHero';
 import './o-projeto.css';
 
 const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
@@ -99,17 +100,13 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* HERO */}
-      <section className="op-hero" data-audit="op-hero">
-        <div className="op-hero-in" data-audit="op-hero-in">
-          <div className="op-hero-left">
-            <div className="op-ey">O Projeto · Build in Public</div>
-            <h1>Construindo este blog em público, <em>do zero</em></h1>
-            <p className="op-sub">Cada decisão de arquitetura, cada erro, cada custo — documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial com AWS e IA.</p>
-            <div className="op-hero-actions">
-              <a className="op-btn-clay-hero" href="#timeline">Ver a jornada <span className="op-arrow">→</span></a>
-              <span className="op-status-badge"><span className="op-status-dot"></span>Em produção · Fase 1</span>
-            </div>
-          </div>
+      <PageHero
+        className="op-hero"
+        dataAudit="op-hero"
+        eyebrow="O Projeto · Build in Public"
+        title={<>Mais que um blog.<br /><span style={{ whiteSpace: 'nowrap' }}>Uma <em>plataforma editorial</em></span><br />completa</>}
+        subtitle="Cada decisão de arquitetura, cada erro, cada custo — documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial com AWS e IA."
+        right={
           <div className="op-hero-stat" data-audit="op-hero-stat">
             <div className="op-hstat-item">
               <span className="op-big">{totalCount}</span>
@@ -120,26 +117,21 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
               <span className="op-cap op-clay-cap">próximas etapas</span>
             </div>
           </div>
+        }
+        statsStrip={
+          <div className="op-stats-strip" data-audit="op-stats-strip">
+            <div className="op-stat-item"><span className="op-v">{totalCount}</span><span className="op-l">Posts publicados</span></div>
+            <div className="op-stat-item"><span className="op-v">4 mo</span><span className="op-l">Em produção</span></div>
+            <div className="op-stat-item"><span className="op-v">12</span><span className="op-l">Serviços AWS</span></div>
+            <div className="op-stat-item"><span className="op-v">~100%</span><span className="op-l">Construído com IA</span></div>
+          </div>
+        }
+      >
+        <div className="op-hero-actions">
+          <a className="op-btn-clay-hero" href="#timeline">Ver a jornada <span className="op-arrow">→</span></a>
+          <span className="op-status-badge"><span className="op-status-dot"></span>Em produção · Fase 1</span>
         </div>
-        <div className="op-stats-strip" data-audit="op-stats-strip">
-          <div className="op-stat-item">
-            <span className="op-v">{totalCount}</span>
-            <span className="op-l">Posts publicados</span>
-          </div>
-          <div className="op-stat-item">
-            <span className="op-v">4 mo</span>
-            <span className="op-l">Em produção</span>
-          </div>
-          <div className="op-stat-item">
-            <span className="op-v">12</span>
-            <span className="op-l">Serviços AWS</span>
-          </div>
-          <div className="op-stat-item">
-            <span className="op-v">~100%</span>
-            <span className="op-l">Construído com IA</span>
-          </div>
-        </div>
-      </section>
+      </PageHero>
 
       <div className="op-wrap">
 

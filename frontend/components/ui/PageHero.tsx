@@ -1,18 +1,42 @@
-// frontend/components/ui/PageHero.tsx
+import { ReactNode } from 'react';
 import './PageHero.css';
 
 interface PageHeroProps {
-  children: React.ReactNode;
-  /** Elemento semântico — section para páginas de conteúdo, header para listagens */
-  as?: 'section' | 'header';
+  className?: string;
+  eyebrow?: ReactNode;
+  title?: ReactNode;
+  subtitle?: ReactNode;
+  children?: ReactNode;
+  right?: ReactNode;
+  statsStrip?: ReactNode;
+  dataAudit?: string;
 }
 
-export default function PageHero({ children, as: Tag = 'section' }: PageHeroProps) {
+export default function PageHero({
+  className,
+  eyebrow,
+  title,
+  subtitle,
+  children,
+  right,
+  statsStrip,
+  dataAudit,
+}: PageHeroProps) {
   return (
-    <Tag className="page-hero">
-      <div className="page-hero__inner">
-        {children}
+    <section
+      className={`page-hero${className ? ` ${className}` : ''}`}
+      data-audit={dataAudit}
+    >
+      <div className="page-hero-in">
+        <div className="page-hero-left">
+          {eyebrow && <div className="page-hero-ey">{eyebrow}</div>}
+          {title && <h1>{title}</h1>}
+          {subtitle && <p className="page-hero-sub">{subtitle}</p>}
+          {children}
+        </div>
+        {right && <div className="page-hero-right">{right}</div>}
       </div>
-    </Tag>
+      {statsStrip}
+    </section>
   );
 }

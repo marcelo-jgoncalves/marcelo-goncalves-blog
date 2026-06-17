@@ -8,6 +8,7 @@ import PostCard from '@/components/ui/PostCard';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
+import PageHero from '@/components/ui/PageHero';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
@@ -87,47 +88,48 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="home-hero" data-audit="home-hero">
-        <div className="home-hero-in" data-audit="home-hero-in">
-          <div className="home-hero-left">
-            <div className="home-hero-ey">Blog · Engenharia &amp; IA · Build in Public</div>
-            <h1>Engenharia, <em>Inteligência Artificial</em> e AWS na prática</h1>
-            <p className="home-hero-sub">Cada post nasce de um problema real. Custo, performance, automação e os desafios de quem constrói na nuvem.</p>
-            <div className="home-hero-pills">
-              {HERO_PILLS.map((pill) => (
-                <Link key={pill.href} href={pill.href} className={`home-hpill${pill.active ? ' home-hpill--active' : ''}`}>
-                  {pill.label}
-                </Link>
-              ))}
+      <PageHero
+        className="home-hero"
+        dataAudit="home-hero"
+        eyebrow="Blog · Engenharia & IA · Build in Public"
+        title={<>Engenharia, <em>Inteligência Artificial</em> e AWS na prática</>}
+        subtitle="Cada post nasce de um problema real. Custo, performance, automação e os desafios de quem constrói na nuvem."
+        right={
+          <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
+            <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
+            <h2>Acompanhe a construção do blog</h2>
+            <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
+            <div className="home-pp-stats">
+              <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">Infra</span><span className="home-pp-l">como código</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
             </div>
-            <div className="home-hero-actions">
-              <Link href="/artigos" className="home-btn-ghost">Todos os artigos →</Link>
-            </div>
-          </div>
-          <div className="home-hero-right">
-            <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
-              <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
-              <h2>Acompanhe a construção do blog</h2>
-              <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
-              <div className="home-pp-stats">
-                <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
-                <div className="home-pp-stat"><span className="home-pp-v">Infra</span><span className="home-pp-l">como código</span></div>
-                <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
-                <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
+            <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow">→</span></span>
+          </Link>
+        }
+        statsStrip={
+          <div className="home-stats-strip" data-audit="home-stats-strip">
+            {STATS.map((stat) => (
+              <div key={stat.l} className="home-stat-item">
+                <span className="v">{stat.v}</span>
+                <span className="l">{stat.l}</span>
               </div>
-              <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow">→</span></span>
-            </Link>
+            ))}
           </div>
-        </div>
-        <div className="home-stats-strip" data-audit="home-stats-strip">
-          {STATS.map((stat) => (
-            <div key={stat.l} className="home-stat-item">
-              <span className="v">{stat.v}</span>
-              <span className="l">{stat.l}</span>
-            </div>
+        }
+      >
+        <div className="home-hero-pills">
+          {HERO_PILLS.map((pill) => (
+            <Link key={pill.href} href={pill.href} className={`home-hpill${pill.active ? ' home-hpill--active' : ''}`}>
+              {pill.label}
+            </Link>
           ))}
         </div>
-      </section>
+        <div className="home-hero-actions">
+          <Link href="/artigos" className="home-btn-ghost">Todos os artigos →</Link>
+        </div>
+      </PageHero>
 
       {/* Mais Lidos */}
       {popular.length > 0 && (

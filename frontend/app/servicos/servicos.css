@@ -14,10 +14,10 @@
    HERO (escuro, 2 colunas)
    ============================================================ */
 .svc-hero {
-  background: var(--petrol-deep);
-  color: var(--ivory);
-  position: relative;
-  isolation: isolate;
+  --ph-cols:    1fr auto;
+  --ph-h1-size: clamp(2.4rem, 4.4vw, 3.5rem);
+  --ph-h1-max:  640px;
+  --ph-sub-max: 520px;
 }
 
 .svc-hero::before {
@@ -34,67 +34,6 @@
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
   -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
   mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
-}
-
-.svc-hero-in {
-  position: relative;
-  z-index: 1;
-  max-width: var(--wrap-max);
-  margin: 0 auto;
-  padding: var(--hero-top) var(--wrap-pad-h) 0;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 60px;
-  align-items: center;
-}
-
-.svc-hero-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.svc-ey {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .65);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.svc-ey::before {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--clay);
-}
-
-.svc-hero h1 {
-  font-weight: 800;
-  font-size: clamp(2.4rem, 4.4vw, 3.5rem);
-  line-height: 1.04;
-  letter-spacing: -.04em;
-  color: #fff;
-  max-width: 640px;
-  text-wrap: balance;
-  margin-bottom: 20px;
-}
-
-.svc-hero h1 em {
-  font-style: italic;
-  color: var(--petrol-soft);
-}
-
-.svc-sub {
-  font-size: 1.075rem;
-  line-height: 1.65;
-  color: rgba(250, 248, 243, .64);
-  max-width: 520px;
-  margin-bottom: 30px;
 }
 
 .svc-hero-actions {
@@ -888,7 +827,7 @@
    RESPONSIVO
    ============================================================ */
 @media (max-width: 1040px) {
-  .svc-hero-in {
+  .svc-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: 40px;
     padding-top: 72px;
@@ -944,7 +883,7 @@
     padding-right: 20px;
   }
   .svc-stats-strip,
-  .svc-hero-in {
+  .svc-hero .page-hero-in {
     padding-left: 20px;
     padding-right: 20px;
   }
