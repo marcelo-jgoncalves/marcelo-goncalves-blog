@@ -253,45 +253,50 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
           </div>
           <div className="svc-mo-right">
-            <div className="svc-proof-card">
-              <div className="svc-proof-label"><span className="svc-dot"></span>Construído em público</div>
-              <div className="svc-proof-stack">
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8z" /></svg>
+            <div className="proof-card">
+              <div className="proof-label"><span className="dot"></span>Construído em público</div>
+              <div className="proof-body">
+                <div className="proof-stack">
+                  <div className="proof-item">
+                    <span className="pi-ic">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8z" /></svg>
+                    </span>
+                    <span className="pi-txt">
+                      <span className="pi-t">Backend 100% serverless</span>
+                      <span className="pi-d">Lambda · API Gateway · DynamoDB</span>
+                    </span>
                   </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Backend 100% serverless</span>
-                    <span className="svc-pi-d">Lambda · API Gateway · DynamoDB</span>
+                  <div className="proof-item">
+                    <span className="pi-ic">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" /></svg>
+                    </span>
+                    <span className="pi-txt">
+                      <span className="pi-t">Deploy e infra por código</span>
+                      <span className="pi-d">GitHub Actions · Terraform</span>
+                    </span>
+                  </div>
+                  <div className="proof-item">
+                    <span className="pi-ic">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16" /><path d="M7 16V9M11.5 16V5M16 16v-4" /></svg>
+                    </span>
+                    <span className="pi-txt">
+                      <span className="pi-t">Observabilidade de ponta a ponta</span>
+                      <span className="pi-d">X-Ray · CloudWatch · Logs estruturados</span>
+                    </span>
+                  </div>
+                  <div className="proof-item">
+                    <span className="pi-ic">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.4-.7 2.6-1.8 3.3L16 21H8l1.8-11.7A4 4 0 0 1 8 6a4 4 0 0 1 4-4z" /><path d="M9 21h6" /></svg>
+                    </span>
+                    <span className="pi-txt">
+                      <span className="pi-t">IA como copiloto</span>
+                      <span className="pi-d">Claude · Cursor · Automações</span>
+                    </span>
                   </div>
                 </div>
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" /></svg>
-                  </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Deploy e infra por código</span>
-                    <span className="svc-pi-d">GitHub Actions · Terraform</span>
-                  </div>
-                </div>
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16" /><path d="M7 16V9M11.5 16V5M16 16v-4" /></svg>
-                  </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Observabilidade de ponta a ponta</span>
-                    <span className="svc-pi-d">X-Ray · CloudWatch · Logs estruturados</span>
-                  </div>
-                </div>
-              </div>
-              <div className="svc-proof-foot">
-                <div className="svc-pf-stack">
-                  <span className="svc-pf-v">IA</span>
-                  <span className="svc-pf-l">como copiloto</span>
-                </div>
-                <div className="svc-pf-stack" style={{ marginLeft: 'auto', textAlign: 'right' }}>
-                  <span className="svc-pf-v">12 mo</span>
-                  <span className="svc-pf-l">Em produção</span>
+                <div className="proof-stat">
+                  <span className="ps-num">6+</span>
+                  <span className="ps-label">Novas etapas planejadas</span>
                 </div>
               </div>
             </div>
