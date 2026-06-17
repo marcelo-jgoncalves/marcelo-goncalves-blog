@@ -1,6 +1,7 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
 import './PostCard.css';
+import LerArtigo from '@/components/ui/LerArtigo';
 import { formatDateShort } from '@/lib/format';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
@@ -62,7 +63,7 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
 
       <div className="pc-foot">
         <span>{formatDateShort(post.data_publicacao)}</span>
-        <span className="more">Ler artigo →</span>
+        <LerArtigo color="var(--petrol)" />
       </div>
     </Link>
   );

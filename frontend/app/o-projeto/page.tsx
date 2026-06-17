@@ -9,6 +9,7 @@ import Pagination from '@/components/ui/Pagination';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import LerArtigo from '@/components/ui/LerArtigo';
 import './o-projeto.css';
 
 const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
@@ -202,7 +203,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <Link className="op-read" href={`/post/${post.slug}`}>Ler artigo →</Link>
+                        <Link className="op-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
                       </div>
                     </div>
                   </div>

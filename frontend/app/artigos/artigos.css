@@ -759,22 +759,15 @@
   color: var(--steel);
 }
 
-.art-f-read {
+.art-f-foot .ler-artigo {
   margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
   font-size: 14px;
-  color: var(--petrol);
-  font-family: var(--mono);
-  transition: gap .2s, color .2s;
 }
 
 @media (hover: hover) {
-  .art-feature:hover .art-f-read {
+  .art-feature:hover .art-f-foot .ler-artigo {
     gap: 12px;
-    color: var(--clay);
+    --ler-artigo-color: var(--clay);
   }
 }
 

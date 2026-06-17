@@ -10,6 +10,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import LerArtigo from '@/components/ui/LerArtigo';
 import './artigos.css';
 
 const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software — quase 100% construído com IA.';
@@ -115,7 +116,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
           <div className="art-hero-left">
             <div className="art-ey">Arquivo · Todos os artigos</div>
             <h1>Tudo que escrevi, reunido <em>num só lugar</em></h1>
-            <p className="art-sub">Tutoriais, bastidores e soluções para problemas reais. Do dia a dia com AWS e IA ao processo de construção deste blog.</p>
+            <p className="art-sub">Tutoriais, bastidores e soluções para problemas reais. Do dia a dia com AWS e IA ao processo de construção desta plataforma.</p>
 
             <form className="art-search" action="/busca" method="get" role="search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
@@ -156,7 +157,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
                       <span>{formatDateShort(feature.data_publicacao)}</span>
                       <span>{feature.tempo_leitura_min || 5} min</span>
                     </div>
-                    <Link className="art-hf-read" href={`/post/${feature.slug}`}>Ler artigo →</Link>
+                    <Link className="art-hf-read" href={`/post/${feature.slug}`}><LerArtigo /></Link>
                   </div>
                 </div>
               </article>
@@ -196,7 +197,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
                     <span className="art-f-name">Marcelo Gonçalves</span>
                     <span className="art-f-meta">{formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min</span>
                   </div>
-                  <span className="art-f-read">Ler artigo →</span>
+                  <LerArtigo color="var(--petrol)" />
                 </div>
               </div>
             </Link>

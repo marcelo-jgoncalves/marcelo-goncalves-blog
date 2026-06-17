@@ -7,6 +7,7 @@ import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } 
 import PostCard from '@/components/ui/PostCard';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import LerArtigo from '@/components/ui/LerArtigo';
 import { formatDateShort } from '@/lib/format';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME } from '@/lib/config';
 
@@ -155,7 +156,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
                           <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`}>Ler artigo →</Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`}><LerArtigo /></Link>
                       </div>
                     </div>
                   </article>
@@ -175,7 +176,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
                           <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`}>Ler artigo →</Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`}><LerArtigo /></Link>
                       </div>
                     </div>
                   </article>
@@ -261,7 +262,7 @@ export default async function Home() {
                         <span>{formatDateShort(iaBig.data_publicacao)}</span>
                         <span>{iaBig.tempo_leitura_min || 5} min</span>
                       </div>
-                      <Link className="home-ia-read" href={`/post/${iaBig.slug}`}>Ler artigo →</Link>
+                      <Link className="home-ia-read" href={`/post/${iaBig.slug}`}><LerArtigo /></Link>
                     </div>
                   </div>
                 </article>
@@ -277,7 +278,7 @@ export default async function Home() {
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <Link className="home-ia-read" href={`/post/${post.slug}`}>Ler artigo →</Link>
+                        <Link className="home-ia-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
                       </div>
                     </article>
                   ))}

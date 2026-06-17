@@ -111,9 +111,6 @@
   letter-spacing: .04em;
 }
 
-.post-card .pc-foot .more {
-  font-family: var(--font);
-  font-weight: 700;
+.post-card .pc-foot .ler-artigo {
   font-size: 13px;
-  color: var(--petrol);
 }
