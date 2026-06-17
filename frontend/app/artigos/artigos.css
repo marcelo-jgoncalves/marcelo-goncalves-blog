@@ -21,6 +21,10 @@
   --ph-sub-max: 500px;
 }
 
+.art-hero .page-hero-in {
+  padding-bottom: 76px;
+}
+
 .art-hero::before {
   content: "";
   position: absolute;
