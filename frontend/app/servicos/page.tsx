@@ -210,63 +210,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* MAKING OF */}
-      <section className="svc-makingof">
-        <div className="svc-makingof-in" data-audit="svc-makingof-in">
-          <div className="svc-mo-left">
-            <div className="svc-mo-ey">Prova viva</div>
-            <h2>Não acredite apenas na minha palavra. Veja o <em>making of</em>.</h2>
-            <p>Este blog, da infraestrutura serverless ao frontend Next.js, foi construído com as exatas metodologias que ofereço — e cada decisão está documentada publicamente.</p>
-            <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
-          </div>
-
-          <div className="svc-mo-right">
-            <div className="svc-proof-card" data-audit="svc-proof-card">
-              <div className="svc-proof-label"><span className="svc-dot"></span>Construído em público</div>
-              <div className="svc-proof-stack">
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8z" /></svg>
-                  </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Backend 100% serverless</span>
-                    <span className="svc-pi-d">Lambda · API Gateway · DynamoDB</span>
-                  </div>
-                </div>
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" /></svg>
-                  </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Deploy por código</span>
-                    <span className="svc-pi-d">GitHub Actions · Terraform</span>
-                  </div>
-                </div>
-                <div className="svc-proof-item">
-                  <div className="svc-pi-ic">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16" /><path d="M7 16V9M11.5 16V5M16 16v-4" /></svg>
-                  </div>
-                  <div className="svc-pi-txt">
-                    <span className="svc-pi-t">Custo e métricas expostos</span>
-                    <span className="svc-pi-d">CloudWatch · Dashboard público</span>
-                  </div>
-                </div>
-              </div>
-              <div className="svc-proof-foot">
-                <div className="svc-pf-stack">
-                  <span className="svc-pf-v">~100%</span>
-                  <span className="svc-pf-l">Construído com IA</span>
-                </div>
-                <div className="svc-pf-stack" style={{ marginLeft: 'auto', textAlign: 'right' }}>
-                  <span className="svc-pf-v">12 mo</span>
-                  <span className="svc-pf-l">Em produção</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* SERVIÇOS — PARTE 2 */}
       <section className="svc-section svc-section-cont">
         <div className="wrap">

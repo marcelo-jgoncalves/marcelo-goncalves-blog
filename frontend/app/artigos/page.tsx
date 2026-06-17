@@ -250,36 +250,61 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         </div>
       </section>
 
-      {/* CLÁSSICOS DO BLOG */}
-      {popular.length > 0 && (
-        <section className="art-readband" data-audit="art-readband">
-          <div className="wrap">
-            <div className="art-rb-head">
-              <div>
-                <div className="art-rb-ey">Mais lidos de sempre</div>
-                <h2 className="art-rb-title">Os clássicos do blog</h2>
-              </div>
-              <Link className="art-rb-link" href="/artigos">Ver ranking completo →</Link>
-            </div>
-            <div className="art-rb-list" data-audit="art-rb-list">
-              {popular.slice(0, 4).map((post, i) => (
-                <Link key={post.slug} className="art-rb-item" href={`/post/${post.slug}`}>
-                  <span className="art-rb-num">{String(i + 1).padStart(2, '0')}</span>
-                  <div className="art-rb-body">
-                    <span className="art-rb-cat">{categoryName(post)}</span>
-                    <span className="art-rb-t">{post.titulo}</span>
-                    <div className="art-rb-meta">
-                      <span>{formatDateShort(post.data_publicacao)}</span>
-                      <span>{post.tempo_leitura_min || 5} min</span>
-                    </div>
+      {/* MAKING OF — O PROJETO */}
+      <section className="svc-makingof">
+        <div className="svc-makingof-in">
+          <div className="svc-mo-left">
+            <div className="svc-mo-ey">Prova viva</div>
+            <h2>Não acredite apenas na minha palavra. Veja o <em>making of</em>.</h2>
+            <p>Este blog, da infraestrutura serverless ao frontend Next.js, foi construído com as exatas metodologias que ofereço — e cada decisão está documentada publicamente.</p>
+            <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
+          </div>
+          <div className="svc-mo-right">
+            <div className="svc-proof-card">
+              <div className="svc-proof-label"><span className="svc-dot"></span>Construído em público</div>
+              <div className="svc-proof-stack">
+                <div className="svc-proof-item">
+                  <div className="svc-pi-ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8z" /></svg>
                   </div>
-                  <span className="art-rb-arrow">→</span>
-                </Link>
-              ))}
+                  <div className="svc-pi-txt">
+                    <span className="svc-pi-t">Backend 100% serverless</span>
+                    <span className="svc-pi-d">Lambda · API Gateway · DynamoDB</span>
+                  </div>
+                </div>
+                <div className="svc-proof-item">
+                  <div className="svc-pi-ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" /></svg>
+                  </div>
+                  <div className="svc-pi-txt">
+                    <span className="svc-pi-t">Deploy por código</span>
+                    <span className="svc-pi-d">GitHub Actions · Terraform</span>
+                  </div>
+                </div>
+                <div className="svc-proof-item">
+                  <div className="svc-pi-ic">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16" /><path d="M7 16V9M11.5 16V5M16 16v-4" /></svg>
+                  </div>
+                  <div className="svc-pi-txt">
+                    <span className="svc-pi-t">Custo e métricas expostos</span>
+                    <span className="svc-pi-d">CloudWatch · Dashboard público</span>
+                  </div>
+                </div>
+              </div>
+              <div className="svc-proof-foot">
+                <div className="svc-pf-stack">
+                  <span className="svc-pf-v">~100%</span>
+                  <span className="svc-pf-l">Construído com IA</span>
+                </div>
+                <div className="svc-pf-stack" style={{ marginLeft: 'auto', textAlign: 'right' }}>
+                  <span className="svc-pf-v">12 mo</span>
+                  <span className="svc-pf-l">Em produção</span>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* GRADE PRINCIPAL — 2ª metade */}
       <section className="wrap art-section after-sticky art-section-end">
