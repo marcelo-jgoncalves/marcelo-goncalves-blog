@@ -234,7 +234,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             <div className="sec-ey">O arquivo</div>
             <h2 className="sec-t" id="art-grid-title">Todos os artigos</h2>
           </div>
-          <Link className="sec-link" href="/artigos">Ver índice por ano →</Link>
         </div>
 
         <div className="posts-grid art-grid" id="art-grid" data-audit="art-grid">
