@@ -7,7 +7,7 @@ test.describe('página /servicos', () => {
 
   test('hero existe com título e ações principais', async ({ page }) => {
     await expect(page.locator('.svc-hero h1')).toBeVisible();
-    await expect(page.locator('.svc-hero h1')).toContainText('Consultoria em AWS');
+    await expect(page.locator('.svc-hero h1')).toContainText('Assessoria em AWS');
 
     const ctaContato = page.locator('.svc-btn-clay-hero');
     await expect(ctaContato).toHaveAttribute('href', '#contato');

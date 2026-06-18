@@ -12,7 +12,7 @@ const DEFAULT_TITLE = (
   </>
 );
 
-const DEFAULT_DESC = 'Consultoria especializada em Cloud Computing, IA e automação. Estratégia, implementação e otimização para empresas que querem escalar.';
+const DEFAULT_DESC = 'Assessoria especializada em Cloud Computing, IA e automação. Estratégia, implementação e otimização para empresas que querem escalar.';
 
 export default function SuperDestaqueServicos({ title, description }: SuperDestaqueServicosProps) {
   return (

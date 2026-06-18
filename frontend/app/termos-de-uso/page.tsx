@@ -46,7 +46,7 @@ export default function TermosDeUsoPage() {
           <p>Você pode utilizar este site para:</p>
           <ul>
             <li>Ler e compartilhar os artigos publicados, com devida atribuição ao autor;</li>
-            <li>Entrar em contato para fins profissionais ou de consultoria;</li>
+            <li>Entrar em contato para fins profissionais ou de assessoria;</li>
             <li>Inscrever-se na newsletter para receber novos conteúdos.</li>
           </ul>
 

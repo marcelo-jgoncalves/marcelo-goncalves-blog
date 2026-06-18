@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './servicos.css';
 import PageHero from '@/components/ui/PageHero';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 
-const TITLE = `Consultoria em AWS, DevOps, FinOps e IA | ${SITE_NAME}`;
-const DESCRIPTION = 'Consultoria especializada em arquitetura AWS, DevOps, FinOps, segurança, observabilidade e IA aplicada — da estratégia ao deploy em produção.';
+const TITLE = `Assessoria em AWS, DevOps, FinOps e IA | ${SITE_NAME}`;
+const DESCRIPTION = 'Assessoria especializada em arquitetura AWS, DevOps, FinOps, segurança, observabilidade e IA aplicada — da estratégia ao deploy em produção.';
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -34,7 +35,7 @@ export const revalidate = 3600;
 const servicosJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Consultoria AWS, DevOps e IA — ${AUTHOR_NAME}`,
+  name: `Assessoria AWS, DevOps e IA — ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: `${SITE_URL}/servicos`,
   provider: {
@@ -46,7 +47,7 @@ const servicosJsonLd = {
   serviceType: 'Cloud Computing Consulting',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Serviços de Consultoria',
+    name: 'Serviços de Assessoria',
     itemListElement: [
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'IA Aplicada & Engenharia de Prompts', description: 'Adoção de IA com foco em resultado — prompts, automações e fluxos que entregam respostas precisas e reutilizáveis em produção.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Observabilidade & Engenharia de Logs', description: 'Métricas, logs e tracing centralizados na AWS com alertas inteligentes e análise comportamental.' } },
@@ -63,10 +64,6 @@ const servicosJsonLd = {
   },
 };
 
-const CHECK_ICON = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-);
-
 export default function ServicosPage() {
   return (
     <>
@@ -76,8 +73,8 @@ export default function ServicosPage() {
       <PageHero
         className="svc-hero"
         dataAudit="svc-hero"
-        eyebrow="Serviços · Consultoria"
-        title={<>Consultoria em AWS, DevOps, FinOps e <em>Serverless</em></>}
+        eyebrow="Serviços · Assessoria"
+        title={<>Assessoria em AWS, DevOps, FinOps e <em>Serverless</em></>}
         subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog — da decisão de stack ao deploy em produção."
         right={
           <div className="svc-hero-panel" data-audit="svc-hero-panel">
@@ -98,12 +95,11 @@ export default function ServicosPage() {
       >
         <div className="svc-hero-actions">
           <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
-          <a className="svc-btn-ghost" href="#servicos">Ver serviços ↓</a>
         </div>
       </PageHero>
 
       {/* SERVIÇOS — PARTE 1 */}
-      <section className="svc-section" id="servicos">
+      <section className="svc-section svc-section-part1" id="servicos">
         <div className="wrap">
           <div className="svc-sec-head" data-audit="svc-sec-head">
             <div className="svc-sec-ey">O que eu faço</div>
@@ -330,43 +326,40 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* CTA FINAL */}
-      <section className="svc-cta-final" id="contato">
-        <div className="svc-cta-final-in" data-audit="svc-cta-final-in">
-          <div className="svc-cf-left">
-            <div className="svc-ey">Vamos começar</div>
-            <h2>Vamos trabalhar <em>juntos</em>?</h2>
-            <p className="svc-desc">Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar.</p>
-            <ul className="svc-cf-points">
-              <li><span className="svc-ck">{CHECK_ICON}</span><span>Diagnóstico objetivo da sua <b>infraestrutura</b> e dos próximos passos</span></li>
-              <li><span className="svc-ck">{CHECK_ICON}</span><span>Plano de ação claro, <b>sem pressão de venda</b></span></li>
-              <li><span className="svc-ck">{CHECK_ICON}</span><span>Resposta em até <b>24h</b>, 100% remoto</span></li>
-            </ul>
-          </div>
-
-          <div className="svc-cf-card" data-audit="svc-cf-card">
-            <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
-            <h3>Vamos conversar sobre o seu</h3>
-            <p className="svc-cf-sub">Conte o desafio e eu retorno com um plano objetivo. Diagnóstico inicial gratuito.</p>
-            <div className="svc-cf-meta">
-              <div className="svc-cf-meta-row">
-                <span className="svc-ml">Chamada inicial</span>
-                <span className="svc-mv svc-clay">30 min · gratuita</span>
-              </div>
-              <div className="svc-cf-meta-row">
-                <span className="svc-ml">Formato</span>
-                <span className="svc-mv">100% remoto</span>
-              </div>
-              <div className="svc-cf-meta-row">
-                <span className="svc-ml">Tempo de resposta</span>
-                <span className="svc-mv">até 24h</span>
-              </div>
+      <CtaAssessoria
+        id="contato"
+        eyebrow="Vamos começar"
+        title={<>Vamos trabalhar <em>juntos</em>?</>}
+        description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
+        points={[
+          <span key="p1">Diagnóstico objetivo da sua <b>infraestrutura</b> e dos próximos passos</span>,
+          <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
+          <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+        ]}
+        cardTagline="Disponível para novos projetos"
+        cardTitle="Vamos conversar sobre o seu projeto"
+        cardSubtitle="Conte o desafio e eu retorno com um plano objetivo. Diagnóstico inicial gratuito."
+        cardBody={
+          <div className="cta-adv-meta">
+            <div className="cta-adv-meta-row">
+              <span className="cta-adv-ml">Chamada inicial</span>
+              <span className="cta-adv-mv clay">30 min · gratuita</span>
             </div>
-            <a className="svc-btn-clay-final" href="mailto:contato@marcelogoncalves.com">Entrar em contato <span className="svc-arrow">→</span></a>
-            <p className="svc-reassure">Sem compromisso · sem custo</p>
+            <div className="cta-adv-meta-row">
+              <span className="cta-adv-ml">Formato</span>
+              <span className="cta-adv-mv">100% remoto</span>
+            </div>
+            <div className="cta-adv-meta-row">
+              <span className="cta-adv-ml">Tempo de resposta</span>
+              <span className="cta-adv-mv">até 24h</span>
+            </div>
           </div>
-        </div>
-      </section>
+        }
+        ctaHref="mailto:contato@marcelogoncalves.com"
+        ctaLabel="Entrar em contato"
+        ctaExternal={true}
+        reassure="Sem compromisso · sem custo"
+      />
     </>
   );
 }

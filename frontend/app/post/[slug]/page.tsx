@@ -276,7 +276,7 @@ export default async function PostPage({ params }: Props) {
       <section className="post-cta-adv" id="assessoria" data-audit="post-cta-adv">
         <div className="post-cta-adv-in" data-audit="post-cta-adv-in">
           <div>
-            <div className="post-cta-ey">Assessoria &amp; Consultoria</div>
+            <div className="post-cta-ey">Assessoria</div>
             <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
             <p className="post-cta-desc">
               Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.

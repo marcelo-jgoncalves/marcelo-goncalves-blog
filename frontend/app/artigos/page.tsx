@@ -294,10 +294,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
                     </span>
                   </div>
                 </div>
-                <div className="proof-stat">
-                  <span className="ps-num">6+</span>
-                  <span className="ps-label">Novas etapas planejadas</span>
-                </div>
               </div>
             </div>
           </div>

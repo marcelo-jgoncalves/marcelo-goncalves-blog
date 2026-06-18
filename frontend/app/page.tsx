@@ -91,7 +91,7 @@ export default async function Home() {
       <PageHero
         className="home-hero"
         dataAudit="home-hero"
-        eyebrow="Blog · Engenharia & IA · Build in Public"
+        eyebrow="Blog · Build in Public"
         title={<>Engenharia, <em>Inteligência Artificial</em> e AWS na prática</>}
         subtitle="Cada post nasce de um problema real. Custo, performance, automação e os desafios de quem constrói na nuvem."
         right={
