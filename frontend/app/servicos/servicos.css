@@ -494,19 +494,38 @@
   white-space: nowrap;
 }
 
-/* ── moss green variant (12 — Backup & DR) ── */
+/* ── petrol + clay variant (12 — Backup & DR) — matches CtaAssessoria ── */
 .svc-card.svc-wide.svc-moss {
-  background: linear-gradient(120deg, #1E3D26 0%, #2D5438 145%);
+  background: var(--petrol);
   border-color: transparent;
-  box-shadow: 0 22px 50px -26px rgba(30, 61, 38, .65);
+  box-shadow: 0 22px 50px -26px rgba(15, 76, 92, .65);
+  position: relative;
+  overflow: hidden;
+}
+
+.svc-card.svc-wide.svc-moss::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(50% 80% at 100% 0%, rgba(201, 96, 60, .28), transparent 55%),
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .18), transparent 60%);
+}
+
+.svc-card.svc-wide.svc-moss > * {
+  position: relative;
+  z-index: 1;
 }
 
 .svc-card.svc-wide.svc-moss:hover {
-  box-shadow: 0 28px 62px -24px rgba(30, 61, 38, .75);
+  box-shadow: 0 28px 62px -24px rgba(15, 76, 92, .75);
 }
 
 .svc-card.svc-wide.svc-moss::after {
-  background: linear-gradient(90deg, var(--moss), rgba(63, 107, 71, .35));
+  background: linear-gradient(90deg, var(--clay), rgba(201, 96, 60, .30));
+  z-index: 2;
 }
 
 .svc-card.svc-wide.svc-moss .svc-icon {
@@ -517,11 +536,11 @@
 }
 
 .svc-card.svc-wide.svc-moss .svc-wide-num {
-  color: rgba(163, 210, 171, .85);
+  color: rgba(232, 165, 130, .80);
 }
 
 .svc-card.svc-wide.svc-moss .svc-wtag {
-  color: rgba(163, 210, 171, .75);
+  color: rgba(232, 165, 130, .70);
 }
 
 .svc-card.svc-wide.svc-moss h3 {
