@@ -130,9 +130,9 @@ export default function ServicosPage() {
                 </ul>
               </div>
               <div className="svc-wide-tags">
-                <span>Modernização</span>
-                <span>Conformidade</span>
                 <span>Eficiência</span>
+                <span>Conformidade</span>
+                <span>Modernização</span>
               </div>
             </div>
 
@@ -286,17 +286,17 @@ export default function ServicosPage() {
               <div className="svc-wide-body">
                 <div className="svc-wtag">Destaque · Continuidade</div>
                 <h3>Backup & Disaster Recovery</h3>
-                <p>Proteja seus dados e garanta continuidade operacional com estratégias de backup automatizado, planos de DR e políticas de retenção que reduzem risco e mantêm seu negócio ativo mesmo diante de falhas ou incidentes.</p>
+                <p>Proteja seus dados e garanta continuidade operacional com estratégias de backup automatizado, planos de DR e políticas de retenção que reduzem risco e mantêm seu negócio ativo mesmo diante de falhas.</p>
                 <ul className="svc-wide-list">
-                  <li><strong>Backups automatizados e validados</strong> com restore testado, frequência configurável e armazenamento seguro em múltiplas zonas</li>
+                  <li><strong>Backups automatizados e validados</strong> com restore testado, frequência configurável e armazenamento seguro</li>
                   <li><strong>Planos de disaster recovery (DR)</strong> com RTO e RPO definidos, failover documentado e ambientes de contingência prontos para ativação</li>
                   <li><strong>Estratégias de retenção, conformidade</strong> e auditoria de dados para atender requisitos regulatórios e proteger informações críticas</li>
                 </ul>
               </div>
               <div className="svc-wide-tags">
                 <span>Backup</span>
-                <span>Disaster Recovery</span>
                 <span>Continuidade</span>
+                <span>Disaster Recovery</span>
               </div>
             </div>
 
