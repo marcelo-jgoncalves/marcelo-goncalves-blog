@@ -75,7 +75,7 @@ export default function ServicosPage() {
         className="svc-hero"
         dataAudit="svc-hero"
         eyebrow="Serviços · Assessoria"
-        title="Transformo operações com AWS, automação, Linux e IA aplicada."
+        title={<>Transformo operações com AWS, automação, Linux e <em>IA aplicada</em></>}
         subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog — da decisão de stack ao deploy em produção."
         right={
           <div className="svc-hero-panel" data-audit="svc-hero-panel">
