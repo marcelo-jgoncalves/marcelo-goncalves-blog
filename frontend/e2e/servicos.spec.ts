@@ -27,8 +27,8 @@ test.describe('página /servicos', () => {
     await expect(page.locator('.svc-stat-item')).toHaveCount(4);
   });
 
-  test('grade de serviços exibe 11 cards', async ({ page }) => {
-    await expect(page.locator('.svc-grid .svc-card')).toHaveCount(11);
+  test('grade de serviços exibe 12 cards', async ({ page }) => {
+    await expect(page.locator('.svc-grid .svc-card')).toHaveCount(12);
   });
 
   test('card 01 (IA Aplicada) é o destaque wide com tags', async ({ page }) => {

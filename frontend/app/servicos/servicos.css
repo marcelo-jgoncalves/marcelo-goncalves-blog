@@ -494,6 +494,54 @@
   white-space: nowrap;
 }
 
+/* ── moss green variant (12 — Backup & DR) ── */
+.svc-card.svc-wide.svc-moss {
+  background: linear-gradient(120deg, #1E3D26 0%, #2D5438 145%);
+  border-color: transparent;
+  box-shadow: 0 22px 50px -26px rgba(30, 61, 38, .65);
+}
+
+.svc-card.svc-wide.svc-moss:hover {
+  box-shadow: 0 28px 62px -24px rgba(30, 61, 38, .75);
+}
+
+.svc-card.svc-wide.svc-moss::after {
+  background: linear-gradient(90deg, var(--moss), rgba(63, 107, 71, .35));
+}
+
+.svc-card.svc-wide.svc-moss .svc-icon {
+  background: rgba(255, 255, 255, .09);
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: none;
+  color: #fff;
+}
+
+.svc-card.svc-wide.svc-moss .svc-wide-num {
+  color: rgba(163, 210, 171, .85);
+}
+
+.svc-card.svc-wide.svc-moss .svc-wtag {
+  color: rgba(163, 210, 171, .75);
+}
+
+.svc-card.svc-wide.svc-moss h3 {
+  color: #fff;
+}
+
+.svc-card.svc-wide.svc-moss p {
+  color: rgba(250, 248, 243, .70);
+}
+
+.svc-card.svc-wide.svc-moss .svc-wide-tags {
+  border-left-color: rgba(255, 255, 255, .14);
+}
+
+.svc-card.svc-wide.svc-moss .svc-wide-tags span {
+  color: #fff;
+  background: rgba(255, 255, 255, .09);
+  border-color: rgba(255, 255, 255, .18);
+}
+
 /* ── dark petrol variant (08 — Transformação Digital) ── */
 .svc-card.svc-wide.svc-alt {
   background: linear-gradient(120deg, var(--petrol-deep) 0%, var(--petrol) 145%);

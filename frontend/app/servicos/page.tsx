@@ -60,6 +60,7 @@ const servicosJsonLd = {
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'SysAdmin & Servidores Linux', description: 'Garanta estabilidade, segurança e alta performance para seus servidores Linux com administração especializada, troubleshooting avançado e sustentação contínua para ambientes críticos.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Migração de Aplicações', description: 'Leve seus sistemas para a nuvem com segurança, menos risco e mínima interrupção, modernizando sua operação para ganhar escala, eficiência e flexibilidade.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação de Processos', description: 'Elimine tarefas repetitivas, reduza retrabalho e acelere operações com automações inteligentes, integrações entre sistemas e execução automática de rotinas críticas.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Backup & Disaster Recovery', description: 'Proteja seus dados e garanta continuidade operacional com estratégias de backup automatizado, planos de DR e políticas de retenção que reduzem risco e mantêm seu negócio ativo.' } },
     ],
   },
 };
@@ -320,6 +321,33 @@ export default function ServicosPage() {
                 <span>Workflows</span>
                 <span>Integrações</span>
                 <span>Automação</span>
+              </div>
+            </div>
+
+            {/* 12 — Backup & DR (wide, moss) */}
+            <div className="svc-card svc-wide svc-moss" data-audit="svc-card-wide-moss">
+              <div className="svc-wide-media">
+                <div className="svc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v4c0 1.66 4.03 3 9 3s9-1.34 9-3V5" /><path d="M3 9v4c0 1.66 4.03 3 9 3s9-1.34 9-3V9" /><path d="M3 13v4c0 1.66 4.03 3 9 3s9-1.34 9-3v-4" />
+                  </svg>
+                </div>
+                <span className="svc-wide-num">12</span>
+              </div>
+              <div className="svc-wide-body">
+                <div className="svc-wtag">Destaque · Continuidade</div>
+                <h3>Backup & Disaster Recovery</h3>
+                <p>Proteja seus dados e garanta continuidade operacional com estratégias de backup automatizado, planos de DR e políticas de retenção que reduzem risco e mantêm seu negócio ativo mesmo diante de falhas ou incidentes.</p>
+                <ul className="svc-wide-list">
+                  <li><strong>Backups automatizados e validados</strong> com restore testado, frequência configurável e armazenamento seguro em múltiplas zonas</li>
+                  <li><strong>Planos de disaster recovery (DR)</strong> com RTO e RPO definidos, failover documentado e ambientes de contingência prontos para ativação</li>
+                  <li><strong>Estratégias de retenção, conformidade</strong> e auditoria de dados para atender requisitos regulatórios e proteger informações críticas</li>
+                </ul>
+              </div>
+              <div className="svc-wide-tags">
+                <span>Backup</span>
+                <span>Disaster Recovery</span>
+                <span>Continuidade</span>
               </div>
             </div>
           </div>
