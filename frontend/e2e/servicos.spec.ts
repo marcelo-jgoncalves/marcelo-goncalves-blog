@@ -31,15 +31,21 @@ test.describe('página /servicos', () => {
     await expect(page.locator('.svc-grid .svc-card')).toHaveCount(12);
   });
 
-  test('card 01 (IA Aplicada) é o destaque wide com tags', async ({ page }) => {
-    const card = page.locator('.svc-card.svc-wide').first();
-    await expect(card).toContainText('IA Aplicada & Engenharia de Prompts');
+  test('card 01 (Transformação Digital) é o destaque petrol wide com lista', async ({ page }) => {
+    const card = page.locator('.svc-card.svc-wide.svc-alt');
+    await expect(card).toContainText('Transformação Digital');
+    await expect(card.locator('.svc-wide-list li')).toHaveCount(3);
+  });
+
+  test('card 05 (IA Aplicada) é o destaque wide clay com tags', async ({ page }) => {
+    const card = page.locator('.svc-card.svc-wide:not(.svc-alt):not(.svc-moss)');
+    await expect(card).toContainText('IA Aplicada & Automação Inteligente');
     await expect(card.locator('.svc-wide-tags span')).toHaveCount(3);
   });
 
-  test('card 08 (Transformação Digital) é o destaque petrol com lista', async ({ page }) => {
-    const card = page.locator('.svc-card.svc-wide.svc-alt');
-    await expect(card).toContainText('Transformação Digital');
+  test('card 09 (Backup & DR) é o destaque wide moss com lista', async ({ page }) => {
+    const card = page.locator('.svc-card.svc-wide.svc-moss');
+    await expect(card).toContainText('Backup & Disaster Recovery');
     await expect(card.locator('.svc-wide-list li')).toHaveCount(3);
   });
 
