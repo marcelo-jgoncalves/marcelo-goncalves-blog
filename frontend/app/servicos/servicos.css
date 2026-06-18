@@ -93,6 +93,7 @@
   border-radius: 18px;
   padding: 26px 28px;
   min-width: 280px;
+  max-width: 385px;
   backdrop-filter: blur(4px);
   box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .6);
 }
