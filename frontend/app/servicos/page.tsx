@@ -49,17 +49,17 @@ const servicosJsonLd = {
     '@type': 'OfferCatalog',
     name: 'Serviços de Assessoria',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'IA Aplicada & Engenharia de Prompts', description: 'Adoção de IA com foco em resultado — prompts, automações e fluxos que entregam respostas precisas e reutilizáveis em produção.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Observabilidade & Engenharia de Logs', description: 'Métricas, logs e tracing centralizados na AWS com alertas inteligentes e análise comportamental.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'FinOps & Otimização de Custos', description: 'Auditoria da fatura AWS, rightsizing de recursos e estratégias de compra para reduzir o TCO.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DevOps & Entrega Contínua', description: 'Pipelines de CI/CD e infraestrutura como código para deploys seguros e repetíveis.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desenvolvimento Serverless', description: 'Backends e APIs de alta performance com AWS Lambda, API Gateway e DynamoDB.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Arquitetura de Nuvem (AWS)', description: 'Desenho e implementação de soluções robustas e escaláveis na AWS.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Segurança em Nuvem', description: 'Auditoria AWS baseada no Well-Architected Framework e plano de remediação priorizado.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Transformação Digital', description: 'Modernização de processos, conformidade com a LGPD e integração de sistemas.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'SysAdmin & Servidores Linux', description: 'Administração, hardening de segurança e automação operacional de servidores Linux.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Migração de Aplicações', description: 'Rehosting, replatforming e modernização do legado on-premise para a AWS, sem downtime surpresa.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação de Processos', description: 'Scripts, integrações e robôs que eliminam tarefas manuais e reduzem erros.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'IA Aplicada & Automação Inteligente', description: 'Transforme IA em produtividade real com automações, assistentes inteligentes e fluxos personalizados que reduzem trabalho manual, aceleram decisões e aumentam eficiência operacional.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Observabilidade & Resiliência Operacional', description: 'Monitore sua infraestrutura, aplicações e processos em tempo real para antecipar falhas, reduzir indisponibilidade e garantir operações mais estáveis e previsíveis.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'FinOps & Otimização de Custos', description: 'Reduza desperdícios, aumente previsibilidade e otimize seus investimentos em cloud com governança financeira, rightsizing e estratégias inteligentes de consumo.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DevOps & Entrega Contínua', description: 'Automatize entregas, padronize infraestrutura e acelere deploys com mais segurança, previsibilidade e menos erros operacionais.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Desenvolvimento Serverless', description: 'Desenvolva APIs, automações e aplicações escaláveis com alta disponibilidade, menor custo operacional e sem a complexidade de gerenciar servidores.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Arquitetura de Nuvem (AWS)', description: 'Estruture ambientes cloud seguros, escaláveis e preparados para crescer com alta disponibilidade, governança e continuidade operacional desde a base.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Segurança em Nuvem', description: 'Proteja sua infraestrutura, aplicações e dados com controles de acesso, boas práticas de segurança e governança para reduzir riscos, fortalecer conformidade e garantir continuidade operacional.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Transformação Digital', description: 'Automatize processos, elimine tarefas repetitivas e conecte seus sistemas para operar com mais velocidade, controle e menos retrabalho.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'SysAdmin & Servidores Linux', description: 'Garanta estabilidade, segurança e alta performance para seus servidores Linux com administração especializada, troubleshooting avançado e sustentação contínua para ambientes críticos.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Migração de Aplicações', description: 'Leve seus sistemas para a nuvem com segurança, menos risco e mínima interrupção, modernizando sua operação para ganhar escala, eficiência e flexibilidade.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação de Processos', description: 'Elimine tarefas repetitivas, reduza retrabalho e acelere operações com automações inteligentes, integrações entre sistemas e execução automática de rotinas críticas.' } },
     ],
   },
 };
@@ -120,13 +120,13 @@ export default function ServicosPage() {
               </div>
               <div className="svc-wide-body">
                 <div className="svc-wtag">Destaque · Diferencial</div>
-                <h3>IA Aplicada & Engenharia de Prompts</h3>
-                <p>Adoção de IA com foco em resultado, não em hype. Formado em Letras com mestrado em Linguística, conecto a estrutura da linguagem à arquitetura dos modelos — prompts, automações e fluxos que entregam respostas precisas e reutilizáveis em produção.</p>
+                <h3>IA Aplicada & Automação Inteligente</h3>
+                <p>Transforme IA em produtividade real com automações, assistentes inteligentes e fluxos personalizados que reduzem trabalho manual, aceleram decisões e aumentam eficiência operacional.</p>
               </div>
               <div className="svc-wide-tags">
-                <span>Prompt Engineering</span>
                 <span>LLMs</span>
                 <span>Automação</span>
+                <span>Assistentes IA</span>
               </div>
             </div>
 
@@ -140,12 +140,12 @@ export default function ServicosPage() {
                 </div>
                 <span className="svc-num">02</span>
               </div>
-              <h3>Observabilidade & Engenharia de Logs</h3>
-              <p>Observabilidade completa na AWS com métricas, logs e tracing centralizados. Alertas inteligentes e análise comportamental para detectar falhas e ameaças antes que impactem o negócio.</p>
+              <h3>Observabilidade & Resiliência Operacional</h3>
+              <p>Monitore sua infraestrutura, aplicações e processos em tempo real para antecipar falhas, reduzir indisponibilidade e garantir operações mais estáveis e previsíveis.</p>
               <div className="svc-tags">
-                <span>Métricas</span>
+                <span>Monitoramento</span>
                 <span>Logs</span>
-                <span>Tracing</span>
+                <span>Alertas</span>
               </div>
             </div>
 
@@ -160,11 +160,11 @@ export default function ServicosPage() {
                 <span className="svc-num">03</span>
               </div>
               <h3>FinOps & Otimização de Custos</h3>
-              <p>Auditoria completa da sua fatura AWS. Identificação de desperdícios, tags de alocação, rightsizing de recursos e estratégias de compra para reduzir drasticamente o seu TCO.</p>
+              <p>Reduza desperdícios, aumente previsibilidade e otimize seus investimentos em cloud com governança financeira, rightsizing e estratégias inteligentes de consumo.</p>
               <div className="svc-tags">
-                <span>Savings Plans</span>
                 <span>Rightsizing</span>
-                <span>Tags</span>
+                <span>Savings Plans</span>
+                <span>Governança</span>
               </div>
             </div>
 
@@ -179,11 +179,11 @@ export default function ServicosPage() {
                 <span className="svc-num">04</span>
               </div>
               <h3>DevOps & Entrega Contínua</h3>
-              <p>Criação de pipelines de CI/CD e infraestrutura como código. Crio o &quot;botão mágico&quot; que permite à sua equipe fazer deploys seguros, repetíveis e sem medo — com cultura de entrega contínua.</p>
+              <p>Automatize entregas, padronize infraestrutura e acelere deploys com mais segurança, previsibilidade e menos erros operacionais.</p>
               <div className="svc-tags">
-                <span>GitHub Actions</span>
-                <span>Terraform</span>
                 <span>CI/CD</span>
+                <span>Terraform</span>
+                <span>Automação</span>
               </div>
             </div>
           </div>
@@ -203,11 +203,11 @@ export default function ServicosPage() {
                 <span className="svc-num">05</span>
               </div>
               <h3>Desenvolvimento Serverless</h3>
-              <p>Construção de backends e APIs de alta performance e custo zero quando ociosos. Especialista em escalar do zero a milhões de usuários sem gerenciar servidores.</p>
+              <p>Desenvolva APIs, automações e aplicações escaláveis com alta disponibilidade, menor custo operacional e sem a complexidade de gerenciar servidores.</p>
               <div className="svc-tags">
+                <span>APIs</span>
                 <span>Lambda</span>
-                <span>API Gateway</span>
-                <span>DynamoDB</span>
+                <span>Escalabilidade</span>
               </div>
             </div>
 
@@ -220,11 +220,11 @@ export default function ServicosPage() {
                 <span className="svc-num">06</span>
               </div>
               <h3>Arquitetura de Nuvem (AWS)</h3>
-              <p>Desenho e implementação de soluções robustas e escaláveis na AWS. Foco em arquiteturas que equilibram performance, custo e segurança — usando os serviços certos para o seu problema.</p>
+              <p>Estruture ambientes cloud seguros, escaláveis e preparados para crescer com alta disponibilidade, governança e continuidade operacional desde a base.</p>
               <div className="svc-tags">
-                <span>EC2</span>
-                <span>Containers</span>
-                <span>VPC</span>
+                <span>AWS</span>
+                <span>Escalabilidade</span>
+                <span>Alta Disponibilidade</span>
               </div>
             </div>
 
@@ -237,11 +237,11 @@ export default function ServicosPage() {
                 <span className="svc-num">07</span>
               </div>
               <h3>Segurança em Nuvem</h3>
-              <p>Auditoria completa da sua conta AWS baseada no Well-Architected Framework. Identificação de vulnerabilidades, configurações inadequadas e plano de remediação priorizado.</p>
+              <p>Proteja sua infraestrutura, aplicações e dados com controles de acesso, boas práticas de segurança e governança para reduzir riscos, fortalecer conformidade e garantir continuidade operacional.</p>
               <div className="svc-tags">
-                <span>Well-Architected</span>
-                <span>Auditoria</span>
-                <span>Remediação</span>
+                <span>IAM</span>
+                <span>Hardening</span>
+                <span>Compliance</span>
               </div>
             </div>
 
@@ -258,11 +258,11 @@ export default function ServicosPage() {
               <div className="svc-wide-body">
                 <div className="svc-wtag">Destaque · Estratégia</div>
                 <h3>Transformação Digital</h3>
-                <p>Levo a tecnologia para perto de quem decide. Tiro o papel e o retrabalho da operação, deixo seus dados em conformidade e faço seus sistemas conversarem entre si — sem jargão, com foco em resultado.</p>
+                <p>Automatize processos, elimine tarefas repetitivas e conecte seus sistemas para operar com mais velocidade, controle e menos retrabalho.</p>
                 <ul className="svc-wide-list">
-                  <li><strong>Apps internos rápidos</strong> para digitalizar formulários em papel e fluxos de aprovação</li>
-                  <li><strong>Conformidade & segurança</strong> — adequação à LGPD e rotinas automáticas de backup</li>
-                  <li><strong>Integração de sistemas</strong> que você já usa, para eles &quot;conversarem&quot; e eliminarem a digitação dupla</li>
+                  <li><strong>Desenvolvimento de apps internos</strong> e portais operacionais para digitalizar processos e fluxos de aprovação</li>
+                  <li><strong>Automação de tarefas repetitivas</strong>, introduza IA aplicada, documentos, relatórios e rotinas manuais</li>
+                  <li><strong>Integração entre sistemas e dados</strong> para eliminar retrabalho, reduzir erros e acelerar decisões</li>
                 </ul>
               </div>
               <div className="svc-wide-tags">
@@ -281,11 +281,11 @@ export default function ServicosPage() {
                 <span className="svc-num">09</span>
               </div>
               <h3>SysAdmin & Servidores Linux</h3>
-              <p>Administração e manutenção de servidores Linux em produção. Hardening de segurança, scripting em Bash, tuning de performance e automação operacional com foco em confiabilidade e rastreabilidade.</p>
+              <p>Garanta estabilidade, segurança e alta performance para seus servidores Linux com administração especializada, troubleshooting avançado e sustentação contínua para ambientes críticos.</p>
               <div className="svc-tags">
-                <span>Bash</span>
-                <span>Systemd</span>
+                <span>Linux</span>
                 <span>Hardening</span>
+                <span>Performance</span>
               </div>
             </div>
 
@@ -298,11 +298,11 @@ export default function ServicosPage() {
                 <span className="svc-num">10</span>
               </div>
               <h3>Migração de Aplicações</h3>
-              <p>Migração de aplicações da e para a nuvem com plano de risco controlado. Rehosting, replatforming e modernização — do legado on-premise ao ambiente AWS, sem downtime surpresa.</p>
+              <p>Leve seus sistemas para a nuvem com segurança, menos risco e mínima interrupção, modernizando sua operação para ganhar escala, eficiência e flexibilidade.</p>
               <div className="svc-tags">
-                <span>Rehosting</span>
-                <span>Replatforming</span>
-                <span>Zero-downtime</span>
+                <span>Migração Cloud</span>
+                <span>Modernização</span>
+                <span>AWS</span>
               </div>
             </div>
 
@@ -315,11 +315,11 @@ export default function ServicosPage() {
                 <span className="svc-num">11</span>
               </div>
               <h3>Automação de Processos</h3>
-              <p>Automatizo qualquer tarefa repetitiva — de rotinas operacionais a fluxos de negócio. Scripts, integrações e robôs que eliminam o trabalho manual, reduzem erros e devolvem horas produtivas à sua equipe.</p>
+              <p>Elimine tarefas repetitivas, reduza retrabalho e acelere operações com automações inteligentes, integrações entre sistemas e execução automática de rotinas críticas.</p>
               <div className="svc-tags">
-                <span>Scripts</span>
+                <span>Workflows</span>
                 <span>Integrações</span>
-                <span>Webhooks</span>
+                <span>Automação</span>
               </div>
             </div>
           </div>
