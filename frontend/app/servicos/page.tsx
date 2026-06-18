@@ -87,7 +87,7 @@ export default function ServicosPage() {
         }
         statsStrip={
           <div className="svc-stats-strip" data-audit="svc-stats-strip">
-            <div className="svc-stat-item"><span className="svc-v">10</span><span className="svc-l">Frentes de atuação</span></div>
+            <div className="svc-stat-item"><span className="svc-v">12</span><span className="svc-l">Frentes de atuação</span></div>
             <div className="svc-stat-item"><span className="svc-v">AWS</span><span className="svc-l">Especialização cloud</span></div>
             <div className="svc-stat-item"><span className="svc-v">IaC</span><span className="svc-l">Tudo em código</span></div>
             <div className="svc-stat-item"><span className="svc-v">FinOps</span><span className="svc-l">Custo sob controle</span></div>
@@ -105,7 +105,7 @@ export default function ServicosPage() {
           <div className="svc-sec-head" data-audit="svc-sec-head">
             <div className="svc-sec-ey">O que eu faço</div>
             <h2 className="svc-sec-t">Engenharia de ponta a ponta na nuvem</h2>
-            <p className="svc-sec-desc">Dez frentes de atuação que cobrem o ciclo completo — da estratégia com IA à operação otimizada, segura e observável.</p>
+            <p className="svc-sec-desc">Doze frentes de atuação que cobrem o ciclo completo. Da estratégia com IA à operação otimizada, segura e observável.</p>
           </div>
 
           <div className="svc-grid" data-audit="svc-grid-1">
