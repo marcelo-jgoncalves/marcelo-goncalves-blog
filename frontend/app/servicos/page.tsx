@@ -76,7 +76,7 @@ export default function ServicosPage() {
         dataAudit="svc-hero"
         eyebrow="Serviços · Assessoria"
         title={<>Transformo operações com AWS, automação, Linux e <em>IA aplicada</em></>}
-        subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog — da decisão de stack ao deploy em produção."
+        subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog, da decisão de stack ao deploy em produção."
         right={
           <div className="svc-hero-panel" data-audit="svc-hero-panel">
             <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
