@@ -56,3 +56,12 @@ a.op-page-number[rel="next"] {
   padding: 10px 16px;
   white-space: nowrap;
 }
+
+@media (max-width: 540px) {
+  .op-page-info {
+    order: -1;
+    flex: 1 0 100%;
+    text-align: center;
+    padding: 0 0 var(--space-1);
+  }
+}

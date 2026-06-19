@@ -84,8 +84,8 @@ export default async function Home() {
         className="home-hero"
         dataAudit="home-hero"
         eyebrow="Blog · Build in Public"
-        title={<>Engenharia, <em>Inteligência Artificial</em> e AWS na prática</>}
-        subtitle="Cada post nasce de um problema real. Custo, performance, automação e os desafios de quem constrói na nuvem."
+        title="Cloud, Automação e IA aplicadas a problemas reais"
+        subtitle="Conteúdo técnico construído a partir da prática: custos, performance, observabilidade, automação e transformação operacional."
         right={
           <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
             <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>

@@ -37,6 +37,10 @@
   mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
 }
 
+.op-hero-title-nowrap {
+  white-space: nowrap;
+}
+
 .op-hero-actions {
   display: flex;
   align-items: center;
@@ -897,6 +901,10 @@
   .op-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  .op-hero-title-nowrap {
+    white-space: normal;
   }
 
   .op-hero-stat {

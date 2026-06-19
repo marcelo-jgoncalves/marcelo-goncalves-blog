@@ -116,8 +116,8 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         className="art-hero"
         dataAudit="art-hero"
         eyebrow="Arquivo · Todos os artigos"
-        title={<>Tudo que escrevi, reunido <em>num só lugar</em></>}
-        subtitle="Tutoriais, bastidores e soluções para problemas reais. Do dia a dia com AWS e IA ao processo de construção desta plataforma."
+        title="Artigos, bastidores e engenharia aplicada"
+        subtitle="Um acervo de aprendizados reais sobre cloud, automação, IA e operações. Do problema à solução."
         right={feature ? (
           <article className="art-hf-card" data-audit="art-hero-feature">
             <div className="art-hf-cover">
