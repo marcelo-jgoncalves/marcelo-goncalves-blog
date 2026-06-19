@@ -74,10 +74,10 @@ const CERTS = [
 ];
 
 const ACAD_ITEMS = [
-  { num: '01', type: 'Especialização', name: 'Arquitetura Cloud' },
-  { num: '02', type: 'Graduação', name: 'Sistemas de Informação' },
-  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada' },
-  { num: '04', type: 'Graduação', name: 'Licenciatura em Letras' },
+  { num: '01', type: 'Especialização', name: 'Arquitetura Cloud', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio' },
+  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio' },
+  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: '/static/logos/potsdam-logo.png', logoAlt: 'Universidade de Potsdam' },
+  { num: '04', type: 'Graduação', name: 'Licenciatura em Letras', logo: '/static/logos/ufmg-logo.png', logoAlt: 'UFMG' },
 ];
 
 const COMPANIES = [
@@ -350,7 +350,9 @@ export default async function SobrePage() {
             <div className="sobre-acad-right">
               {ACAD_ITEMS.map((item) => (
                 <div className="sobre-acad-item" key={item.num}>
-                  <div className="sobre-acad-tile">{item.num}</div>
+                  <div className="sobre-acad-tile">
+                    <img src={item.logo} alt={item.logoAlt} />
+                  </div>
                   <div className="sobre-acad-txt">
                     <span className="sobre-acad-type">{item.type}</span>
                     <span className="sobre-acad-name">{item.name}</span>

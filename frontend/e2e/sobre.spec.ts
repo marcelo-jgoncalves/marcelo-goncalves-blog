@@ -46,9 +46,9 @@ test.describe('página /sobre', () => {
     await expect(page.locator('.sobre-cert-card--soon')).toContainText('Sempre estudando');
   });
 
-  test('base acadêmica exibe 4 itens numerados', async ({ page }) => {
+  test('base acadêmica exibe 4 itens com logos de instituição', async ({ page }) => {
     await expect(page.locator('.sobre-acad-item')).toHaveCount(4);
-    await expect(page.locator('.sobre-acad-item').first().locator('.sobre-acad-tile')).toContainText('01');
+    await expect(page.locator('.sobre-acad-item').first().locator('.sobre-acad-tile img')).toHaveAttribute('alt', 'Estácio');
   });
 
   test('CTA assessoria linka para /servicos', async ({ page }) => {
