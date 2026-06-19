@@ -74,10 +74,10 @@ const CERTS = [
 ];
 
 const ACAD_ITEMS = [
-  { num: '01', type: 'Especialização', name: 'Arquitetura Cloud', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio' },
-  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio' },
-  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: '/static/logos/potsdam-logo.png', logoAlt: 'Universidade de Potsdam' },
-  { num: '04', type: 'Graduação', name: 'Licenciatura em Letras', logo: '/static/logos/ufmg-logo.png', logoAlt: 'UFMG' },
+  { num: '01', type: 'Especialização', name: 'Arquitetura e Projetos de Cloud Computing', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
+  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
+  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: '/static/logos/potsdam-logo.png', logoAlt: 'Universidade de Potsdam', logoTitle: 'Universidade de Potsdam' },
+  { num: '04', type: 'Graduação', name: 'Bacharelado em Letras', logo: '/static/logos/ufmg-logo.png', logoAlt: 'UFMG', logoTitle: 'Universidade Federal de Minas Gerais' },
 ];
 
 const COMPANIES = [
@@ -351,7 +351,7 @@ export default async function SobrePage() {
               {ACAD_ITEMS.map((item) => (
                 <div className="sobre-acad-item" key={item.num}>
                   <div className="sobre-acad-tile">
-                    <img src={item.logo} alt={item.logoAlt} />
+                    <img src={item.logo} alt={item.logoAlt} title={item.logoTitle} />
                   </div>
                   <div className="sobre-acad-txt">
                     <span className="sobre-acad-type">{item.type}</span>

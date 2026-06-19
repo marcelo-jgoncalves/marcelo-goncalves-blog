@@ -259,7 +259,7 @@
 .sobre-acad-right { display: flex; flex-direction: column; gap: 6px; }
 .sobre-acad-item { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
 .sobre-acad-item:last-child { border-bottom: none; }
-.sobre-acad-tile { flex: none; width: 52px; height: 52px; border-radius: 10px; background: var(--ivory); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; padding: 8px; }
+.sobre-acad-tile { flex: none; width: 68px; height: 68px; border-radius: 12px; background: var(--ivory); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; padding: 10px; }
 .sobre-acad-tile img { width: 100%; height: 100%; object-fit: contain; }
 .sobre-acad-txt { display: flex; flex-direction: column; gap: 3px; }
 .sobre-acad-type { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--clay); }
