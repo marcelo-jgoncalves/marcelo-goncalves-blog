@@ -239,12 +239,12 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       {/* MAKING OF — O PROJETO */}
       <section className="svc-makingof">
         <div className="svc-makingof-in">
-          <div className="svc-mo-left">
+          <div className="svc-mo-text">
             <div className="svc-mo-ey">Prova viva</div>
             <h2>Quer saber como esta plataforma foi construída? Veja o <em>making of</em>.</h2>
             <p>Da infraestrutura serverless ao frontend Next.js, tudo documentado desde o primeiro commit.</p>
-            <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
           </div>
+          <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
           <div className="svc-mo-right">
             <div className="proof-card">
               <div className="proof-label"><span className="dot"></span>Construído em público</div>

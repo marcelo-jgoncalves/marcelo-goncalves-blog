@@ -1332,11 +1332,14 @@
   padding: 84px var(--wrap-pad-h);
   display: grid;
   grid-template-columns: 1.35fr 0.65fr;
-  gap: 64px;
+  grid-template-areas: "text right" "cta right";
+  column-gap: 64px;
+  row-gap: 0;
   align-items: center;
 }
 
-.svc-mo-left {
+.svc-mo-text {
+  grid-area: text;
   display: flex;
   flex-direction: column;
 }
@@ -1360,7 +1363,7 @@
   background: var(--clay);
 }
 
-.svc-mo-left h2 {
+.svc-mo-text h2 {
   font-weight: 800;
   font-size: clamp(1.8rem, 2.8vw, 2.35rem);
   letter-spacing: -.04em;
@@ -1370,12 +1373,12 @@
   margin-bottom: 16px;
 }
 
-.svc-mo-left h2 em {
+.svc-mo-text h2 em {
   font-style: italic;
   color: var(--petrol);
 }
 
-.svc-mo-left p {
+.svc-mo-text p {
   font-size: 1.0625rem;
   line-height: 1.7;
   color: var(--slate);
@@ -1384,6 +1387,7 @@
 }
 
 .svc-mo-cta {
+  grid-area: cta;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -1405,6 +1409,7 @@
 }
 
 .svc-mo-right {
+  grid-area: right;
   position: relative;
 }
 
@@ -1538,7 +1543,9 @@
 @media (max-width: 1040px) {
   .svc-makingof-in {
     grid-template-columns: 1fr;
-    gap: 44px;
+    grid-template-areas: "text" "right" "cta";
+    row-gap: 44px;
+    column-gap: 0;
   }
 }
 
