@@ -54,6 +54,7 @@
 }
 .sobre-btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
 .sobre-hero-socials { display: flex; gap: 9px; }
+.sobre-hero-socials-mobile { display: none; }
 .sobre-hero-socials a {
   width: 42px; height: 42px; border-radius: 11px; background: rgba(255,255,255,.07);
   border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.68);
@@ -321,9 +322,11 @@
 }
 @media (max-width: 860px) {
   .sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: 44px; padding-top: 64px; }
-  .sobre-hero .page-hero-right { justify-content: flex-start; }
+  .sobre-hero .page-hero-right { flex-direction: column; justify-content: flex-start; align-items: center; gap: 20px; }
   .sobre-photo-frame { max-width: 340px; }
   .sobre-hero-actions { justify-content: center; }
+  .sobre-hero-socials-desktop { display: none; }
+  .sobre-hero-socials-mobile { display: flex; }
   .sobre-traj-companies { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
   .sobre-tc-list { grid-template-columns: 1fr; }
   .sobre-tc-item,

@@ -1159,10 +1159,14 @@
     display: none;
   }
 
-  .home-ia-link-mobile {
-    display: inline-flex;
-    margin-top: 24px;
-    align-self: flex-start;
+  .home-ia-link.sec-link-clay.home-ia-link-mobile {
+    display: flex;
+    width: fit-content;
+    margin: 44px auto 0;
+    padding: 14px 24px;
+    font-size: 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
   }
 
   .home-btn-clay-hero-desktop {
@@ -1170,8 +1174,21 @@
   }
 
   .home-btn-clay-hero-mobile {
-    display: inline-flex;
-    margin-top: 24px;
+    display: flex;
+    width: fit-content;
+    margin: 24px auto 0;
+  }
+
+  .home-btn-outline-petrol {
+    background: var(--clay);
+    color: #fff;
+    border: none;
+    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
+  }
+
+  .home-btn-outline-petrol:hover {
+    background: var(--clay-hover);
+    color: #fff;
   }
 }
 

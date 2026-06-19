@@ -1547,6 +1547,18 @@
     row-gap: 44px;
     column-gap: 0;
   }
+
+  .svc-mo-cta {
+    background: transparent;
+    color: var(--petrol);
+    border: 1.5px solid rgba(15, 76, 92, .35);
+  }
+
+  .svc-mo-cta:hover {
+    background: var(--petrol);
+    color: #fff;
+    border-color: var(--petrol);
+  }
 }
 
 @media (max-width: 680px) {
