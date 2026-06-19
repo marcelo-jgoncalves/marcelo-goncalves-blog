@@ -1,7 +1,6 @@
 /* frontend/app/sobre/page.tsx */
 
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
@@ -166,7 +165,6 @@ export default async function SobrePage() {
       >
         <div className="sobre-hero-actions">
           <a className="sobre-btn-clay" href="#assessoria">Trabalhe comigo <span className="sobre-arrow">→</span></a>
-          <Link className="sobre-btn-ghost" href="/artigos">Ver artigos técnicos →</Link>
         </div>
         <div className="sobre-hero-socials">
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">

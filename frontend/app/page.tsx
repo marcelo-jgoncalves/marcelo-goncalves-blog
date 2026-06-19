@@ -30,14 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-const HERO_PILLS = [
-  { label: 'IA Aplicada', href: '/categoria/inteligencia-artificial', active: true },
-  { label: 'DevOps', href: '/categoria/devops-automacao' },
-  { label: 'Cloud · AWS', href: '/categoria/cloud-computing' },
-  { label: 'Engenharia', href: '/categoria/engenharia-de-software' },
-  { label: 'Bastidores', href: '/o-projeto' },
-];
-
 const STATS = [
   { v: '50+', l: 'Artigos publicados' },
   { v: '4', l: 'Categorias' },
@@ -119,13 +111,6 @@ export default async function Home() {
           </div>
         }
       >
-        <div className="home-hero-pills">
-          {HERO_PILLS.map((pill) => (
-            <Link key={pill.href} href={pill.href} className={`home-hpill${pill.active ? ' home-hpill--active' : ''}`}>
-              {pill.label}
-            </Link>
-          ))}
-        </div>
         <div className="home-hero-actions">
           <Link href="/artigos" className="home-btn-ghost">Todos os artigos →</Link>
         </div>
@@ -141,7 +126,6 @@ export default async function Home() {
                 <h2 className="sec-t">Posts que mais engajaram</h2>
                 <p className="sec-desc">Os que mais geraram leitura, debate e compartilhamentos. Comece por aqui.</p>
               </div>
-              <Link className="sec-link sec-link-clay" href="/artigos">Ranking completo →</Link>
             </div>
             <div className="home-ml-grid" data-audit="home-ml-grid">
               {mlFeature1 && (
@@ -216,7 +200,6 @@ export default async function Home() {
               <h2 className="sec-t">Direto do forno</h2>
               <p className="sec-desc">Últimos artigos publicados.<br />Problemas reais. Soluções aplicadas. Aprendizados compartilhados.</p>
             </div>
-            <Link className="sec-link sec-link-clay" href="/artigos">Todos os artigos →</Link>
           </div>
           <div className="home-posts-grid" data-audit="home-posts-grid">
             {recent.map((post: HomePost, i: number) => (
@@ -224,7 +207,7 @@ export default async function Home() {
             ))}
           </div>
           <div className="home-posts-cta">
-            <Link className="home-btn-outline-petrol" href="/artigos">Ver todos os artigos <span className="arrow">→</span></Link>
+            <Link className="home-btn-outline-petrol" href="/artigos">Todos os artigos <span className="arrow">→</span></Link>
           </div>
         </div>
       </section>
@@ -239,7 +222,7 @@ export default async function Home() {
                 <h2 className="home-ia-title">IA aplicada, sem hype</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
-              <Link className="home-ia-link sec-link-clay" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
+              <Link className="home-ia-link sec-link-clay home-ia-link-desktop" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
             </div>
             <div className="home-ia-grid" data-audit="home-ia-grid">
               {iaBig && (
@@ -287,6 +270,7 @@ export default async function Home() {
                 </div>
               )}
             </div>
+            <Link className="home-ia-link sec-link-clay home-ia-link-mobile" href="/categoria/inteligencia-artificial">Tudo sobre IA →</Link>
           </div>
         </section>
       )}
@@ -301,13 +285,14 @@ export default async function Home() {
                 <h2 className="sec-t">Bastidores da plataforma</h2>
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
-              <Link className="home-btn-clay-hero" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
+              <Link className="home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
             </div>
             <div className="home-projeto-grid" data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
+            <Link className="home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
           </div>
         </section>
       )}

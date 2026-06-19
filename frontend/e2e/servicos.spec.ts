@@ -9,7 +9,7 @@ test.describe('página /servicos', () => {
     await expect(page.locator('.svc-hero h1')).toBeVisible();
     await expect(page.locator('.svc-hero h1')).toContainText('Transformo operações');
 
-    const ctaContato = page.locator('.svc-btn-clay-hero');
+    const ctaContato = page.locator('.svc-btn-clay-hero').first();
     await expect(ctaContato).toHaveAttribute('href', '#contato');
   });
 

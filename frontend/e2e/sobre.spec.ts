@@ -5,15 +5,12 @@ test.describe('página /sobre', () => {
     await page.goto('/sobre', { waitUntil: 'networkidle' });
   });
 
-  test('hero existe com título e ações principais', async ({ page }) => {
+  test('hero existe com título e ação principal', async ({ page }) => {
     await expect(page.locator('.sobre-hero h1')).toBeVisible();
     await expect(page.locator('.sobre-hero h1')).toContainText('Transformo complexidade técnica');
 
     const ctaAssessoria = page.locator('.sobre-btn-clay');
     await expect(ctaAssessoria).toHaveAttribute('href', '#assessoria');
-
-    const ctaArtigos = page.locator('.sobre-btn-ghost');
-    await expect(ctaArtigos).toHaveAttribute('href', '/artigos');
   });
 
   test('hero exibe 4 indicadores', async ({ page }) => {

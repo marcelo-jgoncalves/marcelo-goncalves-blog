@@ -158,7 +158,7 @@
   color: var(--petrol);
 }
 
-.site-header .nav-cta-mobile {
+.site-header .nav-mobile-menu a.nav-cta-mobile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,6 +180,7 @@
   font-family: var(--mono);
 }
 
-.site-header .nav-cta-mobile:hover {
+.site-header .nav-mobile-menu a.nav-cta-mobile:hover {
   background: var(--petrol-deep);
+  color: #fff;
 }

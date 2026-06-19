@@ -40,6 +40,10 @@
   justify-content: center;
 }
 
+.svc-hero-actions-mobile {
+  display: none;
+}
+
 .svc-btn-clay-hero {
   display: inline-flex;
   align-items: center;
@@ -663,6 +667,15 @@
     min-width: 0;
     width: 100%;
     max-width: 380px;
+  }
+  .svc-hero-actions-desktop {
+    display: none;
+  }
+  .svc-hero-actions-mobile {
+    display: flex;
+    width: 100%;
+    max-width: 380px;
+    margin-top: 24px;
   }
   .svc-grid {
     grid-template-columns: 1fr 1fr;

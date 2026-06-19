@@ -78,12 +78,17 @@ export default function ServicosPage() {
         title={<>Transformo operações com AWS, automação, Linux e <em>IA aplicada</em></>}
         subtitle="Adote arquiteturas escaláveis com a mesma engenharia que move este blog, da decisão de stack ao deploy em produção."
         right={
-          <div className="svc-hero-panel" data-audit="svc-hero-panel">
-            <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
-            <div className="svc-hp-row"><span className="svc-hp-v svc-clay">30 min</span><span className="svc-hp-l">Diagnóstico inicial gratuito</span></div>
-            <div className="svc-hp-row"><span className="svc-hp-v">24h</span><span className="svc-hp-l">Tempo de resposta</span></div>
-            <div className="svc-hp-row"><span className="svc-hp-v">100%</span><span className="svc-hp-l">Remoto · sem compromisso</span></div>
-          </div>
+          <>
+            <div className="svc-hero-panel" data-audit="svc-hero-panel">
+              <div className="svc-tagline"><span className="svc-dot"></span>Disponível para novos projetos</div>
+              <div className="svc-hp-row"><span className="svc-hp-v svc-clay">30 min</span><span className="svc-hp-l">Diagnóstico inicial gratuito</span></div>
+              <div className="svc-hp-row"><span className="svc-hp-v">24h</span><span className="svc-hp-l">Tempo de resposta</span></div>
+              <div className="svc-hp-row"><span className="svc-hp-v">100%</span><span className="svc-hp-l">Remoto · sem compromisso</span></div>
+            </div>
+            <div className="svc-hero-actions svc-hero-actions-mobile">
+              <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
+            </div>
+          </>
         }
         statsStrip={
           <div className="svc-stats-strip" data-audit="svc-stats-strip">
@@ -94,7 +99,7 @@ export default function ServicosPage() {
           </div>
         }
       >
-        <div className="svc-hero-actions">
+        <div className="svc-hero-actions svc-hero-actions-desktop">
           <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
         </div>
       </PageHero>

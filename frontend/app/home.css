@@ -33,37 +33,6 @@
   mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
 }
 
-.home-hero-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 32px;
-}
-
-.home-hpill {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .07);
-  border: 1px solid rgba(255, 255, 255, .14);
-  color: rgba(255, 255, 255, .75);
-  transition: background .2s, color .2s;
-}
-
-.home-hpill:hover {
-  background: rgba(255, 255, 255, .13);
-  color: #fff;
-}
-
-.home-hpill--active {
-  background: rgba(201, 96, 60, .18);
-  border-color: rgba(201, 96, 60, .4);
-  color: var(--clay);
-}
-
 .home-hero-actions {
   display: flex;
   align-items: center;
@@ -93,6 +62,10 @@
 
 .home-btn-clay-hero .arrow {
   font-family: var(--mono);
+}
+
+.home-btn-clay-hero-mobile {
+  display: none;
 }
 
 .home-btn-ghost {
@@ -841,6 +814,10 @@
   border-color: rgba(255, 255, 255, .5);
 }
 
+.home-ia-link-mobile {
+  display: none;
+}
+
 .home-ia-grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
@@ -1176,6 +1153,25 @@
 
   .home-projeto-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .home-ia-link-desktop {
+    display: none;
+  }
+
+  .home-ia-link-mobile {
+    display: inline-flex;
+    margin-top: 24px;
+    align-self: flex-start;
+  }
+
+  .home-btn-clay-hero-desktop {
+    display: none;
+  }
+
+  .home-btn-clay-hero-mobile {
+    display: inline-flex;
+    margin-top: 24px;
   }
 }
 
