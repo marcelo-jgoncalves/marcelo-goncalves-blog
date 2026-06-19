@@ -152,13 +152,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
           <input type="search" name="q" placeholder="Buscar por título, tema ou tecnologia…" aria-label="Buscar artigos" required />
           <span className="art-kbd">⌘K</span>
         </form>
-        <div className="art-hero-stats">
-          <span><b>{totalCount}</b> artigos</span>
-          <span className="art-pipe"></span>
-          <span><b>{CATEGORIES.length}</b> categorias</span>
-          <span className="art-pipe"></span>
-          <span>Atualizado <b>semanalmente</b></span>
-        </div>
       </PageHero>
 
 

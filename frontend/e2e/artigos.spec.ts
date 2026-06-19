@@ -11,11 +11,6 @@ test.describe('página /artigos', () => {
     await expect(page.locator('.art-search input[name="q"]')).toBeVisible();
   });
 
-  test('hero stats mostram contagem de artigos e categorias', async ({ page }) => {
-    await expect(page.locator('.art-hero-stats')).toBeVisible();
-    await expect(page.locator('.art-hero-stats')).toContainText('artigos');
-  });
-
   test('CTA O Projeto aparece no hero', async ({ page }) => {
     const cta = page.locator('.art-proj-card');
     await expect(cta).toBeVisible();
