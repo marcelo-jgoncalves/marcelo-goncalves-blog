@@ -143,7 +143,7 @@ export default async function SobrePage() {
         className="sobre-hero"
         dataAudit="sobre-hero"
         eyebrow={`Sobre · ${nome}`}
-        title={<>Engenheiro Cloud que <em>traduz</em> complexidade em arquitetura resiliente.</>}
+        title="Transformo complexidade técnica em operações mais inteligentes, eficientes e escaláveis"
         subtitle="Mais de uma década resolvendo desafios de infraestrutura em escala global — e transformando essa prática em conteúdo técnico sobre cloud, DevOps, FinOps e serverless."
         right={
           <div className="sobre-photo-frame" data-audit="sobre-photo-frame">

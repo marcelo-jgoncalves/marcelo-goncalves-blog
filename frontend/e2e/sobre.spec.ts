@@ -6,8 +6,8 @@ test.describe('página /sobre', () => {
   });
 
   test('hero existe com título e ações principais', async ({ page }) => {
-    await expect(page.locator('.sobre-hero-title')).toBeVisible();
-    await expect(page.locator('.sobre-hero-title')).toContainText('Engenheiro Cloud');
+    await expect(page.locator('.sobre-hero h1')).toBeVisible();
+    await expect(page.locator('.sobre-hero h1')).toContainText('Transformo complexidade técnica');
 
     const ctaAssessoria = page.locator('.sobre-btn-clay');
     await expect(ctaAssessoria).toHaveAttribute('href', '#assessoria');
@@ -53,7 +53,7 @@ test.describe('página /sobre', () => {
   });
 
   test('CTA assessoria linka para /servicos', async ({ page }) => {
-    const btn = page.locator('.sobre-btn-adv');
+    const btn = page.locator('.cta-adv-btn');
     await expect(btn).toBeVisible();
     await expect(btn).toHaveAttribute('href', '/servicos');
   });
