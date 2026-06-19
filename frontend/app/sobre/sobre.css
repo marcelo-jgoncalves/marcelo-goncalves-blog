@@ -159,12 +159,12 @@
 .sobre-ac-title { font-weight: 800; font-size: 1.2rem; letter-spacing: -.025em; color: var(--petrol); line-height: 1.25; }
 .sobre-ac-desc { font-size: 14px; line-height: 1.6; color: var(--slate); flex: 1; }
 .sobre-ac-meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--steel); margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); }
-/* clay highlight */
-.sobre-area-card.sobre-feat { background: var(--clay); border-color: transparent; box-shadow: 0 6px 18px rgba(201,96,60,.2); }
-.sobre-area-card.sobre-feat:hover { background: var(--clay-hover); transform: translateY(-3px); box-shadow: 0 18px 40px rgba(201,96,60,.3); }
-.sobre-area-card.sobre-feat .sobre-ac-cat { color: rgba(255,255,255,.9); }
+/* petrol highlight — mesma paleta do card "Transformação Digital" em /servicos */
+.sobre-area-card.sobre-feat { background: linear-gradient(120deg, var(--petrol-deep) 0%, var(--petrol) 145%); border-color: transparent; box-shadow: 0 22px 50px -26px rgba(8,50,61,.7); }
+.sobre-area-card.sobre-feat:hover { transform: translateY(-3px); box-shadow: 0 28px 62px -24px rgba(8,50,61,.8); }
+.sobre-area-card.sobre-feat .sobre-ac-cat { color: var(--petrol-soft); }
 .sobre-area-card.sobre-feat .sobre-ac-title { color: #fff; font-size: 1.32rem; }
-.sobre-area-card.sobre-feat .sobre-ac-desc { color: rgba(250,248,243,.92); }
+.sobre-area-card.sobre-feat .sobre-ac-desc { color: rgba(250,248,243,.70); }
 .sobre-area-card.sobre-feat .sobre-ac-meta { color: rgba(255,255,255,.75); border-top-color: rgba(255,255,255,.2); }
 
 /* ── DIFERENCIAL (dark band) ── */
