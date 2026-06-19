@@ -167,7 +167,7 @@
 .sobre-area-card.sobre-feat .sobre-ac-desc { color: rgba(250,248,243,.70); }
 .sobre-area-card.sobre-feat .sobre-ac-meta { color: rgba(255,255,255,.75); border-top-color: rgba(255,255,255,.2); }
 
-/* ── DIFERENCIAL (dark band) ── */
+/* ── DIFERENCIAL (dark band — Variação A · Editorial Assimétrico, ver specs/superdestaque.md) ── */
 .sobre-dif { padding: 80px 0; background: var(--petrol); color: var(--ivory); position: relative; overflow: hidden; isolation: isolate; }
 .sobre-dif::before {
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
@@ -179,28 +179,53 @@
   -webkit-mask-image: radial-gradient(ellipse at 55% 28%, #000 28%, transparent 80%);
   mask-image: radial-gradient(ellipse at 55% 28%, #000 28%, transparent 80%);
 }
-.sobre-dif .wrap { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.sobre-dif .wrap { position: relative; z-index: 1; }
+
+.sobre-dif-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: 72px; align-items: start; }
+
+/* coluna esquerda */
 .sobre-dif-ey {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--clay); display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
 }
-.sobre-dif-ey::before, .sobre-dif-ey::after { content: ""; flex: 0 0 30px; height: 1px; background: rgba(255,255,255,.2); }
-.sobre-dif-title { font-weight: 800; font-size: clamp(2rem, 3.6vw, 2.85rem); letter-spacing: -.04em; color: #fff; line-height: 1.08; margin-bottom: 26px; text-wrap: balance; }
-.sobre-dif-title em { font-style: italic; color: var(--petrol-soft); }
-.sobre-dif-quote { max-width: 680px; font-size: 1.125rem; line-height: 1.75; color: rgba(250,248,243,.74); margin-bottom: 30px; }
-.sobre-dif-quote em { font-style: italic; color: #fff; font-weight: 500; }
-.sobre-dif-author {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(255,255,255,.42); display: flex; align-items: center; gap: 12px; margin-bottom: 52px;
+.sobre-dif-ey::before { content: ""; width: 30px; height: 1px; background: var(--clay); }
+.sobre-dif-title { font-weight: 800; font-size: clamp(2rem, 3.4vw, 2.85rem); line-height: 1.05; letter-spacing: -.04em; color: #fff; margin-bottom: 34px; }
+.sobre-dif-title em { font-style: italic; color: var(--clay); font-weight: 800; }
+.sobre-dif-seal {
+  display: inline-flex; flex-direction: column; gap: 7px; padding: 18px 22px;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.13);
+  border-left: 3px solid var(--clay); border-radius: 14px;
 }
-.sobre-dif-author::before, .sobre-dif-author::after { content: ""; flex: 0 0 22px; height: 1px; background: rgba(255,255,255,.18); }
-.sobre-dif-langs-label { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 18px; }
-.sobre-dif-langs { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.sobre-lang-pill { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 11px 22px; transition: background .2s, transform .2s; }
-.sobre-lang-pill:hover { background: rgba(255,255,255,.12); transform: translateY(-2px); }
-.sobre-lang-flag { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: rgba(255,255,255,.42); padding-right: 12px; border-right: 1px solid rgba(255,255,255,.16); }
-.sobre-lang-name { font-weight: 700; font-size: 14px; color: #fff; }
-.sobre-lang-level { font-size: 13px; color: rgba(255,255,255,.5); }
+.sobre-dif-seal .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--petrol-soft); }
+.sobre-dif-seal .v { font-weight: 700; font-size: 15px; color: #fff; letter-spacing: -.01em; line-height: 1.35; }
+
+/* coluna direita */
+.sobre-dif-quotemark { font-family: Georgia, serif; font-size: 90px; line-height: .6; color: var(--clay); opacity: .85; margin-bottom: -6px; display: block; }
+.sobre-dif-quote {
+  font-size: clamp(1.45rem, 2.05vw, 1.85rem); line-height: 1.5; font-weight: 500; color: #fff;
+  letter-spacing: -.018em; max-width: 680px; text-wrap: pretty;
+}
+.sobre-dif-quote em { font-style: italic; color: var(--petrol-soft); font-weight: 600; }
+.sobre-dif-by { margin-top: 30px; display: flex; align-items: center; gap: 14px; }
+.sobre-dif-by .nm { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+.sobre-dif-by .ln { flex: 1; height: 1px; background: rgba(255,255,255,.16); max-width: 90px; }
+
+/* rodapé de idiomas */
+.sobre-dif-langs {
+  position: relative; z-index: 1; margin-top: 64px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+}
+.sobre-dif-langs-label { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.38); }
+.sobre-dif-langs-row { display: flex; gap: 26px; flex-wrap: wrap; }
+.sobre-dif-lang { display: flex; align-items: baseline; gap: 9px; }
+.sobre-dif-lang .f { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--petrol-soft); }
+.sobre-dif-lang .n { font-weight: 700; font-size: 14px; color: #fff; }
+.sobre-dif-lang .l { font-size: 13px; color: rgba(255,255,255,.45); }
+
+@media (max-width: 880px) {
+  .sobre-dif-grid { grid-template-columns: 1fr; gap: 40px; }
+  .sobre-dif-langs { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
 
 /* ── CREDENCIAIS (certs) ── */
 .sobre-certs { padding: 96px 0; background: var(--ivory); }
@@ -306,7 +331,6 @@
   .sobre-certs-grid { grid-template-columns: 1fr; }
   .sobre-acad-card { padding: 28px 22px; }
   .sobre-traj-quote { padding: 32px 26px; }
-  .sobre-dif-langs { gap: 8px; }
-  .sobre-lang-pill { padding: 10px 16px; }
+  .sobre-dif-langs-row { gap: 16px; }
   .sobre-cta-adv-in { padding: 88px 20px; }
 }

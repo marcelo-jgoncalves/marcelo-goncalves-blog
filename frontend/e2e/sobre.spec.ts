@@ -38,7 +38,7 @@ test.describe('página /sobre', () => {
   });
 
   test('diferencial exibe 3 idiomas', async ({ page }) => {
-    await expect(page.locator('.sobre-lang-pill')).toHaveCount(3);
+    await expect(page.locator('.sobre-dif-lang')).toHaveCount(3);
   });
 
   test('certificações exibe 5 credenciais + card "sempre estudando"', async ({ page }) => {

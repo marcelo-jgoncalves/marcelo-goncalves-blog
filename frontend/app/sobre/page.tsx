@@ -265,24 +265,39 @@ export default async function SobrePage() {
       {/* ── DIFERENCIAL ── */}
       <section className="sobre-dif">
         <div className="wrap" data-audit="sobre-dif-wrap">
-          <div className="sobre-dif-ey">O Diferencial</div>
-          <h2 className="sobre-dif-title">Engenharia encontra <em>linguagem</em></h2>
-          <p className="sobre-dif-quote">
-            Minha base não é apenas engenharia. Sou formado em Letras, com Mestrado em
-            Linguística. No mundo atual, onde a IA e os modelos de linguagem dominam a
-            arquitetura, entender a estrutura da palavra é o que me permite conectar o{' '}
-            <em>como</em> técnico ao <em>porquê</em> estratégico.
-          </p>
-          <div className="sobre-dif-author">Marcelo Gonçalves</div>
-          <div className="sobre-dif-langs-label">Idiomas</div>
-          <div className="sobre-dif-langs">
-            {LANGUAGES.map((lang) => (
-              <div className="sobre-lang-pill" key={lang.name}>
-                <span className="sobre-lang-flag">{lang.flag}</span>
-                <span className="sobre-lang-name">{lang.name}</span>
-                <span className="sobre-lang-level">{lang.level}</span>
+          <div className="sobre-dif-grid">
+            <div className="sobre-dif-col-l">
+              <div className="sobre-dif-ey">O Diferencial</div>
+              <h2 className="sobre-dif-title">Engenharia encontra <em>linguagem</em></h2>
+              <div className="sobre-dif-seal">
+                <span className="k">Formação</span>
+                <span className="v">Engenharia + Letras<br />Mestrado em Linguística</span>
               </div>
-            ))}
+            </div>
+            <div className="sobre-dif-col-r">
+              <span className="sobre-dif-quotemark">&ldquo;</span>
+              <p className="sobre-dif-quote">
+                No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura,
+                entender a estrutura da palavra é o que me permite conectar o <em>como</em>{' '}
+                técnico ao <em>porquê</em> estratégico.
+              </p>
+              <div className="sobre-dif-by">
+                <span className="nm">Marcelo Gonçalves</span>
+                <span className="ln" />
+              </div>
+            </div>
+          </div>
+          <div className="sobre-dif-langs">
+            <span className="sobre-dif-langs-label">Idiomas</span>
+            <div className="sobre-dif-langs-row">
+              {LANGUAGES.map((lang) => (
+                <span className="sobre-dif-lang" key={lang.name}>
+                  <span className="f">{lang.flag}</span>
+                  <span className="n">{lang.name}</span>
+                  <span className="l">{lang.level}</span>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
