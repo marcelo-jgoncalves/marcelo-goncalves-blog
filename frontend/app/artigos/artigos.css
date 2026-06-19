@@ -532,7 +532,7 @@
    SHELL — seções com padding próprio
    ========================================================================== */
 .art-section {
-  padding: 72px 0;
+  padding-block: 72px;
 }
 
 .art-section.after-sticky {
