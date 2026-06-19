@@ -204,8 +204,8 @@ export default async function SobrePage() {
             <div className="sobre-traj-quote" data-audit="sobre-traj-quote">
               <div className="sobre-tq-mark">&ldquo;</div>
               <p className="sobre-tq-text">
-                A tecnologia só atinge seu potencial máximo quando é comunicada com{' '}
-                <em>clareza</em> — uma ponte entre o detalhe da engenharia e a decisão estratégica.
+                Entre a engenharia e a estratégia, meu papel é transformar complexidade em
+                sistemas, automações e operações que funcionam melhor.
               </p>
               <div className="sobre-tq-foot">
                 <div className="sobre-tq-author">
