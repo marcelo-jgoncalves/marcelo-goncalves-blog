@@ -242,7 +242,7 @@ export default async function SobrePage() {
           <div className="sobre-areas-head">
             <div className="sec-ey">Especialidades</div>
             <h2 className="sec-t">Áreas em que atuo</h2>
-            <p className="sec-desc">Da arquitetura à operação do dia a dia — onde aplico engenharia para construir e sustentar nuvem com eficiência.</p>
+            <p className="sec-desc">Da transformação digital à operação em produção. Aplico cloud, automação e IA para tornar operações mais eficientes, seguras e escaláveis.</p>
           </div>
           <div className="sobre-areas-grid" data-audit="sobre-areas-grid">
             {EXPERTISE_AREAS.map((area) => (
