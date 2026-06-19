@@ -34,7 +34,7 @@ test.describe('página /sobre', () => {
     const cards = page.locator('.sobre-area-card');
     await expect(cards).toHaveCount(6);
     await expect(cards.first()).toHaveClass(/sobre-feat/);
-    await expect(cards.first()).toContainText('Arquitetura AWS');
+    await expect(cards.first()).toContainText('Transformação Digital');
   });
 
   test('diferencial exibe 3 idiomas', async ({ page }) => {

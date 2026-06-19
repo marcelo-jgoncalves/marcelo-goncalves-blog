@@ -21,41 +21,41 @@ const CHECK_ICON = (
 
 const EXPERTISE_AREAS = [
   {
+    cat: 'Modernização Operacional',
+    title: 'Transformação Digital',
+    desc: 'Apps internos, digitalização de processos, integração de sistemas e automação operacional para reduzir retrabalho e acelerar decisões.',
+    meta: 'Processos · Integrações · Automação',
+    feat: true,
+  },
+  {
+    cat: 'Produtividade com IA',
+    title: 'IA Aplicada & Automação Inteligente',
+    desc: 'Assistentes internos, AIOps, análise inteligente de logs, automação documental e fluxos com IA para operações mais inteligentes e eficientes.',
+    meta: 'LLMs · AIOps · Automação',
+  },
+  {
     cat: 'Nuvem Empresarial',
     title: 'Arquitetura AWS',
-    desc: 'Design de soluções seguras e escaláveis seguindo o Well-Architected Framework. Multi-region, alta disponibilidade, governança e segurança desde o primeiro commit.',
-    meta: 'EC2 · ECS · Lambda · S3 · RDS · CloudFront',
-    feat: true,
+    desc: 'Arquiteturas seguras, escaláveis e resilientes para ambientes cloud preparados para crescer com governança, alta disponibilidade e continuidade operacional.',
+    meta: 'AWS · Alta Disponibilidade · Governança',
   },
   {
     cat: 'Entrega Contínua',
     title: 'DevOps & Automação',
-    desc: 'Infraestrutura como Código com Terraform e pipelines CI/CD de ponta a ponta. Ambientes reproduzíveis, deploys sem ansiedade e rollback confiável em produção.',
-    meta: 'Terraform · GitHub Actions · CodePipeline',
-  },
-  {
-    cat: 'Computação Sem Servidor',
-    title: 'Serverless',
-    desc: 'Arquiteturas event-driven com Lambda, API Gateway e DynamoDB. Custo proporcional ao uso, escala automática e zero gestão de servidor para times enxutos.',
-    meta: 'Lambda · API Gateway · DynamoDB · SQS',
+    desc: 'Infraestrutura como código, pipelines CI/CD e automações que aceleram entregas, reduzem erros e aumentam previsibilidade operacional.',
+    meta: 'Terraform · CI/CD · GitOps',
   },
   {
     cat: 'Gestão de Custos',
     title: 'FinOps',
-    desc: 'Governança financeira e otimização de custos na nuvem. Visibilidade de gastos, rightsizing de recursos e reservas estratégicas de capacidade para máxima eficiência operacional.',
-    meta: 'Cost Explorer · Savings Plans · Budgets',
+    desc: 'Otimização de custos, governança financeira e estratégias de consumo inteligente para operar cloud com eficiência e previsibilidade.',
+    meta: 'Rightsizing · Savings Plans · Budgets',
   },
   {
-    cat: 'Sistemas Operacionais',
-    title: 'Linux',
-    desc: 'Administração de ambientes cloud e on-premise. Scripting em Bash, hardening de segurança e automação com foco em confiabilidade, rastreabilidade e eficiência.',
-    meta: 'Bash · Systemd · Networking · LPIC',
-  },
-  {
-    cat: 'Operações de Nuvem',
-    title: 'Administração de Infra AWS',
-    desc: 'Provisionamento, monitoramento e manutenção de ambientes AWS em produção. CloudWatch, Systems Manager, Config e resposta a incidentes com rastreabilidade total.',
-    meta: 'CloudWatch · SSM · AWS Config · CloudTrail',
+    cat: 'Confiabilidade Operacional',
+    title: 'Operações & Resiliência',
+    desc: 'Administração de ambientes Linux e AWS, observabilidade, backup, resposta a incidentes e sustentação contínua para operações críticas.',
+    meta: 'Linux · CloudWatch · Backup',
   },
 ];
 
