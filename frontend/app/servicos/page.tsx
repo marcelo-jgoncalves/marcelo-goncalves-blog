@@ -362,7 +362,7 @@ export default function ServicosPage() {
         points={[
           <span key="p1">Diagnóstico objetivo da sua <b>infraestrutura</b> e dos próximos passos</span>,
           <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-          <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+          <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
         ]}
         cardTagline="Disponível para novos projetos"
         cardTitle="Vamos conversar sobre o seu projeto"
