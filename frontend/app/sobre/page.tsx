@@ -189,9 +189,10 @@ export default async function SobrePage() {
               <div className="sec-ey">Trajetória</div>
               <h2 className="sec-t sobre-traj-title">Uma carreira entre o código e a sala de aula</h2>
               <p>
-                Especialista em <strong>alta disponibilidade e eficiência</strong>, projeto
-                infraestruturas cloud que sustentam negócios em escala global. Minha carreira é
-                definida pela busca de resiliência, automação e arquiteturas que envelhecem bem.
+                Especialista em <strong>cloud, automação e eficiência operacional</strong>, construo
+                soluções que ajudam empresas a reduzir complexidade, ganhar escala e operar com mais
+                inteligência. Minha atuação combina infraestrutura resiliente, automação de processos,
+                IA aplicada e arquiteturas preparadas para evoluir com o negócio.
               </p>
               <p>
                 Ao longo da carreira, colaborei com empresas no <strong>Brasil e no exterior</strong>,
