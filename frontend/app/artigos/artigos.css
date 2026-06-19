@@ -539,6 +539,10 @@
   padding-top: 64px;
 }
 
+.art-section.after-sticky:not(.art-section-end) {
+  padding-bottom: 0;
+}
+
 .art-section-end {
   padding-bottom: 80px;
 }
@@ -1390,6 +1394,7 @@
   grid-area: cta;
   display: inline-flex;
   align-items: center;
+  justify-self: center;
   gap: 10px;
   width: fit-content;
   font-weight: 600;

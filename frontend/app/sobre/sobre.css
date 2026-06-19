@@ -323,7 +323,7 @@
 }
 @media (max-width: 860px) {
   .sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: 44px; padding-top: 64px; }
-  .sobre-hero .page-hero-right { flex-direction: column; justify-content: flex-start; align-items: center; gap: 20px; }
+  .sobre-hero .page-hero-right { flex-direction: column; justify-content: flex-start; align-items: center; gap: 36px; }
   .sobre-photo-frame { max-width: 340px; }
   .sobre-hero-actions { justify-content: center; }
   .sobre-hero-socials-desktop { display: none; }

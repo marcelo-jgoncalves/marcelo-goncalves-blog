@@ -675,7 +675,7 @@
     display: flex;
     width: 100%;
     max-width: 380px;
-    margin-top: 24px;
+    margin-top: 40px;
   }
   .svc-grid {
     grid-template-columns: 1fr 1fr;

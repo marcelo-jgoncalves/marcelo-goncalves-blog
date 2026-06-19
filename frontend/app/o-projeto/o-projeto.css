@@ -907,6 +907,14 @@
     white-space: normal;
   }
 
+  .op-hero-actions {
+    justify-content: center;
+  }
+
+  .op-btn-clay-hero {
+    display: none;
+  }
+
   .op-hero-stat {
     display: none;
   }
