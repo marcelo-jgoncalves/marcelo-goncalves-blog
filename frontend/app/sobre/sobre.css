@@ -219,13 +219,14 @@
 .sobre-dif-langs-label { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.38); }
 .sobre-dif-langs-row { display: flex; gap: 26px; flex-wrap: wrap; }
 .sobre-dif-lang { display: flex; align-items: baseline; gap: 9px; }
-.sobre-dif-lang .f { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--petrol-soft); }
+.sobre-dif-lang .f { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--clay); }
 .sobre-dif-lang .n { font-weight: 700; font-size: 14px; color: #fff; }
 .sobre-dif-lang .l { font-size: 13px; color: rgba(255,255,255,.45); }
 
 @media (max-width: 880px) {
   .sobre-dif-grid { grid-template-columns: 1fr; gap: 40px; }
   .sobre-dif-langs { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .sobre-dif-seal { display: flex; width: 100%; }
 }
 
 /* ── CREDENCIAIS (certs) ── */

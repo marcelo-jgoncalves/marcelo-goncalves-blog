@@ -282,7 +282,7 @@ export default async function SobrePage() {
               <h2 className="sobre-dif-title">Engenharia encontra <em>linguagem</em></h2>
               <div className="sobre-dif-seal">
                 <span className="k">Formação</span>
-                <span className="v">Engenharia + Letras<br />Mestrado em Linguística</span>
+                <span className="v">Letras Mestrado em Linguística + Tecnologia</span>
               </div>
             </div>
             <div className="sobre-dif-col-r">
