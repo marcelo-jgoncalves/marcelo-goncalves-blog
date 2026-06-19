@@ -208,6 +208,12 @@ export default function ServicosPage() {
                 <div className="svc-wtag">Destaque · Diferencial</div>
                 <h3>IA Aplicada & Automação Inteligente</h3>
                 <p>Transforme IA em produtividade real com automações, assistentes inteligentes e fluxos personalizados que reduzem trabalho manual, aceleram decisões e aumentam eficiência operacional.</p>
+                <ul className="svc-wide-list">
+                  <li><strong>Assistentes internos com IA</strong> para suporte operacional, consultas, análise de dados e acesso rápido a informações</li>
+                  <li><strong>Automação inteligente de tarefas e documentos</strong>, com classificação, extração de dados e execução de rotinas</li>
+                  <li><strong>Fluxos personalizados com IA e integrações</strong>, conectando sistemas e acelerando processos críticos</li>
+                  <li><strong>AIOps e análise de logs com IA</strong> para triagem de incidentes, correlação de alertas e identificação proativa de falhas</li>
+                </ul>
               </div>
               <div className="svc-wide-tags">
                 <span>LLMs</span>

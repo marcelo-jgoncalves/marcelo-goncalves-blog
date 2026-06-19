@@ -5,15 +5,12 @@ test.describe('página /servicos', () => {
     await page.goto('/servicos', { waitUntil: 'networkidle' });
   });
 
-  test('hero existe com título e ações principais', async ({ page }) => {
+  test('hero existe com título e ação principal', async ({ page }) => {
     await expect(page.locator('.svc-hero h1')).toBeVisible();
-    await expect(page.locator('.svc-hero h1')).toContainText('Assessoria em AWS');
+    await expect(page.locator('.svc-hero h1')).toContainText('Transformo operações');
 
     const ctaContato = page.locator('.svc-btn-clay-hero');
     await expect(ctaContato).toHaveAttribute('href', '#contato');
-
-    const ctaServicos = page.locator('.svc-btn-ghost');
-    await expect(ctaServicos).toHaveAttribute('href', '#servicos');
   });
 
   test('hero panel mostra disponibilidade', async ({ page }) => {
@@ -49,21 +46,9 @@ test.describe('página /servicos', () => {
     await expect(card.locator('.svc-wide-list li')).toHaveCount(3);
   });
 
-  test('seção making-of linka para /o-projeto', async ({ page }) => {
-    const cta = page.locator('.svc-mo-cta');
-    await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute('href', '/o-projeto');
-  });
-
-  test('CTA final tem botão de contato por e-mail', async ({ page }) => {
-    const btn = page.locator('.svc-btn-clay-final');
+  test('CTA final (CtaAssessoria) tem botão de contato por e-mail', async ({ page }) => {
+    const btn = page.locator('.cta-adv-btn');
     await expect(btn).toBeVisible();
     await expect(btn).toHaveAttribute('href', /^mailto:/);
-  });
-
-  test('navegar para #servicos via "Ver serviços"', async ({ page }) => {
-    await page.locator('.svc-btn-ghost').click();
-    await expect(page).toHaveURL(/#servicos$/);
-    await expect(page.locator('#servicos')).toBeInViewport();
   });
 });

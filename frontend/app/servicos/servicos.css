@@ -470,6 +470,14 @@
   font-size: 15px;
 }
 
+.svc-card.svc-wide:not(.svc-alt):not(.svc-moss) .svc-wide-list li {
+  color: var(--slate);
+}
+
+.svc-card.svc-wide:not(.svc-alt):not(.svc-moss) .svc-wide-list li strong {
+  color: var(--ink);
+}
+
 .svc-wide-tags {
   flex: none;
   display: flex;
