@@ -16,8 +16,7 @@ test.describe('página /sobre', () => {
     await expect(ctaArtigos).toHaveAttribute('href', '/artigos');
   });
 
-  test('hero exibe 5 tags e 4 indicadores', async ({ page }) => {
-    await expect(page.locator('.sobre-hero-tags span')).toHaveCount(5);
+  test('hero exibe 4 indicadores', async ({ page }) => {
     await expect(page.locator('.sobre-hstat')).toHaveCount(4);
   });
 

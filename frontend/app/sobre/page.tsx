@@ -164,9 +164,6 @@ export default async function SobrePage() {
           </div>
         }
       >
-        <div className="sobre-hero-tags">
-          <span>AWS</span><span>DevOps</span><span>FinOps</span><span>Serverless</span><span>IA Aplicada</span>
-        </div>
         <div className="sobre-hero-actions">
           <a className="sobre-btn-clay" href="#assessoria">Trabalhe comigo <span className="sobre-arrow">→</span></a>
           <Link className="sobre-btn-ghost" href="/artigos">Ver artigos técnicos →</Link>
