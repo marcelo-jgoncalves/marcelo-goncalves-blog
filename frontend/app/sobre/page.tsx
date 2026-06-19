@@ -194,9 +194,10 @@ export default async function SobrePage() {
                 definida pela busca de resiliência, automação e arquiteturas que envelhecem bem.
               </p>
               <p>
-                Colaborei com empresas líderes no <strong>Brasil e no exterior</strong>, refinando
-                metodologias que equilibram agilidade técnica com governança corporativa — uma
-                atuação internacional que molda como penso arquitetura até hoje.
+                Ao longo da carreira, colaborei com empresas no <strong>Brasil e no exterior</strong>,
+                refinando métodos que equilibram agilidade técnica, governança e sustentabilidade
+                operacional — uma experiência que molda como penso tecnologia: como ferramenta para
+                gerar eficiência real.
               </p>
             </div>
             <div className="sobre-traj-quote" data-audit="sobre-traj-quote">
