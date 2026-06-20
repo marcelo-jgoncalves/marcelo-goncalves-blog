@@ -320,44 +320,48 @@
 .op-about-strip .op-right {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 }
 
 .op-principle {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 20px;
 }
 
 .op-principle .op-tile {
   flex: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: var(--petrol);
-  color: var(--ivory);
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(15, 76, 92, 0.06);
+  border: 1px solid rgba(15, 76, 92, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  color: var(--petrol);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .op-principle .op-tile svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 .op-principle .op-txt .op-t {
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 28px;
+  line-height: 1.1;
   color: var(--ink);
   letter-spacing: -.01em;
 }
 
 .op-principle .op-txt .op-d {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--slate);
-  margin-top: 3px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(15, 76, 92, 0.78);
+  margin-top: 6px;
 }
 
 /* ==========================================================================
