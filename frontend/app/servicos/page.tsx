@@ -86,7 +86,7 @@ export default function ServicosPage() {
               <div className="svc-hp-row"><span className="svc-hp-v">100%</span><span className="svc-hp-l">Remoto · sem compromisso</span></div>
             </div>
             <div className="svc-hero-actions svc-hero-actions-mobile">
-              <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
+              <a className="svc-btn-clay-hero" href="#contato">Entre em contato <span className="svc-arrow">→</span></a>
             </div>
           </>
         }
@@ -100,7 +100,7 @@ export default function ServicosPage() {
         }
       >
         <div className="svc-hero-actions svc-hero-actions-desktop">
-          <a className="svc-btn-clay-hero" href="#contato">Entrar em contato <span className="svc-arrow">→</span></a>
+          <a className="svc-btn-clay-hero" href="#contato">Entre em contato <span className="svc-arrow">→</span></a>
         </div>
       </PageHero>
 
