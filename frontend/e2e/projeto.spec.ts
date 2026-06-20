@@ -16,10 +16,10 @@ test.describe('página /o-projeto', () => {
     await expect(page.locator('.op-stat-item')).toHaveCount(4);
   });
 
-  test('seção "Sobre o projeto" exibe 4 princípios numerados', async ({ page }) => {
+  test('seção "Sobre o projeto" exibe 4 princípios com ícone', async ({ page }) => {
     const principles = page.locator('.op-principle');
     await expect(principles).toHaveCount(4);
-    await expect(principles.first().locator('.op-tile')).toHaveText('01');
+    await expect(principles.first().locator('.op-tile svg')).toBeVisible();
   });
 
   test('seção timeline existe com contagem de posts', async ({ page }) => {
