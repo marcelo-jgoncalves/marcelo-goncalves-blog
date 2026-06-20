@@ -322,6 +322,12 @@
 .post-toc-read-meta span { display: flex; align-items: center; gap: 6px; }
 .post-toc-read-meta b { color: var(--petrol); font-weight: 600; }
 
+/* TOC removido no mobile/tablet por enquanto — reafirma o display:none da
+   seção 4, que a regra base .post-toc{display:flex} acima sobrescrevia. */
+@media (max-width: 1080px) {
+  .post-toc { display: none; }
+}
+
 /* ==========================================================================
    6. PROSE — .post-content
    ========================================================================== */
