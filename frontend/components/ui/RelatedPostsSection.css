@@ -22,6 +22,7 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
+  white-space: nowrap;
 }
 
 .post-r-eyebrow::before {
@@ -56,8 +57,44 @@
   gap: 22px;
 }
 
+.post-r-all-mobile-wrap {
+  display: none;
+}
+
 @media (max-width: 820px) {
   .post-r-grid {
     grid-template-columns: 1fr;
+  }
+
+  .post-r-all-desktop {
+    display: none;
+  }
+
+  .post-r-all-mobile-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  .post-r-all-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--clay);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
+    transition: background .2s, transform .2s;
+  }
+
+  .post-r-all-mobile:hover {
+    background: var(--clay-hover);
+  }
+
+  .post-r-all-mobile .arrow {
+    font-family: var(--font-mono);
   }
 }

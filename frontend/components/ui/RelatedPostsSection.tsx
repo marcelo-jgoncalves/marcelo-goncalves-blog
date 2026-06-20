@@ -19,7 +19,7 @@ export default async function RelatedPostsSection() {
           <div className="post-r-eyebrow">Continue explorando</div>
           <h2>Mais sobre IA &amp; engenharia</h2>
         </div>
-        <Link className="post-r-all" href="/artigos">Todos os artigos →</Link>
+        <Link className="post-r-all post-r-all-desktop" href="/artigos">Todos os artigos →</Link>
       </div>
       <div className="post-r-grid" data-audit="post-r-grid">
         {related.map((post) => (
@@ -29,6 +29,9 @@ export default async function RelatedPostsSection() {
             dataAudit="post-r-card"
           />
         ))}
+      </div>
+      <div className="post-r-all-mobile-wrap">
+        <Link className="post-r-all-mobile" href="/artigos">Todos os artigos <span className="arrow">→</span></Link>
       </div>
     </div>
   );
