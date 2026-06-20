@@ -68,7 +68,9 @@ const PRINCIPLES = [
     d: 'Não como hype — como ferramenta com limitações documentadas.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 3l1.91 5.81a2 2 0 0 0 1.28 1.28L21 12l-5.81 1.91a2 2 0 0 0-1.28 1.28L12 21l-1.91-5.81a2 2 0 0 0-1.28-1.28L3 12l5.81-1.91a2 2 0 0 0 1.28-1.28L12 3Z" />
+        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+        <rect x="9" y="9" width="6" height="6" />
+        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
       </svg>
     ),
   },

@@ -350,18 +350,16 @@
 
 .op-principle .op-txt .op-t {
   font-weight: 700;
-  font-size: 28px;
-  line-height: 1.1;
+  font-size: 14.5px;
   color: var(--ink);
   letter-spacing: -.01em;
 }
 
 .op-principle .op-txt .op-d {
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.7;
-  color: rgba(15, 76, 92, 0.78);
-  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--slate);
+  margin-top: 3px;
 }
 
 /* ==========================================================================
