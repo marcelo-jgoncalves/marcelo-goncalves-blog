@@ -43,7 +43,8 @@ test.describe('página /o-projeto', () => {
   test('seção "Próximas etapas" exibe 6 cards de roadmap', async ({ page }) => {
     const cards = page.locator('.op-rm-card');
     await expect(cards).toHaveCount(6);
-    await expect(cards.first()).toHaveClass(/op-doing/);
+    await expect(cards.first()).toHaveClass(/op-planned/);
+    await expect(cards.last()).toHaveClass(/op-future/);
   });
 
   test('CTA assessoria linka para /servicos', async ({ page }) => {

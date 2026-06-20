@@ -65,7 +65,7 @@ const PRINCIPLES = [
   },
   {
     t: 'IA como copiloto real',
-    d: 'Não como hype — como ferramenta com limitações documentadas.',
+    d: 'Não como hype, mas como ferramenta com limitações documentadas.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
@@ -88,7 +88,7 @@ const PRINCIPLES = [
   },
   {
     t: 'Sem pular etapas',
-    d: 'Do primeiro commit ao primeiro real de receita — tudo documentado.',
+    d: 'Do primeiro commit ao primeiro real de receita, tudo documentado.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <line x1="6" y1="3" x2="6" y2="15" />
@@ -101,12 +101,12 @@ const PRINCIPLES = [
 ];
 
 const ROADMAP = [
-  { num: 'E-01', status: 'doing', statusLabel: 'Em andamento', title: 'Sistema de comentários nativo', desc: 'Discussão integrada nos posts, sem dependência de ferramentas de terceiros. Autenticação leve, moderação simples.', foot: 'Previsão · Q1 2026' },
-  { num: 'E-02', status: 'doing', statusLabel: 'Em andamento', title: 'Design system documentado', desc: 'Tokens de cor, tipografia e componentes formalizados. Base para a plataforma escalar sem inconsistência visual.', foot: 'Previsão · Q1 2026' },
-  { num: 'P-01', status: 'planned', statusLabel: 'Planejado', title: 'Newsletter automatizada', desc: 'Cada novo post entregue por e-mail. Avaliando Beehiiv vs. solução própria com SES — com os critérios publicados no blog.', foot: 'Previsão · Q1 2026' },
-  { num: 'P-02', status: 'planned', statusLabel: 'Planejado', title: 'Monetização com AdSense', desc: 'Integração e posicionamento de anúncios sem destruir a leitura. Métricas de receita publicadas mensalmente.', foot: 'Previsão · Q2 2026' },
-  { num: 'P-03', status: 'planned', statusLabel: 'Planejado', title: 'Busca nativa', desc: 'Search sem dependência de Algolia ou Elasticsearch. Explorando solução com embeddings e busca semântica no próprio banco.', foot: 'Previsão · Q2 2026' },
-  { num: 'F-01', status: 'future', statusLabel: 'Futuro', title: 'Dashboard público de métricas', desc: 'Tráfego, custo AWS, receita e crescimento — ao vivo, visíveis para qualquer visitante. A transparência radical na prática.', foot: 'Sem data definida' },
+  { num: 'P-01', status: 'planned', statusLabel: 'Planejado', title: 'Automação para LinkedIn', desc: 'Cada novo post publicado gera automaticamente uma versão adaptada para LinkedIn, ampliando alcance, fortalecendo autoridade e criando um canal recorrente de aquisição.', foot: 'Previsão · Q1 2026' },
+  { num: 'P-02', status: 'planned', statusLabel: 'Planejado', title: 'Newsletter automatizada', desc: 'Entrega automática de novos conteúdos por e-mail. Construção de audiência própria, sem dependência exclusiva de algoritmos, com foco em retenção e relacionamento.', foot: 'Previsão · Q1 2026' },
+  { num: 'P-03', status: 'planned', statusLabel: 'Planejado', title: 'Resumos com IA', desc: 'Síntese inteligente para cada artigo, facilitando leitura rápida, consumo técnico e navegação eficiente — sem perder profundidade no conteúdo completo.', foot: 'Previsão · Q1 2026' },
+  { num: 'P-04', status: 'planned', statusLabel: 'Planejado', title: 'Monetização com AdSense', desc: 'Integração estratégica de anúncios via Google AdSense com posicionamento pensado para preservar experiência e gerar receita complementar.', foot: 'Previsão · Q2 2026' },
+  { num: 'P-05', status: 'planned', statusLabel: 'Planejado', title: 'Versão em inglês', desc: 'Expansão internacional com tradução assistida por IA e revisão humana. Conteúdo técnico acessível para novas audiências e mercados globais.', foot: 'Previsão · Q2 2026' },
+  { num: 'F-01', status: 'future', statusLabel: 'Futuro', title: 'Ebook proprietário', desc: 'Material estruturado com os aprendizados e frameworks do projeto. Primeiro produto editorial da plataforma e base para novos cursos e materiais premium.', foot: 'Sem data definida' },
 ];
 
 interface PageProps {
@@ -180,7 +180,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           <div className="op-left">
             <div className="op-ey2">O que é isso</div>
             <h2>Um blog que documenta a própria construção</h2>
-            <p>A premissa é simples: construir uma plataforma editorial completa na AWS, usando IA em cada etapa — e publicar tudo. Cada artigo é um registro real de uma decisão tomada, não um tutorial polido a posteriori.</p>
+            <p>A premissa é simples: construir uma plataforma editorial completa na AWS, usando IA em cada etapa e publicar tudo. Cada artigo é um registro real de uma decisão tomada, não um tutorial polido a posteriori.</p>
             <p>Nada de <strong>resultados sem o processo</strong>. Os erros ficam. Os custos aparecem. As trocas de stack acontecem ao vivo.</p>
           </div>
           <div className="op-right">
