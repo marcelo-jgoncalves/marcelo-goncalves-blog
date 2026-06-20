@@ -16,6 +16,7 @@ interface PostCardProps {
     categoria?: {
       nome_exibicao: string;
     };
+    subcategoria_nome?: string;
     data_publicacao?: string;
     imagem_destaque_url?: string;
     imagem_destaque_alt_text?: string;
@@ -56,7 +57,9 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
       </div>
 
       <div className="pc-body">
-        {categoriaNome && <span className="pc-cat">{categoriaNome}</span>}
+        {(post.subcategoria_nome || categoriaNome) && (
+          <span className="pc-cat">{post.subcategoria_nome || categoriaNome}</span>
+        )}
         <span className="pc-title" title={post.titulo}>{post.titulo}</span>
         {post.resumo && <span className="pc-excerpt">{post.resumo}</span>}
       </div>

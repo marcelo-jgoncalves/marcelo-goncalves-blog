@@ -45,6 +45,7 @@ interface HomePost {
   categoria?: {
     nome_exibicao: string;
   };
+  subcategoria_nome?: string;
   data_publicacao?: string;
   tempo_leitura_min?: number;
   imagem_destaque_url?: string;

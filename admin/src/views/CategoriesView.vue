@@ -3,7 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { categoriesApi } from '../services/api'
 import { slugify } from '../utils/slug'
 import { MACRO_AREAS } from '../utils/taxonomy'
-import type { Categoria } from '../types'
+import type { Categoria, Subcategoria } from '../types'
 
 // --- Estado ---
 const categories = ref<Categoria[]>([])
@@ -23,9 +23,26 @@ const defaultForm: Categoria = {
   nome: '',
   categoria_slug: '',
   descricao: '',
-  macro_areas: []
+  macro_areas: [],
+  subcategorias: []
 }
 const form = ref<Categoria>({ ...defaultForm })
+const novaSubcategoria = ref('')
+
+function addSubcategoria() {
+  const nome = novaSubcategoria.value.trim()
+  if (!nome) return
+  const slug = slugify(nome)
+  if (!form.value.subcategorias) form.value.subcategorias = []
+  if (form.value.subcategorias.some((s) => s.slug === slug)) return
+  form.value.subcategorias.push({ slug, nome })
+  novaSubcategoria.value = ''
+}
+
+function removeSubcategoria(slug: string) {
+  if (!form.value.subcategorias) return
+  form.value.subcategorias = form.value.subcategorias.filter((s) => s.slug !== slug)
+}
 
 // --- Lógica de Inicialização (Fetch da API) ---
 const fetchCategories = async () => {
@@ -59,6 +76,7 @@ const openModal = (category?: Categoria) => {
     editingSlug.value = category.categoria_slug
     form.value = { ...defaultForm, ...JSON.parse(JSON.stringify(category)) }
     if (!form.value.macro_areas) form.value.macro_areas = []
+    if (!form.value.subcategorias) form.value.subcategorias = []
   } else {
     editingSlug.value = null
     form.value = { ...defaultForm }
@@ -227,6 +245,29 @@ const handleDelete = async (slug: string) => {
                 >
                 {{ area.label }}
               </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Subcategorias <small>(lista fixa exibida nos cards)</small></label>
+            <div class="subcat-list">
+              <span v-for="sub in form.subcategorias" :key="sub.slug" class="subcat-pill">
+                {{ sub.nome }}
+                <button type="button" @click="removeSubcategoria(sub.slug)" :disabled="isSaving" aria-label="Remover">
+                  <i class="fas fa-times"></i>
+                </button>
+              </span>
+              <span v-if="!form.subcategorias?.length" class="subcat-empty">Nenhuma subcategoria ainda.</span>
+            </div>
+            <div class="subcat-input-row">
+              <input
+                v-model="novaSubcategoria"
+                type="text"
+                placeholder="Ex: Kubernetes"
+                :disabled="isSaving"
+                @keydown.enter.prevent="addSubcategoria"
+              >
+              <button type="button" class="btn-secondary" @click="addSubcategoria" :disabled="isSaving">Adicionar</button>
             </div>
           </div>
         </div>
@@ -407,6 +448,27 @@ tr:hover { background-color: var(--slate-50); }
   background: var(--accent-light); border-color: var(--accent); color: var(--accent);
 }
 .checkbox-pill input { width: auto; margin: 0; }
+
+.subcat-list { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-1); }
+.subcat-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 6px 6px 12px; border: 1px solid var(--border-color); border-radius: 999px;
+  font-size: var(--text-sm); font-weight: 500; color: var(--dark-700); background: var(--slate-50);
+}
+.subcat-pill button {
+  background: none; border: none; cursor: pointer; color: var(--slate-400);
+  width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs);
+}
+.subcat-pill button:hover { background: var(--slate-100); color: #e53e3e; }
+.subcat-empty { font-size: var(--text-sm); color: var(--slate-400); }
+.subcat-input-row { display: flex; gap: var(--space-1); }
+.subcat-input-row input {
+  flex: 1; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px;
+  font-size: var(--text-base); outline: none; box-sizing: border-box; font-family: inherit;
+}
+.subcat-input-row input:focus { border-color: var(--accent); }
+.subcat-input-row .btn-secondary { flex: none; }
 
 .input-group { display: flex; align-items: center; }
 .input-addon {

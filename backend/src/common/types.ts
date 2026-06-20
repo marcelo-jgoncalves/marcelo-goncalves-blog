@@ -9,6 +9,8 @@ export interface Post {
   imagem_destaque_alt_text: string; // Acessibilidade (Blueprint v1.7)
   imagem_lqip_base64?: string;     // data URI inline para blur placeholder (LQIP)
   categoria_slug: string;
+  subcategoria_slug?: string; // sub-taxonomia fixa, definida nas subcategorias da categoria
+  subcategoria_nome?: string; // denormalizado no save — evita join em tempo de leitura
   autor_id: string;
   status: 'Publicado' | 'Rascunho' | 'Programado';
   data_publicacao: string; // ISO 8601
@@ -34,9 +36,15 @@ export interface Autor {
   instagram_url?: string;
 }
 
+export interface Subcategoria {
+  slug: string;
+  nome: string;
+}
+
 export interface Categoria {
   categoria_slug: string;
   nome: string;
   descricao?: string;
   macro_areas?: string[]; // agrupamento usado nos filtros de Artigos: ia | devops | cloud | eng | bastidores
+  subcategorias?: Subcategoria[]; // sub-taxonomia fixa, definida no admin por categoria
 }

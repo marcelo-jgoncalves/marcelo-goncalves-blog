@@ -10,6 +10,7 @@ import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
 import { slugify } from '../utils/slug'
 import { CARD_VARIANTS } from '../utils/taxonomy'
+import type { Categoria } from '../types'
 
 const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
   'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr']
@@ -33,6 +34,8 @@ const form = ref({
   conteudo_html: '', 
   resumo: '',
   categoria_slug: 'tutoriais-aws',
+  subcategoria_slug: '',
+  subcategoria_nome: '',
   imagem_destaque_url: '',
   imagem_destaque_alt_text: '',
   meta_titulo_seo: '',
@@ -101,7 +104,22 @@ const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'engenharia-de-software', nome: 'Engenharia de Software' },
   { categoria_slug: 'noticias-e-mercado', nome: 'Notícias e Mercado' },
 ]
-const categorias = ref(FALLBACK_CATEGORIAS)
+const categorias = ref<Categoria[]>(FALLBACK_CATEGORIAS)
+
+const availableSubcategorias = computed(() =>
+  categorias.value.find((c) => c.categoria_slug === form.value.categoria_slug)?.subcategorias || []
+)
+
+watch(() => form.value.categoria_slug, () => {
+  if (!availableSubcategorias.value.some((s) => s.slug === form.value.subcategoria_slug)) {
+    form.value.subcategoria_slug = ''
+  }
+})
+
+watch(() => form.value.subcategoria_slug, (slug) => {
+  const found = availableSubcategorias.value.find((s) => s.slug === slug)
+  form.value.subcategoria_nome = found?.nome || ''
+})
 
 function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
   toast.value = { message, type }
@@ -158,7 +176,9 @@ onMounted(async () => {
         e_popular: !!data.e_popular,
         e_projeto: !!data.e_projeto,
         topico: data.topico || '',
-        variante_card: data.variante_card || ''
+        variante_card: data.variante_card || '',
+        subcategoria_slug: data.subcategoria_slug || '',
+        subcategoria_nome: data.subcategoria_nome || ''
       }
     } catch (error) {
       showToast('Erro ao carregar post', 'error')
@@ -364,8 +384,17 @@ function generateSlug() {
               >{{ cat.nome }}</option>
             </select>
           </div>
+          <div class="form-group" v-if="availableSubcategorias.length">
+            <label>Subcategoria <small>(eyebrow do card)</small></label>
+            <select v-model="form.subcategoria_slug">
+              <option value="">Nenhuma</option>
+              <option v-for="sub in availableSubcategorias" :key="sub.slug" :value="sub.slug">
+                {{ sub.nome }}
+              </option>
+            </select>
+          </div>
           <div class="form-group">
-            <label>Tópico (eyebrow do card)</label>
+            <label>Tópico <small>(não exibido no blog ainda)</small></label>
             <input v-model="form.topico" type="text" placeholder="Ex: Bastidores, Monetização..." />
           </div>
           <div class="form-group">

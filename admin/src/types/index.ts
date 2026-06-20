@@ -6,6 +6,8 @@ export interface Post {
   resumo: string
   conteudo_html: string
   categoria_slug: string
+  subcategoria_slug?: string
+  subcategoria_nome?: string
   status: PostStatus
   data_publicacao: string
   data_atualizacao?: string
@@ -21,11 +23,17 @@ export interface Post {
   variante_card?: string
 }
 
+export interface Subcategoria {
+  slug: string
+  nome: string
+}
+
 export interface Categoria {
   categoria_slug: string
   nome: string
   descricao?: string
   macro_areas?: string[]
+  subcategorias?: Subcategoria[]
 }
 
 export interface Autor {
