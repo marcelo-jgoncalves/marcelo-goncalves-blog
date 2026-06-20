@@ -128,7 +128,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         }
       >
         <div className="op-hero-actions">
-          <a className="op-btn-clay-hero" href="#timeline">Ver a jornada <span className="op-arrow">→</span></a>
           <span className="op-status-badge"><span className="op-status-dot"></span>Em produção · Fase 1</span>
         </div>
       </PageHero>

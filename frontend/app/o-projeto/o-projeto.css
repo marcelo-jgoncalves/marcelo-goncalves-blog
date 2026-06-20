@@ -48,29 +48,6 @@
   flex-wrap: wrap;
 }
 
-.op-btn-clay-hero {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--clay);
-  color: #fff;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 14px 26px;
-  border-radius: 12px;
-  box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
-  transition: background .2s, transform .2s;
-}
-
-.op-btn-clay-hero:hover {
-  background: var(--clay-hover);
-  transform: translateY(-2px);
-}
-
-.op-arrow {
-  font-family: var(--mono);
-}
-
 .op-status-badge {
   display: inline-flex;
   align-items: center;
@@ -905,14 +882,6 @@
 
   .op-hero-title-nowrap {
     white-space: normal;
-  }
-
-  .op-hero-actions {
-    justify-content: center;
-  }
-
-  .op-btn-clay-hero {
-    display: none;
   }
 
   .op-hero-stat {

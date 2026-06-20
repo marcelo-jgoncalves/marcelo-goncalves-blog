@@ -72,10 +72,10 @@
   transform: scaleX(-1); object-fit: cover; object-position: center;
 }
 .sobre-pf-tag {
-  position: absolute; left: 14px; bottom: 14px; z-index: 2; display: flex; align-items: center; gap: 8px;
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 2; display: flex; align-items: center; gap: 8px;
   background: rgba(8,50,61,.78); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.16);
   border-radius: 999px; padding: 8px 14px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
-  text-transform: uppercase; color: #fff;
+  text-transform: uppercase; color: #fff; white-space: nowrap;
 }
 .sobre-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 3px rgba(63,107,71,.3); }
 
@@ -199,6 +199,7 @@
 }
 .sobre-dif-seal .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--petrol-soft); }
 .sobre-dif-seal .v { font-weight: 700; font-size: 15px; color: #fff; letter-spacing: -.01em; line-height: 1.35; }
+.sobre-dif-seal-plus { color: var(--clay); margin: 0 6px; }
 
 /* coluna direita */
 .sobre-dif-quotemark { font-family: Georgia, serif; font-size: 90px; line-height: .6; color: var(--clay); opacity: .85; margin-bottom: -6px; display: block; }
@@ -226,7 +227,9 @@
 @media (max-width: 880px) {
   .sobre-dif-grid { grid-template-columns: 1fr; gap: 40px; }
   .sobre-dif-langs { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .sobre-dif-seal { display: flex; width: 100%; }
+  .sobre-dif-seal { display: flex; width: 100%; align-items: center; text-align: center; }
+  .sobre-dif-seal .v { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .sobre-dif-seal-plus { margin: 0; }
 }
 
 /* ── CREDENCIAIS (certs) ── */
@@ -325,7 +328,6 @@
   .sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: 44px; padding-top: 64px; }
   .sobre-hero .page-hero-right { flex-direction: column; justify-content: flex-start; align-items: center; gap: 36px; }
   .sobre-photo-frame { max-width: 340px; }
-  .sobre-pf-tag { left: 50%; transform: translateX(-50%); }
   .sobre-hero-actions { justify-content: center; }
   .sobre-hero-socials-desktop { display: none; }
   .sobre-hero-socials-mobile { display: flex; }

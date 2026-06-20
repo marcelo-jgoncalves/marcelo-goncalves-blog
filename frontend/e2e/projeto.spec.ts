@@ -5,13 +5,9 @@ test.describe('página /o-projeto', () => {
     await page.goto('/o-projeto', { waitUntil: 'networkidle' });
   });
 
-  test('hero existe com título e ações principais', async ({ page }) => {
+  test('hero existe com título e status', async ({ page }) => {
     await expect(page.locator('.op-hero')).toBeVisible();
-    await expect(page.locator('.op-hero h1')).toContainText('Construindo este blog em público');
-
-    const ctaTimeline = page.locator('.op-btn-clay-hero');
-    await expect(ctaTimeline).toHaveAttribute('href', '#timeline');
-
+    await expect(page.locator('.op-hero h1')).toContainText('Mais que um blog');
     await expect(page.locator('.op-status-badge')).toContainText('Em produção');
   });
 
@@ -53,12 +49,6 @@ test.describe('página /o-projeto', () => {
   test('CTA assessoria linka para /servicos', async ({ page }) => {
     await expect(page.locator('.op-cta-adv')).toBeVisible();
     await expect(page.locator('.op-btn-adv')).toHaveAttribute('href', '/servicos');
-  });
-
-  test('navegar para #timeline via "Ver a jornada"', async ({ page }) => {
-    await page.locator('.op-btn-clay-hero').click();
-    await expect(page).toHaveURL(/#timeline$/);
-    await expect(page.locator('#timeline')).toBeInViewport();
   });
 
   test('clicar em "Ler artigo" navega para /post/ quando há posts', async ({ page }) => {
