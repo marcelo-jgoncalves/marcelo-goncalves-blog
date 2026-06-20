@@ -199,7 +199,7 @@ export default async function PostPage({ params }: Props) {
 
           <h1 className="post-hero-title">{post.titulo}</h1>
 
-          {post.resumo && <p className="post-hero-sub">{post.resumo}</p>}
+          {(post.subtitulo || post.resumo) && <p className="post-hero-sub">{post.subtitulo || post.resumo}</p>}
 
           <div className="post-byline">
             <div className="post-avatar" aria-hidden="true">MG</div>

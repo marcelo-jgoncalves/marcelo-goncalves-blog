@@ -31,8 +31,9 @@ const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 const form = ref({
   titulo: '',
   slug: '',
-  conteudo_html: '', 
+  conteudo_html: '',
   resumo: '',
+  subtitulo: '',
   categoria_slug: 'tutoriais-aws',
   subcategoria_slug: '',
   subcategoria_nome: '',
@@ -178,7 +179,8 @@ onMounted(async () => {
         topico: data.topico || '',
         variante_card: data.variante_card || '',
         subcategoria_slug: data.subcategoria_slug || '',
-        subcategoria_nome: data.subcategoria_nome || ''
+        subcategoria_nome: data.subcategoria_nome || '',
+        subtitulo: data.subtitulo || ''
       }
     } catch (error) {
       showToast('Erro ao carregar post', 'error')
@@ -319,7 +321,12 @@ function generateSlug() {
           <label>Resumo</label>
           <textarea v-model="form.resumo" rows="3"></textarea>
         </div>
-        
+
+        <div class="form-group">
+          <label>Subtítulo <small>(exibido abaixo do título na página de postagem)</small></label>
+          <textarea v-model="form.subtitulo" rows="2"></textarea>
+        </div>
+
         <div class="seo-box">
           <h3>SEO & Meta Tags</h3>
           <div class="form-group">

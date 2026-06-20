@@ -5,6 +5,7 @@ export interface Post {
   titulo: string;
   conteudo_html: string;
   resumo: string;
+  subtitulo?: string; // exibido na hero da página de postagem, abaixo do título
   imagem_destaque_url: string;
   imagem_destaque_alt_text: string; // Acessibilidade (Blueprint v1.7)
   imagem_lqip_base64?: string;     // data URI inline para blur placeholder (LQIP)

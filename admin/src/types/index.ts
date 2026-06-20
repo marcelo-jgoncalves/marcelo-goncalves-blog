@@ -4,6 +4,7 @@ export interface Post {
   slug: string
   titulo: string
   resumo: string
+  subtitulo?: string
   conteudo_html: string
   categoria_slug: string
   subcategoria_slug?: string
