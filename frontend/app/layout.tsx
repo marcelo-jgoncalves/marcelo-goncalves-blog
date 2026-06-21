@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -103,8 +104,9 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         {/* Google Consent Mode v2 — deve rodar ANTES de qualquer script de ads */}
-        <script
+        <Script
           id="consent-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
           window.dataLayer = window.dataLayer || [];
