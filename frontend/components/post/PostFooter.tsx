@@ -5,19 +5,12 @@ export interface PostFooterProps {
     name: string;
     bio: string;
     avatarInitials: string;
-    profileUrl: string;
   };
   social?: {
     linkedin_url?: string;
     github_url?: string;
     instagram_url?: string;
   };
-}
-
-const AUTHOR_ROLE = 'Engenheiro Cloud Sênior & Arquiteto AWS';
-
-function stripHtmlTags(html: string): string {
-  return html.replace(/<[^>]*>/g, '');
 }
 
 export default function PostFooter({ author, social }: PostFooterProps) {
@@ -27,11 +20,8 @@ export default function PostFooter({ author, social }: PostFooterProps) {
     <div className={styles.authorbox} data-audit="post-authorbox">
       <div className={styles.av} aria-hidden="true">{author.avatarInitials}</div>
       <div className={styles.abBody}>
-        <div className={styles.abName}><b>{author.name}</b> é {AUTHOR_ROLE}</div>
-        <p>
-          {stripHtmlTags(author.bio)}{' '}
-          <a href={author.profileUrl} className={styles.abLink}>Veja o perfil completo →</a>
-        </p>
+        <b className={styles.abName}>{author.name}</b>{' '}
+        <span dangerouslySetInnerHTML={{ __html: author.bio }} />
       </div>
       {hasSocial && (
         <div className={styles.abSocial}>

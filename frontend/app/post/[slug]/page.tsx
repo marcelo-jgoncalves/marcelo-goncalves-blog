@@ -258,7 +258,6 @@ export default async function PostPage({ params }: Props) {
             name: autorNome,
             bio: autor?.bio || 'é Engenheiro Cloud especialista em AWS e DevOps.',
             avatarInitials: 'MG',
-            profileUrl: '/sobre',
           }}
           social={{
             linkedin_url: autor?.linkedin_url || AUTHOR_LINKEDIN_URL,
