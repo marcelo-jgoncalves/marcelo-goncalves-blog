@@ -13,10 +13,18 @@ const VALID_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'ima
 const MAX_SIZE_MB = 10
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
-async function handleUpload() {
+function openFilePicker() {
+  if (uploading.value) return
+  fileInput.value?.click()
+}
+
+async function handleFileChange() {
   const file = fileInput.value?.files?.[0]
   if (!file) return
+  await handleUpload(file)
+}
 
+async function handleUpload(file: File) {
   if (!VALID_TYPES.includes(file.type)) {
     error.value = `Tipo inválido: ${file.type || 'desconhecido'}. Use PNG, JPEG, WebP, HEIC ou HEIF.`
     return
@@ -44,6 +52,7 @@ async function handleUpload() {
     error.value = err.message || 'Erro no upload'
   } finally {
     uploading.value = false
+    if (fileInput.value) fileInput.value.value = ''
   }
 }
 </script>
@@ -58,17 +67,24 @@ async function handleUpload() {
       
       <div class="modal-body">
         <div class="form-group">
-          <label>Selecionar Arquivo</label>
-          <input type="file" ref="fileInput" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" :disabled="uploading">
+          <input
+            type="file"
+            ref="fileInput"
+            class="file-input-hidden"
+            accept="image/png, image/jpeg, image/webp, image/heic, image/heif"
+            :disabled="uploading"
+            @change="handleFileChange"
+          >
+          <p class="hint">Selecione PNG, JPEG, WebP, HEIC ou HEIF (máx. {{ MAX_SIZE_MB }} MB).</p>
         </div>
         <p v-if="error" class="error">{{ error }}</p>
       </div>
 
       <footer class="modal-footer">
         <button class="btn-secondary" @click="$emit('close')" :disabled="uploading">Cancelar</button>
-        <button class="btn-primary" @click="handleUpload" :disabled="uploading">
+        <button class="btn-primary" @click="openFilePicker" :disabled="uploading">
           <span v-if="uploading"><i class="fas fa-spinner fa-spin"></i> Enviando...</span>
-          <span v-else>Fazer Upload</span>
+          <span v-else>Selecionar e Enviar</span>
         </button>
       </footer>
     </div>
@@ -86,6 +102,8 @@ async function handleUpload() {
 .modal-header h2 { font-size: var(--text-xl); color: var(--dark-900); margin: 0; }
 .close-btn { background: none; border: none; font-size: var(--text-xl); cursor: pointer; color: var(--slate-400); }
 .form-group { margin-bottom: var(--space-2); }
+.file-input-hidden { display: none; }
+.hint { color: var(--slate-400); font-size: var(--text-sm); margin: 0; }
 .modal-footer { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-3); }
 .error { color: #c0392b; font-size: var(--text-sm); }
 
