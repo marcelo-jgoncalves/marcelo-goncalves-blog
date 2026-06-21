@@ -6,6 +6,7 @@ import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
@@ -177,17 +178,13 @@ export default async function PostPage({ params }: Props) {
 
       <section className="post-hero" data-audit="post-hero">
         <div className="post-hero-in" data-audit="post-hero-in">
-          <nav className="post-crumbs" aria-label="breadcrumb">
-            <Link href="/">Home</Link>
-            <span className="post-crumb-sep">/</span>
-            <Link href="/artigos">Artigos</Link>
-            {categorySlug && (
-              <>
-                <span className="post-crumb-sep">/</span>
-                <Link href={`/categoria/${categorySlug}`}>{categoryLabel}</Link>
-              </>
-            )}
-          </nav>
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Artigos', href: '/artigos' },
+              ...(categorySlug ? [{ label: categoryLabel, href: `/categoria/${categorySlug}` }] : []),
+            ]}
+          />
 
           {categorySlug ? (
             <Link href={`/categoria/${categorySlug}`} className="post-cat-pill">

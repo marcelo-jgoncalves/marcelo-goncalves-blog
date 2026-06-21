@@ -41,21 +41,6 @@
   align-items: center;
 }
 
-.post-crumbs {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--steel);
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 26px;
-}
-
-.post-crumbs a:hover { color: var(--petrol); }
-.post-crumb-sep { opacity: .5; }
-
 .post-cat-pill {
   display: inline-flex;
   align-items: center;
