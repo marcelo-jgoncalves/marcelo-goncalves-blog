@@ -8,6 +8,7 @@ import { SITE_URL, SITE_NAME, AUTHOR_TWITTER, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import PostFooter from '@/components/post/PostFooter';
 import ShareRail from '@/components/post/ShareRail';
@@ -273,58 +274,7 @@ export default async function PostPage({ params }: Props) {
 
       <RelatedPostsSection />
 
-      <section className="post-cta-adv" id="assessoria" data-audit="post-cta-adv">
-        <div className="post-cta-adv-in" data-audit="post-cta-adv-in">
-          <div>
-            <div className="post-cta-ey">Assessoria</div>
-            <h2>Precisa de ajuda para <em>construir</em> ou escalar na nuvem?</h2>
-            <p className="post-cta-desc">
-              Levo a mesma engenharia que você lê aqui para o seu projeto — da arquitetura ao deploy, com IA acelerando cada etapa.
-            </p>
-            <ul className="post-cta-points">
-              <li>
-                <span className="ck">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span>Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>
-              </li>
-              <li>
-                <span className="ck">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span>Automação e <b>CI/CD</b> de ponta a ponta em código</span>
-              </li>
-              <li>
-                <span className="ck">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span>Adoção de <b>IA</b> com foco em resultado, não em hype</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="post-adv-card" data-audit="post-adv-card">
-            <div className="post-adv-tagline">
-              <span className="dot" aria-hidden="true" />
-              Disponível para novos projetos
-            </div>
-            <h3>Vamos conversar sobre o seu</h3>
-            <p className="post-adv-sub">
-              Diagnóstico inicial gratuito. Conte o desafio e eu retorno com um plano objetivo.
-            </p>
-            <div className="post-adv-svc">
-              <span>Cloud · AWS</span>
-              <span>DevOps</span>
-              <span>IA aplicada</span>
-              <span>Mentoria</span>
-            </div>
-            <a className="post-adv-btn" href="/servicos">
-              Conhecer a assessoria <span className="arrow">→</span>
-            </a>
-            <div className="post-adv-reassure">Resposta em até 24h · sem compromisso</div>
-          </div>
-        </div>
-      </section>
+      <CtaAssessoria />
     </article>
   );
 }
