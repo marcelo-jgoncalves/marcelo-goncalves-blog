@@ -47,11 +47,9 @@ export default function PostFooter({ author, social }: PostFooterProps) {
                 <i className="fab fa-github" aria-hidden="true" />
               </a>
             )}
-            {social?.instagram_url && (
-              <a href={social.instagram_url} aria-label="Instagram" target="_blank" rel="noopener noreferrer author">
-                <i className="fab fa-instagram" aria-hidden="true" />
-              </a>
-            )}
+            <a href={social?.instagram_url || '#'} aria-label="Instagram" target="_blank" rel="noopener noreferrer author">
+              <i className="fab fa-instagram" aria-hidden="true" />
+            </a>
           </div>
         </div>
       )}
