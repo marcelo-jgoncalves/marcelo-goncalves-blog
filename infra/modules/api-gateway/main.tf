@@ -920,8 +920,12 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.admin_categorias_slug_any,
       aws_api_gateway_integration.admin_categorias_slug_integration,
       aws_api_gateway_method.admin_categorias_slug_options,
-      aws_api_gateway_integration.admin_categorias_slug_options_integration
-
+      aws_api_gateway_integration.admin_categorias_slug_options_integration,
+      # Gateway Responses (CORS em erros do autorizador Cognito)
+      aws_api_gateway_gateway_response.unauthorized_cors,
+      aws_api_gateway_gateway_response.access_denied_cors,
+      aws_api_gateway_gateway_response.default_4xx_cors,
+      aws_api_gateway_gateway_response.default_5xx_cors,
     ]))
   }
 
