@@ -258,6 +258,21 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
+  # Sem isso, um 403/404 (ex: variante do imageProcessor ainda não gerada)
+  # fica cacheado no edge pelo TTL padrão da AWS (300s) — como media/* ignora
+  # query string, o cache-buster (?retry=) do admin não consegue contornar
+  # isso, e o editor esgota suas 5 tentativas (10s) antes do cache expirar,
+  # mostrando "Imagem indisponível" mesmo com a variante já existindo no S3.
+  custom_error_response {
+    error_code            = 403
+    error_caching_min_ttl = 1
+  }
+
+  custom_error_response {
+    error_code            = 404
+    error_caching_min_ttl = 1
+  }
+
   dynamic "logging_config" {
     for_each = var.enable_cloudfront_logging ? [1] : []
     content {
