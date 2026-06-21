@@ -206,7 +206,6 @@ export default async function PostPage({ params }: Props) {
             <div className="post-avatar" aria-hidden="true">MG</div>
             <div className="post-byline-who">
               <div className="post-byline-name">{autorNome}</div>
-              <div className="post-byline-role">Cloud Engineer · AWS</div>
             </div>
             <span className="post-byline-dot" aria-hidden="true" />
             <span className="post-byline-meta">

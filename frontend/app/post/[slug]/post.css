@@ -126,14 +126,6 @@
   letter-spacing: -.01em;
 }
 
-.post-byline-role {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: .06em;
-  color: var(--steel);
-  margin-top: 2px;
-}
-
 .post-byline-dot {
   width: 4px;
   height: 4px;
@@ -152,7 +144,7 @@
   gap: 7px;
 }
 
-.post-byline-meta i { opacity: .6; font-size: 12px; }
+.post-byline-meta i { color: var(--clay); font-size: 12px; }
 
 /* ==========================================================================
    3. COVER
