@@ -170,6 +170,7 @@ jobs:
           echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"  >> $GITHUB_OUTPUT
           echo "cognito_client=$(terraform output -raw cognito_client_id)"   >> $GITHUB_OUTPUT
           echo "admin_url=$(terraform output -raw admin_url)"                >> $GITHUB_OUTPUT
+          echo "frontend_url=$(terraform output -raw frontend_url)"          >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
         with:
@@ -185,7 +186,7 @@ jobs:
           VITE_API_BASE_URL: ${{ steps.tf.outputs.api_url }}
           VITE_COGNITO_USER_POOL_ID: ${{ steps.tf.outputs.cognito_pool }}
           VITE_COGNITO_CLIENT_ID: ${{ steps.tf.outputs.cognito_client }}
-          VITE_ASSETS_URL: https://${{ steps.tf.outputs.frontend_bucket }}.s3.amazonaws.com
+          VITE_ASSETS_URL: ${{ steps.tf.outputs.frontend_url }}
         run: npm run build
 
       - name: Sync frontend static assets to S3
@@ -346,6 +347,7 @@ jobs:
           echo "cognito_pool=$(terraform output -raw cognito_user_pool_id)"  >> $GITHUB_OUTPUT
           echo "cognito_client=$(terraform output -raw cognito_client_id)"   >> $GITHUB_OUTPUT
           echo "admin_url=$(terraform output -raw admin_url)"                >> $GITHUB_OUTPUT
+          echo "frontend_url=$(terraform output -raw frontend_url)"          >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
         with:
@@ -361,7 +363,7 @@ jobs:
           VITE_API_BASE_URL: ${{ steps.tf.outputs.api_url }}
           VITE_COGNITO_USER_POOL_ID: ${{ steps.tf.outputs.cognito_pool }}
           VITE_COGNITO_CLIENT_ID: ${{ steps.tf.outputs.cognito_client }}
-          VITE_ASSETS_URL: https://${{ steps.tf.outputs.frontend_bucket }}.s3.amazonaws.com
+          VITE_ASSETS_URL: ${{ steps.tf.outputs.frontend_url }}
         run: npm run build
 
       - name: Sync frontend static assets to S3
