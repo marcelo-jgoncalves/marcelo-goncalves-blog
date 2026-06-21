@@ -922,10 +922,14 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_method.admin_categorias_slug_options,
       aws_api_gateway_integration.admin_categorias_slug_options_integration,
       # Gateway Responses (CORS em erros do autorizador Cognito)
-      aws_api_gateway_gateway_response.unauthorized_cors,
-      aws_api_gateway_gateway_response.access_denied_cors,
-      aws_api_gateway_gateway_response.default_4xx_cors,
-      aws_api_gateway_gateway_response.default_5xx_cors,
+      # Referencia só o .id (nao o objeto inteiro) — o provider AWS recalcula
+      # response_parameters durante o apply, e usar o objeto completo aqui
+      # causa "Provider produced inconsistent final plan" (hash do trigger
+      # muda entre plan e apply porque o proprio recurso esta sendo modificado).
+      aws_api_gateway_gateway_response.unauthorized_cors.id,
+      aws_api_gateway_gateway_response.access_denied_cors.id,
+      aws_api_gateway_gateway_response.default_4xx_cors.id,
+      aws_api_gateway_gateway_response.default_5xx_cors.id,
     ]))
   }
 
