@@ -12,9 +12,14 @@ import { slugify } from '../utils/slug'
 import { CARD_VARIANTS } from '../utils/taxonomy'
 import type { Categoria } from '../types'
 
+// div/span: wrapper dos nodes customizados do Tiptap (Callout, PullQuote,
+// ClosingFlourish, embed do YouTube) — sem eles o DOMPurify "desempacota"
+// esses nodes, descartando a div e deixando só o texto solto no HTML salvo.
 const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
-  'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr']
-const ALLOWED_ATTR = ['src','alt','href','title','class','target','rel','width','height']
+  'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr',
+  'div','span','iframe']
+const ALLOWED_ATTR = ['src','alt','href','title','class','target','rel','width','height',
+  'frameborder','allow','allowfullscreen','data-youtube-video']
 
 function sanitizeHtml(html: string): string {
   return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR })
