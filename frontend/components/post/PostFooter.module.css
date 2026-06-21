@@ -71,7 +71,7 @@
 .abSocial {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   align-items: flex-end;
   padding-left: 30px;
   border-left: 1px solid var(--line);
