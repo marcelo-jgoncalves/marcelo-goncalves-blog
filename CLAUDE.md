@@ -306,7 +306,9 @@ Gonçalves  → color: var(--accent)   — DM Sans 700
 
 - `tsconfig.test.json` separado no backend com `"types": ["jest"]`.
 - `npm audit --audit-level=high` roda em cada job de CI. Zero high/critical tolerado.
-- Admin: 11 moderate residuais em aws-amplify@6 — aceito como risco conhecido (fix exige downgrade breaking para v5).
+- Admin: 0 vulnerabilidades (resolvido via `npm audit fix` sem --force, incluindo `shell-quote` critical).
+- Backend: 19 moderate residuais (js-yaml via jest/istanbul, dev-only) — aceito como risco conhecido (fix exige downgrade breaking de ts-jest).
+- Frontend: 22 moderate residuais (esbuild/open-next, js-yaml/ts-jest, postcss/next) — aceito como risco conhecido (fix exigiria downgrade para next@9 ou open-next@0.0.1, inviável).
 
 ---
 
