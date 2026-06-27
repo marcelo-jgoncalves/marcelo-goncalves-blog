@@ -9,6 +9,7 @@ describe('logger', () => {
   beforeEach(() => {
     jest.resetModules();
     delete process.env.LOG_LEVEL;
+    delete process.env._X_AMZN_TRACE_ID;
     consoleSpy.log.mockClear();
     consoleSpy.error.mockClear();
   });
@@ -55,6 +56,25 @@ describe('logger', () => {
 
       const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
       expect(parsed.message).toBe('no_context');
+    });
+  });
+
+  describe('X-Ray trace ID correlation', () => {
+    it('extracts traceId from _X_AMZN_TRACE_ID when present', () => {
+      process.env._X_AMZN_TRACE_ID = 'Root=1-5e1b4151-5ac6c58fbe39d72f9b00f9bb;Parent=585b9a4a3b1d1c52;Sampled=1';
+      const logger = importLogger('DEBUG');
+      logger.info('event');
+
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      expect(parsed.traceId).toBe('1-5e1b4151-5ac6c58fbe39d72f9b00f9bb');
+    });
+
+    it('omits traceId when _X_AMZN_TRACE_ID is absent (local/test runs)', () => {
+      const logger = importLogger('DEBUG');
+      logger.info('event');
+
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      expect(parsed.traceId).toBeUndefined();
     });
   });
 
