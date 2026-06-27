@@ -1,5 +1,5 @@
 // backend/src/functions/mediaUpload/index.test.ts
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 
 jest.mock('@aws-sdk/client-s3', () => ({
@@ -29,7 +29,7 @@ function makeEvent(body: object | null, method = 'POST'): APIGatewayProxyEvent {
     queryStringParameters: null,
     multiValueQueryStringParameters: null,
     stageVariables: null,
-    requestContext: {} as any,
+    requestContext: {} as APIGatewayEventRequestContext,
     resource: '',
   };
 }

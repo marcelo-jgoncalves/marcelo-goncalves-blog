@@ -49,8 +49,11 @@ describe('imageProcessor', () => {
     process.env.DESTINATION_BUCKET = 'assets-bucket';
     delete process.env.POSTS_TABLE;
 
-    const fakeStream = {
-      on: jest.fn().mockImplementation(function (this: any, event: string, cb: any) {
+    interface FakeStream {
+      on: (event: string, cb: (chunk?: Buffer) => void) => FakeStream;
+    }
+    const fakeStream: FakeStream = {
+      on: jest.fn().mockImplementation(function (this: FakeStream, event: string, cb: (chunk?: Buffer) => void) {
         if (event === 'data') cb(Buffer.from('fake-image-data'));
         if (event === 'end')  cb();
         return this;

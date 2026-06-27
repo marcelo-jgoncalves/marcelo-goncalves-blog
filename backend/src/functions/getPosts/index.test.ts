@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
 
@@ -34,7 +34,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     path: '/posts',
     pathParameters: null,
     queryStringParameters: null,
-    requestContext: {} as any,
+    requestContext: {} as APIGatewayEventRequestContext,
     resource: '/posts',
     stageVariables: null,
     ...overrides,

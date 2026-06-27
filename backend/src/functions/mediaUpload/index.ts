@@ -60,8 +60,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     logger.info("presigned_url_generated", { requestId, basePath });
     return { statusCode: 200, body: JSON.stringify({ uploadURL, basePath }), headers };
 
-  } catch (error: any) {
-    logger.error("media_upload_error", { requestId, error: error.message });
-    return { statusCode: 500, body: JSON.stringify({ message: error.message }), headers };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error("media_upload_error", { requestId, error: message });
+    return { statusCode: 500, body: JSON.stringify({ message }), headers };
   }
 };

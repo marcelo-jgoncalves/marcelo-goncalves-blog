@@ -20,6 +20,10 @@ describe('logger', () => {
 
   function importLogger(level?: string) {
     if (level) process.env.LOG_LEVEL = level;
+    // require() (não import) é necessário aqui: precisa re-executar o
+    // módulo a cada chamada após jest.resetModules(), para que o logger
+    // releia LOG_LEVEL do zero a cada teste.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require('./logger').logger;
   }
 

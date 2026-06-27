@@ -7,7 +7,7 @@ import { logger } from "../../common/logger";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
-export const handler = async (event: unknown): Promise<void> => {
+export const handler = async (_event: unknown): Promise<void> => {
   const now = new Date().toISOString();
   logger.info("scheduler_run_start", { now });
 
@@ -29,8 +29,9 @@ export const handler = async (event: unknown): Promise<void> => {
     const failed = results.filter((r) => r.status === "rejected").length;
 
     logger.info("scheduler_run_complete", { published, failed, now });
-  } catch (error: any) {
-    logger.error("scheduler_run_error", { error: error.message, now });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error("scheduler_run_error", { error: message, now });
     throw error;
   }
 };

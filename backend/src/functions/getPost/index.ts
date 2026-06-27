@@ -35,8 +35,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     logger.info("post_fetched", { requestId, slug });
     return { statusCode: 200, body: JSON.stringify({ post: result.Item }), headers };
 
-  } catch (error: any) {
-    logger.error("get_post_error", { requestId, slug, error: error.message });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error("get_post_error", { requestId, slug, error: message });
     return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error" }), headers };
   }
 };

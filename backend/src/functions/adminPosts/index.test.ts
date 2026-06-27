@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
 
@@ -34,7 +34,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     path: '/admin/posts',
     pathParameters: null,
     queryStringParameters: null,
-    requestContext: {} as any,
+    requestContext: {} as APIGatewayEventRequestContext,
     resource: '/admin/posts',
     stageVariables: null,
     ...overrides,
@@ -97,8 +97,8 @@ describe('adminPosts handler', () => {
       mockSend.mockResolvedValue({ Items: [] });
       await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
 
-      const calls = mockSend.mock.calls;
-      const statuses = calls.map((c: any[]) => c[0].input.ExpressionAttributeValues[':status']);
+      const calls = mockSend.mock.calls as Array<[{ input: { ExpressionAttributeValues: Record<string, string> } }]>;
+      const statuses = calls.map((c) => c[0].input.ExpressionAttributeValues[':status']);
       expect(statuses).toEqual(['Publicado', 'Rascunho', 'Programado']);
     });
 
@@ -115,7 +115,7 @@ describe('adminPosts handler', () => {
       expect(mockSend).toHaveBeenCalledTimes(3);
       // e o resultado combina itens das 3, mesmo com Rascunho vazio
       expect(body.count).toBe(2);
-      expect(body.items.map((i: any) => i.slug)).toEqual(expect.arrayContaining(['a', 'c']));
+      expect(body.items.map((i: { slug: string }) => i.slug)).toEqual(expect.arrayContaining(['a', 'c']));
     });
 
     it('usa ProjectionExpression para retornar apenas campos necessários', async () => {

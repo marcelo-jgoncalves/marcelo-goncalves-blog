@@ -90,8 +90,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
     return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
-  } catch (error: any) {
-    logger.error("admin_authors_error", { requestId, httpMethod, authorId, error: error.message });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error("admin_authors_error", { requestId, httpMethod, authorId, error: message });
     return { statusCode: 500, headers, body: JSON.stringify({ error: "Internal Server Error" }) };
   }
 };

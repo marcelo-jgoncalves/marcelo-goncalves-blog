@@ -1,4 +1,4 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyHandler, APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
 import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
@@ -35,8 +35,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     }
     return await getAllPosts(queryStringParameters, requestId);
 
-  } catch (error: any) {
-    logger.error("get_posts_error", { requestId, resource, error: error.message });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error("get_posts_error", { requestId, resource, error: message });
     return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error" }), headers };
   }
 };
@@ -49,7 +50,7 @@ function toTitleCase(str: string) {
 }
 
 // Lógica Específica para "O Projeto"
-async function getProjectPosts(queryParams: any, requestId?: string) {
+async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 8;
   const nextToken = queryParams?.nextToken;
 
@@ -89,7 +90,7 @@ async function getProjectPosts(queryParams: any, requestId?: string) {
   };
 }
 
-async function searchPosts(term: string, queryParams: any, requestId?: string) {
+async function searchPosts(term: string, queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   if (!term || term.trim() === "") {
     return { statusCode: 200, body: JSON.stringify({ posts: [], termo_busca: term }), headers };
   }
@@ -126,7 +127,7 @@ async function searchPosts(term: string, queryParams: any, requestId?: string) {
   return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
 }
 
-async function getPopularPosts(queryParams: any, requestId?: string) {
+async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
 
   const command = new QueryCommand({
@@ -149,7 +150,7 @@ async function getPopularPosts(queryParams: any, requestId?: string) {
   };
 }
 
-async function getRecentPosts(queryParams: any, requestId?: string) {
+async function getRecentPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
   const command = new QueryCommand({
     TableName: TABLE_NAME,
@@ -165,7 +166,7 @@ async function getRecentPosts(queryParams: any, requestId?: string) {
   return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
 }
 
-async function getAllPosts(queryParams: any, requestId?: string) {
+async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
@@ -205,7 +206,7 @@ async function getAllPosts(queryParams: any, requestId?: string) {
   };
 }
 
-async function getPostsByCategory(categorySlug: string, queryParams: any, requestId?: string) {
+async function getPostsByCategory(categorySlug: string, queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
   const nextToken = queryParams?.nextToken;
 
