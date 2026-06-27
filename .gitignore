@@ -10,6 +10,11 @@ yarn-error.log*
 # --- NODE.JS (Dependências) ---
 node_modules/
 */node_modules/
+# Exceção: layout exigido pelo zip do CloudWatch Synthetics canary
+# (nodejs/node_modules/<handler>.js é estrutura obrigatória da AWS, não
+# uma pasta de dependências npm de verdade).
+!infra/modules/observability/canary-src/nodejs/node_modules/
+!infra/modules/observability/canary-src/nodejs/node_modules/**
 
 # --- VARIÁVEIS DE AMBIENTE & SEGREDOS (CRÍTICO) ---
 .env
@@ -47,6 +52,8 @@ override.tf.json
 # Ignora os zips gerados que vão para o S3/Lambda
 infra/builds/*.zip
 infra/builds/*.js
+# Zip gerado por data.archive_file do canary Synthetics (terraform plan/apply)
+infra/modules/observability/canary-src.zip
 # Ignora a pasta de transpilacão temporária do esbuild
 backend/dist/
 

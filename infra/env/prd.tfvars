@@ -9,8 +9,9 @@ log_retention_days = 30
 # achado #1, docs/auditoria-engenharia/08-infraestrutura-como-codigo.md.
 enable_xray_tracing       = true
 enable_cloudwatch_alarms  = true
-alarm_email               = "" # preencher antes do primeiro deploy real de prod
-enable_cloudfront_logging = false  # setar true quando prod tiver tráfego real
+alarm_email               = "marcelo.mjgoncalves@gmail.com"
+enable_cloudfront_logging = false # setar true quando prod tiver tráfego real
+enable_synthetic_canary   = true  # monitoramento contínuo de disponibilidade, sempre ativo em prod
 
 # Lambda Provisioned Concurrency — 1 instância sempre aquecida elimina cold starts
-provisioned_concurrency  = 1
+provisioned_concurrency = 1

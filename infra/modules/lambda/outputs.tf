@@ -53,3 +53,7 @@ output "admin_categorias_invoke_arn" {
 output "admin_categorias_function_name" {
   value = aws_lambda_function.admin_categorias.function_name
 }
+
+output "post_scheduler_function_name" {
+  value = aws_lambda_function.post_scheduler.function_name
+}

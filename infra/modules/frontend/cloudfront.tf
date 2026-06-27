@@ -124,10 +124,10 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies { forward = "none" }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 31536000
-    compress    = true
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
   }
 
   ordered_cache_behavior {
@@ -140,10 +140,10 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies { forward = "none" }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 86400
-    compress    = true
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 86400
+    compress               = true
   }
 
   ordered_cache_behavior {
@@ -156,10 +156,10 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies { forward = "none" }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 31536000
-    compress    = true
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
   }
 
   ordered_cache_behavior {
@@ -172,10 +172,10 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies { forward = "none" }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 31536000
-    compress    = true
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
   }
 
   ordered_cache_behavior {
@@ -188,10 +188,10 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies { forward = "none" }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 31536000
-    compress    = true
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
   }
 
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
@@ -201,18 +201,18 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id = "Lambda-SSR"
 
     forwarded_values {
-      query_string = true  # Necessário para paginação (?nextToken) e busca (?q)
+      query_string = true # Necessário para paginação (?nextToken) e busca (?q)
       cookies {
-        forward = "none"   # Blog público sem auth — cookies não afetam o render
+        forward = "none" # Blog público sem auth — cookies não afetam o render
       }
       headers = ["Authorization"]
     }
 
     viewer_protocol_policy = "redirect-to-https"
-    compress    = true  # Gzip/Brotli — reduz payload HTML em ~70%
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 0     # ISR cache gerenciado pelo OpenNext; SSR caching requer Suspense streaming
+    compress               = true # Gzip/Brotli — reduz payload HTML em ~70%
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0 # ISR cache gerenciado pelo OpenNext; SSR caching requer Suspense streaming
   }
 
   # --- Comportamento Estático (_next/static/*): Manda para o S3 ---

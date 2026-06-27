@@ -9,3 +9,7 @@ output "uploads_bucket_arn" {
 output "uploads_bucket_regional_domain_name" {
   value = aws_s3_bucket.uploads.bucket_regional_domain_name
 }
+
+output "image_processor_function_name" {
+  value = aws_lambda_function.image_processor.function_name
+}

@@ -95,3 +95,28 @@ module "media" {
   posts_table_arn          = module.dynamodb.posts_table_arn
   posts_table_name         = module.dynamodb.posts_table_name
 }
+
+module "observability" {
+  source = "./modules/observability"
+
+  environment              = var.environment
+  project_name             = var.project_name
+  aws_region               = var.aws_region
+  enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
+  enable_synthetic_canary  = var.enable_synthetic_canary
+  alarm_email              = var.alarm_email
+  frontend_url             = "https://${module.frontend.cloudfront_url}"
+  api_gateway_name         = "${var.project_name}-${var.environment}-api"
+
+  lambda_function_names = {
+    getPost         = module.lambda.get_post_function_name
+    getAuthor       = module.lambda.get_author_function_name
+    getPosts        = module.lambda.get_posts_function_name
+    adminPosts      = module.lambda.admin_posts_function_name
+    adminAuthors    = module.lambda.admin_authors_function_name
+    adminCategorias = module.lambda.admin_categorias_function_name
+    mediaUpload     = module.lambda.media_upload_function_name
+    postScheduler   = module.lambda.post_scheduler_function_name
+    imageProcessor  = module.media.image_processor_function_name
+  }
+}

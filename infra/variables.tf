@@ -57,6 +57,12 @@ variable "alarm_email" {
   default     = ""
 }
 
+variable "enable_synthetic_canary" {
+  description = "Cria um CloudWatch Synthetics canary (heartbeat) verificando a URL pública a cada 15min. Custo recorrente (~US$3-4/mês) independente de tráfego/deploy — variável própria, separada de enable_cloudwatch_alarms, para ligar/desligar em dev sob demanda."
+  type        = bool
+  default     = false
+}
+
 variable "enable_cloudfront_logging" {
   description = "Habilita logs de acesso do CloudFront em bucket S3. Logs expiram conforme log_retention_days. Desativado em dev para reduzir custos."
   type        = bool
