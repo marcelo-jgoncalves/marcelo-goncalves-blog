@@ -21,3 +21,15 @@ variable "enable_xray_tracing" {
   type        = bool
   default     = false
 }
+
+variable "enable_cloudwatch_alarms" {
+  description = "Cria alarme CloudWatch de erro/throttle para a Lambda imageProcessor"
+  type        = bool
+  default     = false
+}
+
+variable "alarm_email" {
+  description = "E-mail para notificacoes SNS do alarme de imageProcessor"
+  type        = string
+  default     = ""
+}

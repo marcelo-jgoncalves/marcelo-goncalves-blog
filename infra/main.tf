@@ -84,12 +84,14 @@ module "admin" {
 module "media" {
   source = "./modules/media"
 
-  environment         = var.environment
-  project_name        = var.project_name
-  log_level           = var.log_level
-  log_retention_days  = var.log_retention_days
-  enable_xray_tracing = var.enable_xray_tracing
-  assets_bucket_name  = module.frontend.s3_bucket_name
-  posts_table_arn     = module.dynamodb.posts_table_arn
-  posts_table_name    = module.dynamodb.posts_table_name
+  environment              = var.environment
+  project_name             = var.project_name
+  log_level                = var.log_level
+  log_retention_days       = var.log_retention_days
+  enable_xray_tracing      = var.enable_xray_tracing
+  enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
+  alarm_email              = var.alarm_email
+  assets_bucket_name       = module.frontend.s3_bucket_name
+  posts_table_arn          = module.dynamodb.posts_table_arn
+  posts_table_name         = module.dynamodb.posts_table_name
 }
