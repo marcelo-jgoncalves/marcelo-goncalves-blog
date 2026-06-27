@@ -4,9 +4,14 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { postsApi } from '../services/api'
+import type { Post } from '../types'
+
+type PostListItem = Pick<Post, 'slug' | 'titulo' | 'status' | 'data_atualizacao' | 'autor_id'> & {
+  categoria_slug?: string
+}
 
 const router = useRouter()
-const posts = ref<any[]>([])
+const posts = ref<PostListItem[]>([])
 const loading = ref(true)
 const error = ref('')
 const search = ref('')
@@ -32,14 +37,14 @@ onMounted(async () => {
   try {
     const data = await postsApi.list()
     posts.value = data.items || []
-  } catch (err: any) {
-    error.value = err.message || 'Erro ao carregar posts'
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Erro ao carregar posts'
   } finally {
     loading.value = false
   }
 })
 
-function formatDate(isoString: string) {
+function formatDate(isoString: string | undefined) {
   if (!isoString) return '-'
   return new Date(isoString).toLocaleDateString('pt-BR')
 }
@@ -49,8 +54,8 @@ async function deletePost(slug: string, titulo: string) {
   try {
     await postsApi.delete(slug)
     posts.value = posts.value.filter(p => p.slug !== slug)
-  } catch (err: any) {
-    error.value = err.message || 'Erro ao excluir post'
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Erro ao excluir post'
   }
 }
 </script>

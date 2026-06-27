@@ -3,7 +3,7 @@
 // Declaração necessária para que o TS entenda arquivos .vue como componentes
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
   const component: DefineComponent<{}, {}, any>
   export default component
 }

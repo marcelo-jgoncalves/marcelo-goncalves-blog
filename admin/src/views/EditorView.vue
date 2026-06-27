@@ -10,7 +10,7 @@ import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
 import { slugify } from '../utils/slug'
 import { CARD_VARIANTS } from '../utils/taxonomy'
-import type { Categoria } from '../types'
+import type { Categoria, Post } from '../types'
 
 // div/span: wrapper dos nodes customizados do Tiptap (Callout, PullQuote,
 // ClosingFlourish, embed do YouTube) — sem eles o DOMPurify "desempacota"
@@ -29,11 +29,11 @@ const featureImageCacheBuster = ref(Date.now())
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
-const editorRef = ref<any>(null)
+const editorRef = ref<InstanceType<typeof RichTextEditor> | null>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 
-const form = ref({
+const form = ref<Post>({
   titulo: '',
   slug: '',
   conteudo_html: '',
@@ -187,7 +187,7 @@ onMounted(async () => {
         subcategoria_nome: data.subcategoria_nome || '',
         subtitulo: data.subtitulo || ''
       }
-    } catch (error) {
+    } catch {
       showToast('Erro ao carregar post', 'error')
       router.push('/')
     } finally {
@@ -214,8 +214,8 @@ async function save() {
     const payload = {
       ...form.value,
       conteudo_html: sanitizeHtml(form.value.conteudo_html),
-      e_popular: form.value.e_popular ? 1 : 0,
-      e_projeto: form.value.e_projeto ? 1 : 0
+      e_popular: (form.value.e_popular ? 1 : 0) as 0 | 1,
+      e_projeto: (form.value.e_projeto ? 1 : 0) as 0 | 1
     }
 
     if (isEditing.value) {
@@ -227,8 +227,9 @@ async function save() {
     captureInitialState()
     showToast('Post salvo com sucesso!')
     router.push('/')
-  } catch (error: any) {
-    showToast('Erro ao salvar: ' + error.message, 'error')
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Erro desconhecido'
+    showToast('Erro ao salvar: ' + message, 'error')
   } finally {
     saving.value = false
   }

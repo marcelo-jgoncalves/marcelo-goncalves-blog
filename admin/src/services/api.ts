@@ -1,6 +1,7 @@
 /**admin/src/services/api.ts */
 
 import { fetchAuthSession, signOut } from 'aws-amplify/auth'
+import type { Post, Autor } from '../types'
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -71,8 +72,8 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
 export const postsApi = {
   list: () => apiCall('/admin/posts'),
   get: (slug: string) => apiCall(`/admin/post/${slug}`),
-  create: (data: any) => apiCall('/admin/posts', { method: 'POST', body: JSON.stringify(data) }),
-  update: (slug: string, data: any) => apiCall(`/admin/post/${slug}`, { method: 'PUT', body: JSON.stringify(data) }),
+  create: (data: Partial<Post>) => apiCall('/admin/posts', { method: 'POST', body: JSON.stringify(data) }),
+  update: (slug: string, data: Partial<Post>) => apiCall(`/admin/post/${slug}`, { method: 'PUT', body: JSON.stringify(data) }),
   delete: (slug: string) => apiCall(`/admin/post/${slug}`, { method: 'DELETE' })
 }
 
@@ -95,7 +96,7 @@ export const mediaApi = {
 
 export const authorsApi = {
   get: (id: string) => apiCall(`/admin/autor/${id}`),
-  save: (data: any) => apiCall(`/admin/autor/${data.autor_id}`, {
+  save: (data: Partial<Autor> & { autor_id: string }) => apiCall(`/admin/autor/${data.autor_id}`, {
     method: 'PUT',
     body: JSON.stringify(data)
   })

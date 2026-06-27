@@ -108,10 +108,9 @@ jobs:
         run: npm test
         working-directory: admin
 
-      # Lint (ESLint) -- ainda nao gateado em CI: hoje encontra 24 erros
-      # reais (any/unused vars) -- ver docs/auditoria-engenharia/
-      # 02-qualidade-de-codigo.md achado #2. Adicionar de volta depois
-      # de corrigir os 24 erros existentes.
+      - name: Lint (ESLint)
+        run: npm run lint
+        working-directory: admin
 
       - name: Build (type-check + Vite)
         run: npm run build

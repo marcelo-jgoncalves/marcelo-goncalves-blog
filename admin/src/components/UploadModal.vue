@@ -48,8 +48,8 @@ async function handleUpload(file: File) {
     // O imageProcessor gera as variantes: -480.avif, -480.webp, -768.*, -1280.*
     emit('uploaded', basePath)
     emit('close')
-  } catch (err: any) {
-    error.value = err.message || 'Erro no upload'
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Erro no upload'
   } finally {
     uploading.value = false
     if (fileInput.value) fileInput.value.value = ''

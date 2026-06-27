@@ -1,19 +1,19 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth'
-import { useRouter } from 'vue-router'
+
+type AuthUser = Awaited<ReturnType<typeof getCurrentUser>>
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<any>(null)
+  const user = ref<AuthUser | null>(null)
   const isAuthenticated = computed(() => !!user.value)
-  const router = useRouter()
 
   // Inicializa verificando se já existe sessão
   async function checkSession() {
     try {
       const currentUser = await getCurrentUser()
       user.value = currentUser
-    } catch (error) {
+    } catch {
       user.value = null
     }
   }
@@ -29,9 +29,10 @@ export const useAuthStore = defineStore('auth', () => {
       // Se pedir nova senha (primeiro acesso), tratamos depois. 
       // Para o user 'admin' que criamos via CLI, o status deve ser CONFIRMED.
       return { success: false, nextStep }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erro no login:', error)
-      return { success: false, error: error.message }
+      const message = error instanceof Error ? error.message : 'Erro desconhecido'
+      return { success: false, error: message }
     }
   }
 

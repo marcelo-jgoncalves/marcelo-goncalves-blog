@@ -47,8 +47,9 @@ async function save() {
   try {
     await authorsApi.save(form.value)
     showToast('Perfil salvo com sucesso!')
-  } catch (error: any) {
-    showToast('Erro ao salvar perfil: ' + error.message, 'error')
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Erro desconhecido'
+    showToast('Erro ao salvar perfil: ' + message, 'error')
   } finally {
     saving.value = false
   }

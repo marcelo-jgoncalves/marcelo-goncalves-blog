@@ -1,5 +1,8 @@
 // src/tiptap.d.ts
-import { Editor } from '@tiptap/vue-3'
+// Import necessário apenas para colocar este arquivo em "module mode" —
+// sem nenhum import/export, o TS trata declare module como ambient global
+// e a augmentation abaixo deixa de se mesclar com os tipos reais do @tiptap/core.
+import '@tiptap/vue-3'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

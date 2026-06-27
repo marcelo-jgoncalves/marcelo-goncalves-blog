@@ -3,7 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { categoriesApi } from '../services/api'
 import { slugify } from '../utils/slug'
 import { MACRO_AREAS } from '../utils/taxonomy'
-import type { Categoria, Subcategoria } from '../types'
+import type { Categoria } from '../types'
 
 // --- Estado ---
 const categories = ref<Categoria[]>([])
@@ -50,7 +50,7 @@ const fetchCategories = async () => {
   try {
     const response = await categoriesApi.list()
     categories.value = response.items || []
-  } catch (error) {
+  } catch {
     showToast('Não foi possível carregar as categorias.', 'error')
   } finally {
     isLoading.value = false
@@ -113,8 +113,8 @@ const handleSave = async () => {
     await fetchCategories()
     showToast(editingSlug.value ? 'Categoria atualizada!' : 'Categoria criada!')
     closeModal()
-  } catch (error: any) {
-    showToast(error.message || 'Erro ao salvar categoria.', 'error')
+  } catch (error) {
+    showToast(error instanceof Error ? error.message : 'Erro ao salvar categoria.', 'error')
   } finally {
     isSaving.value = false
   }
@@ -126,8 +126,8 @@ const handleDelete = async (slug: string) => {
       await categoriesApi.delete(slug)
       await fetchCategories()
       showToast('Categoria excluída.')
-    } catch (error: any) {
-      showToast(error.message || 'Erro ao excluir categoria.', 'error')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Erro ao excluir categoria.', 'error')
     }
   }
 }
