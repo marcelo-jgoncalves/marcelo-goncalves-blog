@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { getPostsByCategory } from '@/lib/api';
 import './categoria.css';
-import PostCard from '@/components/ui/PostCard';
+import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -87,7 +86,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const { slug } = resolvedParams;
   const nextToken = typeof resolvedSearchParams.nextToken === 'string' ? resolvedSearchParams.nextToken : undefined;
 
-  let posts = [];
+  let posts: PostCardProps['post'][] = [];
   let nextPageToken = undefined;
   
   // Busca na API
@@ -137,7 +136,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           <AdSenseBanner />
           <div className="posts-grid">
             {posts.length > 0 ? (
-              posts.map((post: any) => (
+              posts.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))
             ) : (

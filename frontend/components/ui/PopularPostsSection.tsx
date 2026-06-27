@@ -1,9 +1,8 @@
 // frontend/components/ui/PopularPostsSection.tsx
 
 import './PopularPostsSection.css';
-import Link from 'next/link';
 import { getPopularPosts } from '@/lib/api';
-import PostCard from '@/components/ui/PostCard'; 
+import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 
 interface PopularPostsSectionProps {
   // Define o número máximo de posts a serem exibidos (4 ou 6)
@@ -45,7 +44,7 @@ export default async function PopularPostsSection({
 
         {/* Usa a classe dinâmica do grid */}
         <div className={gridClass}>
-          {popularPosts.map((post: any) => (
+          {popularPosts.map((post: PostCardProps['post']) => (
             <PostCard key={post.slug} post={post} /> 
           ))}
         </div>

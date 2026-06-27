@@ -3,7 +3,7 @@ import { processFullPostContent, normalizeMediaImageSrc } from '@/lib/postUtils'
 // Shiki é pesado e irrelevante para estes testes — mock simples que devolve o bloco original
 jest.mock('shiki', () => ({
   createHighlighter: jest.fn().mockResolvedValue({
-    codeToHtml: (_code: string, _opts: unknown) => '<pre><code>mocked</code></pre>',
+    codeToHtml: () => '<pre><code>mocked</code></pre>',
   }),
 }));
 

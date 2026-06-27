@@ -1,7 +1,6 @@
 /* frontend/app/servicos/page.tsx */
 
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import './servicos.css';
 import PageHero from '@/components/ui/PageHero';

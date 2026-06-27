@@ -20,8 +20,13 @@ export default function ConsentManager() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // Hidratação única a partir do localStorage (indisponível no render do
+    // servidor) — não é um anti-padrão de "estado derivado", é leitura de
+    // um sistema externo síncrono que só existe no client, por isso roda
+    // dentro do efeito e não no corpo do componente.
     const stored = readConsent();
     if (!stored || !isConsentValid(stored)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowBanner(true);
     } else {
       setConsent(stored);

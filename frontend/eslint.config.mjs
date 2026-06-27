@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Scripts de debug standalone (CommonJS, rodados via `node` direto —
+    // fora do build do Next, não seguem as regras de módulo ESM/TS do app).
+    "scripts/**",
   ]),
 ]);
 

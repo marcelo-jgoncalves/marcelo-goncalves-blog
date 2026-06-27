@@ -20,7 +20,7 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
     useEffect(() => {
       if (ADSENSE_CONFIGURED) {
         try {
-          // @ts-ignore
+          // @ts-expect-error adsbygoogle não tem tipos oficiais — injetado pelo script do AdSense
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (err) {
           console.error('Erro ao carregar o AdSense', err);

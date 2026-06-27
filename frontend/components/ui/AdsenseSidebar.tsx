@@ -11,7 +11,7 @@ export default function AdsenseSidebar({ blockId = "sidebar-300x600" }: AdsenseS
   if (ADSENSE_CONFIGURED) {
     return (
       <div className="sidebar-ad-container" aria-label="Anúncio">
-        {/* <ins className="adsbygoogle" data-ad-client="ca-pub-XXXXXX" data-ad-slot={blockId}></ins> */}
+        <ins className="adsbygoogle" data-ad-client="ca-pub-XXXXXX" data-ad-slot={blockId}></ins>
       </div>
     );
   }

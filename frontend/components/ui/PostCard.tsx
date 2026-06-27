@@ -7,7 +7,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 const GRADIENT_VARIANTS = ['t-soft', 't-petrol', 't-clay', 't-teal', 't-deep', 't-moss'] as const;
 
-interface PostCardProps {
+export interface PostCardProps {
   post: {
     slug: string;
     titulo: string;

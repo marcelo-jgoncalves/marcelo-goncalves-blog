@@ -70,10 +70,9 @@ jobs:
         run: npm test
         working-directory: frontend
 
-      # Lint (ESLint) -- ainda nao gateado em CI: `npm run lint` hoje falha
-      # com "Invalid project directory provided" (next lint, Next.js 16) --
-      # ver docs/auditoria-engenharia/02-qualidade-de-codigo.md achado #3.
-      # Adicionar de volta depois de corrigir o script.
+      - name: Lint (ESLint)
+        run: npm run lint
+        working-directory: frontend
 
       - name: Build (Next.js)
         run: npm run build

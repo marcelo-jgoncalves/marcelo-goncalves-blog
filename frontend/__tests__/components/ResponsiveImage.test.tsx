@@ -10,8 +10,8 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: Record<string, unknown>) => {
-    const { fill, priority, sizes, ...rest } = props;
-    return <img data-fill={String(fill)} data-priority={String(priority)} data-sizes={sizes as string} {...(rest as React.ImgHTMLAttributes<HTMLImageElement>)} />;
+    const { fill, priority, sizes, alt, ...rest } = props;
+    return <img data-fill={String(fill)} data-priority={String(priority)} data-sizes={sizes as string} alt={alt as string} {...(rest as React.ImgHTMLAttributes<HTMLImageElement>)} />;
   },
 }));
 

@@ -1,7 +1,6 @@
 import './not-found.css';
-import Link from 'next/link';
 import { getPopularPosts } from '@/lib/api';
-import PostCard from '@/components/ui/PostCard';
+import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
 
 // Metadados são automáticos no not-found, mas podemos definir o título via layout se necessário,
@@ -56,7 +55,7 @@ export default async function NotFound() {
         
         <div className="posts-grid">
             {popularPosts.length > 0 ? (
-                popularPosts.slice(0, 3).map((post: any) => (
+                popularPosts.slice(0, 3).map((post: PostCardProps['post']) => (
                     <PostCard key={post.slug} post={post} />
                 ))
             ) : (

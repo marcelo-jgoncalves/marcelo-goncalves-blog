@@ -4,9 +4,17 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
 
 export const revalidate = 3600;
 
+interface FeedPost {
+  slug: string;
+  titulo?: string;
+  resumo?: string;
+  categoria_slug?: string;
+  data_publicacao?: string;
+}
+
 export async function GET() {
   const data = await getAllPosts(undefined, 20).catch(() => ({ posts: [], nextToken: undefined }));
-  const posts: any[] = data.posts || [];
+  const posts: FeedPost[] = data.posts || [];
 
   const items = posts
     .map((post) => {

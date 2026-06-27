@@ -14,7 +14,6 @@ interface ResponsiveImageProps {
   priority?: boolean;
   sizes?: string;
   className?: string;
-  style?: React.CSSProperties;
   lqip?: string; // data URI inline do blur placeholder (imagem_lqip_base64)
 }
 
@@ -35,7 +34,6 @@ export default function ResponsiveImage({
   priority = false,
   sizes,
   className,
-  style,
   lqip,
 }: ResponsiveImageProps) {
   if (!src) return null;
@@ -56,6 +54,7 @@ export default function ResponsiveImage({
     style: fill
       ? { width: "100%", height: "100%", objectFit: "cover", display: "block" }
       : undefined,
+    sizes,
     className,
   };
 
@@ -82,7 +81,7 @@ export default function ResponsiveImage({
         <source media="(max-width: 768px)" type="image/avif" srcSet={`${basePath}-768.avif`} />
         <source media="(max-width: 768px)" type="image/webp" srcSet={`${basePath}-768.webp`} />
         <source type="image/avif" srcSet={`${basePath}-1280.avif`} />
-        <img {...imgProps} />
+        <img {...imgProps} alt={alt} />
       </picture>
     );
   }
@@ -94,7 +93,7 @@ export default function ResponsiveImage({
       <source media="(max-width: 768px)" type="image/avif" srcSet={`${basePath}-768.avif`} />
       <source media="(max-width: 768px)" type="image/webp" srcSet={`${basePath}-768.webp`} />
       <source type="image/avif" srcSet={`${basePath}-1280.avif`} />
-      <img {...imgProps} />
+      <img {...imgProps} alt={alt} />
     </picture>
   );
 }

@@ -2,13 +2,12 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllPosts, getPopularPosts, getRecentPosts } from '@/lib/api';
+import { getAllPosts, getRecentPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
-import ArtigosFilters from '@/components/ui/ArtigosFilters';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort } from '@/lib/format';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
@@ -57,16 +56,6 @@ function categoryName(post: ArtigoPost): string {
   return (post?.categoria_slug || '').replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
 }
 
-const CATEGORIES = [
-  { slug: 'inteligencia-artificial', label: 'Inteligência Artificial' },
-  { slug: 'cloud-computing', label: 'Cloud Computing' },
-  { slug: 'devops-automacao', label: 'DevOps & Automação' },
-  { slug: 'engenharia-de-software', label: 'Engenharia' },
-  { slug: 'tutoriais-aws', label: 'Tutoriais AWS' },
-  { slug: 'seguranca-na-nuvem', label: 'Segurança' },
-  { slug: 'noticias-e-mercado', label: 'Notícias & Mercado' },
-];
-
 interface ArtigosPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -79,9 +68,8 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
   const prevTokens = typeof params.prevTokens === 'string' ? params.prevTokens : '';
   const page       = typeof params.page       === 'string' ? Math.max(1, parseInt(params.page)) : 1;
 
-  const [allData, popularData, recentData] = await Promise.all([
+  const [allData, recentData] = await Promise.all([
     getAllPosts(nextToken, LIMIT).catch(() => null),
-    getPopularPosts(4).catch(() => ({ posts: [] })),
     getRecentPosts(3).catch(() => ({ posts: [] })),
   ]);
 
@@ -90,7 +78,6 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
   const totalCount = allData?.totalCount ?? 0;
   const totalPages = totalCount > 0 ? Math.ceil(totalCount / LIMIT) : 0;
 
-  const popular: ArtigoPost[] = popularData?.posts || [];
   const recent: ArtigoPost[] = recentData?.posts || [];
 
   const feature = recent[0];

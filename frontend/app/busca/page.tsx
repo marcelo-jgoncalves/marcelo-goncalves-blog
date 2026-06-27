@@ -1,7 +1,6 @@
 import './busca.css';
-import Link from 'next/link';
 import { searchPosts, getPopularPosts } from '@/lib/api';
-import PostCard from '@/components/ui/PostCard';
+import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -30,8 +29,8 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const q = typeof params.q === 'string' ? params.q : '';
   const nextToken = typeof params.nextToken === 'string' ? params.nextToken : undefined;
 
-  let posts = [];
-  let popularPosts = [];
+  let posts: PostCardProps['post'][] = [];
+  let popularPosts: PostCardProps['post'][] = [];
   let nextPageToken = undefined;
 
   // Busca em paralelo
@@ -63,7 +62,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
             <main>
               <AdSenseBanner />
               <div className="posts-grid">
-                {posts.map((post: any) => (
+                {posts.map((post) => (
                   <PostCard key={post.slug} post={post} />
                 ))}
               </div>
@@ -110,7 +109,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
               </div>
               <div className="posts-grid">
                 {popularPosts.length > 0 ? (
-                  popularPosts.slice(0, 3).map((post: any) => (
+                  popularPosts.slice(0, 3).map((post) => (
                     <PostCard key={post.slug} post={post} />
                   ))
                 ) : null}

@@ -75,7 +75,7 @@ export default function TermosDeUsoPage() {
 
           <h2>7. Isenção de Responsabilidade</h2>
           <p>
-            O conteúdo é fornecido "como está", sem garantias de qualquer natureza. Não nos
+            O conteúdo é fornecido &ldquo;como está&rdquo;, sem garantias de qualquer natureza. Não nos
             responsabilizamos por decisões tomadas com base no conteúdo publicado. Recomendamos
             sempre validar as informações técnicas no contexto específico do seu ambiente.
           </p>
