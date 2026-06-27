@@ -19,6 +19,7 @@ node_modules/
 .env.production.local
 *.env
 *.env.*
+!*.env.example
 
 # --- TERRAFORM (Infraestrutura) ---
 # Ignora arquivos de estado locais (contêm segredos!)

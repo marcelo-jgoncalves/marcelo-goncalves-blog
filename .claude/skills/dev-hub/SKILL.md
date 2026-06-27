@@ -355,11 +355,17 @@ API_URL=https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1
 
 ### Admin (Vite)
 
+Real vars read by the code (`admin/src/services/api.ts`, `admin/src/main.ts` Amplify config) and injected by `cd.yml` at build time — confirmed against source, not `VITE_API_URL`/`VITE_ADMIN_ORIGIN` (those names don't exist in the codebase):
+
 ```bash
 # .env.local (not committed)
-VITE_API_URL=https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1
-VITE_ADMIN_ORIGIN=https://d11ubkpuy1di6r.cloudfront.net
+VITE_API_BASE_URL=https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1
+VITE_COGNITO_USER_POOL_ID=<terraform output cognito_user_pool_id>
+VITE_COGNITO_CLIENT_ID=<terraform output cognito_client_id>
+VITE_ASSETS_URL=https://dsns2wusdrj9z.cloudfront.net
 ```
+
+Get the Cognito values with `aws --profile claude-dev` + `terraform output cognito_user_pool_id` / `cognito_client_id` from `infra/`, or `aws cognito-idp list-user-pools`.
 
 ### Backend
 

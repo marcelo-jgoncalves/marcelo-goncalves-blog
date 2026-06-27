@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# frontend — Blog Marcelo Gonçalves
 
-## Getting Started
+Next.js 16 (App Router) + React 19, deployado via OpenNext v3 em AWS Lambda + CloudFront + S3 (não Vercel).
 
-First, run the development server:
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # preencher API_URL (já tem valor de dev funcional)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Stack real deste workspace
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Fonte:** Inter (`--font-sans`, `--font-display`) + JetBrains Mono (`--font-mono`) via `next/font/google`. Nunca DM Sans nem Space Grotesk — removidas do projeto.
+- **Deploy:** `npx open-next build` empacota um `.zip` de Lambda (`server-functions/default/`), sem relação com a plataforma Vercel.
+- **Imagens:** nunca usar `<Image>` do Next.js para conteúdo de post — usar `<ResponsiveImage>` (`components/ui/ResponsiveImage.tsx`). Não há Lambda de image optimizer neste deploy.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+```bash
+npm run dev          # servidor de desenvolvimento
+npm run build        # build de produção (OpenNext)
+npm run lint         # ESLint
+npm test             # Jest (unit)
+npm run test:e2e     # Playwright (e2e)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Mais contexto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ver `CLAUDE.md` e `docs/contract.md` na raiz do monorepo.

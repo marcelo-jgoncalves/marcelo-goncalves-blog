@@ -249,107 +249,14 @@ Todos os formatos suportados têm trigger S3→Lambda: `.jpg`, `.jpeg`, `.png`, 
 
 O design system define os tokens visuais que garantem consistência em toda a UI. Nunca usar valores hardcoded de cor ou fonte — sempre referenciar os tokens.
 
-### Fontes
+> **Fonte única de valores: `CLAUDE.md` (raiz do repo), seção 5.** Este documento (`contract.md`) não duplica fontes/paleta/escala de espaçamento — duplicar foi exatamente o que causou divergência real entre os dois documentos (achado #1 de `docs/auditoria-engenharia/10-documentacao-e-governanca.md`, corrigido em 2026-06-27). Antes de aplicar qualquer token de cor, fonte ou espaçamento, ler `CLAUDE.md` — não este arquivo, não a memória de uma sessão anterior.
 
-| Variável CSS | Fonte | Uso |
-|---|---|---|
-| `--font-display` | DM Sans | Headings, display, UI elements (botões, labels, nav) |
-| `--font-sans` | Inter | Body text, parágrafos, meta |
-| `--font-mono` | JetBrains Mono | Blocos de código, inline code |
+Regras estruturais que continuam valendo independente do valor exato do token:
 
-Carregadas via `next/font/google` em `frontend/app/layout.tsx`. **Nunca** usar `Space Grotesk` — foi removido.
-
-### Paleta de Cores
-
-```css
-/* Brand */
---accent: #3B5F8A        /* Classic Blue — CTA, links, ativo */
---accent-hover: #2D4F76  /* Hover/pressed do accent */
---accent-light: #EBF1F8  /* Fundo sutil, badges, ícone bg */
---accent-dark: #1E3A57   /* Texto sobre fundo claro, deep blue */
-
-/* Dark Scale */
---dark-900: #111827      /* Near-black — headings, logo */
---dark-800: #1F2937      /* Cards escuros, dark sections */
---dark-700: #374151      /* Body text */
---dark-600: #475569      /* Secondary text */
-
-/* Slate Neutrals */
---slate-50:  #F8FAFC     /* Page bg, hero bg */
---slate-100: #F1F5F9     /* Card bg, section alt */
---slate-200: #E2E8F0     /* Borders (= --border-color) */
---slate-300: #CBD5E1     /* Dividers, muted borders */
---slate-400: #94A3B8     /* Placeholder text */
---slate-500: #64748B     /* Muted text, metadata */
-```
-
-### Tokens de Superfície
-
-```css
---border-color: #E2E8F0        /* Borda padrão (= --slate-200) */
---border-radius-sm: 4px        /* Tags, badges */
---border-radius: 8px           /* Cards, inputs */
---border-radius-lg: 12px       /* Modais, widgets grandes */
---shadow-sm: 0 2px 8px rgba(0,0,0,0.05)
---shadow-md: 0 4px 16px rgba(0,0,0,0.08)
---shadow-lg: 0 12px 32px rgba(0,0,0,0.12)
---bg-light-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)
-```
-
-### Regras
-
-- **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` ou `--font-space-grotesk` — foram removidos.
-- Botões primários: `background: var(--accent)`, `color: white`. Nunca texto escuro em fundo azul.
-- `.highlight` e `.accent` aplicam `color: var(--accent)`.
-- Referência completa dos exemplos visuais: `docs/design-system/design-reference.md`.
-
-### Logo Wordmark
-
-```
-Marcelo          → color: var(--dark-900) — #111827
-Gonçalves        → color: var(--accent)   — #3B5F8A
-```
-
-Font: DM Sans 700, letter-spacing: -0.5px.
-
-### Ritmo Vertical — Escala de Espaçamento (OBRIGATÓRIO)
-
-O sistema usa uma escala de 6 níveis baseada em 8px. Cada nível tem responsabilidade exclusiva — **nunca misturar**.
-
-```css
---space-1:  8px    /* Micro: gap ícone/badge, separação inline */
---space-2:  16px   /* Pequeno: meta-row, margin entre ícone e texto */
---space-3:  24px   /* Médio: gap entre cards, padding interno de widgets */
---space-4:  40px   /* Grande: gap seção→grid, margin de banners AdSense */
---space-5:  64px   /* Seção: padding vertical de layouts de conteúdo */
---space-6:  80px   /* Landmark: padding de PageHero e CTAs fullwidth */
---section-min-height: 384px  /* min-height de landmarks (hero, PageCTA, service-proof) */
-```
-
-**Regra não-negociável:**
-
-| Contexto | Tokens permitidos |
-|---|---|
-| Componentes (PostCard, widgets, badges) | `--space-1` a `--space-4` |
-| Seções de layout (page-layout, bio-section) | `--space-5` |
-| Landmarks fullwidth (PageHero, PageCTA, CTAs dark) | `--space-6` |
-
-Nenhum CSS de componente deve ter `padding` vertical maior que `--space-4`. Nenhuma seção de layout deve usar valor menor que `--space-5`.
-
-**Hierarquia visual de 4 camadas (referência: página `/artigos`):**
-
-```
-Landmark   → 80px   PageHero, NewsletterCTA
-Seção      → 40px   hero→banner, banner→grid, grid→banner, pagination, gap colunas
-Componente → 24px   gap entre cards, padding de widgets, gap sidebar
-Micro      → 16px   elementos internos do card (título, excerpt, meta)
-```
-
-**`--space-4` é o separador universal de blocos.** Toda transição entre elementos de nível seção usa exatamente 40px — banner margins, padding-top do layout, gap de colunas desktop, padding da paginação. O olho percebe o mesmo respiro em qualquer ponto da página.
-
-**Primeiro banner de cada página** deve ter `margin-top: 0` via `:first-child` no container pai — alinha com o topo da sidebar sem empurrar o conteúdo.
-
-**Paginação** deve ficar **fora** do grid de duas colunas (abaixo de ambas as colunas) — evita altura assimétrica que desalinha o último card com o último widget da sidebar.
+- Nunca usar valor de cor/fonte/espaçamento ad-hoc — sempre um token CSS existente.
+- Nunca reintroduzir fontes ou cores explicitamente removidas (ver lista atual em `CLAUDE.md`).
+- Qualquer novo token criado precisa ser adicionado ao `CLAUDE.md`, não apenas usado no CSS — senão a próxima sessão (humana ou de IA) não vai saber que ele existe.
+- Referência visual completa: `docs/design-system/design-reference.md`.
 
 ---
 
