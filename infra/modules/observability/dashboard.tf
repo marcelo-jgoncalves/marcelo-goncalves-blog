@@ -104,7 +104,32 @@ locals {
     }
   }]
 
-  widgets = concat(local.base_widgets, var.enable_synthetic_canary ? local.canary_widget : [])
+  # Splat ([*]) em vez de índice [0]: seguro mesmo com count = 0
+  # (enable_cloudwatch_alarms = false) — retorna lista vazia em vez de
+  # "index out of range". Este local é avaliado sempre que o módulo roda,
+  # independente do ramo do ternário em `widgets` que efetivamente o usa.
+  burn_alarm_arns = concat(
+    aws_cloudwatch_composite_alarm.availability_burn_fast[*].arn,
+    aws_cloudwatch_composite_alarm.availability_burn_slow[*].arn,
+  )
+
+  slo_widget = [{
+    type   = "alarm"
+    x      = 0
+    y      = 18
+    width  = 24
+    height = 6
+    properties = {
+      title  = "SLO de Disponibilidade — Error Budget Burn Rate"
+      alarms = local.burn_alarm_arns
+    }
+  }]
+
+  widgets = concat(
+    local.base_widgets,
+    var.enable_synthetic_canary ? local.canary_widget : [],
+    var.enable_cloudwatch_alarms ? local.slo_widget : []
+  )
 }
 
 resource "aws_cloudwatch_dashboard" "main" {

@@ -37,3 +37,14 @@ variable "lambda_function_names" {
   type        = map(string)
   default     = {}
 }
+
+variable "availability_slo" {
+  description = "SLO de disponibilidade do API Gateway (proporção de requests não-5xx), em janela de 30 dias. Define o error budget usado nos burn rate alarms."
+  type        = number
+  default     = 0.995
+
+  validation {
+    condition     = var.availability_slo > 0 && var.availability_slo < 1
+    error_message = "availability_slo deve ser uma proporção entre 0 e 1 (ex.: 0.995 para 99.5%)."
+  }
+}
