@@ -102,6 +102,11 @@ describe('mediaUpload', () => {
     expect(res!.statusCode).toBe(400);
   });
 
+  it('responde 400 quando tipo_arquivo não está na allowlist (ex: text/html)', async () => {
+    const res = await handler(makeEvent({ nome_arquivo: 'evil.png', tipo_arquivo: 'text/html' }), ctx, jest.fn());
+    expect(res!.statusCode).toBe(400);
+  });
+
   it('responde 200 para OPTIONS (CORS preflight)', async () => {
     const res = await handler(makeEvent(null, 'OPTIONS'), ctx, jest.fn());
     expect(res!.statusCode).toBe(200);

@@ -3,6 +3,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { sanitizePostHtml } from "../../common/sanitizer";
 
 const TABLE_NAME = process.env.AUTHORS_TABLE || '';
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -61,11 +62,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Author ID is required" }) };
       }
 
-      // Sanitização básica e mapeamento conforme Modelo de Dados [Blueprint 3.3]
+      // Mapeamento conforme Modelo de Dados [Blueprint 3.3]. `bio` é HTML
+      // renderizado via dangerouslySetInnerHTML no blog público
+      // (PostFooter.tsx, AuthorBox.tsx) — precisa do mesmo allowlist usado
+      // em conteudo_html (adminPosts), senão é stored XSS direto.
       const authorItem = {
         autor_id: finalId,
         nome_exibicao: data.nome_exibicao,
-        bio: data.bio, // HTML String
+        bio: sanitizePostHtml(data.bio ?? ""),
         foto_avatar_url: data.foto_avatar_url,
         foto_avatar_alt_text: data.foto_avatar_alt_text, // Acessibilidade Mandatória
         linkedin_url: data.linkedin_url,

@@ -554,6 +554,20 @@ resource "aws_api_gateway_stage" "main" {
   xray_tracing_enabled = var.enable_xray_tracing
 }
 
+# Throttling aplicado a todos os métodos do stage (* /*), sem exigir API key
+# — protege também as rotas públicas de leitura, que hoje não têm nenhuma
+# camada de autenticação para fazer essa limitação de outra forma.
+resource "aws_api_gateway_method_settings" "throttle_all" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  stage_name  = aws_api_gateway_stage.main.stage_name
+  method_path = "*/*"
+
+  settings {
+    throttling_rate_limit  = var.throttle_rate_limit
+    throttling_burst_limit = var.throttle_burst_limit
+  }
+}
+
 # --- 1. Recursos para Listagem ---
 
 # /posts (Já existe /post singular, agora criamos o plural)

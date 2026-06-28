@@ -14,6 +14,14 @@ resource "aws_dynamodb_table" "posts" {
   billing_mode = "PAY_PER_REQUEST" # Serverless puro
   hash_key     = "slug"
 
+  # Sem isso, a tabela já é criptografada em repouso (default da AWS desde
+  # 2018), mas com uma chave AWS-owned — sem visibilidade de uso via
+  # CloudTrail/KMS. AWS-managed (este bloco) é igualmente gratuito e dá essa
+  # auditabilidade (achado da auditoria AppSec, Cat. 3).
+  server_side_encryption {
+    enabled = true
+  }
+
   attribute {
     name = "slug"
     type = "S"
@@ -111,6 +119,10 @@ resource "aws_dynamodb_table" "autores" {
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "autor_id"
 
+  server_side_encryption {
+    enabled = true
+  }
+
   attribute {
     name = "autor_id"
     type = "S"
@@ -122,6 +134,10 @@ resource "aws_dynamodb_table" "categorias" {
   name         = "${var.project_name}-${var.environment}-categorias"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "categoria_slug"
+
+  server_side_encryption {
+    enabled = true
+  }
 
   attribute {
     name = "categoria_slug"

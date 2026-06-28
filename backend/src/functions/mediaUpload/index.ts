@@ -7,6 +7,17 @@ const s3 = new S3Client({});
 const UPLOADS_BUCKET = process.env.UPLOADS_BUCKET;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
+// Formatos aceitos pelo pipeline de imagem (CLAUDE.md seção 6) — o client
+// escolhe o Content-Type livremente, então sem este allowlist qualquer
+// valor seria aceito e usado direto no PutObjectCommand.
+const ALLOWED_CONTENT_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/heic",
+  "image/heif",
+];
+
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": ADMIN_ORIGIN,
@@ -29,6 +40,10 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
     if (!nome_arquivo || !tipo_arquivo) {
       return { statusCode: 400, body: JSON.stringify({ message: "Missing params" }), headers };
+    }
+
+    if (!ALLOWED_CONTENT_TYPES.includes(tipo_arquivo)) {
+      return { statusCode: 400, body: JSON.stringify({ message: "Unsupported content type" }), headers };
     }
 
     // Normaliza extensão para minúsculas — S3 filter_suffix é case-sensitive,
@@ -63,6 +78,6 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     logger.error("media_upload_error", { requestId, error: message });
-    return { statusCode: 500, body: JSON.stringify({ message }), headers };
+    return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error" }), headers };
   }
 };

@@ -21,6 +21,7 @@ export default function PostFooter({ author, social }: PostFooterProps) {
       <div className={styles.av} aria-hidden="true">{author.avatarInitials}</div>
       <div className={styles.abBody}>
         <b className={styles.abName}>{author.name}</b>{' '}
+        {/* nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- bio é sanitizado no backend (adminAuthors/index.ts, sanitizePostHtml) antes de persistir */}
         <span dangerouslySetInnerHTML={{ __html: author.bio }} />
       </div>
       {hasSocial && (

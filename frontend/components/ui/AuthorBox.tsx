@@ -42,6 +42,7 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
             <div
               className="author-bio-content"
               itemProp="description"
+              // nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- bio é sanitizado no backend (adminAuthors/index.ts, sanitizePostHtml) antes de persistir
               dangerouslySetInnerHTML={{ __html: autor.bio }}
             />
         </div>

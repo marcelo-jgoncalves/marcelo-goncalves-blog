@@ -3,12 +3,13 @@
 resource "aws_cognito_user_pool" "admin_pool" {
   name = "${var.project_name}-${var.environment}-admin-pool"
 
-  # Política de Senha (Segurança básica)
+  # Política de senha — ASVS V2.1.1 recomenda mínimo 12 chars quando não há
+  # MFA como controle compensatório (achado da auditoria AppSec, Cat. 1).
   password_policy {
-    minimum_length    = 8
+    minimum_length    = 12
     require_lowercase = true
     require_numbers   = true
-    require_symbols   = false
+    require_symbols   = true
     require_uppercase = true
   }
 

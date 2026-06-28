@@ -19,34 +19,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Install Semgrep
         run: pip install semgrep
 
-      - name: Scan backend (TypeScript + Node.js)
+      - name: Scan backend (TypeScript + Node.js + segurança dedicada)
         run: |
           semgrep scan \
             --config p/typescript \
             --config p/nodejs \
+            --config p/owasp-top-ten \
+            --config p/secrets \
+            --config p/jwt \
             --severity ERROR \
             --error \
             --quiet \
             backend/src/
 
-      - name: Scan frontend (TypeScript)
+      - name: Scan frontend (TypeScript + segurança dedicada)
         run: |
           semgrep scan \
             --config p/typescript \
+            --config p/owasp-top-ten \
+            --config p/secrets \
+            --config p/jwt \
             --severity ERROR \
             --error \
             --quiet \
             frontend/
 
-      - name: Scan admin (TypeScript)
+      - name: Scan admin (TypeScript + segurança dedicada)
         run: |
           semgrep scan \
             --config p/typescript \
+            --config p/owasp-top-ten \
+            --config p/secrets \
+            --config p/jwt \
             --severity ERROR \
             --error \
             --quiet \
