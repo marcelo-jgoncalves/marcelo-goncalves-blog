@@ -1,6 +1,6 @@
 # Plano — Auditoria Completa de Application Security (World-Class Standard)
 
-> Status: **planejamento, execução ainda não iniciada.**
+> Status: **✅ executada em 2026-06-28.** Resultado completo em `docs/auditoria-appsec/` (sumário executivo em `00-metodologia.md`). 4 achados de alto impacto, 13 de impacto médio — ver backlog de remediação no sumário.
 > Diferença em relação à auditoria de engenharia anterior (`docs/auditoria-engenharia/06-criterio-seguranca.md`): aquela tratou segurança como **1 de 12 critérios** (visão panorâmica). Esta é uma auditoria **dedicada e profunda**, só de AppSec, usando frameworks reconhecidos como vara de medir — é isso que torna o resultado "world-class" e não uma lista ad hoc de boas práticas.
 
 ## 1. Objetivo
