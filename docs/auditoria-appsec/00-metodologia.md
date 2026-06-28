@@ -28,33 +28,39 @@ Análise estática de código (leitura direta de todos os 8 Lambdas, Terraform d
 
 ## Backlog de remediação (ordem ascendente de risco de implementação, convenção já usada nas auditorias anteriores deste projeto)
 
-> **Atualização pós-execução (mesma sessão, 2026-06-28):** itens 1, 4, 6, 9 (parcial), 11, 12 já foram corrigidos. Ver checkmarks abaixo e os arquivos de categoria correspondentes para o detalhe de cada correção, validação (`terraform plan`, testes, lint) e o que ficou de fora do escopo.
+> **Atualização pós-execução, 2ª rodada (mesma sessão, 2026-06-28):** itens 5, 8, 9 (completo), 10 corrigidos nesta rodada. Item 3 (branch protection) permanece bloqueado — requer ação manual do Marcelo, ver `docs/auditoria-appsec/05-supply-chain-iac-cicd.md` para o comando pronto. Itens 7 (MFA) e 13 (TLS) ficam **fora desta rodada por decisão explícita do Marcelo** ("aplique tudo menos o mfa e o tls"), não por bloqueio técnico.
 
 | # | Ação | Achado relacionado | Risco de implementar | Status |
 |---|---|---|---|---|
 | 1 | Padronizar erro genérico em `adminPosts`/`adminCategorias`/`mediaUpload` (já é o padrão nos outros 5 Lambdas) | Cat. 6, #2 | Nenhum | ✅ Corrigido |
 | 1b | *(fora da ordem original, fixado por ser trivial junto do #2)* Sanitizar `bio` em `adminAuthors` | Cat. 2, #1 (🔴) | Baixo | ✅ Corrigido |
 | 2 | ~~Aplicar `sanitizePostHtml()` (ou equivalente) em `bio` no `adminAuthors`~~ | Cat. 2, #1 (🔴) | Baixo | ✅ Corrigido (ver 1b) |
-| 3 | Configurar branch protection em `main` (status checks obrigatórios, sem force-push) | Cat. 5, #1 (🔴) | Nenhum (config GitHub, não código) | Pendente |
+| 3 | Configurar branch protection em `main` (status checks obrigatórios, sem force-push) | Cat. 5, #1 (🔴) | Nenhum (config GitHub, não código) | ⚠️ Bloqueado — comando pronto, requer execução manual (ver nota abaixo) |
 | 4 | Expandir Semgrep: rulesets de segurança dedicados + revisar threshold de severidade | Cat. 5, #2 | Baixo | ✅ Rulesets adicionados (severidade ainda `ERROR` — ver nota) |
-| 5 | Habilitar CloudTrail (1 trail multi-região) + GuardDuty (1 detector) | Cat. 6, #1 (🔴) | Baixo (ativação de serviço AWS) | Pendente |
+| 5 | Habilitar CloudTrail (1 trail multi-região) + GuardDuty (1 detector) | Cat. 6, #1 (🔴) | Baixo (ativação de serviço AWS) | ✅ Corrigido |
 | 6 | `usage_plan`/throttling no API Gateway | Cat. 4, #1 | Médio (precisa calibrar limites sem afetar tráfego legítimo) | ✅ Corrigido |
-| 7 | Habilitar MFA `OPTIONAL` no Cognito + fortalecer password policy | Cat. 1, #1 (🔴) parcial, #2 | Médio (comunicar ao único usuário) | Password policy ✅; MFA pendente |
-| 8 | Migrar para `ALLOW_USER_SRP_AUTH` exclusivo (fecha item #19 do backlog já existente) | Cat. 1, #1 (🔴) completo | Médio-alto (testar fluxo de login do admin antes) | Pendente |
-| 9 | Allowlist de `Content-Type` + limite de tamanho em `mediaUpload` | Cat. 2, #3 / Cat. 4, #2 | Médio | Allowlist ✅; limite de tamanho pendente (exige presigned POST) |
-| 10 | Introduzir lib de validação de schema (`zod`) + fechar mass assignment em `savePost` | Cat. 2, #2, #4 | Médio-alto (toca lógica central de salvamento de post) | Pendente |
+| 7 | Habilitar MFA `OPTIONAL` no Cognito + fortalecer password policy | Cat. 1, #1 (🔴) parcial, #2 | Médio (comunicar ao único usuário) | Password policy ✅; MFA **fora de escopo por decisão do Marcelo** |
+| 8 | Migrar para `ALLOW_USER_SRP_AUTH` exclusivo (fecha item #19 do backlog já existente) | Cat. 1, #1 (🔴) completo | Médio-alto (testar fluxo de login do admin antes) | ✅ Corrigido — confirmado ao vivo via `describe-user-pool-client` |
+| 9 | Allowlist de `Content-Type` + limite de tamanho em `mediaUpload` | Cat. 2, #3 / Cat. 4, #2 | Médio | ✅ Corrigido (allowlist + presigned POST com `content-length-range` 10MB) |
+| 10 | Introduzir lib de validação de schema (`zod`) + fechar mass assignment em `savePost` | Cat. 2, #2, #4 | Médio-alto (toca lógica central de salvamento de post) | ✅ Corrigido (`backend/src/common/postSchema.ts`) |
 | 11 | Pin de GitHub Actions por SHA | Cat. 5, #3 | Baixo (manutenção contínua) | ✅ Corrigido (incluindo `trivy-action@master` → versão pinada, achado adicional) |
 | 12 | DynamoDB: declarar SSE explícito com chave KMS AWS-managed | Cat. 3, #2 | Médio (recriação de configuração de tabela existente) | ✅ Corrigido (update in-place, sem recriação) |
-| 13 | TLS moderno via CloudFront (`minimum_protocol_version`) | Cat. 3, #1 | Bloqueado — depende de domínio definitivo (pré-condição externa) | Bloqueado |
+| 13 | TLS moderno via CloudFront (`minimum_protocol_version`) | Cat. 3, #1 | Bloqueado — depende de domínio definitivo (pré-condição externa) | Bloqueado + **fora de escopo por decisão do Marcelo** |
+
+### Branch protection (#3) — comando pronto, aguardando execução manual
+
+O agente tentou aplicar via `gh api`, mas o harness de execução bloqueou a ação (categoria "[CI Bypass]") por se tratar de uma mudança de configuração no branch default escolhida unilateralmente pelo agente, não pelo usuário. Comando completo, com os parâmetros já definidos, está documentado em `docs/auditoria-appsec/05-supply-chain-iac-cicd.md` (Categoria 5, achado #1) — basta o Marcelo rodar ou aprovar explicitamente.
 
 ## Achados novos descobertos durante a remediação (fora do escopo original)
 
-1. **JSON-LD vulnerável a quebra de tag via `titulo`/`resumo` não escapados** — 9 ocorrências de `dangerouslySetInnerHTML={{ __html: JSON.stringify(x) }}` no frontend (`layout.tsx` e 7 páginas). `JSON.stringify` não escapa `<`/`>`/`/`; um título de post com `</script><script>...` quebraria a tag. Descoberto ao testar localmente os novos rulesets do Semgrep em severidade `WARNING`. **Não corrigido** — fica para uma próxima sessão, fora do escopo desta rodada de achados médios. Ver `docs/auditoria-appsec/05-supply-chain-iac-cicd.md`.
+1. **JSON-LD vulnerável a quebra de tag via `titulo`/`resumo` não escapados** — ✅ corrigido nesta rodada. 9 ocorrências de `dangerouslySetInnerHTML={{ __html: JSON.stringify(x) }}` no frontend (`layout.tsx` e 7 páginas). `JSON.stringify` não escapa `<`/`>`/`/`; um título de post com `</script><script>...` quebraria a tag. Descoberto ao testar localmente os novos rulesets do Semgrep em severidade `WARNING`. Novo helper `frontend/lib/json-ld.ts` (`jsonLdScript()`) substitui todas as chamadas. Ver `docs/auditoria-appsec/05-supply-chain-iac-cicd.md`.
 2. **`deploy.yml` já tinha um scanner de IaC (Trivy `config` mode)** que a Categoria 5 original não havia notado — mas só dispara em `pull_request`, não no fluxo real de push direto a `develop` usado neste projeto. Corrigido o texto da auditoria; o gap funcional (workflow não exercitado no fluxo real) continua aberto.
 
 ## Validação da remediação
 
-`npm run lint` + `tsc --noEmit -p tsconfig.test.json` + `npm test` (backend: 121/121, +1 teste novo de allowlist; frontend: 81/81) limpos. `terraform fmt`/`validate`/`plan -var-file=env/dev.tfvars`: 1 to add (`aws_api_gateway_method_settings.throttle_all`), 18 to change (Cognito password policy, DynamoDB SSE ×3, source_code_hash de Lambdas afetadas + nextjs_server, drift pré-existente não relacionado em `aws_api_gateway_gateway_response`), 0 to destroy.
+**1ª rodada:** `npm run lint` + `tsc --noEmit -p tsconfig.test.json` + `npm test` (backend: 121/121, +1 teste novo de allowlist; frontend: 81/81) limpos. `terraform fmt`/`validate`/`plan -var-file=env/dev.tfvars`: 1 to add, 18 to change, 0 to destroy.
+
+**2ª rodada (esta):** backend 123/123 (+2 testes novos: mass-assignment strip, `e_popular` fora do domínio; suíte de `mediaUpload` adaptada ao novo formato `{ url, fields }`), frontend 81/81, admin 16/16 — todos limpos (lint + `tsc --noEmit`). `terraform fmt`/`validate`/`plan -var-file=env/dev.tfvars`: 7 to add (módulo `security_monitoring` completo), 15 to change (Cognito `explicit_auth_flows`, demais = `source_code_hash` de Lambdas — ruído de build local desatualizado em relação ao último build real do CD, não aplicado localmente por política do projeto), 0 to destroy. Pós-deploy (CD verde), validado ao vivo via AWS CLI: `describe-user-pool-client` confirma `ALLOW_USER_PASSWORD_AUTH` removido; `cloudtrail get-trail-status` → `IsLogging: true`; `guardduty get-detector` → `Status: ENABLED`. Smoke test `curl` em blog, admin e API: todos 200.
 
 ## Índice das categorias
 

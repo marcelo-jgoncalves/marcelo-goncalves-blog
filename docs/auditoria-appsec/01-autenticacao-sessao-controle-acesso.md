@@ -7,13 +7,15 @@
 
 ## 🔴 Achados de alto impacto
 
-### 1. Conta de admin sem MFA e com `ALLOW_USER_PASSWORD_AUTH` habilitado — único ponto de autenticação de todo o sistema
+### 1. Conta de admin sem MFA e com `ALLOW_USER_PASSWORD_AUTH` habilitado — único ponto de autenticação de todo o sistema — ⚠️ parcialmente corrigido
 
-`infra/modules/cognito/main.tf` não declara `mfa_configuration` (default = `OFF`), e o app client habilita `ALLOW_USER_PASSWORD_AUTH` junto com `ALLOW_USER_SRP_AUTH` — já era o item #19 do backlog (`CLAUDE.md`), confirmado ainda presente.
+`infra/modules/cognito/main.tf` não declara `mfa_configuration` (default = `OFF`), e o app client habilitava `ALLOW_USER_PASSWORD_AUTH` junto com `ALLOW_USER_SRP_AUTH` — já era o item #19 do backlog (`CLAUDE.md`), confirmado ainda presente.
 
 Isoladamente isso já seria risco médio. Mas há só **uma conta admin em todo o sistema**, com poder de escrita total sobre o conteúdo público (posts, autores, categorias, upload de mídia). Se essa única credencial for comprometida (senha fraca, reuso, phishing — sem MFA para conter nenhum desses cenários), o atacante herda automaticamente o achado #1 da Categoria 2 (stored XSS via `bio` do autor não sanitizado): o blast radius vai de "uma conta comprometida" para "JavaScript arbitrário executando no browser de todo visitante do blog público". É essa combinação que eleva o achado para alto impacto.
 
-**Recomendação:** habilitar MFA (mesmo que `OPTIONAL` para não travar o único usuário sem aviso prévio) e migrar para `ALLOW_USER_SRP_AUTH` exclusivo, conforme já planejado no backlog.
+**Corrigido (parte 1/2):** `admin/src/stores/auth.ts` chama `signIn({ username, password })` sem `authFlowType` — Amplify v6 já usa SRP por padrão, então `ALLOW_USER_PASSWORD_AUTH` nunca era de fato necessário. Removido de `explicit_auth_flows` em `infra/modules/cognito/main.tf`; confirmado em produção via `aws cognito-idp describe-user-pool-client` que o client agora só tem `ALLOW_USER_SRP_AUTH` + `ALLOW_REFRESH_TOKEN_AUTH`.
+
+**Pendente (parte 2/2):** MFA continua `OFF` — decisão explícita do Marcelo de deixar de fora desta rodada de remediação (2026-06-28), não um esquecimento.
 
 ## 🟡 Achados de impacto médio
 

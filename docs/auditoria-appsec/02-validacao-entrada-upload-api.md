@@ -23,7 +23,7 @@ Ambos aparecem no rodapé de **todo post publicado** e na página `/sobre`. Qual
 
 ## 🟡 Achados de impacto médio
 
-### 2. Mass assignment em `savePost` — payload do client é espalhado quase sem filtro
+### 2. ~~Mass assignment em `savePost` — payload do client é espalhado quase sem filtro~~ — ✅ corrigido
 
 `backend/src/functions/adminPosts/index.ts:131-145`:
 ```ts
@@ -43,17 +43,21 @@ const item: Post = {
 
 Risco prático hoje é baixo (rota já protegida por Cognito, só 1 admin), mas é exatamente o tipo de gap que ASVS V5.1.1 (validação positiva/allowlist) pede para fechar antes que a superfície de quem pode chamar essa rota cresça (ex: um segundo usuário admin, ou uma integração futura).
 
-### 3. `mediaUpload` aceita `Content-Type` do client sem allowlist e sem limite de tamanho — ✅ parcialmente corrigido (allowlist; limite de tamanho ainda pendente)
+**Correção aplicada:** `backend/src/common/postSchema.ts` define um schema `zod` que espelha `common/types.ts` — `savePost()` agora chama `postInputSchema.safeParse(rawData)` e retorna 400 em caso de falha. `.object()` do zod já descarta (strip) qualquer chave fora do schema por padrão, eliminando o `...data as Post` blind spread. Testado: campo desconhecido (`isAdmin`) e `e_popular_marker` (campo derivado, nunca aceito do client) confirmados ausentes do item persistido; `e_popular: 2` (fora do domínio 0/1) corretamente rejeitado com 400.
+
+### 3. ~~`mediaUpload` aceita `Content-Type` do client sem allowlist e sem limite de tamanho~~ — ✅ corrigido
 
 `backend/src/functions/mediaUpload/index.ts:26,50`: `tipo_arquivo` vem direto do body da requisição e é usado como `ContentType` no `PutObjectCommand` que gera a URL pré-assinada — sem checar contra a lista de formatos aceitos (`CLAUDE.md` seção 6 lista PNG/JPEG/WebP/HEIC/HEIF como os únicos aceitos, mas o Lambda não aplica esse allowlist). Também não há nenhum limite de tamanho de arquivo na URL pré-assinada (`getSignedUrl` não define `ContentLengthRange` via policy condition).
 
-**Correção aplicada:** allowlist de `Content-Type` adicionado (`ALLOWED_CONTENT_TYPES`, rejeita com 400 qualquer valor fora de PNG/JPEG/WebP/HEIC/HEIF). **Limite de tamanho não foi corrigido** — exigiria trocar de presigned PUT para presigned POST (`createPresignedPost`), uma mudança maior de abordagem (ver `estudos/04-seguranca-upload-arquivos.md`, Módulo 3), fora do escopo desta correção pontual.
+**Correção aplicada (parte 1, sessão anterior):** allowlist de `Content-Type` adicionado (`ALLOWED_CONTENT_TYPES`, rejeita com 400 qualquer valor fora de PNG/JPEG/WebP/HEIC/HEIF).
 
-**Mitigação parcial já existente:** o bucket `uploads-raw` tem `public_access_block` (sessão 51) — um arquivo malicioso enviado não fica publicamente acessível, e o `imageProcessor` (Sharp.js) provavelmente falha ao decodificar conteúdo que não seja imagem real, então o risco prático de execução é baixo. O gap é mais sobre **abuso de custo/armazenamento** (arquivos grandes, tipos não previstos) do que sobre execução direta de código.
+**Correção aplicada (parte 2):** `mediaUpload` migrado de presigned PUT (`PutObjectCommand` + `getSignedUrl`) para presigned POST (`createPresignedPost` de `@aws-sdk/s3-presigned-post`), com `Conditions: [["content-length-range", 0, 10MB], ["eq", "$Content-Type", tipo_arquivo]]` — o S3 agora valida e rejeita o upload no próprio servidor se o arquivo exceder 10MB, em vez de depender só do limite client-side já existente em `UploadModal.vue`. `admin/src/services/api.ts` (`mediaApi.uploadToS3`) e `UploadModal.vue` atualizados para enviar `FormData` com os `fields` retornados, em vez de um `PUT` simples.
 
-### 4. Nenhuma biblioteca de validação de schema no backend
+### 4. ~~Nenhuma biblioteca de validação de schema no backend~~ — ✅ corrigido
 
-`backend/package.json` não tem `zod`/`joi`/`yup`/equivalente — confirmado por busca direta. A validação de entrada em cada Lambda é manual e inconsistente: alguns checam só presença de campo (`if (!data.slug || !data.titulo || !data.autor_id)`), nenhum valida tipo, formato ou tamanho máximo de string. Isso é a causa raiz dos achados #2 e #3 — não há um único lugar/padrão para fechar essa classe de problema, cada Lambda reinventa sua própria validação parcial.
+`backend/package.json` não tinha `zod`/`joi`/`yup`/equivalente — confirmado por busca direta. A validação de entrada em cada Lambda era manual e inconsistente: alguns checavam só presença de campo (`if (!data.slug || !data.titulo || !data.autor_id)`), nenhum validava tipo, formato ou tamanho máximo de string. Isso era a causa raiz dos achados #2 e #3.
+
+**Correção aplicada:** `zod` adicionado como dependência; `backend/src/common/postSchema.ts` é o primeiro schema centralizado do projeto, usado em `savePost()`. Os demais Lambdas (`adminAuthors`, `adminCategorias`) continuam com validação manual — ficou fora do escopo desta rodada por serem superfícies menores (poucos campos, sem o histórico de mass assignment que motivou o fix em `adminPosts`); considerar estender o padrão a eles numa próxima sessão.
 
 ## 🟢 Pontos positivos (manter)
 

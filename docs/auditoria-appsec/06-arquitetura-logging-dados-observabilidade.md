@@ -7,18 +7,20 @@
 
 ## 🔴 Achados de alto impacto
 
-### 1. Nenhum CloudTrail e nenhum GuardDuty configurados na conta AWS
+### 1. ~~Nenhum CloudTrail e nenhum GuardDuty configurados na conta AWS~~ — ✅ corrigido
 
-Confirmado via AWS CLI direto contra a conta (profile `claude-dev`, região `us-east-1`):
+Confirmado via AWS CLI direto contra a conta (profile `claude-dev`, região `us-east-1`), estado antes da correção:
 ```
 aws guardduty list-detectors   → { "DetectorIds": [] }
 aws cloudtrail describe-trails → []
 ```
-Não existe nenhum trail de CloudTrail (logging de toda chamada de API feita na conta — quem fez o quê, quando, de onde) e nenhum detector do GuardDuty (detecção automatizada de comportamento anômalo/comprometimento) ativo. Isso é mencionado no plano original como possível lacuna; está confirmado.
+Não existia nenhum trail de CloudTrail (logging de toda chamada de API feita na conta — quem fez o quê, quando, de onde) e nenhum detector do GuardDuty (detecção automatizada de comportamento anômalo/comprometimento) ativo. Isso era mencionado no plano original como possível lacuna; confirmado e corrigido.
 
-**Por que é alto impacto apesar do porte pequeno do projeto:** isso não é sobre prevenir um ataque — é sobre a capacidade de **saber que algo aconteceu**. Se a credencial AWS usada pelo pipeline (mesmo via OIDC, sem chave de longa duração) ou a sessão do Cognito admin forem comprometidas, hoje não existe nenhum log de API-level nem alerta automatizado que permitiria detectar isso, delimitar o que foi acessado/alterado, ou responder ao incidente. É a contraparte de visibilidade que falta a todo o resto da auditoria — mesmo que cada controle individual (IAM, CSP, sanitização) esteja correto, sem CloudTrail não há como confirmar isso retroativamente nem investigar quando algo sair errado.
+**Por que era alto impacto apesar do porte pequeno do projeto:** isso não é sobre prevenir um ataque — é sobre a capacidade de **saber que algo aconteceu**. Se a credencial AWS usada pelo pipeline (mesmo via OIDC, sem chave de longa duração) ou a sessão do Cognito admin forem comprometidas, não existia nenhum log de API-level nem alerta automatizado que permitiria detectar isso, delimitar o que foi acessado/alterado, ou responder ao incidente.
 
-**Recomendação:** habilitar 1 trail multi-região do CloudTrail (custo baixo, primeiro trail é gratuito) e 1 detector do GuardDuty (tem free trial de 30 dias, custo posterior é proporcional ao volume — avaliar para o porte da conta). Ambos resolvem boa parte do CIS AWS Foundations Benchmark de uma vez.
+**Correção aplicada:** novo módulo Terraform `infra/modules/security-monitoring/` cria 1 trail multi-região do CloudTrail (bucket S3 dedicado, SSE, public access block, lifecycle de `log_retention_days`) e 1 detector do GuardDuty. Confirmado em produção via AWS CLI: `aws cloudtrail get-trail-status` → `IsLogging: true`; `aws guardduty get-detector` → `Status: ENABLED`.
+
+**Nota para o futuro deploy de `prod`:** GuardDuty e CloudTrail (multi-região) são recursos de **conta/região**, não de aplicação — se `dev` e `prod` algum dia compartilharem a mesma conta AWS, instanciar este módulo nos dois ambientes fará o segundo `apply` falhar ("detector already exists"). Documentado como comentário no próprio módulo; resolver quando `prod` for de fato provisionado.
 
 ## 🟡 Achados de impacto médio
 
