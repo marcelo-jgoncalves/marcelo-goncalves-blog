@@ -407,7 +407,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 13. **GSI projections KEYS_ONLY/INCLUDE** — 5 GSIs com `projection_type = "ALL"` duplicam `conteudo_html`. Fix requer recriar tabela. Fazer com volume real de posts.
 14. **getPostsByCategory: Limit + FilterExpression** — baixo impacto agora, cresce com rascunhos em categorias.
 15. **CloudFront `static/*` TTL explícito** — adicionar `default_ttl`/`max_ttl` por consistência.
-16. **Full-text search (Algolia)** — searchPosts é full table scan O(n). Estratégia decidida (Algolia, não OpenSearch — custo fixo de cluster injustificável para este volume). Plano completo em `docs/plano-busca-algolia.md`. Avaliar execução com 500+ posts ou se a busca degradar antes disso.
+16. **Full-text search (Algolia)** — searchPosts é full table scan O(n). Estratégia decidida (Algolia, não OpenSearch — custo fixo de cluster injustificável para este volume). Plano completo em `docs/plano-busca-algolia.md`. **Sem gatilho de volume** (decisão 2026-06-28) — entra na fila de prioridades de implementação, não espera 500+ posts.
 
 ### Baixa prioridade
 17. ~~Paginação bidirecional~~ ✅ Implementada em artigos e o-projeto

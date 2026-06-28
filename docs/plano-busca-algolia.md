@@ -1,8 +1,8 @@
 # Plano de Implementação — Busca Full-Text via Algolia
 
-> Status: **planejamento, nada executado ainda**. Estratégia decidida (Algolia, não OpenSearch) — ver justificativa de custo abaixo.
+> Status: **planejamento, execução prevista em breve**. Estratégia decidida (Algolia, não OpenSearch) — ver justificativa de custo abaixo.
 > Achado original: `docs/auditoria-engenharia/07-performance-e-escalabilidade.md`, item 1 (maior impacto da auditoria).
-> Gatilho de execução: quando o catálogo de posts crescer (sugestão original: 500+ posts) ou quando a degradação de latência da busca for percebida antes disso.
+> Gatilho de execução: **sem limiar de volume** (decisão de Marcelo, 2026-06-28) — entra na fila de prioridades de implementação, não fica esperando o catálogo crescer.
 
 ## 1. O problema, em concreto
 
@@ -78,10 +78,11 @@ Mantém a chave de API do Algolia só no backend, consistente com o padrão atua
 
 ## 7. Gatilho de execução
 
-Não implementar agora — volume atual (14 posts) não justifica a complexidade adicional (mais uma conta externa, dados duplicados entre DynamoDB e Algolia, mais uma Lambda para manter). Revisitar quando:
-- O catálogo de posts crescer significativamente (referência original: 500+ posts), **ou**
-- A latência da busca for percebida como problema real antes disso, **ou**
-- Houver necessidade de features que o Algolia oferece de graça e o Scan atual não tem (typo tolerance, highlighting, facetas por categoria/autor) — pode ser motivo de implementação antecipada por valor de produto, não só performance.
+**Decisão (2026-06-28): sem limiar de volume.** Implementar em breve, entrando na fila de prioridades junto com os outros itens pendentes da auditoria — não fica condicionado ao catálogo atingir 500+ posts. Motivo: mesmo com volume baixo, o Scan atual já não escala bem com qualquer crescimento, e o custo de implementação (Algolia free tier = $0) não justifica esperar o problema aparecer para só então corrigir.
+
+Itens que tornam a implementação mais valiosa quanto antes:
+- Features que o Algolia oferece e o Scan atual não tem (typo tolerance, highlighting, facetas por categoria/autor) — ganho de produto, não só de performance.
+- Remove um ponto conhecido de dívida técnica antes que o catálogo cresça o suficiente para a migração ficar mais arriscada (mais dados para reindexar, mais chance de inconsistência durante o backfill).
 
 ## 8. Fonte interna
 
