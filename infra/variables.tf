@@ -68,3 +68,21 @@ variable "enable_cloudfront_logging" {
   type        = bool
   default     = false
 }
+
+variable "enable_budget_alerts" {
+  description = "Cria AWS Budgets com alertas via SNS quando limite mensal é atingido. Desativado em dev para manter custo zero."
+  type        = bool
+  default     = false
+}
+
+variable "budget_monthly_limit_usd" {
+  description = "Limite orçamentário mensal em USD para ativar alertas. Default: 100 USD (margem de segurança para dev)."
+  type        = number
+  default     = 100
+}
+
+variable "budget_alert_email" {
+  description = "Email para notificações de orçamento excedido via AWS Budgets. Obrigatório se enable_budget_alerts=true."
+  type        = string
+  default     = ""
+}
