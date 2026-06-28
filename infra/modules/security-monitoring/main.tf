@@ -11,6 +11,13 @@
 # se dev e prod compartilharem a mesma conta AWS, instanciar este módulo
 # duas vezes faz o segundo `apply` falhar ("detector already exists"). Se
 # forem contas separadas (boa prática), está correto manter em ambas.
+#
+# GuardDuty tem custo recorrente real (sem free tier permanente, só 30 dias
+# de trial) — por isso fica atrás de var.enable_guardduty, seguindo o mesmo
+# padrão de enable_xray_tracing/enable_synthetic_canary (infra/variables.tf):
+# desligado em dev, ligado quando o ambiente de produção existir. CloudTrail
+# fica sempre ligado — primeiro trail é gratuito e o valor de auditoria
+# (saber quem fez o quê, mesmo em dev) supera o custo quase zero.
 
 data "aws_caller_identity" "current" {}
 
@@ -90,5 +97,7 @@ resource "aws_cloudtrail" "main" {
 }
 
 resource "aws_guardduty_detector" "main" {
+  count = var.enable_guardduty ? 1 : 0
+
   enable = true
 }

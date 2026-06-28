@@ -12,6 +12,7 @@ enable_cloudwatch_alarms  = true
 alarm_email               = "marcelo.mjgoncalves@gmail.com"
 enable_cloudfront_logging = false # setar true quando prod tiver tráfego real
 enable_synthetic_canary   = true  # monitoramento contínuo de disponibilidade, sempre ativo em prod
+enable_guardduty          = true  # detecção de ameaça sempre ativa em prod (achado AppSec Cat. 6)
 
 # Lambda Provisioned Concurrency — 1 instância sempre aquecida elimina cold starts
 provisioned_concurrency = 1

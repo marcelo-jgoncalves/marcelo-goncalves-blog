@@ -86,3 +86,9 @@ variable "budget_alert_email" {
   type        = string
   default     = ""
 }
+
+variable "enable_guardduty" {
+  description = "Habilita o detector do GuardDuty. Tem 30 dias de trial gratuito; depois cobra por volume de eventos analisados (~poucos USD/mês). Desativado em dev por padrão — ativar quando o ambiente de produção for criado."
+  type        = bool
+  default     = false
+}

@@ -15,6 +15,10 @@ enable_cloudfront_logging = false
 # o heartbeat funcionando, depois voltar para false. Em prod fica sempre true.
 enable_synthetic_canary = false
 
+# GuardDuty (~poucos USD/mês após o trial de 30 dias) — desligado em dev.
+# Ativar (true) quando o ambiente de produção for criado.
+enable_guardduty = false
+
 # Lambda Provisioned Concurrency — 0 = off (dev economiza custo)
 # Em prod: setar para 1+ para eliminar cold starts
 provisioned_concurrency = 0

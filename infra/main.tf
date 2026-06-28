@@ -139,4 +139,5 @@ module "security_monitoring" {
   environment        = var.environment
   project_name       = var.project_name
   log_retention_days = var.log_retention_days
+  enable_guardduty   = var.enable_guardduty
 }
