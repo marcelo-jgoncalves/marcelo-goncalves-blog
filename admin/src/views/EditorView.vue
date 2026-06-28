@@ -15,11 +15,25 @@ import type { Categoria, Post } from '../types'
 // div/span: wrapper dos nodes customizados do Tiptap (Callout, PullQuote,
 // ClosingFlourish, embed do YouTube) — sem eles o DOMPurify "desempacota"
 // esses nodes, descartando a div e deixando só o texto solto no HTML salvo.
-const ALLOWED_TAGS = ['p','br','strong','em','u','s','h2','h3','h4','ul','ol','li',
-  'blockquote','pre','code','img','a','table','thead','tbody','tr','td','th','hr',
-  'div','span','iframe']
-const ALLOWED_ATTR = ['src','alt','href','title','class','target','rel','width','height',
-  'frameborder','allow','allowfullscreen','data-youtube-video']
+// Sincronizado com backend/src/common/sanitizer.ts — ALLOWED_TAGS e ALLOWED_ATTR
+// devem ser idênticos entre admin (DOMPurify) e backend (sanitize-html).
+const ALLOWED_TAGS = [
+  // Block
+  'h1','h2','h3','h4','h5','h6',
+  'p','blockquote','pre','hr','br',
+  'ul','ol','li',
+  'div','table','thead','tbody','tr','th','td',
+  // Inline
+  'strong','em','u','s','code',
+  'a','img','span','mark',
+  'iframe', // YouTube embeds
+]
+const ALLOWED_ATTR = [
+  'src','alt','href','title','class','id','target','rel','width','height',
+  'loading', // img
+  'frameborder','allow','allowfullscreen','data-youtube-video', // iframe
+  'colspan','rowspan', // th, td
+]
 
 function sanitizeHtml(html: string): string {
   return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR })

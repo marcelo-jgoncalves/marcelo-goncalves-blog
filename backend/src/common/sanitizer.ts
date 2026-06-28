@@ -14,12 +14,14 @@ const ALLOWED_TAGS = [
   // Inline
   "strong", "em", "u", "s", "code",
   "a", "img", "span", "mark",
+  "iframe", // YouTube embeds (data-youtube-video attribute)
 ];
 
 const ALLOWED_ATTRIBUTES: sanitizeHtml.IOptions["allowedAttributes"] = {
   "*": ["class", "id"],
-  "a": ["href", "target", "rel"],
+  "a": ["href", "target", "rel", "title"],
   "img": ["src", "alt", "width", "height", "loading"],
+  "iframe": ["src", "width", "height", "frameborder", "allow", "allowfullscreen", "data-youtube-video"],
   "th": ["colspan", "rowspan"],
   "td": ["colspan", "rowspan"],
 };
