@@ -62,6 +62,27 @@ resource "aws_cloudfront_origin_access_control" "lambda_oac" {
   signing_protocol                  = "sigv4"
 }
 
+# Único header de segurança que faltava: o Lambda SSR (next.config.ts
+# headers()) já envia X-Frame-Options, X-Content-Type-Options, Referrer-Policy
+# e Permissions-Policy via header HTTP real — mas nunca enviou
+# Content-Security-Policy. Esta policy adiciona só esse header (evita
+# duplicar/conflitar com os que o Lambda já envia corretamente).
+# script-src/style-src precisam de 'unsafe-inline': o app usa o script inline
+# de Consent Mode v2 (frontend/app/layout.tsx) e inline style={{}} em vários
+# componentes — migrar para nonce/hash exigiria middleware por requisição,
+# fora de escopo desta correção. frame-src libera embeds de YouTube nos posts
+# (mesmo allowlist do sanitizer, ver backend/src/common/sanitizer.ts).
+resource "aws_cloudfront_response_headers_policy" "frontend_security_headers" {
+  name = "${var.project_name}-${var.environment}-frontend-security-headers"
+
+  security_headers_config {
+    content_security_policy {
+      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://youtube-nocookie.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
+      override                = true
+    }
+  }
+}
+
 resource "aws_cloudfront_distribution" "frontend" {
   enabled         = true
   is_ipv6_enabled = true
@@ -196,9 +217,10 @@ resource "aws_cloudfront_distribution" "frontend" {
 
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
   default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "Lambda-SSR"
+    allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "Lambda-SSR"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
     forwarded_values {
       query_string = true # Necessário para paginação (?nextToken) e busca (?q)

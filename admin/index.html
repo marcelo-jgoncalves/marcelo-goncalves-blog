@@ -7,24 +7,12 @@
     <title>Admin — Marcelo Gonçalves</title>
     <meta name="robots" content="noindex, nofollow">
 
-    <!-- Segurança -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <!-- X-Frame-Options é enviado via CloudFront header (não via meta tag, que é ignorada) -->
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <!-- CSP: removido 'unsafe-inline' do style-src, usamos tag <style> no build Vite ao invés -->
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' 'wasm-unsafe-eval';
-      style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
-      font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      connect-src 'self'
-        https://cognito-idp.us-east-1.amazonaws.com
-        https://*.auth.us-east-1.amazoncognito.com
-        https://*.execute-api.us-east-1.amazonaws.com
-        https://*.s3.amazonaws.com
-        https://*.s3.us-east-1.amazonaws.com;
-    ">
+    <!-- Segurança: todos os headers (CSP, X-Frame-Options, X-Content-Type-Options,
+         Referrer-Policy, Strict-Transport-Security) são enviados via header HTTP
+         real pelo CloudFront, não por <meta> — admin é SPA estática (S3+Vite),
+         sem servidor para emitir headers, e X-Frame-Options/X-Content-Type-Options
+         nunca são honrados via <meta> em nenhum browser. Ver
+         infra/modules/admin/cloudfront.tf (aws_cloudfront_response_headers_policy.admin_security_headers). -->
   </head>
   <body>
     <div id="app"></div>
