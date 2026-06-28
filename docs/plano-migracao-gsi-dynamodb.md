@@ -1,8 +1,25 @@
 # Plano de Migração — GSI de Baixa Cardinalidade (DynamoDB)
 
-> Status: **planejamento, nada executado ainda**. Ambiente: dev (downtime aceitável, confirmado por Marcelo).
+> Status: **✅ CONCLUÍDA e validada em dev (2026-06-28, sessão 52).** Ambiente: dev (downtime aceitável, confirmado por Marcelo).
 > Achado original: `docs/auditoria-engenharia/07-performance-e-escalabilidade.md`, item 2.
 > Esta migração também alimenta o post `postagens/auditoria-engenharia-ia/16-standalone-dynamodb-gsi-partition-key-design.md`.
+
+## Resultado final (execução real)
+
+Todas as 3 fases do plano abaixo foram executadas e validadas contra o ambiente dev real, sem desvio do desenho original:
+
+| Fase | Commit | Validação |
+|---|---|---|
+| 1 — backup + backfill + novas GSIs | `edb88e5` | Backup completo (14 itens) salvo em `scripts/backups/` (gitignored). Backfill via `scripts/backfill-gsi-markers.mjs` (`--dry-run` depois real): 10× `e_popular_marker`, 14× `e_projeto_marker`, zero erros. `terraform plan`: 2 attribute + 2 GSI adicionados, zero destruição. |
+| 2 — backend troca de GSI | `3946d73` | `getPosts`/`adminPosts` migrados para `PopularesPorData_v2`/`ProjetoPorData_v2`. 120/120 testes, lint e `tsc` limpos. Smoke test real contra a API de dev: `/posts/populares` retornou 10/10 itens, `/projeto` retornou 13/14 (1 post com `status=Programado`, corretamente excluído pelo filtro — não é bug). |
+| 3 — remoção das GSIs antigas | `5174eb0` | `terraform plan`: 0 add, 15 change (14 são `source_code_hash` de Lambda, não relacionados), 0 destroy. Validação pós-deploy via Node SDK: GSIs antigas (`PopularesPorData`, `ProjetoPorData`) confirmadas ausentes; item count da tabela = 14 (idêntico ao backup); smoke test repetido com os mesmos resultados (10/13). |
+
+**Achado real descoberto durante a execução** (não estava no plano original): `e_projeto = 1` em **100% dos 14 posts** — o pior caso possível de hot partition, toda a tabela concentrada numa única partição lógica. Ilustra o problema de forma mais contundente do que qualquer exemplo hipotético — vale destacar isso no post.
+
+**Lições da execução real, não previstas no plano:**
+- AWS CLI no Windows corrompeu o JSON do backup (encoding de caracteres acentuados em `conteudo_html`) — resolvido usando AWS SDK direto via Node em todos os scripts (`scripts/backup-posts-table.mjs`, `scripts/backfill-gsi-markers.mjs`).
+- `terraform apply` é responsabilidade exclusiva do pipeline CD (push → `cd.yml`), nunca rodado localmente — isso adicionou 2 ciclos de espera de pipeline (~5-20min cada) ao tempo total.
+- Pipeline falhou 2x antes de aplicar a fase 1: uma regressão real de segurança no sanitizer (iframe XSS, ver `a8cf101`) e cota de armazenamento do GitHub Actions esgotada (resolvido tornando o repositório público, após confirmar zero segredos commitados).
 
 ## 1. O problema, em concreto
 
