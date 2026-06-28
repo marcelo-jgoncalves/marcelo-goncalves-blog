@@ -51,7 +51,7 @@ Severidades diferentes merecem resposta diferente: fast burn (page) é "acorda a
 
 Isto é SLI/SLO real (objetivo de negócio declarado → error budget derivado → alarme derivado do error budget), não apenas "CloudWatch Alarm com nome bonito". Mas tem 2 limitações conhecidas, deliberadas:
 - O SLI cobre só a API (`AWS/ApiGateway`), não o frontend/CDN — o canary (`canary.tf`) cobre disponibilidade ponta-a-ponta via Synthetics, mas com alarme threshold simples (2 falhas consecutivas), não burn rate.
-- MTTR não é medido automaticamente — não há instrumentação de "tempo entre alarme e resolução". Ficaria em um sistema de incident tracking (PagerDuty/Opsgenie), fora do escopo de CloudWatch puro.
+- MTTR não tem dashboard dedicado nem sistema de incident tracking (PagerDuty/Opsgenie) — mas é calculável sem custo adicional via `scripts/mttr-report.mjs`, que lê o CloudWatch Alarm History (gravado nativamente por 14 meses, sem infra nova) e pareia transições `ALARM → OK` em incidentes com duração. Uso: `AWS_PROFILE=claude-dev node scripts/mttr-report.mjs --env dev --days 30`.
 
 ## Por que tráfego e duration não têm alarme fixo
 
