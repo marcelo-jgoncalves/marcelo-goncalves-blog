@@ -91,6 +91,8 @@ module "media" {
   enable_xray_tracing      = var.enable_xray_tracing
   enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
   alarm_email              = var.alarm_email
+  admin_origin             = module.admin.cloudfront_url
+  frontend_origin          = module.frontend.cloudfront_url
   assets_bucket_name       = module.frontend.s3_bucket_name
   posts_table_arn          = module.dynamodb.posts_table_arn
   posts_table_name         = module.dynamodb.posts_table_name

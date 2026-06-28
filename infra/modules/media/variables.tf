@@ -33,3 +33,15 @@ variable "alarm_email" {
   type        = string
   default     = ""
 }
+
+variable "admin_origin" {
+  description = "CloudFront domain of admin SPA (for CORS whitelist in uploads bucket)"
+  type        = string
+  default     = ""
+}
+
+variable "frontend_origin" {
+  description = "CloudFront domain of frontend blog (for CORS whitelist in uploads bucket)"
+  type        = string
+  default     = ""
+}

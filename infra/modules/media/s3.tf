@@ -6,17 +6,35 @@ resource "aws_s3_bucket" "uploads" {
   force_destroy = var.environment == "dev" ? true : false
 }
 
-# 2. Configuração de CORS
+# 2. Bloquear acesso público — uploads-raw só deve ser acessível via Lambda + presigned URLs
+resource "aws_s3_bucket_public_access_block" "uploads_public_access" {
+  bucket = aws_s3_bucket.uploads.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# 3. Configuração de CORS — restritiva (só admin + frontend CloudFront, sem wildcard)
 resource "aws_s3_bucket_cors_configuration" "uploads_cors" {
   bucket = aws_s3_bucket.uploads.id
 
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["PUT", "POST", "GET"]
-    allowed_origins = ["*"]
+    # Restringido aos domínios CloudFront reais — presigned URLs são emitidas
+    # apenas pelo admin Vue (UploadModal.vue) para CORS preflight no browser.
+    # Frontend nunca faz upload direto a este bucket (só imageProcessor).
+    allowed_origins = [
+      "https://${var.admin_origin}",
+      "https://${var.frontend_origin}"
+    ]
     expose_headers  = ["ETag"]
     max_age_seconds = 3000
   }
+
+  depends_on = [aws_s3_bucket_public_access_block.uploads_public_access]
 }
 
 # 3. Notificação S3 → Lambda imageProcessor
