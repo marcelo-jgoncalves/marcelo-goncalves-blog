@@ -35,18 +35,8 @@ resource "aws_dynamodb_table" "posts" {
   }
 
   attribute {
-    name = "e_projeto"
-    type = "N" # Boolean armazenado como 0 ou 1 para índice
-  }
-
-  attribute {
     name = "data_publicacao"
     type = "S"
-  }
-
-  attribute {
-    name = "e_popular"
-    type = "N" # Boolean armazenado como 0 ou 1 para índice
   }
 
   attribute {
@@ -85,20 +75,11 @@ resource "aws_dynamodb_table" "posts" {
     projection_type = "ALL"
   }
 
-  # GSI 3: ProjetoPorData (Para /o-projeto)
-  # DEPRECATED — hash_key = e_projeto (Number 0/1) é anti-padrão de baixa
-  # cardinalidade (achado #2, docs/auditoria-engenharia/07-*.md). Mantida
-  # em paralelo com ProjetoPorData_v2 durante a migração (fase 1); remover
-  # após o backend trocar de GSI + smoke test (fase 2).
-  global_secondary_index {
-    name            = "ProjetoPorData"
-    hash_key        = "e_projeto"
-    range_key       = "data_publicacao" # Ordem ascendente será controlada na query
-    projection_type = "ALL"
-  }
-
-  # GSI 3v2: ProjetoPorData_v2 — sparse index via e_projeto_marker (string,
-  # só existe quando e_projeto=1). Substitui GSI 3 (ver nota acima).
+  # GSI 3: ProjetoPorData_v2 (Para /o-projeto) — sparse index via
+  # e_projeto_marker (string, só existe quando e_projeto=1). Substitui a
+  # GSI original (hash_key = e_projeto, Number 0/1 — anti-padrão de baixa
+  # cardinalidade, achado #2 de docs/auditoria-engenharia/07-*.md). Migração
+  # completa em docs/plano-migracao-gsi-dynamodb.md.
   global_secondary_index {
     name            = "ProjetoPorData_v2"
     hash_key        = "e_projeto_marker"
@@ -106,16 +87,8 @@ resource "aws_dynamodb_table" "posts" {
     projection_type = "ALL"
   }
 
-  # GSI 4: PopularesPorData (Para seções "Populares")
-  # DEPRECATED — mesma razão da GSI 3. Ver ProjetoPorData_v2 acima.
-  global_secondary_index {
-    name            = "PopularesPorData"
-    hash_key        = "e_popular"
-    range_key       = "data_atualizacao"
-    projection_type = "ALL"
-  }
-
-  # GSI 4v2: PopularesPorData_v2 — sparse index via e_popular_marker.
+  # GSI 4: PopularesPorData_v2 (Para seções "Populares") — mesma razão da
+  # GSI 3 acima.
   global_secondary_index {
     name            = "PopularesPorData_v2"
     hash_key        = "e_popular_marker"
