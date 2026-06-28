@@ -11,9 +11,9 @@
 
 As duas distributions (`admin`, `frontend`) declaram `viewer_certificate { cloudfront_default_certificate = true }`. Esse modo só é compatível com a política de protocolo padrão da AWS — **não é possível** declarar `minimum_protocol_version = "TLSv1.2_2021"` (a recomendação atual) junto com certificado default; isso só fica disponível ao usar um certificado ACM customizado com SNI. Hoje isso está bloqueado por uma dependência já conhecida do backlog (domínio definitivo ainda não configurado) — não é um achado novo, é a formalização do motivo técnico exato do bloqueio.
 
-### 2. DynamoDB sem criptografia em repouso declarada explicitamente no Terraform
+### 2. ~~DynamoDB sem criptografia em repouso declarada explicitamente no Terraform~~ — ✅ corrigido
 
-Nenhuma das 3 tabelas (`infra/modules/dynamodb/main.tf`) declara `server_side_encryption`. Confirmado via AWS CLI (`describe-table` → `SSEDescription: null`) que a tabela está usando o comportamento **default** da AWS — que desde 2018 criptografa todas as tabelas em repouso automaticamente com uma chave **AWS-owned** (gratuita, mas sem visibilidade de uso via CloudTrail/KMS e sem possibilidade de revogar acesso via política de chave). Não há exposição de dados em texto claro — é uma lacuna de **explicitação e auditabilidade**, não uma vulnerabilidade de dados em si. Migrar para uma chave AWS-managed (KMS, ainda gratuita) daria visibilidade de uso sem custo adicional.
+Nenhuma das 3 tabelas (`infra/modules/dynamodb/main.tf`) declarava `server_side_encryption`. Confirmado via AWS CLI (`describe-table` → `SSEDescription: null`) que a tabela usava o comportamento **default** da AWS — que desde 2018 criptografa todas as tabelas em repouso automaticamente com uma chave **AWS-owned** (gratuita, mas sem visibilidade de uso via CloudTrail/KMS). **Correção aplicada:** `server_side_encryption { enabled = true }` adicionado às 3 tabelas — migra para chave AWS-managed (KMS), ainda gratuita, com visibilidade de uso via CloudTrail. `terraform plan` confirmou update in-place, sem destruição/recriação de tabela.
 
 ## 🟢 Pontos positivos (manter)
 

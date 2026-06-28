@@ -7,15 +7,15 @@
 
 ## 🟡 Achados de impacto médio
 
-### 1. Nenhum `usage_plan`/throttling configurado no API Gateway
+### 1. ~~Nenhum `usage_plan`/throttling configurado no API Gateway~~ — ✅ corrigido
 
-Confirmado por busca direta em todo `infra/modules/api-gateway/`: não existe nenhum `aws_api_gateway_usage_plan` nem configuração de throttling (`throttle_settings`) em nenhum método ou stage. A API inteira — incluindo as 8 rotas públicas de leitura — está exposta sem limite de requisições por cliente/IP.
+Confirmado por busca direta em todo `infra/modules/api-gateway/`: não existia nenhum `aws_api_gateway_usage_plan` nem configuração de throttling (`throttle_settings`) em nenhum método ou stage. A API inteira — incluindo as 8 rotas públicas de leitura — estava exposta sem limite de requisições por cliente/IP.
 
 Risco prático: scraping agressivo do conteúdo público, ou simplesmente tráfego anômalo (bot, crawler mal-comportado, ataque de baixo esforço) gerando custo inesperado de Lambda + DynamoDB sem nenhum teto. Não é um risco de confidencialidade/integridade — é de disponibilidade e custo (API4:2023 — Unrestricted Resource Consumption).
 
-**Recomendação:** `aws_api_gateway_usage_plan` com `throttle_settings` (rate/burst) aplicado ao stage, ou `aws_wafv2_web_acl` com rate-based rule na frente do CloudFront/API Gateway — o que também resolveria parte do item de backlog #18 (WAF no admin).
+**Correção aplicada:** `aws_api_gateway_method_settings.throttle_all` (`infra/modules/api-gateway/main.tf`) aplica `throttling_rate_limit = 20`/`throttling_burst_limit = 40` a `*/*` no stage `v1` — cobre toda a API, inclusive as rotas públicas, sem exigir API key (que quebraria o acesso anônimo das rotas de leitura). Valores iniciais conservadores, ajustáveis conforme tráfego real. WAF com rate-based rule (item de backlog #18) continua sendo uma camada complementar futura, não substituída por este fix.
 
-### 2. Upload de mídia sem limite de tamanho de arquivo (reforça achado da Categoria 2)
+### 2. Upload de mídia sem limite de tamanho de arquivo (reforça achado da Categoria 2) — não corrigido
 
 `mediaUpload` gera uma URL pré-assinada sem `ContentLengthRange` — um único upload poderia, em teoria, ser arbitrariamente grande, consumindo armazenamento S3 e (se processado) tempo de execução do `imageProcessor` sem teto algum. Mesma raiz do achado #3 da Categoria 2, citado aqui sob a lente de abuso de custo/disponibilidade, não de execução de código.
 

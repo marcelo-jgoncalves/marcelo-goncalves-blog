@@ -22,9 +22,9 @@ Não existe nenhum trail de CloudTrail (logging de toda chamada de API feita na 
 
 ## 🟡 Achados de impacto médio
 
-### 2. Mensagens de erro internas vazadas ao cliente em 3 de 8 Lambdas
+### 2. ~~Mensagens de erro internas vazadas ao cliente em 3 de 8 Lambdas~~ — ✅ corrigido
 
-Levantamento de todos os blocos `catch` dos 8 Lambdas:
+Levantamento de todos os blocos `catch` dos 8 Lambdas (estado antes da correção):
 
 | Lambda | Resposta de erro ao cliente |
 |---|---|
@@ -34,7 +34,7 @@ Levantamento de todos os blocos `catch` dos 8 Lambdas:
 | `adminCategorias` | ❌ mesmo padrão de `adminPosts` |
 | `mediaUpload` | ❌ `JSON.stringify({ message })` — sempre a mensagem real da exceção, sem fallback algum |
 
-Inconsistência real: a maioria dos Lambdas segue a prática correta (ASVS V7.4 — não expor detalhes internos em respostas de erro), mas 3 não seguem. O risco prático é baixo (não há segredo nem dado sensível nas mensagens de exceção do AWS SDK/DynamoDB, tipicamente), mas pode revelar detalhes de implementação (nomes de tabela, estrutura interna) úteis para um atacante mapear o sistema.
+Inconsistência real: a maioria dos Lambdas seguia a prática correta (ASVS V7.4 — não expor detalhes internos em respostas de erro), mas 3 não seguiam. **Correção aplicada:** os 3 Lambdas divergentes (`adminPosts`, `adminCategorias`, `mediaUpload`) agora retornam `"Internal Server Error"` genérico, igual aos outros 5 — o log interno (`logger.error`) continua recebendo a mensagem real da exceção, só a resposta HTTP ao cliente mudou.
 
 ## 🟢 Pontos positivos (manter)
 

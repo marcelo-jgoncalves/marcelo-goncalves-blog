@@ -17,9 +17,9 @@ Isoladamente isso já seria risco médio. Mas há só **uma conta admin em todo 
 
 ## 🟡 Achados de impacto médio
 
-### 2. Password policy abaixo do recomendado para conta de privilégio total
+### 2. ~~Password policy abaixo do recomendado para conta de privilégio total~~ — ✅ corrigido
 
-`password_policy` exige mínimo 8 caracteres, maiúscula, minúscula e número — mas **não exige símbolo**. ASVS V2.1.1 recomenda mínimo 12 caracteres (ou 8 + MFA como controle compensatório, que hoje não existe — ver achado #1).
+`password_policy` exigia mínimo 8 caracteres, maiúscula, minúscula e número — mas **não exigia símbolo**. ASVS V2.1.1 recomenda mínimo 12 caracteres. **Corrigido:** `infra/modules/cognito/main.tf` agora exige mínimo 12 caracteres + símbolo. MFA (achado #1, 🔴) continua não habilitado — essa correção isolada não substitui o controle compensatório que faltava, só fecha a parte de força de senha.
 
 ### 3. Armazenamento do token de sessão no browser não confirmado/documentado
 
