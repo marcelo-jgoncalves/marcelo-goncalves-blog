@@ -1,149 +1,6 @@
 # infra/modules/lambda/main.tf
-
-locals {
-  xray_mode = var.enable_xray_tracing ? "Active" : "PassThrough"
-
-  # Statement X-Ray reutilizado em todas as policies (inofensivo quando desativado)
-  xray_statement = {
-    Action   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords", "xray:GetSamplingRules", "xray:GetSamplingTargets"]
-    Effect   = "Allow"
-    Resource = "*"
-  }
-}
-
-# --- IAM: Role pública (read-only DynamoDB) ---
-resource "aws_iam_role" "public_lambda_role" {
-  name = "${var.project_name}-${var.environment}-public-lambda-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = { Service = "lambda.amazonaws.com" }
-    }]
-  })
-}
-
-resource "aws_iam_policy" "public_lambda_policy" {
-  name = "${var.project_name}-${var.environment}-public-lambda-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:*:*:*"
-      },
-      {
-        Action = ["dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"]
-        Effect = "Allow"
-        Resource = [
-          var.posts_table_arn,
-          "${var.posts_table_arn}/index/*",
-          var.autores_table_arn,
-          "${var.autores_table_arn}/index/*",
-        ]
-      },
-      local.xray_statement
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "public_lambda_attach" {
-  role       = aws_iam_role.public_lambda_role.name
-  policy_arn = aws_iam_policy.public_lambda_policy.arn
-}
-
-# --- IAM: Role admin (read-write DynamoDB) ---
-resource "aws_iam_role" "admin_lambda_role" {
-  name = "${var.project_name}-${var.environment}-admin-lambda-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = { Service = "lambda.amazonaws.com" }
-    }]
-  })
-}
-
-resource "aws_iam_policy" "admin_lambda_policy" {
-  name = "${var.project_name}-${var.environment}-admin-lambda-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:*:*:*"
-      },
-      {
-        Action = [
-          "dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan",
-          "dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:DeleteItem"
-        ]
-        Effect = "Allow"
-        Resource = [
-          var.posts_table_arn,
-          "${var.posts_table_arn}/index/*",
-          var.autores_table_arn,
-          "${var.autores_table_arn}/index/*",
-          var.categorias_table_arn,
-        ]
-      },
-      local.xray_statement
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "admin_lambda_attach" {
-  role       = aws_iam_role.admin_lambda_role.name
-  policy_arn = aws_iam_policy.admin_lambda_policy.arn
-}
-
-# --- IAM: Role mediaUpload (S3 PutObject somente no bucket de uploads) ---
-resource "aws_iam_role" "media_upload_role" {
-  name = "${var.project_name}-${var.environment}-media-upload-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = { Service = "lambda.amazonaws.com" }
-    }]
-  })
-}
-
-resource "aws_iam_policy" "media_upload_policy" {
-  name = "${var.project_name}-${var.environment}-media-upload-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:*:*:*"
-      },
-      {
-        Action   = ["s3:PutObject"]
-        Effect   = "Allow"
-        Resource = "${var.uploads_bucket_arn}/*"
-      },
-      local.xray_statement
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "media_upload_attach" {
-  role       = aws_iam_role.media_upload_role.name
-  policy_arn = aws_iam_policy.media_upload_policy.arn
-}
+#
+# IAM roles/policies (uma por Lambda, least-privilege) vivem em lambda-iam.tf.
 
 # --- CloudWatch Log Groups (retenção explícita — criados antes das Lambdas) ---
 
@@ -191,7 +48,7 @@ resource "aws_cloudwatch_log_group" "admin_categorias" {
 
 resource "aws_lambda_function" "media_upload" {
   function_name = "${var.project_name}-${var.environment}-mediaUpload"
-  role          = aws_iam_role.media_upload_role.arn
+  role          = aws_iam_role.mediaUpload_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -214,7 +71,7 @@ resource "aws_lambda_function" "media_upload" {
 
 resource "aws_lambda_function" "get_post" {
   function_name = "${var.project_name}-${var.environment}-getPost"
-  role          = aws_iam_role.public_lambda_role.arn
+  role          = aws_iam_role.getPost_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -237,7 +94,7 @@ resource "aws_lambda_function" "get_post" {
 
 resource "aws_lambda_function" "get_author" {
   function_name = "${var.project_name}-${var.environment}-getAuthor"
-  role          = aws_iam_role.public_lambda_role.arn
+  role          = aws_iam_role.getAuthor_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -259,7 +116,7 @@ resource "aws_lambda_function" "get_author" {
 
 resource "aws_lambda_function" "get_posts" {
   function_name = "${var.project_name}-${var.environment}-getPosts"
-  role          = aws_iam_role.public_lambda_role.arn
+  role          = aws_iam_role.getPosts_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -281,7 +138,7 @@ resource "aws_lambda_function" "get_posts" {
 
 resource "aws_lambda_function" "admin_posts" {
   function_name = "${var.project_name}-${var.environment}-adminPosts"
-  role          = aws_iam_role.admin_lambda_role.arn
+  role          = aws_iam_role.adminPosts_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -304,7 +161,7 @@ resource "aws_lambda_function" "admin_posts" {
 
 resource "aws_lambda_function" "admin_authors" {
   function_name = "${var.project_name}-${var.environment}-adminAuthors"
-  role          = aws_iam_role.admin_lambda_role.arn
+  role          = aws_iam_role.adminAuthors_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -327,7 +184,7 @@ resource "aws_lambda_function" "admin_authors" {
 
 resource "aws_lambda_function" "admin_categorias" {
   function_name = "${var.project_name}-${var.environment}-adminCategorias"
-  role          = aws_iam_role.admin_lambda_role.arn
+  role          = aws_iam_role.adminCategorias_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -349,54 +206,11 @@ resource "aws_lambda_function" "admin_categorias" {
 }
 
 # --- PostSchedulerLambda ---
-
-resource "aws_iam_role" "scheduler_lambda_role" {
-  name = "${var.project_name}-${var.environment}-scheduler-lambda-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = { Service = "lambda.amazonaws.com" }
-    }]
-  })
-}
-
-resource "aws_iam_policy" "scheduler_lambda_policy" {
-  name = "${var.project_name}-${var.environment}-scheduler-lambda-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:*:*:*"
-      },
-      {
-        Action   = ["dynamodb:Query"]
-        Effect   = "Allow"
-        Resource = "${var.posts_table_arn}/index/StatusProgramadoPorData"
-      },
-      {
-        Action   = ["dynamodb:UpdateItem"]
-        Effect   = "Allow"
-        Resource = var.posts_table_arn
-      },
-      local.xray_statement
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "scheduler_lambda_attach" {
-  role       = aws_iam_role.scheduler_lambda_role.name
-  policy_arn = aws_iam_policy.scheduler_lambda_policy.arn
-}
+# IAM role/policy individual em lambda-iam.tf (aws_iam_role.postScheduler_role).
 
 resource "aws_lambda_function" "post_scheduler" {
   function_name = "${var.project_name}-${var.environment}-postScheduler"
-  role          = aws_iam_role.scheduler_lambda_role.arn
+  role          = aws_iam_role.postScheduler_role.arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   timeout       = 30
