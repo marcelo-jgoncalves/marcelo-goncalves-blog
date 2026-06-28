@@ -28,6 +28,12 @@ const ALLOWED_ATTRIBUTES: sanitizeHtml.IOptions["allowedAttributes"] = {
 
 const ALLOWED_SCHEMES = ["http", "https", "mailto"];
 
+// iframe só é permitido para embeds de YouTube — sanitize-html remove
+// qualquer <iframe> cujo src não resolva para um desses hostnames,
+// mesmo com a tag/atributo allowlisted. Sem isso, "iframe" em
+// ALLOWED_TAGS permitiria <iframe src="qualquer-coisa.html"> (XSS).
+const ALLOWED_IFRAME_HOSTNAMES = ["www.youtube.com", "youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"];
+
 export function sanitizePostHtml(html: string): string {
   if (!html) return html;
 
@@ -35,6 +41,7 @@ export function sanitizePostHtml(html: string): string {
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTRIBUTES,
     allowedSchemes: ALLOWED_SCHEMES,
+    allowedIframeHostnames: ALLOWED_IFRAME_HOSTNAMES,
     // Force rel="noopener noreferrer" on external links
     transformTags: {
       a: (tagName, attribs) => ({

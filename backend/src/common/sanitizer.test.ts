@@ -73,10 +73,17 @@ describe('sanitizePostHtml', () => {
       expect(result).not.toContain('style=');
     });
 
-    it('removes disallowed tags but keeps inner text', () => {
+    it('strips iframe src from non-whitelisted hostnames (XSS vector neutralized)', () => {
       const input = '<iframe src="evil.html">content</iframe>';
       const result = sanitizePostHtml(input);
-      expect(result).not.toContain('<iframe');
+      expect(result).not.toContain('evil.html');
+      expect(result).not.toContain('src=');
+    });
+
+    it('allows iframe src from YouTube (embed use case)', () => {
+      const input = '<iframe src="https://www.youtube.com/embed/abc123"></iframe>';
+      const result = sanitizePostHtml(input);
+      expect(result).toContain('src="https://www.youtube.com/embed/abc123"');
     });
 
     it('removes data-uri in img src', () => {
