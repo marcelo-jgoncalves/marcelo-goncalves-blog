@@ -48,6 +48,9 @@ override.tf
 override.tf.json
 .terraform.lock.hcl
 
+# --- SCRIPTS (snapshots de dados, não código-fonte) ---
+scripts/backups/
+
 # --- BACKEND (Builds & Artefatos) ---
 # Ignora os zips gerados que vão para o S3/Lambda
 infra/builds/*.zip

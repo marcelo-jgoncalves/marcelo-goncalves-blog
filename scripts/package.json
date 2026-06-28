@@ -5,6 +5,8 @@
   "description": "Scripts de operação/manutenção fora do ciclo de build dos workspaces (backfills, relatórios). Não faz parte do app — node_modules próprio, isolado.",
   "type": "module",
   "dependencies": {
-    "@aws-sdk/client-cloudwatch": "^3.937.0"
+    "@aws-sdk/client-cloudwatch": "^3.937.0",
+    "@aws-sdk/client-dynamodb": "^3.937.0",
+    "@aws-sdk/lib-dynamodb": "^3.937.0"
   }
 }
