@@ -56,11 +56,11 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
 
   const baseQuery = {
     TableName: TABLE_NAME,
-    IndexName: "ProjetoPorData",
-    KeyConditionExpression: "e_projeto = :val",
+    IndexName: "ProjetoPorData_v2",
+    KeyConditionExpression: "e_projeto_marker = :val",
     FilterExpression: "#status = :published",
     ExpressionAttributeNames: { "#status": "status" },
-    ExpressionAttributeValues: { ":val": 1, ":published": "Publicado" },
+    ExpressionAttributeValues: { ":val": "PROJ", ":published": "Publicado" },
   };
 
   const postsCommand = new QueryCommand({
@@ -132,11 +132,11 @@ async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParam
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
-    IndexName: "PopularesPorData",
-    KeyConditionExpression: "e_popular = :popular",
+    IndexName: "PopularesPorData_v2",
+    KeyConditionExpression: "e_popular_marker = :popular",
     FilterExpression: "#status = :published",
     ExpressionAttributeNames: { "#status": "status" },
-    ExpressionAttributeValues: { ":popular": 1, ":published": "Publicado" },
+    ExpressionAttributeValues: { ":popular": "POP", ":published": "Publicado" },
     ScanIndexForward: false,
     Limit: limit,
   });

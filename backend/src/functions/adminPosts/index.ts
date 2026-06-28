@@ -135,14 +135,21 @@ async function savePost(data: Partial<Post>, isNew: boolean) {
   }
 
   const now = new Date().toISOString();
+  const ePopular = Number(data.e_popular || 0);
+  const eProjeto = Number(data.e_projeto || 0);
 
   const item: Post = {
     ...data as Post,
     conteudo_html: sanitizePostHtml(data.conteudo_html ?? ""),
     data_atualizacao: now,
     data_publicacao: isNew ? (data.data_publicacao || now) : data.data_publicacao!,
-    e_popular: Number(data.e_popular || 0),
-    e_projeto: Number(data.e_projeto || 0),
+    e_popular: ePopular,
+    e_projeto: eProjeto,
+    // undefined é omitido pelo marshaller (removeUndefinedValues: true em
+    // common/dynamodb.ts) — isso é o que torna o índice esparso: o atributo
+    // simplesmente não existe no item quando o flag é 0.
+    e_popular_marker: ePopular === 1 ? "POP" : undefined,
+    e_projeto_marker: eProjeto === 1 ? "PROJ" : undefined,
     tempo_leitura_min: Number(data.tempo_leitura_min || 5)
   };
 

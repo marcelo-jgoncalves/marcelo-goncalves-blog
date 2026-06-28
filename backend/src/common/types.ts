@@ -20,6 +20,14 @@ export interface Post {
   tempo_leitura_min: number;
   e_popular: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
   e_projeto: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
+  // Sparse index markers — só existem no item quando o respectivo flag é 1.
+  // hash_key de PopularesPorData_v2/ProjetoPorData_v2 (substituem GSIs com
+  // hash_key = e_popular/e_projeto, baixa cardinalidade — ver
+  // docs/plano-migracao-gsi-dynamodb.md). Nunca lidos/escritos fora de
+  // savePost() e getPosts() — e_popular/e_projeto continuam a fonte de
+  // verdade para toda lógica de negócio e UI.
+  e_popular_marker?: "POP";
+  e_projeto_marker?: "PROJ";
   meta_titulo_seo?: string; // SEO (Blueprint v1.7)
   meta_descricao_seo?: string; // SEO (Blueprint v1.7)
   topico?: string; // eyebrow exibido no card (pc-cat) — pode diferir da categoria

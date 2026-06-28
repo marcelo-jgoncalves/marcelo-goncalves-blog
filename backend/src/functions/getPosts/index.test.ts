@@ -73,14 +73,14 @@ describe('getPosts handler', () => {
   });
 
   describe('/posts/populares', () => {
-    it('uses PopularesPorData GSI with e_popular=1', async () => {
+    it('uses PopularesPorData_v2 GSI with e_popular_marker=POP', async () => {
       mockSend.mockResolvedValueOnce({ Items: [POST_A] });
 
       await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];
-      expect(cmd.input.IndexName).toBe('PopularesPorData');
-      expect(cmd.input.ExpressionAttributeValues[':popular']).toBe(1);
+      expect(cmd.input.IndexName).toBe('PopularesPorData_v2');
+      expect(cmd.input.ExpressionAttributeValues[':popular']).toBe('POP');
     });
 
     it('filters only Publicado status', async () => {
@@ -285,13 +285,13 @@ describe('getPosts handler', () => {
   });
 
   describe('/projeto', () => {
-    it('uses ProjetoPorData GSI with Publicado filter', async () => {
+    it('uses ProjetoPorData_v2 GSI with Publicado filter', async () => {
       mockSend.mockResolvedValueOnce({ Items: [POST_A] });
 
       await handler(event({ resource: '/posts/projeto' }), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];
-      expect(cmd.input.IndexName).toBe('ProjetoPorData');
+      expect(cmd.input.IndexName).toBe('ProjetoPorData_v2');
       expect(cmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
     });
   });
