@@ -106,7 +106,50 @@ Regras:
 - vulnerability scanning
 - Zero Trust mindset
 
-Você deve corrigir riscos automaticamente quando possível.
+Você deve corrigir riscos automaticamente quando possível, **exceto** as ações listadas em "Mudanças que exigem aprovação humana explícita" (ver seção `REGRAS DE SEGURANÇA OPERACIONAL`).
+
+---
+
+## AppSec — Regras Concretas (OBRIGATÓRIO)
+
+> Origem: auditoria dedicada de AppSec (`docs/auditoria-appsec/`, OWASP ASVS + API Security Top 10 + AWS Well-Architected Security Pillar). Estas regras existem porque cada uma corrigiu um achado real — não são aspiracionais. O padrão que conecta os achados: a regra existia para **um** campo/endpoint e não foi replicada automaticamente quando um segundo campo/endpoint igual apareceu.
+
+### Sanitização de HTML — regra central, não por campo
+
+Todo campo persistido que será renderizado como HTML (`dangerouslySetInnerHTML` em qualquer componente) **deve** passar por `sanitizePostHtml()` (`backend/src/common/sanitizer.ts`) antes do `PutCommand`. Não existe exceção "este campo é pequeno/interno". Ao adicionar qualquer novo campo de texto rico:
+
+1. Buscar todos os usos de `dangerouslySetInnerHTML` no frontend antes de decidir se o campo precisa de sanitização — não assumir que só `conteudo_html` é renderizado como HTML.
+2. Aplicar a mesma função de sanitização já usada nos demais campos — nunca reimplementar ou pular a etapa.
+
+### Validação de schema obrigatória em todo endpoint de escrita
+
+Nenhuma Lambda de escrita (`POST`/`PUT`) pode persistir `{ ...data as Tipo }` direto do corpo da requisição. `as Tipo` é uma asserção de tipo TypeScript, apagada na compilação — não valida nada em runtime.
+
+- Toda Lambda de escrita **deve** ter um schema `zod` (ver `backend/src/common/postSchema.ts` como referência) que define exatamente os campos aceitos.
+- `.safeParse()` retorna 400 em caso de falha, **antes** de qualquer lógica de negócio.
+- Campos fora do schema devem ser descartados silenciosamente (comportamento padrão do `.object()` do zod), nunca repassados ao banco.
+
+### Dados embutidos em `<script>` (JSON-LD ou qualquer outro)
+
+`JSON.stringify()` não escapa `<`, `>` nem `/` — um valor de campo de texto contendo `</script><script>` quebra a tag quando embutido via `dangerouslySetInnerHTML`.
+
+- Toda vez que dados forem embutidos dentro de uma tag `<script>`, usar `jsonLdScript()` (`frontend/lib/json-ld.ts`), nunca `JSON.stringify()` direto.
+- Isso vale para qualquer schema novo (JSON-LD ou não) — o helper existe para qualquer serialização que vá dentro de HTML, não só para os schemas atuais.
+
+### Upload de arquivo — sempre presigned POST, nunca presigned PUT sem limite
+
+Presigned PUT (`PutObjectCommand` + `getSignedUrl`) não aceita nenhuma condição — qualquer cliente com a URL pode subir um arquivo de qualquer tamanho.
+
+- Toda URL pré-assinada de upload **deve** usar `createPresignedPost` (`@aws-sdk/s3-presigned-post`) com `Conditions: [["content-length-range", 0, MAX_BYTES]]`.
+- O limite de tamanho client-side (validação no formulário) é UX, não segurança — o limite real é o que o S3 valida no próprio upload.
+
+### Autenticação — SRP por padrão, nunca habilitar password auth "por simplicidade"
+
+`ALLOW_USER_PASSWORD_AUTH` no Cognito só deve ser habilitado se o código cliente realmente passar `authFlowType: 'USER_PASSWORD_AUTH'` explicitamente para `signIn()`. Antes de adicionar esse flow ao `explicit_auth_flows`, confirmar no código do client (`grep authFlowType`) que ele é de fato necessário — Amplify v6 já usa SRP por padrão sem nenhuma configuração extra.
+
+### Custo recorrente de serviços de segurança — mesmo padrão de toggle do resto da infra
+
+Serviços de detecção de ameaça com custo recorrente real (ex: GuardDuty, sem free tier permanente) seguem o mesmo padrão de `enable_xray_tracing`/`enable_synthetic_canary`: variável `enable_*` em `infra/variables.tf`, default `false`, ligada explicitamente em `env/prd.tfvars`. Serviços de auditoria sem custo relevante (ex: CloudTrail — primeiro trail é gratuito) ficam sempre ligados, mesmo em dev — o valor de rastreabilidade supera um custo que já é zero ou centavos.
 
 ---
 
@@ -574,6 +617,17 @@ Sempre priorizar:
 - reversibilidade
 - mudanças incrementais
 - rollback simples
+
+## Mudanças que exigem aprovação humana explícita (não tentar contornar)
+
+Algumas mudanças afetam todos os colaboradores do projeto ou alteram a postura de segurança de forma que os parâmetros corretos são uma decisão de produto, não uma decisão técnica — mesmo quando você tem a permissão técnica para executá-las.
+
+- **Configuração de branch protection** (`gh api .../branches/{branch}/protection`) — os parâmetros (quais checks são obrigatórios, se admins estão isentos, se PR review é exigida) afetam o fluxo de trabalho de todo colaborador presente e futuro.
+- **Habilitar/desabilitar MFA, mudar `mfa_configuration` do Cognito** — afeta a experiência de login do(s) usuário(s) existente(s) sem aviso prévio.
+- **Mudanças de TLS/certificado que podem quebrar acesso existente** (ex: `minimum_protocol_version` do CloudFront).
+- Qualquer mudança de configuração de repositório/conta que não seja revertida por um simples `git revert` (settings do GitHub, IAM policies de conta, configuração de domínio).
+
+Nestes casos: documentar o achado, preparar o comando/mudança exata e pronta para executar, e **parar** — pedir para o humano rodar ou aprovar explicitamente os parâmetros. Não procurar um caminho alternativo para aplicar a mudança sem essa aprovação.
 
 ---
 
