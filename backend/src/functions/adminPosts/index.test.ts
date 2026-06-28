@@ -228,6 +228,32 @@ describe('adminPosts handler', () => {
       expect(typeof sentCmd.input.Item.e_popular).toBe('number');
       expect(typeof sentCmd.input.Item.e_projeto).toBe('number');
     });
+
+    it('descarta campos desconhecidos (mass assignment / overposting)', async () => {
+      mockSend.mockResolvedValueOnce({});
+      const postWithExtra = { ...SAMPLE_POST, isAdmin: true, e_popular_marker: 'POP' };
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(postWithExtra) }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[0][0];
+      expect(sentCmd.input.Item.isAdmin).toBeUndefined();
+      // e_popular_marker é derivado de e_popular no servidor, não aceito do client
+      expect(sentCmd.input.Item.e_popular_marker).toBeUndefined();
+    });
+
+    it('returns 400 when e_popular não é 0 ou 1', async () => {
+      const postWithInvalidFlag = { ...SAMPLE_POST, e_popular: 2 };
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(postWithInvalidFlag) }),
+        ctx,
+        jest.fn(),
+      );
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
+    });
   });
 
   describe('PUT /admin/posts/:slug (update)', () => {

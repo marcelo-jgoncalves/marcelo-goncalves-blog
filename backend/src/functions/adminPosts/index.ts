@@ -5,6 +5,7 @@ import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
+import { postInputSchema } from "../../common/postSchema";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -125,14 +126,16 @@ async function getPost(slug: string) {
   };
 }
 
-async function savePost(data: Partial<Post>, isNew: boolean) {
-  if (!data.slug || !data.titulo || !data.autor_id) {
-    return { 
-        statusCode: 400, 
-        body: JSON.stringify({ message: "Missing required fields" }), 
-        headers // <--- ADICIONADO
+async function savePost(rawData: unknown, isNew: boolean) {
+  const parsed = postInputSchema.safeParse(rawData);
+  if (!parsed.success) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: "Invalid post data" }),
+      headers,
     };
   }
+  const data = parsed.data;
 
   const now = new Date().toISOString();
   const ePopular = Number(data.e_popular || 0);

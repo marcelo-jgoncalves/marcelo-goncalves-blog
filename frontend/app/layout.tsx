@@ -11,6 +11,7 @@ import Footer from "../components/layout/Footer";
 import SkipLink from "../components/ui/SkipLink";
 import ConsentManager from "../components/consent/ConsentManager";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, AUTHOR_NAME, AUTHOR_TWITTER } from "@/lib/config";
+import { jsonLdScript } from "@/lib/json-ld";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -131,11 +132,11 @@ export default function RootLayout({
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(orgJsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(websiteJsonLd) }}
         />
       </head>
       <body

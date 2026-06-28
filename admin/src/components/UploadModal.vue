@@ -38,11 +38,11 @@ async function handleUpload(file: File) {
   error.value = ''
 
   try {
-    // 1. Obter URL Assinada
-    const { uploadURL, basePath } = await mediaApi.getUploadUrl(file.name, file.type)
+    // 1. Obter URL e campos do presigned POST
+    const { url, fields, basePath } = await mediaApi.getUploadUrl(file.name, file.type)
 
     // 2. Enviar para o S3
-    await mediaApi.uploadToS3(uploadURL, file)
+    await mediaApi.uploadToS3(url, fields, file)
 
     // basePath = "media/{uuid}-{nome}" (sem extensão)
     // O imageProcessor gera as variantes: -480.avif, -480.webp, -768.*, -1280.*

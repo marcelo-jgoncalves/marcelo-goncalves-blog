@@ -30,10 +30,12 @@ resource "aws_cognito_user_pool_client" "admin_client" {
 
   # Configurações para SPA (Vue.js)
   generate_secret = false # SPAs não conseguem guardar segredos, então desligamos
+  # ALLOW_USER_PASSWORD_AUTH removido (achado AppSec, Cat. 1): admin/src/stores/auth.ts
+  # chama signIn() sem authFlowType — Amplify v6 já usa SRP por padrão, então a senha
+  # nunca precisa ser transmitida em texto puro.
   explicit_auth_flows = [
     "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_PASSWORD_AUTH" # Permite login direto user/senha (mais simples para admin interno)
   ]
 
   # Tokens válidos por 1 hora (Acesso) e 30 dias (Refresh)

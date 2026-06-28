@@ -132,3 +132,11 @@ module "finops" {
   alert_email              = var.budget_alert_email
   enable_budget_alerts     = var.enable_budget_alerts
 }
+
+module "security_monitoring" {
+  source = "./modules/security-monitoring"
+
+  environment        = var.environment
+  project_name       = var.project_name
+  log_retention_days = var.log_retention_days
+}

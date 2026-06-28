@@ -84,12 +84,15 @@ export const mediaApi = {
       body: JSON.stringify({ nome_arquivo: fileName, tipo_arquivo: fileType })
     }),
 
-  uploadToS3: async (presignedUrl: string, file: File) => {
-    const res = await fetch(presignedUrl, {
-      method: 'PUT',
-      body: file,
-      headers: { 'Content-Type': file.type }
-    })
+  // Presigned POST (não PUT): o S3 valida `content-length-range` nos `fields`
+  // recebidos do backend, então o limite de tamanho é aplicado no servidor,
+  // não só no client (achado AppSec, Cat. 2).
+  uploadToS3: async (url: string, fields: Record<string, string>, file: File) => {
+    const formData = new FormData()
+    Object.entries(fields).forEach(([key, value]) => formData.append(key, value))
+    formData.append('file', file)
+
+    const res = await fetch(url, { method: 'POST', body: formData })
     if (!res.ok) throw new Error('Falha no upload para o S3')
   }
 }

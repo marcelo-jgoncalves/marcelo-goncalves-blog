@@ -4,11 +4,13 @@ import { handler } from './index';
 
 jest.mock('@aws-sdk/client-s3', () => ({
   S3Client: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
-  PutObjectCommand: jest.fn().mockImplementation((args) => args),
 }));
 
-jest.mock('@aws-sdk/s3-request-presigner', () => ({
-  getSignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/presigned'),
+jest.mock('@aws-sdk/s3-presigned-post', () => ({
+  createPresignedPost: jest.fn().mockResolvedValue({
+    url: 'https://s3.example.com/uploads-bucket',
+    fields: { key: 'mock-key', 'Content-Type': 'image/jpeg' },
+  }),
 }));
 
 jest.mock('../../common/logger', () => ({
@@ -40,11 +42,12 @@ describe('mediaUpload', () => {
     process.env.ADMIN_ORIGIN = 'https://admin.example.com';
   });
 
-  it('retorna uploadURL e basePath sem extensão', async () => {
+  it('retorna url, fields e basePath sem extensão', async () => {
     const res = await handler(makeEvent({ nome_arquivo: 'foto.jpg', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
     expect(res!.statusCode).toBe(200);
     const body = JSON.parse(res!.body);
-    expect(body.uploadURL).toBe('https://s3.example.com/presigned');
+    expect(body.url).toBe('https://s3.example.com/uploads-bucket');
+    expect(body.fields).toBeDefined();
     expect(body.basePath).toMatch(/^media\//);
     expect(body.basePath).not.toMatch(/\.(webp|jpg|jpeg|png|heic|heif)$/);
   });
