@@ -4,7 +4,13 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+
+// autoAddCss injeta <style> em runtime — causa mismatch de hidratação em SSR.
+// Import estático do styles.css (poucos KB) substitui o all.min.css (74KB,
+// definição de todos os ícones do pacote pra apenas 19 usados no projeto).
+config.autoAddCss = false;
 
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";

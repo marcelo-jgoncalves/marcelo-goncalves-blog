@@ -1,4 +1,6 @@
 /* frontend/components/ui/SystemStatus.tsx */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCodeBranch, faServer, faGlobe, faBolt } from '@fortawesome/free-solid-svg-icons';
 import './SystemStatus.css';
 
 export default function SystemStatus() {
@@ -15,7 +17,7 @@ export default function SystemStatus() {
       <dl className="system-status-list">
         <div className="system-status-row">
           <dt className="system-status-group">
-            <i className="fas fa-code-branch system-status-icon-version" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faCodeBranch} className="system-status-icon-version" aria-hidden="true" />
             <span>Version</span>
           </dt>
           <dd className="system-status-value-bold">v1.2.0</dd>
@@ -23,7 +25,7 @@ export default function SystemStatus() {
 
         <div className="system-status-row">
           <dt className="system-status-group">
-            <i className="fas fa-server system-status-icon-env" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faServer} className="system-status-icon-env" aria-hidden="true" />
             <span>Env</span>
           </dt>
           <dd>
@@ -33,7 +35,7 @@ export default function SystemStatus() {
 
         <div className="system-status-row">
           <dt className="system-status-group">
-            <i className="fas fa-globe system-status-icon-region" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faGlobe} className="system-status-icon-region" aria-hidden="true" />
             <span>Region</span>
           </dt>
           <dd className="system-status-value-normal">us-east-1</dd>
@@ -41,7 +43,7 @@ export default function SystemStatus() {
 
         <div className="system-status-row">
           <dt className="system-status-group">
-            <i className="fas fa-bolt system-status-icon-uptime" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faBolt} className="system-status-icon-uptime" aria-hidden="true" />
             <span>Uptime</span>
           </dt>
           <dd className="system-status-value-bold">99.99%</dd>

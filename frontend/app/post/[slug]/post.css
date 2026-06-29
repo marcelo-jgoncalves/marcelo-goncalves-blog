@@ -129,7 +129,7 @@
   gap: 7px;
 }
 
-.post-byline-meta i { color: var(--clay); font-size: 12px; }
+.post-byline-meta svg { color: var(--clay); font-size: 12px; }
 
 /* ==========================================================================
    3. COVER

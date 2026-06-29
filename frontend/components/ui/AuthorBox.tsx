@@ -1,9 +1,11 @@
 // frontend/components/ui/AuthorBox.tsx
 
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedinIn, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { getAuthor } from '@/lib/api';
 import Eyebrow from './Eyebrow';
-import './AuthorBox.css'; 
+import './AuthorBox.css';
 
 interface AuthorBoxProps {
   authorId?: string;
@@ -49,17 +51,17 @@ export default async function AuthorBox({ authorId }: AuthorBoxProps) {
         <nav className="author-social" aria-label={`Redes sociais de ${autor.nome_exibicao}`}>
             {autor.linkedin_url && (
                 <a href={autor.linkedin_url} target="_blank" rel="noopener noreferrer author" aria-label={`LinkedIn de ${autor.nome_exibicao}`}>
-                    <i className="fab fa-linkedin-in" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
                 </a>
             )}
             {autor.github_url && (
                 <a href={autor.github_url} target="_blank" rel="noopener noreferrer author" aria-label={`GitHub de ${autor.nome_exibicao}`}>
-                    <i className="fab fa-github" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon={faGithub} aria-hidden="true" />
                 </a>
             )}
             {autor.instagram_url && (
                 <a href={autor.instagram_url} target="_blank" rel="noopener noreferrer author" aria-label={`Instagram de ${autor.nome_exibicao}`}>
-                    <i className="fab fa-instagram" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon={faInstagram} aria-hidden="true" />
                 </a>
             )}
         </nav>

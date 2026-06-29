@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faListUl, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Eyebrow from './Eyebrow';
 import './TOC.css';
 
@@ -57,10 +59,10 @@ export default function TOC({ headings, variant }: TOCProps) {
           aria-controls="toc-mobile-content"
         >
           <span className="toc-mobile-title">
-            <i className="fas fa-list-ul toc-icon" aria-hidden="true" />
+            <FontAwesomeIcon icon={faListUl} className="toc-icon" aria-hidden="true" />
             Neste Artigo
           </span>
-          <i className={`fas fa-chevron-down toc-chevron ${isOpen ? 'open' : ''}`} aria-hidden="true" />
+          <FontAwesomeIcon icon={faChevronDown} className={`toc-chevron ${isOpen ? 'open' : ''}`} aria-hidden="true" />
         </button>
 
         <div id="toc-mobile-content" className={`toc-mobile-content ${isOpen ? 'open' : ''}`}>

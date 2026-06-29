@@ -1,5 +1,7 @@
 /* frontend/components/ui/ShareButtons.tsx */
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedinIn, faWhatsapp, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import './ShareButtons.css';
 import CopyLinkButton from './CopyLinkButton';
 
@@ -30,7 +32,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             aria-label="Compartilhar artigo no LinkedIn"
             title="Compartilhar no LinkedIn"
           >
-            <i className="fab fa-linkedin-in" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
           </a>
 
           {/* Botão WhatsApp */}
@@ -42,7 +44,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             aria-label="Compartilhar artigo no WhatsApp"
             title="Compartilhar no WhatsApp"
           >
-            <i className="fab fa-whatsapp" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faWhatsapp} aria-hidden="true" />
           </a>
 
           {/* Botão X (Twitter) */}
@@ -54,7 +56,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
             aria-label="Compartilhar artigo no X (antigo Twitter)"
             title="Compartilhar no X"
           >
-            <i className="fab fa-x-twitter" aria-hidden="true"></i>
+            <FontAwesomeIcon icon={faXTwitter} aria-hidden="true" />
           </a>
 
           {/* Novo Botão Interativo de Copiar Link */}

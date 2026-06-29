@@ -1,4 +1,6 @@
 import './busca.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { searchPosts, getPopularPosts } from '@/lib/api';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
@@ -96,7 +98,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
                 <form className="archive-search-bar" action="/busca" method="get">
                   <input type="text" name="q" className="search-input" placeholder="Tente buscar por 'AWS', 'RAG'..." defaultValue={q} aria-label="Buscar no blog" />
                   <button type="submit" className="search-button" aria-label="Pesquisar">
-                    <i className="fas fa-search"></i>
+                    <FontAwesomeIcon icon={faSearch} />
                   </button>
                 </form>
               </div>

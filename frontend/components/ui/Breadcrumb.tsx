@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import './Breadcrumb.css';
 
 export interface BreadcrumbItem {
@@ -15,7 +17,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <nav className="breadcrumb" aria-label="Breadcrumb">
       {items.map((item, index) => (
         <span key={index} style={{ display: 'contents' }}>
-          {index > 0 && <i className="fas fa-chevron-right" aria-hidden="true" />}
+          {index > 0 && <FontAwesomeIcon icon={faChevronRight} aria-hidden="true" />}
           {item.href ? (
             <Link href={item.href}>{item.label}</Link>
           ) : (

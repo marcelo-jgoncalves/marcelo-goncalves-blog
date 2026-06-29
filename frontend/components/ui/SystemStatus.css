@@ -67,7 +67,7 @@
   gap: 8px; /* Ritmo 8px */
 }
 
-.system-status-group i {
+.system-status-group svg {
   width: 16px; /* Ajuste para ritmo */
   text-align: center;
 }

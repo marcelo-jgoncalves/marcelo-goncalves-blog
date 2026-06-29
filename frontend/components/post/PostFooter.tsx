@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedinIn, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import styles from './PostFooter.module.css';
 
 export interface PostFooterProps {
@@ -30,16 +32,16 @@ export default function PostFooter({ author, social }: PostFooterProps) {
           <div className={styles.row}>
             {social?.linkedin_url && (
               <a href={social.linkedin_url} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer author">
-                <i className="fab fa-linkedin-in" aria-hidden="true" />
+                <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
               </a>
             )}
             {social?.github_url && (
               <a href={social.github_url} aria-label="GitHub" target="_blank" rel="noopener noreferrer author">
-                <i className="fab fa-github" aria-hidden="true" />
+                <FontAwesomeIcon icon={faGithub} aria-hidden="true" />
               </a>
             )}
             <a href={social?.instagram_url || '#'} aria-label="Instagram" target="_blank" rel="noopener noreferrer author">
-              <i className="fab fa-instagram" aria-hidden="true" />
+              <FontAwesomeIcon icon={faInstagram} aria-hidden="true" />
             </a>
           </div>
         </div>

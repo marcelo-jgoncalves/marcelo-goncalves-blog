@@ -1,6 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { faLinkedinIn, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { SITE_URL } from '@/lib/config';
 import './ShareWidget.css';
 
@@ -41,7 +45,7 @@ export default function ShareWidget({ title, slug }: ShareWidgetProps) {
           className="share-widget__btn"
           aria-label="Compartilhar no LinkedIn"
         >
-          <i className="fab fa-linkedin-in" aria-hidden="true" />
+          <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
         </a>
 
         <a
@@ -51,7 +55,7 @@ export default function ShareWidget({ title, slug }: ShareWidgetProps) {
           className="share-widget__btn"
           aria-label="Compartilhar no X"
         >
-          <i className="fab fa-x-twitter" aria-hidden="true" />
+          <FontAwesomeIcon icon={faXTwitter} aria-hidden="true" />
         </a>
 
         <button
@@ -59,7 +63,7 @@ export default function ShareWidget({ title, slug }: ShareWidgetProps) {
           className={`share-widget__btn share-widget__btn--copy${copied ? ' share-widget__btn--copied' : ''}`}
           aria-label={copied ? 'Link copiado!' : 'Copiar link'}
         >
-          <i className={copied ? 'fas fa-check' : 'far fa-copy'} aria-hidden="true" />
+          <FontAwesomeIcon icon={copied ? faCheck : faCopy} aria-hidden="true" />
         </button>
       </div>
     </section>

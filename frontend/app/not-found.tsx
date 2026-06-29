@@ -1,4 +1,6 @@
 import './not-found.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { getPopularPosts } from '@/lib/api';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import NewsletterCTA from '@/components/ui/NewsletterCTA';
@@ -38,7 +40,7 @@ export default async function NotFound() {
                   required
                 />
                 <button type="submit" className="search-button">
-                    <i className="fas fa-search"></i>
+                    <FontAwesomeIcon icon={faSearch} />
                 </button>
             </form>
         </div>

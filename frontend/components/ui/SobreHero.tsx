@@ -1,4 +1,6 @@
 // frontend/components/ui/SobreHero.tsx
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedinIn, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons';
 import './SobreHero.css';
 
 interface SobreHeroProps {
@@ -32,13 +34,13 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
 
           <div className="sobre-hero__social">
             <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <i className="fab fa-linkedin-in" aria-hidden="true" />
+              <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
             </a>
             <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <i className="fab fa-instagram" aria-hidden="true" />
+              <FontAwesomeIcon icon={faInstagram} aria-hidden="true" />
             </a>
             <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <i className="fab fa-github" aria-hidden="true" />
+              <FontAwesomeIcon icon={faGithub} aria-hidden="true" />
             </a>
           </div>
         </div>

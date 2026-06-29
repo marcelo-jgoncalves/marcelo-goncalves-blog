@@ -2,6 +2,8 @@ import './post.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { getPost, getAuthor } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
@@ -207,14 +209,14 @@ export default async function PostPage({ params }: Props) {
             </div>
             <span className="post-byline-dot" aria-hidden="true" />
             <span className="post-byline-meta">
-              <i className="far fa-calendar" aria-hidden="true" />
+              <FontAwesomeIcon icon={faCalendar} aria-hidden="true" />
               <time dateTime={post.data_publicacao}>
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
               </time>
             </span>
             <span className="post-byline-dot" aria-hidden="true" />
             <span className="post-byline-meta">
-              <i className="far fa-clock" aria-hidden="true" />
+              <FontAwesomeIcon icon={faClock} aria-hidden="true" />
               {post.tempo_leitura_min || 5} min de leitura
             </span>
           </div>

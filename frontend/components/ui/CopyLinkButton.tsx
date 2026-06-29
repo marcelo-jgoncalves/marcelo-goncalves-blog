@@ -3,6 +3,9 @@
 'use client';
 
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
 
 interface CopyLinkButtonProps {
   url: string;
@@ -30,7 +33,7 @@ export default function CopyLinkButton({ url }: CopyLinkButtonProps) {
       aria-label={copied ? "Link copiado com sucesso" : "Copiar link do artigo"}
       title={copied ? "Copiado!" : "Copiar Link"}
     >
-      <i className={copied ? 'fas fa-check' : 'far fa-copy'} aria-hidden="true"></i>
+      <FontAwesomeIcon icon={copied ? faCheck : faCopy} aria-hidden="true" />
     </button>
   );
 }

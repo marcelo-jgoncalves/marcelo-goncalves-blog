@@ -2,6 +2,15 @@
 'use client';
 
 import { useEffect } from 'react';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+
+// Manipulação de DOM puro (fora da árvore React) — não dá pra usar
+// <FontAwesomeIcon>. icon().html é a API vanilla-JS oficial do
+// fontawesome-svg-core pra gerar a mesma <svg> em string HTML.
+const CHECK_ICON_HTML = icon(faCheck).html.join('');
+const COPY_ICON_HTML = icon(faCopy).html.join('');
 
 /**
  * Componente silencioso que injeta botões de cópia nos blocos de código (Shiki).
@@ -16,7 +25,7 @@ export default function CopyCodeLogic() {
         
         const originalInner = button.innerHTML;
         // Feedback visual: Muda para ícone de check (estilizado via classe .copied no CSS)
-        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.innerHTML = CHECK_ICON_HTML;
         button.classList.add('copied');
         
         setTimeout(() => {
@@ -40,7 +49,7 @@ export default function CopyCodeLogic() {
       button.className = 'copy-code-btn';
       button.setAttribute('aria-label', 'Copiar código');
       // Ícone inicial: Cópia (Regular)
-      button.innerHTML = '<i class="far fa-copy"></i>';
+      button.innerHTML = COPY_ICON_HTML;
 
       // Garante que o container tenha posição relativa para o botão absoluto
       (pre as HTMLElement).style.position = 'relative';

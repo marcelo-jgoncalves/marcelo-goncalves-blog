@@ -76,7 +76,7 @@
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.share-widget__btn i {
+.share-widget__btn svg {
   font-size: var(--text-lg);
   line-height: 1;
 }
@@ -95,6 +95,6 @@
   border-color: rgba(255,255,255,0.30);
 }
 
-.share-widget__btn--copied i {
+.share-widget__btn--copied svg {
   color: #22c55e;
 }

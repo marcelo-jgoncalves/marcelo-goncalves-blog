@@ -1,6 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedinIn, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import styles from './ShareRail.module.css';
 
 interface ShareRailProps {
@@ -26,13 +29,13 @@ export default function ShareRail({ currentPageUrl, linkedinUrl, twitterUrl }: S
     <>
       <aside className={styles.share} data-audit="post-share" aria-label="Compartilhar artigo">
         <a href={linkedinUrl} className={styles.shareBtn} title="LinkedIn" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-linkedin-in" aria-hidden="true" />
+          <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
         </a>
         <a href={twitterUrl} className={styles.shareBtn} title="X" target="_blank" rel="noopener noreferrer">
-          <i className="fab fa-x-twitter" aria-hidden="true" />
+          <FontAwesomeIcon icon={faXTwitter} aria-hidden="true" />
         </a>
         <button type="button" className={styles.shareBtn} title="Copiar link" onClick={handleCopy}>
-          <i className={`fas ${copied ? 'fa-check' : 'fa-link'}`} aria-hidden="true" />
+          <FontAwesomeIcon icon={copied ? faCheck : faLink} aria-hidden="true" />
         </button>
       </aside>
 

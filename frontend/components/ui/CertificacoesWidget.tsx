@@ -1,4 +1,6 @@
 // frontend/components/ui/CertificacoesWidget.tsx
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCertificate } from '@fortawesome/free-solid-svg-icons';
 import StaticPicture from './StaticPicture';
 import './CertificacoesWidget.css';
 
@@ -17,7 +19,7 @@ export default function CertificacoesWidget() {
       {/* Header */}
       <div className="certs-widget__header">
         <div className="certs-widget__icon-wrap" aria-hidden="true">
-          <i className="fas fa-certificate" />
+          <FontAwesomeIcon icon={faCertificate} />
         </div>
         <h3 className="certs-widget__title">Certificações</h3>
       </div>

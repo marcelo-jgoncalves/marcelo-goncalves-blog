@@ -1,7 +1,19 @@
 // frontend/components/ui/FullwidthCallout.tsx
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faEnvelope, faRocket, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import './FullwidthCallout.css';
+
+// Mapa fechado dos ícones realmente usados pelos 4 callers (SuperDestaque*) —
+// a prop `icon` continua recebendo a mesma string ("fa-envelope") por
+// compatibilidade, só resolvida aqui pro ícone SVG correspondente.
+const ICON_MAP: Record<string, IconDefinition> = {
+  'fa-envelope': faEnvelope,
+  'fa-rocket': faRocket,
+  'fa-briefcase': faBriefcase,
+};
 
 type FwcVariant    = 'light' | 'gradient' | 'newsletter' | 'dark' | 'navy';
 type FwcIconVariant = 'light' | 'dark';
@@ -46,9 +58,9 @@ export default function FullwidthCallout({
     >
       <div className="fwc-inner" style={{ maxWidth }}>
 
-        {icon && (
+        {icon && ICON_MAP[icon] && (
           <div className="fwc-icon" data-icon-variant={iconVariant} aria-hidden="true">
-            <i className={`fas ${icon}`} />
+            <FontAwesomeIcon icon={ICON_MAP[icon]} />
           </div>
         )}
 

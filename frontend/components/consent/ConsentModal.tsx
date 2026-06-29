@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import type { ConsentState, ConsentSettings } from '@/lib/consent';
 
 interface ConsentModalProps {
@@ -70,7 +72,7 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
             onClick={onClose}
             aria-label="Fechar preferências"
           >
-            <i className="fas fa-times" aria-hidden="true" />
+            <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
           </button>
         </div>
 
