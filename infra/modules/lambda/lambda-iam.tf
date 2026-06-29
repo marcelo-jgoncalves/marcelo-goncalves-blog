@@ -100,7 +100,7 @@ resource "aws_iam_role_policy_attachment" "getAuthor_attach" {
   policy_arn = aws_iam_policy.getAuthor_policy.arn
 }
 
-# --- getPosts: read posts_table (Query, Scan) ---
+# --- getPosts: read posts_table (GetItem, Query, Scan) ---
 resource "aws_iam_role" "getPosts_role" {
   name = "${var.project_name}-${var.environment}-getPosts-role"
 
@@ -122,7 +122,7 @@ resource "aws_iam_policy" "getPosts_policy" {
     Statement = [
       local.logs_statement,
       {
-        Action = ["dynamodb:Query", "dynamodb:Scan"]
+        Action = ["dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"]
         Effect = "Allow"
         Resource = [
           var.posts_table_arn,
