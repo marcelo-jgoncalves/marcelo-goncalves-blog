@@ -5,6 +5,7 @@ import { QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
+import { invalidatePostCache } from "../../common/cacheInvalidation";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -90,6 +91,10 @@ async function publishPost(slug: string, scheduledDate: string, eProjeto: number
   await applyCounterDeltas(
     computeCounterDeltas({ status: "Programado", e_projeto: eProjeto }, { status: "Publicado", e_projeto: eProjeto }),
   );
+
+  // Sempre Programado -> Publicado: a home (posts recentes) sempre fica
+  // stale aqui, diferente de savePost onde isso só acontece condicionalmente.
+  await invalidatePostCache([`/post/${slug}`, "/"]);
 
   logger.info("post_published", { slug, scheduledDate });
 }

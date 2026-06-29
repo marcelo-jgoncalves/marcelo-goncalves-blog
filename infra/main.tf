@@ -25,6 +25,11 @@ module "lambda" {
   uploads_bucket_name  = module.media.uploads_bucket_name
   uploads_bucket_arn   = module.media.uploads_bucket_arn
   admin_origin         = "https://${module.admin.cloudfront_url}"
+
+  # Valor literal (var.frontend_cloudfront_distribution_id), não
+  # module.frontend.cloudfront_distribution_id — essa referência criaria um
+  # ciclo: module.lambda -> module.frontend -> module.api-gateway -> module.lambda.
+  frontend_distribution_id = var.frontend_cloudfront_distribution_id
 }
 
 module "api-gateway" {

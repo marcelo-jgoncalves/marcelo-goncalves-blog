@@ -1,12 +1,18 @@
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
+import { invalidatePostCache } from '../../common/cacheInvalidation';
 
 jest.mock('../../common/dynamodb', () => ({
   dynamo: { send: jest.fn() },
 }));
 
+jest.mock('../../common/cacheInvalidation', () => ({
+  invalidatePostCache: jest.fn(),
+}));
+
 const mockSend = dynamo.send as jest.Mock;
+const mockInvalidatePostCache = invalidatePostCache as jest.Mock;
 
 const ctx = {
   awsRequestId: 'req-admin-789',
@@ -201,6 +207,31 @@ describe('adminPosts handler', () => {
       expect(mockSend).toHaveBeenCalledTimes(1); // só o Put, sem chamada de contador
     });
 
+    it('invalida /post/{slug} e "/" ao criar um post já Publicado', async () => {
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+    });
+
+    it('invalida só /post/{slug} (sem "/") ao criar um Rascunho', async () => {
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho' }) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post']);
+    });
+
     it('returns 400 when slug is missing', async () => {
       const { slug, ...noSlug } = SAMPLE_POST;
       const result = await handler(
@@ -343,6 +374,41 @@ describe('adminPosts handler', () => {
       expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': 0 });
     });
 
+    it('invalida "/" também quando o status muda de Rascunho para Publicado', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST), // SAMPLE_POST.status === 'Publicado'
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+    });
+
+    it('NÃO invalida "/" quando o post já era Publicado e continua Publicado (edição de conteúdo)', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post']);
+    });
+
     it('returns 500 on slug mismatch', async () => {
       const result = await handler(
         event({
@@ -401,6 +467,33 @@ describe('adminPosts handler', () => {
 
       const counterCmd = mockSend.mock.calls[2][0];
       expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': -1 });
+    });
+
+    it('invalida /post/{slug} e "/" ao deletar um post Publicado', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+    });
+
+    it('invalida só /post/{slug} (sem "/") ao deletar um Rascunho', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
+
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post']);
     });
   });
 

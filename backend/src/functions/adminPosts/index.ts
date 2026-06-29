@@ -7,6 +7,7 @@ import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
 import { postInputSchema } from "../../common/postSchema";
 import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
+import { invalidatePostCache } from "../../common/cacheInvalidation";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -172,6 +173,12 @@ async function savePost(rawData: unknown, isNew: boolean) {
 
   await applyCounterDeltas(computeCounterDeltas(existing, item));
 
+  // Post passou a contar como publicado agora (criação já publicada, ou
+  // transição de Rascunho/Programado -> Publicado) -- a home (posts
+  // recentes) também fica stale, não só a página do post.
+  const ficouPublicado = item.status === "Publicado" && existing?.status !== "Publicado";
+  await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/"] : [`/post/${item.slug}`]);
+
   return {
     statusCode: 200,
     body: JSON.stringify({ message: "Post saved", slug: item.slug }),
@@ -188,6 +195,8 @@ async function deletePost(slug: string) {
   }));
 
   await applyCounterDeltas(computeCounterDeltas(existing, undefined));
+
+  await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/"] : [`/post/${slug}`]);
 
   return {
     statusCode: 200,

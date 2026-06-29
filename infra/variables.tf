@@ -98,3 +98,8 @@ variable "enable_guardduty" {
   type        = bool
   default     = false
 }
+
+variable "frontend_cloudfront_distribution_id" {
+  description = "ID da distribution CloudFront do frontend (module.frontend), usado por adminPosts/postScheduler para invalidar cache sob demanda. Valor literal, não referência de módulo — module.lambda -> module.frontend -> module.api-gateway -> module.lambda criaria um ciclo no Terraform. Atualizar manualmente se a distribution for recriada (raro)."
+  type        = string
+}

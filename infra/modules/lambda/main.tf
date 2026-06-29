@@ -148,10 +148,11 @@ resource "aws_lambda_function" "admin_posts" {
 
   environment {
     variables = {
-      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
-      ADMIN_ORIGIN = var.admin_origin
-      LOG_LEVEL    = var.log_level
-      XRAY_ENABLED = tostring(var.enable_xray_tracing)
+      POSTS_TABLE              = "${var.project_name}-${var.environment}-posts"
+      ADMIN_ORIGIN             = var.admin_origin
+      LOG_LEVEL                = var.log_level
+      XRAY_ENABLED             = tostring(var.enable_xray_tracing)
+      FRONTEND_DISTRIBUTION_ID = var.frontend_distribution_id
     }
   }
 
@@ -220,9 +221,10 @@ resource "aws_lambda_function" "post_scheduler" {
 
   environment {
     variables = {
-      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
-      LOG_LEVEL    = var.log_level
-      XRAY_ENABLED = tostring(var.enable_xray_tracing)
+      POSTS_TABLE              = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL                = var.log_level
+      XRAY_ENABLED             = tostring(var.enable_xray_tracing)
+      FRONTEND_DISTRIBUTION_ID = var.frontend_distribution_id
     }
   }
 

@@ -1,11 +1,17 @@
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
+import { invalidatePostCache } from '../../common/cacheInvalidation';
 
 jest.mock('../../common/dynamodb', () => ({
   dynamo: { send: jest.fn() },
 }));
 
+jest.mock('../../common/cacheInvalidation', () => ({
+  invalidatePostCache: jest.fn(),
+}));
+
 const mockSend = dynamo.send as jest.Mock;
+const mockInvalidatePostCache = invalidatePostCache as jest.Mock;
 
 beforeAll(() => {
   process.env.POSTS_TABLE = 'test-posts-table';
@@ -61,6 +67,18 @@ describe('postScheduler handler', () => {
 
       const counterCmd = mockSend.mock.calls[2][0];
       expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 1 });
+    });
+
+    it('invalida /post/{slug} e "/" ao publicar (sempre afeta a home)', async () => {
+      const post = { slug: 'my-post', data_publicacao_programada: '2026-01-01T00:00:00.000Z' };
+      mockSend
+        .mockResolvedValueOnce({ Items: [post] }) // Query
+        .mockResolvedValueOnce({}) // UpdateItem (status)
+        .mockResolvedValueOnce({}); // contador
+
+      await handler({});
+
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/my-post', '/']);
     });
 
     it('updates status to Publicado for each post', async () => {

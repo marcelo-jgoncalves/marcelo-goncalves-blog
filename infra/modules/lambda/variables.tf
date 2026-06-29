@@ -28,6 +28,11 @@ variable "admin_origin" {
   default     = "*"
 }
 
+variable "frontend_distribution_id" {
+  description = "CloudFront distribution ID of the public frontend, used by adminPosts/postScheduler to invalidate the cache of /post/{slug} (and /) on demand after a write"
+  type        = string
+}
+
 variable "enable_xray_tracing" {
   description = "Enable AWS X-Ray active tracing on Lambda functions"
   type        = bool

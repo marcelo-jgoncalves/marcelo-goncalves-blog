@@ -20,3 +20,9 @@ enable_point_in_time_recovery = true
 
 # Lambda Provisioned Concurrency — 1 instância sempre aquecida elimina cold starts
 provisioned_concurrency = 1
+
+# Distribution CloudFront do frontend — TODO: ambiente de prod ainda não existe.
+# Atualizar com o ID real (`aws cloudfront list-distributions`) antes do primeiro
+# apply em prod. Ver comentário em infra/variables.tf sobre por que é um valor
+# literal e não uma referência de módulo.
+frontend_cloudfront_distribution_id = ""

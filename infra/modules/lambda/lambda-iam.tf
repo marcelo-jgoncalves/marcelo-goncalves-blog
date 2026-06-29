@@ -5,6 +5,8 @@
 #
 # Logs + X-Ray statements are included in every role (inert when disabled).
 
+data "aws_caller_identity" "current" {}
+
 locals {
   xray_mode = var.enable_xray_tracing ? "Active" : "PassThrough"
 
@@ -18,6 +20,14 @@ locals {
     Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
     Effect   = "Allow"
     Resource = "arn:aws:logs:*:*:*"
+  }
+
+  # adminPosts/postScheduler invalidam o cache do CloudFront sob demanda
+  # após save/publish/delete (docs/plano-cache-invalidation-cloudfront.md).
+  cloudfront_invalidation_statement = {
+    Action   = ["cloudfront:CreateInvalidation"]
+    Effect   = "Allow"
+    Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${var.frontend_distribution_id}"
   }
 }
 
@@ -171,6 +181,7 @@ resource "aws_iam_policy" "adminPosts_policy" {
           "${var.posts_table_arn}/index/*",
         ]
       },
+      local.cloudfront_invalidation_statement,
       local.xray_statement
     ]
   })
@@ -329,6 +340,7 @@ resource "aws_iam_policy" "postScheduler_policy" {
         Effect   = "Allow"
         Resource = var.posts_table_arn
       },
+      local.cloudfront_invalidation_statement,
       local.xray_statement
     ]
   })

@@ -26,3 +26,9 @@ enable_point_in_time_recovery = false
 # Lambda Provisioned Concurrency — 0 = off (dev economiza custo)
 # Em prod: setar para 1+ para eliminar cold starts
 provisioned_concurrency = 0
+
+# Distribution CloudFront do frontend — valor literal (ver comentário em
+# infra/variables.tf sobre o ciclo que uma referência de módulo criaria).
+# Confirmado via `aws cloudfront list-distributions` (dominio dsns2wusdrj9z.cloudfront.net).
+# Se a distribution for recriada, atualizar este ID manualmente.
+frontend_cloudfront_distribution_id = "E1XI31PS4HFJIH"
