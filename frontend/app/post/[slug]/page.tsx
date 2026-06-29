@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
-import { getPost, getAuthor } from '@/lib/api';
+import { getPost, getAuthor, getAllPosts } from '@/lib/api';
 import { processFullPostContent } from '@/lib/postUtils';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
@@ -20,6 +20,25 @@ import ReadingProgress from '@/components/post/ReadingProgress';
 import TableOfContents from '@/components/post/TableOfContents';
 
 export const revalidate = 60;
+
+// Sem isso, a rota [slug] nunca entra no sistema de ISR do Next.js — o
+// `revalidate` acima fica sendo um no-op silencioso e toda página de post
+// é renderizada via SSR puro a cada request (CloudFront nunca cacheia,
+// Cache-Control vira no-store). Confirmado em produção: dynamicRoutes
+// vazio no prerender-manifest.json antes deste fix.
+export async function generateStaticParams() {
+  const slugs: { slug: string }[] = [];
+  let nextToken: string | undefined;
+
+  do {
+    const data = await getAllPosts(nextToken, 100).catch(() => null);
+    if (!data?.posts?.length) break;
+    slugs.push(...data.posts.map((post: { slug: string }) => ({ slug: post.slug })));
+    nextToken = data.nextToken ?? undefined;
+  } while (nextToken);
+
+  return slugs;
+}
 
 interface Props {
   params: Promise<{ slug: string }>;
