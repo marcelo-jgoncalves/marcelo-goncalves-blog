@@ -280,6 +280,13 @@ Marcelo    → color: var(--dark-900)  — DM Sans 700
 Gonçalves  → color: var(--accent)   — DM Sans 700
 ```
 
+### CSS Modules vs. CSS global (regra decidida em 2026-06-29)
+
+- **Componente novo a partir de agora → `.module.css`.** Evita colisão de nome de classe (sem garantia de tooling hoje — convenção de prefixo manual `sobre-*`/`op-*`/`pc-*`/`post-*` depende de disciplina, não de compilador) e dá uma rede de segurança mínima contra typo (`styles.foo` inexistente vira `undefined`, em vez de uma string solta que silenciosamente não estiliza nada).
+- **CSS existente (177 arquivos `.css` globais) → não migrar retroativamente.** Custo real (reescrever seletores `:nth-child`/descendentes que cruzam elementos, ex. `.sobre-tc-item:nth-child(1) .sobre-tc-logo`, com risco de regressão visual em todas as páginas) maior que o ganho (proteção contra um problema que a convenção de prefixo já mitiga na prática). Só editar um arquivo `.css` existente se já estiver tocando naquele componente por outro motivo — não é proibido, só não é prioridade isolada.
+- Variáveis CSS (`--accent`, `--space-*` etc.) continuam globais em `globals.css` independente da escolha — CSS Modules não as afeta, só escopa classes/ids.
+- Os 2 arquivos que já eram `.module.css` antes desta regra (`PostFooter.module.css`, `ShareRail.module.css`) foram a motivação original — escolha pontual de quem escreveu, nunca formalizada até agora.
+
 ---
 
 ## 6. Imagens (pipeline obrigatória)
