@@ -5,6 +5,7 @@ import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import StaticPicture from '@/components/ui/StaticPicture';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import './sobre.css';
@@ -66,25 +67,25 @@ const LANGUAGES = [
 ];
 
 const CERTS = [
-  { tile: 'SA', issuer: 'AWS Certified', name: 'Solutions Architect – Associate', badge: '/static/badges/solutions.png', accent: true },
-  { tile: 'SO', issuer: 'AWS Certified', name: 'SysOps Administrator – Associate', badge: '/static/badges/sysops.png' },
-  { tile: 'TF', issuer: 'HashiCorp', name: 'Terraform Associate', badge: '/static/badges/terraform.png' },
-  { tile: 'CP', issuer: 'AWS Certified', name: 'Cloud Practitioner', badge: '/static/badges/pactitioner.png' },
-  { tile: 'SP', issuer: 'Splunk', name: 'Power User', badge: '/static/badges/splunk.png' },
+  { tile: 'SA', issuer: 'AWS Certified', name: 'Solutions Architect – Associate', badge: 'solutions', accent: true },
+  { tile: 'SO', issuer: 'AWS Certified', name: 'SysOps Administrator – Associate', badge: 'sysops' },
+  { tile: 'TF', issuer: 'HashiCorp', name: 'Terraform Associate', badge: 'terraform' },
+  { tile: 'CP', issuer: 'AWS Certified', name: 'Cloud Practitioner', badge: 'pactitioner' },
+  { tile: 'SP', issuer: 'Splunk', name: 'Power User', badge: 'splunk' },
 ];
 
 const ACAD_ITEMS = [
-  { num: '01', type: 'Especialização', name: 'Arquitetura e Projetos de Cloud Computing', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
-  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: '/static/logos/estacio-logo.png', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
-  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: '/static/logos/potsdam-logo.png', logoAlt: 'Universidade de Potsdam', logoTitle: 'Universidade de Potsdam' },
-  { num: '04', type: 'Graduação', name: 'Bacharelado em Letras', logo: '/static/logos/ufmg-logo.png', logoAlt: 'UFMG', logoTitle: 'Universidade Federal de Minas Gerais' },
+  { num: '01', type: 'Especialização', name: 'Arquitetura e Projetos de Cloud Computing', logo: 'estacio-logo', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
+  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: 'estacio-logo', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
+  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: 'potsdam-logo', logoAlt: 'Universidade de Potsdam', logoTitle: 'Universidade de Potsdam' },
+  { num: '04', type: 'Graduação', name: 'Bacharelado em Letras', logo: 'ufmg-logo', logoAlt: 'UFMG', logoTitle: 'Universidade Federal de Minas Gerais' },
 ];
 
 const COMPANIES = [
-  { name: 'Accenture', logo: '/static/logos/accenture-logo.png' },
-  { name: 'Deutsche Bahn', logo: '/static/logos/deutsche-bahn-logo.png' },
-  { name: 'anynines', logo: '/static/logos/anynines-logo.png' },
-  { name: 'CrediSIS', logo: '/static/logos/credisis-logo.png' },
+  { name: 'Accenture', logo: 'accenture-logo' },
+  { name: 'Deutsche Bahn', logo: 'deutsche-bahn-logo' },
+  { name: 'anynines', logo: 'anynines-logo' },
+  { name: 'CrediSIS', logo: 'credisis-logo' },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -241,7 +242,7 @@ export default async function SobrePage() {
             <div className="sobre-tc-list">
               {COMPANIES.map((c) => (
                 <div className="sobre-tc-item" key={c.name}>
-                  <img className="sobre-tc-logo" src={c.logo} alt={c.name} title={c.name} />
+                  <StaticPicture category="logos" name={c.logo} alt={c.name} title={c.name} className="sobre-tc-logo" />
                 </div>
               ))}
             </div>
@@ -332,7 +333,7 @@ export default async function SobrePage() {
             {CERTS.map((cert) => (
               <div className={`sobre-cert-card${cert.accent ? ' sobre-accent' : ''}`} key={cert.tile}>
                 <div className="sobre-cert-top">
-                  <img className="sobre-cert-badge" src={cert.badge} alt={`Selo de certificação ${cert.name}`} width={64} height={64} />
+                  <StaticPicture category="badges" name={cert.badge} alt={`Selo de certificação ${cert.name}`} className="sobre-cert-badge" width={64} height={64} />
                   <span className="sobre-cert-verified">{CHECK_ICON}Verificada</span>
                 </div>
                 <div className="sobre-cert-body">
@@ -369,7 +370,7 @@ export default async function SobrePage() {
               {ACAD_ITEMS.map((item) => (
                 <div className="sobre-acad-item" key={item.num}>
                   <div className="sobre-acad-tile">
-                    <img src={item.logo} alt={item.logoAlt} title={item.logoTitle} />
+                    <StaticPicture category="logos" name={item.logo} alt={item.logoAlt} title={item.logoTitle} />
                   </div>
                   <div className="sobre-acad-txt">
                     <span className="sobre-acad-type">{item.type}</span>

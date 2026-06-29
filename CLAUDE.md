@@ -293,6 +293,15 @@ Gonçalves  → color: var(--accent)   — DM Sans 700
 - `imagem_destaque_url` no DynamoDB: basePath sem extensão (novos posts) ou URL `.webp` legada — ambos funcionam via strip.
 - Alt text: nunca string vazia — fallback mínimo = título do post.
 
+### Assets estáticos do site (logos, badges) — pipeline separada (sessão 2026-06-29)
+
+Categoria diferente de imagem: não vem de upload de usuário, é parte do código-fonte, muda raramente. Por isso é otimizada em **build-time** (script local), não em runtime (Lambda) — usar o `imageProcessor` pra isso seria over-engineering.
+
+- **`scripts/optimize-static-images.mjs`** (Sharp, mesmo pacote do `imageProcessor`) gera 2 variantes por imagem — `{nome}-1x.{avif,webp}` e `{nome}-2x.{avif,webp}` — no tamanho de exibição real em CSS (largura para badges quadrados, altura para logos retangulares). **Não** usa breakpoints de viewport (480/768/1280) como o `ResponsiveImage` — esses elementos têm tamanho fixo em CSS em qualquer largura de tela; o único eixo que importa é densidade de pixel (1x/2x retina).
+- **`frontend/components/ui/StaticPicture.tsx`** consome essas variantes via `<picture>` com `srcSet` de densidade (`1x, 2x`), AVIF→WebP fallback, `loading="lazy"`. Usar para qualquer logo/badge estático — nunca `<img>` puro com PNG direto.
+- **`assets-source/`** (raiz do repo, fora de `frontend/public/`) guarda os PNGs originais de alta resolução — nunca comitar arquivo-fonte não otimizado dentro de `frontend/public/static/`, só o output do script.
+- Fotos de pessoas/conteúdo (avatar, hero) continuam pelo fluxo normal de upload (`imageProcessor`) mesmo se vierem de um arquivo local — sobem direto pro bucket `uploads-raw` (mesma convenção de key do admin: `{YYYY}/{MM}/{DD}/{timestamp}-{random}-{nome}`) em vez de virar asset estático.
+
 ---
 
 ## 7. Testes
