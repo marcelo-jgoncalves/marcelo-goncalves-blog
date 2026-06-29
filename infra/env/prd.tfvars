@@ -14,5 +14,9 @@ enable_cloudfront_logging = false # setar true quando prod tiver tráfego real
 enable_synthetic_canary   = true  # monitoramento contínuo de disponibilidade, sempre ativo em prod
 enable_guardduty          = true  # detecção de ameaça sempre ativa em prod (achado AppSec Cat. 6)
 
+# PITR no DynamoDB — protege contra delete/corrupção acidental (inclusive humana)
+# em produção. Custo real (~$0.20/GB-mês), aceitável dado o benefício em prod.
+enable_point_in_time_recovery = true
+
 # Lambda Provisioned Concurrency — 1 instância sempre aquecida elimina cold starts
 provisioned_concurrency = 1

@@ -6,6 +6,7 @@ import { Post } from "../../common/types";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
 import { postInputSchema } from "../../common/postSchema";
+import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -137,6 +138,14 @@ async function savePost(rawData: unknown, isNew: boolean) {
   }
   const data = parsed.data;
 
+  // Lido antes do overwrite só para saber o estado anterior (status/e_projeto)
+  // e computar o delta dos contadores agregados (postCounters.ts) — não
+  // existia leitura prévia aqui antes, savePost confiava 100% no body do
+  // client para os campos não recalculados.
+  const existing = isNew
+    ? undefined
+    : (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug: data.slug } }))).Item as Post | undefined;
+
   const now = new Date().toISOString();
   const ePopular = Number(data.e_popular || 0);
   const eProjeto = Number(data.e_projeto || 0);
@@ -161,6 +170,8 @@ async function savePost(rawData: unknown, isNew: boolean) {
     Item: item
   }));
 
+  await applyCounterDeltas(computeCounterDeltas(existing, item));
+
   return {
     statusCode: 200,
     body: JSON.stringify({ message: "Post saved", slug: item.slug }),
@@ -169,11 +180,15 @@ async function savePost(rawData: unknown, isNew: boolean) {
 }
 
 async function deletePost(slug: string) {
+  const existing = (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug } }))).Item as Post | undefined;
+
   await dynamo.send(new DeleteCommand({
     TableName: TABLE_NAME,
     Key: { slug }
   }));
-  
+
+  await applyCounterDeltas(computeCounterDeltas(existing, undefined));
+
   return {
     statusCode: 200,
     body: JSON.stringify({ message: "Post deleted" }),

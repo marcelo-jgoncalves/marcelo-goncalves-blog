@@ -3,8 +3,9 @@
 module "dynamodb" {
   source = "./modules/dynamodb"
 
-  environment  = var.environment
-  project_name = var.project_name
+  environment                   = var.environment
+  project_name                  = var.project_name
+  enable_point_in_time_recovery = var.enable_point_in_time_recovery
 }
 
 module "lambda" {

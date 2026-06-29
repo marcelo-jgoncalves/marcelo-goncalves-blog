@@ -2,6 +2,11 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# --- Auditoria de Performance (artefatos brutos, não versionar) ---
+.lighthouseci/
+scripts/performance-audit/lighthouse/results/
+scripts/performance-audit/k6/*-results.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

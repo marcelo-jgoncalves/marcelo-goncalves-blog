@@ -158,7 +158,8 @@ describe('adminPosts handler', () => {
 
   describe('POST /admin/posts (create)', () => {
     it('creates a new post and returns 200', async () => {
-      mockSend.mockResolvedValueOnce({});
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador (post novo é Publicado → ADD total_publicado :1)
 
       const result = await handler(
         event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
@@ -170,6 +171,34 @@ describe('adminPosts handler', () => {
       const body = JSON.parse(result?.body ?? '{}');
       expect(body.message).toBe('Post saved');
       expect(body.slug).toBe('meu-post');
+    });
+
+    it('incrementa total_publicado ao criar um post com status Publicado (sem 2ª query de COUNT)', async () => {
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockSend).toHaveBeenCalledTimes(2);
+      const counterCmd = mockSend.mock.calls[1][0];
+      expect(counterCmd.input.UpdateExpression).toBe('ADD total_publicado :dt, total_projeto_publicado :dp');
+      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
+    });
+
+    it('NÃO chama o contador ao criar um Rascunho (delta zero)', async () => {
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho' }) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockSend).toHaveBeenCalledTimes(1); // só o Put, sem chamada de contador
     });
 
     it('returns 400 when slug is missing', async () => {
@@ -258,7 +287,8 @@ describe('adminPosts handler', () => {
 
   describe('PUT /admin/posts/:slug (update)', () => {
     it('updates an existing post', async () => {
-      mockSend.mockResolvedValueOnce({});
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
 
       const result = await handler(
         event({
@@ -271,6 +301,46 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(200);
+      // mesmo status (Publicado → Publicado) e mesmo e_projeto: delta zero, sem 3ª chamada
+      expect(mockSend).toHaveBeenCalledTimes(2);
+    });
+
+    it('atualiza o contador quando o status muda de Rascunho para Publicado', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST), // SAMPLE_POST.status === 'Publicado'
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const counterCmd = mockSend.mock.calls[2][0];
+      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
+    });
+
+    it('decrementa o contador quando o status muda de Publicado para Rascunho', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho' }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const counterCmd = mockSend.mock.calls[2][0];
+      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': 0 });
     });
 
     it('returns 500 on slug mismatch', async () => {
@@ -290,7 +360,8 @@ describe('adminPosts handler', () => {
 
   describe('DELETE /admin/posts/:slug', () => {
     it('deletes the post and returns 200', async () => {
-      mockSend.mockResolvedValueOnce({});
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
 
       const result = await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
@@ -300,18 +371,36 @@ describe('adminPosts handler', () => {
 
       expect(result?.statusCode).toBe(200);
       expect(JSON.parse(result?.body ?? '{}').message).toBe('Post deleted');
+      // Rascunho não contava no agregado: delta zero, sem 3ª chamada
+      expect(mockSend).toHaveBeenCalledTimes(2);
     });
 
     it('calls DynamoDB DeleteCommand with correct key', async () => {
-      mockSend.mockResolvedValueOnce({});
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
       await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
         ctx,
         jest.fn(),
       );
 
-      const cmd = mockSend.mock.calls[0][0];
+      const cmd = mockSend.mock.calls[1][0]; // call[0] agora é o Get prévio
       expect(cmd.input.Key).toEqual({ slug: 'meu-post' });
+    });
+
+    it('decrementa o contador ao deletar um post Publicado', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
+      mockSend.mockResolvedValueOnce({}); // contador
+
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const counterCmd = mockSend.mock.calls[2][0];
+      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': -1 });
     });
   });
 

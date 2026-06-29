@@ -138,7 +138,7 @@ describe('getPosts handler', () => {
 
       await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
 
-      // getAllPosts dispara 2 queries (data + COUNT); populares dispara apenas 1
+      // getAllPosts dispara 2 chamadas (Query de itens + GetCommand do contador); populares dispara apenas 1
       expect(mockSend).toHaveBeenCalledTimes(1);
     });
   });
@@ -286,7 +286,8 @@ describe('getPosts handler', () => {
 
   describe('/projeto', () => {
     it('uses ProjetoPorData_v2 GSI with Publicado filter', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [POST_A] });
+      mockSend.mockResolvedValueOnce({ Items: [POST_A] }); // posts query
+      mockSend.mockResolvedValueOnce({ Item: { total_projeto_publicado: 1 } }); // contador
 
       await handler(event({ resource: '/posts/projeto' }), ctx, jest.fn());
 
@@ -294,12 +295,25 @@ describe('getPosts handler', () => {
       expect(cmd.input.IndexName).toBe('ProjetoPorData_v2');
       expect(cmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
     });
+
+    it('totalCount vem do contador agregado, não de uma 2ª Query', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A] }); // posts query
+      mockSend.mockResolvedValueOnce({ Item: { total_projeto_publicado: 13 } }); // contador
+
+      const result = await handler(event({ resource: '/posts/projeto' }), ctx, jest.fn());
+
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.totalCount).toBe(13);
+      // GetCommand do contador, não outra QueryCommand
+      const counterCmd = mockSend.mock.calls[1][0];
+      expect(counterCmd.input.Select).toBeUndefined();
+    });
   });
 
   describe('default (all posts)', () => {
-    it('returns all published posts with totalCount', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [POST_A, POST_B] }); // posts query
-      mockSend.mockResolvedValueOnce({ Count: 2 });                // count query
+    it('returns all published posts with totalCount (vindo do contador agregado, não de uma 2ª Query)', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [POST_A, POST_B] });                // posts query
+      mockSend.mockResolvedValueOnce({ Item: { total_publicado: 2 } });           // contador (GetCommand)
 
       const result = await handler(event(), ctx, jest.fn());
 
@@ -310,8 +324,8 @@ describe('getPosts handler', () => {
     });
 
     it('uses StatusPorData GSI with default limit 9', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
-      mockSend.mockResolvedValueOnce({ Count: 0 });  // count query
+      mockSend.mockResolvedValueOnce({ Items: [] });               // posts query
+      mockSend.mockResolvedValueOnce({ Item: undefined });         // contador
       await handler(event(), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];
@@ -320,19 +334,20 @@ describe('getPosts handler', () => {
       expect(cmd.input.ExpressionAttributeValues[':status']).toBe('Publicado');
     });
 
-    it('count query uses SELECT COUNT without Limit', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
-      mockSend.mockResolvedValueOnce({ Count: 5 });  // count query
+    it('o contador é lido via GetCommand (não Query/COUNT) — não duplica RCU', async () => {
+      mockSend.mockResolvedValueOnce({ Items: [] });                       // posts query
+      mockSend.mockResolvedValueOnce({ Item: { total_publicado: 5 } });    // contador
       await handler(event(), ctx, jest.fn());
 
-      const countCmd = mockSend.mock.calls[1][0];
-      expect(countCmd.input.Select).toBe('COUNT');
-      expect(countCmd.input.Limit).toBeUndefined();
+      const counterCmd = mockSend.mock.calls[1][0];
+      expect(counterCmd.input.Select).toBeUndefined();
+      expect(counterCmd.input.IndexName).toBeUndefined();
+      expect(counterCmd.input.Key).toBeDefined();
     });
 
     it('respects custom limit from query param', async () => {
-      mockSend.mockResolvedValueOnce({ Items: [] }); // posts query
-      mockSend.mockResolvedValueOnce({ Count: 0 });  // count query
+      mockSend.mockResolvedValueOnce({ Items: [] });        // posts query
+      mockSend.mockResolvedValueOnce({ Item: undefined });  // contador
       await handler(event({ queryStringParameters: { limit: '3' } }), ctx, jest.fn());
 
       const cmd = mockSend.mock.calls[0][0];

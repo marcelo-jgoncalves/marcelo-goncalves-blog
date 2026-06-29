@@ -67,7 +67,9 @@
       "PowerShell(pip install Pillow --quiet 2>&1)",
       "PowerShell(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
       "Edit(/.claude/skills/verifier-frontend-nextjs/**)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(gh api *)",
+      "Bash(AWS_PROFILE=claude-dev node -e ' *)"
     ],
     "defaultMode": "bypassPermissions",
     "additionalDirectories": [

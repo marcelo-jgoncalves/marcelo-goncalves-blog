@@ -8,6 +8,15 @@ variable "project_name" {
   type = string
 }
 
+# Point-in-Time Recovery — desabilitado em dev por padrão (custo real, ~$0.20/GB-mês
+# em us-east-1, achado de docs/investigacao-dynamodb.md ponto 2). Mesmo padrão de
+# toggle de enable_xray_tracing/enable_guardduty — ligar só quando convier.
+variable "enable_point_in_time_recovery" {
+  description = "Habilita Point-in-Time Recovery nas 3 tabelas (posts/autores/categorias). Desativado em dev por custo; ativar em produção."
+  type        = bool
+  default     = false
+}
+
 # --- Tabela 1: Posts (Seção 3.1) ---
 resource "aws_dynamodb_table" "posts" {
   name         = "${var.project_name}-${var.environment}-posts"
@@ -20,6 +29,10 @@ resource "aws_dynamodb_table" "posts" {
   # auditabilidade (achado da auditoria AppSec, Cat. 3).
   server_side_encryption {
     enabled = true
+  }
+
+  point_in_time_recovery {
+    enabled = var.enable_point_in_time_recovery
   }
 
   attribute {
@@ -67,12 +80,26 @@ resource "aws_dynamodb_table" "posts" {
     type = "S"
   }
 
-  # GSI 1: StatusPorData (Para /artigos e Home)
+  # Projections trocadas de ALL para INCLUDE (achado #13 de
+  # docs/auditoria-engenharia/07-*.md): ALL duplicava conteudo_html (maior
+  # campo do item) em cada uma das 5 GSIs. A lista de non_key_attributes
+  # abaixo foi extraída dos consumidores reais (getPosts/adminPosts/
+  # postScheduler no backend + componentes de listagem no frontend) — ver
+  # docs/investigacao-dynamodb.md. As keys (hash/range da própria GSI +
+  # chave primária da tabela) são sempre projetadas automaticamente pela AWS,
+  # independente do projection_type, e não precisam aparecer na lista.
+
+  # GSI 1: StatusPorData (Para /artigos, Home e listagem do admin)
   global_secondary_index {
     name            = "StatusPorData"
     hash_key        = "status"
     range_key       = "data_atualizacao"
-    projection_type = "ALL"
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "titulo", "resumo", "imagem_destaque_url", "imagem_destaque_alt_text",
+      "imagem_lqip_base64", "categoria_slug", "subcategoria_nome",
+      "data_publicacao", "tempo_leitura_min", "autor_id",
+    ]
   }
 
   # GSI 2: CategoriaPorData (Para /categoria/[slug])
@@ -80,7 +107,12 @@ resource "aws_dynamodb_table" "posts" {
     name            = "CategoriaPorData"
     hash_key        = "categoria_slug"
     range_key       = "data_atualizacao"
-    projection_type = "ALL"
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "status", "titulo", "resumo", "imagem_destaque_url",
+      "imagem_destaque_alt_text", "imagem_lqip_base64", "subcategoria_nome",
+      "data_publicacao",
+    ]
   }
 
   # GSI 3: ProjetoPorData_v2 (Para /o-projeto) — sparse index via
@@ -92,7 +124,10 @@ resource "aws_dynamodb_table" "posts" {
     name            = "ProjetoPorData_v2"
     hash_key        = "e_projeto_marker"
     range_key       = "data_publicacao"
-    projection_type = "ALL"
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "status", "titulo", "resumo", "categoria_slug", "tempo_leitura_min",
+    ]
   }
 
   # GSI 4: PopularesPorData_v2 (Para seções "Populares") — mesma razão da
@@ -101,15 +136,24 @@ resource "aws_dynamodb_table" "posts" {
     name            = "PopularesPorData_v2"
     hash_key        = "e_popular_marker"
     range_key       = "data_atualizacao"
-    projection_type = "ALL"
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "status", "titulo", "resumo", "imagem_destaque_url",
+      "imagem_destaque_alt_text", "imagem_lqip_base64", "categoria_slug",
+      "subcategoria_nome", "data_publicacao",
+    ]
   }
 
-  # GSI 5: StatusProgramadoPorData (Para Lambda Scheduler)
+  # GSI 5: StatusProgramadoPorData (Para Lambda Scheduler) — postScheduler já
+  # usa ProjectionExpression "slug, data_publicacao_programada, e_projeto";
+  # só falta e_projeto na projeção da própria GSI (slug é a PK da tabela e
+  # data_publicacao_programada é a range key — ambos sempre projetados).
   global_secondary_index {
-    name            = "StatusProgramadoPorData"
-    hash_key        = "status"
-    range_key       = "data_publicacao_programada"
-    projection_type = "ALL" # Projetar tudo para facilitar a atualização
+    name               = "StatusProgramadoPorData"
+    hash_key           = "status"
+    range_key          = "data_publicacao_programada"
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["e_projeto"]
   }
 }
 
@@ -121,6 +165,10 @@ resource "aws_dynamodb_table" "autores" {
 
   server_side_encryption {
     enabled = true
+  }
+
+  point_in_time_recovery {
+    enabled = var.enable_point_in_time_recovery
   }
 
   attribute {
@@ -137,6 +185,10 @@ resource "aws_dynamodb_table" "categorias" {
 
   server_side_encryption {
     enabled = true
+  }
+
+  point_in_time_recovery {
+    enabled = var.enable_point_in_time_recovery
   }
 
   attribute {

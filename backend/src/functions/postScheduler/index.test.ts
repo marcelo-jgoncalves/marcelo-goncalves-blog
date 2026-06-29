@@ -34,7 +34,7 @@ describe('postScheduler handler', () => {
   });
 
   describe('posts to publish', () => {
-    it('calls UpdateItem for each scheduled post', async () => {
+    it('calls UpdateItem for each scheduled post (+ atualização do contador agregado)', async () => {
       const scheduledPosts = [
         { slug: 'post-a', data_publicacao_programada: '2026-01-01T00:00:00.000Z' },
         { slug: 'post-b', data_publicacao_programada: '2026-01-02T00:00:00.000Z' },
@@ -46,7 +46,21 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      expect(mockSend).toHaveBeenCalledTimes(3);
+      // 1 Query + (1 UpdateItem de status + 1 ADD no contador) por post publicado
+      expect(mockSend).toHaveBeenCalledTimes(5);
+    });
+
+    it('incrementa total_publicado ao publicar (Programado nunca contava no agregado)', async () => {
+      const post = { slug: 'my-post', data_publicacao_programada: '2026-01-01T00:00:00.000Z', e_projeto: 1 };
+      mockSend
+        .mockResolvedValueOnce({ Items: [post] }) // Query
+        .mockResolvedValueOnce({}) // UpdateItem (status)
+        .mockResolvedValueOnce({}); // contador
+
+      await handler({});
+
+      const counterCmd = mockSend.mock.calls[2][0];
+      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 1 });
     });
 
     it('updates status to Publicado for each post', async () => {

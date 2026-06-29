@@ -4,6 +4,7 @@
 import { QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -22,7 +23,7 @@ export const handler = async (_event: unknown): Promise<void> => {
     logger.info("scheduler_posts_found", { count: scheduledPosts.length, now });
 
     const results = await Promise.allSettled(
-      scheduledPosts.map((post) => publishPost(post.slug, post.data_publicacao_programada, now)),
+      scheduledPosts.map((post) => publishPost(post.slug, post.data_publicacao_programada, post.e_projeto, now)),
     );
 
     const published = results.filter((r) => r.status === "fulfilled").length;
@@ -36,8 +37,8 @@ export const handler = async (_event: unknown): Promise<void> => {
   }
 };
 
-async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; data_publicacao_programada: string }>> {
-  const items: Array<{ slug: string; data_publicacao_programada: string }> = [];
+async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; data_publicacao_programada: string; e_projeto?: number }>> {
+  const items: Array<{ slug: string; data_publicacao_programada: string; e_projeto?: number }> = [];
   let lastKey: Record<string, unknown> | undefined;
 
   do {
@@ -48,14 +49,16 @@ async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; d
         KeyConditionExpression: "#status = :programado AND data_publicacao_programada <= :now",
         ExpressionAttributeNames: { "#status": "status" },
         ExpressionAttributeValues: { ":programado": "Programado", ":now": now },
-        ProjectionExpression: "slug, data_publicacao_programada",
+        // e_projeto incluído para computar o delta do contador agregado
+        // (postCounters.ts) sem precisar de uma segunda leitura em publishPost.
+        ProjectionExpression: "slug, data_publicacao_programada, e_projeto",
         ExclusiveStartKey: lastKey,
       }),
     );
 
     for (const item of result.Items ?? []) {
       if (item.slug && item.data_publicacao_programada) {
-        items.push({ slug: item.slug, data_publicacao_programada: item.data_publicacao_programada });
+        items.push({ slug: item.slug, data_publicacao_programada: item.data_publicacao_programada, e_projeto: item.e_projeto });
       }
     }
 
@@ -65,7 +68,7 @@ async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; d
   return items;
 }
 
-async function publishPost(slug: string, scheduledDate: string, now: string): Promise<void> {
+async function publishPost(slug: string, scheduledDate: string, eProjeto: number | undefined, now: string): Promise<void> {
   await dynamo.send(
     new UpdateCommand({
       TableName: TABLE_NAME,
@@ -81,5 +84,12 @@ async function publishPost(slug: string, scheduledDate: string, now: string): Pr
       },
     }),
   );
+
+  // Programado nunca conta nos agregados (só Publicado conta) — a transição
+  // é sempre +1 no total, e +1 no de projeto só se e_projeto=1.
+  await applyCounterDeltas(
+    computeCounterDeltas({ status: "Programado", e_projeto: eProjeto }, { status: "Publicado", e_projeto: eProjeto }),
+  );
+
   logger.info("post_published", { slug, scheduledDate });
 }

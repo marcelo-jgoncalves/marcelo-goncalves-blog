@@ -1,0 +1,23 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://dsns2wusdrj9z.cloudfront.net/",
+        "https://dsns2wusdrj9z.cloudfront.net/post/terraform-em-producao-as-licoes-que-so-um-incidente-real-ensina",
+        "https://dsns2wusdrj9z.cloudfront.net/artigos"
+      ],
+      "numberOfRuns": 3
+    },
+    "assert": {
+      "assertions": {
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.1 }],
+        "interactive": ["warn", { "maxNumericValue": 3800 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "scripts/performance-audit/lighthouse/results"
+    }
+  }
+}

@@ -19,6 +19,10 @@ enable_synthetic_canary = false
 # Ativar (true) quando o ambiente de produção for criado.
 enable_guardduty = false
 
+# PITR no DynamoDB (~$0.20/GB-mês, custo real) — desligado em dev.
+# Ativar (true) só quando o ambiente de produção for criado (docs/investigacao-dynamodb.md, ponto 2).
+enable_point_in_time_recovery = false
+
 # Lambda Provisioned Concurrency — 0 = off (dev economiza custo)
 # Em prod: setar para 1+ para eliminar cold starts
 provisioned_concurrency = 0

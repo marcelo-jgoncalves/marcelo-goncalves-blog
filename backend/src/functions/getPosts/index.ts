@@ -2,6 +2,7 @@ import { APIGatewayProxyHandler, APIGatewayProxyEventQueryStringParameters } fro
 import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { getPostCounters } from "../../common/postCounters";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -54,33 +55,30 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
   const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 8;
   const nextToken = queryParams?.nextToken;
 
-  const baseQuery = {
+  const postsCommand = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "ProjetoPorData_v2",
     KeyConditionExpression: "e_projeto_marker = :val",
     FilterExpression: "#status = :published",
     ExpressionAttributeNames: { "#status": "status" },
     ExpressionAttributeValues: { ":val": "PROJ", ":published": "Publicado" },
-  };
-
-  const postsCommand = new QueryCommand({
-    ...baseQuery,
     ScanIndexForward: true,
     Limit: limit,
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined,
   });
 
-  const countCommand = new QueryCommand({ ...baseQuery, Select: "COUNT" });
-
-  const [result, countResult] = await Promise.all([
+  // totalCount vem do contador agregado (postCounters.ts), não de uma 2ª
+  // Query — achado real da auditoria de performance dedicada (RCU duplicado
+  // a cada requisição só para exibir "Página X de Y").
+  const [result, counters] = await Promise.all([
     dynamo.send(postsCommand),
-    dynamo.send(countCommand),
+    getPostCounters(),
   ]);
 
   const newNextToken = result.LastEvaluatedKey
     ? btoa(JSON.stringify(result.LastEvaluatedKey))
     : null;
-  const totalCount = countResult.Count ?? 0;
+  const totalCount = counters.total_projeto_publicado;
 
   logger.info("project_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
   return {
@@ -181,22 +179,17 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
-  const countCommand = new QueryCommand({
-    TableName: TABLE_NAME,
-    IndexName: "StatusPorData",
-    KeyConditionExpression: "#status = :status",
-    ExpressionAttributeNames: { "#status": "status" },
-    ExpressionAttributeValues: { ":status": "Publicado" },
-    Select: "COUNT"
-  });
-
-  const [result, countResult] = await Promise.all([
+  // totalCount vem do contador agregado (postCounters.ts), não de uma 2ª
+  // Query — achado real da auditoria de performance dedicada (RCU duplicado
+  // a cada requisição só para exibir "Página X de Y"; /artigos era a rota
+  // mais lenta no teste de carga real por causa exatamente desta 2ª query).
+  const [result, counters] = await Promise.all([
     dynamo.send(postsCommand),
-    dynamo.send(countCommand)
+    getPostCounters()
   ]);
 
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
-  const totalCount = countResult.Count ?? 0;
+  const totalCount = counters.total_publicado;
 
   logger.info("all_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
   return {

@@ -45,6 +45,12 @@ variable "enable_xray_tracing" {
   default     = false
 }
 
+variable "enable_point_in_time_recovery" {
+  description = "Habilita Point-in-Time Recovery nas 3 tabelas DynamoDB (posts/autores/categorias). Desativado em dev por custo (~$0.20/GB-mês); ativar em produção."
+  type        = bool
+  default     = false
+}
+
 variable "enable_cloudwatch_alarms" {
   description = "Cria CloudWatch Alarms para erros de Lambda e 5xx do API Gateway. Desativado em dev."
   type        = bool
