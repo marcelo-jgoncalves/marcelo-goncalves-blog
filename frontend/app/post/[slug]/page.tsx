@@ -14,9 +14,9 @@ import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
+import ReadingProgressBar from '@/components/ui/ReadingProgressBar';
 import PostFooter from '@/components/post/PostFooter';
 import ShareRail from '@/components/post/ShareRail';
-import ReadingProgress from '@/components/post/ReadingProgress';
 import TableOfContents from '@/components/post/TableOfContents';
 
 export const revalidate = 60;
@@ -195,7 +195,7 @@ export default async function PostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
-      <ReadingProgress />
+      <ReadingProgressBar />
       <CopyCodeLogic />
 
       <section className="post-hero" data-audit="post-hero">
