@@ -42,7 +42,7 @@ export default function NewsletterCTA() {
           {/* ── Coluna direita ── */}
           <div className="nl-cta__right">
             {status === 'success' ? (
-              <div className="nl-cta__success">
+              <div className="nl-cta__success" role="status" aria-live="polite">
                 ✓ Obrigado! Você receberá a próxima edição na terça-feira.
               </div>
             ) : (
@@ -52,6 +52,7 @@ export default function NewsletterCTA() {
                     type="email"
                     className="nl-cta__input"
                     placeholder="seu@email.com"
+                    aria-label="Endereço de e-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

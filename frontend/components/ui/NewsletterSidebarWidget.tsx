@@ -46,7 +46,6 @@ export default function NewsletterSidebarWidget() {
               checked={accepted}
               onChange={(e) => setAccepted(e.target.checked)}
               className="nl-widget__checkbox-input"
-              aria-label="Aceitar política de privacidade"
             />
             <div className="nl-widget__checkbox-box" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="currentColor" className="nl-widget__check-icon">

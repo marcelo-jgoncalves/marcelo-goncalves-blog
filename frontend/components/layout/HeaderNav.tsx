@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -15,11 +15,15 @@ const NAV_LINKS = [
 export default function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
-  const closeMenu = () => setIsMenuOpen(false);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    menuBtnRef.current?.focus();
+  };
 
   return (
     <>
@@ -38,10 +42,11 @@ export default function HeaderNav() {
       </nav>
 
       <Link href="/servicos" className="nav-cta" prefetch={false} data-audit="header-cta">
-        Assessoria <span className="arrow">→</span>
+        Assessoria <span className="arrow" aria-hidden="true">→</span>
       </Link>
 
       <button
+        ref={menuBtnRef}
         className="nav-mobile-btn"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
@@ -66,14 +71,15 @@ export default function HeaderNav() {
             href={link.href}
             prefetch={false}
             onClick={closeMenu}
+            tabIndex={isMenuOpen ? 0 : -1}
             className={isActive(link.href) ? 'active' : ''}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.name}
           </Link>
         ))}
-        <Link href="/servicos" className="nav-cta-mobile" onClick={closeMenu} prefetch={false}>
-          Assessoria <span className="arrow">→</span>
+        <Link href="/servicos" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+          Assessoria <span className="arrow" aria-hidden="true">→</span>
         </Link>
       </div>
     </>

@@ -210,7 +210,6 @@ export default async function PostPage({ params }: Props) {
 
           {categorySlug ? (
             <Link href={`/categoria/${categorySlug}`} className="post-cat-pill">
-              {category?.icone_fa && <i className={category.icone_fa} aria-hidden="true" />}
               {categoryLabel}
             </Link>
           ) : (

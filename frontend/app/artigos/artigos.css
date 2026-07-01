@@ -203,6 +203,10 @@
   50%      { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .art-dot { animation: none; }
+}
+
 .art-proj-card h2 {
   font-weight: 800;
   font-size: 1.5rem;
@@ -1485,6 +1489,10 @@
 @keyframes proof-pulse {
   0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
   50%       { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-label .dot { animation: none; }
 }
 
 .proof-body {

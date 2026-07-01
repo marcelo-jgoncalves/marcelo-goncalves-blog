@@ -98,7 +98,7 @@ export default async function Home() {
               <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
               <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
             </div>
-            <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow">→</span></span>
+            <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
           </Link>
         }
         statsStrip={
@@ -113,7 +113,7 @@ export default async function Home() {
         }
       >
         <div className="home-hero-actions">
-          <Link href="/artigos" className="home-btn-ghost">Todos os artigos →</Link>
+          <Link href="/artigos" className="home-btn-ghost">Todos os artigos <span aria-hidden="true">→</span></Link>
         </div>
       </PageHero>
 
@@ -143,7 +143,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
                           <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`}><LerArtigo /></Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature1.slug}`} aria-label={`Ler artigo: ${mlFeature1.titulo}`}><LerArtigo /></Link>
                       </div>
                     </div>
                   </article>
@@ -163,7 +163,7 @@ export default async function Home() {
                           <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
                           <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`}><LerArtigo /></Link>
+                        <Link className="home-ml-card-read" href={`/post/${mlFeature2.slug}`} aria-label={`Ler artigo: ${mlFeature2.titulo}`}><LerArtigo /></Link>
                       </div>
                     </div>
                   </article>
@@ -182,7 +182,7 @@ export default async function Home() {
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
                       </div>
-                      <span className="home-ml-item-arrow">→</span>
+                      <span className="home-ml-item-arrow" aria-hidden="true">→</span>
                     </Link>
                   ))}
                 </div>
@@ -208,7 +208,7 @@ export default async function Home() {
             ))}
           </div>
           <div className="home-posts-cta">
-            <Link className="home-btn-outline-petrol" href="/artigos">Todos os artigos <span className="arrow">→</span></Link>
+            <Link className="home-btn-outline-petrol" href="/artigos">Todos os artigos <span className="arrow" aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -248,7 +248,7 @@ export default async function Home() {
                         <span>{formatDateShort(iaBig.data_publicacao)}</span>
                         <span>{iaBig.tempo_leitura_min || 5} min</span>
                       </div>
-                      <Link className="home-ia-read" href={`/post/${iaBig.slug}`}><LerArtigo /></Link>
+                      <Link className="home-ia-read" href={`/post/${iaBig.slug}`} aria-label={`Ler artigo: ${iaBig.titulo}`}><LerArtigo /></Link>
                     </div>
                   </div>
                 </article>
@@ -264,7 +264,7 @@ export default async function Home() {
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <Link className="home-ia-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
+                        <Link className="home-ia-read" href={`/post/${post.slug}`} aria-label={`Ler artigo: ${post.titulo}`}><LerArtigo /></Link>
                       </div>
                     </article>
                   ))}
@@ -286,14 +286,14 @@ export default async function Home() {
                 <h2 className="sec-t">Bastidores da plataforma</h2>
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
-              <Link className="home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
+              <Link className="home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
             </div>
             <div className="home-projeto-grid" data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <Link className="home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada <span className="arrow">→</span></Link>
+            <Link className="home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
           </div>
         </section>
       )}

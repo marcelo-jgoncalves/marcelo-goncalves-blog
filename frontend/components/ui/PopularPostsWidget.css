@@ -331,6 +331,10 @@
   100% { opacity: 0.6;  }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .popular-widget__skeleton-pulse { animation: none; opacity: 0.8; }
+}
+
 /* ── Modificador mobile flow ───────────────────────────── */
 .popular-widget--mobile-flow {
   margin-top: var(--space-4);

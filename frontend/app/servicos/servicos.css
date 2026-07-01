@@ -37,7 +37,7 @@
 
 .svc-hero-actions {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .svc-hero-actions-mobile {
@@ -129,6 +129,10 @@
 @keyframes svc-pulse {
   0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
   50% { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-dot { animation: none; }
 }
 
 .svc-hp-row {

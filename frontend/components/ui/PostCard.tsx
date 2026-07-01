@@ -43,7 +43,7 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
   const categoriaNome = post.categoria?.nome_exibicao || slugToName(post.categoria_slug);
 
   return (
-    <Link href={`/post/${post.slug}`} className="post-card" aria-label={post.titulo} data-audit={dataAudit} data-cat={dataCat}>
+    <Link href={`/post/${post.slug}`} className="post-card" data-audit={dataAudit} data-cat={dataCat}>
       <div className={`pc-img ${gradientVariant(post.slug)}`}>
         {post.imagem_destaque_url && (
           <ResponsiveImage

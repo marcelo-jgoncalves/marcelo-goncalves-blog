@@ -17,3 +17,7 @@
   transform: scaleX(0);
   will-change: transform;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress { display: none; }
+}

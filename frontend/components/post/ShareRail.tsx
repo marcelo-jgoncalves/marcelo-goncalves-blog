@@ -28,13 +28,13 @@ export default function ShareRail({ currentPageUrl, linkedinUrl, twitterUrl }: S
   return (
     <>
       <aside className={styles.share} data-audit="post-share" aria-label="Compartilhar artigo">
-        <a href={linkedinUrl} className={styles.shareBtn} title="LinkedIn" target="_blank" rel="noopener noreferrer">
+        <a href={linkedinUrl} className={styles.shareBtn} aria-label="Compartilhar no LinkedIn" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faLinkedinIn} aria-hidden="true" />
         </a>
-        <a href={twitterUrl} className={styles.shareBtn} title="X" target="_blank" rel="noopener noreferrer">
+        <a href={twitterUrl} className={styles.shareBtn} aria-label="Compartilhar no X (Twitter)" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faXTwitter} aria-hidden="true" />
         </a>
-        <button type="button" className={styles.shareBtn} title="Copiar link" onClick={handleCopy}>
+        <button type="button" className={styles.shareBtn} aria-label="Copiar link" onClick={handleCopy}>
           <FontAwesomeIcon icon={copied ? faCheck : faLink} aria-hidden="true" />
         </button>
       </aside>

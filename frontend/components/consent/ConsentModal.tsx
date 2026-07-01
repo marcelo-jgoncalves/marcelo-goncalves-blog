@@ -15,11 +15,10 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
   const [analytics, setAnalytics] = useState(current?.analytics ?? false);
   const [ads, setAds] = useState(current?.ads ?? false);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const firstFocusRef = useRef<HTMLButtonElement>(null);
 
-  // Foca o primeiro elemento ao abrir
+  // Foca o dialog ao abrir (não o botão fechar — melhor ergonomia)
   useEffect(() => {
-    firstFocusRef.current?.focus();
+    dialogRef.current?.focus();
   }, []);
 
   // ESC fecha o modal
@@ -35,7 +34,7 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
   const trapFocus = useCallback((e: React.KeyboardEvent) => {
     if (e.key !== 'Tab' || !dialogRef.current) return;
     const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-      'button, input, [tabindex]:not([tabindex="-1"])'
+      'button, input, a[href], [tabindex]:not([tabindex="-1"])'
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -60,6 +59,7 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
         aria-modal="true"
         aria-labelledby="cmp-modal-title"
         className="cmp-modal"
+        tabIndex={-1}
         onKeyDown={trapFocus}
       >
         <div className="cmp-modal__header">
@@ -67,7 +67,6 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
             Preferências de Privacidade
           </h2>
           <button
-            ref={firstFocusRef}
             className="cmp-modal__close"
             onClick={onClose}
             aria-label="Fechar preferências"
@@ -113,7 +112,6 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
                 type="checkbox"
                 checked={analytics}
                 onChange={(e) => setAnalytics(e.target.checked)}
-                aria-checked={analytics}
               />
               <span className="cmp-toggle__track" />
             </label>
@@ -133,7 +131,6 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
                 type="checkbox"
                 checked={ads}
                 onChange={(e) => setAds(e.target.checked)}
-                aria-checked={ads}
               />
               <span className="cmp-toggle__track" />
             </label>

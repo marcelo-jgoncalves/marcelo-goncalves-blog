@@ -311,7 +311,7 @@ export default async function SobrePage() {
             <div className="sobre-dif-langs-row">
               {LANGUAGES.map((lang) => (
                 <span className="sobre-dif-lang" key={lang.name}>
-                  <span className="f">{lang.flag}</span>
+                  <span className="f" aria-label={lang.name}>{lang.flag}</span>
                   <span className="n">{lang.name}</span>
                   <span className="l">{lang.level}</span>
                 </span>

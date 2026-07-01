@@ -77,6 +77,10 @@
   50%      { box-shadow: 0 0 0 5px rgba(63, 107, 71, .15); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .op-status-dot { animation: none; }
+}
+
 /* ── hero · stat lateral ── */
 .op-hero-stat {
   display: flex;

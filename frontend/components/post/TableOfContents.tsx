@@ -57,8 +57,8 @@ export default function TableOfContents({ headings, readingTimeMin }: TableOfCon
 
   return (
     <aside className="post-toc" data-audit="post-toc">
-      <div className="post-toc-lbl">Neste artigo</div>
-      <nav className="post-toc-items">
+      <div id="post-toc-lbl" className="post-toc-lbl">Neste artigo</div>
+      <nav className="post-toc-items" aria-labelledby="post-toc-lbl">
         <span className="post-toc-prog" style={{ height: `${progHeight}px` }} aria-hidden="true" />
         {headings.map((h, i) => (
           <a
