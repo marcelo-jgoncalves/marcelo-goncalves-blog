@@ -25,12 +25,6 @@ const inter = Inter({
   display: "swap",
 });
 
-const interDisplay = Inter({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -146,7 +140,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${interDisplay.variable} ${jetbrainsMono.variable}`}
+        className={`${inter.variable} ${jetbrainsMono.variable}`}
         suppressHydrationWarning={true}
       >
         <SkipLink />
