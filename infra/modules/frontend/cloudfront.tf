@@ -215,6 +215,59 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
+  # --- /artigos e /categoria/*: TTL explícito de 300s no CloudFront ---
+  # Estas rotas leem searchParams (cursor de paginação), o que força renderização
+  # dinâmica no App Router e faz o Next.js emitir Cache-Control: no-store.
+  # O CloudFront normalmente respeita esse header; aqui sobrescrevemos o TTL
+  # diretamente para dar cache de 5 min na borda (match do revalidate: 300
+  # declarado nas páginas, que sem ISR funcional era no-op silencioso).
+  # query_string=true mantém entradas separadas por combinação de cursor —
+  # sem isso, /artigos?nextToken=abc serviria o conteúdo da página 1.
+
+  ordered_cache_behavior {
+    path_pattern     = "/artigos"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "Lambda-SSR"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "none"
+      }
+      headers = ["Authorization"]
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+    min_ttl                = 0
+    default_ttl            = 300
+    max_ttl                = 300
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "/categoria/*"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "Lambda-SSR"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "none"
+      }
+      headers = ["Authorization"]
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+    min_ttl                = 0
+    default_ttl            = 300
+    max_ttl                = 300
+  }
+
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
   default_cache_behavior {
     allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
