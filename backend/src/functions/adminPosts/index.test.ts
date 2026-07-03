@@ -217,7 +217,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
     });
 
     it('invalida só /post/{slug} (sem "/") ao criar um Rascunho', async () => {
@@ -389,7 +389,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
     });
 
     it('NÃO invalida "/" quando o post já era Publicado e continua Publicado (edição de conteúdo)', async () => {
@@ -480,7 +480,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
     });
 
     it('invalida só /post/{slug} (sem "/") ao deletar um Rascunho', async () => {

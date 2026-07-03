@@ -78,7 +78,7 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/my-post', '/']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/my-post', '/', '/artigos', '/categoria/*']);
     });
 
     it('updates status to Publicado for each post', async () => {

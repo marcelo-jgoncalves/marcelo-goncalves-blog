@@ -177,7 +177,7 @@ async function savePost(rawData: unknown, isNew: boolean) {
   // transição de Rascunho/Programado -> Publicado) -- a home (posts
   // recentes) também fica stale, não só a página do post.
   const ficouPublicado = item.status === "Publicado" && existing?.status !== "Publicado";
-  await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/"] : [`/post/${item.slug}`]);
+  await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/", "/artigos", "/categoria/*"] : [`/post/${item.slug}`]);
 
   return {
     statusCode: 200,
@@ -196,7 +196,7 @@ async function deletePost(slug: string) {
 
   await applyCounterDeltas(computeCounterDeltas(existing, undefined));
 
-  await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/"] : [`/post/${slug}`]);
+  await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/", "/artigos", "/categoria/*"] : [`/post/${slug}`]);
 
   return {
     statusCode: 200,

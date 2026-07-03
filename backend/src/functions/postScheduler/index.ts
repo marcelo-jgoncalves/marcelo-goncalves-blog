@@ -94,7 +94,7 @@ async function publishPost(slug: string, scheduledDate: string, eProjeto: number
 
   // Sempre Programado -> Publicado: a home (posts recentes) sempre fica
   // stale aqui, diferente de savePost onde isso só acontece condicionalmente.
-  await invalidatePostCache([`/post/${slug}`, "/"]);
+  await invalidatePostCache([`/post/${slug}`, "/", "/artigos", "/categoria/*"]);
 
   logger.info("post_published", { slug, scheduledDate });
 }

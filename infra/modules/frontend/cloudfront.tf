@@ -242,8 +242,8 @@ resource "aws_cloudfront_distribution" "frontend" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
     min_ttl                = 0
-    default_ttl            = 300
-    max_ttl                = 300
+    default_ttl            = 86400
+    max_ttl                = 86400
   }
 
   ordered_cache_behavior {
@@ -264,8 +264,8 @@ resource "aws_cloudfront_distribution" "frontend" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
     min_ttl                = 0
-    default_ttl            = 300
-    max_ttl                = 300
+    default_ttl            = 86400
+    max_ttl                = 86400
   }
 
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
