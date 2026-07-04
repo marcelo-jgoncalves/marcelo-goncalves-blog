@@ -3,7 +3,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { postsApi } from '../services/api'
+import { postsApi, categoriesApi } from '../services/api'
+import { useToast } from '../composables/useToast'
 import type { Post } from '../types'
 
 type PostListItem = Pick<Post,
@@ -45,6 +46,11 @@ const selected = ref<string[]>([])
 
 const BLOG_URL = (import.meta.env.VITE_ASSETS_URL || '').split('/').slice(0, 3).join('/')
 
+const categoriaNomes = ref<Record<string, string>>({})
+function categoriaNomeFor(post: PostListItem) {
+  return categoriaNomes.value[post.categoria_slug] || post.categoria_slug || '—'
+}
+
 async function fetchPosts() {
   loading.value = true
   try {
@@ -57,7 +63,19 @@ async function fetchPosts() {
   }
 }
 
-onMounted(fetchPosts)
+async function fetchCategorias() {
+  try {
+    const data = await categoriesApi.list()
+    categoriaNomes.value = Object.fromEntries((data.items || []).map((c) => [c.categoria_slug, c.nome]))
+  } catch {
+    // Sem lista de categorias, a tabela cai no fallback (mostra o slug cru)
+  }
+}
+
+onMounted(() => {
+  fetchPosts()
+  fetchCategorias()
+})
 
 function thumbFor(post: PostListItem) {
   if (post.imagem_destaque_url) {
@@ -149,11 +167,7 @@ function clearSelection() {
   selected.value = []
 }
 
-const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
-function showToast(message: string, type: 'success' | 'error' = 'success') {
-  toast.value = { message, type }
-  setTimeout(() => { toast.value = null }, 2600)
-}
+const { toast, showToast } = useToast()
 
 async function bulkDelete() {
   if (!confirm(`Excluir ${selected.value.length} post(s)? Esta ação não pode ser desfeita.`)) return
@@ -352,7 +366,7 @@ function previewUrl(post: PostListItem) {
               <span class="ia-status-dot"></span>{{ post.status }}
             </span>
           </div>
-          <div class="ia-cat">{{ post.categoria_slug || '—' }}</div>
+          <div class="ia-cat">{{ categoriaNomeFor(post) }}</div>
           <div class="ia-date">{{ formatDate(post.data_atualizacao) }}</div>
           <div class="ia-date">{{ post.tempo_leitura_min || '—' }} min</div>
           <div class="ia-actions">

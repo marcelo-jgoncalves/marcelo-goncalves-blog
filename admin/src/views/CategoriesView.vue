@@ -3,6 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { categoriesApi } from '../services/api'
 import { slugify } from '../utils/slug'
 import { MACRO_AREAS } from '../utils/taxonomy'
+import { useToast } from '../composables/useToast'
 import type { Categoria } from '../types'
 
 // --- Estado ---
@@ -11,12 +12,7 @@ const isModalOpen = ref(false)
 const editingSlug = ref<string | null>(null)
 const isLoading = ref(true)
 const isSaving = ref(false)
-const toast = ref<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null)
-
-function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
-  toast.value = { message, type }
-  setTimeout(() => { toast.value = null }, 4000)
-}
+const { toast, showToast } = useToast()
 
 // Estado do Formulário
 const defaultForm: Categoria = {

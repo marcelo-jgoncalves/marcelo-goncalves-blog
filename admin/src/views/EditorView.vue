@@ -4,13 +4,14 @@
 import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DOMPurify from 'dompurify'
-import { postsApi, categoriesApi } from '../services/api'
+import { postsApi, categoriesApi, authorsApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
 import { slugify } from '../utils/slug'
 import { CARD_VARIANTS } from '../utils/taxonomy'
-import type { Categoria, Post } from '../types'
+import { useToast } from '../composables/useToast'
+import type { Autor, Categoria, Post } from '../types'
 
 // div/span: wrapper dos nodes customizados do Tiptap (Callout, PullQuote,
 // ClosingFlourish, embed do YouTube) — sem eles o DOMPurify "desempacota"
@@ -49,8 +50,22 @@ const titleRef = ref<HTMLElement | null>(null)
 const subtitleRef = ref<HTMLElement | null>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
-const AUTHOR_NAME = 'Marcelo Gonçalves'
-const AUTHOR_INITIALS = 'MG'
+// Blog tem apenas 1 autor por design (ver memória project_admin_single_user) —
+// mesmo AUTHOR_ID hardcoded usado em AuthorEditView.vue.
+const AUTHOR_ID = 'marcelo-goncalves'
+const author = ref<Autor | null>(null)
+const authorName = computed(() => author.value?.nome_exibicao || 'Marcelo Gonçalves')
+const authorInitials = computed(() => {
+  const parts = authorName.value.trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return 'MG'
+  return parts.slice(0, 2).map((p) => p[0]?.toUpperCase() || '').join('')
+})
+const authorAvatarUrl = computed(() => {
+  const url = author.value?.foto_avatar_url
+  if (!url) return ''
+  const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
+  return `${base}-480.webp`
+})
 
 const form = ref<Post>({
   titulo: '',
@@ -81,7 +96,7 @@ const loading = ref(false)
 const saving = ref(false)
 const uploadContext = ref<'destaque' | 'editor'>('destaque')
 const loadingCategories = ref(true)
-const toast = ref<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null)
+const { toast, showToast } = useToast()
 
 // Painéis / modos da tela de escrita
 const settingsOpen = ref(false)
@@ -186,11 +201,6 @@ watch(() => form.value.subcategoria_slug, (slug) => {
   form.value.subcategoria_nome = found?.nome || ''
 })
 
-function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
-  toast.value = { message, type }
-  setTimeout(() => { toast.value = null }, 2600)
-}
-
 // Contagem de palavras / tempo de leitura (200 palavras/min, mínimo 1)
 const words = computed(() => {
   const text = (form.value.conteudo_html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -286,6 +296,13 @@ onMounted(async () => {
     loadingCategories.value = false
   }
 
+  try {
+    const data = await authorsApi.get(AUTHOR_ID)
+    if (data.autor) author.value = data.autor
+  } catch {
+    // Autor ainda não cadastrado — preview cai no fallback "Marcelo Gonçalves"
+  }
+
   // 2. Continua com a lógica normal de edição
   if (isEditing.value) {
     loading.value = true
@@ -337,14 +354,28 @@ async function save() {
       e_projeto: (form.value.e_projeto ? 1 : 0) as 0 | 1
     }
 
+    const wasNew = !isEditing.value
     if (isEditing.value) {
       await postsApi.update(form.value.slug, payload)
     } else {
       await postsApi.create(payload)
     }
 
+    // captureInitialState() ANTES do router.replace: onBeforeRouteLeave só
+    // deixa navegar sem confirmação se isDirty já estiver false — senão o
+    // replace abaixo dispararia o prompt "alterações não salvas" mesmo
+    // logo após um save bem-sucedido.
     captureInitialState()
     showToast('Alterações salvas')
+
+    if (wasNew) {
+      // Sem isto, "Salvar" (sem publicar) duas vezes seguidas num post novo
+      // chamaria postsApi.create de novo com o mesmo slug — router.replace
+      // troca a rota para edit-post sem remontar o componente (só o parâmetro
+      // muda), então isEditing passa a refletir a realidade e o slug trava,
+      // exatamente como ao reabrir um post já salvo.
+      await router.replace({ name: 'edit-post', params: { slug: form.value.slug } })
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Erro desconhecido'
     showToast('Erro ao salvar: ' + message, 'error')
@@ -695,9 +726,12 @@ function generateSlug() {
           <h1 class="ia-preview-h1">{{ form.titulo || 'Título do post' }}</h1>
           <p v-if="form.subtitulo" class="ia-preview-sub">{{ form.subtitulo }}</p>
           <div class="ia-preview-author">
-            <div class="ia-preview-avatar">{{ AUTHOR_INITIALS }}</div>
+            <div class="ia-preview-avatar">
+              <img v-if="authorAvatarUrl" :src="authorAvatarUrl" :alt="authorName" />
+              <span v-else>{{ authorInitials }}</span>
+            </div>
             <div>
-              <div class="ia-preview-author-name">{{ AUTHOR_NAME }}</div>
+              <div class="ia-preview-author-name">{{ authorName }}</div>
               <div class="ia-preview-author-meta">{{ form.tempo_leitura_min }} min de leitura · {{ words }} palavras</div>
             </div>
           </div>
@@ -968,7 +1002,9 @@ function generateSlug() {
 .ia-preview-avatar {
   width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
   display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex: none;
+  overflow: hidden;
 }
+.ia-preview-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .ia-preview-author-name { font-weight: 700; font-size: 13.5px; color: var(--dark-700); }
 .ia-preview-author-meta { font-family: var(--font-mono); font-size: 11px; color: var(--slate-400); margin-top: 2px; }
 .ia-preview-cover { aspect-ratio: 16/8; border-radius: 16px; background-size: cover; background-position: center; margin: 32px 0 8px; box-shadow: 0 12px 30px rgba(12,32,39,.12); }
@@ -980,6 +1016,61 @@ function generateSlug() {
 .ia-read :deep(strong) { color: #A94C2D; font-weight: 600; }
 .ia-read :deep(blockquote) { margin: 1.2em 0; padding-left: 20px; border-left: 3px solid var(--petrol); font-style: italic; color: var(--slate-500); }
 .ia-read :deep(ul), .ia-read :deep(ol) { color: #26343a; font-size: 1.2rem; line-height: 1.75; margin: 0 0 1em 1.3em; }
+.ia-read :deep(a) { color: var(--petrol); border-bottom: 1px solid rgba(15,76,92,.4); }
+.ia-read :deep(.inline-code) {
+  font-family: var(--font-mono); font-size: .85em; background: var(--slate-100); color: #d53f8c;
+  padding: 1px 6px; border-radius: 4px;
+}
+.ia-read :deep(pre) {
+  font-family: var(--font-mono); font-size: .92rem; line-height: 1.6; background: var(--petrol-deep);
+  color: #D6E4E7; padding: 16px 18px; border-radius: 12px; overflow: auto; margin: 1.1em 0;
+}
+.ia-read :deep(hr) { border: none; border-top: 1px solid #D8CEBD; margin: 2em auto; width: 70px; }
+
+/* Blocos ricos do Tiptap (mesmas classes de RichTextEditor.vue / frontend post.css) */
+.ia-read :deep(.callout), .ia-read :deep(.tip) {
+  display: flex; gap: 18px; align-items: flex-start; background: #fff; border: 1px solid var(--border-color);
+  border-left: 4px solid var(--petrol); border-radius: 12px; padding: 22px 26px; margin: 1.6em 0;
+}
+.ia-read :deep(.callout .ic), .ia-read :deep(.tip .ic) {
+  flex: none; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 18px; background: rgba(15,76,92,.1); color: var(--petrol);
+}
+.ia-read :deep(.callout .t), .ia-read :deep(.tip .t) {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 500; margin-bottom: 6px; color: var(--petrol);
+}
+.ia-read :deep(.callout .c p), .ia-read :deep(.tip .c p) { margin: 0; font-size: 1.05rem; line-height: 1.6; }
+.ia-read :deep(.callout.warn) { border-left-color: var(--accent); background: #FCF6F1; }
+.ia-read :deep(.callout.warn .ic) { background: var(--accent-light); color: #A94C2D; }
+.ia-read :deep(.callout.warn .t) { color: #A94C2D; }
+.ia-read :deep(.callout.error) { border-left-color: #A33A2B; background: #FBF0EE; }
+.ia-read :deep(.callout.error .ic) { background: #F4D9D4; color: #A33A2B; }
+.ia-read :deep(.callout.error .t) { color: #A33A2B; }
+.ia-read :deep(.callout.ok) { border-left-color: var(--moss); background: #F1F5F0; }
+.ia-read :deep(.callout.ok .ic) { background: #DCE8DD; color: var(--moss); }
+.ia-read :deep(.callout.ok .t) { color: var(--moss); }
+.ia-read :deep(.tip) { border-left-color: var(--accent); }
+.ia-read :deep(.tip .ic) { background: var(--accent-light); color: #A94C2D; }
+.ia-read :deep(.tip .t) { color: var(--accent); }
+
+.ia-read :deep(.pull) { margin: 1.8em 0; padding: 8px 0 8px 28px; border-left: 3px solid var(--accent); }
+.ia-read :deep(.pull p) {
+  margin: 0; font-size: 1.5rem; line-height: 1.4; font-weight: 500; font-style: italic;
+  color: var(--petrol); letter-spacing: -.015em;
+}
+.ia-read :deep(.pull .cite) { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; color: var(--slate-400); margin-top: 14px; font-style: normal; }
+
+.ia-read :deep(.closing) { margin-top: 1.8em; padding: 30px 32px; background: var(--petrol); border-radius: 16px; color: var(--slate-50); }
+.ia-read :deep(.closing h3) { font-weight: 800; font-size: 1.4rem; letter-spacing: -.025em; color: #fff; margin-bottom: 8px; }
+.ia-read :deep(.closing p) { font-size: 1.05rem; line-height: 1.6; color: rgba(250,248,243,.72); max-width: 520px; margin: 0; }
+
+.ia-read :deep(table) { border-collapse: collapse; table-layout: fixed; width: 100%; margin: 1.5rem 0; }
+.ia-read :deep(table td), .ia-read :deep(table th) { position: relative; vertical-align: top; padding: 8px 10px; border: 1px solid var(--border-color); }
+.ia-read :deep(table th) { background: var(--slate-50); font-weight: 600; text-align: left; }
+
+.ia-read :deep(div[data-youtube-video]) { margin: 1.3em 0; }
+.ia-read :deep(iframe) { border: 8px solid #000; border-radius: 4px; display: block; margin: 0 auto; max-width: 100%; }
 
 @media (max-width: 1179px) {
   .ia-outline { display: none; }

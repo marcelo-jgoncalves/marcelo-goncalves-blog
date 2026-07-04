@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { authorsApi } from '../services/api'
 import UploadModal from '../components/UploadModal.vue'
 import RichTextEditor from '../components/RichTextEditor.vue'
+import { useToast } from '../composables/useToast'
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 const AUTHOR_ID = 'marcelo-goncalves'
@@ -21,18 +22,13 @@ const form = ref({
 const loading = ref(false)
 const saving = ref(false)
 const showUploadModal = ref(false)
-const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
+const { toast, showToast } = useToast()
 
 const initials = computed(() => {
   const parts = (form.value.nome_exibicao || '').trim().split(/\s+/).filter(Boolean)
   if (!parts.length) return 'MG'
   return parts.slice(0, 2).map(p => p[0]?.toUpperCase() || '').join('')
 })
-
-function showToast(message: string, type: 'success' | 'error' = 'success') {
-  toast.value = { message, type }
-  setTimeout(() => { toast.value = null }, 4000)
-}
 
 onMounted(async () => {
   loading.value = true
