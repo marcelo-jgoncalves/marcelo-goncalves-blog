@@ -55,7 +55,7 @@ if (sqlDef) lowlightInstance.register('sql', sqlDef)
 /* END BLOCK: Syntax Highlighting Setup */
 
 
-const props = defineProps<{ modelValue: string }>()
+const props = defineProps<{ modelValue: string; hideToolbar?: boolean }>()
 const emit = defineEmits<{(e: 'update:modelValue', v: string): void,(e: 'request-upload'): void }>()
 
 /* BLOCK: Editor Initialization */
@@ -270,15 +270,20 @@ const insertImage = (url: string, altText: string = '') => {
   editorInstance.value.chain().focus().setImage({ src: url, alt: altText }).run()
 }
 
+const focusStart = () => {
+  editorInstance.value?.chain().focus('start').run()
+}
+
 defineExpose({
-  insertImage
+  insertImage,
+  focusStart
 })
 /* END BLOCK: Image Upload Logic */
 </script>
 
 <template>
-  <div class="tiptap-editor-container">
-    <div v-if="editorInstance" class="tiptap-toolbar">
+  <div class="tiptap-editor-container" :class="{ 'tiptap-editor-container--bare': hideToolbar }">
+    <div v-if="editorInstance && !hideToolbar" class="tiptap-toolbar">
       <button
         type="button"
         @click="editorInstance.chain().focus().toggleHeading({ level: 2 }).run()"
@@ -640,6 +645,15 @@ defineExpose({
   background: var(--slate-50);
   border-radius: 8px 8px 0 0;
   flex-wrap: wrap;
+}
+
+.tiptap-editor-container--bare {
+  border: none;
+  background: transparent;
+}
+.tiptap-editor-container--bare .tiptap-content :deep(.ProseMirror) {
+  padding: 0;
+  min-height: 40vh;
 }
 
 .tiptap-toolbar button {

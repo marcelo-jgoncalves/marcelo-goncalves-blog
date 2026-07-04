@@ -23,6 +23,12 @@ const saving = ref(false)
 const showUploadModal = ref(false)
 const toast = ref<{ message: string; type: 'success' | 'error' } | null>(null)
 
+const initials = computed(() => {
+  const parts = (form.value.nome_exibicao || '').trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return 'MG'
+  return parts.slice(0, 2).map(p => p[0]?.toUpperCase() || '').join('')
+})
+
 function showToast(message: string, type: 'success' | 'error' = 'success') {
   toast.value = { message, type }
   setTimeout(() => { toast.value = null }, 4000)
@@ -69,78 +75,68 @@ const avatarPreviewUrl = computed(() => {
 </script>
 
 <template>
-  <div class="editor">
-    <Transition name="toast">
-      <div v-if="toast" :class="['toast', `toast--${toast.type}`]" role="alert">
-        {{ toast.message }}
+  <div data-screen-label="Autor" class="ia-author">
+    <Transition name="ia-toast">
+      <div v-if="toast" :class="['ia-toast', `ia-toast--${toast.type}`]" role="alert">
+        <span class="ia-toast-check">✓</span>{{ toast.message }}
       </div>
     </Transition>
 
-    <header class="editor-header">
-      <h1>Editar Perfil</h1>
-      <button class="btn-primary" @click="save" :disabled="saving">
-        {{ saving ? 'Salvando...' : 'Salvar Perfil' }}
-      </button>
-    </header>
+    <div class="ia-eyebrow"><span class="ia-eyebrow-line"></span>Configurações</div>
+    <h1 class="ia-h1">Perfil do autor</h1>
+    <p class="ia-subtitle">Aparece no rodapé de cada post e na página Sobre.</p>
 
-    <div v-if="loading" class="loading">Carregando dados...</div>
+    <div v-if="loading" class="ia-loading">Carregando dados…</div>
 
-    <div v-else class="editor-grid">
-      <div class="main-column">
-        <div class="form-group">
-          <label>Nome de Exibição</label>
-          <input v-model="form.nome_exibicao" type="text" placeholder="Ex: Marcelo Gonçalves" />
+    <div v-else class="ia-card">
+      <div class="ia-card-top">
+        <div class="ia-avatar">
+          <img v-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="Avatar" />
+          <span v-else>{{ initials }}</span>
         </div>
-
-        <div class="form-group">
-          <label>Biografia</label>
-          <RichTextEditor
-            v-model="form.bio"
-            :key="AUTHOR_ID"
-            @request-upload="() => {}"
-          />
-          <small>Suporta formatação básica — negrito, itálico, links.</small>
-        </div>
-
-        <div class="panel">
-          <h3>Redes Sociais</h3>
-          <div class="form-group">
-            <label>LinkedIn URL</label>
-            <input v-model="form.linkedin_url" type="text" placeholder="https://linkedin.com/in/..." />
-          </div>
-          <div class="form-group">
-            <label>GitHub URL</label>
-            <input v-model="form.github_url" type="text" placeholder="https://github.com/..." />
-          </div>
-          <div class="form-group">
-            <label>Instagram URL</label>
-            <input v-model="form.instagram_url" type="text" placeholder="https://instagram.com/..." />
-          </div>
+        <div>
+          <button class="ia-btn-outline" @click="showUploadModal = true">Trocar avatar</button>
+          <div class="ia-avatar-hint">Quadrada · mín. 400×400px</div>
         </div>
       </div>
 
-      <aside class="settings-column">
-        <div class="panel">
-          <h3>Foto de Perfil</h3>
-          <div class="avatar-preview">
-            <img v-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="Avatar" />
-            <div v-else class="avatar-placeholder"><i class="fas fa-user"></i></div>
-          </div>
+      <div class="ia-field-block">
+        <label class="ia-field-label">Nome</label>
+        <input v-model="form.nome_exibicao" type="text" placeholder="Ex: Marcelo Gonçalves" class="ia-input" />
+      </div>
 
-          <button class="btn-outline" @click="showUploadModal = true" style="margin-top: 15px;">
-            <i class="fas fa-camera"></i> Alterar Foto
-          </button>
+      <div class="ia-field-block">
+        <label class="ia-field-label">Bio</label>
+        <RichTextEditor v-model="form.bio" :key="AUTHOR_ID" @request-upload="() => {}" />
+      </div>
 
-          <div class="form-group" style="margin-top: 15px;">
-            <label>URL da Foto</label>
-            <input v-model="form.foto_avatar_url" type="text" disabled />
-          </div>
-          <div class="form-group">
-            <label>Alt Text (Acessibilidade)</label>
-            <input v-model="form.foto_avatar_alt_text" type="text" placeholder="Descrição da foto" />
-          </div>
-        </div>
-      </aside>
+      <div class="ia-field-block">
+        <label class="ia-field-label">URL da foto</label>
+        <input v-model="form.foto_avatar_url" type="text" class="ia-input" disabled />
+      </div>
+      <div class="ia-field-block">
+        <label class="ia-field-label">Alt text (acessibilidade)</label>
+        <input v-model="form.foto_avatar_alt_text" type="text" placeholder="Descrição da foto" class="ia-input" />
+      </div>
+
+      <div class="ia-field-block">
+        <label class="ia-field-label">LinkedIn URL</label>
+        <input v-model="form.linkedin_url" type="text" placeholder="https://linkedin.com/in/..." class="ia-input" />
+      </div>
+      <div class="ia-field-block">
+        <label class="ia-field-label">GitHub URL</label>
+        <input v-model="form.github_url" type="text" placeholder="https://github.com/..." class="ia-input" />
+      </div>
+      <div class="ia-field-block">
+        <label class="ia-field-label">Instagram URL</label>
+        <input v-model="form.instagram_url" type="text" placeholder="https://instagram.com/..." class="ia-input" />
+      </div>
+
+      <div class="ia-card-footer">
+        <button class="ia-btn-primary" @click="save" :disabled="saving">
+          {{ saving ? 'Salvando…' : 'Salvar perfil' }}
+        </button>
+      </div>
     </div>
 
     <UploadModal v-if="showUploadModal" @close="showUploadModal = false" @uploaded="onImageUploaded" />
@@ -148,39 +144,63 @@ const avatarPreviewUrl = computed(() => {
 </template>
 
 <style scoped>
-.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
-.editor-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
-.form-group { margin-bottom: var(--space-3); }
-label { display: block; font-weight: 600; margin-bottom: var(--space-1); font-size: var(--text-sm); color: var(--dark-900); }
-input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: var(--text-base); }
-input:focus { outline: none; border-color: var(--accent); }
-.panel { background: white; padding: var(--space-3); border-radius: 8px; margin-bottom: var(--space-3); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.panel h3 { border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-1); margin-bottom: var(--space-2); font-size: var(--text-lg); }
+.ia-author { padding: 38px 40px 90px; max-width: 640px; }
 
-.avatar-preview {
-  width: 150px; height: 150px; margin: 0 auto;
-  border-radius: 50%; overflow: hidden;
-  background: var(--slate-100); border: 4px solid white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  display: flex; align-items: center; justify-content: center;
+.ia-eyebrow {
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
 }
-.avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
-.avatar-placeholder { font-size: var(--text-4xl); color: var(--slate-300); }
+.ia-eyebrow-line { width: 22px; height: 1px; background: var(--accent); }
+.ia-h1 { font-weight: 800; font-size: 2rem; letter-spacing: -.04em; color: var(--petrol); line-height: 1.05; margin: 0; }
+.ia-subtitle { font-size: 14px; color: var(--slate-500); margin: 10px 0 0; }
 
-.btn-primary { background: var(--accent); color: white; border: none; padding: var(--space-1) var(--space-3); border-radius: 4px; font-weight: 700; cursor: pointer; font-family: var(--font-display); transition: background-color 0.2s; }
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-outline { background: white; border: 1px solid var(--border-color); padding: 8px 15px; width: 100%; border-radius: 4px; cursor: pointer; color: var(--dark-700); transition: border-color 0.2s; }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.ia-loading { padding: 40px; text-align: center; color: var(--slate-500); }
 
-.toast {
-  position: fixed; top: var(--space-3); right: var(--space-3);
-  padding: var(--space-2) var(--space-3); border-radius: 6px; font-weight: 600; color: #fff;
-  z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+.ia-card { margin-top: 26px; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; padding: 26px; }
+.ia-card-top { display: flex; align-items: center; gap: 18px; padding-bottom: 22px; border-bottom: 1px solid var(--slate-100); }
+.ia-avatar {
+  width: 66px; height: 66px; border-radius: 50%; background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 22px;
+  letter-spacing: -.02em; flex: none; overflow: hidden;
 }
-.toast--success { background: #2d6a4f; }
-.toast--error   { background: #c0392b; }
-.toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
-.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
+.ia-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ia-avatar-hint { font-size: 11.5px; color: var(--slate-400); margin-top: 7px; }
 
-@media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } }
+.ia-field-block { margin-top: 22px; }
+.ia-field-label {
+  display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--slate-400); margin-bottom: 8px;
+}
+.ia-input {
+  width: 100%; font-family: var(--font-sans); font-size: 14.5px; color: var(--dark-700);
+  background: #fff; border: 1px solid var(--border-color); border-radius: 9px; padding: 10px 12px;
+}
+.ia-input:focus { outline: none; border-color: var(--accent); }
+.ia-input:disabled { background: var(--slate-100); color: var(--slate-400); cursor: not-allowed; }
+
+.ia-btn-outline {
+  font-size: 13px; font-weight: 600; color: var(--petrol); background: #fff; border: 1px solid var(--border-color);
+  border-radius: 9px; padding: 9px 15px; cursor: pointer;
+}
+.ia-btn-outline:hover { background: var(--slate-100); }
+
+.ia-card-footer { display: flex; justify-content: flex-end; margin-top: 20px; }
+.ia-btn-primary {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff;
+  border: none; cursor: pointer; font-weight: 600; font-size: 13.5px;
+  padding: 11px 18px; border-radius: 10px; box-shadow: 0 6px 16px rgba(201,96,60,.28); transition: filter .15s;
+}
+.ia-btn-primary:hover { filter: brightness(.92); }
+.ia-btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+.ia-toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 60; background: var(--petrol); color: #fff;
+  padding: 13px 18px; border-radius: 12px; box-shadow: 0 14px 34px rgba(12,32,39,.28);
+  display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500;
+}
+.ia-toast--error { background: #A94C2D; }
+.ia-toast-check { width: 22px; height: 22px; border-radius: 50%; background: var(--moss); display: flex; align-items: center; justify-content: center; font-size: 12px; flex: none; }
+.ia-toast--error .ia-toast-check { background: rgba(255,255,255,.25); }
+.ia-toast-enter-active, .ia-toast-leave-active { transition: opacity .25s, transform .25s; }
+.ia-toast-enter-from, .ia-toast-leave-to { opacity: 0; transform: translateY(14px); }
 </style>

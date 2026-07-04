@@ -1,30 +1,37 @@
 /* admin/src/assets/main.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
 @import '@fortawesome/fontawesome-free/css/all.css';
 
 :root {
-  /* ── Brand ── */
-  --accent:       #3B5F8A;
-  --accent-hover: #2D4F76;
-  --accent-light: #EBF1F8;
-  --accent-dark:  #1E3A57;
+  /* ── Brand — paleta "Painel de conteúdo" (petróleo/argila) ── */
+  --accent:       #C9603C; /* argila — ação primária */
+  --accent-hover: #A94C2D; /* argila hover */
+  --accent-light: #F3DDD0; /* argila suave */
+  --accent-dark:  #A94C2D;
+
+  --petrol:       #0F4C5C; /* títulos, tabs ativas, acentos */
+  --petrol-deep:  #08323D; /* sidebar, avatar */
+  --petrol-soft:  #5B8B96; /* gradientes de thumbnail */
+  --moss:         #3F6B47; /* status publicado, sucesso */
+  --clay-red-bg:  #FBEEE9; /* hover excluir (fundo) */
+  --clay-red-bd:  #E6C9BC; /* borda excluir */
 
   /* ── Dark scale ── */
-  --dark-900: #111827;
-  --dark-800: #1F2937;
-  --dark-700: #374151;
-  --dark-600: #475569;
+  --dark-900: #0F4C5C; /* petróleo — headings */
+  --dark-800: #08323D;
+  --dark-700: #0C2027; /* tinta — texto de interface */
+  --dark-600: #3C5A64; /* ardósia — texto secundário */
 
-  /* ── Slate neutrals ── */
-  --slate-50:  #F8FAFC;
-  --slate-100: #F1F5F9;
-  --slate-200: #E2E8F0;
-  --slate-300: #CBD5E1;
-  --slate-400: #94A3B8;
-  --slate-500: #64748B;
+  /* ── Slate neutrals (aço/areia/marfim) ── */
+  --slate-50:  #FAF8F3; /* marfim — fundo de área */
+  --slate-100: #F0ECE2; /* areia */
+  --slate-200: #E4DDD0; /* linha — bordas */
+  --slate-300: #E9E2D6; /* areia escura — hover toolbar */
+  --slate-400: #7E969E; /* aço — metadados, placeholders */
+  --slate-500: #3C5A64; /* ardósia — texto secundário */
 
   /* ── Surface ── */
-  --border-color: #E2E8F0;
+  --border-color: #E4DDD0;
   --blue-600:     #3182CE;
 
   /* ── Fonts ── */
@@ -64,6 +71,7 @@ body {
   background-color: var(--slate-50);
   line-height: 1.6;
   font-size: 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -79,3 +87,9 @@ a {
 button {
   font-family: inherit;
 }
+
+::selection { background: var(--accent-light); color: var(--accent-hover); }
+
+.ia-scroll::-webkit-scrollbar { width: 9px; height: 9px; }
+.ia-scroll::-webkit-scrollbar-thumb { background: rgba(15,76,92,.18); border-radius: 5px; }
+.ia-scroll::-webkit-scrollbar-track { background: transparent; }

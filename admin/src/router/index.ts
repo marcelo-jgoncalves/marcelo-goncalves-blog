@@ -27,16 +27,6 @@ const router = createRouter({
           component: DashboardView
         },
         {
-          path: 'posts/new',
-          name: 'new-post',
-          component: EditorView
-        },
-        {
-          path: 'post/:slug', // Rota de edição
-          name: 'edit-post',
-          component: EditorView
-        },
-        {
           path: 'profile', // Rota será /profile
           name: 'profile',
           component: AuthorEditView
@@ -50,8 +40,21 @@ const router = createRouter({
             requiresAuth: true
           }
         }
-        // Futuro: { path: 'posts/new', component: EditorView }
       ]
+    },
+    // A tela de escrita é full-bleed (sem sidebar do Admin) — tem sua própria
+    // barra superior com "‹ Posts", igual ao protótipo "Editor de Escrita".
+    {
+      path: '/posts/new',
+      name: 'new-post',
+      component: EditorView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/post/:slug',
+      name: 'edit-post',
+      component: EditorView,
+      meta: { requiresAuth: true }
     }
   ]
 })

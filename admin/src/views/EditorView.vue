@@ -44,8 +44,13 @@ const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const editorRef = ref<InstanceType<typeof RichTextEditor> | null>(null)
+const editorWrapperRef = ref<HTMLElement | null>(null)
+const titleRef = ref<HTMLElement | null>(null)
+const subtitleRef = ref<HTMLElement | null>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
+const AUTHOR_NAME = 'Marcelo Gonçalves'
+const AUTHOR_INITIALS = 'MG'
 
 const form = ref<Post>({
   titulo: '',
@@ -78,6 +83,13 @@ const uploadContext = ref<'destaque' | 'editor'>('destaque')
 const loadingCategories = ref(true)
 const toast = ref<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null)
 
+// Painéis / modos da tela de escrita
+const settingsOpen = ref(false)
+const focusMode = ref(false)
+const previewOpen = ref(false)
+const hintOpen = ref(true)
+const showOutline = computed(() => !focusMode.value && typeof window !== 'undefined' && window.innerWidth >= 1180)
+
 // Dirty state — detecta alterações não salvas
 const initialFormJson = ref('')
 const isDirty = computed(() =>
@@ -88,11 +100,33 @@ function captureInitialState() {
   initialFormJson.value = JSON.stringify(form.value)
 }
 
+const saveStatus = computed<'saved' | 'editing' | 'saving'>(() => {
+  if (saving.value) return 'saving'
+  if (isDirty.value) return 'editing'
+  return 'saved'
+})
+const SAVE_STATUS_META = {
+  saved:   { label: 'Salvo',      color: 'var(--moss)' },
+  editing: { label: 'Editando…',  color: 'var(--accent)' },
+  saving:  { label: 'Salvando…',  color: 'var(--slate-400)' }
+}
+
 const handleBeforeUnload = (e: BeforeUnloadEvent) => {
   if (isDirty.value) { e.preventDefault(); e.returnValue = '' }
 }
-onMounted(() => window.addEventListener('beforeunload', handleBeforeUnload))
-onUnmounted(() => window.removeEventListener('beforeunload', handleBeforeUnload))
+function onWindowResize() {
+  // força reavaliação de showOutline (computed já lê window.innerWidth)
+  windowTick.value++
+}
+const windowTick = ref(0)
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  window.addEventListener('resize', onWindowResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+  window.removeEventListener('resize', onWindowResize)
+})
 
 onBeforeRouteLeave(() => {
   if (isDirty.value) {
@@ -115,6 +149,13 @@ const featureImagePreviewUrl = computed(() => {
   const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
   return `${base}-480.webp?t=${featureImageCacheBuster.value}`
 })
+// variante 1280w para a capa grande da folha e do preview de leitura
+const coverFullUrl = computed(() => {
+  const url = form.value.imagem_destaque_url
+  if (!url) return ''
+  const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
+  return `${base}-1280.webp?t=${featureImageCacheBuster.value}`
+})
 
 const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'inteligencia-artificial', nome: 'Inteligência Artificial' },
@@ -125,6 +166,10 @@ const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'noticias-e-mercado', nome: 'Notícias e Mercado' },
 ]
 const categorias = ref<Categoria[]>(FALLBACK_CATEGORIAS)
+
+const categoriaNome = computed(() =>
+  categorias.value.find((c) => c.categoria_slug === form.value.categoria_slug)?.nome || 'Sem categoria'
+)
 
 const availableSubcategorias = computed(() =>
   categorias.value.find((c) => c.categoria_slug === form.value.categoria_slug)?.subcategorias || []
@@ -143,16 +188,44 @@ watch(() => form.value.subcategoria_slug, (slug) => {
 
 function showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
   toast.value = { message, type }
-  setTimeout(() => { toast.value = null }, 4000)
+  setTimeout(() => { toast.value = null }, 2600)
 }
 
-// Auto-cálculo do tempo de leitura (200 palavras/min)
-watch(() => form.value.conteudo_html, (html) => {
-  if (!html) return
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
-  const words = text.split(/\s+/).filter(Boolean).length
-  form.value.tempo_leitura_min = Math.max(1, Math.round(words / 200))
+// Contagem de palavras / tempo de leitura (200 palavras/min, mínimo 1)
+const words = computed(() => {
+  const text = (form.value.conteudo_html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  return text ? text.split(/\s+/).length : 0
 })
+watch(words, (n) => {
+  form.value.tempo_leitura_min = Math.max(1, Math.round(n / 200))
+}, { immediate: true })
+
+// Sumário lateral — reconstrói a partir dos H2/H3 renderizados de verdade no Tiptap,
+// atribuindo ids sequenciais (iah-0, iah-1…) para permitir o scroll-to-heading.
+type OutlineItem = { id: string; text: string; level: 2 | 3 }
+const outline = ref<OutlineItem[]>([])
+function refreshOutline() {
+  nextTick(() => {
+    const root = editorWrapperRef.value
+    if (!root) return
+    const heads = root.querySelectorAll('.tiptap-content .ProseMirror h2, .tiptap-content .ProseMirror h3')
+    const list: OutlineItem[] = []
+    heads.forEach((el, i) => {
+      const id = 'iah-' + i
+      el.id = id
+      list.push({ id, text: el.textContent?.trim() || '(sem título)', level: el.tagName === 'H2' ? 2 : 3 })
+    })
+    outline.value = list
+  })
+}
+watch(() => form.value.conteudo_html, refreshOutline)
+
+function scrollToHeading(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return
+  const y = el.getBoundingClientRect().top + window.scrollY - 92
+  window.scrollTo({ top: y, behavior: 'smooth' })
+}
 
 // Preview SERP
 const serpTitle = computed(() =>
@@ -164,6 +237,36 @@ const serpDesc = computed(() =>
 const serpUrl = computed(() =>
   `${BLOG_URL}/post/${form.value.slug || 'url-do-artigo'}`
 )
+
+// Título / Subtítulo — contenteditable, sincronizados via innerText apenas
+// quando o post aberto muda (nunca a cada tecla, para não resetar o cursor).
+let syncedKey = ''
+function syncTitleSubtitleDom() {
+  const key = (isEditing.value ? 'edit-' + route.params.slug : 'new') as string
+  if (syncedKey === key) return
+  syncedKey = key
+  if (titleRef.value) titleRef.value.innerText = form.value.titulo || ''
+  if (subtitleRef.value) subtitleRef.value.innerText = form.value.subtitulo || ''
+}
+function onTitleInput() {
+  form.value.titulo = titleRef.value?.innerText || ''
+  generateSlug()
+}
+function onSubtitleInput() {
+  form.value.subtitulo = subtitleRef.value?.innerText || ''
+}
+function onTitleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    subtitleRef.value?.focus()
+  }
+}
+function onSubtitleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    editorRef.value?.focusStart()
+  }
+}
 
 onMounted(async () => {
   // autor_id vem do Cognito username (não mais hardcoded)
@@ -209,6 +312,8 @@ onMounted(async () => {
     }
   }
   await nextTick()
+  syncTitleSubtitleDom()
+  refreshOutline()
   captureInitialState()
 })
 
@@ -237,16 +342,37 @@ async function save() {
     } else {
       await postsApi.create(payload)
     }
-    
+
     captureInitialState()
-    showToast('Post salvo com sucesso!')
-    router.push('/')
+    showToast('Alterações salvas')
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Erro desconhecido'
     showToast('Erro ao salvar: ' + message, 'error')
   } finally {
     saving.value = false
   }
+}
+
+async function publish() {
+  if (form.value.status !== 'Programado') form.value.status = 'Publicado'
+  await save()
+  if (!toast.value || toast.value.type !== 'error') {
+    showToast(form.value.status === 'Programado' ? 'Post agendado' : 'Post publicado')
+    router.push('/')
+  }
+}
+
+function backToPosts() {
+  router.push('/')
+}
+
+function openPreview() {
+  refreshOutline()
+  previewOpen.value = true
+}
+
+function toggleFocus() {
+  focusMode.value = !focusMode.value
 }
 
 /* Lógica de Upload Unificada */
@@ -273,10 +399,13 @@ function onImageUploaded(relativePath: string) {
   }
 }
 
-// Chamado pelo botão da lateral (Imagem de Destaque)
+// Chamado pela capa da folha (Adicionar/Trocar capa)
 function openFeatureImageUpload() {
   uploadContext.value = 'destaque'
   showUploadModal.value = true
+}
+function removeCover() {
+  form.value.imagem_destaque_url = ''
 }
 
 // Chamado pelo evento do Editor (Imagem no Texto)
@@ -293,250 +422,566 @@ function generateSlug() {
 </script>
 
 <template>
-  <div class="editor">
-    <Transition name="toast">
-      <div v-if="toast" :class="['toast', `toast--${toast.type}`]" role="alert">
-        {{ toast.message }}
+  <div data-screen-label="Editor de post" class="ia-write-screen" :class="{ 'ia-focus': focusMode }">
+    <Transition name="ia-toast">
+      <div v-if="toast" :class="['ia-toast', `ia-toast--${toast.type}`]" role="alert">
+        <span class="ia-toast-check">✓</span>{{ toast.message }}
       </div>
     </Transition>
-    <header class="editor-header">
-      <h1>{{ isEditing ? 'Editar Post' : 'Novo Post' }}</h1>
-      <div class="actions">
-        <span v-if="isDirty" class="dirty-badge" title="Alterações não salvas">● Não salvo</span>
-        <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="btn-secondary btn-preview">
-          <i class="fas fa-external-link-alt"></i> Ver no Blog
-        </a>
-        <button class="btn-secondary" @click="$router.push('/')">Cancelar</button>
-        <button class="btn-primary" @click="save" :disabled="saving">
-          {{ saving ? 'Salvando...' : 'Salvar Post' }}
-        </button>
+
+    <header class="ia-topbar" :class="{ 'ia-topbar--focus': focusMode }">
+      <button class="ia-btn-back" @click="backToPosts">‹ Posts</button>
+
+      <div class="ia-save-status">
+        <span class="ia-save-dot" :style="{ background: SAVE_STATUS_META[saveStatus].color }"></span>
+        <span class="ia-save-text" :style="{ color: SAVE_STATUS_META[saveStatus].color }">{{ SAVE_STATUS_META[saveStatus].label }}</span>
       </div>
+
+      <div style="flex:1"></div>
+
+      <div class="ia-counters">
+        <span>{{ words }} palavras</span>
+        <span class="ia-counters-divider"></span>
+        <span>{{ form.tempo_leitura_min }} min</span>
+      </div>
+
+      <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="ia-btn-ghost" title="Ver no Blog">
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+
+      <button class="ia-btn-ghost" @click="settingsOpen = true" title="Configurações do post">
+        <i class="fas fa-sliders-h"></i>
+      </button>
+
+      <button class="ia-btn-focus" :class="{ on: focusMode }" @click="toggleFocus">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        {{ focusMode ? 'Sair do foco' : 'Foco' }}
+      </button>
+
+      <button class="ia-btn-read" @click="openPreview">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        Ler
+      </button>
+
+      <button class="ia-btn-save" @click="save" :disabled="saving">Salvar</button>
+      <button class="ia-btn-publish" @click="publish" :disabled="saving">
+        {{ form.status === 'Programado' ? 'Agendar' : 'Publicar' }}
+      </button>
     </header>
 
-    <div v-if="loading" class="loading">Carregando...</div>
+    <div v-if="loading" class="ia-loading">Carregando…</div>
 
-    <div v-else class="editor-grid">
-      <div class="main-column">
-        <div class="form-group">
-          <label>Título</label>
-          <input v-model="form.titulo" @input="generateSlug" type="text" placeholder="Título do Artigo" />
-        </div>
-        
-        <div class="form-group">
-          <label>Slug (URL)</label>
-          <input v-model="form.slug" type="text" :disabled="isEditing" />
-        </div>
-
-        <div class="form-group">
-          <label>Conteúdo</label>
-          <RichTextEditor 
-            ref="editorRef" 
-            v-model="form.conteudo_html" 
-            :key="form.slug"
-            @request-upload="openEditorImageUpload"
-          />
+    <div v-else class="ia-body">
+      <aside v-if="showOutline" class="ia-outline">
+        <div class="ia-outline-header">Sumário</div>
+        <p v-if="outline.length === 0" class="ia-outline-empty">Os títulos que você criar aparecem aqui para navegar.</p>
+        <div v-else class="ia-outline-list ia-scroll">
+          <a
+            v-for="item in outline"
+            :key="item.id"
+            class="ia-outline-item"
+            :class="`ia-outline-item--h${item.level}`"
+            @click="scrollToHeading(item.id)"
+          >{{ item.text }}</a>
         </div>
 
-        <div class="form-group">
-          <label>Resumo</label>
-          <textarea v-model="form.resumo" rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Subtítulo <small>(exibido abaixo do título na página de postagem)</small></label>
-          <textarea v-model="form.subtitulo" rows="2"></textarea>
-        </div>
-
-        <div class="seo-box">
-          <h3>SEO & Meta Tags</h3>
-          <div class="form-group">
-            <label>
-              Meta Título
-              <span :class="['char-count', { warn: serpTitle.length > 60 }]">
-                {{ serpTitle.length }}/60
-              </span>
-            </label>
-            <input v-model="form.meta_titulo_seo" type="text" />
-          </div>
-          <div class="form-group">
-            <label>
-              Meta Descrição
-              <span :class="['char-count', { warn: serpDesc.length > 155 }]">
-                {{ serpDesc.length }}/160
-              </span>
-            </label>
-            <textarea v-model="form.meta_descricao_seo" rows="2"></textarea>
-          </div>
-
-          <div class="serp-preview">
-            <p class="serp-label">Preview Google</p>
-            <div class="serp-url">{{ serpUrl }}</div>
-            <div class="serp-title">{{ serpTitle }}</div>
-            <div class="serp-desc">{{ serpDesc }}</div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="settings-column">
-        <div class="panel">
-          <h3>Publicação</h3>
-          <div class="form-group">
-            <label>Status</label>
-            <select v-model="form.status">
-              <option value="Rascunho">Rascunho</option>
-              <option value="Publicado">Publicado</option>
-              <option value="Programado">Programado</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Data Publicação</label>
-            <input v-model="form.data_publicacao" type="datetime-local" />
-          </div>
-          <div class="form-group">
-            <label>Tempo de Leitura (min) <span class="auto-badge">auto</span></label>
-            <input v-model.number="form.tempo_leitura_min" type="number" min="1" max="60" />
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3>Organização</h3>
-          <div class="form-group">
-            <label>Categoria</label>
-            <select v-model="form.categoria_slug" :disabled="loadingCategories">
-              <option v-if="loadingCategories" value="" disabled>Carregando categorias...</option>
-              <option
-                v-for="cat in categorias"
-                :key="cat.categoria_slug"
-                :value="cat.categoria_slug"
-              >{{ cat.nome }}</option>
-            </select>
-          </div>
-          <div class="form-group" v-if="availableSubcategorias.length">
-            <label>Subcategoria <small>(eyebrow do card)</small></label>
-            <select v-model="form.subcategoria_slug">
-              <option value="">Nenhuma</option>
-              <option v-for="sub in availableSubcategorias" :key="sub.slug" :value="sub.slug">
-                {{ sub.nome }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Tópico <small>(não exibido no blog ainda)</small></label>
-            <input v-model="form.topico" type="text" placeholder="Ex: Bastidores, Monetização..." />
-          </div>
-          <div class="form-group">
-            <label>Variante visual do card</label>
-            <select v-model="form.variante_card">
-              <option value="">Padrão (definida pela categoria)</option>
-              <option v-for="variant in CARD_VARIANTS" :key="variant.value" :value="variant.value">
-                {{ variant.label }}
-              </option>
-            </select>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="popular" v-model="form.e_popular" />
-            <label for="popular">É Popular?</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="projeto" v-model="form.e_projeto" />
-            <label for="projeto">É do "Projeto"?</label>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3>Imagem de Destaque</h3>
-          <div class="form-group">
-            <button class="btn-outline" @click="openFeatureImageUpload">
-              <i class="fas fa-upload"></i> Upload Imagem
-            </button>
-          </div>
-          
-          <div class="form-group">
-            <label>URL da Imagem</label>
-            <input v-model="form.imagem_destaque_url" type="text" />
-          </div>
-
-          <div v-if="featureImagePreviewUrl" class="image-preview">
-            <img
-              :src="featureImagePreviewUrl"
-              alt="Preview da imagem de destaque"
-              @error="handleFeatureImageError"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Alt Text (Acessibilidade)</label>
-            <input v-model="form.imagem_destaque_alt_text" type="text" />
+        <div class="ia-shortcuts">
+          <div class="ia-shortcuts-header">Atalhos</div>
+          <div class="ia-shortcuts-list">
+            <div class="ia-shortcut-row"><span>Título</span><span class="ia-key">## ␣</span></div>
+            <div class="ia-shortcut-row"><span>Lista</span><span class="ia-key">- ␣</span></div>
+            <div class="ia-shortcut-row"><span>Citação</span><span class="ia-key">&gt; ␣</span></div>
+            <div class="ia-shortcut-row"><span>Blocos ricos</span><span class="ia-key">menu ⌄</span></div>
           </div>
         </div>
       </aside>
+
+      <div class="ia-sheet" :class="{ 'ia-sheet--focus': focusMode }">
+        <div v-if="form.imagem_destaque_url" class="ia-cover" :style="{ backgroundImage: `url(${coverFullUrl})` }">
+          <div class="ia-cover-actions">
+            <button class="ia-cover-btn" @click="openFeatureImageUpload">Trocar capa</button>
+            <button class="ia-cover-btn ia-cover-btn--danger" @click="removeCover">Remover</button>
+          </div>
+        </div>
+        <button v-else class="ia-add-cover" @click="openFeatureImageUpload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 4"/></svg>
+          Adicionar capa
+        </button>
+
+        <div
+          ref="titleRef"
+          class="ia-title"
+          contenteditable="true"
+          data-ph="Título do post"
+          @input="onTitleInput"
+          @keydown="onTitleKeydown"
+        ></div>
+        <div
+          ref="subtitleRef"
+          class="ia-sub"
+          contenteditable="true"
+          data-ph="Um subtítulo que convida à leitura…"
+          @input="onSubtitleInput"
+          @keydown="onSubtitleKeydown"
+        ></div>
+
+        <div class="ia-divider"></div>
+
+        <div ref="editorWrapperRef" class="ia-write-wrap">
+          <RichTextEditor
+            ref="editorRef"
+            v-model="form.conteudo_html"
+            :key="form.slug"
+            :hide-toolbar="focusMode"
+            @request-upload="openEditorImageUpload"
+          />
+        </div>
+      </div>
     </div>
 
-    <UploadModal 
-      v-if="showUploadModal" 
-      @close="showUploadModal = false" 
-      @uploaded="onImageUploaded" 
+    <Transition name="ia-hint">
+      <div v-if="hintOpen && !focusMode" class="ia-hint-bar">
+        <span><span class="ia-key ia-key--dark">##&nbsp;␣</span> título</span>
+        <span class="ia-hint-sep">·</span>
+        <span><span class="ia-key ia-key--dark">-&nbsp;␣</span> lista</span>
+        <span class="ia-hint-sep">·</span>
+        <span>selecione o texto para formatar</span>
+        <button class="ia-hint-close" @click="hintOpen = false">✕</button>
+      </div>
+    </Transition>
+
+    <!-- Painel de configurações (campos que não fazem parte da folha de escrita) -->
+    <Transition name="ia-drawer">
+      <div v-if="settingsOpen" class="ia-drawer-overlay" @click.self="settingsOpen = false">
+        <aside class="ia-drawer ia-scroll">
+          <div class="ia-drawer-header">
+            <span>Configurações do post</span>
+            <button class="ia-drawer-close" @click="settingsOpen = false">✕</button>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header">Status</div>
+            <div class="ia-segmented">
+              <button :class="['ia-seg', { active: form.status === 'Rascunho' }]" @click="form.status = 'Rascunho'">Rascunho</button>
+              <button :class="['ia-seg', { active: form.status === 'Publicado' }]" @click="form.status = 'Publicado'">Publicado</button>
+              <button :class="['ia-seg', { active: form.status === 'Programado' }]" @click="form.status = 'Programado'">Programado</button>
+            </div>
+            <div v-if="form.status === 'Programado'" class="ia-sched">
+              <label class="ia-field-label">Publicar em</label>
+              <input v-model="form.data_publicacao" type="datetime-local" class="ia-input" />
+            </div>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header">URL</div>
+            <div class="ia-slug-field">
+              <span class="ia-slug-prefix">/post/</span>
+              <input v-model="form.slug" type="text" :disabled="isEditing" class="ia-slug-input" />
+            </div>
+            <div class="ia-field-block" style="margin-top:12px">
+              <label class="ia-field-label">Resumo</label>
+              <textarea v-model="form.resumo" rows="2" class="ia-textarea"></textarea>
+            </div>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header">Categoria</div>
+            <select v-model="form.categoria_slug" :disabled="loadingCategories" class="ia-select-full">
+              <option v-if="loadingCategories" value="" disabled>Carregando categorias…</option>
+              <option v-for="cat in categorias" :key="cat.categoria_slug" :value="cat.categoria_slug">{{ cat.nome }}</option>
+            </select>
+            <div v-if="availableSubcategorias.length" class="ia-field-block" style="margin-top:10px">
+              <label class="ia-field-label">Subcategoria <small>(eyebrow do card)</small></label>
+              <select v-model="form.subcategoria_slug" class="ia-select-full">
+                <option value="">Nenhuma</option>
+                <option v-for="sub in availableSubcategorias" :key="sub.slug" :value="sub.slug">{{ sub.nome }}</option>
+              </select>
+            </div>
+            <div class="ia-field-block" style="margin-top:10px">
+              <label class="ia-field-label">Tópico <small>(não exibido no blog ainda)</small></label>
+              <input v-model="form.topico" type="text" placeholder="Ex: Bastidores, Monetização..." class="ia-input" />
+            </div>
+            <div class="ia-field-block" style="margin-top:10px">
+              <label class="ia-field-label">Variante visual do card</label>
+              <select v-model="form.variante_card" class="ia-select-full">
+                <option value="">Padrão (definida pela categoria)</option>
+                <option v-for="variant in CARD_VARIANTS" :key="variant.value" :value="variant.value">{{ variant.label }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header" style="margin-bottom:14px">Destaques</div>
+            <div class="ia-toggle-row">
+              <div>
+                <div class="ia-toggle-title">Post popular</div>
+                <div class="ia-toggle-sub">Aparece na seção "Em alta"</div>
+              </div>
+              <button class="ia-toggle-track" @click="form.e_popular = !form.e_popular">
+                <span class="ia-toggle-track-bg" :style="{ background: form.e_popular ? 'var(--accent)' : '#D8CEBD' }"></span>
+                <span class="ia-toggle-knob" :style="{ left: form.e_popular ? '19px' : '2.5px' }"></span>
+              </button>
+            </div>
+            <div class="ia-toggle-row" style="margin-top:14px">
+              <div>
+                <div class="ia-toggle-title">Página do projeto</div>
+                <div class="ia-toggle-sub">Lista em "O Projeto"</div>
+              </div>
+              <button class="ia-toggle-track" @click="form.e_projeto = !form.e_projeto">
+                <span class="ia-toggle-track-bg" :style="{ background: form.e_projeto ? 'var(--petrol)' : '#D8CEBD' }"></span>
+                <span class="ia-toggle-knob" :style="{ left: form.e_projeto ? '19px' : '2.5px' }"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header" style="margin-bottom:14px">SEO</div>
+            <div class="ia-field-block">
+              <label class="ia-field-label ia-field-label--row">
+                Meta título
+                <span class="ia-char-count" :class="{ warn: serpTitle.length > 60 }">{{ serpTitle.length }}/60</span>
+              </label>
+              <input v-model="form.meta_titulo_seo" type="text" class="ia-input" />
+            </div>
+            <div class="ia-field-block" style="margin-top:10px">
+              <label class="ia-field-label ia-field-label--row">
+                Meta descrição
+                <span class="ia-char-count" :class="{ warn: serpDesc.length > 160 }">{{ serpDesc.length }}/160</span>
+              </label>
+              <textarea v-model="form.meta_descricao_seo" rows="3" class="ia-textarea"></textarea>
+            </div>
+            <div class="ia-serp">
+              <div class="ia-serp-label">Pré-visualização · Google</div>
+              <div class="ia-serp-title">{{ serpTitle }}</div>
+              <div class="ia-serp-url">{{ serpUrl }}</div>
+              <div class="ia-serp-desc">{{ serpDesc }}</div>
+            </div>
+          </div>
+
+          <div class="ia-rail-card">
+            <div class="ia-rail-header">Imagem de destaque</div>
+            <div v-if="featureImagePreviewUrl" class="ia-image-preview">
+              <img :src="featureImagePreviewUrl" alt="Preview" @error="handleFeatureImageError" />
+            </div>
+            <div class="ia-field-block" style="margin-top:10px">
+              <label class="ia-field-label">Alt text (acessibilidade)</label>
+              <input v-model="form.imagem_destaque_alt_text" type="text" class="ia-input" />
+            </div>
+          </div>
+
+          <div class="ia-rail-card ia-rail-card--compact">
+            <div class="ia-meta-row">
+              <span class="ia-meta-label">Tempo de leitura</span>
+              <span class="ia-meta-value">{{ form.tempo_leitura_min }} min</span>
+            </div>
+            <div class="ia-meta-row" style="margin-top:9px">
+              <span class="ia-meta-label">Última alteração</span>
+              <span class="ia-meta-value ia-meta-value--muted">{{ isDirty ? 'agora (não salvo)' : 'salvo' }}</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </Transition>
+
+    <!-- Pré-visualização — como o leitor verá -->
+    <Transition name="ia-fade">
+      <div v-if="previewOpen" class="ia-preview-overlay ia-scroll">
+        <header class="ia-preview-top">
+          <button class="ia-preview-back" @click="previewOpen = false">‹ Voltar à escrita</button>
+          <span class="ia-preview-label">Como o leitor verá</span>
+        </header>
+        <article class="ia-preview-article">
+          <div class="ia-preview-eyebrow"><span class="ia-preview-eyebrow-line"></span>{{ categoriaNome }}</div>
+          <h1 class="ia-preview-h1">{{ form.titulo || 'Título do post' }}</h1>
+          <p v-if="form.subtitulo" class="ia-preview-sub">{{ form.subtitulo }}</p>
+          <div class="ia-preview-author">
+            <div class="ia-preview-avatar">{{ AUTHOR_INITIALS }}</div>
+            <div>
+              <div class="ia-preview-author-name">{{ AUTHOR_NAME }}</div>
+              <div class="ia-preview-author-meta">{{ form.tempo_leitura_min }} min de leitura · {{ words }} palavras</div>
+            </div>
+          </div>
+          <div v-if="coverFullUrl" class="ia-preview-cover" :style="{ backgroundImage: `url(${coverFullUrl})` }"></div>
+          <div class="ia-read" v-html="form.conteudo_html || '<p style=\'color:#7E969E\'>Sem conteúdo ainda.</p>'"></div>
+        </article>
+      </div>
+    </Transition>
+
+    <UploadModal
+      v-if="showUploadModal"
+      @close="showUploadModal = false"
+      @uploaded="onImageUploaded"
     />
   </div>
 </template>
 
 <style scoped>
-.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
-.editor-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
-.form-group { margin-bottom: var(--space-3); }
-label { display: block; font-weight: 600; margin-bottom: var(--space-1); color: var(--dark-900); font-size: var(--text-sm); }
-input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: var(--text-base); }
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-.panel { background: white; padding: var(--space-3); border-radius: 8px; margin-bottom: var(--space-3); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.panel h3 { font-size: var(--text-lg); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-1); margin-bottom: var(--space-2); }
-.image-preview img { width: 100%; border-radius: 4px; margin-top: var(--space-1); }
-.checkbox-group { display: flex; align-items: center; gap: var(--space-1); margin-bottom: var(--space-1); }
-.btn-primary { background: var(--accent); color: white; border: none; padding: var(--space-1) var(--space-3); border-radius: 4px; font-weight: 700; cursor: pointer; font-family: var(--font-display); transition: background-color 0.2s; }
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-secondary { background: var(--slate-100); border: none; padding: var(--space-1) var(--space-3); border-radius: 4px; margin-right: var(--space-1); cursor: pointer; color: var(--dark-700); transition: background-color 0.2s; }
-.btn-secondary:hover { background: var(--slate-200); }
-.btn-outline { background: transparent; border: 1px solid var(--border-color); padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; color: var(--dark-700); transition: border-color 0.2s; }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-@media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } }
-.toast {
-  position: fixed; top: var(--space-3); right: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border-radius: 6px; font-weight: 600; color: #fff;
-  z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.toast--success { background: #2d6a4f; }
-.toast--error   { background: #c0392b; }
-.toast--warning { background: #b45309; }
+.ia-write-screen { min-height: 100vh; background: var(--slate-50); }
 
-.seo-box { background: white; padding: var(--space-3); border-radius: 8px; margin-top: var(--space-3); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.seo-box h3 { font-size: var(--text-lg); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-1); margin-bottom: var(--space-2); }
-
-.char-count { font-size: var(--text-xs); font-weight: 400; color: var(--slate-400); margin-left: var(--space-1); }
-.char-count.warn { color: #dc2626; font-weight: 600; }
-
-.serp-preview {
-  margin-top: var(--space-2); padding: 14px 16px; border: 1px solid var(--border-color);
-  border-radius: 8px; background: var(--slate-50); font-family: Arial, sans-serif;
+/* ===== Top bar ===== */
+.ia-topbar {
+  position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 14px;
+  padding: 11px 24px; background: rgba(250,248,243,.9); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color); transition: background .3s, border-color .3s;
 }
-.serp-label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-400); margin-bottom: var(--space-1); font-family: inherit; }
-.serp-url   { font-size: var(--text-xs); color: #1a0dab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.serp-title { font-size: var(--text-base); color: #1a0dab; font-weight: 400; margin: 2px 0; }
-.serp-title:hover { text-decoration: underline; }
-.serp-desc  { font-size: var(--text-sm); color: #545454; line-height: 1.4; margin-top: 4px; }
+.ia-topbar--focus { background: rgba(250,248,243,.7); border-bottom-color: transparent; }
 
-.auto-badge {
-  display: inline-block; font-size: var(--text-xs); background: #d1fae5; color: #065f46;
-  border-radius: 4px; padding: 1px 6px; font-weight: 600; vertical-align: middle; margin-left: 6px;
+.ia-btn-back {
+  display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border-color);
+  color: var(--slate-500); font-size: 12.5px; font-weight: 600; padding: 7px 13px; border-radius: 9px; cursor: pointer;
+}
+.ia-btn-back:hover { background: #fff; }
+
+.ia-save-status { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.ia-save-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ia-save-text { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; white-space: nowrap; }
+
+.ia-counters { display: flex; align-items: center; gap: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--slate-400); white-space: nowrap; }
+.ia-counters-divider { width: 1px; height: 14px; background: var(--border-color); }
+
+.ia-btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--border-color);
+  color: var(--petrol); font-size: 12.5px; font-weight: 600; padding: 8px 12px; border-radius: 9px; cursor: pointer;
+}
+.ia-btn-ghost:hover { background: var(--slate-100); }
+
+.ia-btn-focus {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; padding: 8px 13px;
+  border-radius: 9px; cursor: pointer; background: #fff; border: 1px solid var(--border-color); color: var(--slate-500);
+}
+.ia-btn-focus.on { background: var(--petrol); border-color: var(--petrol); color: #fff; }
+.ia-btn-focus:hover { background: var(--slate-100); }
+.ia-btn-focus.on:hover { background: var(--petrol); }
+
+.ia-btn-read {
+  display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--border-color);
+  color: var(--petrol); font-size: 12.5px; font-weight: 600; padding: 8px 14px; border-radius: 9px; cursor: pointer;
+}
+.ia-btn-read:hover { background: var(--slate-100); }
+
+.ia-btn-save {
+  background: #fff; border: 1px solid var(--petrol); color: var(--petrol); font-size: 12.5px; font-weight: 600;
+  padding: 8px 16px; border-radius: 9px; cursor: pointer;
+}
+.ia-btn-save:hover { background: rgba(15,76,92,.06); }
+.ia-btn-save:disabled { opacity: .6; cursor: not-allowed; }
+
+.ia-btn-publish {
+  background: var(--accent); color: #fff; border: none; font-size: 12.5px; font-weight: 600; padding: 8px 16px;
+  border-radius: 9px; cursor: pointer; box-shadow: 0 6px 16px rgba(201,96,60,.28);
+}
+.ia-btn-publish:hover { filter: brightness(.92); }
+.ia-btn-publish:disabled { opacity: .6; cursor: not-allowed; }
+
+.ia-loading { padding: 60px; text-align: center; color: var(--slate-500); }
+
+/* ===== Body / Outline / Sheet ===== */
+.ia-body { padding: 0 24px; position: relative; }
+
+.ia-outline {
+  position: fixed; left: 50%; margin-left: -628px; width: 236px; top: 82px; height: calc(100vh - 110px);
+  padding: 0 22px; display: flex; flex-direction: column;
+}
+.ia-outline-header { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--slate-400); margin-bottom: 16px; }
+.ia-outline-empty { font-size: 12.5px; line-height: 1.6; color: #A9B4B0; }
+.ia-outline-list { overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.ia-outline-item {
+  text-align: left; background: transparent; cursor: pointer; border-radius: 7px; border-left: 2px solid transparent;
+  line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all .12s; display: block;
+}
+.ia-outline-item--h2 { font-size: 12.5px; font-weight: 600; color: var(--slate-500); padding: 5px 9px; }
+.ia-outline-item--h3 { font-size: 12px; font-weight: 500; color: var(--slate-400); padding: 5px 9px 5px 20px; }
+.ia-outline-item:hover { color: var(--petrol); background: var(--slate-100); }
+
+.ia-shortcuts { margin-top: auto; padding-top: 20px; }
+.ia-shortcuts-header { font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--slate-400); margin-bottom: 9px; }
+.ia-shortcuts-list { display: flex; flex-direction: column; gap: 7px; font-size: 11.5px; color: var(--slate-500); background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 13px 15px; }
+.ia-shortcut-row { display: flex; justify-content: space-between; }
+.ia-key { font-family: var(--font-mono); color: var(--petrol); }
+.ia-key--dark { background: rgba(255,255,255,.16); padding: 2px 7px; border-radius: 5px; }
+
+.ia-sheet {
+  width: 100%; max-width: 740px; margin: 34px auto 80px; padding: 52px 60px 40px; position: relative;
+  background: #fff; border: 1px solid #E7E0D3; border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(12,32,39,.04), 0 18px 46px rgba(12,32,39,.06); transition: max-width .3s;
+}
+.ia-sheet--focus { max-width: 760px; }
+
+.ia-cover {
+  position: relative; border-radius: 16px; overflow: hidden; height: 200px; margin-bottom: 34px;
+  background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+}
+.ia-cover-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; }
+.ia-cover-btn {
+  font-size: 11.5px; font-weight: 600; color: var(--petrol); background: rgba(255,255,255,.92); border: none;
+  border-radius: 8px; padding: 7px 12px; cursor: pointer; backdrop-filter: blur(4px);
+}
+.ia-cover-btn--danger { color: #A94C2D; }
+
+.ia-add-cover {
+  display: inline-flex; align-items: center; gap: 8px; background: transparent; border: none; color: var(--slate-400);
+  font-size: 13px; font-weight: 600; cursor: pointer; padding: 6px 0; margin-bottom: 12px;
+}
+.ia-add-cover:hover { color: var(--accent); }
+
+.ia-title {
+  width: 100%; font-family: var(--font-sans); font-weight: 800; font-size: 2.7rem; letter-spacing: -.045em;
+  line-height: 1.08; color: var(--petrol); outline: none;
+}
+.ia-title:empty:before { content: attr(data-ph); color: #A9B4B0; pointer-events: none; }
+
+.ia-sub {
+  width: 100%; font-family: 'Newsreader', serif; font-size: 1.32rem; line-height: 1.5; color: #5c6f76;
+  outline: none; margin-top: 14px;
+}
+.ia-sub:empty:before { content: attr(data-ph); color: #A9B4B0; pointer-events: none; }
+
+.ia-divider { height: 1px; background: var(--border-color); margin: 26px 0 8px; }
+
+.ia-write-wrap :deep(.tiptap-content .ProseMirror) {
+  font-family: 'Newsreader', Georgia, serif; color: #0C2027; font-size: 1.28rem; line-height: 1.75;
+  caret-color: var(--accent);
+}
+.ia-write-wrap :deep(.tiptap-content .ProseMirror p) { margin: 0 0 .85em; }
+.ia-write-wrap :deep(.tiptap-content .ProseMirror h2) {
+  font-family: var(--font-sans); font-weight: 800; font-size: 1.7rem; letter-spacing: -.03em; color: var(--petrol);
+  margin: 1.5em 0 .35em; line-height: 1.15;
+}
+.ia-write-wrap :deep(.tiptap-content .ProseMirror h3) {
+  font-family: var(--font-sans); font-weight: 700; font-size: 1.28rem; letter-spacing: -.015em; color: var(--petrol);
+  margin: 1.25em 0 .3em;
+}
+.ia-write-wrap :deep(.tiptap-content .ProseMirror strong) { color: #A94C2D; font-weight: 600; }
+.ia-write-wrap :deep(.tiptap-content .ProseMirror blockquote) {
+  margin: 1.1em 0; padding: 2px 0 2px 20px; border-left: 3px solid var(--petrol); font-style: italic; color: var(--slate-500);
 }
 
-.dirty-badge {
-  font-size: var(--text-sm); font-weight: 600; color: #b45309;
-  display: flex; align-items: center; gap: 4px;
+/* ===== Hint bar ===== */
+.ia-hint-bar {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 30; display: flex; align-items: center;
+  gap: 14px; background: var(--petrol); color: #fff; padding: 10px 16px; border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(12,32,39,.24); font-size: 12.5px;
 }
-.btn-preview {
-  display: inline-flex; align-items: center; gap: 6px;
-  text-decoration: none; font-size: var(--text-sm);
+.ia-hint-sep { opacity: .5; }
+.ia-hint-close { background: transparent; border: none; color: rgba(255,255,255,.6); font-size: 15px; cursor: pointer; margin-left: 2px; padding: 0 2px; }
+.ia-hint-enter-active, .ia-hint-leave-active { transition: opacity .2s; }
+.ia-hint-enter-from, .ia-hint-leave-to { opacity: 0; }
+
+/* ===== Drawer de configurações ===== */
+.ia-drawer-overlay { position: fixed; inset: 0; z-index: 65; background: rgba(8,50,61,.32); display: flex; justify-content: flex-end; }
+.ia-drawer {
+  width: 380px; max-width: 92vw; height: 100vh; background: #FCFAF6; border-left: 1px solid var(--border-color);
+  padding: 20px 20px 60px; overflow-y: auto;
 }
-.toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
-.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
+.ia-drawer-header {
+  display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--petrol); font-weight: 600; margin-bottom: 18px;
+}
+.ia-drawer-close { background: none; border: none; font-size: 16px; color: var(--slate-400); cursor: pointer; }
+.ia-drawer-enter-active, .ia-drawer-leave-active { transition: opacity .18s; }
+.ia-drawer-enter-from, .ia-drawer-leave-to { opacity: 0; }
+
+.ia-rail-card { background: #fff; border: 1px solid var(--border-color); border-radius: 13px; padding: 18px; margin-top: 16px; }
+.ia-rail-card:first-of-type { margin-top: 0; }
+.ia-rail-card--compact { padding: 16px 18px; }
+.ia-rail-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--petrol); font-weight: 600; margin-bottom: 12px; }
+
+.ia-segmented { display: flex; gap: 4px; background: var(--slate-100); border-radius: 9px; padding: 4px; }
+.ia-seg { flex: 1; padding: 8px 4px; border-radius: 7px; border: none; cursor: pointer; font-size: 11.5px; font-weight: 500; color: var(--slate-500); background: transparent; }
+.ia-seg.active { font-weight: 600; color: #fff; background: var(--petrol); }
+.ia-sched { margin-top: 12px; }
+
+.ia-slug-field { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 9px; padding: 0 12px; font-family: var(--font-mono); font-size: 12.5px; }
+.ia-slug-prefix { color: var(--slate-400); padding: 9px 0; white-space: nowrap; }
+.ia-slug-input { flex: 1; font-family: var(--font-mono); font-size: 12.5px; color: var(--petrol); background: transparent; border: none; padding: 9px 2px; }
+.ia-slug-input:focus { outline: none; }
+
+.ia-field-block { margin-top: 0; }
+.ia-field-label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--slate-400); margin-bottom: 8px; }
+.ia-field-label small { text-transform: none; letter-spacing: 0; font-family: var(--font-sans); }
+.ia-field-label--row { display: flex; justify-content: space-between; align-items: center; }
+.ia-textarea, .ia-input, .ia-select-full {
+  width: 100%; font-family: var(--font-sans); font-size: 13.5px; color: var(--slate-500); background: #fff;
+  border: 1px solid var(--border-color); border-radius: 9px; padding: 10px 12px;
+}
+.ia-textarea:focus, .ia-input:focus, .ia-select-full:focus { outline: none; border-color: var(--accent); }
+.ia-select-full { appearance: none; cursor: pointer; }
+
+.ia-toggle-row { display: flex; align-items: center; justify-content: space-between; }
+.ia-toggle-title { font-size: 13.5px; font-weight: 600; color: var(--dark-700); }
+.ia-toggle-sub { font-size: 11.5px; color: var(--slate-400); }
+.ia-toggle-track { width: 40px; height: 23px; border-radius: 999px; border: none; cursor: pointer; position: relative; padding: 0; flex: none; background: transparent; }
+.ia-toggle-track-bg { position: absolute; inset: 0; border-radius: 999px; transition: background .2s; }
+.ia-toggle-knob { position: absolute; top: 2.5px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .2s; box-shadow: 0 1px 3px rgba(0,0,0,.22); }
+
+.ia-char-count { font-family: var(--font-mono); font-size: 10px; color: var(--slate-400); }
+.ia-char-count.warn { color: #A94C2D; }
+.ia-serp { margin-top: 14px; background: var(--slate-50); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; }
+.ia-serp-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--slate-400); margin-bottom: 8px; }
+.ia-serp-title { font-size: 15px; color: var(--petrol); font-weight: 500; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ia-serp-url { font-family: var(--font-mono); font-size: 11.5px; color: var(--moss); margin: 3px 0 5px; }
+.ia-serp-desc { font-size: 12.5px; line-height: 1.5; color: var(--slate-500); }
+
+.ia-image-preview { border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; background: var(--slate-100); }
+.ia-image-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.ia-meta-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--slate-500); }
+.ia-meta-label { color: var(--slate-400); }
+.ia-meta-value { font-family: var(--font-mono); font-weight: 600; color: var(--petrol); }
+.ia-meta-value--muted { font-weight: 400; color: var(--slate-400); }
+
+/* ===== Toast ===== */
+.ia-toast {
+  position: fixed; bottom: 76px; right: 24px; z-index: 60; background: var(--petrol); color: #fff;
+  padding: 13px 18px; border-radius: 12px; box-shadow: 0 14px 34px rgba(12,32,39,.28);
+  display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500;
+}
+.ia-toast--error { background: #A94C2D; }
+.ia-toast--warning { background: #b45309; }
+.ia-toast-check { width: 22px; height: 22px; border-radius: 50%; background: var(--moss); display: flex; align-items: center; justify-content: center; font-size: 12px; flex: none; }
+.ia-toast--error .ia-toast-check, .ia-toast--warning .ia-toast-check { background: rgba(255,255,255,.25); }
+.ia-toast-enter-active, .ia-toast-leave-active { transition: opacity .25s, transform .25s; }
+.ia-toast-enter-from, .ia-toast-leave-to { opacity: 0; transform: translateY(14px); }
+
+/* ===== Preview overlay ===== */
+.ia-fade-enter-active, .ia-fade-leave-active { transition: opacity .2s; }
+.ia-fade-enter-from, .ia-fade-leave-to { opacity: 0; }
+
+.ia-preview-overlay { position: fixed; inset: 0; z-index: 50; background: var(--slate-50); overflow-y: auto; }
+.ia-preview-top {
+  position: sticky; top: 0; z-index: 2; background: rgba(15,76,92,.96); backdrop-filter: blur(10px);
+  padding: 12px 28px; display: flex; align-items: center; gap: 14px; color: #fff;
+}
+.ia-preview-back {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 12.5px;
+  font-weight: 600; padding: 8px 14px; border-radius: 9px; cursor: pointer;
+}
+.ia-preview-back:hover { background: rgba(255,255,255,.2); }
+.ia-preview-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+
+.ia-preview-article { max-width: 720px; margin: 0 auto; padding: 52px 32px 120px; }
+.ia-preview-eyebrow { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+.ia-preview-eyebrow-line { width: 24px; height: 1px; background: var(--accent); }
+.ia-preview-h1 { font-family: var(--font-sans); font-weight: 800; font-size: clamp(2.2rem,4.6vw,3.1rem); line-height: 1.04; letter-spacing: -.04em; color: var(--petrol); margin: 0 0 18px; }
+.ia-preview-sub { font-family: 'Newsreader', serif; font-size: 1.4rem; line-height: 1.5; color: #5c6f76; margin: 0 0 26px; }
+.ia-preview-author { display: flex; align-items: center; gap: 14px; padding-bottom: 26px; border-bottom: 1px solid var(--border-color); }
+.ia-preview-avatar {
+  width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex: none;
+}
+.ia-preview-author-name { font-weight: 700; font-size: 13.5px; color: var(--dark-700); }
+.ia-preview-author-meta { font-family: var(--font-mono); font-size: 11px; color: var(--slate-400); margin-top: 2px; }
+.ia-preview-cover { aspect-ratio: 16/8; border-radius: 16px; background-size: cover; background-position: center; margin: 32px 0 8px; box-shadow: 0 12px 30px rgba(12,32,39,.12); }
+
+.ia-read { margin-top: 32px; font-family: 'Newsreader', Georgia, serif; }
+.ia-read :deep(p) { font-size: 1.32rem; line-height: 1.8; color: #26343a; margin: 0 0 1em; }
+.ia-read :deep(h2) { font-family: var(--font-sans); font-weight: 800; font-size: 1.8rem; color: var(--petrol); margin: 1.5em 0 .4em; }
+.ia-read :deep(h3) { font-family: var(--font-sans); font-weight: 700; font-size: 1.3rem; color: var(--petrol); margin: 1.3em 0 .35em; }
+.ia-read :deep(strong) { color: #A94C2D; font-weight: 600; }
+.ia-read :deep(blockquote) { margin: 1.2em 0; padding-left: 20px; border-left: 3px solid var(--petrol); font-style: italic; color: var(--slate-500); }
+.ia-read :deep(ul), .ia-read :deep(ol) { color: #26343a; font-size: 1.2rem; line-height: 1.75; margin: 0 0 1em 1.3em; }
+
+@media (max-width: 1179px) {
+  .ia-outline { display: none; }
+}
 </style>

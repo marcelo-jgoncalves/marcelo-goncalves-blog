@@ -134,61 +134,50 @@ const handleDelete = async (slug: string) => {
 </script>
 
 <template>
-  <div class="dashboard">
-    <Transition name="toast">
-      <div v-if="toast" :class="['toast', `toast--${toast.type}`]" role="alert">
-        {{ toast.message }}
+  <div data-screen-label="Categorias" class="ia-categories">
+    <Transition name="ia-toast">
+      <div v-if="toast" :class="['ia-toast', `ia-toast--${toast.type}`]" role="alert">
+        <span class="ia-toast-check">✓</span>{{ toast.message }}
       </div>
     </Transition>
 
-    <div class="header-actions">
-      <h1>Gerenciar Categorias</h1>
-      <button @click="openModal()" class="btn-primary" :disabled="isLoading">
-        <i class="fas fa-plus"></i> Nova Categoria
+    <div class="ia-eyebrow"><span class="ia-eyebrow-line"></span>Organização</div>
+    <h1 class="ia-h1">Categorias</h1>
+    <p class="ia-subtitle">Agrupe os posts por tema. A contagem reflete os posts publicados e rascunhos.</p>
+
+    <div class="ia-add-row">
+      <button @click="openModal()" class="ia-btn-primary" :disabled="isLoading">
+        <i class="fas fa-plus"></i> Nova categoria
       </button>
     </div>
 
-    <div class="table-container">
-      <div v-if="isLoading" class="empty-state">
+    <div class="ia-list">
+      <div v-if="isLoading" class="ia-empty">
         <i class="fas fa-spinner fa-spin"></i>
-        <p>Carregando categorias...</p>
+        <p>Carregando categorias…</p>
       </div>
 
-      <div v-else-if="categories.length === 0" class="empty-state">
+      <div v-else-if="categories.length === 0" class="ia-empty">
         <i class="fas fa-folder-open"></i>
         <p>Nenhuma categoria encontrada.</p>
       </div>
 
-      <table v-else>
-        <thead>
-          <tr>
-            <th>Categoria / Slug</th>
-            <th>Descrição</th>
-            <th style="width: 100px;">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="cat in categories" :key="cat.categoria_slug">
-            <td>
-              <strong>{{ cat.nome }}</strong>
-              <br><small class="slug-text">/{{ cat.categoria_slug }}</small>
-            </td>
-            <td class="desc-cell" :title="cat.descricao">
-              {{ cat.descricao || '-' }}
-            </td>
-            <td>
-              <div class="actions-cell">
-                <button @click="openModal(cat)" class="btn-icon" title="Editar">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button @click="handleDelete(cat.categoria_slug)" class="btn-icon btn-danger" title="Excluir">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div v-else v-for="cat in categories" :key="cat.categoria_slug" class="ia-list-item">
+        <span class="ia-list-dot"></span>
+        <div class="ia-list-main">
+          <div class="ia-list-name">{{ cat.nome }}</div>
+          <div class="ia-list-slug">/{{ cat.categoria_slug }}</div>
+          <div v-if="cat.descricao" class="ia-list-desc">{{ cat.descricao }}</div>
+        </div>
+        <div class="ia-actions-cell">
+          <button @click="openModal(cat)" class="ia-icon-btn" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button @click="handleDelete(cat.categoria_slug)" class="ia-icon-btn ia-icon-btn--danger" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
@@ -285,45 +274,44 @@ const handleDelete = async (slug: string) => {
 </template>
 
 <style scoped>
-/* =========================================
-   ESTRUTURA IDENTICA AO DASHBOARD
-   ========================================= */
-.dashboard {
-  /* Herda o layout padrão */
-}
+.ia-categories { padding: 38px 40px 90px; max-width: 780px; }
 
-.header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-4);
+.ia-eyebrow {
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
 }
+.ia-eyebrow-line { width: 22px; height: 1px; background: var(--accent); }
+.ia-h1 { font-weight: 800; font-size: 2rem; letter-spacing: -.04em; color: var(--petrol); line-height: 1.05; margin: 0; }
+.ia-subtitle { font-size: 14px; color: var(--slate-500); margin: 10px 0 0; }
+
+.ia-add-row { display: flex; gap: 10px; margin-top: 26px; }
 
 /* =========================================
    BOTÕES & AÇÕES
    ========================================= */
-.btn-primary {
+.ia-btn-primary, .btn-primary {
   background-color: var(--accent);
   color: white;
-  padding: var(--space-1) var(--space-3);
-  border-radius: 6px;
+  padding: 11px 18px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   border: none;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  transition: 0.2s;
+  transition: filter 0.15s;
   cursor: pointer;
-  font-size: var(--text-base);
-  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-family: var(--font-sans);
+  box-shadow: 0 6px 16px rgba(201,96,60,.28);
 }
 
-.btn-primary:hover:not(:disabled) {
-  background-color: var(--accent-hover);
+.ia-btn-primary:hover:not(:disabled), .btn-primary:hover:not(:disabled) {
+  filter: brightness(.92);
 }
 
-.btn-primary:disabled, .btn-secondary:disabled {
+.ia-btn-primary:disabled, .btn-primary:disabled, .btn-secondary:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
@@ -332,71 +320,40 @@ const handleDelete = async (slug: string) => {
   background: white;
   border: 1px solid var(--border-color);
   padding: var(--space-1) var(--space-3);
-  border-radius: 6px;
+  border-radius: 9px;
   cursor: pointer;
-  color: var(--dark-700);
-  font-weight: 500;
+  color: var(--slate-500);
+  font-weight: 600;
   transition: 0.2s;
 }
-.btn-secondary:hover:not(:disabled) { background-color: var(--slate-50); }
+.btn-secondary:hover:not(:disabled) { background-color: var(--slate-100); }
 
 /* =========================================
-   TABELA (Cópia exata do DashboardView)
+   LISTA (spec seção 9)
    ========================================= */
-.table-container {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  overflow: hidden;
-  border: 1px solid var(--border-color);
+.ia-list {
+  margin-top: 22px; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden;
 }
-
-table { width: 100%; border-collapse: collapse; }
-
-th, td {
-  padding: var(--space-2) var(--space-3);
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
+.ia-list-item {
+  display: flex; align-items: center; gap: 14px; padding: 15px 18px; border-bottom: 1px solid var(--slate-100);
 }
+.ia-list-item:last-child { border-bottom: none; }
+.ia-list-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--petrol); flex: none; }
+.ia-list-main { flex: 1; min-width: 0; }
+.ia-list-name { font-weight: 600; font-size: 14px; color: var(--dark-700); }
+.ia-list-slug { font-family: var(--font-mono); font-size: 11px; color: var(--slate-400); margin-top: 2px; }
+.ia-list-desc { font-size: 12.5px; color: var(--slate-500); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-th {
-  background-color: var(--slate-50);
-  font-weight: 600;
-  color: var(--slate-500);
-  font-size: var(--text-sm);
+.ia-actions-cell { display: flex; gap: 6px; flex: none; }
+.ia-icon-btn {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff;
+  color: var(--slate-500); cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
+.ia-icon-btn:hover { background: var(--slate-100); color: var(--petrol); }
+.ia-icon-btn--danger:hover { background: var(--clay-red-bg); color: #A94C2D; border-color: var(--clay-red-bd); }
 
-tr:hover { background-color: var(--slate-50); }
-
-.slug-text { color: var(--slate-400); font-size: var(--text-sm); }
-
-.desc-cell {
-  max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  color: var(--dark-600); font-size: var(--text-sm);
-}
-
-/* =========================================
-   AÇÕES & PREVIEWS
-   ========================================= */
-.actions-cell { display: flex; gap: 12px; }
-
-.btn-icon {
-  background: none; border: none; cursor: pointer;
-  color: var(--accent); font-size: var(--text-lg); padding: 4px;
-}
-.btn-icon:hover { color: var(--dark-900); }
-.btn-icon.btn-danger { color: #e53e3e; }
-.btn-icon.btn-danger:hover { color: #c53030; }
-
-.icon-preview-cell { display: flex; align-items: center; gap: var(--space-1); }
-.icon-preview-cell i { width: 24px; text-align: center; color: var(--accent); }
-.icon-badge {
-  background: var(--slate-100); padding: 2px 8px; border-radius: 4px;
-  font-size: var(--text-xs); font-family: var(--font-mono); color: var(--dark-600); border: 1px solid var(--border-color);
-}
-
-.empty-state { text-align: center; padding: var(--space-5); color: var(--slate-500); }
-.empty-state i { font-size: var(--text-3xl); margin-bottom: var(--space-2); opacity: 0.5; }
+.ia-empty { text-align: center; padding: 56px 24px; color: var(--slate-500); }
+.ia-empty i { font-size: 2rem; margin-bottom: var(--space-2); opacity: 0.5; }
 
 /* =========================================
    MODAL
@@ -491,14 +448,18 @@ tr:hover { background-color: var(--slate-50); }
   background: var(--slate-50); display: flex; justify-content: flex-end; gap: 12px; border-radius: 0 0 8px 8px;
 }
 
-.toast {
-  position: fixed; top: 20px; right: 20px;
-  padding: 14px 20px; border-radius: 6px; font-weight: 600; color: #fff;
-  z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+.ia-toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 60; background: var(--petrol); color: #fff;
+  padding: 13px 18px; border-radius: 12px; box-shadow: 0 14px 34px rgba(12,32,39,.28);
+  display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500;
 }
-.toast--success  { background: #2d6a4f; }
-.toast--error    { background: #c0392b; }
-.toast--warning  { background: #b45309; }
-.toast-enter-active, .toast-leave-active { transition: opacity 0.3s, transform 0.3s; }
-.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-10px); }
+.ia-toast--error   { background: #A94C2D; }
+.ia-toast--warning { background: #b45309; }
+.ia-toast-check {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--moss);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; flex: none;
+}
+.ia-toast--error .ia-toast-check, .ia-toast--warning .ia-toast-check { background: rgba(255,255,255,.25); }
+.ia-toast-enter-active, .ia-toast-leave-active { transition: opacity 0.25s, transform 0.25s; }
+.ia-toast-enter-from, .ia-toast-leave-to { opacity: 0; transform: translateY(14px); }
 </style>

@@ -1,11 +1,22 @@
 /** admin/src/layouts/AdminLayout.vue */
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useAuthStore } from '../stores/auth'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+
+const BLOG_URL = (import.meta.env.VITE_ASSETS_URL || '').split('/').slice(0, 3).join('/')
+
+// Posts, Editor de post e Pré-visualização mantêm o item "Posts" ativo na sidebar
+const activeSection = computed(() => {
+  if (route.path.startsWith('/categories')) return 'categorias'
+  if (route.path.startsWith('/profile')) return 'autor'
+  return 'posts'
+})
 
 async function handleLogout() {
   try {
@@ -20,109 +31,125 @@ async function handleLogout() {
 </script>
 
 <template>
-  <div class="admin-layout">
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        Marcelo<span>Gonçalves</span> <small>(Admin)</small>
+  <div class="ia-shell">
+    <aside class="ia-sidebar">
+      <div class="ia-brand">
+        <div class="ia-brand-row">
+          <div class="ia-logo">MG</div>
+          <div>
+            <div class="ia-brand-name">Marcelo Gonçalves</div>
+            <div class="ia-brand-sub">Painel de conteúdo</div>
+          </div>
+        </div>
       </div>
-      
-      <nav>
-        <ul class="sidebar-nav">
-          <li>
-            <router-link to="/" class="nav-link" active-class="active">
-              <i class="fas fa-tachometer-alt"></i> Dashboard
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/posts/new" class="nav-link" active-class="active">
-              <i class="fas fa-plus"></i> Novo Post
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/categories" class="nav-link" active-class="active">
-              <i class="fas fa-tags"></i> Gerenciar Categorias
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/profile" class="nav-link" active-class="active">
-              <i class="fas fa-user-edit"></i> Editar Perfil
-            </router-link>
-          </li>
-        </ul>
+
+      <nav class="ia-nav">
+        <div class="ia-nav-group">Conteúdo</div>
+        <router-link to="/" class="ia-nav-item" :class="{ active: activeSection === 'posts' }">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M4 5h16M4 12h16M4 19h10"/>
+          </svg>
+          Posts
+        </router-link>
+        <router-link to="/categories" class="ia-nav-item" :class="{ active: activeSection === 'categorias' }">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 7l1.5-2.5h5L11 7M3 7h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+          </svg>
+          Categorias
+        </router-link>
+
+        <div class="ia-nav-group">Configurações</div>
+        <router-link to="/profile" class="ia-nav-item" :class="{ active: activeSection === 'autor' }">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/>
+          </svg>
+          Autor
+        </router-link>
       </nav>
 
-      <div class="sidebar-footer">
-        <button @click="handleLogout" class="btn-logout">
+      <div class="ia-sidebar-footer">
+        <a v-if="BLOG_URL" :href="BLOG_URL" target="_blank" rel="noopener" class="ia-site-link">
+          <span class="ia-dot"></span>
+          Ver site publicado
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto">
+            <path d="M7 17L17 7M9 7h8v8"/>
+          </svg>
+        </a>
+        <button @click="handleLogout" class="ia-logout">
           <i class="fas fa-sign-out-alt"></i> Sair
         </button>
       </div>
     </aside>
 
-    <main class="main-content">
+    <main class="ia-main ia-scroll">
       <router-view />
     </main>
   </div>
 </template>
 
 <style scoped>
-.admin-layout {
+.ia-shell {
   display: flex;
-  height: 100vh;
-  background-color: var(--slate-50);
+  min-height: 100vh;
+  background: var(--slate-50);
+  font-family: var(--font-sans);
+  color: var(--dark-700);
 }
 
-/* Sidebar */
-.sidebar {
-  width: 260px;
-  background-color: var(--dark-900);
-  color: white;
+.ia-sidebar {
+  width: 238px;
+  flex: none;
+  background: var(--petrol-deep);
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: var(--space-3);
-  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,.08);
 }
 
-.sidebar-logo {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  margin-bottom: var(--space-5);
-  text-align: center;
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+.ia-brand { padding: 24px 22px 20px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.ia-brand-row { display: flex; align-items: center; gap: 11px; }
+.ia-logo {
+  width: 32px; height: 32px; border-radius: 9px; background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: #fff; font-size: 13px; letter-spacing: -.02em; flex: none;
 }
-.sidebar-logo span { color: var(--accent-light); }
-.sidebar-logo small { font-size: var(--text-sm); opacity: 0.7; font-weight: 400; display: block; margin-top: var(--space-1); }
-
-.sidebar-nav { list-style: none; }
-.sidebar-nav li { margin-bottom: var(--space-1); }
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
-  color: var(--slate-300);
-  text-decoration: none;
-  border-radius: 6px;
-  transition: all 0.2s;
-  font-weight: 500;
+.ia-brand-name { font-weight: 800; font-size: 13.5px; color: #fff; line-height: 1.15; letter-spacing: -.01em; }
+.ia-brand-sub {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin-top: 3px;
 }
-.nav-link:hover { background-color: rgba(255,255,255,0.08); color: white; }
-.nav-link.active { background-color: var(--accent); color: white; font-weight: 700; }
-.nav-link i { width: 20px; text-align: center; }
 
-.sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-3); }
-.btn-logout {
-  background: none; border: none; color: #fc8181; cursor: pointer;
-  display: flex; align-items: center; gap: var(--space-1); font-size: var(--text-base); padding: var(--space-1); width: 100%;
+.ia-nav { flex: 1; padding: 16px 14px; display: flex; flex-direction: column; gap: 3px; }
+.ia-nav-group {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); padding: 10px 10px 6px;
 }
-.btn-logout:hover { color: #feb2b2; }
+.ia-nav-group:not(:first-child) { padding: 16px 10px 6px; }
 
-/* Main Content */
-.main-content {
-  flex-grow: 1;
-  padding: var(--space-5);
-  overflow-y: auto;
+.ia-nav-item {
+  display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 9px;
+  font-size: 13px; letter-spacing: -.005em; cursor: pointer; transition: all .15s;
+  font-weight: 500; color: rgba(255,255,255,.62); background: transparent;
 }
+.ia-nav-item:hover { color: #fff; }
+.ia-nav-item.active { font-weight: 600; color: #fff; background: rgba(201,96,60,.22); }
+
+.ia-sidebar-footer { border-top: 1px solid rgba(255,255,255,.1); padding: 14px 18px; display: flex; flex-direction: column; gap: 4px; }
+.ia-site-link {
+  display: flex; align-items: center; gap: 9px; font-size: 12px; color: rgba(255,255,255,.55);
+  cursor: pointer; padding: 8px; border-radius: 8px; transition: background .15s;
+}
+.ia-site-link:hover { background: rgba(255,255,255,.06); }
+.ia-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 3px rgba(63,107,71,.2); flex: none; }
+
+.ia-logout {
+  background: none; border: none; color: rgba(255,255,255,.55); cursor: pointer;
+  display: flex; align-items: center; gap: 9px; font-size: 12px; padding: 8px; border-radius: 8px;
+  width: 100%; text-align: left; transition: background .15s, color .15s;
+}
+.ia-logout:hover { background: rgba(201,96,60,.18); color: #fff; }
+
+.ia-main { flex: 1; min-width: 0; height: 100vh; overflow-y: auto; }
 </style>
