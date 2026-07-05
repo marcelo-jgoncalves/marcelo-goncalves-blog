@@ -156,7 +156,13 @@ async function savePost(rawData: unknown, isNew: boolean) {
     ...data as Post,
     conteudo_html: sanitizePostHtml(data.conteudo_html ?? ""),
     data_atualizacao: now,
-    data_publicacao: isNew ? (data.data_publicacao || now) : data.data_publicacao!,
+    // Nunca gravar string vazia: quando e_popular/e_projeto=1, os GSIs
+    // esparsos (PopularesPorData_v2/ProjetoPorData_v2) usam este campo como
+    // range key, e uma AttributeValue vazia num atributo de chave de índice
+    // é rejeitada pelo DynamoDB (crash observado ao salvar um Rascunho
+    // marcado como "projeto" sem nunca ter tido data de publicação). Cai
+    // para o valor já existente no update, ou "agora" na criação/1ª vez.
+    data_publicacao: data.data_publicacao || existing?.data_publicacao || now,
     e_popular: ePopular,
     e_projeto: eProjeto,
     // undefined é omitido pelo marshaller (removeUndefinedValues: true em

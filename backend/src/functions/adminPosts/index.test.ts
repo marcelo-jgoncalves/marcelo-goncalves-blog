@@ -336,6 +336,27 @@ describe('adminPosts handler', () => {
       expect(mockSend).toHaveBeenCalledTimes(2);
     });
 
+    it('nunca grava data_publicacao vazia — cai para o valor existente quando o client manda "" (regressão: crashava o GSI esparso ProjetoPorData_v2)', async () => {
+      mockSend.mockResolvedValueOnce({
+        Item: { status: 'Rascunho', e_projeto: 0, data_publicacao: '2026-05-01T00:00:00.000Z' },
+      }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', e_projeto: 1, data_publicacao: '' }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[1][0];
+      expect(sentCmd.input.Item.data_publicacao).toBe('2026-05-01T00:00:00.000Z');
+      expect(sentCmd.input.Item.data_publicacao).not.toBe('');
+    });
+
     it('atualiza o contador quando o status muda de Rascunho para Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // PutCommand
