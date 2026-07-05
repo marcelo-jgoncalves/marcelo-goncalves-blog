@@ -20,7 +20,8 @@ const defaultForm: Categoria = {
   categoria_slug: '',
   descricao: '',
   macro_areas: [],
-  subcategorias: []
+  subcategorias: [],
+  icone_fa: ''
 }
 const form = ref<Categoria>({ ...defaultForm })
 const novaSubcategoria = ref('')
@@ -216,6 +217,16 @@ const handleDelete = async (slug: string) => {
               placeholder="Descrição opcional da categoria"
               :disabled="isSaving"
             ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Ícone <small>(classe Font Awesome — ex: "fa solid fa-brain")</small></label>
+            <input
+              v-model="form.icone_fa"
+              type="text"
+              placeholder="fa solid fa-brain"
+              :disabled="isSaving"
+            >
           </div>
 
           <div class="form-group">

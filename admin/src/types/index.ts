@@ -35,6 +35,7 @@ export interface Categoria {
   descricao?: string
   macro_areas?: string[]
   subcategorias?: Subcategoria[]
+  icone_fa?: string
 }
 
 export interface Autor {
