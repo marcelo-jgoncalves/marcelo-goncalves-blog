@@ -92,7 +92,8 @@ async function listPosts() {
         KeyConditionExpression: "#status = :status",
         ExpressionAttributeNames: { "#status": "status" },
         ExpressionAttributeValues: { ":status": status },
-        ProjectionExpression: "slug, titulo, #status, data_atualizacao, autor_id",
+        ProjectionExpression:
+          "slug, titulo, #status, data_atualizacao, autor_id, categoria_slug, imagem_destaque_url, tempo_leitura_min, e_popular, e_projeto",
         ScanIndexForward: false,
       }))
     )

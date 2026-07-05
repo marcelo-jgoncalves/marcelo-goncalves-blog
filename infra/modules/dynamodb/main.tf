@@ -99,6 +99,7 @@ resource "aws_dynamodb_table" "posts" {
       "titulo", "resumo", "imagem_destaque_url", "imagem_destaque_alt_text",
       "imagem_lqip_base64", "categoria_slug", "subcategoria_nome",
       "data_publicacao", "tempo_leitura_min", "autor_id",
+      "e_popular", "e_projeto", # Admin: badges Popular/Projeto na listagem de posts
     ]
   }
 
