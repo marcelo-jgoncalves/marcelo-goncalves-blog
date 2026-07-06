@@ -19,6 +19,11 @@
     transform: translateY(-3px);
     box-shadow: 0 14px 30px rgba(12, 32, 39, .09);
   }
+
+  /* Tema escuro — hover com borda argila translúcida, igual ao protótipo. */
+  .theme-dark .post-card:hover {
+    border-color: rgba(201, 96, 60, .4);
+  }
 }
 
 /* ── imagem (gradiente) ── */
@@ -48,13 +53,26 @@
 .post-card .pc-img .tag {
   position: relative;
   z-index: 1;
-  background: var(--ivory);
+  /* Pílula sempre clara sobre o gradiente colorido da capa — não segue
+     --ivory do tema (ficaria escura/ilegível sobre o gradiente no tema escuro). */
+  background: #FAF8F3;
   border-radius: 999px;
   padding: 5px 12px;
   font-weight: 600;
   font-size: 11.5px;
   color: var(--petrol);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
+}
+
+/* Tema escuro — badge translúcido sobre a capa, igual ao protótipo
+   (specs/ESPECIFICACAO-HOME.md §11.2), em vez da pílula clara sólida. */
+.theme-dark .post-card .pc-img .tag {
+  background: rgba(8, 50, 61, .55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #F4F1EA;
+  box-shadow: none;
+  border-radius: 6px;
 }
 
 /* ── corpo ── */
@@ -86,6 +104,13 @@
   overflow: hidden;
 }
 
+/* --petrol é escuro por natureza (pensado para texto sobre --surface claro) —
+   no tema escuro o card vira uma superfície translúcida escura, então o
+   título precisa seguir --ink (que o wrapper .theme-dark já inverte). */
+.theme-dark .post-card .pc-title {
+  color: var(--ink);
+}
+
 .post-card .pc-excerpt {
   font-size: 13.5px;
   line-height: 1.6;
@@ -113,4 +138,10 @@
 
 .post-card .pc-foot .ler-artigo {
   font-size: 13px;
+}
+
+/* Tema escuro — "Ler artigo" ganha a cor de destaque (protótipo usa
+   #D9744F ali, distinto do metadado de tempo de leitura ao lado). */
+.theme-dark .post-card .pc-foot .ler-artigo {
+  color: var(--word-accent);
 }

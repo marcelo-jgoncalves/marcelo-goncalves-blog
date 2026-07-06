@@ -12,10 +12,12 @@ const CATEGORY_LINKS = [
 ];
 
 const QUICK_LINKS = [
-  { name: 'Todos os Artigos', href: '/artigos' },
+  { name: 'Home', href: '/' },
+  { name: 'Blog', href: '/blog' },
   { name: 'O Projeto', href: '/o-projeto' },
   { name: 'Serviços', href: '/servicos' },
   { name: 'Sobre', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
 ];
 
 export default function Footer() {

@@ -1,0 +1,75 @@
+/* frontend/components/ui/StepsTimeline.css — trilha de etapas (tema escuro, Home/Contato) */
+
+.steps-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.steps-timeline-line {
+  position: absolute;
+  top: 23px;
+  left: 9%;
+  right: 9%;
+  height: 1px;
+  background: rgba(255, 255, 255, .13);
+}
+
+.steps-timeline-item {
+  position: relative;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.steps-timeline-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 15px;
+  background: #08323D;
+  border: 1px solid rgba(201, 96, 60, .5);
+  color: var(--word-accent);
+  position: relative;
+  z-index: 1;
+}
+
+.steps-timeline-circle--done {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+}
+
+.steps-timeline-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #F4F1EA;
+  margin: 0 0 8px;
+}
+
+.steps-timeline-desc {
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: rgba(240, 244, 244, .52);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .steps-timeline {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 32px;
+  }
+  .steps-timeline-line { display: none; }
+}
+
+@media (max-width: 560px) {
+  .steps-timeline {
+    grid-template-columns: 1fr;
+  }
+}

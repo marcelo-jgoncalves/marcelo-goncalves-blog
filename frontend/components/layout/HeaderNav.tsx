@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
-  { name: 'Artigos', href: '/artigos' },
-  { name: 'O Projeto', href: '/o-projeto' },
   { name: 'Serviços', href: '/servicos' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Sobre', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
 ] as const;
 
 export default function HeaderNav() {
@@ -41,8 +41,8 @@ export default function HeaderNav() {
         ))}
       </nav>
 
-      <Link href="/servicos" className="nav-cta" prefetch={false} data-audit="header-cta">
-        Assessoria <span className="arrow" aria-hidden="true">→</span>
+      <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
+        Agendar diagnóstico <span className="arrow" aria-hidden="true">→</span>
       </Link>
 
       <button
@@ -78,8 +78,8 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
-        <Link href="/servicos" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
-          Assessoria <span className="arrow" aria-hidden="true">→</span>
+        <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+          Agendar diagnóstico <span className="arrow" aria-hidden="true">→</span>
         </Link>
       </div>
     </>

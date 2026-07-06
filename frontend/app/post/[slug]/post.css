@@ -142,7 +142,7 @@
 
 .post-cover-frame {
   position: relative;
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 4 / 3;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(12, 32, 39, .3);
@@ -842,6 +842,19 @@ pre.code-block,
   color: var(--moss);
 }
 
+/* Tema escuro — os fundos pastel claros acima (pensados para texto escuro)
+   ficam ilegíveis com --ink virando claro; trocar por fundo translúcido
+   tingido, no mesmo idioma do banner de erro do formulário de Contato. */
+.theme-dark .post-content .callout.warn {
+  background: rgba(201, 96, 60, .12);
+}
+.theme-dark .post-content .callout.error {
+  background: rgba(163, 58, 43, .16);
+}
+.theme-dark .post-content .callout.ok {
+  background: rgba(63, 107, 71, .14);
+}
+
 @media (max-width: 768px) {
   .post-content .callout,
   .post-content .tip {
@@ -991,6 +1004,12 @@ pre.code-block,
 
 .callout-warning .callout-icon {
   background: rgba(201, 96, 60, 0.10);
+}
+
+/* Tema escuro — o fundo branco literal do callout legado fica ilegível
+   com --slate/--ink virando claros; segue --surface como o callout novo. */
+.theme-dark .content-callout {
+  background: var(--surface);
 }
 
 @media (max-width: 768px) {

@@ -218,7 +218,7 @@
 
 .art-proj-card h2 em {
   font-style: italic;
-  color: var(--petrol-soft);
+  color: var(--word-accent);
 }
 
 .art-pc-sub {
@@ -1089,7 +1089,7 @@
 
 .art-cta-adv h2 em {
   font-style: italic;
-  color: var(--petrol-soft);
+  color: var(--word-accent);
 }
 
 .art-cta-desc {

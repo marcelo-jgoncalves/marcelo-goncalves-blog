@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function NewsletterPage() {
   return (
-    <>
+    <div className="theme-dark">
       <PageHero>
         <h1 className="hero-title">Newsletter — Em Breve</h1>
         <p className="hero-subtitle">
@@ -24,6 +24,6 @@ export default function NewsletterPage() {
           Explorar artigos enquanto isso →
         </Link>
       </div>
-    </>
+    </div>
   );
 }

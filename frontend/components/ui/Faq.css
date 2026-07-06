@@ -1,0 +1,60 @@
+/* frontend/components/ui/Faq.css — acordeão (tema escuro, Contato) */
+
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 14px;
+  padding: 22px 24px;
+  cursor: pointer;
+  transition: border-color .18s;
+}
+
+.faq-item--open {
+  border-color: rgba(201, 96, 60, .4);
+}
+
+.faq-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.faq-item-q {
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -.01em;
+  color: #F4F1EA;
+  margin: 0;
+}
+
+.faq-item-chevron {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--word-accent);
+  transition: transform .22s;
+}
+
+.faq-item--open .faq-item-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-item-a {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: rgba(240, 244, 244, .62);
+  margin: 16px 0 0;
+  max-width: 68ch;
+}

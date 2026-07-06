@@ -68,7 +68,9 @@
 .nl-cta__title em {
   font-style: italic;
   font-weight: 700;
-  color: var(--ink);
+  /* Contraste intencional escuro-sobre-creme (não segue --ink do tema —
+     este componente já é uma banda escura fixa em qualquer tema). */
+  color: #0C2027;
 }
 
 .nl-cta__desc {

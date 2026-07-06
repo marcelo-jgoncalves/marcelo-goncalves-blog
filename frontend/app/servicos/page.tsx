@@ -67,7 +67,7 @@ const servicosJsonLd = {
 
 export default function ServicosPage() {
   return (
-    <>
+    <div className="theme-dark">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(servicosJsonLd) }} />
 
       {/* HERO */}
@@ -399,6 +399,6 @@ export default function ServicosPage() {
         ctaExternal={true}
         reassure="Sem compromisso · sem custo"
       />
-    </>
+    </div>
   );
 }
