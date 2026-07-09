@@ -217,7 +217,7 @@ export default async function InstitutionalHome() {
           </div>
           <div className="ih-method-label">As 5 Etapas do Nosso Método</div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
-          <div className="ih-method-footer">
+          <div className="ih-section-footer-center">
             <Link href="/contato" className="btn">Fale com o time <span aria-hidden="true">→</span></Link>
             <span className="ih-method-credit">Conduzido por Marcelo Gonçalves · Arquiteto de soluções</span>
           </div>
@@ -231,7 +231,6 @@ export default async function InstitutionalHome() {
             <div className="ih-eyebrow ih-eyebrow--dual ih-eyebrow--onDark">Resultados</div>
             <h2 className="ih-results-t">Resultado que aparece na <em>fatura</em></h2>
             <p className="ih-results-desc">Projetos reais de otimização de nuvem e arquitetura, com redução de custo mensurável e sem abrir mão de performance ou disponibilidade.</p>
-            <Link href="/contato" className="btn ih-results-cta">Falar com o time <span aria-hidden="true">→</span></Link>
           </div>
           <div className="ih-cases">
             {CASES.map((c, i) => (
@@ -259,6 +258,9 @@ export default async function InstitutionalHome() {
               </div>
             ))}
           </div>
+          <div className="ih-section-footer-center">
+            <Link href="/contato" className="btn">Falar com o time <span aria-hidden="true">→</span></Link>
+          </div>
         </div>
       </section>
 
@@ -266,17 +268,17 @@ export default async function InstitutionalHome() {
       {recent.length > 0 && (
         <section className="ih-section ih-section--sand" id="insights">
           <div className="wrap">
-            <div className="sec-head-row">
-              <div className="left">
-                <div className="ih-eyebrow">Conteúdo técnico</div>
-                <h2 className="sec-t">Engenharia compartilhada por quem<br />a vive no dia a dia</h2>
-              </div>
-              <Link className="ih-btn-blog" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
+            <div className="ih-center-head">
+              <div className="ih-eyebrow ih-eyebrow--dual">Conteúdo técnico</div>
+              <h2 className="sec-t">Engenharia compartilhada por quem a vive no dia a dia</h2>
             </div>
             <div className="ih-blog-grid">
               {recent.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
+            </div>
+            <div className="ih-section-footer-center">
+              <Link className="ih-btn-blog" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>
