@@ -46,10 +46,16 @@
 
 .ih-btn--clay {
   background: var(--clay);
+  border: 1px solid transparent;
 }
 
+/* Hover invertido — mesmo padrão do "Voltar ao topo" do Footer, só que
+   ao contrário: o botão laranja vira petróleo no hover. */
 .ih-btn--clay:hover {
-  background: var(--clay-hover);
+  background: var(--petrol-deep);
+  border-color: rgba(255, 255, 255, .3);
+  color: #fff;
+  transform: translateY(-2px);
 }
 
 .ih-btn--petrol {
@@ -57,9 +63,12 @@
   border: 1px solid rgba(255, 255, 255, .3);
 }
 
+/* Hover — mesmo padrão do "Voltar ao topo" do Footer: vira laranja/clay. */
 .ih-btn--petrol:hover {
-  background: var(--ink);
-  border-color: rgba(255, 255, 255, .5);
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+  transform: translateY(-2px);
 }
 
 .ih-hero-trust {
