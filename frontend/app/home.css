@@ -20,26 +20,44 @@
   margin-top: var(--sp-7);
 }
 
-.ih-btn-outline {
+/* Botão padrão da Home — dois tipos únicos (laranja/clay e verde/moss),
+   reutilizados em toda a página. Variam apenas em texto e largura; no
+   hover, a mesma cor fica mais escura. Forma de referência: "Conhecer
+   serviços" da hero. */
+.ih-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
-  background: transparent;
-  color: rgba(255, 255, 255, .78);
-  border: 1px solid rgba(255, 255, 255, .2);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14.5px;
   padding: 14px 22px;
   border-radius: 12px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: #fff;
+  border: none;
   text-decoration: none;
-  transition: color .15s, border-color .15s, transform .15s;
+  cursor: pointer;
+  transition: background-color .15s, transform .15s;
 }
 
-.ih-btn-outline:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, .42);
+.ih-btn:hover {
   transform: translateY(-1px);
+}
+
+.ih-btn--clay {
+  background: var(--clay);
+}
+
+.ih-btn--clay:hover {
+  background: var(--clay-hover);
+}
+
+.ih-btn--moss {
+  background: var(--moss);
+}
+
+.ih-btn--moss:hover {
+  background: #2C4F32;
 }
 
 .ih-hero-trust {
@@ -441,27 +459,6 @@
 }
 
 /* Blog */
-.ih-btn-blog {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  background: var(--moss);
-  color: #fff;
-  border-radius: 11px;
-  padding: 13px 20px;
-  font-weight: 600;
-  font-size: 14px;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 8px 22px rgba(63, 107, 71, .3);
-  transition: background .2s, transform .15s;
-}
-
-.ih-btn-blog:hover {
-  background: #345A3B;
-  transform: translateY(-1px);
-}
-
 .ih-blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
