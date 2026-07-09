@@ -160,7 +160,7 @@ export default async function InstitutionalHome() {
       >
         <div className="ih-hero-actions">
           <Link href="/contato" className="ih-btn ih-btn--clay">Agendar diagnóstico <span aria-hidden="true">→</span></Link>
-          <a href="#servicos" className="ih-btn ih-btn--moss">Conhecer serviços</a>
+          <a href="#servicos" className="ih-btn ih-btn--petrol">Conhecer serviços</a>
         </div>
         <div className="ih-hero-trust">
           <span className="ih-hero-dot" aria-hidden="true" />
@@ -278,7 +278,7 @@ export default async function InstitutionalHome() {
               ))}
             </div>
             <div className="ih-section-footer-center">
-              <Link className="ih-btn ih-btn--moss" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
+              <Link className="ih-btn ih-btn--petrol" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>

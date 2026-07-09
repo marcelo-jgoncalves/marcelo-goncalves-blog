@@ -20,10 +20,10 @@
   margin-top: var(--sp-7);
 }
 
-/* Botão padrão da Home — dois tipos únicos (laranja/clay e verde/moss),
-   reutilizados em toda a página. Variam apenas em texto e largura; no
-   hover, a mesma cor fica mais escura. Forma de referência: "Conhecer
-   serviços" da hero. */
+/* Botão padrão da Home — dois tipos únicos (laranja/clay e petróleo,
+   mesma cor de fundo da hero), reutilizados em toda a página. Variam
+   apenas em texto e largura; no hover, a mesma cor fica mais escura.
+   Forma de referência: "Conhecer serviços" da hero. */
 .ih-btn {
   display: inline-flex;
   align-items: center;
@@ -52,12 +52,14 @@
   background: var(--clay-hover);
 }
 
-.ih-btn--moss {
-  background: var(--moss);
+.ih-btn--petrol {
+  background: var(--petrol-deep);
+  border: 1px solid rgba(255, 255, 255, .3);
 }
 
-.ih-btn--moss:hover {
-  background: #2C4F32;
+.ih-btn--petrol:hover {
+  background: var(--ink);
+  border-color: rgba(255, 255, 255, .5);
 }
 
 .ih-hero-trust {
