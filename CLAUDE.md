@@ -6,7 +6,7 @@
 
 ## 1. Contexto do Projeto
 
-Blog de autoridade sobre IA, AWS e DevOps. Propósito: AdSense + leads para consultoria.  
+Site empresarial de consultoria em tecnologia (IA, AWS, DevOps), com blog de autoridade como subseção. Propósito: leads de consultoria + AdSense no blog. **Pivô estrutural na sessão 42:** a Home (`/`) passou a ser institucional (hero, serviços, metodologia, resultados, teaser de blog, CTA) e o antigo blog (que era a home) mudou para `/blog`; nova página `/contato` com formulário de diagnóstico.  
 **Owner:** Marcelo Gonçalves (PM/Arquiteto) — você é o Staff Engineer.
 
 **Ambiente ativo:** apenas `dev`. Produção não existe ainda.  
@@ -15,7 +15,7 @@ Blog de autoridade sobre IA, AWS e DevOps. Propósito: AdSense + leads para cons
 ### Sistema ao vivo (dev)
 | Serviço | URL |
 |---|---|
-| Blog público | `https://dsns2wusdrj9z.cloudfront.net` |
+| Site público | `https://dsns2wusdrj9z.cloudfront.net` (Home institucional em `/`, blog em `/blog`, contato em `/contato`) |
 | Admin Vue | `https://d11ubkpuy1di6r.cloudfront.net` |
 | API Gateway | `https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1` |
 | Pipeline CD | GitHub Actions → develop ✅ verde |
@@ -279,6 +279,17 @@ Exceção permitida: `14px` para código inline (sub-pixel preciso) e `0.9375rem
 Marcelo    → color: var(--dark-900)  — DM Sans 700
 Gonçalves  → color: var(--accent)   — DM Sans 700
 ```
+
+### Botões — sistema único (sessão 42, `f1f6a4c`)
+
+Todo botão/CTA do site (frontend público) usa exatamente **duas classes**, definidas globalmente em `frontend/app/globals.css`:
+```
+.btn          → laranja/clay (var(--clay)), cor primária — usar por padrão
+.btn.btn-petrol → petróleo (var(--petrol-deep)), secundária
+```
+Mesma forma sempre (`padding: 14px 22px; border-radius: 12px; font-weight: 600`), variando **só texto e largura**. Hover troca de cor (clay⇄petrol, com borda clara sutil para não sumir sobre fundos da mesma cor) — mesmo padrão do botão "Voltar ao topo" do Footer.  
+**Nunca criar uma nova classe de botão com cor/padding/radius próprios.** Se um componente precisa de contexto de layout (largura 100%, altura fixa, sombra específica, ícone de seta com fonte mono), crie uma classe local **sem** propriedades de cor/forma e aplique-a **junto** com `.btn`/`.btn-petrol` (ex.: `className="btn cta-adv-btn"`, onde `cta-adv-btn` só define `width:100%` e a sombra).  
+Isso substituiu 14 sistemas de botão distintos que existiam antes (`.btn-outline`/`.btn-ghost`/`.btn-white`/`.btn-outline-dark`, `.fwc-btn`, `.cta-adv-btn`, `.home-btn-*`, `.ct-btn-primary`, `.sobre-hero__btn-*`, `.sobre-btn-clay`, `.op-btn-callout-primary`, `.svc-btn-clay-hero`, `.widget-newsletter .btn-full`) — todos continuam existindo como nomes de classe (para não quebrar seletores CSS descendentes/contexto), mas nenhum define mais cor ou padding, só o que for específico daquele componente.
 
 ### CSS Modules vs. CSS global (regra decidida em 2026-06-29)
 
