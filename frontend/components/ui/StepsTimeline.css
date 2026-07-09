@@ -1,4 +1,4 @@
-/* frontend/components/ui/StepsTimeline.css — trilha de etapas (tema escuro, Home/Contato) */
+/* frontend/components/ui/StepsTimeline.css — trilha de etapas reutilizável (Home, Contato) */
 
 .steps-timeline {
   position: relative;
@@ -9,11 +9,11 @@
 
 .steps-timeline-line {
   position: absolute;
-  top: 23px;
+  top: 24px;
   left: 9%;
   right: 9%;
-  height: 1px;
-  background: rgba(255, 255, 255, .13);
+  height: 2px;
+  background: var(--line);
 }
 
 .steps-timeline-item {
@@ -25,38 +25,35 @@
 .steps-timeline-circle {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
+  border-radius: 14px;
   margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
-  background: #08323D;
-  border: 1px solid rgba(201, 96, 60, .5);
-  color: var(--word-accent);
+  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  color: #fff;
   position: relative;
   z-index: 1;
 }
 
 .steps-timeline-circle--done {
-  background: var(--clay);
-  border-color: var(--clay);
-  color: #fff;
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
 }
 
 .steps-timeline-title {
   font-weight: 700;
   font-size: 15px;
-  color: #F4F1EA;
+  color: var(--ink);
   margin: 0 0 8px;
 }
 
 .steps-timeline-desc {
   font-size: 12.8px;
   line-height: 1.6;
-  color: rgba(240, 244, 244, .52);
+  color: var(--slate);
   margin: 0;
 }
 

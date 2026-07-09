@@ -68,6 +68,15 @@ export function IconCube() {
   );
 }
 
+export function IconLayers() {
+  return (
+    <svg {...common}>
+      <path d="M12 3 3 8l9 5 9-5-9-5z" />
+      <path d="M3 13l9 5 9-5" />
+    </svg>
+  );
+}
+
 export function IconEnvelope() {
   return (
     <svg {...common}>

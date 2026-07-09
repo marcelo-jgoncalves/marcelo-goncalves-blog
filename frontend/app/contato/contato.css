@@ -1,51 +1,12 @@
-/* frontend/app/contato/contato.css — Contato, tema escuro (specs/ESPECIFICACAO-CONTATO.md) */
+/* frontend/app/contato/contato.css — Contato (Redesign 2026 — Petrol/Clay/Ivory) */
 
-/* Hero de coluna única (sem painel à direita) — sobrescreve o default 1fr 1fr do
-   PageHero (pensado para páginas com painel lateral), que espremia H1/subtítulo
-   na metade esquerda da hero. */
 .page-hero.ct-hero {
   --ph-cols: 1fr;
   --ph-h1-max: 760px;
   --ph-sub-max: 680px;
   /* PageHero usa padding-bottom:0 por padrão (espera um statsStrip próprio) —
-     sem ele, o CTA/texto auxiliar ficava colado na borda inferior da hero
-     (specs/ESPECIFICACAO-CONTATO.md §3: hero "104px 40px 40px"). */
-  --ph-pad: 104px 40px 56px;
-}
-
-@keyframes iaGlow {
-  0%, 100% { opacity: .4; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: .68; transform: translate(-50%, -50%) scale(1.12); }
-}
-
-.ct-hero-decoration {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.ct-hero-glow-1 {
-  position: absolute;
-  left: 82%;
-  top: 12%;
-  width: 520px;
-  height: 520px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 96, 60, .2), transparent 66%);
-  animation: iaGlow 9s ease-in-out infinite;
-}
-
-.ct-hero-glow-2 {
-  position: absolute;
-  left: 4%;
-  top: 82%;
-  width: 440px;
-  height: 440px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(15, 76, 92, .5), transparent 68%);
-  animation: iaGlow 11s ease-in-out infinite;
+     sem ele, o CTA/texto auxiliar ficava colado na borda inferior da hero. */
+  --ph-pad: 88px 40px 56px;
 }
 
 .ct-hero-actions {
@@ -58,7 +19,7 @@
 
 .ct-hero-aux {
   font-size: 13.5px;
-  color: rgba(240, 244, 244, .5);
+  color: rgba(250, 248, 243, .5);
 }
 
 .ct-btn-primary {
@@ -86,30 +47,11 @@
 .ct-section {
   margin-block: 0;
   padding: var(--section-pad) 0;
-  border-top: 1px solid rgba(255, 255, 255, .07);
-  scroll-margin-top: 84px;
-  background: #08323D;
-  color: #F4F1EA;
+  border-top: 1px solid var(--line);
 }
 
 .ct-section--surface {
-  background: #0A2A32;
-}
-
-.ct-section .sec-ey {
-  color: var(--word-accent);
-}
-
-.ct-section .sec-ey::before {
-  background: var(--word-accent);
-}
-
-.ct-section .sec-t {
-  color: #F4F1EA;
-}
-
-.ct-section .sec-desc {
-  color: rgba(240, 244, 244, .6);
+  background: var(--sand);
 }
 
 .ct-center-head {
@@ -138,7 +80,7 @@
   align-items: center;
   gap: 12px;
   font-size: 14px;
-  color: rgba(240, 244, 244, .72);
+  color: var(--ink);
 }
 
 .ct-guarantee .ck {
@@ -146,8 +88,8 @@
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: rgba(63, 107, 71, .18);
-  color: #6FB37E;
+  background: rgba(63, 107, 71, .14);
+  color: var(--moss);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,15 +105,16 @@
 }
 
 .ct-area-card {
-  background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .08);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 16px;
   padding: 26px;
-  transition: border-color .18s, transform .18s;
+  transition: border-color .18s, transform .18s, box-shadow .18s;
 }
 
 .ct-area-card:hover {
-  border-color: rgba(201, 96, 60, .4);
+  border-color: rgba(15, 76, 92, .22);
+  box-shadow: 0 18px 40px -18px rgba(12, 32, 39, .18);
   transform: translateY(-2px);
 }
 
@@ -179,9 +122,9 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(201, 96, 60, .14);
+  background: var(--clay-soft);
   border: 1px solid rgba(201, 96, 60, .28);
-  color: var(--word-accent);
+  color: var(--clay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,14 +143,14 @@
   font-weight: 700;
   font-size: 1.12rem;
   letter-spacing: -.015em;
-  color: #F4F1EA;
+  color: var(--ink);
   margin: 0 0 9px;
 }
 
 .ct-area-card p {
   font-size: 14px;
   line-height: 1.62;
-  color: rgba(240, 244, 244, .58);
+  color: var(--slate);
   margin: 0;
 }
 
@@ -224,9 +167,9 @@
   align-items: center;
   gap: 10px;
   margin-top: 30px;
-  background: rgba(63, 107, 71, .16);
-  color: #8FD49E;
-  border: 1px solid rgba(63, 107, 71, .4);
+  background: rgba(63, 107, 71, .1);
+  color: var(--moss);
+  border: 1px solid rgba(63, 107, 71, .3);
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
@@ -237,7 +180,7 @@
 }
 
 .ct-whatsapp-btn:hover {
-  background: rgba(63, 107, 71, .24);
+  background: rgba(63, 107, 71, .18);
 }
 
 .ct-contact-cards {
@@ -250,8 +193,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .08);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 14px;
   padding: 18px;
   transition: border-color .18s;
@@ -265,7 +208,7 @@
 }
 
 .ct-contact-card:not(.ct-contact-card--static):hover {
-  border-color: rgba(201, 96, 60, .4);
+  border-color: rgba(15, 76, 92, .22);
 }
 
 .ct-contact-card--static {
@@ -277,74 +220,18 @@
   font-size: 9.5px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(240, 244, 244, .42);
+  color: var(--steel);
 }
 
 .ct-contact-v {
   font-size: 13.5px;
   font-weight: 600;
-  color: #F4F1EA;
+  color: var(--ink);
 }
 
 /* FAQ */
 .ct-faq-wrap {
   max-width: 900px;
-}
-
-/* CTA final */
-.ct-cta-final {
-  margin-block: 0;
-  position: relative;
-  overflow: hidden;
-  background: #061F26;
-  border-top: 1px solid rgba(255, 255, 255, .07);
-}
-
-.ct-cta-final-glow {
-  position: absolute;
-  left: 50%;
-  top: 58%;
-  width: 640px;
-  height: 640px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 96, 60, .16), transparent 66%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.ct-cta-final-in {
-  position: relative;
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 112px 40px;
-  text-align: center;
-}
-
-.ct-cta-final-in h2 {
-  font-weight: 800;
-  font-size: clamp(2rem, 3.8vw, 3rem);
-  letter-spacing: -.04em;
-  line-height: 1.1;
-  color: #F4F1EA;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.ct-cta-final-in h2 em {
-  font-style: italic;
-  color: var(--word-accent);
-}
-
-.ct-cta-final-in p {
-  font-size: 1.08rem;
-  line-height: 1.72;
-  color: rgba(240, 244, 244, .66);
-  margin: 26px auto 0;
-  max-width: 58ch;
-}
-
-.ct-cta-final-btn {
-  margin-top: 36px;
 }
 
 @media (max-width: 860px) {

@@ -48,7 +48,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const hasResults = posts.length > 0;
 
   return (
-    <div className="theme-dark">
+    <>
       {hasResults ? (
         // --- CENÁRIO A: Encontrou Resultados ---
         <>
@@ -91,7 +91,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
               <h1 style={{ fontSize: '2rem', marginBottom: '20px' }}>
                 Oops! Ainda não escrevi sobre &ldquo;<span className="highlight">{q}</span>&rdquo;.
               </h1>
-              <p style={{ color: 'var(--slate)', maxWidth: '600px', margin: '0 auto 40px', fontSize: '1.1rem' }}>
+              <p style={{ color: '#666', maxWidth: '600px', margin: '0 auto 40px', fontSize: '1.1rem' }}>
                 Mas talvez este seja um ótimo tema para um futuro post. Que tal tentar um outro termo?
               </p>
               <div style={{ maxWidth: '600px', margin: '0 auto' }}>
@@ -123,6 +123,6 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
 
       {/* Componente Reutilizável de Newsletter */}
       <NewsletterCTA />
-    </div>
+    </>
   );
 }

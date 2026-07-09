@@ -27,7 +27,6 @@
   --clay-hover:    #A94C2D;
   --clay-soft:     #F3DDD0;
   --moss:          #3F6B47;
-  --word-accent:   #D9744F;  /* argila clara — destaque de palavra em títulos (em h1/h2) */
 
   /* ─────────────────────────────────────
      LAYOUT
@@ -346,50 +345,6 @@ img {
 /* Visibilidade responsiva */
 .mobile-only  { display: block; }
 .desktop-only { display: none; }
-
-/* =========================================
-   6. REVEAL — fade-in + subida sutil na entrada
-   Usado nas páginas institucionais (Home, Contato) — specs/ESPECIFICACAO-HOME.md §19
-   ========================================= */
-@keyframes reveal-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: none; }
-}
-
-.reveal {
-  animation: reveal-in .7s cubic-bezier(.2, .7, .2, 1) both;
-  animation-delay: var(--reveal-delay, 0ms);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    animation: none;
-  }
-}
-
-/* =========================================
-   7. TEMA ESCURO — wrapper escopado (petróleo/argila)
-   Redefine só os tokens "claros" (--clay/--petrol/--moss/--word-accent
-   já são compartilhados entre os dois temas e não mudam aqui).
-   Qualquer página/componente que herde destas variáveis (por estar
-   dentro de um elemento com esta classe) fica escuro automaticamente,
-   sem precisar editar o CSS de cada componente compartilhado.
-   ========================================= */
-.theme-dark {
-  --ivory:  #08323D;                  /* fundo de página */
-  --surface: rgba(255, 255, 255, .035); /* fundo de card */
-  --sand:   #0A2A32;                   /* fundo de seção alternada */
-  --ink:    #F4F1EA;                   /* títulos */
-  --slate:  rgba(240, 244, 244, .62);  /* corpo de texto */
-  --steel:  rgba(240, 244, 244, .42);  /* texto terciário/metadados */
-  --line:   rgba(255, 255, 255, .08);  /* bordas */
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-xl: none;
-
-  background: var(--ivory);
-}
 
 @media (min-width: 1024px) {
   .mobile-only  { display: none; }

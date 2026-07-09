@@ -79,7 +79,7 @@ export default async function Home() {
   const iaStack = ia.slice(1, 5);
 
   return (
-    <div className="theme-dark">
+    <>
       {/* Hero */}
       <PageHero
         className="home-hero"
@@ -299,6 +299,6 @@ export default async function Home() {
       )}
 
       <CtaAssessoria />
-    </div>
+    </>
   );
 }

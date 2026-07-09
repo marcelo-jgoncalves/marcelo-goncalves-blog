@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function PoliticaDeCookiesPage() {
   return (
-    <div className="theme-dark">
+    <>
       <PageHero>
         <h1 className="hero-title">Política de <span className="highlight">Cookies</span></h1>
         <p className="hero-subtitle">
@@ -102,6 +102,6 @@ export default function PoliticaDeCookiesPage() {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

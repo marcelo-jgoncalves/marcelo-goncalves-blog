@@ -14,7 +14,7 @@ export default async function NotFound() {
   const popularPosts = popularData.posts || [];
 
   return (
-    <div className="theme-dark">
+    <>
       {/* 1. Hero de Erro */}
       <section className="error-hero">
         <div className="error-header-content">
@@ -68,6 +68,6 @@ export default async function NotFound() {
 
       {/* 4. CTA Newsletter */}
       <NewsletterCTA />
-    </div>
+    </>
   );
 }

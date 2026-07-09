@@ -136,7 +136,7 @@
 .sobre-traj-quote > * { position: relative; z-index: 1; }
 .sobre-tq-mark { font-family: Georgia, serif; font-size: 5rem; line-height: .6; color: rgba(255,255,255,.16); height: 38px; }
 .sobre-tq-text { font-size: 1.25rem; line-height: 1.5; color: #fff; letter-spacing: -.015em; font-weight: 600; text-wrap: balance; margin-bottom: 24px; }
-.sobre-tq-text em { font-style: italic; color: var(--word-accent); }
+.sobre-tq-text em { font-style: italic; color: var(--petrol-soft); }
 .sobre-tq-foot { display: flex; align-items: center; gap: 24px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.12); }
 .sobre-tq-author { display: flex; flex-direction: column; gap: 2px; }
 .sobre-tq-author .n { font-weight: 700; font-size: 14.5px; color: #fff; }
@@ -207,7 +207,7 @@
   font-size: clamp(1.45rem, 2.05vw, 1.85rem); line-height: 1.5; font-weight: 500; color: #fff;
   letter-spacing: -.018em; max-width: 680px; text-wrap: pretty;
 }
-.sobre-dif-quote em { font-style: italic; color: var(--word-accent); font-weight: 600; }
+.sobre-dif-quote em { font-style: italic; color: var(--petrol-soft); font-weight: 600; }
 .sobre-dif-by { margin-top: 30px; display: flex; align-items: center; gap: 14px; }
 .sobre-dif-by .nm { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.55); }
 .sobre-dif-by .ln { flex: 1; height: 1px; background: rgba(255,255,255,.16); max-width: 90px; }
@@ -289,7 +289,7 @@
 .sobre-ey2 { font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.72); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .sobre-ey2::before { content: ""; width: 30px; height: 1px; background: var(--clay); }
 .sobre-cta-adv-left h2 { font-weight: 800; font-size: clamp(2rem, 3.6vw, 2.75rem); line-height: 1.06; letter-spacing: -.04em; color: #fff; max-width: 500px; }
-.sobre-cta-adv-left h2 em { font-style: italic; color: var(--word-accent); }
+.sobre-cta-adv-left h2 em { font-style: italic; color: var(--petrol-soft); }
 .sobre-cta-desc { font-size: 1.0625rem; line-height: 1.6; color: rgba(250,248,243,.66); max-width: 440px; margin-top: 18px; }
 .sobre-cta-points { display: flex; flex-direction: column; gap: 13px; margin-top: 26px; }
 .sobre-cta-points li { list-style: none; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.5; color: rgba(250,248,243,.9); }

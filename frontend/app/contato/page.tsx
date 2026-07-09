@@ -2,10 +2,10 @@
 
 import './contato.css';
 import type { Metadata } from 'next';
-import type { CSSProperties } from 'react';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import Faq from '@/components/ui/Faq';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
   IconCycle, IconBolt, IconCloud, IconChip, IconChart, IconCube,
@@ -69,10 +69,6 @@ const FAQ_ITEMS = [
   },
 ];
 
-function delay(ms: number): CSSProperties {
-  return { '--reveal-delay': `${ms}ms` } as CSSProperties;
-}
-
 export default function ContatoPage() {
   return (
     <>
@@ -82,14 +78,8 @@ export default function ContatoPage() {
         eyebrow="Contato"
         title={<>Vamos conversar sobre a <em>evolução</em> da sua empresa.</>}
         subtitle="Cada empresa possui desafios diferentes. Quer você esteja buscando modernizar sua infraestrutura, automatizar processos, aplicar Inteligência Artificial ou iniciar uma jornada de transformação digital, estamos prontos para entender seu cenário e identificar oportunidades de evolução."
-        decoration={
-          <div className="ct-hero-decoration" aria-hidden="true">
-            <div className="ct-hero-glow-1" />
-            <div className="ct-hero-glow-2" />
-          </div>
-        }
       >
-        <div className="ct-hero-actions reveal" style={delay(180)}>
+        <div className="ct-hero-actions">
           <a href="#form" className="ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
           <span className="ct-hero-aux">ou role a página para preencher o formulário</span>
         </div>
@@ -98,7 +88,7 @@ export default function ContatoPage() {
       {/* Formulário */}
       <section className="ct-section ct-section--surface" id="form">
         <div className="wrap ct-form-grid">
-          <div className="reveal">
+          <div>
             <div className="sec-ey">Solicitação</div>
             <h2 className="sec-t">Conte um pouco sobre a sua empresa.</h2>
             <p className="sec-desc" style={{ maxWidth: 400 }}>
@@ -110,31 +100,27 @@ export default function ContatoPage() {
               <div className="ct-guarantee"><span className="ck">✓</span>Seus dados ficam apenas conosco</div>
             </div>
           </div>
-          <div className="reveal" style={delay(120)}>
-            <ContactForm />
-          </div>
+          <ContactForm />
         </div>
       </section>
 
       {/* Como funciona */}
       <section className="ct-section">
         <div className="wrap">
-          <div className="sec-head-row reveal">
+          <div className="sec-head-row">
             <div className="left">
               <div className="sec-ey">Como funciona</div>
               <h2 className="sec-t">O que acontece depois do envio.</h2>
             </div>
           </div>
-          <div className="reveal" style={delay(100)}>
-            <StepsTimeline steps={STEPS} dataAudit="ct-steps" />
-          </div>
+          <StepsTimeline steps={STEPS} dataAudit="ct-steps" />
         </div>
       </section>
 
       {/* Como podemos ajudar */}
       <section className="ct-section ct-section--surface">
         <div className="wrap">
-          <div className="sec-head-row reveal">
+          <div className="sec-head-row">
             <div className="left">
               <div className="sec-ey">Áreas de atuação</div>
               <h2 className="sec-t">Como podemos ajudar.</h2>
@@ -142,8 +128,8 @@ export default function ContatoPage() {
             </div>
           </div>
           <div className="ct-areas-grid" data-audit="ct-areas-grid">
-            {AREAS.map((area, i) => (
-              <div className="ct-area-card reveal" style={delay((i % 3) * 70)} key={area.title}>
+            {AREAS.map((area) => (
+              <div className="ct-area-card" key={area.title}>
                 <div className="ct-icon-box"><area.Icon /></div>
                 <h3>{area.title}</h3>
                 <p>{area.description}</p>
@@ -156,12 +142,12 @@ export default function ContatoPage() {
       {/* Outras formas de contato */}
       <section className="ct-section">
         <div className="wrap ct-otherways-grid">
-          <div className="reveal">
+          <div>
             <div className="sec-ey">Outras formas de contato</div>
             <h2 className="sec-t" style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.4rem)' }}>Prefere falar direto? Estamos por aqui.</h2>
             {/* WhatsApp fica pendente até termos um número real (backlog #1, .project-context.md) */}
           </div>
-          <div className="ct-contact-cards reveal" style={delay(120)}>
+          <div className="ct-contact-cards">
             <a className="ct-contact-card" href="mailto:contato@marcelogoncalves.com">
               <div className="ct-icon-box ct-icon-box--sm"><IconEnvelope /></div>
               <span className="ct-contact-card-text">
@@ -197,26 +183,22 @@ export default function ContatoPage() {
       {/* FAQ */}
       <section className="ct-section ct-section--surface">
         <div className="wrap ct-faq-wrap">
-          <div className="ct-center-head reveal">
+          <div className="ct-center-head">
             <div className="sec-ey" style={{ justifyContent: 'center' }}>Perguntas frequentes</div>
             <h2 className="sec-t">Dúvidas antes de começar.</h2>
           </div>
-          <div className="reveal" style={delay(100)}>
-            <Faq items={FAQ_ITEMS} dataAudit="ct-faq" />
-          </div>
+          <Faq items={FAQ_ITEMS} dataAudit="ct-faq" />
         </div>
       </section>
 
-      <section className="ct-cta-final" id="chamada-final">
-        <div className="ct-cta-final-glow" aria-hidden="true" />
-        <div className="ct-cta-final-in reveal">
-          <h2>Vamos construir o próximo passo da <em>evolução</em> da sua empresa.</h2>
-          <p>
-            A tecnologia evolui constantemente. Empresas que conseguem transformar essa evolução em vantagem competitiva estão mais preparadas para crescer, inovar e enfrentar novos desafios.
-          </p>
-          <a href="#form" className="ct-btn-primary ct-cta-final-btn">Solicitar diagnóstico <span aria-hidden="true">→</span></a>
-        </div>
-      </section>
+      <CtaAssessoria
+        id="chamada-final"
+        eyebrow="Vamos conversar"
+        title={<>Vamos construir o próximo passo da <em>evolução</em> da sua empresa.</>}
+        description="A tecnologia evolui constantemente. Empresas que conseguem transformar essa evolução em vantagem competitiva estão mais preparadas para crescer, inovar e enfrentar novos desafios."
+        ctaHref="#form"
+        ctaLabel="Solicitar diagnóstico"
+      />
     </>
   );
 }

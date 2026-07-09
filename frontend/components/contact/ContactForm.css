@@ -1,11 +1,12 @@
-/* frontend/components/contact/ContactForm.css — tema escuro (Contato) */
+/* frontend/components/contact/ContactForm.css */
 
 .contact-form-card {
   position: relative;
-  background: rgba(255, 255, 255, .035);
-  border: 1px solid rgba(255, 255, 255, .09);
-  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
   padding: 32px;
+  box-shadow: var(--shadow-md);
 }
 
 .contact-form-grid {
@@ -21,7 +22,7 @@
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: .01em;
-  color: rgba(240, 244, 244, .72);
+  color: var(--slate);
 }
 
 .contact-field-wide {
@@ -29,7 +30,7 @@
 }
 
 .contact-required {
-  color: var(--word-accent);
+  color: var(--clay);
 }
 
 .contact-optional {
@@ -37,7 +38,7 @@
   font-size: 9.5px;
   font-weight: 500;
   letter-spacing: .06em;
-  color: rgba(240, 244, 244, .36);
+  color: var(--steel);
   text-transform: uppercase;
 }
 
@@ -45,24 +46,15 @@
 .contact-field textarea,
 .contact-field select {
   width: 100%;
-  background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .12);
+  background: var(--ivory);
+  border: 1px solid var(--line);
   border-radius: 11px;
   padding: 12px 14px;
   font-size: 14px;
   font-weight: 400;
-  color: #F4F1EA;
+  color: var(--ink);
   font-family: var(--font-sans);
   transition: border-color .15s, background .15s;
-}
-
-.contact-field select option {
-  background: #0A2A32;
-}
-
-.contact-field input::placeholder,
-.contact-field textarea::placeholder {
-  color: rgba(240, 244, 244, .34);
 }
 
 .contact-field textarea {
@@ -74,8 +66,8 @@
 .contact-field textarea:focus,
 .contact-field select:focus {
   outline: none;
-  border-color: rgba(201, 96, 60, .6);
-  background: rgba(255, 255, 255, .05);
+  border-color: var(--clay);
+  background: var(--surface);
 }
 
 .contact-error {
@@ -84,9 +76,9 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: #E79A80;
-  background: rgba(201, 96, 60, .12);
-  border: 1px solid rgba(201, 96, 60, .3);
+  color: var(--clay-hover);
+  background: var(--clay-soft);
+  border: 1px solid var(--clay);
   padding: 11px 14px;
   border-radius: 11px;
 }
@@ -102,7 +94,7 @@
 
 .contact-required-note {
   font-size: 12px;
-  color: rgba(240, 244, 244, .42);
+  color: var(--steel);
   font-family: var(--mono);
 }
 
@@ -116,26 +108,26 @@
   height: 64px;
   border-radius: 50%;
   margin: 0 auto 22px;
-  background: rgba(63, 107, 71, .16);
-  border: 1px solid rgba(63, 107, 71, .4);
+  background: rgba(63, 107, 71, .12);
+  border: 1px solid var(--moss);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6FB37E;
+  color: var(--moss);
 }
 
 .contact-success h3 {
   font-weight: 700;
   font-size: 1.4rem;
   letter-spacing: -.02em;
-  color: #F4F1EA;
+  color: var(--ink);
   margin: 0 0 10px;
 }
 
 .contact-success p {
   font-size: 1rem;
   line-height: 1.66;
-  color: rgba(240, 244, 244, .62);
+  color: var(--slate);
   margin: 0 auto 26px;
   max-width: 38ch;
 }

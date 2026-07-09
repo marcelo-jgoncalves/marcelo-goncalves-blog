@@ -9,7 +9,6 @@ interface PageHeroProps {
   children?: ReactNode;
   right?: ReactNode;
   statsStrip?: ReactNode;
-  decoration?: ReactNode;
   dataAudit?: string;
 }
 
@@ -21,7 +20,6 @@ export default function PageHero({
   children,
   right,
   statsStrip,
-  decoration,
   dataAudit,
 }: PageHeroProps) {
   return (
@@ -29,7 +27,6 @@ export default function PageHero({
       className={`page-hero${className ? ` ${className}` : ''}`}
       data-audit={dataAudit}
     >
-      {decoration}
       <div className="page-hero-in">
         <div className="page-hero-left">
           {eyebrow && <div className="page-hero-ey">{eyebrow}</div>}

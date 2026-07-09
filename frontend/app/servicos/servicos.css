@@ -658,13 +658,6 @@
   font-weight: 700;
 }
 
-/* Tema escuro — --clay tem contraste marginal em texto pequeno sobre o
-   petróleo escuro; usar o accent mais vibrante reservado para destaques. */
-.theme-dark .svc-wide-list li::before {
-  color: var(--word-accent);
-  font-weight: 800;
-}
-
 /* ============================================================
    RESPONSIVO
    ============================================================ */

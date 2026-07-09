@@ -191,7 +191,7 @@ export default async function PostPage({ params }: Props) {
   };
 
   return (
-    <article className="theme-dark">
+    <article>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 

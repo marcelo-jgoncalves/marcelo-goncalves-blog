@@ -51,13 +51,6 @@
   flex: none;
 }
 
-/* --petrol é escuro por natureza (pensado para texto sobre fundo de página
-   claro) — no tema escuro o link fica sobre o próprio fundo escuro da
-   página, então precisa de uma cor de destaque clara. */
-.theme-dark .post-r-all {
-  color: var(--word-accent);
-}
-
 .post-r-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

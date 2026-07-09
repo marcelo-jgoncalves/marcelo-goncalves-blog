@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function TermosDeUsoPage() {
   return (
-    <div className="theme-dark">
+    <>
       <PageHero>
         <h1 className="hero-title">Termos de <span className="highlight">Uso</span></h1>
         <p className="hero-subtitle">
@@ -106,6 +106,6 @@ export default function TermosDeUsoPage() {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

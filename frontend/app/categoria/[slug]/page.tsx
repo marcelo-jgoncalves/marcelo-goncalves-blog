@@ -118,7 +118,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   };
 
   return (
-    <div className="theme-dark">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
       {/* Hero da Categoria */}
@@ -157,6 +157,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
       <Pagination nextToken={nextPageToken} basePath={`/categoria/${slug}`} />
       <NewsletterCTA />
-    </div>
+    </>
   );
 }

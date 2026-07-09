@@ -138,7 +138,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
   };
 
   return (
-    <div className="theme-dark">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
       {/* HERO */}
@@ -289,6 +289,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
       </div>
 
       <CtaAssessoria />
-    </div>
+    </>
   );
 }

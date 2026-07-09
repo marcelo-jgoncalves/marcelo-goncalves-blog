@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function PoliticaDePrivacidadePage() {
   return (
-    <div className="theme-dark">
+    <>
       <PageHero>
         <h1 className="hero-title">Política de <span className="highlight">Privacidade</span></h1>
         <p className="hero-subtitle">
@@ -109,6 +109,6 @@ export default function PoliticaDePrivacidadePage() {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

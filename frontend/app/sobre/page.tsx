@@ -136,7 +136,7 @@ export default async function SobrePage() {
   };
 
   return (
-    <div className="theme-dark">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(personJsonLd) }} />
 
       {/* ── HERO ── */}
@@ -384,6 +384,6 @@ export default async function SobrePage() {
       </section>
 
       <CtaAssessoria />
-    </div>
+    </>
   );
 }

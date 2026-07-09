@@ -1,4 +1,4 @@
-/* frontend/components/ui/Faq.css — acordeão (tema escuro, Contato) */
+/* frontend/components/ui/Faq.css — acordeão reutilizável (Contato) */
 
 .faq-accordion {
   display: flex;
@@ -7,8 +7,8 @@
 }
 
 .faq-item {
-  background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .08);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 14px;
   padding: 22px 24px;
   cursor: pointer;
@@ -16,7 +16,7 @@
 }
 
 .faq-item--open {
-  border-color: rgba(201, 96, 60, .4);
+  border-color: rgba(15, 76, 92, .3);
 }
 
 .faq-item-row {
@@ -30,7 +30,7 @@
   font-weight: 600;
   font-size: 1.05rem;
   letter-spacing: -.01em;
-  color: #F4F1EA;
+  color: var(--ink);
   margin: 0;
 }
 
@@ -39,11 +39,11 @@
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, .06);
+  background: var(--sand);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--word-accent);
+  color: var(--clay);
   transition: transform .22s;
 }
 
@@ -54,7 +54,7 @@
 .faq-item-a {
   font-size: 14.5px;
   line-height: 1.7;
-  color: rgba(240, 244, 244, .62);
+  color: var(--slate);
   margin: 16px 0 0;
   max-width: 68ch;
 }
