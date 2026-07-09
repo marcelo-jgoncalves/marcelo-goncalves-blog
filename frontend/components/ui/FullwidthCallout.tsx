@@ -71,7 +71,7 @@ export default function FullwidthCallout({
         )}
 
         {href && ctaText && (
-          <Link href={href} className="fwc-btn" data-cta-variant={ctaVariant}>
+          <Link href={href} className={`btn fwc-btn${ctaVariant === 'white' ? ' btn-petrol' : ''}`}>
             {ctaText}
           </Link>
         )}

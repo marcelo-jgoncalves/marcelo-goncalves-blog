@@ -22,26 +22,9 @@
   color: rgba(250, 248, 243, .5);
 }
 
+/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
 .ct-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  background: var(--clay);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14.5px;
-  padding: 14px 24px;
-  border-radius: 11px;
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
-  text-decoration: none;
-  transition: filter .15s, transform .15s;
-}
-
-.ct-btn-primary:hover {
-  filter: brightness(1.06);
-  transform: translateY(-1px);
 }
 
 .ct-section {

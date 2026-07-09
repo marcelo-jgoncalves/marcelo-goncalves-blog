@@ -74,11 +74,11 @@ export default function CtaAssessoria({
             <p className="cta-adv-sub">{cardSubtitle}</p>
             {cardBody}
             {ctaExternal ? (
-              <a className="cta-adv-btn" href={ctaHref}>
+              <a className="btn cta-adv-btn" href={ctaHref}>
                 {ctaLabel} <span className="arrow">→</span>
               </a>
             ) : (
-              <Link className="cta-adv-btn" href={ctaHref}>
+              <Link className="btn cta-adv-btn" href={ctaHref}>
                 {ctaLabel} <span className="arrow">→</span>
               </Link>
             )}

@@ -179,27 +179,12 @@
   border-radius: 999px;
 }
 
+/* Botão — usa o padrão global .btn (globals.css); .cta-adv-btn só ajusta
+   largura (preenche o card) e a sombra própria deste componente. */
 .cta-adv-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
   width: 100%;
-  background: var(--clay);
-  color: #fff;
-  border: none;
-  height: 56px;
-  border-radius: 13px;
-  font-family: var(--font);
-  font-weight: 600;
   font-size: 15.5px;
   box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
-  transition: background .2s, transform .2s;
-}
-
-.cta-adv-btn:hover {
-  background: var(--clay-hover);
-  transform: translateY(-2px);
 }
 
 .cta-adv-btn .arrow {

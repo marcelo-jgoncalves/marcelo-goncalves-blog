@@ -41,50 +41,14 @@
   flex-wrap: wrap;
 }
 
-.home-btn-clay-hero {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--clay);
-  color: #fff;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 14px 24px;
-  border-radius: 12px;
-  box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
-  transition: background .2s, transform .2s;
-}
-
-.home-btn-clay-hero:hover {
-  background: var(--clay-hover);
-  transform: translateY(-2px);
-}
-
+/* Botões — usam o padrão global .btn/.btn-petrol (globals.css); as
+   classes locais só cuidam de contexto (arrow font, show/hide mobile). */
 .home-btn-clay-hero .arrow {
   font-family: var(--mono);
 }
 
 .home-btn-clay-hero-mobile {
   display: none;
-}
-
-.home-btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  font-size: 14.5px;
-  color: rgba(255, 255, 255, .75);
-  border: 1px solid rgba(255, 255, 255, .18);
-  padding: 13px 20px;
-  border-radius: 12px;
-  transition: color .2s, border-color .2s, transform .2s;
-}
-
-.home-btn-ghost:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, .4);
-  transform: translateY(-1px);
 }
 
 /* ── Hero — card em destaque ── */
@@ -355,25 +319,20 @@
   color: rgba(255, 255, 255, .48);
 }
 
+/* .home-pp-btn é um <span> (todo o card é o link) — usa o padrão global
+   .btn, só ajusta largura/altura no contexto do card e delega o hover
+   ao hover do card pai. */
 .home-pp-btn {
   margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
   width: 100%;
-  background: var(--clay);
-  color: #fff;
   height: 54px;
-  border-radius: 13px;
-  font-weight: 600;
   font-size: 15px;
   box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
-  transition: background .2s;
 }
 
 .home-proj-panel:hover .home-pp-btn {
-  background: var(--clay-hover);
+  background: var(--petrol-deep);
+  border-color: rgba(255, 255, 255, .3);
 }
 
 .home-pp-arrow {
@@ -693,27 +652,7 @@
   margin-top: 44px;
 }
 
-.home-btn-outline-petrol {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--petrol);
-  border: 1.5px solid rgba(15, 76, 92, .35);
-  padding: 14px 28px;
-  border-radius: 12px;
-  background: transparent;
-  transition: background .2s, color .2s, border-color .2s, transform .15s;
-}
-
-.home-btn-outline-petrol:hover {
-  background: var(--petrol);
-  color: #fff;
-  border-color: var(--petrol);
-  transform: translateY(-1px);
-}
-
+/* Usa o padrão global .btn.btn-petrol (globals.css); mantém só o arrow. */
 .home-btn-outline-petrol .arrow {
   font-family: var(--mono);
 }
@@ -1187,16 +1126,16 @@
     margin: 24px auto 0;
   }
 
-  .home-btn-outline-petrol {
+  /* No mobile, este CTA fica laranja/clay (maior destaque no fluxo vertical). */
+  .home-btn-outline-petrol.btn-petrol {
     background: var(--clay);
-    color: #fff;
-    border: none;
+    border-color: var(--clay);
     box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
   }
 
-  .home-btn-outline-petrol:hover {
-    background: var(--clay-hover);
-    color: #fff;
+  .home-btn-outline-petrol.btn-petrol:hover {
+    background: var(--petrol-deep);
+    border-color: rgba(255, 255, 255, .3);
   }
 }
 

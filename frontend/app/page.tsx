@@ -159,8 +159,7 @@ export default async function InstitutionalHome() {
         subtitle="Transformação digital, Inteligência Artificial aplicada, automação, computação na nuvem, DevOps e aplicações modernas, aplicados aos problemas reais da sua empresa."
       >
         <div className="ih-hero-actions">
-          <Link href="/contato" className="ih-btn ih-btn--clay">Agendar diagnóstico <span aria-hidden="true">→</span></Link>
-          <a href="#servicos" className="ih-btn ih-btn--petrol">Conhecer serviços</a>
+          <Link href="/contato" className="btn">Agendar diagnóstico <span aria-hidden="true">→</span></Link>
         </div>
         <div className="ih-hero-trust">
           <span className="ih-hero-dot" aria-hidden="true" />
@@ -200,7 +199,7 @@ export default async function InstitutionalHome() {
             ))}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="ih-btn ih-btn--clay">Fale sobre o seu desafio <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Fale sobre o seu desafio <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -218,7 +217,7 @@ export default async function InstitutionalHome() {
           <div className="ih-method-label">As 5 Etapas do Nosso Método</div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="ih-btn ih-btn--clay">Fale com o time <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Fale com o time <span aria-hidden="true">→</span></Link>
             <span className="ih-method-credit">Conduzido por Marcelo Gonçalves · Arquiteto de soluções</span>
           </div>
         </div>
@@ -259,7 +258,7 @@ export default async function InstitutionalHome() {
             ))}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="ih-btn ih-btn--clay">Falar com o time <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Falar com o time <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -278,7 +277,7 @@ export default async function InstitutionalHome() {
               ))}
             </div>
             <div className="ih-section-footer-center">
-              <Link className="ih-btn ih-btn--petrol" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
+              <Link className="btn btn-petrol" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>

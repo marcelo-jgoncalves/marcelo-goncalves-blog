@@ -40,19 +40,9 @@
   border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.75);
 }
 .sobre-hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 30px; }
-.sobre-btn-clay {
-  display: inline-flex; align-items: center; gap: 10px; background: var(--clay); color: #fff;
-  font-weight: 600; font-size: 15px; padding: 14px 24px; border-radius: 12px;
-  box-shadow: 0 8px 22px rgba(201,96,60,.35); transition: background .2s, transform .2s;
-}
-.sobre-btn-clay:hover { background: var(--clay-hover); transform: translateY(-2px); }
+/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
+.sobre-btn-clay { box-shadow: 0 8px 22px rgba(201,96,60,.35); }
 .sobre-arrow { font-family: var(--mono); }
-.sobre-btn-ghost {
-  display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14.5px;
-  color: rgba(255,255,255,.75); border: 1px solid rgba(255,255,255,.18); padding: 13px 20px; border-radius: 12px;
-  transition: color .2s, border-color .2s, transform .2s;
-}
-.sobre-btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
 .sobre-hero-socials { display: flex; gap: 9px; }
 .sobre-hero-socials-mobile { display: none; }
 .sobre-hero-socials a {

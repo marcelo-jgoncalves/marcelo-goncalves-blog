@@ -82,54 +82,14 @@
   margin-top: var(--space-1);
 }
 
+/* Usam o padrão global .btn/.btn-petrol (globals.css); as classes locais
+   só ajustam a sombra própria deste componente. */
 .sobre-hero__btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 0 var(--space-4);
-  background-color: var(--petrol);
-  color: white;
-  border-radius: 10px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-base);
-  text-decoration: none;
-  box-shadow: 0 8px 24px rgba(15, 76, 92, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-}
-
-@media (hover: hover) {
-  .sobre-hero__btn-primary:hover {
-    transform: translateY(-2px);
-    background-color: var(--petrol-deep);
-    box-shadow: 0 12px 30px rgba(15, 76, 92, 0.32);
-  }
+  box-shadow: 0 8px 24px rgba(201, 96, 60, 0.25);
 }
 
 .sobre-hero__btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  text-decoration: none;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-base);
-  color: var(--ink);
-  background: white;
-  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
-}
-
-@media (hover: hover) {
-  .sobre-hero__btn-secondary:hover {
-    border-color: var(--petrol);
-    color: var(--petrol);
-    transform: translateY(-2px);
-  }
+  box-shadow: 0 8px 24px rgba(15, 76, 92, 0.2);
 }
 
 /* ── ÍCONES SOCIAIS ── */

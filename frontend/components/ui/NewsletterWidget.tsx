@@ -15,7 +15,7 @@ export default function NewsletterWidget() {
       </div>
       <span className="card-title">Newsletter VIP</span>
       <p className="card-desc">Receba análises exclusivas de IA e AWS direto no seu e-mail.</p>
-      <Link href="/newsletter" className="btn-full btn-primary">
+      <Link href="/newsletter" className="btn btn-full">
         Inscrever-se
       </Link>
     </div>

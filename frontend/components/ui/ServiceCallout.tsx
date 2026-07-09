@@ -18,7 +18,7 @@ export default function ServiceCallout() {
         Veja como posso apoiar o seu projeto.
       </p>
 
-      <Link href="/servicos" className="op-btn-callout-primary">
+      <Link href="/servicos" className="btn op-btn-callout-primary">
         Conheça Meus Serviços
       </Link>
     </section>

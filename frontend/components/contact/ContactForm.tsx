@@ -76,7 +76,7 @@ export default function ContactForm() {
         </div>
         <h3>Solicitação recebida.</h3>
         <p>Obrigado pelo contato. Analisaremos as informações e retornaremos em até um dia útil.</p>
-        <button type="button" className="btn btn-outline" onClick={novoEnvio}>
+        <button type="button" className="btn btn-petrol" onClick={novoEnvio}>
           Enviar nova solicitação
         </button>
       </div>

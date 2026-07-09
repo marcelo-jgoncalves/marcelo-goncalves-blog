@@ -20,7 +20,7 @@ export default function NewsletterPage() {
         </p>
       </PageHero>
       <div className="container" style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <Link href="/artigos" className="btn btn-primary">
+        <Link href="/artigos" className="btn">
           Explorar artigos enquanto isso →
         </Link>
       </div>

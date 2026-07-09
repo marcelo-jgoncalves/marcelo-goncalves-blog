@@ -20,56 +20,7 @@
   margin-top: var(--sp-7);
 }
 
-/* Botão padrão da Home — dois tipos únicos (laranja/clay e petróleo,
-   mesma cor de fundo da hero), reutilizados em toda a página. Variam
-   apenas em texto e largura; no hover, a mesma cor fica mais escura.
-   Forma de referência: "Conhecer serviços" da hero. */
-.ih-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 14px 22px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 14.5px;
-  color: #fff;
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color .15s, transform .15s;
-}
-
-.ih-btn:hover {
-  transform: translateY(-1px);
-}
-
-.ih-btn--clay {
-  background: var(--clay);
-  border: 1px solid transparent;
-}
-
-/* Hover invertido — mesmo padrão do "Voltar ao topo" do Footer, só que
-   ao contrário: o botão laranja vira petróleo no hover. */
-.ih-btn--clay:hover {
-  background: var(--petrol-deep);
-  border-color: rgba(255, 255, 255, .3);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-.ih-btn--petrol {
-  background: var(--petrol-deep);
-  border: 1px solid rgba(255, 255, 255, .3);
-}
-
-/* Hover — mesmo padrão do "Voltar ao topo" do Footer: vira laranja/clay. */
-.ih-btn--petrol:hover {
-  background: var(--clay);
-  border-color: var(--clay);
-  color: #fff;
-  transform: translateY(-2px);
-}
+/* Botão — usa o padrão global .btn/.btn-petrol (globals.css). */
 
 .ih-hero-trust {
   display: flex;

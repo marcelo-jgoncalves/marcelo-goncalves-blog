@@ -44,46 +44,13 @@
   display: none;
 }
 
+/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
 .svc-btn-clay-hero {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--clay);
-  color: #fff;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 14px 26px;
-  border-radius: 12px;
   box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
-  transition: background .2s, transform .2s;
-}
-
-.svc-btn-clay-hero:hover {
-  background: var(--clay-hover);
-  transform: translateY(-2px);
 }
 
 .svc-arrow {
   font-family: var(--mono);
-}
-
-.svc-btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  font-size: 14.5px;
-  color: rgba(255, 255, 255, .75);
-  border: 1px solid rgba(255, 255, 255, .18);
-  padding: 13px 20px;
-  border-radius: 12px;
-  transition: color .2s, border-color .2s, transform .2s;
-}
-
-.svc-btn-ghost:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, .4);
-  transform: translateY(-1px);
 }
 
 /* ── hero side panel — disponibilidade ── */

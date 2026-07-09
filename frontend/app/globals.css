@@ -370,90 +370,57 @@ img {
 /* =========================================
    3. BOTÕES (design-reference.md §6 Componentes)
    ========================================= */
+/* Botão padrão do site — dois tipos únicos (laranja/clay e petróleo,
+   mesma cor de fundo da hero da Home), reutilizados em toda a
+   plataforma. Variam apenas em texto e largura; no hover, a cor troca
+   para a outra (clay⇄petrol) — mesmo padrão do "Voltar ao topo" do
+   Footer. Forma de referência: hero da Home. */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);             /* 16px entre ícone + texto */
-  padding: 11px 26px;              /* tamanho padrão (--btn) */
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 14px 22px;
+  border-radius: 12px;
   background-color: var(--clay);
   color: #ffffff;
-  border-radius: var(--radius-md); /* 6px */
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.95rem;
-  border: none;
+  border: 1px solid transparent;
+  text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover {
+  background-color: var(--petrol-deep);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
   transform: translateY(-2px);
-  background-color: var(--clay-hover);
-  box-shadow: 0 10px 20px rgba(201, 96, 60, 0.22);
 }
 
-/* Button sizes */
+/* Variante petróleo — mesma forma, cor invertida (secundário) */
+.btn-petrol {
+  background-color: var(--petrol-deep);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-petrol:hover {
+  background-color: var(--clay);
+  border-color: var(--clay);
+  color: #ffffff;
+}
+
+/* Button sizes — variam largura/altura, nunca cor/forma-base */
 .btn-sm {
-  padding: 7px 16px;
+  padding: 9px 16px;
   font-size: 0.8rem;
 }
 
 .btn-lg {
-  padding: 14px 32px;
+  padding: 16px 30px;
   font-size: 1.05rem;
-}
-
-/* Outline variant — Clay border */
-.btn-outline {
-  background-color: transparent;
-  border: 2px solid var(--clay);
-  color: var(--clay);
-  font-family: var(--font-display);
-}
-
-.btn-outline:hover {
-  background-color: var(--clay);
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-/* Outline Dark variant */
-.btn-outline-dark {
-  background-color: transparent;
-  border: 2px solid var(--ink);
-  color: var(--ink);
-  font-family: var(--font-display);
-}
-
-.btn-outline-dark:hover {
-  background-color: var(--ink);
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-/* Ghost variant — No border, transparent bg */
-.btn-ghost {
-  background-color: transparent;
-  border: none;
-  color: var(--clay);
-}
-
-.btn-ghost:hover {
-  background-color: var(--clay-soft);
-  transform: translateY(-2px);
-}
-
-/* White variant — On dark background */
-.btn-white {
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-}
-
-.btn-white:hover {
-  background-color: white;
-  color: var(--ink);
-  transform: translateY(-2px);
 }
 
 /* =========================================

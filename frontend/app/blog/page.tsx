@@ -98,7 +98,7 @@ export default async function Home() {
               <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
               <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
             </div>
-            <span className="home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
+            <span className="btn home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
           </Link>
         }
         statsStrip={
@@ -113,7 +113,7 @@ export default async function Home() {
         }
       >
         <div className="home-hero-actions">
-          <Link href="/artigos" className="home-btn-ghost">Todos os artigos <span aria-hidden="true">→</span></Link>
+          <Link href="/artigos" className="btn btn-petrol home-btn-ghost">Todos os artigos <span aria-hidden="true">→</span></Link>
         </div>
       </PageHero>
 
@@ -208,7 +208,7 @@ export default async function Home() {
             ))}
           </div>
           <div className="home-posts-cta">
-            <Link className="home-btn-outline-petrol" href="/artigos">Todos os artigos <span className="arrow" aria-hidden="true">→</span></Link>
+            <Link className="btn btn-petrol home-btn-outline-petrol" href="/artigos">Todos os artigos <span className="arrow" aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -286,14 +286,14 @@ export default async function Home() {
                 <h2 className="sec-t">Bastidores da plataforma</h2>
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
-              <Link className="home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
+              <Link className="btn home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
             </div>
             <div className="home-projeto-grid" data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <Link className="home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
+            <Link className="btn home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada <span className="arrow" aria-hidden="true">→</span></Link>
           </div>
         </section>
       )}

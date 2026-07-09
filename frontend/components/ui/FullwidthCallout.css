@@ -115,41 +115,10 @@
   margin: 0;
 }
 
-/* ── Botão CTA ────────────────────────────────────────────── */
+/* ── Botão CTA — usa o padrão global .btn/.btn-petrol (globals.css);
+   .fwc-btn só ajusta o tamanho de fonte no contexto deste componente. */
 .fwc-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 0 var(--space-5);
-  font-family: var(--font-display);
-  font-weight: 700;
   font-size: var(--text-base);
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.fwc-btn[data-cta-variant="accent"] {
-  background-color: var(--petrol);
-  color: white;
-}
-
-.fwc-btn[data-cta-variant="white"] {
-  background-color: white;
-  color: var(--petrol-deep);
-}
-
-@media (hover: hover) {
-  .fwc-btn[data-cta-variant="accent"]:hover {
-    background-color: var(--petrol-deep);
-    transform: translateY(-2px);
-  }
-
-  .fwc-btn[data-cta-variant="white"]:hover {
-    background-color: rgba(15, 76, 92, 0.08);
-    transform: translateY(-2px);
-  }
 }
 
 /* ── Responsivo ───────────────────────────────────────────── */

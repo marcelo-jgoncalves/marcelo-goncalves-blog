@@ -80,7 +80,7 @@ export default function ContatoPage() {
         subtitle="Cada empresa possui desafios diferentes. Quer você esteja buscando modernizar sua infraestrutura, automatizar processos, aplicar Inteligência Artificial ou iniciar uma jornada de transformação digital, estamos prontos para entender seu cenário e identificar oportunidades de evolução."
       >
         <div className="ct-hero-actions">
-          <a href="#form" className="ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
+          <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
           <span className="ct-hero-aux">ou role a página para preencher o formulário</span>
         </div>
       </PageHero>

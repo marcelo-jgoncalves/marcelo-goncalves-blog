@@ -28,8 +28,8 @@ export default function SobreHero({ nome, linkedinUrl, instagramUrl, githubUrl }
           </p>
 
           <div className="sobre-hero__actions">
-            <a href="/servicos" className="sobre-hero__btn-primary">Conheça Meu Trabalho</a>
-            <a href="/artigos" className="sobre-hero__btn-secondary">Ver Artigos Técnicos</a>
+            <a href="/servicos" className="btn sobre-hero__btn-primary">Conheça Meu Trabalho</a>
+            <a href="/artigos" className="btn btn-petrol sobre-hero__btn-secondary">Ver Artigos Técnicos</a>
           </div>
 
           <div className="sobre-hero__social">
