@@ -19,6 +19,10 @@
     "audit:servicos": "playwright test e2e/visual-audit/servicos.audit.spec.ts",
     "audit:projeto": "playwright test e2e/visual-audit/o-projeto.audit.spec.ts",
     "audit:404": "playwright test e2e/visual-audit/not-found.audit.spec.ts",
+    "audit:engenharia-de-software": "playwright test e2e/visual-audit/engenharia-de-software.audit.spec.ts",
+    "audit:cloud-devops": "playwright test e2e/visual-audit/cloud-devops.audit.spec.ts",
+    "audit:integracao-automacao": "playwright test e2e/visual-audit/integracao-automacao.audit.spec.ts",
+    "audit:inteligencia-artificial": "playwright test e2e/visual-audit/inteligencia-artificial.audit.spec.ts",
     "audit:all": "playwright test e2e/visual-audit/"
   },
   "dependencies": {

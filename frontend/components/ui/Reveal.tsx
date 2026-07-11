@@ -1,0 +1,39 @@
+'use client';
+
+/* frontend/components/ui/Reveal.tsx
+   Animação de entrada disparada uma vez no mount — specs/ESPECIFICACAO-CLOUD-DEVOPS.md §15.
+   Não é scroll-reveal: todos os elementos animam juntos 60ms após o carregamento da página. */
+
+import { useEffect, useState, type ElementType, type ReactNode } from 'react';
+
+interface RevealProps {
+  children: ReactNode;
+  delay?: number;
+  as?: ElementType;
+  className?: string;
+  dataAudit?: string;
+}
+
+export default function Reveal({ children, delay = 0, as: Tag = 'div', className, dataAudit }: RevealProps) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 60);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <Tag
+      data-reveal
+      data-audit={dataAudit}
+      className={className}
+      style={{
+        opacity: ready ? 1 : 0,
+        transform: ready ? 'none' : 'translateY(24px)',
+        transition: `opacity .7s cubic-bezier(.2,.7,.2,1) ${delay}ms, transform .7s cubic-bezier(.2,.7,.2,1) ${delay}ms`,
+      }}
+    >
+      {children}
+    </Tag>
+  );
+}

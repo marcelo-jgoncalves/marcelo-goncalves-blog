@@ -456,3 +456,20 @@ body.debug-rhythm {
   );
   background-size: 100% 8px;
 }
+
+/* =========================================
+   6. REVEAL — animação de entrada (components/ui/Reveal.tsx)
+   specs/ESPECIFICACAO-CLOUD-DEVOPS.md §15
+   ========================================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@keyframes iaPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}

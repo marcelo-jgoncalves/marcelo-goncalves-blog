@@ -8,7 +8,7 @@ import PostCard from '@/components/ui/PostCard';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
-import { IconCycle, IconBolt, IconChip, IconCloud, IconLayers } from '@/components/ui/InstitutionalIcons';
+import { IconCycle, IconBolt, IconChip, IconCloud } from '@/components/ui/InstitutionalIcons';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
 
 export const revalidate = 300;
@@ -31,65 +31,55 @@ export const metadata: Metadata = {
 
 const PILLARS = [
   {
-    kicker: 'Pilar · Estratégia',
-    title: 'Transformação Digital',
-    description: 'Modernizamos a operação de ponta a ponta, substituindo processos lentos por fluxos digitais que reduzem custo e preparam a empresa para crescer.',
+    kicker: 'Pilar · Software',
+    title: 'Engenharia de Software',
+    description: 'Desenvolvemos aplicações web, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.',
     bullets: [
-      <><strong>Sistemas e portais sob medida</strong> para centralizar a operação</>,
-      <><strong>Fim de planilhas e retrabalho</strong>, com fluxos digitalizados</>,
-      <><strong>Integração entre ferramentas</strong> para a informação fluir em tempo real</>,
+      <><strong>Sistemas sob medida</strong> para atender necessidades específicas</>,
+      <><strong>Arquiteturas modernas</strong> preparadas para crescer com sua empresa</>,
+      <><strong>APIs e microsserviços</strong> para soluções flexíveis e integradas</>,
     ],
-    tags: ['Digitalização', 'Agilidade', 'Eficiência'],
+    tags: ['Aplicações', 'APIs', 'Arquitetura'],
     Icon: IconCycle,
+    wide: true,
   },
   {
-    kicker: 'Pilar · Operações',
-    title: 'Automação',
-    description: 'Colocamos a rotina da empresa no piloto automático, eliminando tarefas manuais e repetitivas que tomam o tempo da equipe.',
+    kicker: 'Pilar · Inteligência',
+    title: 'Inteligência Artificial',
+    description: 'Aplicamos inteligência artificial para automatizar atividades, acelerar decisões e aumentar a produtividade da equipe com soluções práticas e integradas ao dia a dia.',
     bullets: [
-      <><strong>Relatórios, documentos e alertas</strong> gerados automaticamente</>,
-      <><strong>Sistemas sincronizados</strong>, sem retrabalho manual</>,
-      <><strong>Operação escalável 24/7</strong> sem inflar a equipe</>,
+      <><strong>Assistentes inteligentes</strong> para apoiar equipes e clientes</>,
+      <><strong>Automação com IA</strong> para documentos, análises e atendimento</>,
+      <><strong>IA integrada aos sistemas</strong> para processos mais rápidos e eficientes</>,
     ],
-    tags: ['Piloto Automático', 'Zero Retrabalho', 'Ganho de Tempo'],
-    Icon: IconBolt,
-  },
-  {
-    kicker: 'Pilar · Inovação',
-    title: 'IA Aplicada',
-    description: 'Levamos IA para o dia a dia da operação: decisões mais rápidas, tarefas complexas automatizadas e mais capacidade de entrega para o time.',
-    bullets: [
-      <><strong>Assistentes e copilotos de IA</strong> para atendimento e suporte</>,
-      <><strong>Análise preditiva</strong> que transforma dados em decisões</>,
-      <><strong>Processamento inteligente</strong> de documentos e rotinas</>,
-    ],
-    tags: ['Produtividade', 'Inteligência', 'Decisões Rápidas'],
+    tags: ['IA Generativa', 'Agentes', 'Produtividade'],
     Icon: IconChip,
+    wide: true,
   },
   {
-    kicker: 'Pilar · Infraestrutura',
-    title: 'Computação na Nuvem & DevOps',
-    description: 'Construímos a base técnica para crescer sem limites: nuvem segura, escalável e com entregas previsíveis do commit à produção.',
+    kicker: 'Pilar · Plataforma',
+    title: 'Cloud & DevOps',
+    description: 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.',
     bullets: [
-      <><strong>Arquitetura e migração AWS</strong> com custo sob controle</>,
-      <><strong>Segurança, IAM e hardening</strong> de ambientes</>,
-      <><strong>CI/CD e infraestrutura como código</strong> com Terraform</>,
+      <><strong>Arquitetura em nuvem</strong> para ambientes resilientes e escaláveis</>,
+      <><strong>DevOps e CI/CD</strong> para implantações rápidas e confiáveis</>,
+      <><strong>Infraestrutura como Código</strong> para ambientes padronizados e seguros</>,
     ],
-    tags: ['AWS Cloud', 'DevOps & CI/CD', 'Alta Disponibilidade'],
+    tags: ['AWS', 'DevOps', 'Infraestrutura'],
     Icon: IconCloud,
     wide: true,
   },
   {
-    kicker: 'Pilar · Engenharia',
-    title: 'Aplicações Modernas & Serverless',
-    description: 'Desenvolvemos sistemas sob medida em arquitetura serverless, com agilidade, segurança e custo mínimo de infraestrutura.',
+    kicker: 'Pilar · Automação',
+    title: 'Integração & Automação',
+    description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho, acelerar operações e garantir que as informações fluam de forma confiável entre toda a empresa.',
     bullets: [
-      <><strong>Sistemas serverless</strong> que escalam automaticamente</>,
-      <><strong>Portais, dashboards e CRMs leves</strong> sob medida</>,
-      <><strong>APIs e microsserviços</strong> para destravar processos específicos</>,
+      <><strong>Integração entre sistemas</strong> por APIs e eventos em tempo real</>,
+      <><strong>Automação de processos</strong> para eliminar tarefas repetitivas</>,
+      <><strong>Workflows inteligentes</strong> que reduzem erros e aumentam a produtividade</>,
     ],
-    tags: ['Serverless', 'Sistemas Leves', 'Eficiência Financeira'],
-    Icon: IconLayers,
+    tags: ['Integrações', 'Automação', 'Produtividade'],
+    Icon: IconBolt,
     wide: true,
   },
 ];

@@ -15,7 +15,6 @@ const QUICK_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
   { name: 'O Projeto', href: '/o-projeto' },
-  { name: 'Serviços', href: '/servicos' },
   { name: 'Sobre', href: '/sobre' },
   { name: 'Contato', href: '/contato' },
 ];

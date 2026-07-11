@@ -1,0 +1,431 @@
+/* frontend/app/cloud-devops/page.module.css
+   specs/ESPECIFICACAO-CLOUD-DEVOPS.md — breakpoints próprios da página (680/1040) */
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 680px) {
+  .wrap { padding: 0 32px; }
+}
+
+@media (min-width: 1040px) {
+  .wrap { padding: 0 40px; }
+}
+
+.h2 {
+  letter-spacing: -.04em;
+  color: var(--ink);
+  text-wrap: balance;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.h2Dark {
+  letter-spacing: -.04em;
+  color: var(--ivory);
+  text-wrap: balance;
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.sectionDesc {
+  color: var(--slate);
+  max-width: 580px;
+  margin: 14px 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+/* Eyebrow — mesmo padrão de frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual) e de
+   frontend/app/engenharia-de-software/page.module.css: traço à esquerda por padrão,
+   margin-bottom:14px até o título; .eyebrowDual centraliza e adiciona o 2º traço (::after)
+   para cabeçalhos de seção centralizados. NUNCA remover o margin-bottom nem aplicar
+   dual/centralizado numa seção que a spec pede alinhada à esquerda (ver Seção 16 de cada
+   ESPECIFICACAO-*.md — checar "traço nos dois lados" = dual vs "só ::before" = single). */
+.eyebrowLight,
+.eyebrowDark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.eyebrowDark { color: rgba(255, 255, 255, .65); }
+.eyebrowLight { color: var(--clay); }
+
+.eyebrowLight::before,
+.eyebrowDark::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+.eyebrowDual {
+  justify-content: center;
+}
+
+.eyebrowDual::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+/* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
+   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--space-6) }") */
+.oquefazemos,
+.beneficios,
+.especialidades,
+.abordagem,
+.faq {
+  margin-block: 0;
+}
+
+/* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
+.cdHero {
+  --ph-cols: 1fr;
+  --ph-h1-max: 900px;
+  --ph-sub-max: 800px;
+  --ph-pad: 88px 40px 56px;
+}
+
+/* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
+   anterior já vem do margin-bottom:30px de .page-hero-sub (PageHero.css), então
+   este 2º parágrafo não soma margem própria por cima. */
+.heroParagraph2 {
+  color: rgba(250, 248, 243, .68);
+  max-width: 800px;
+  font-size: 1.0625rem;
+  line-height: 1.68;
+  margin: 0;
+}
+
+.heroCtaRow {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: var(--sp-7);
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: rgba(250, 248, 243, .5);
+}
+
+.availabilityDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--moss);
+  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
+  animation: iaPulse 2.4s ease-in-out infinite;
+  flex: none;
+}
+
+/* ===== O QUE FAZEMOS ===== */
+.oquefazemos {
+  padding: 64px 0;
+}
+
+@media (min-width: 680px) { .oquefazemos { padding: 80px 0; } }
+@media (min-width: 1040px) { .oquefazemos { padding: 100px 0; } }
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ===== BENEFÍCIOS ===== */
+.beneficios {
+  padding: 64px 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 680px) { .beneficios { padding: 80px 0; } }
+@media (min-width: 1040px) { .beneficios { padding: 100px 0; } }
+
+.beneficiosOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
+    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
+}
+
+.beneficiosWrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 36px;
+}
+
+@media (min-width: 680px) {
+  .beneficiosWrap { padding: 0 32px; gap: 48px; }
+}
+
+@media (min-width: 1040px) {
+  .beneficiosWrap { padding: 0 40px; grid-template-columns: .8fr 1.2fr; gap: 64px; }
+}
+
+.beneficiosList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 32px;
+}
+
+@media (min-width: 680px) {
+  /* minmax(0,1fr), não 1fr puro: coluna 1fr não encolhe abaixo do min-content e,
+     combinada com white-space:nowrap no texto, vaza para fora do container em
+     larguras intermediárias (~900-1000px) — specs/ESPECIFICACAO-INTEGRACAO-
+     AUTOMACAO.md §3. */
+  .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.beneficioItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  min-width: 0;
+}
+
+.checkIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(201, 96, 60, .2);
+  color: #E8A582;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.beneficioText {
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(250, 248, 243, .92);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* ===== ESPECIALIDADES ===== */
+.especialidades {
+  padding: 64px 0;
+  background: var(--sand);
+}
+
+@media (min-width: 680px) { .especialidades { padding: 80px 0; } }
+@media (min-width: 1040px) { .especialidades { padding: 100px 0; } }
+
+.especialidadesWrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 680px) { .especialidadesWrap { padding: 0 32px; } }
+@media (min-width: 1040px) { .especialidadesWrap { padding: 0 40px; } }
+
+.especialidadesHead {
+  margin-bottom: 60px;
+}
+
+.especialidadesList {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 56px;
+}
+
+@media (min-width: 680px) {
+  .especialidadesList { grid-template-columns: 1fr 1fr; }
+}
+
+.especialidadeItem {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 24px 10px;
+  border-bottom: 1px solid #DDD4C4;
+  cursor: default;
+  transition: padding-left .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.especialidadeItem:hover {
+  padding-left: 18px;
+  border-color: var(--clay);
+  background: rgba(255, 255, 255, .5);
+}
+
+.especialidadeNumeral {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--clay);
+  flex: none;
+  width: 38px;
+}
+
+.especialidadeTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  flex: 1;
+}
+
+/* ===== NOSSA ABORDAGEM ===== */
+.abordagem {
+  padding: 64px 0;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 680px) { .abordagem { padding: 80px 0; } }
+@media (min-width: 1040px) { .abordagem { padding: 100px 0; } }
+
+.abordagemHead {
+  max-width: 680px;
+}
+
+.etapasGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  margin-top: 52px;
+}
+
+@media (min-width: 1040px) {
+  .etapasGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.etapasLine {
+  position: absolute;
+  top: 24px;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+  display: none;
+}
+
+@media (min-width: 1040px) {
+  .etapasLine { display: block; }
+}
+
+.etapa {
+  text-align: center;
+  padding: 0 8px;
+  position: relative;
+}
+
+.etapaCirculo,
+.etapaCirculoClay {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  margin: 0 auto 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.etapaCirculo {
+  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  box-shadow: 0 8px 18px -8px rgba(8, 50, 61, .6);
+}
+
+.etapaCirculoClay {
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
+  box-shadow: 0 8px 18px -8px rgba(201, 96, 60, .55);
+}
+
+.etapaTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.etapaText {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+/* ===== FAQ ===== */
+.faq {
+  padding: 64px 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .faq { padding: 80px 0; } }
+@media (min-width: 1040px) { .faq { padding: 100px 0; } }
+
+.faqWrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 680px) { .faqWrap { padding: 0 32px; } }
+@media (min-width: 1040px) { .faqWrap { padding: 0 40px; } }
+
+.faqWrap .sectionHead {
+  margin-bottom: 48px;
+}
