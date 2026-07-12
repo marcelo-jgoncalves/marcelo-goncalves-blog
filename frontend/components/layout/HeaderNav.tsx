@@ -39,6 +39,9 @@ export default function HeaderNav() {
 
   const isServicesActive = SERVICE_LINKS.some((link) => isActive(link.href));
   const showOProjeto = pathname === '/blog' || pathname.startsWith('/post/');
+  // No contexto de blog/post/o-projeto o visitante ainda não escolheu um pilar —
+  // o CTA do nav aponta pro menu de serviços em vez de pular direto pro formulário.
+  const isBlogContext = pathname === '/blog' || pathname.startsWith('/post/') || pathname === '/o-projeto';
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -132,9 +135,16 @@ export default function HeaderNav() {
         )}
       </nav>
 
-      <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
-        Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
-      </Link>
+      {isBlogContext ? (
+        // eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique
+        <a href="/#servicos" className="nav-cta" data-audit="header-cta">
+          Conheça nossos serviços <span className="arrow" aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
+          Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+        </Link>
+      )}
 
       <button
         ref={menuBtnRef}
@@ -223,9 +233,16 @@ export default function HeaderNav() {
             {O_PROJETO_LINK.name}
           </Link>
         )}
-        <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
-          Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
-        </Link>
+        {isBlogContext ? (
+          // eslint-disable-next-line @next/next/no-html-link-for-pages -- ver comentário acima (desktop)
+          <a href="/#servicos" className="nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
+            Conheça nossos serviços <span className="arrow" aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+            Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+          </Link>
+        )}
       </div>
     </>
   );

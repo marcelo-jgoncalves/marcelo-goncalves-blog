@@ -128,6 +128,7 @@ resource "aws_dynamodb_table" "posts" {
     projection_type = "INCLUDE"
     non_key_attributes = [
       "status", "titulo", "resumo", "categoria_slug", "tempo_leitura_min",
+      "imagem_destaque_url", "imagem_destaque_alt_text", "imagem_lqip_base64",
     ]
   }
 

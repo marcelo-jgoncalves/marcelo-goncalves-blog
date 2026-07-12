@@ -78,7 +78,7 @@ export default function ContatoPage() {
         className="ct-hero"
         dataAudit="ct-hero"
         eyebrow="Contato"
-        title={<>Vamos conversar sobre a <em>evolução</em> da sua empresa.</>}
+        title={<>Vamos conversar sobre a tecnologia que <em>impulsiona</em> a sua empresa.</>}
         subtitle="Cada empresa possui desafios diferentes. Quer você esteja buscando modernizar sua infraestrutura, automatizar processos, aplicar Inteligência Artificial ou iniciar uma jornada de transformação digital, estamos prontos para entender seu cenário e identificar oportunidades de evolução."
       >
         <div className="ct-hero-actions">

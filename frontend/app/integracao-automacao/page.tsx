@@ -157,8 +157,8 @@ export default function IntegracaoAutomacaoPage() {
       <PageHero
         className={styles.iaHero}
         dataAudit="ia2-hero"
-        eyebrow="Serviços · Integração & Automação"
-        title={<>Conecte sistemas, elimine retrabalho e torne sua operação mais <em>inteligente</em>.</>}
+        eyebrow="Especialidades · Integração & Automação"
+        title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação mais <em>inteligente</em>.</>}
         subtitle="À medida que uma empresa cresce, é comum que diferentes sistemas passem a fazer parte da rotina: ERP, CRM, e-commerce, plataformas financeiras, sistemas internos e diversas outras aplicações."
       >
         <p className={styles.heroParagraph2}>
@@ -169,7 +169,7 @@ export default function IntegracaoAutomacaoPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=integracao-automacao" className="btn">
-            Falar sobre o meu projeto <span aria-hidden="true">→</span>
+            Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
         </div>
         <div className={styles.availability}>

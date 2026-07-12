@@ -135,7 +135,7 @@ export default function EngenhariaDeSoftwarePage() {
       <PageHero
         className={styles.esHero}
         dataAudit="esw-hero"
-        eyebrow="Serviços · Engenharia de Software"
+        eyebrow="Especialidades · Engenharia de Software"
         title={<>Desenvolvemos software que impulsiona o seu <em>negócio</em>.</>}
         subtitle="Cada empresa possui desafios únicos. Por isso, desenvolvemos sistemas, aplicações e plataformas sob medida que automatizam processos, integram informações e apoiam o crescimento do seu negócio."
       >
@@ -144,7 +144,7 @@ export default function EngenhariaDeSoftwarePage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=engenharia-de-software" className="btn">
-            Falar sobre o meu projeto <span aria-hidden="true">→</span>
+            Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
         </div>
         <div className={styles.availability}>

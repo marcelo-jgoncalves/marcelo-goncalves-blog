@@ -30,13 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-const STATS = [
-  { v: '50+', l: 'Artigos publicados' },
-  { v: '4', l: 'Categorias' },
-  { v: '100%', l: 'conteúdo original' },
-  { v: 'Casos Reais', l: 'Do problema à solução' },
-];
-
 interface HomePost {
   slug: string;
   titulo: string;
@@ -85,7 +78,7 @@ export default async function Home() {
         className="home-hero"
         dataAudit="home-hero"
         eyebrow="Blog · Build in Public"
-        title="Cloud, Automação e IA aplicadas a problemas reais"
+        title="Engenharia, Cloud, Automação e IA aplicadas a problemas reais"
         subtitle="Conteúdo técnico construído a partir da prática: custos, performance, observabilidade, automação e transformação operacional."
         right={
           <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
@@ -100,16 +93,6 @@ export default async function Home() {
             </div>
             <span className="btn home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
           </Link>
-        }
-        statsStrip={
-          <div className="home-stats-strip" data-audit="home-stats-strip">
-            {STATS.map((stat) => (
-              <div key={stat.l} className="home-stat-item">
-                <span className="v">{stat.v}</span>
-                <span className="l">{stat.l}</span>
-              </div>
-            ))}
-          </div>
         }
       >
         <div className="home-hero-actions">

@@ -97,11 +97,6 @@
   flex-direction: column;
   align-items: flex-end;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, .14);
-}
-
-.op-hstat-item.op-clay-item {
-  border-bottom-color: rgba(201, 96, 60, .35);
 }
 
 .op-hero-stat .op-big {
@@ -141,53 +136,6 @@
 }
 
 /* ==========================================================================
-   STATS STRIP
-   ========================================================================== */
-.op-stats-strip {
-  position: relative;
-  z-index: 1;
-  max-width: var(--wrap-max-narrow);
-  margin: 0 auto;
-  display: flex;
-  padding: 0 40px;
-  border-top: 1px solid rgba(255, 255, 255, .1);
-}
-
-.op-stat-item {
-  flex: 1;
-  padding: 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  border-right: 1px solid rgba(255, 255, 255, .08);
-}
-
-.op-stat-item:first-child {
-  padding-left: 0;
-}
-
-.op-stat-item:last-child {
-  border-right: none;
-}
-
-.op-stat-item .op-v {
-  font-weight: 800;
-  font-size: 1.8rem;
-  letter-spacing: -.03em;
-  color: #fff;
-  line-height: 1;
-}
-
-.op-stat-item .op-l {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .5);
-  margin-top: 2px;
-}
-
-/* ==========================================================================
    WRAP (conteúdo principal — narrow)
    ========================================================================== */
 .op-wrap {
@@ -201,6 +149,13 @@
    ========================================================================== */
 .op-section {
   padding-top: 96px;
+}
+
+.op-section--surface {
+  background: var(--surface);
+  padding-bottom: 56px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .op-sec-eyebrow {
@@ -401,16 +356,34 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 26px 28px;
+  padding: 20px 28px 20px 20px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: stretch;
+  gap: 24px;
   transition: transform .2s, box-shadow .2s, border-color .2s;
 }
 
 .op-tl-card > *:not(.op-tl-num-bg) {
   position: relative;
   z-index: 1;
+}
+
+.op-tl-cover {
+  position: relative;
+  flex: none;
+  width: 160px;
+  min-height: 140px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.op-tl-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
 }
 
 @media (hover: hover) {
@@ -455,12 +428,6 @@
   background: var(--clay-soft);
   color: var(--clay-hover);
   border: 1px solid rgba(201, 96, 60, .25);
-}
-
-.op-tl-badge.op-pub {
-  background: rgba(15, 76, 92, .08);
-  color: var(--petrol);
-  border: 1px solid rgba(15, 76, 92, .2);
 }
 
 .op-tl-card h3 {
@@ -559,7 +526,8 @@
 }
 
 .op-rm-card.op-planned {
-  background: var(--ivory);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(243, 221, 208, .18) 100%);
+  border-color: rgba(201, 96, 60, .3);
 }
 
 .op-rm-card.op-future {
@@ -895,19 +863,18 @@
     display: none;
   }
 
-  .op-stats-strip {
-    flex-wrap: wrap;
-  }
-
-  .op-stat-item {
-    flex: 1 1 40%;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, .08);
-    padding: 20px 0;
-  }
-
   .op-roadmap-grid {
     grid-template-columns: 1fr;
+  }
+
+  .op-tl-card {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .op-tl-cover {
+    width: 100%;
+    min-height: 180px;
   }
 
   .op-about-strip {

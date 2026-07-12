@@ -150,8 +150,8 @@ export default function InteligenciaArtificialPage() {
       <PageHero
         className={styles.aiHero}
         dataAudit="ai-hero"
-        eyebrow="Serviços · Inteligência Artificial"
-        title={<>Transforme inteligência artificial em resultados para o seu <em>negócio</em>.</>}
+        eyebrow="Especialidades · Inteligência Artificial"
+        title={<>Transformamos inteligência artificial em resultados para o seu <em>negócio</em>.</>}
         subtitle="A inteligência artificial está mudando a forma como as empresas trabalham. Mais do que automatizar tarefas, ela permite acelerar decisões, ampliar a capacidade das equipes e criar experiências mais inteligentes para clientes e colaboradores."
       >
         <p className={styles.heroParagraph2}>
@@ -159,7 +159,7 @@ export default function InteligenciaArtificialPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=inteligencia-artificial" className="btn">
-            Falar sobre o meu projeto <span aria-hidden="true">→</span>
+            Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
         </div>
         <div className={styles.availability}>

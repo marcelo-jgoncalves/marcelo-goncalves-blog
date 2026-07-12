@@ -12,6 +12,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
+import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import './o-projeto.css';
 
 const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
@@ -46,6 +47,9 @@ interface ProjectPost {
   categoria?: { nome_exibicao: string };
   data_publicacao?: string;
   tempo_leitura_min?: number;
+  imagem_destaque_url?: string;
+  imagem_destaque_alt_text?: string;
+  imagem_lqip_base64?: string;
 }
 
 function categoryName(post: ProjectPost): string {
@@ -156,16 +160,8 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             </div>
             <div className="op-hstat-item op-clay-item">
               <span className="op-big op-clay-num">{ROADMAP.length}</span>
-              <span className="op-cap op-clay-cap">próximas etapas</span>
+              <span className="op-cap op-clay-cap">novas etapas planejadas</span>
             </div>
-          </div>
-        }
-        statsStrip={
-          <div className="op-stats-strip" data-audit="op-stats-strip">
-            <div className="op-stat-item"><span className="op-v">{totalCount}</span><span className="op-l">Posts publicados</span></div>
-            <div className="op-stat-item"><span className="op-v">4 mo</span><span className="op-l">Em produção</span></div>
-            <div className="op-stat-item"><span className="op-v">12</span><span className="op-l">Serviços AWS</span></div>
-            <div className="op-stat-item"><span className="op-v">~100%</span><span className="op-l">Construído com IA</span></div>
           </div>
         }
       >
@@ -221,22 +217,30 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
                   <div className={`op-tl-entry${isLatest ? ' op-latest' : ''}`} key={post.slug}>
                     <div className="op-tl-card" data-audit={i === 0 ? 'op-tl-card' : undefined}>
                       <div className="op-tl-num-bg">{String(num).padStart(2, '0')}</div>
-                      <div className="op-tl-card-top">
-                        <span className="op-tl-cat">{categoryName(post)}</span>
-                        {isLatest ? (
-                          <span className="op-tl-badge op-latest-tag">Mais recente</span>
-                        ) : (
-                          <span className="op-tl-badge op-pub">Publicado</span>
-                        )}
-                      </div>
-                      <h3>{post.titulo}</h3>
-                      {post.resumo && <p>{post.resumo}</p>}
-                      <div className="op-tl-card-foot">
-                        <div className="op-meta">
-                          <span>{formatDateShort(post.data_publicacao)}</span>
-                          <span>{post.tempo_leitura_min || 5} min</span>
+                      {post.imagem_destaque_url && (
+                        <div className="op-tl-cover">
+                          <ResponsiveImage
+                            src={post.imagem_destaque_url}
+                            alt={post.imagem_destaque_alt_text || post.titulo}
+                            fill
+                            lqip={post.imagem_lqip_base64}
+                          />
                         </div>
-                        <Link className="op-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
+                      )}
+                      <div className="op-tl-body">
+                        <div className="op-tl-card-top">
+                          <span className="op-tl-cat">{categoryName(post)}</span>
+                          {isLatest && <span className="op-tl-badge op-latest-tag">Mais recente</span>}
+                        </div>
+                        <h3>{post.titulo}</h3>
+                        {post.resumo && <p>{post.resumo}</p>}
+                        <div className="op-tl-card-foot">
+                          <div className="op-meta">
+                            <span>{formatDateShort(post.data_publicacao)}</span>
+                            <span>{post.tempo_leitura_min || 5} min</span>
+                          </div>
+                          <Link className="op-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -258,8 +262,11 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           </div>
         </section>
 
-        {/* PRÓXIMAS ETAPAS */}
-        <section className="op-section" id="roadmap">
+      </div>
+
+      {/* PRÓXIMAS ETAPAS */}
+      <section className="op-section op-section--surface" id="roadmap">
+        <div className="op-wrap">
           <div className="op-sec-header">
             <div>
               <div className="op-sec-eyebrow">O que vem por aí</div>
@@ -284,9 +291,8 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
               </div>
             ))}
           </div>
-        </section>
-
-      </div>
+        </div>
+      </section>
 
       <CtaAssessoria
         eyebrow="Viu como trabalhamos"

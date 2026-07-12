@@ -128,8 +128,8 @@ export default function CloudDevOpsPage() {
       <PageHero
         className={styles.cdHero}
         dataAudit="cd-hero"
-        eyebrow="Serviços · Cloud & DevOps"
-        title={<>Construa uma plataforma preparada para <em>crescer</em>.</>}
+        eyebrow="Especialidades · Cloud & DevOps"
+        title={<>Construímos plataformas em nuvem preparadas para <em>crescer</em>.</>}
         subtitle="A infraestrutura deixou de ser apenas um ambiente onde sistemas são executados. Hoje ela é um fator estratégico para garantir disponibilidade, segurança, escalabilidade e velocidade na entrega de novas funcionalidades."
       >
         <p className={styles.heroParagraph2}>
@@ -137,7 +137,7 @@ export default function CloudDevOpsPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=cloud-devops" className="btn">
-            Falar sobre o meu projeto <span aria-hidden="true">→</span>
+            Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
         </div>
         <div className={styles.availability}>

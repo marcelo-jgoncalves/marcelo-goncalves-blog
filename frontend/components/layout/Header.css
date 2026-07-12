@@ -158,6 +158,8 @@
 .site-header .nav-cta {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
   gap: 9px;
   background: var(--petrol);
   color: #fff;
