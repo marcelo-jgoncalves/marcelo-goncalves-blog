@@ -461,7 +461,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 32. **Upload real de imagem no admin (capa + inline) nunca foi testado ponta a ponta com Playwright** — sessões 39-41 validaram todo o resto da tela de escrita contra dados reais, mas upload exige um arquivo de teste real e mexe em S3 (`mediaApi.getUploadUrl` + presigned POST) — deixado de fora por tempo/risco. Ver `docs/admin-test-plan.md` seção 3.2.
 33. **Slash command (`/`) e botão de margem "+" (gutter) do protótipo "Editor de Escrita" não foram implementados** — o floating-menu do Tiptap (já existente antes do redesign) cobre parcialmente essa função (aparece em linha vazia, oferece os mesmos blocos e mais), mas não é uma réplica 1:1 da UX do protótipo. Avaliar se vale construir a extensão de sugestão customizada do Tiptap.
 34. **Acessibilidade da tela de escrita nunca auditada** — título/subtítulo `contenteditable` sem `role`/`aria-label`, toggles customizados (`.ia-toggle-track`) sem `aria-pressed`/`role="switch"`. Auditoria a11y original (item abaixo) foi feita antes do redesign do admin, não cobre essas telas novas.
-35. **Corrigir o pin do Gitleaks Action em `security.yml`** — `Unable to resolve action gitleaks/gitleaks-action@<sha>`, SHA de versão inválido/expirado. Security Scan falha em todo push desde antes da sessão 39; CD (que importa pro deploy) não é afetado.
+~~35. Corrigir o pin do Gitleaks Action em `security.yml`~~ ✅ **resolvido (2026-07-12, commit `2ebab67`)** — causa era um typo de 1 caractere no SHA pinado (`...329070c8` em vez do real `...329070c7`, confirmado via `gh api`). Security Scan verde novamente.
 
 ---
 
