@@ -290,7 +290,13 @@ export default async function PostPage({ params }: Props) {
 
       <RelatedPostsSection />
 
-      <CtaAssessoria />
+      <CtaAssessoria
+        eyebrow="Gostou do artigo?"
+        title="Leve esse tipo de solução para o seu projeto."
+        description="Esse artigo mostrou uma solução real. Se sua empresa tem um desafio parecido, ajudamos a resolver com a mesma abordagem prática."
+        ctaHref={categorySlug ? `/contato?assunto=${categorySlug}` : '/contato'}
+        ctaLabel="Vamos conversar"
+      />
     </article>
   );
 }

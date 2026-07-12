@@ -377,10 +377,13 @@
   color: var(--ink);
 }
 
-/* ===== PRINCÍPIOS DE ENGENHARIA ===== */
+/* ===== PRINCÍPIOS DE ENGENHARIA =====
+   Cores alinhadas ao padrão de app/cloud-devops/page.module.css .especialidades
+   (fundo sand, bordas #DDD4C4, hover rgba(255,255,255,.5), texto ink) — a pedido
+   de Marcelo (2026-07-11), sobrescrevendo a variação de fundo escuro da spec original. */
 .principios {
   padding: 64px 0;
-  background: var(--petrol-deep);
+  background: var(--sand);
 }
 
 @media (min-width: 680px) { .principios { padding: 80px 0; } }
@@ -404,7 +407,7 @@
 }
 
 .principiosDesc {
-  color: rgba(250, 248, 243, .66);
+  color: var(--slate);
   max-width: 520px;
   margin: 14px 0 0;
   font-size: 1.0625rem;
@@ -427,7 +430,7 @@
   align-items: baseline;
   gap: 20px;
   padding: 24px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, .14);
+  border-bottom: 1px solid #DDD4C4;
   cursor: default;
   transition: padding-left .25s ease, border-color .25s ease, background .25s ease;
   min-width: 0;
@@ -436,7 +439,7 @@
 .principioItem:hover {
   padding-left: 18px;
   border-color: var(--clay);
-  background: rgba(255, 255, 255, .05);
+  background: rgba(255, 255, 255, .5);
 }
 
 .principioNumeral {
@@ -453,7 +456,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -.015em;
-  color: #fff;
+  color: var(--ink);
   flex: 1;
   min-width: 0;
   white-space: nowrap;

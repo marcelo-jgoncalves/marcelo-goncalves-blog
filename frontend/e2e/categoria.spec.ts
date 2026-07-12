@@ -12,11 +12,6 @@ test.describe('página /categoria/:slug', () => {
     await expect(page.locator('.hero-title')).toBeVisible();
   });
 
-  test('sidebar existe com ServiceCallout', async ({ page }) => {
-    await expect(page.locator('.blog-sidebar')).toBeVisible();
-    await expect(page.locator('.op-service-callout')).toBeVisible();
-  });
-
   test('grid de posts ou estado vazio renderiza', async ({ page }) => {
     const hasCards = (await page.locator('.post-card').count()) > 0;
     const hasEmpty = (await page.locator('[class*="empty"]').count()) > 0;

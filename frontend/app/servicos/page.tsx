@@ -8,7 +8,7 @@ import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 
 const TITLE = `Assessoria em AWS, DevOps, FinOps e IA | ${SITE_NAME}`;
-const DESCRIPTION = 'Assessoria especializada em arquitetura AWS, DevOps, FinOps, segurança, observabilidade e IA aplicada — da estratégia ao deploy em produção.';
+const DESCRIPTION = 'Assessoria especializada em arquitetura AWS, DevOps, FinOps, segurança, observabilidade e IA aplicada, da estratégia ao deploy em produção.';
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -35,7 +35,7 @@ export const revalidate = 3600;
 const servicosJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Assessoria AWS, DevOps e IA — ${AUTHOR_NAME}`,
+  name: `Assessoria AWS, DevOps e IA | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: `${SITE_URL}/servicos`,
   provider: {
@@ -369,7 +369,7 @@ export default function ServicosPage() {
         id="contato"
         eyebrow="Vamos começar"
         title={<>Vamos trabalhar <em>juntos</em>?</>}
-        description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso — só clareza sobre como posso ajudar."
+        description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso, só clareza sobre como podemos ajudar."
         points={[
           <span key="p1">Diagnóstico objetivo da sua <b>infraestrutura</b> e dos próximos passos</span>,
           <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,

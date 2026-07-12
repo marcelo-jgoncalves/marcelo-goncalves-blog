@@ -14,7 +14,7 @@ import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
 import './artigos.css';
 
-const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software — quase 100% construído com IA.';
+const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software, quase 100% construído com IA.';
 
 export const metadata: Metadata = {
   title: { absolute: `Todos os Artigos | ${SITE_NAME}` },
@@ -294,7 +294,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
         <div className="art-empty" id="art-empty">
           <div className="art-e-t">Nenhum artigo nesta categoria ainda</div>
-          <div className="art-e-s">Tente outro filtro — ou volte para &quot;Todos&quot;.</div>
+          <div className="art-e-s">Tente outro filtro ou volte para &quot;Todos&quot;.</div>
         </div>
 
         <div className="art-load-wrap">
@@ -309,7 +309,11 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         </div>
       </section>
 
-      <CtaAssessoria />
+      <CtaAssessoria
+        eyebrow="Além dos artigos"
+        title="Prefere aplicar isso direto no seu projeto?"
+        description="Nem todo desafio cabe num artigo. Se você quer aplicar essas técnicas na sua operação, sem tentativa e erro, ajudamos diretamente."
+      />
     </>
   );
 }

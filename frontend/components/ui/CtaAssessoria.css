@@ -120,7 +120,7 @@
   background: rgba(255, 255, 255, .05);
   border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 18px;
-  padding: 34px 34px 30px;
+  padding: 38px 38px 34px;
   backdrop-filter: blur(4px);
   box-shadow: 0 24px 60px -28px rgba(0, 0, 0, .55);
 }
@@ -162,21 +162,40 @@
 
 .cta-adv-svc {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 22px 0 26px;
+  flex-direction: column;
+  margin: 28px 0 32px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
-.cta-adv-svc span {
+.cta-adv-svc a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: rgba(250, 248, 243, .9);
+  text-decoration: none;
+  padding: 15px 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  transition: color .2s, padding-left .2s;
+}
+
+.cta-adv-svc a .arrow {
   font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .8);
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .12);
-  padding: 7px 12px;
-  border-radius: 999px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, .4);
+  transition: color .2s, transform .2s;
+}
+
+.cta-adv-svc a:hover {
+  color: #fff;
+  padding-left: 6px;
+}
+
+.cta-adv-svc a:hover .arrow {
+  color: var(--clay);
+  transform: translateX(3px);
 }
 
 /* Botão — usa o padrão global .btn (globals.css); .cta-adv-btn só ajusta
@@ -184,6 +203,7 @@
 .cta-adv-btn {
   width: 100%;
   font-size: 15.5px;
+  margin-top: 4px;
   box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
 }
 
@@ -238,7 +258,7 @@
   letter-spacing: .1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .5);
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 @media (max-width: 840px) {

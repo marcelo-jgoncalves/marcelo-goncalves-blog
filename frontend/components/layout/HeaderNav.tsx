@@ -6,11 +6,16 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
+// Ordem pedida por Marcelo (2026-07-12): Home, Serviços (dropdown), Contato, Sobre, Blog.
 const NAV_LINKS_AFTER = [
-  { name: 'Blog', href: '/blog' },
-  { name: 'Sobre', href: '/sobre' },
   { name: 'Contato', href: '/contato' },
+  { name: 'Sobre', href: '/sobre' },
+  { name: 'Blog', href: '/blog' },
 ] as const;
+
+// "O Projeto" só aparece na nav quando o visitante está no contexto do blog (home do
+// blog ou uma postagem) — não é um item fixo. Ver mesma regra em Footer.tsx.
+const O_PROJETO_LINK = { name: 'O Projeto', href: '/o-projeto' } as const;
 
 // Landing pages de pilar (specs/ESPECIFICACAO-*.md) — as 4 já estão implementadas.
 // Ver project_engenharia_software_landing (memória).
@@ -33,6 +38,7 @@ export default function HeaderNav() {
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   const isServicesActive = SERVICE_LINKS.some((link) => isActive(link.href));
+  const showOProjeto = pathname === '/blog' || pathname.startsWith('/post/');
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -114,10 +120,20 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
+        {showOProjeto && (
+          <Link
+            href={O_PROJETO_LINK.href}
+            prefetch={false}
+            className={isActive(O_PROJETO_LINK.href) ? 'active' : ''}
+            aria-current={isActive(O_PROJETO_LINK.href) ? 'page' : undefined}
+          >
+            {O_PROJETO_LINK.name}
+          </Link>
+        )}
       </nav>
 
       <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
-        Agendar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+        Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
       </Link>
 
       <button
@@ -195,8 +211,20 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
+        {showOProjeto && (
+          <Link
+            href={O_PROJETO_LINK.href}
+            prefetch={false}
+            onClick={closeMenu}
+            tabIndex={isMenuOpen ? 0 : -1}
+            className={isActive(O_PROJETO_LINK.href) ? 'active' : ''}
+            aria-current={isActive(O_PROJETO_LINK.href) ? 'page' : undefined}
+          >
+            {O_PROJETO_LINK.name}
+          </Link>
+        )}
         <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
-          Agendar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+          Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
         </Link>
       </div>
     </>

@@ -1,14 +1,16 @@
 /**frontend/app/contato/page.tsx */
 
 import './contato.css';
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import Faq from '@/components/ui/Faq';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
-  IconCycle, IconBolt, IconCloud, IconChip, IconChart, IconCube,
+  IconCycle, IconChip, IconCloud, IconBolt,
   IconEnvelope, IconLinkedin, IconGithub, IconPin,
 } from '@/components/ui/InstitutionalIcons';
 import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
@@ -41,13 +43,13 @@ const STEPS = [
   { title: 'Elaboramos uma proposta', description: 'Caso exista aderência entre suas necessidades e nossos serviços, apresentamos uma proposta personalizada.' },
 ];
 
+// Mesmos 4 pilares de frontend/app/page.tsx (PILLARS) — mantidos em sincronia
+// manualmente (não há módulo compartilhado ainda). Ver docs/analise-funil-ctas-servicos.md.
 const AREAS = [
-  { title: 'Transformação Digital', description: 'Modernização tecnológica para empresas que desejam evoluir.', Icon: IconCycle },
-  { title: 'Cloud & Infraestrutura', description: 'Arquiteturas modernas, seguras e escaláveis.', Icon: IconCloud },
-  { title: 'Automação', description: 'Redução de tarefas manuais e integração entre sistemas.', Icon: IconBolt },
-  { title: 'Inteligência Artificial', description: 'Aplicações práticas de IA para aumentar produtividade e eficiência.', Icon: IconChip },
-  { title: 'Arquitetura de Soluções', description: 'Projetos voltados para disponibilidade, desempenho e crescimento sustentável.', Icon: IconCube },
-  { title: 'DevOps', description: 'Automação de infraestrutura, entrega contínua e observabilidade.', Icon: IconChart },
+  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', Icon: IconCycle, href: '/engenharia-de-software' },
+  { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', Icon: IconChip, href: '/inteligencia-artificial' },
+  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', Icon: IconCloud, href: '/cloud-devops' },
+  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', Icon: IconBolt, href: '/integracao-automacao' },
 ];
 
 const FAQ_ITEMS = [
@@ -81,7 +83,6 @@ export default function ContatoPage() {
       >
         <div className="ct-hero-actions">
           <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
-          <span className="ct-hero-aux">ou role a página para preencher o formulário</span>
         </div>
       </PageHero>
 
@@ -100,7 +101,9 @@ export default function ContatoPage() {
               <div className="ct-guarantee"><span className="ck">✓</span>Seus dados ficam apenas conosco</div>
             </div>
           </div>
-          <ContactForm />
+          <Suspense fallback={<div className="contact-form-card" />}>
+            <ContactForm />
+          </Suspense>
         </div>
       </section>
 
@@ -129,11 +132,11 @@ export default function ContatoPage() {
           </div>
           <div className="ct-areas-grid" data-audit="ct-areas-grid">
             {AREAS.map((area) => (
-              <div className="ct-area-card" key={area.title}>
+              <Link href={area.href} className="ct-area-card" key={area.title}>
                 <div className="ct-icon-box"><area.Icon /></div>
                 <h3>{area.title}</h3>
                 <p>{area.description}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

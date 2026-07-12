@@ -42,6 +42,7 @@ const PILLARS = [
     tags: ['Aplicações', 'APIs', 'Arquitetura'],
     Icon: IconCycle,
     wide: true,
+    href: '/engenharia-de-software',
   },
   {
     kicker: 'Pilar · Inteligência',
@@ -55,19 +56,7 @@ const PILLARS = [
     tags: ['IA Generativa', 'Agentes', 'Produtividade'],
     Icon: IconChip,
     wide: true,
-  },
-  {
-    kicker: 'Pilar · Plataforma',
-    title: 'Cloud & DevOps',
-    description: 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.',
-    bullets: [
-      <><strong>Arquitetura em nuvem</strong> para ambientes resilientes e escaláveis</>,
-      <><strong>DevOps e CI/CD</strong> para implantações rápidas e confiáveis</>,
-      <><strong>Infraestrutura como Código</strong> para ambientes padronizados e seguros</>,
-    ],
-    tags: ['AWS', 'DevOps', 'Infraestrutura'],
-    Icon: IconCloud,
-    wide: true,
+    href: '/inteligencia-artificial',
   },
   {
     kicker: 'Pilar · Automação',
@@ -81,6 +70,21 @@ const PILLARS = [
     tags: ['Integrações', 'Automação', 'Produtividade'],
     Icon: IconBolt,
     wide: true,
+    href: '/integracao-automacao',
+  },
+  {
+    kicker: 'Pilar · Plataforma',
+    title: 'Cloud & DevOps',
+    description: 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.',
+    bullets: [
+      <><strong>Arquitetura em nuvem</strong> para ambientes resilientes e escaláveis</>,
+      <><strong>DevOps e CI/CD</strong> para implantações rápidas e confiáveis</>,
+      <><strong>Infraestrutura como Código</strong> para ambientes padronizados e seguros</>,
+    ],
+    tags: ['AWS', 'DevOps', 'Infraestrutura'],
+    Icon: IconCloud,
+    wide: true,
+    href: '/cloud-devops',
   },
 ];
 
@@ -149,11 +153,7 @@ export default async function InstitutionalHome() {
         subtitle="Transformação digital, Inteligência Artificial aplicada, automação, computação na nuvem, DevOps e aplicações modernas, aplicados aos problemas reais da sua empresa."
       >
         <div className="ih-hero-actions">
-          <Link href="/contato" className="btn">Agendar diagnóstico <span aria-hidden="true">→</span></Link>
-        </div>
-        <div className="ih-hero-trust">
-          <span className="ih-hero-dot" aria-hidden="true" />
-          Diagnóstico inicial gratuito de 30 min · resposta em até 24h · 100% remoto
+          <Link href="/contato" className="btn">Solicitar diagnóstico <span aria-hidden="true">→</span></Link>
         </div>
       </PageHero>
 
@@ -162,12 +162,12 @@ export default async function InstitutionalHome() {
         <div className="wrap">
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual">Serviços</div>
-            <h2 className="sec-t">Cinco pilares, engenharia de ponta a ponta</h2>
+            <h2 className="sec-t">Quatro pilares, engenharia de ponta a ponta</h2>
             <p className="ih-center-desc">Especialização em poucas áreas, com profundidade. Cada pilar reúne as capacidades que entregam resultado, da estratégia à operação otimizada.</p>
           </div>
           <div className="ih-pillars-grid">
             {PILLARS.map((pillar, i) => (
-              <Link href="/contato" className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
+              <Link href={pillar.href} className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
                 <div className="ih-pillar-top">
                   <div className="ih-pillar-icon"><pillar.Icon /></div>
                   <span className="ih-pillar-num">{String(i + 1).padStart(2, '0')}</span>
@@ -180,16 +180,19 @@ export default async function InstitutionalHome() {
                     <li key={bi}>{bullet}</li>
                   ))}
                 </ul>
-                <div className="ih-pillar-tags">
-                  {pillar.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+                <div className="ih-pillar-footer">
+                  <div className="ih-pillar-tags">
+                    {pillar.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <span className="ih-pillar-more">Saiba mais <span className="arrow" aria-hidden="true">→</span></span>
                 </div>
               </Link>
             ))}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Fale sobre o seu desafio <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Conte-nos seu desafio <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -207,7 +210,7 @@ export default async function InstitutionalHome() {
           <div className="ih-method-label">As 5 Etapas do Nosso Método</div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Fale com o time <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>
             <span className="ih-method-credit">Conduzido por Marcelo Gonçalves · Arquiteto de soluções</span>
           </div>
         </div>
@@ -248,7 +251,7 @@ export default async function InstitutionalHome() {
             ))}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Falar com o time <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
@@ -276,10 +279,10 @@ export default async function InstitutionalHome() {
       <CtaAssessoria
         id="contato"
         eyebrow="Vamos conversar"
-        title={<>Vamos construir a <em>evolução</em> da sua empresa.</>}
-        description="Toda empresa tem oportunidades de melhoria: algumas resolvidas com automação, outras com modernização da infraestrutura, outras com Inteligência Artificial. O primeiro passo é entender o seu cenário."
+        title={<>Vamos construir a tecnologia que <em>impulsiona</em> seu negócio.</>}
+        description="Cada empresa enfrenta desafios diferentes. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para modernizar operações, aumentar a eficiência e apoiar o crescimento do seu negócio."
         ctaHref="/contato"
-        ctaLabel="Agendar diagnóstico"
+        ctaLabel="Vamos conversar"
       />
     </>
   );

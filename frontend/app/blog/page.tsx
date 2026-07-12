@@ -298,7 +298,11 @@ export default async function Home() {
         </section>
       )}
 
-      <CtaAssessoria />
+      <CtaAssessoria
+        eyebrow="Do blog para o seu projeto"
+        title="Gosta do que lê aqui? Aplico o mesmo na sua empresa."
+        description="Tudo que você vê neste blog nasce de projetos reais. Se sua empresa enfrenta um desafio parecido com os que aparecem por aqui, ajudamos a resolver."
+      />
     </>
   );
 }

@@ -13,6 +13,22 @@
   --ph-pad: 88px 40px 64px;
 }
 
+.ih-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(52% 70% at 100% 0%, rgba(201, 96, 60, .3), transparent 55%),
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+}
+
 .ih-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -232,13 +248,21 @@
   font-weight: 700;
 }
 
-.ih-pillar-tags {
+.ih-pillar-footer {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.ih-pillar-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  border-top: 1px solid var(--line);
-  padding-top: 18px;
 }
 
 .ih-pillar-tags span {
@@ -251,6 +275,26 @@
   border: 1px solid rgba(15, 76, 92, .14);
   border-radius: 999px;
   padding: 6px 12px;
+}
+
+.ih-pillar-more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-left: auto;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--clay);
+  white-space: nowrap;
+}
+
+.ih-pillar-more .arrow {
+  transition: transform .2s;
+}
+
+.ih-pillar-card:hover .ih-pillar-more .arrow {
+  transform: translateX(3px);
 }
 
 /* Botão de fechamento de seção — sempre no fim da seção, sempre

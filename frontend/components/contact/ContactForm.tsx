@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import './ContactForm.css';
 
 interface FormState {
@@ -11,8 +12,22 @@ interface FormState {
   telefone: string;
   porte: string;
   area: string;
+  interesse: string;
   mensagem: string;
 }
+
+// Mesmos slugs das 4 landing pages de pilar (frontend/app/<slug>/page.tsx) — usados
+// como valor de ?assunto= no link de cada landing para /contato, e como value do
+// <select> aqui. Ver docs/analise-funil-ctas-servicos.md, achado 5.
+export const INTERESSE_OPTIONS = [
+  { value: 'engenharia-de-software', label: 'Engenharia de Software' },
+  { value: 'cloud-devops', label: 'Cloud & DevOps' },
+  { value: 'integracao-automacao', label: 'Integração & Automação' },
+  { value: 'inteligencia-artificial', label: 'Inteligência Artificial' },
+  { value: 'outro', label: 'Ainda não sei / outro assunto' },
+] as const;
+
+const INTERESSE_VALUES: readonly string[] = INTERESSE_OPTIONS.map((o) => o.value);
 
 const EMPTY_FORM: FormState = {
   nome: '',
@@ -22,6 +37,7 @@ const EMPTY_FORM: FormState = {
   telefone: '',
   porte: '',
   area: '',
+  interesse: '',
   mensagem: '',
 };
 
@@ -35,7 +51,11 @@ function submitContact(_form: FormState): Promise<void> {
 }
 
 export default function ContactForm() {
-  const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const searchParams = useSearchParams();
+  const assuntoParam = searchParams.get('assunto') || '';
+  const interesseInicial = INTERESSE_VALUES.includes(assuntoParam) ? assuntoParam : '';
+
+  const [form, setForm] = useState<FormState>({ ...EMPTY_FORM, interesse: interesseInicial });
   const [erro, setErro] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
@@ -114,6 +134,15 @@ export default function ContactForm() {
             <option value="11-50">11 a 50</option>
             <option value="51-200">51 a 200</option>
             <option value="200+">Mais de 200</option>
+          </select>
+        </label>
+        <label className="contact-field">
+          <span>Área de interesse <span className="contact-optional">opcional</span></span>
+          <select value={form.interesse} onChange={set('interesse')}>
+            <option value="">Selecione</option>
+            {INTERESSE_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
           </select>
         </label>
       </div>

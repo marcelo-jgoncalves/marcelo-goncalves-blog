@@ -49,7 +49,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Cloud & DevOps — ${AUTHOR_NAME}`,
+  name: `Cloud & DevOps | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -136,7 +136,7 @@ export default function CloudDevOpsPage() {
           Projetamos, implementamos e operamos plataformas em nuvem utilizando boas práticas de arquitetura, automação e DevOps para que sua empresa possa inovar com confiança e reduzir a complexidade operacional.
         </p>
         <div className={styles.heroCtaRow}>
-          <Link href="/contato" className="btn">
+          <Link href="/contato?assunto=cloud-devops" className="btn">
             Falar sobre o meu projeto <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -275,7 +275,7 @@ export default function CloudDevOpsPage() {
               </div>
             </div>
           }
-          ctaHref="/contato"
+          ctaHref="/contato?assunto=cloud-devops"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"
         />

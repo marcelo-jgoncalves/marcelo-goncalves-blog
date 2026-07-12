@@ -9,14 +9,17 @@ const CHECK_ICON = (
 );
 
 const DEFAULT_POINTS: ReactNode[] = [
-  <span key="p1">Arquitetura <b>AWS</b> sob medida, sem desperdício de custo</span>,
-  <span key="p2">Automação e <b>CI/CD</b> de ponta a ponta em código</span>,
-  <span key="p3">Adoção de <b>IA</b> com foco em resultado, não em hype</span>,
+  <span key="p1">Sistemas desenvolvidos para a realidade da sua empresa</span>,
+  <span key="p2">Processos integrados e automatizados</span>,
+  <span key="p3">Plataformas escaláveis preparadas para crescer</span>,
 ];
 
 const DEFAULT_CARD_BODY = (
   <div className="cta-adv-svc">
-    <span>Cloud · AWS</span><span>DevOps</span><span>IA aplicada</span><span>Mentoria</span>
+    <Link href="/engenharia-de-software">Engenharia de Software <span className="arrow">→</span></Link>
+    <Link href="/inteligencia-artificial">Inteligência Artificial <span className="arrow">→</span></Link>
+    <Link href="/integracao-automacao">Integração & Automação <span className="arrow">→</span></Link>
+    <Link href="/cloud-devops">Cloud & DevOps <span className="arrow">→</span></Link>
   </div>
 );
 
@@ -43,13 +46,13 @@ export default function CtaAssessoria({
   description = 'O que você lê aqui, aplicado ao seu negócio. Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.',
   points = DEFAULT_POINTS,
   cardTagline = 'Disponível para novos projetos',
-  cardTitle = 'Clique abaixo e conheça os serviços',
-  cardSubtitle = 'Arquitetura, DevOps, FinOps, Serverless e mais. Veja como posso te ajudar.',
+  cardTitle = 'Conte-nos seu desafio. Nós ajudamos a encontrar a melhor solução.',
+  cardSubtitle = 'Desenvolvimento, IA, automação, infraestrutura e mais. Veja como podemos ajudar.',
   cardBody = DEFAULT_CARD_BODY,
-  ctaHref = '/servicos',
-  ctaLabel = 'Ver todos os serviços',
+  ctaHref = '/#servicos',
+  ctaLabel = 'Explorar os serviços',
   ctaExternal = false,
-  reassure = '10 frentes de atuação · diagnóstico gratuito',
+  reassure = 'Projetos sob medida · Primeira conversa sem compromisso',
 }: CtaAssessoriaProps) {
   return (
     <section className="cta-adv" id={id}>
@@ -73,7 +76,7 @@ export default function CtaAssessoria({
             <h3>{cardTitle}</h3>
             <p className="cta-adv-sub">{cardSubtitle}</p>
             {cardBody}
-            {ctaExternal ? (
+            {ctaExternal || ctaHref.includes('#') ? (
               <a className="btn cta-adv-btn" href={ctaHref}>
                 {ctaLabel} <span className="arrow">→</span>
               </a>

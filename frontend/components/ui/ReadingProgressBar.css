@@ -1,13 +1,14 @@
 /* frontend/components/ui/ReadingProgressBar.css */
 
 .reading-progress {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  top: var(--nav-height);
   left: 0;
   right: 0;
   height: 3px;
   overflow: hidden;
   pointer-events: none;
+  z-index: 49;
 }
 
 .reading-progress__bar {

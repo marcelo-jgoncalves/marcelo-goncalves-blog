@@ -288,15 +288,16 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  font-family: var(--font-sans);
+  font-family: inherit;
   font-size: inherit;
-  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  color: #fff;
   transition: color 0.2s ease;
   text-align: left;
 }
 
 .cmp-trigger:hover {
-  color: white;
+  color: #fff;
 }
 
 /* ═══════════════════════════════════════════

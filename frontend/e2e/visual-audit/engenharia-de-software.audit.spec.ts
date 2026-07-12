@@ -18,13 +18,17 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/engenharia-de-so
 // em vez de replicar o padding/grid inline do protótipo standalone — a régua de
 // correção aqui é "bate com o componente reutilizável", não "bate pixel a pixel
 // com o protótipo". Ver frontend/components/ui/PageHero.tsx e CtaAssessoria.tsx.
+//
+// esw-principios também ficou fora: a pedido de Marcelo (2026-07-11), a seção
+// "Maturidade Técnica" passou a usar as cores de app/cloud-devops/page.module.css
+// .especialidades (fundo sand, não mais petrol-deep) — desvio intencional do
+// protótipo, mesmo raciocínio do hero/cta-final acima.
 const TARGETS = [
   'esw-oquefazemos',
   'esw-card',
   'esw-beneficios',
   'esw-abordagem',
   'esw-diferenciais',
-  'esw-principios',
   'esw-faq',
 ];
 

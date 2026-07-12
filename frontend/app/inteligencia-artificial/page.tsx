@@ -52,7 +52,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Inteligência Artificial — ${AUTHOR_NAME}`,
+  name: `Inteligência Artificial | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -158,7 +158,7 @@ export default function InteligenciaArtificialPage() {
           Desenvolvemos soluções de IA integradas aos processos da sua empresa, sempre com foco em gerar valor real, reduzir custos operacionais e aumentar a produtividade.
         </p>
         <div className={styles.heroCtaRow}>
-          <Link href="/contato" className="btn">
+          <Link href="/contato?assunto=inteligencia-artificial" className="btn">
             Falar sobre o meu projeto <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -299,7 +299,7 @@ export default function InteligenciaArtificialPage() {
               </div>
             </div>
           }
-          ctaHref="/contato"
+          ctaHref="/contato?assunto=inteligencia-artificial"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"
         />

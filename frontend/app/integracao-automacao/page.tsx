@@ -48,7 +48,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Integração & Automação — ${AUTHOR_NAME}`,
+  name: `Integração & Automação | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -168,7 +168,7 @@ export default function IntegracaoAutomacaoPage() {
           Desenvolvemos soluções que integram plataformas e automatizam fluxos de trabalho para que as informações circulem de forma segura, rápida e confiável, permitindo que sua equipe concentre esforços no que realmente importa.
         </p>
         <div className={styles.heroCtaRow}>
-          <Link href="/contato" className="btn">
+          <Link href="/contato?assunto=integracao-automacao" className="btn">
             Falar sobre o meu projeto <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -317,7 +317,7 @@ export default function IntegracaoAutomacaoPage() {
               </div>
             </div>
           }
-          ctaHref="/contato"
+          ctaHref="/contato?assunto=integracao-automacao"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"
         />

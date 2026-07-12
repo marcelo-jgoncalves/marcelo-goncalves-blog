@@ -49,7 +49,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Engenharia de Software — ${AUTHOR_NAME}`,
+  name: `Engenharia de Software | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -143,7 +143,7 @@ export default function EngenhariaDeSoftwarePage() {
           Combinamos arquitetura moderna, boas práticas de engenharia e tecnologias consolidadas para entregar soluções seguras, escaláveis e preparadas para evoluir junto com sua empresa.
         </p>
         <div className={styles.heroCtaRow}>
-          <Link href="/contato" className="btn">
+          <Link href="/contato?assunto=engenharia-de-software" className="btn">
             Falar sobre o meu projeto <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -240,8 +240,8 @@ export default function EngenhariaDeSoftwarePage() {
       <section id="principios" className={styles.principios} data-audit="esw-principios">
         <div className={styles.principiosWrap}>
           <div className={styles.principiosHead}>
-            <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Maturidade técnica</span>
-            <h2 className={styles.h2Dark}>Princípios de Engenharia</h2>
+            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Maturidade técnica</span>
+            <h2 className={styles.h2}>Princípios de Engenharia</h2>
             <p className={styles.principiosDesc}>O que guia cada decisão técnica, do primeiro commit à operação em produção.</p>
           </div>
           <div className={styles.principiosList}>
@@ -297,7 +297,7 @@ export default function EngenhariaDeSoftwarePage() {
               </div>
             </div>
           }
-          ctaHref="/contato"
+          ctaHref="/contato?assunto=engenharia-de-software"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"
         />

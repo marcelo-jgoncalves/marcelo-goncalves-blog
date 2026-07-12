@@ -98,11 +98,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const avatarUrl = autor?.foto_avatar_url;
 
   return {
-    title: { absolute: `Sobre — ${nome}` },
+    title: { absolute: `Sobre | ${nome}` },
     description: desc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `Sobre — ${nome}`,
+      title: `Sobre | ${nome}`,
       description: desc,
       url: canonicalUrl,
       type: 'profile',
@@ -110,7 +110,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'pt_BR',
       ...(avatarUrl && { images: [{ url: avatarUrl, alt: `Foto de ${nome}` }] }),
     },
-    twitter: { card: 'summary_large_image', title: `Sobre — ${nome}`, description: desc, creator: AUTHOR_TWITTER },
+    twitter: { card: 'summary_large_image', title: `Sobre | ${nome}`, description: desc, creator: AUTHOR_TWITTER },
   };
 }
 
@@ -128,7 +128,7 @@ export default async function SobrePage() {
     name: nome,
     url: `${SITE_URL}/sobre`,
     image: author.foto_avatar_url || undefined,
-    jobTitle: 'Engenheiro Cloud — AWS, DevOps & IA',
+    jobTitle: 'Engenheiro Cloud, AWS, DevOps & IA',
     description: author.bio || FALLBACK_DESC,
     sameAs: [linkedinUrl, githubUrl, instagramUrl].filter((u) => u && u !== '#'),
     knowsAbout: ['AWS', 'Arquitetura Serverless', 'DevOps', 'Terraform', 'FinOps', 'Inteligência Artificial', 'Linguística'],
@@ -210,7 +210,7 @@ export default async function SobrePage() {
               <p>
                 Ao longo da carreira, colaborei com empresas no <strong>Brasil e no exterior</strong>,
                 refinando métodos que equilibram agilidade técnica, governança e sustentabilidade
-                operacional — uma experiência que molda como penso tecnologia: como ferramenta para
+                operacional, uma experiência que molda como penso tecnologia: como ferramenta para
                 gerar eficiência real.
               </p>
             </div>
@@ -327,7 +327,7 @@ export default async function SobrePage() {
           <div className="sobre-certs-head">
             <div className="sec-ey">Credenciais</div>
             <h2 className="sec-t">Certificações</h2>
-            <p className="sec-desc">Credenciais que validam na prática o que aplico no dia a dia — da arquitetura de soluções à automação de infraestrutura e observabilidade.</p>
+            <p className="sec-desc">Credenciais que validam na prática o que aplico no dia a dia, da arquitetura de soluções à automação de infraestrutura e observabilidade.</p>
           </div>
           <div className="sobre-certs-grid" data-audit="sobre-certs-grid">
             {CERTS.map((cert) => (
@@ -362,7 +362,7 @@ export default async function SobrePage() {
               <h2 className="sec-t sobre-acad-title">Base acadêmica multidisciplinar</h2>
               <p>
                 Uma formação que conecta a precisão da engenharia à clareza da comunicação. Cada
-                disciplina contribui para uma visão única — da arquitetura cloud à estrutura da
+                disciplina contribui para uma visão única, da arquitetura cloud à estrutura da
                 linguagem.
               </p>
             </div>
@@ -383,7 +383,13 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <CtaAssessoria />
+      <CtaAssessoria
+        eyebrow="Vamos trabalhar juntos"
+        title="Pronto para começar? Vamos conversar sobre seu projeto."
+        description="Se o que você viu aqui faz sentido para o seu momento, o próximo passo é simples: uma conversa sem compromisso para entender seu cenário."
+        ctaHref="/contato"
+        ctaLabel="Vamos conversar"
+      />
     </>
   );
 }

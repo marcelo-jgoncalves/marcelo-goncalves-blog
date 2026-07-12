@@ -203,7 +203,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
             <div>
               <div className="op-sec-eyebrow">A jornada</div>
               <h2 className="op-sec-title">Tudo que foi documentado</h2>
-              <p className="op-sec-desc">Em ordem cronológica — cada post é um registro real de uma decisão, erro ou aprendizado.</p>
+              <p className="op-sec-desc">Em ordem cronológica: cada post é um registro real de uma decisão, erro ou aprendizado.</p>
             </div>
             <div>
               <div className="op-count"><strong>{totalCount}</strong> posts publicados</div>
@@ -288,7 +288,11 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
       </div>
 
-      <CtaAssessoria />
+      <CtaAssessoria
+        eyebrow="Viu como trabalhamos"
+        title="É assim que construímos, inclusive para o seu negócio."
+        description="Cada decisão documentada aqui reflete como trabalhamos na prática: transparência, engenharia sólida e foco em resultado. Vamos aplicar isso ao seu projeto."
+      />
     </>
   );
 }
