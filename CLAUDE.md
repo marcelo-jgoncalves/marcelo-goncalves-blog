@@ -337,6 +337,21 @@ Categoria diferente de imagem: não vem de upload de usuário, é parte do códi
 - Backend: 19 moderate residuais (js-yaml via jest/istanbul, dev-only) — aceito como risco conhecido (fix exige downgrade breaking de ts-jest).
 - Frontend: 22 moderate residuais (esbuild/open-next, js-yaml/ts-jest, postcss/next) — aceito como risco conhecido (fix exigiria downgrade para next@9 ou open-next@0.0.1, inviável).
 
+### Estratégia de validação local (sessão 44, 2026-07-13)
+
+Validar mudanças de frontend em nível proporcional ao risco, não uniformemente — screenshot/Playwright para toda edição pequena desperdiça tempo.
+
+| Nível | Quando | Validação |
+|---|---|---|
+| 1 — sempre | Toda edição | `tsc --noEmit` + `eslint` |
+| 2 — copy puro | Texto/label sem CSS | Só nível 1 |
+| 3 — CSS local/escopado | Espaçamento, cor, tamanho num componente | `page.evaluate` com sweep de `getBoundingClientRect()` (overflow-check) — não screenshot. Foi essa técnica, não inspeção visual, que achou os bugs reais da auditoria de 2026-07-12 |
+| 4 — mudança estrutural | Novo componente, grid/flex novo | 1 screenshot mobile (390px) + desktop (1440px) só da seção afetada |
+| 5 — componente compartilhado | `PageHero`, `Footer`, `HeaderNav`, tokens em `globals.css` | Nível 4 + overflow-check em 2-3 páginas representativas, não nas 17 rotas |
+| 6 — auditoria completa | Só sob pedido explícito de Marcelo | Full sweep das rotas |
+
+`npm test`/e2e continuam só sob pedido explícito (regra já em vigor, não muda). Detalhes e racional completo em `memory/feedback_testing_strategy_tiers.md`.
+
 ---
 
 ## 8. Commits e Pipeline
