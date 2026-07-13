@@ -356,7 +356,7 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 20px 28px 20px 20px;
+  padding: 0;
   display: flex;
   align-items: stretch;
   gap: 24px;
@@ -373,8 +373,6 @@
   flex: none;
   width: 160px;
   min-height: 140px;
-  border-radius: 10px;
-  overflow: hidden;
   background: var(--sand);
 }
 
@@ -384,6 +382,7 @@
   gap: 10px;
   min-width: 0;
   flex: 1;
+  padding: 20px 28px 20px 0;
 }
 
 @media (hover: hover) {
@@ -443,6 +442,10 @@
   line-height: 1.6;
   color: var(--slate);
   max-width: 680px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .op-tl-card-foot {
@@ -869,12 +872,16 @@
 
   .op-tl-card {
     flex-direction: column;
-    padding: 20px;
+    gap: 0;
   }
 
   .op-tl-cover {
     width: 100%;
     min-height: 180px;
+  }
+
+  .op-tl-body {
+    padding: 20px;
   }
 
   .op-about-strip {

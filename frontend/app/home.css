@@ -386,7 +386,8 @@
 .ih-case-metrics {
   display: flex;
   align-items: baseline;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 12px 20px;
   margin-bottom: 12px;
 }
 

@@ -197,7 +197,7 @@ export default function ContatoPage() {
       <CtaAssessoria
         id="chamada-final"
         eyebrow="Vamos conversar"
-        title={<>Vamos construir o próximo passo da <em>evolução</em> da sua empresa.</>}
+        title={<>Vamos construir o próximo passo da tecnologia que <em>impulsiona</em> a sua empresa.</>}
         description="A tecnologia evolui constantemente. Empresas que conseguem transformar essa evolução em vantagem competitiva estão mais preparadas para crescer, inovar e enfrentar novos desafios."
         ctaHref="#form"
         ctaLabel="Solicitar diagnóstico"
