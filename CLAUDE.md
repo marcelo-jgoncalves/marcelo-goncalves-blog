@@ -352,6 +352,26 @@ Validar mudanças de frontend em nível proporcional ao risco, não uniformement
 
 `npm test`/e2e continuam só sob pedido explícito (regra já em vigor, não muda). Detalhes e racional completo em `memory/feedback_testing_strategy_tiers.md`.
 
+### Estratégia de registro em contexto/memória (sessão 44, 2026-07-13)
+
+Cada fato mora em exatamente 1 lugar — nunca duplicar entre `CLAUDE.md`, `.project-context.md` e `memory/`.
+
+| Onde | O que vive aqui | O que NÃO vive aqui |
+|---|---|---|
+| `CLAUDE.md` | Regras de projeto duráveis: arquitetura, design system, gotchas críticos, backlog técnico (única lista, §10) | Narrativa de sessão, "o que fizemos hoje" |
+| `.project-context.md` | Status atual + changelog compacto (1-8 linhas por sessão, linkando pra memória) | Prosa longa por commit, valores de pixel, passo a passo — isso já está no `git log`/`git show` |
+| `memory/` (`feedback`) | Regras de comportamento anti-repetição de erro, válidas em qualquer sessão futura | Diário de execução ("rodei X, funcionou") |
+| `memory/` (`project`) | Fatos duráveis e não-óbvios específicos do projeto | Itens já fechados/resolvidos sem pendência — viram 1 linha de changelog, não um arquivo |
+
+**Checklist antes de gravar qualquer coisa** (memória ou `.project-context.md`):
+1. Isso muda o que uma sessão futura faz, mesmo sem lembrar desta conversa? Se não → não grava.
+2. Já é derivável do `git log`/código? Se sim → não grava (exceção: quando o "porquê" não está no commit).
+3. Já existe um arquivo/seção pra isso? Se sim → atualiza, não cria um novo.
+4. É um fato fechado/resolvido sem pendência? Se sim → 1 linha de changelog, não um arquivo próprio.
+5. É genuinamente "não repita esse erro" ou "aqui está algo não-óbvio"? Só isso justifica memória `feedback`/`project`.
+
+Auditoria que motivou esta regra: sessão 44 encontrou `.project-context.md` com 455 linhas (60-70% diário cronológico) e 7 arquivos de memória órfãos/duplicados/superados — cortado para ~110 linhas e 45 arquivos sem perder conhecimento durável. Detalhes em `memory/feedback_context_recording_strategy.md`.
+
 ---
 
 ## 8. Commits e Pipeline
