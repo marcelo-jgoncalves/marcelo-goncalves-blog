@@ -229,4 +229,12 @@
   .site-footer .foot-in {
     padding: 0 var(--wrap-pad-h-mobile) var(--sp-5);
   }
+  .site-footer .foot-lead {
+    justify-content: center;
+    text-align: center;
+  }
+  .site-footer .to-top {
+    justify-content: center;
+    width: 100%;
+  }
 }

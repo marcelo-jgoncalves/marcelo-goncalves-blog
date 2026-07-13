@@ -150,7 +150,7 @@ export default async function InstitutionalHome() {
         dataAudit="ih-hero"
         eyebrow="Consultoria em Tecnologia"
         title={<>Tecnologia que sustenta a operação, aumenta eficiência e destrava <em>crescimento</em>.</>}
-        subtitle="Transformação digital, Inteligência Artificial aplicada, automação, computação na nuvem, DevOps e aplicações modernas, aplicados aos problemas reais da sua empresa."
+        subtitle="Desenvolvimento, IA, Automação, Cloud & DevOps aplicados aos problemas reais da sua empresa."
       >
         <div className="ih-hero-actions">
           <Link href="/contato" className="btn">Solicitar diagnóstico <span aria-hidden="true">→</span></Link>
@@ -162,15 +162,14 @@ export default async function InstitutionalHome() {
         <div className="wrap">
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual">Serviços</div>
-            <h2 className="sec-t">Quatro pilares, engenharia de ponta a ponta</h2>
-            <p className="ih-center-desc">Especialização em poucas áreas, com profundidade. Cada pilar reúne as capacidades que entregam resultado, da estratégia à operação otimizada.</p>
+            <h2 className="sec-t">Quatro pilares que cobrem toda a sua operação</h2>
+            <p className="ih-center-desc">Atuamos com profundidade em cada um deles, da estratégia ao código, da implementação à operação em produção.</p>
           </div>
           <div className="ih-pillars-grid">
-            {PILLARS.map((pillar, i) => (
+            {PILLARS.map((pillar) => (
               <Link href={pillar.href} className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
                 <div className="ih-pillar-top">
                   <div className="ih-pillar-icon"><pillar.Icon /></div>
-                  <span className="ih-pillar-num">{String(i + 1).padStart(2, '0')}</span>
                 </div>
                 <div className="ih-pillar-kicker">{pillar.kicker}</div>
                 <h3>{pillar.title}</h3>
@@ -204,10 +203,12 @@ export default async function InstitutionalHome() {
             <div className="ih-eyebrow">Como trabalhamos</div>
             <h2 className="sec-t">Processo estruturado, entrega previsível</h2>
             <p className="sec-desc" style={{ maxWidth: 720 }}>
-              Não somos apenas executores. Unimos a governança de grandes projetos à agilidade que o mercado exige, atuando de forma consultiva para mapear gargalos invisíveis na sua operação e sugerir as melhores alternativas tecnológicas. Com base no histórico comprovado do nosso núcleo sênior, desenhamos soluções com escopo enxuto para garantir retorno rápido, custos sob controle e uma entrega totalmente sem surpresas.
+              Não somos apenas executores. Unimos a governança de grandes projetos à agilidade que o mercado exige, atuando de forma consultiva para mapear gargalos invisíveis na sua operação e sugerir as melhores alternativas tecnológicas.
+            </p>
+            <p className="sec-desc" style={{ maxWidth: 720 }}>
+              Com base no histórico comprovado do nosso núcleo sênior, desenhamos soluções com escopo enxuto para garantir retorno rápido, custos sob controle e uma entrega totalmente sem surpresas.
             </p>
           </div>
-          <div className="ih-method-label">As 5 Etapas do Nosso Método</div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
             <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>

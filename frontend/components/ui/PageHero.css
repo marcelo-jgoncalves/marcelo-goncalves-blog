@@ -9,7 +9,7 @@
   --ph-gap:      60px;
   --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) 0;
   --ph-max:      var(--wrap-max);
-  --ph-h1-size:  clamp(2.3rem, 4vw, 3.4rem);
+  --ph-h1-size:  var(--text-4xl);
   --ph-h1-max:   600px;
   --ph-sub-max:  510px;
   --ph-ey-color: rgba(255, 255, 255, .65);
@@ -40,6 +40,7 @@
 .page-hero-left {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .page-hero-ey {

@@ -14,7 +14,6 @@
    ============================================================ */
 .svc-hero {
   --ph-cols:    1fr auto;
-  --ph-h1-size: clamp(2.4rem, 4.4vw, 3.5rem);
   --ph-h1-max:  640px;
   --ph-sub-max: 520px;
 }

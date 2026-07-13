@@ -17,7 +17,6 @@
   --ph-cols:    1fr auto;
   --ph-gap:     60px;
   --ph-pad:     88px 40px 48px;
-  --ph-h1-size: clamp(2.4rem, 4.5vw, 3.6rem);
   --ph-sub-max: 520px;
 }
 
@@ -167,7 +166,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: var(--sp-5);
 }
 
 .op-sec-eyebrow::before {
@@ -190,7 +189,7 @@
   line-height: 1.65;
   color: var(--slate);
   max-width: 580px;
-  margin-top: 12px;
+  margin-top: var(--sp-6);
 }
 
 .op-sec-header {

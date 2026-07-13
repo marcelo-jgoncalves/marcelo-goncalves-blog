@@ -18,7 +18,6 @@
   --ph-cols:     1.12fr .88fr;
   --ph-gap:      64px;
   --ph-ey-color: rgba(255,255,255,.6);
-  --ph-h1-size:  clamp(2.2rem, 3.9vw, 3.15rem);
   --ph-h1-max:   none;
   --ph-sub-max:  500px;
 }
@@ -138,7 +137,6 @@
 /* ── ÁREAS ── */
 .sobre-areas { padding: 96px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .sobre-areas-head { margin-bottom: 48px; }
-.sobre-areas-head .sec-t { margin-bottom: 10px; }
 .sobre-areas-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 20px; }
 .sobre-area-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
@@ -225,7 +223,6 @@
 /* ── CREDENCIAIS (certs) ── */
 .sobre-certs { padding: 96px 0; background: var(--ivory); }
 .sobre-certs-head { margin-bottom: 48px; max-width: 620px; }
-.sobre-certs-head .sec-t { margin-bottom: 10px; }
 .sobre-certs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .sobre-cert-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 16px;

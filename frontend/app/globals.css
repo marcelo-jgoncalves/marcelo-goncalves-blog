@@ -272,7 +272,7 @@ img {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: var(--sp-5);
 }
 
 .sec-ey::before {
@@ -295,7 +295,7 @@ img {
   line-height: 1.65;
   color: var(--slate);
   max-width: 520px;
-  margin-top: 10px;
+  margin-top: var(--sp-6);
 }
 
 .sec-link {

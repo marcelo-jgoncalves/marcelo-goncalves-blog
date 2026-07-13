@@ -17,7 +17,6 @@
 .art-hero {
   --ph-cols:    1.08fr .92fr;
   --ph-pad:     88px 40px 76px;
-  --ph-h1-size: clamp(2.3rem, 4vw, 3.3rem);
   --ph-sub-max: 500px;
 }
 
