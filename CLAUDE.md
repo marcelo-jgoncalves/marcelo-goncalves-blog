@@ -462,6 +462,8 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 33. **Slash command (`/`) e botão de margem "+" (gutter) do protótipo "Editor de Escrita" não foram implementados** — o floating-menu do Tiptap (já existente antes do redesign) cobre parcialmente essa função (aparece em linha vazia, oferece os mesmos blocos e mais), mas não é uma réplica 1:1 da UX do protótipo. Avaliar se vale construir a extensão de sugestão customizada do Tiptap.
 34. **Acessibilidade da tela de escrita nunca auditada** — título/subtítulo `contenteditable` sem `role`/`aria-label`, toggles customizados (`.ia-toggle-track`) sem `aria-pressed`/`role="switch"`. Auditoria a11y original (item abaixo) foi feita antes do redesign do admin, não cobre essas telas novas.
 ~~35. Corrigir o pin do Gitleaks Action em `security.yml`~~ ✅ **resolvido (2026-07-12, commit `2ebab67`)** — causa era um typo de 1 caractere no SHA pinado (`...329070c8` em vez do real `...329070c7`, confirmado via `gh api`). Security Scan verde novamente.
+36. **`<title>` duplicado em `/busca?q=...`** — achado na auditoria visual mobile de 2026-07-12 (`docs/auditoria-visual-mobile.md`): tab do navegador mostra `Resultados para "aws" | Marcelo Gonçalves | Marcelo Gonçalves` (nome do site 2×). Provavelmente `metadata.title` em `app/busca/page.tsx` já inclui `SITE_NAME` e o template do `layout.tsx` concatena de novo. Não investigado a fundo.
+37. **Categoria "Devops Automacao" sem acento/capitalização correta num card do blog** — achado na mesma auditoria, num dos cards de "Posts que mais engajaram" da Home. Pode ser dado de teste (post de teste com `categoria_slug` digitado manualmente) em vez de bug de renderização — checar o dado bruto antes de mexer em código.
 
 ---
 
