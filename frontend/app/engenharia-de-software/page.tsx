@@ -133,6 +133,7 @@ export default function EngenhariaDeSoftwarePage() {
 
       {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
       <PageHero
+        singleColumn
         className={styles.esHero}
         dataAudit="esw-hero"
         eyebrow="Especialidades · Engenharia de Software"

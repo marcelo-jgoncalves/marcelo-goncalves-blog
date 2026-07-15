@@ -10,6 +10,7 @@ interface PageHeroProps {
   right?: ReactNode;
   statsStrip?: ReactNode;
   dataAudit?: string;
+  singleColumn?: boolean;
 }
 
 export default function PageHero({
@@ -21,10 +22,11 @@ export default function PageHero({
   right,
   statsStrip,
   dataAudit,
+  singleColumn,
 }: PageHeroProps) {
   return (
     <section
-      className={`page-hero${className ? ` ${className}` : ''}`}
+      className={`page-hero${singleColumn ? ' page-hero--single' : ''}${className ? ` ${className}` : ''}`}
       data-audit={dataAudit}
     >
       <div className="page-hero-in">

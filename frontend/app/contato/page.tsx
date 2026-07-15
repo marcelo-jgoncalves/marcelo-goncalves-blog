@@ -75,6 +75,7 @@ export default function ContatoPage() {
   return (
     <>
       <PageHero
+        singleColumn
         className="ct-hero"
         dataAudit="ct-hero"
         eyebrow="Contato"

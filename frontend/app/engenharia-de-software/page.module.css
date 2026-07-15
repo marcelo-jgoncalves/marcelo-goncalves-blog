@@ -102,9 +102,6 @@
 
 /* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
 .esHero {
-  --ph-cols: 1fr;
-  --ph-h1-max: 900px;
-  --ph-sub-max: 800px;
   --ph-pad: 88px 40px 56px;
 }
 

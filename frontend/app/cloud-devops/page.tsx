@@ -126,6 +126,7 @@ export default function CloudDevOpsPage() {
 
       {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
       <PageHero
+        singleColumn
         className={styles.cdHero}
         dataAudit="cd-hero"
         eyebrow="Especialidades · Cloud & DevOps"

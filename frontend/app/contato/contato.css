@@ -1,9 +1,6 @@
 /* frontend/app/contato/contato.css — Contato (Redesign 2026 — Petrol/Clay/Ivory) */
 
 .page-hero.ct-hero {
-  --ph-cols: 1fr;
-  --ph-h1-max: 760px;
-  --ph-sub-max: 680px;
   /* PageHero usa padding-bottom:0 por padrão (espera um statsStrip próprio) —
      sem ele, o CTA/texto auxiliar ficava colado na borda inferior da hero. */
   --ph-pad: 88px 40px 56px;

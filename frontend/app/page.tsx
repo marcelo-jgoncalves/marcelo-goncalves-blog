@@ -147,6 +147,7 @@ export default async function InstitutionalHome() {
   return (
     <>
       <PageHero
+        singleColumn
         className="ih-hero"
         dataAudit="ih-hero"
         eyebrow="Consultoria em Tecnologia"

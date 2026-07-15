@@ -52,7 +52,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
       {hasResults ? (
         // --- CENÁRIO A: Encontrou Resultados ---
         <>
-          <PageHero>
+          <PageHero singleColumn>
             <h1>
               Resultados para: <span className="highlight">{q}</span>
             </h1>

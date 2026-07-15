@@ -122,7 +122,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
       {/* Hero da Categoria */}
-      <PageHero>
+      <PageHero singleColumn>
         <h1>
           Artigos na Categoria: <span className="highlight">{meta.title}</span>
         </h1>

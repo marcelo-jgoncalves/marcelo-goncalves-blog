@@ -33,6 +33,12 @@
   align-items: start;
 }
 
+.page-hero--single {
+  --ph-cols:    1fr;
+  --ph-h1-max:  32ch;
+  --ph-sub-max: 56ch;
+}
+
 .page-hero-right {
   align-self: center;
 }

@@ -148,6 +148,7 @@ export default function InteligenciaArtificialPage() {
 
       {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
       <PageHero
+        singleColumn
         className={styles.aiHero}
         dataAudit="ai-hero"
         eyebrow="Especialidades · Inteligência Artificial"

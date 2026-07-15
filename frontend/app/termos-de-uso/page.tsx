@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function TermosDeUsoPage() {
   return (
     <>
-      <PageHero>
+      <PageHero singleColumn>
         <h1 className="hero-title">Termos de <span className="highlight">Uso</span></h1>
         <p className="hero-subtitle">
           Condições que regem o acesso e uso deste site.

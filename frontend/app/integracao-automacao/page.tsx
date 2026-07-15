@@ -155,6 +155,7 @@ export default function IntegracaoAutomacaoPage() {
 
       {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
       <PageHero
+        singleColumn
         className={styles.iaHero}
         dataAudit="ia2-hero"
         eyebrow="Especialidades · Integração & Automação"

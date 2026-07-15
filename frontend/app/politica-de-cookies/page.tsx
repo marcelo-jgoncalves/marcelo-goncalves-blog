@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function PoliticaDeCookiesPage() {
   return (
     <>
-      <PageHero>
+      <PageHero singleColumn>
         <h1 className="hero-title">Política de <span className="highlight">Cookies</span></h1>
         <p className="hero-subtitle">
           O que são cookies, quais usamos e como você pode gerenciá-los.

@@ -6,9 +6,6 @@
 }
 
 .page-hero.ih-hero {
-  --ph-cols:    1fr;
-  --ph-h1-max:  32ch;
-  --ph-sub-max: 56ch;
   --ph-pad: 88px 40px 64px;
 }
 

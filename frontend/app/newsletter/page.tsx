@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function NewsletterPage() {
   return (
     <>
-      <PageHero>
+      <PageHero singleColumn>
         <h1 className="hero-title">Newsletter — Em Breve</h1>
         <p className="hero-subtitle">
           Estamos preparando algo especial. Em breve você poderá se inscrever para receber análises exclusivas sobre IA, AWS e DevOps.
