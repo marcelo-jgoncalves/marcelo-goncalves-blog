@@ -94,11 +94,7 @@ export default async function Home() {
             <span className="btn home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
           </Link>
         }
-      >
-        <div className="home-hero-actions">
-          <Link href="/artigos" className="btn btn-petrol home-btn-ghost">Todos os artigos <span aria-hidden="true">→</span></Link>
-        </div>
-      </PageHero>
+      />
 
       {/* Mais Lidos */}
       {popular.length > 0 && (

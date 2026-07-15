@@ -17,6 +17,7 @@
   --ph-cols:    1fr auto;
   --ph-gap:     60px;
   --ph-pad:     88px 40px 48px;
+  --ph-h1-max:  760px;
   --ph-sub-max: 520px;
 }
 
@@ -34,10 +35,6 @@
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
   -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
   mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
-}
-
-.op-hero-title-nowrap {
-  white-space: nowrap;
 }
 
 .op-hero-actions {

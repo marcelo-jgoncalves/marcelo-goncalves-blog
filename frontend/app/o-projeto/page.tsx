@@ -150,7 +150,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         className="op-hero"
         dataAudit="op-hero"
         eyebrow="O Projeto · Build in Public"
-        title={<>Mais que um blog.<br /><span className="op-hero-title-nowrap">Uma <em>plataforma editorial</em></span><br />completa</>}
+        title={<>Mais que um blog. Uma <em>plataforma editorial</em> completa, automatizada e construída para escalar com baixo custo.</>}
         subtitle="Cada decisão de arquitetura, cada erro, cada custo e cada automação documentados em tempo real. Um registro honesto de como construir uma plataforma com cloud, IA e engenharia aplicada."
         right={
           <div className="op-hero-stat" data-audit="op-hero-stat">
