@@ -6,16 +6,14 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
-// Ordem pedida por Marcelo (2026-07-12): Home, Serviços (dropdown), Contato, Sobre, Blog.
+// Ordem pedida por Marcelo (2026-07-15): Home, Serviços (dropdown), Contato, Sobre, Blog, O Projeto.
+// "O Projeto" é item fixo na nav (não mais condicional ao contexto de blog/post).
 const NAV_LINKS_AFTER = [
   { name: 'Contato', href: '/contato' },
   { name: 'Sobre', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
+  { name: 'O Projeto', href: '/o-projeto' },
 ] as const;
-
-// "O Projeto" só aparece na nav quando o visitante está no contexto do blog (home do
-// blog ou uma postagem) — não é um item fixo. Ver mesma regra em Footer.tsx.
-const O_PROJETO_LINK = { name: 'O Projeto', href: '/o-projeto' } as const;
 
 // Landing pages de pilar (specs/ESPECIFICACAO-*.md) — as 4 já estão implementadas.
 // Ver project_engenharia_software_landing (memória).
@@ -38,7 +36,6 @@ export default function HeaderNav() {
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   const isServicesActive = SERVICE_LINKS.some((link) => isActive(link.href));
-  const showOProjeto = pathname === '/blog' || pathname.startsWith('/post/');
   // No contexto de blog/post/o-projeto o visitante ainda não escolheu um pilar —
   // o CTA do nav aponta pro menu de serviços em vez de pular direto pro formulário.
   const isBlogContext = pathname === '/blog' || pathname.startsWith('/post/') || pathname === '/o-projeto';
@@ -123,16 +120,6 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
-        {showOProjeto && (
-          <Link
-            href={O_PROJETO_LINK.href}
-            prefetch={false}
-            className={isActive(O_PROJETO_LINK.href) ? 'active' : ''}
-            aria-current={isActive(O_PROJETO_LINK.href) ? 'page' : undefined}
-          >
-            {O_PROJETO_LINK.name}
-          </Link>
-        )}
       </nav>
 
       {isBlogContext ? (
@@ -221,18 +208,6 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
-        {showOProjeto && (
-          <Link
-            href={O_PROJETO_LINK.href}
-            prefetch={false}
-            onClick={closeMenu}
-            tabIndex={isMenuOpen ? 0 : -1}
-            className={isActive(O_PROJETO_LINK.href) ? 'active' : ''}
-            aria-current={isActive(O_PROJETO_LINK.href) ? 'page' : undefined}
-          >
-            {O_PROJETO_LINK.name}
-          </Link>
-        )}
         {isBlogContext ? (
           // eslint-disable-next-line @next/next/no-html-link-for-pages -- ver comentário acima (desktop)
           <a href="/#servicos" className="nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>

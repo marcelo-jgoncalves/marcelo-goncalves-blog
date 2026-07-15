@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import './Footer.css';
 import ConsentTrigger from '@/components/consent/ConsentTrigger';
 
@@ -14,23 +13,19 @@ const ESPECIALIDADES_LINKS = [
   { name: 'Cloud & DevOps', href: '/cloud-devops' },
 ];
 
-// Mesma ordem do nav principal (HeaderNav.tsx): Home, Serviços, Contato, Sobre, Blog.
+// Mesma ordem do nav principal (HeaderNav.tsx): Home, Serviços, Contato, Sobre, Blog, O Projeto.
+// "O Projeto" é item fixo (2026-07-15) — não mais condicional ao contexto de blog/post.
 const QUICK_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Serviços', href: '/#servicos' },
   { name: 'Contato', href: '/contato' },
   { name: 'Sobre', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
+  { name: 'O Projeto', href: '/o-projeto' },
 ];
-
-// "O Projeto" só aparece quando o visitante está no contexto do blog — ver mesma regra em HeaderNav.tsx.
-const O_PROJETO_LINK = { name: 'O Projeto', href: '/o-projeto' };
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const pathname = usePathname();
-  const showOProjeto = pathname === '/blog' || pathname.startsWith('/post/');
-  const quickLinks = showOProjeto ? [...QUICK_LINKS, O_PROJETO_LINK] : QUICK_LINKS;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -69,7 +64,7 @@ export default function Footer() {
           <div className="foot-col">
             <h5>Links Rápidos</h5>
             <ul>
-              {quickLinks.map((link) => (
+              {QUICK_LINKS.map((link) => (
                 <li key={link.name}>
                   {link.href.includes('#') ? (
                     <a href={link.href}>{link.name}</a>

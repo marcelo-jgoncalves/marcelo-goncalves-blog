@@ -147,23 +147,12 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
       {/* HERO */}
       <PageHero
+        singleColumn
         className="op-hero"
         dataAudit="op-hero"
         eyebrow="O Projeto · Build in Public"
         title={<>Mais que um blog. Uma <em>plataforma editorial</em> completa, automatizada e construída para escalar com baixo custo.</>}
         subtitle="Cada decisão de arquitetura, cada erro, cada custo e cada automação documentados em tempo real. Um registro honesto de como construir uma plataforma com cloud, IA e engenharia aplicada."
-        right={
-          <div className="op-hero-stat" data-audit="op-hero-stat">
-            <div className="op-hstat-item">
-              <span className="op-big">{totalCount}</span>
-              <span className="op-cap">posts publicados</span>
-            </div>
-            <div className="op-hstat-item op-clay-item">
-              <span className="op-big op-clay-num">{ROADMAP.length}</span>
-              <span className="op-cap op-clay-cap">novas etapas planejadas</span>
-            </div>
-          </div>
-        }
       >
         <div className="op-hero-actions">
           <span className="op-status-badge"><span className="op-status-dot"></span>Em produção · Fase 1</span>

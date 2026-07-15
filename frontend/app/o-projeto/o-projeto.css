@@ -13,12 +13,8 @@
    HERO (escuro)
    ========================================================================== */
 .op-hero {
-  --ph-max:     var(--wrap-max-narrow);
-  --ph-cols:    1fr auto;
-  --ph-gap:     60px;
-  --ph-pad:     88px 40px 48px;
-  --ph-h1-max:  760px;
-  --ph-sub-max: 520px;
+  --ph-max: var(--wrap-max-narrow);
+  --ph-pad: 88px 40px 48px;
 }
 
 .op-hero::before {
@@ -75,60 +71,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .op-status-dot { animation: none; }
-}
-
-/* ── hero · stat lateral ── */
-.op-hero-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 8px;
-  padding-bottom: 32px;
-  align-self: center;
-  gap: 0;
-}
-
-.op-hstat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-bottom: 16px;
-}
-
-.op-hero-stat .op-big {
-  display: block;
-  font-weight: 900;
-  font-size: clamp(7rem, 12vw, 10.5rem);
-  line-height: 1.15;
-  letter-spacing: -.07em;
-  padding: 16px 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .9) 0%, rgba(255, 255, 255, .35) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.op-hero-stat .op-big.op-clay-num {
-  background: linear-gradient(180deg, var(--clay) 0%, rgba(201, 96, 60, .5) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.op-hero-stat .op-cap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
-}
-
-.op-hero-stat .op-cap.op-clay-cap {
-  color: rgba(201, 96, 60, .85);
 }
 
 /* ==========================================================================
@@ -852,14 +794,6 @@
   .op-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: 32px;
-  }
-
-  .op-hero-title-nowrap {
-    white-space: normal;
-  }
-
-  .op-hero-stat {
-    display: none;
   }
 
   .op-roadmap-grid {
