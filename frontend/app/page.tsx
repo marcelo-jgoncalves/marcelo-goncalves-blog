@@ -9,6 +9,7 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import { IconCycle, IconBolt, IconChip, IconCloud } from '@/components/ui/InstitutionalIcons';
+import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
 
 export const revalidate = 300;
@@ -99,30 +100,30 @@ const STEPS = [
 const CASES = [
   {
     metrics: [{ value: '-40%', label: 'custo de infraestrutura' }],
-    title: 'FinOps & Otimização de Custos em Kubernetes',
-    text: 'Implementação de CloudWatch Container Insights, Metrics Server e Vertical Pod Autoscaler em clusters Amazon EKS de produção, com right-sizing de CPU e memória e um modelo híbrido de instâncias On-Demand e Spot, sem impacto em performance ou disponibilidade.',
-    tags: ['Amazon EKS', 'FinOps', 'Kubernetes'],
+    title: 'Redução de 40% no custo de infraestrutura',
+    text: 'A infraestrutura apresentava desperdício de recursos e custos crescentes em um ambiente Kubernetes na AWS. Revisamos a arquitetura, ajustamos o right-sizing de CPU e memória, configuramos autoscaling e adotamos uma estratégia híbrida de instâncias On-Demand e Spot, mantendo a disponibilidade e a performance da aplicação.',
+    tags: ['FinOps', 'Kubernetes', 'AWS'],
   },
   {
     metrics: [
       { value: '-60%', label: 'custo operacional' },
       { value: '+40%', label: 'performance', accent: true },
     ],
-    title: 'Recriação de Arquitetura & Reconfiguração de Ambiente',
-    text: 'Reprojeto da arquitetura de uma aplicação e reconfiguração completa do ambiente de execução, reduzindo custo operacional e elevando a performance da aplicação.',
+    title: 'Aumento de 40% na performance da aplicação',
+    text: 'A aplicação apresentava baixo desempenho, alto consumo de recursos e uma infraestrutura que limitava sua capacidade de crescimento. Reprojetamos a arquitetura da solução, revisamos a configuração do ambiente e implementamos melhorias de infraestrutura que reduziram o custo operacional em 60% e elevaram significativamente a performance da aplicação.',
     tags: ['Arquitetura', 'Cloud', 'Performance'],
   },
   {
     metrics: [{ value: '-70%', label: 'tempo de ciclo de aprovação' }],
-    title: 'Digitalização do Fluxo de Aprovação de Contratos',
-    text: 'Substituição de um processo baseado em planilhas e e-mail por um portal interno com aprovação em etapas, trilha de auditoria e notificações automáticas, eliminando gargalos manuais e o retrabalho entre áreas.',
+    title: 'Redução de 70% no tempo de aprovação de contratos',
+    text: 'O processo dependia de planilhas, troca de e-mails e aprovações manuais, gerando atrasos, retrabalho e pouca rastreabilidade. Desenvolvemos um portal interno com fluxo de aprovação automatizado, trilha de auditoria e notificações em cada etapa, tornando o processo mais ágil, seguro e transparente.',
     tags: ['Portal Interno', 'Automação de Fluxo', 'Auditoria'],
   },
   {
     metrics: [{ value: '-85%', label: 'tempo de fechamento mensal' }],
-    title: 'Automação do Fechamento Financeiro Mensal',
-    text: 'Automatização da consolidação de relatórios, conciliação de lançamentos e geração de indicadores, eliminando o trabalho manual repetido todo fim de mês.',
-    tags: ['Automação', 'Relatórios', 'Fechamento Contábil'],
+    title: 'Redução de 85% no tempo de fechamento financeiro',
+    text: 'O fechamento mensal exigia consolidação manual de dados, conferências repetitivas e geração de relatórios em diferentes sistemas, consumindo tempo da equipe financeira. Automatizamos a consolidação das informações, os lançamentos e a geração de indicadores, reduzindo significativamente o esforço operacional e permitindo que a equipe se concentrasse em análises estratégicas.',
+    tags: ['Automação', 'Relatórios', 'Fechamento Financeiro'],
   },
 ];
 
@@ -226,30 +227,33 @@ export default async function InstitutionalHome() {
             <p className="ih-results-desc">Projetos reais de otimização de nuvem e arquitetura, com redução de custo mensurável e sem abrir mão de performance ou disponibilidade.</p>
           </div>
           <div className="ih-cases">
-            {CASES.map((c, i) => (
-              <div className={`ih-case${i % 2 === 1 ? ' ih-case--reverse' : ''}`} key={c.title}>
-                <div className="ih-case-text">
-                  <div className="ih-case-metrics">
-                    {c.metrics.map((m) => (
-                      <div className="ih-case-metric" key={m.label}>
-                        <span className="ih-case-metric-v">{m.value}</span>
-                        <span className="ih-case-metric-l">{m.label}</span>
-                      </div>
-                    ))}
+            {CASES.map((c, i) => {
+              const Illustration = RESULT_CASE_ILLUSTRATIONS[i];
+              return (
+                <div className={`ih-case${i % 2 === 1 ? ' ih-case--reverse' : ''}`} key={c.title}>
+                  <div className="ih-case-text">
+                    <div className="ih-case-metrics">
+                      {c.metrics.map((m) => (
+                        <div className="ih-case-metric" key={m.label}>
+                          <span className="ih-case-metric-v">{m.value}</span>
+                          <span className="ih-case-metric-l">{m.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <h3>{c.title}</h3>
+                    <p>{c.text}</p>
+                    <div className="ih-case-tags">
+                      {c.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
                   </div>
-                  <h3>{c.title}</h3>
-                  <p>{c.text}</p>
-                  <div className="ih-case-tags">
-                    {c.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
+                  <div className={`ih-case-visual${i % 2 === 1 ? ' ih-case-visual--alt' : ''}`}>
+                    <Illustration />
                   </div>
                 </div>
-                <div className={`ih-case-visual${i % 2 === 1 ? ' ih-case-visual--alt' : ''}`}>
-                  Ilustração do case (placeholder)
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="ih-section-footer-center">
             <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>
