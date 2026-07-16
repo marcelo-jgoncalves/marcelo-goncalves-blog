@@ -137,7 +137,7 @@ export default function EngenhariaDeSoftwarePage() {
         className={styles.esHero}
         dataAudit="esw-hero"
         eyebrow="Especialidades · Engenharia de Software"
-        title={<>Desenvolvemos software que impulsiona o seu <em>negócio</em>.</>}
+        title={<>Desenvolvemos software que <em>impulsiona</em> o seu negócio.</>}
         subtitle="Cada empresa possui desafios únicos. Por isso, desenvolvemos sistemas, aplicações e plataformas sob medida que automatizam processos, integram informações e apoiam o crescimento do seu negócio."
       >
         <p className={styles.heroParagraph2}>
@@ -147,10 +147,6 @@ export default function EngenhariaDeSoftwarePage() {
           <Link href="/contato?assunto=engenharia-de-software" className="btn">
             Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
-        </div>
-        <div className={styles.availability}>
-          <span className={styles.availabilityDot} aria-hidden="true" />
-          Diagnóstico inicial gratuito de 30 min · resposta em até 24h · 100% remoto
         </div>
       </PageHero>
 

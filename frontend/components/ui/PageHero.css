@@ -71,12 +71,13 @@
 
 .page-hero h1 {
   font-weight: 800;
-  font-size: var(--ph-h1-size);
+  font-size: clamp(1.85rem, 5.5vw + 1rem, var(--ph-h1-size));
   line-height: 1.04;
   letter-spacing: -.04em;
   color: #fff;
   max-width: var(--ph-h1-max);
   text-wrap: balance;
+  overflow-wrap: break-word;
   margin-bottom: 20px;
 }
 
@@ -90,5 +91,6 @@
   line-height: 1.68;
   color: rgba(250, 248, 243, .63);
   max-width: var(--ph-sub-max);
+  overflow-wrap: break-word;
   margin-bottom: 30px;
 }

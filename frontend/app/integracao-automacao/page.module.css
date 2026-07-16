@@ -127,33 +127,22 @@
   margin: 16px 0 0;
 }
 
+/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
+   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
+   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .heroCtaRow {
-  display: flex;
+  display: none;
   gap: 14px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   margin-top: var(--sp-7);
 }
 
-.availability {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 40px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .08em;
-  color: rgba(250, 248, 243, .5);
-}
-
-.availabilityDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--moss);
-  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
-  animation: iaPulse 2.4s ease-in-out infinite;
-  flex: none;
+@media (max-width: 860px) {
+  .heroCtaRow {
+    display: flex;
+  }
 }
 
 /* ===== O QUE FAZEMOS — 5 cards (3+2), não 6 ===== */
@@ -237,9 +226,9 @@
 }
 
 @media (min-width: 680px) {
-  /* minmax(0,1fr), não 1fr puro: coluna 1fr não encolhe abaixo do min-content e,
-     combinada com white-space:nowrap no texto, vaza para fora do container em
-     larguras intermediárias (~900-1000px) — Seção 3 da spec. */
+  /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
+     min-content do texto — necessário porque .beneficioText quebra em
+     2 linhas (overflow-wrap) em vez de nowrap. */
   .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
@@ -268,7 +257,7 @@
   font-size: 15px;
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
-  white-space: nowrap;
+  overflow-wrap: break-word;
   min-width: 0;
 }
 

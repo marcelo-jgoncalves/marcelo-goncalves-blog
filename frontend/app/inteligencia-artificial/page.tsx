@@ -163,10 +163,6 @@ export default function InteligenciaArtificialPage() {
             Solicitar diagnóstico <span aria-hidden="true">→</span>
           </Link>
         </div>
-        <div className={styles.availability}>
-          <span className={styles.availabilityDot} aria-hidden="true" />
-          Diagnóstico inicial gratuito de 30 min · resposta em até 24h · 100% remoto
-        </div>
       </PageHero>
 
       {/* O QUE FAZEMOS */}
