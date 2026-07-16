@@ -131,7 +131,7 @@ export default function CloudDevOpsPage() {
         dataAudit="cd-hero"
         eyebrow="Especialidades · Cloud & DevOps"
         title={<>Construímos plataformas em nuvem preparadas para <em>crescer</em>.</>}
-        subtitle="A infraestrutura deixou de ser apenas um ambiente onde sistemas são executados. Hoje ela é um fator estratégico para garantir disponibilidade, segurança, escalabilidade e velocidade na entrega de novas funcionalidades."
+        subtitle="Projetamos e operamos ambientes cloud modernos, seguros e escaláveis para acelerar entregas, reduzir a complexidade operacional e apoiar o crescimento do seu negócio."
       >
         <p className={styles.heroParagraph2}>
           Projetamos, implementamos e operamos plataformas em nuvem utilizando boas práticas de arquitetura, automação e DevOps para que sua empresa possa inovar com confiança e reduzir a complexidade operacional.

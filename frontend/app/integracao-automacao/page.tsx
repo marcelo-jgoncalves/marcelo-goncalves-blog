@@ -160,7 +160,7 @@ export default function IntegracaoAutomacaoPage() {
         dataAudit="ia2-hero"
         eyebrow="Especialidades · Integração & Automação"
         title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação mais <em>inteligente</em>.</>}
-        subtitle="À medida que uma empresa cresce, é comum que diferentes sistemas passem a fazer parte da rotina: ERP, CRM, e-commerce, plataformas financeiras, sistemas internos e diversas outras aplicações."
+        subtitle="Integramos aplicações e automatizamos processos para que as informações circulem com segurança, reduzindo erros, aumentando a produtividade e simplificando a operação da sua empresa."
       >
         <p className={styles.heroParagraph2}>
           Quando essas ferramentas não se comunicam, surgem processos manuais, informações duplicadas e perda de produtividade.

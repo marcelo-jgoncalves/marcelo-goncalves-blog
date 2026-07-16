@@ -153,7 +153,7 @@ export default function InteligenciaArtificialPage() {
         dataAudit="ai-hero"
         eyebrow="Especialidades · Inteligência Artificial"
         title={<>Transformamos inteligência artificial em resultados para o seu <em>negócio</em>.</>}
-        subtitle="A inteligência artificial está mudando a forma como as empresas trabalham. Mais do que automatizar tarefas, ela permite acelerar decisões, ampliar a capacidade das equipes e criar experiências mais inteligentes para clientes e colaboradores."
+        subtitle="Desenvolvemos soluções de IA integradas aos processos da sua empresa para aumentar a produtividade, apoiar decisões e automatizar tarefas de forma inteligente."
       >
         <p className={styles.heroParagraph2}>
           Desenvolvemos soluções de IA integradas aos processos da sua empresa, sempre com foco em gerar valor real, reduzir custos operacionais e aumentar a produtividade.
