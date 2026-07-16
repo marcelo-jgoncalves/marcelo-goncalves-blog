@@ -80,7 +80,7 @@ export default function ContatoPage() {
         dataAudit="ct-hero"
         eyebrow="Contato"
         title={<>Vamos conversar sobre a tecnologia que <em>impulsiona</em> a sua empresa.</>}
-        subtitle="Cada empresa possui desafios diferentes. Quer você esteja buscando modernizar sua infraestrutura, automatizar processos, aplicar Inteligência Artificial ou iniciar uma jornada de transformação digital, estamos prontos para entender seu cenário e identificar oportunidades de evolução."
+        subtitle="Conte-nos seus desafios. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para ajudar sua empresa a crescer com mais eficiência, segurança e inovação."
       >
         <div className="ct-hero-actions">
           <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
