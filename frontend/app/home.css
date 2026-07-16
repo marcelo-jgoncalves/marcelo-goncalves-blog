@@ -5,8 +5,14 @@
   50% { opacity: .3; }
 }
 
+/* padding-bottom 20px: no desktop o botão da hero fica oculto (.ih-hero-actions
+   — ver abaixo) e o último elemento visível é o subtitle, que já tem
+   margin-bottom:30px (PageHero.css) — 20+30=50px de fato até o limite da
+   seção, igualando ao #servicos abaixo. No mobile (≤860px) o botão volta a
+   aparecer sem margem própria, então o padding-bottom precisa virar 50px
+   puro — ver media query mais abaixo. */
 .page-hero.ih-hero {
-  --ph-pad: 88px 40px 64px;
+  --ph-pad: 88px 40px 20px;
 }
 
 .ih-hero::before {
@@ -25,11 +31,28 @@
   mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
 }
 
+/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
+   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
+   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .ih-hero-actions {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   gap: 14px;
   margin-top: var(--sp-7);
+}
+
+@media (max-width: 860px) {
+  .ih-hero-actions {
+    display: flex;
+    justify-content: center;
+  }
+  /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
+     precisa virar 50px "puro" para manter o mesmo espaçamento do desktop
+     (lá o padding é 20px porque soma com os 30px de margin-bottom do
+     subtitle, que é o último elemento visível quando o botão está oculto). */
+  .page-hero.ih-hero .page-hero-in {
+    padding-bottom: 50px;
+  }
 }
 
 /* Botão — usa o padrão global .btn/.btn-petrol (globals.css). */
@@ -62,6 +85,44 @@
 .ih-section {
   margin-block: 0;
   padding: 100px 0;
+}
+
+/* Espaçamento até a linha divisória com #abordagem reduzido à metade (100px→50px),
+   a pedido de Marcelo — só a borda inferior desta seção, não o padding padrão.
+   padding-top também reduzido a 50px, para igualar o espaço entre a hero e o
+   eyebrow "Serviços" (ver .page-hero.ih-hero acima). */
+#servicos.ih-section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* Espaçamento entre a linha divisória e o eyebrow "Como trabalhamos" reduzido
+   à metade (100px→50px) — só o padding superior desta seção. */
+#abordagem.ih-section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* Espaçamento entre "Conte-nos seu desafio" (#resultados) e o eyebrow
+   "Conteúdo técnico" reduzido à metade (100px→50px). Também reduz a
+   borda inferior (até "Conheça o blog"→"Vamos conversar", ver #contato
+   abaixo) para manter o mesmo total de 100px dos demais casos. */
+#insights.ih-section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* Espaçamento entre "Conheça o blog" (#insights) e o eyebrow "Vamos
+   conversar" reduzido para o mesmo total dos demais casos (100px).
+   .cta-adv-in usa align-items:center (centraliza a coluna de texto
+   contra o card, mais alto, à direita) — isso empurrava o eyebrow bem
+   além do padding-top sozinho. Troca para align-items:flex-start só
+   nesta instância (id="contato", exclusiva da Home) para o eyebrow
+   ficar de fato a 50px do topo da seção; as outras páginas que usam
+   CtaAssessoria não são afetadas. */
+#contato.cta-adv .cta-adv-in {
+  align-items: flex-start;
+  padding-top: 50px;
 }
 
 .ih-section--surface {
@@ -321,6 +382,13 @@
   isolation: isolate;
 }
 
+/* Espaçamento entre "Conduzido por Marcelo Gonçalves..." (#abordagem) e o
+   eyebrow "Resultados" reduzido à metade (100px→50px), a pedido de Marcelo. */
+#resultados.ih-results {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 .ih-results-t {
   font-weight: 800;
   font-size: clamp(1.9rem, 3vw, 2.6rem);
@@ -346,7 +414,7 @@
 .ih-cases {
   display: flex;
   flex-direction: column;
-  gap: 72px;
+  gap: 56px;
 }
 
 .ih-case {
@@ -441,6 +509,23 @@
   overflow: hidden;
 }
 
+.ih-illustration {
+  position: relative;
+  z-index: 1;
+  width: 72%;
+  height: 72%;
+}
+
+.ih-illustration--74 {
+  width: 74%;
+  height: 74%;
+}
+
+.ih-illustration--76 {
+  width: 76%;
+  height: 76%;
+}
+
 .ih-case-visual--alt {
   border-radius: 150px 28px 28px 150px;
 }
@@ -454,13 +539,14 @@
   .ih-results .ih-case-visual--alt {
     order: 1;
     width: 100%;
-    height: 210px;
+    height: 170px;
+    border-radius: 90px;
   }
-  .ih-results .ih-case-visual {
-    border-radius: 20px 90px 90px 20px;
-  }
-  .ih-results .ih-case-visual--alt {
-    border-radius: 90px 20px 20px 90px;
+  .ih-results .ih-illustration,
+  .ih-results .ih-illustration--74,
+  .ih-results .ih-illustration--76 {
+    width: 95%;
+    height: 95%;
   }
   .ih-results .ih-case-text {
     order: 2;
@@ -510,8 +596,3 @@
   .ih-blog-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 680px) {
-  .ih-hero-actions {
-    justify-content: center;
-  }
-}

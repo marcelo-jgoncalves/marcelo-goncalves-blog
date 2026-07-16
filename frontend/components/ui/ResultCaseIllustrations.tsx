@@ -1,19 +1,12 @@
 /* frontend/components/ui/ResultCaseIllustrations.tsx
    Ilustrações SVG dos 4 cases da seção Resultados (Home) —
-   specs/ESPECIFICACAO-RESULTADOS-ILUSTRACOES-V2.md */
-
-import type { CSSProperties } from 'react';
-
-const svgStyle = (pct: number): CSSProperties => ({
-  width: `${pct}%`,
-  height: `${pct}%`,
-  position: 'relative',
-  zIndex: 1,
-});
+   specs/ESPECIFICACAO-RESULTADOS-ILUSTRACOES-V2.md
+   Tamanho controlado via classe (não inline style) para permitir
+   override responsivo em home.css — ver .ih-illustration. */
 
 export function ResultCase1() {
   return (
-    <svg viewBox="0 0 220 150" style={svgStyle(72)} fill="none" aria-hidden="true">
+    <svg viewBox="0 0 220 150" className="ih-illustration" fill="none" aria-hidden="true">
       <text x="12" y="48" textAnchor="start" fill="rgba(255,255,255,.4)" fontFamily="'JetBrains Mono', monospace" fontSize="9">100%</text>
       <text x="12" y="86" textAnchor="start" fill="rgba(255,255,255,.4)" fontFamily="'JetBrains Mono', monospace" fontSize="9">50%</text>
       <text x="12" y="128" textAnchor="start" fill="rgba(255,255,255,.4)" fontFamily="'JetBrains Mono', monospace" fontSize="9">0%</text>
@@ -32,7 +25,7 @@ export function ResultCase1() {
 
 export function ResultCase2() {
   return (
-    <svg viewBox="0 0 220 150" style={svgStyle(72)} fill="none" aria-hidden="true">
+    <svg viewBox="0 0 220 150" className="ih-illustration" fill="none" aria-hidden="true">
       <path d="M26 20 L48 34 M48 34 L18 52 M18 52 L50 60 M50 60 L22 82 M22 82 L52 94 M52 94 L30 108 M26 20 L18 52 M48 34 L50 60 M18 52 L22 82 M50 60 L52 94" stroke="rgba(255,255,255,.2)" strokeWidth="1.1" />
       <circle cx="26" cy="20" r="4.5" fill="#0A2A33" stroke="rgba(255,255,255,.5)" strokeWidth="1" />
       <circle cx="48" cy="34" r="4.5" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.3)" strokeWidth="1" strokeDasharray="2 2" />
@@ -58,7 +51,7 @@ export function ResultCase2() {
 
 export function ResultCase3() {
   return (
-    <svg viewBox="0 0 220 150" style={svgStyle(76)} fill="none" aria-hidden="true">
+    <svg viewBox="0 0 220 150" className="ih-illustration ih-illustration--76" fill="none" aria-hidden="true">
       <circle cx="192" cy="62" r="17" fill="#3F6B47" fillOpacity=".2" />
       <path d="M28 62 L151 62" stroke="#C9603C" strokeWidth="2" />
       <path d="M151 62 L192 62" stroke="#3F6B47" strokeWidth="2" />
@@ -76,7 +69,7 @@ export function ResultCase3() {
 
 export function ResultCase4() {
   return (
-    <svg viewBox="0 0 220 150" style={svgStyle(74)} fill="none" aria-hidden="true">
+    <svg viewBox="0 0 220 150" className="ih-illustration ih-illustration--74" fill="none" aria-hidden="true">
       <path d="M64 40 C 96 40, 100 48, 130 48" stroke="rgba(255,255,255,.32)" strokeWidth="1.3" />
       <path d="M66 78 C 96 78, 100 72, 130 72" stroke="rgba(255,255,255,.32)" strokeWidth="1.3" />
       <path d="M62 112 C 96 112, 100 96, 130 96" stroke="rgba(255,255,255,.32)" strokeWidth="1.3" />
