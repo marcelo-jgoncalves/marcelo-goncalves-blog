@@ -1,11 +1,10 @@
-/* frontend/app/sobre/page.tsx */
+/* frontend/app/sobre/page.tsx — specs/ESPECIFICACAO-SOBRE-V2.md */
 
 import type { Metadata } from 'next';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
-import StaticPicture from '@/components/ui/StaticPicture';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import './sobre.css';
@@ -16,76 +15,39 @@ const AUTOR_ID = 'marcelo-goncalves';
 const FALLBACK_DESC = 'Conheça Marcelo Gonçalves: engenheiro cloud especialista em AWS, DevOps e FinOps, mestre em Linguística e professor há mais de 15 anos.';
 const FALLBACK_PHOTO = '/static/foto-perfil-oculos.png';
 
-const CHECK_ICON = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-);
-
-const EXPERTISE_AREAS = [
-  {
-    cat: 'Modernização Operacional',
-    title: 'Transformação Digital',
-    desc: 'Apps internos, digitalização de processos, integração de sistemas e automação operacional para reduzir retrabalho e acelerar decisões.',
-    meta: 'Processos · Integrações · Automação',
-    feat: true,
-  },
-  {
-    cat: 'Produtividade com IA',
-    title: 'IA Aplicada & Automação Inteligente',
-    desc: 'Assistentes internos, AIOps, análise inteligente de logs, automação documental e fluxos com IA para operações mais inteligentes e eficientes.',
-    meta: 'LLMs · AIOps · Automação',
-  },
-  {
-    cat: 'Nuvem Empresarial',
-    title: 'Arquitetura AWS',
-    desc: 'Arquiteturas seguras, escaláveis e resilientes para ambientes cloud preparados para crescer com governança, alta disponibilidade e continuidade operacional.',
-    meta: 'AWS · Alta Disponibilidade · Governança',
-  },
-  {
-    cat: 'Entrega Contínua',
-    title: 'DevOps & Automação',
-    desc: 'Infraestrutura como código, pipelines CI/CD e automações que aceleram entregas, reduzem erros e aumentam previsibilidade operacional.',
-    meta: 'Terraform · CI/CD · GitOps',
-  },
-  {
-    cat: 'Gestão de Custos',
-    title: 'FinOps',
-    desc: 'Otimização de custos, governança financeira e estratégias de consumo inteligente para operar cloud com eficiência e previsibilidade.',
-    meta: 'Rightsizing · Savings Plans · Budgets',
-  },
-  {
-    cat: 'Confiabilidade Operacional',
-    title: 'Operações & Resiliência',
-    desc: 'Administração de ambientes Linux e AWS, observabilidade, backup, resposta a incidentes e sustentação contínua para operações críticas.',
-    meta: 'Linux · CloudWatch · Backup',
-  },
+const PRINCIPLES = [
+  { num: '01', title: 'Simplicidade', text: 'Projetamos soluções fáceis de entender, operar e manter. A complexidade só deve existir quando for realmente necessária — nunca como consequência de decisões mal estruturadas.' },
+  { num: '02', title: 'Modularidade', text: 'Construímos sistemas formados por partes bem definidas, independentes e preparadas para evoluir. Assim, o negócio pode crescer sem precisar reconstruir tudo a cada nova necessidade.' },
+  { num: '03', title: 'Automação', text: 'Antes de adicionar mais ferramentas, procuramos eliminar esforço manual, reduzir retrabalho e criar processos mais previsíveis. Pessoas devem resolver problemas, não repetir tarefas.' },
+  { num: '04', title: 'Precisão', text: 'Cada decisão técnica precisa ter um propósito claro. Tecnologia deve gerar impacto mensurável, melhorar a operação e contribuir diretamente para os objetivos do negócio.' },
+  { num: '05', title: 'Evolução', text: 'Criamos arquiteturas preparadas para acompanhar mudanças, novas demandas e novas oportunidades. Crescer deve ser uma evolução natural, não uma sucessão de recomeços.' },
 ];
 
-const LANGUAGES = [
-  { flag: 'BR', name: 'Português', level: 'Nativo' },
-  { flag: 'US', name: 'Inglês', level: 'Avançado' },
-  { flag: 'DE', name: 'Alemão', level: 'Avançado' },
+const MODULES = [
+  { num: '01', glyph: '↳', title: 'Entendemos', text: 'Mapeamos a operação, as limitações e os objetivos reais antes de propor qualquer mudança técnica.', span: 4 },
+  { num: '02', glyph: '?', title: 'Questionamos', text: 'Revisamos premissas, identificamos desperdícios e verificamos se o problema realmente exige mais tecnologia.', span: 4 },
+  { num: '03', glyph: '−', title: 'Simplificamos', text: 'Eliminamos etapas e dependências desnecessárias para tornar a solução mais clara, previsível e sustentável.', span: 4 },
+  { num: '04', glyph: '□', title: 'Construímos', text: 'Transformamos decisões bem fundamentadas em componentes modulares, seguros e preparados para evoluir sem comprometer o restante da operação.', span: 7 },
+  { num: '05', glyph: '↗', title: 'Evoluímos', text: 'Observamos os resultados, aprendemos com o uso real e adaptamos a solução conforme o negócio avança.', span: 5, dark: true },
 ];
 
-const CERTS = [
-  { tile: 'SA', issuer: 'AWS Certified', name: 'Solutions Architect – Associate', badge: 'solutions', accent: true },
-  { tile: 'SO', issuer: 'AWS Certified', name: 'SysOps Administrator – Associate', badge: 'sysops' },
-  { tile: 'TF', issuer: 'HashiCorp', name: 'Terraform Associate', badge: 'terraform' },
-  { tile: 'CP', issuer: 'AWS Certified', name: 'Cloud Practitioner', badge: 'pactitioner' },
-  { tile: 'SP', issuer: 'Splunk', name: 'Power User', badge: 'splunk' },
+const METRICS = [
+  { value: '10+ anos', label: 'de experiência em tecnologia' },
+  { value: 'Cloud', label: 'arquitetura e modernização' },
+  { value: 'DevOps', label: 'automação e entrega contínua' },
+  { value: 'Engenharia', label: 'soluções preparadas para evoluir' },
 ];
 
-const ACAD_ITEMS = [
-  { num: '01', type: 'Especialização', name: 'Arquitetura e Projetos de Cloud Computing', logo: 'estacio-logo', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
-  { num: '02', type: 'Graduação', name: 'Sistemas de Informação', logo: 'estacio-logo', logoAlt: 'Estácio', logoTitle: 'Universidade Estácio de Sá' },
-  { num: '03', type: 'Mestrado', name: 'Linguística Aplicada', logo: 'potsdam-logo', logoAlt: 'Universidade de Potsdam', logoTitle: 'Universidade de Potsdam' },
-  { num: '04', type: 'Graduação', name: 'Bacharelado em Letras', logo: 'ufmg-logo', logoAlt: 'UFMG', logoTitle: 'Universidade Federal de Minas Gerais' },
+const EVIDENCE_CARDS = [
+  { label: 'Experiência internacional', title: 'Contextos complexos e distribuídos', text: 'Experiência em projetos corporativos, equipes internacionais e ambientes que exigem confiabilidade, segurança e clareza técnica.', tags: ['Enterprise', 'Times globais', 'Ambientes críticos'] },
+  { label: 'Certificações principais', title: 'Conhecimento validado na prática', text: 'Certificações estratégicas em arquitetura cloud, operação, infraestrutura como código e observabilidade.', tags: ['AWS', 'Terraform', 'Observabilidade'] },
+  { label: 'Especialidades', title: 'Competências que trabalham juntas', text: 'Uma atuação integrada, conectando estratégia, arquitetura, implementação, automação e evolução contínua.', tags: ['Cloud e arquitetura', 'Software', 'Automação', 'IA e integrações'] },
 ];
 
-const COMPANIES = [
-  { name: 'Accenture', logo: 'accenture-logo' },
-  { name: 'Deutsche Bahn', logo: 'deutsche-bahn-logo' },
-  { name: 'anynines', logo: 'anynines-logo' },
-  { name: 'CrediSIS', logo: 'credisis-logo' },
+const BELIEFS = [
+  { num: '01', title: 'Tecnologia com propósito', text: 'Cada ferramenta, sistema ou automação precisa existir para resolver um problema real e gerar impacto mensurável na operação.' },
+  { num: '02', title: 'Eficiência antes da complexidade', text: 'Não adicionamos tecnologia por hábito. Primeiro buscamos reduzir etapas, dependências e esforço desnecessário.' },
+  { num: '03', title: 'Evolução sem recomeços', text: 'Boas soluções devem crescer junto com o negócio, sem exigir que tudo seja reconstruído a cada nova necessidade.' },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -117,9 +79,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SobrePage() {
   const authorData = await getAuthor(AUTOR_ID).catch(() => null);
   const author = authorData?.autor || {};
-  const linkedinUrl = author.linkedin_url || '#';
-  const githubUrl = author.github_url || '#';
-  const instagramUrl = author.instagram_url || '#';
   const nome = author.nome_exibicao || AUTHOR_NAME;
 
   const personJsonLd = {
@@ -130,8 +89,7 @@ export default async function SobrePage() {
     image: author.foto_avatar_url || undefined,
     jobTitle: 'Engenheiro Cloud, AWS, DevOps & IA',
     description: author.bio || FALLBACK_DESC,
-    sameAs: [linkedinUrl, githubUrl, instagramUrl].filter((u) => u && u !== '#'),
-    knowsAbout: ['AWS', 'Arquitetura Serverless', 'DevOps', 'Terraform', 'FinOps', 'Inteligência Artificial', 'Linguística'],
+    knowsAbout: ['AWS', 'Arquitetura Serverless', 'DevOps', 'Terraform', 'FinOps', 'Inteligência Artificial'],
     worksFor: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
   };
 
@@ -143,243 +101,183 @@ export default async function SobrePage() {
       <PageHero
         className="sobre-hero"
         dataAudit="sobre-hero"
-        eyebrow={`Sobre · ${nome}`}
-        title={<>Transformo complexidade técnica em <em>operações inteligentes</em>, eficientes e escaláveis</>}
-        subtitle="Combino experiência prática em infraestrutura, DevOps e FinOps para modernizar ambientes, automatizar processos e tornar operações mais eficientes."
+        eyebrow="Sobre Nós"
+        title={<>Toda empresa merece uma tecnologia que <em>acompanhe seu crescimento</em>.</>}
+        subtitle="Criamos soluções que aumentam a eficiência operacional por meio de engenharia, automação e inteligência artificial. Porque crescer não deveria significar conviver com processos cada vez mais complexos."
         right={
-          <>
-            <div className="sobre-photo-frame" data-audit="sobre-photo-frame">
-              {author.foto_avatar_url ? (
-                <ResponsiveImage className="sobre-pf-slot" src={author.foto_avatar_url} alt={nome} priority />
-              ) : (
-                <img className="sobre-pf-slot" src={FALLBACK_PHOTO} alt={nome} />
-              )}
-              <div className="sobre-pf-tag"><span className="sobre-dot" />Engenheiro Cloud · AWS</div>
+          <div className="sobre-hero-panel" data-audit="sobre-hero-panel">
+            <div className="sobre-hp-tag"><span className="sobre-dot" />Nossa Visão</div>
+            <p className="sobre-hp-quote">Tecnologia deve ampliar a capacidade de uma empresa, não aumentar o esforço necessário para operá-la.</p>
+            <div className="sobre-hp-list">
+              <div className="sobre-hp-row"><span className="k">Processos</span><span className="v">mais simples</span></div>
+              <div className="sobre-hp-row"><span className="k">Operações</span><span className="v">mais eficientes</span></div>
+              <div className="sobre-hp-row sobre-hp-row--last"><span className="k">Soluções</span><span className="v">preparadas para evoluir</span></div>
             </div>
-            <div className="sobre-hero-socials sobre-hero-socials-mobile">
-              <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z" /></svg>
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
-              </a>
-              <a href={githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" /></svg>
-              </a>
-            </div>
-          </>
-        }
-        statsStrip={
-          <div className="sobre-hero-stats" data-audit="sobre-hero-stats">
-            <div className="sobre-hstat"><span className="v">10+</span><span className="l">Anos de experiência</span></div>
-            <div className="sobre-hstat"><span className="v">8+</span><span className="l">Anos com AWS</span></div>
-            <div className="sobre-hstat"><span className="v">3+</span><span className="l">Países</span></div>
-            <div className="sobre-hstat"><span className="v">15+</span><span className="l">Anos de ensino</span></div>
           </div>
         }
       >
         <div className="sobre-hero-actions">
-          <a className="btn sobre-btn-clay" href="#assessoria">Entre em contato <span className="sobre-arrow">→</span></a>
-          <div className="sobre-hero-socials sobre-hero-socials-desktop">
-            <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z" /></svg>
-            </a>
-            <a href={instagramUrl} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
-            </a>
-            <a href={githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" /></svg>
-            </a>
-          </div>
+          <a className="btn sobre-btn-clay" href="#filosofia">Conheça nossa filosofia <span className="sobre-arrow">→</span></a>
+          <a className="sobre-btn-ghost" href="#assessoria">Fale com a gente</a>
         </div>
       </PageHero>
 
-      {/* ── TRAJETÓRIA ── */}
-      <section className="sobre-traj">
-        <div className="wrap">
-          <div className="sobre-traj-grid" data-audit="sobre-traj-grid">
-            <div className="sobre-traj-left">
-              <div className="sec-ey">Trajetória</div>
-              <h2 className="sec-t sobre-traj-title">Uma carreira entre o código e a sala de aula</h2>
-              <p>
-                Especialista em <strong>cloud, automação e eficiência operacional</strong>, construo
-                soluções que ajudam empresas a reduzir complexidade, ganhar escala e operar com mais
-                inteligência. Minha atuação combina infraestrutura resiliente, automação de processos,
-                IA aplicada e arquiteturas preparadas para evoluir com o negócio.
-              </p>
-              <p>
-                Ao longo da carreira, colaborei com empresas no <strong>Brasil e no exterior</strong>,
-                refinando métodos que equilibram agilidade técnica, governança e sustentabilidade
-                operacional, uma experiência que molda como penso tecnologia: como ferramenta para
-                gerar eficiência real.
-              </p>
-            </div>
-            <div className="sobre-traj-quote" data-audit="sobre-traj-quote">
-              <div className="sobre-tq-mark">&ldquo;</div>
-              <p className="sobre-tq-text">
-                Entre a engenharia e a estratégia, meu papel é transformar complexidade em
-                sistemas, automações e operações que funcionam melhor.
-              </p>
-              <div className="sobre-tq-foot">
-                <div className="sobre-tq-author">
-                  <span className="n">Marcelo Gonçalves</span>
-                  <span className="r">Engenheiro &amp; Professor</span>
-                </div>
-                <div className="sobre-tq-stat">
-                  <span className="v">15+</span>
-                  <span className="l">Anos ensinando</span>
-                </div>
-              </div>
-            </div>
+      {/* ── NOSSA ORIGEM ── */}
+      <section className="sobre-origem">
+        <div className="wrap sobre-origem-grid" data-audit="sobre-origem-grid">
+          <div className="sobre-origem-text">
+            <div className="sec-ey">Nossa Origem</div>
+            <h2 className="sobre-origem-title">Tecnologia só gera valor quando ajuda uma empresa a <em>operar melhor</em>.</h2>
+            <p>Ao longo dos anos, vimos empresas investirem em novas ferramentas esperando mais velocidade e produtividade.</p>
+            <p>Muitas vezes o resultado foi o contrário: processos mais complexos e sistemas que deixaram de conversar entre si.</p>
+            <p>Por isso construímos uma visão diferente: soluções que simplificam operações e dão espaço para o que realmente importa.</p>
           </div>
+          <aside className="sobre-origem-mission" data-audit="sobre-origem-mission">
+            <span className="sobre-om-label">Nossa Missão</span>
+            <h3 className="sobre-om-title">Transformar tecnologia em eficiência operacional.</h3>
+            <p className="sobre-om-text">Fazemos isso por meio de engenharia, automação e inteligência artificial, construindo sistemas preparados para acompanhar cada nova etapa do negócio.</p>
+          </aside>
+        </div>
+      </section>
 
-          <div className="sobre-traj-companies" data-audit="sobre-traj-companies">
-            <div className="sobre-tc-wrapper">
-              <div className="sec-ey sobre-tc-ey">Experiência</div>
-              <div className="sobre-tc-label">Empresas que marcaram a <span className="sobre-clay-text">trajetória</span></div>
-              <p className="sobre-tc-sub">Atuação em empresas líderes no Brasil e no exterior, do código à escala global.</p>
-            </div>
-            <div className="sobre-tc-list">
-              {COMPANIES.map((c) => (
-                <div className="sobre-tc-item" key={c.name}>
-                  <StaticPicture category="logos" name={c.logo} alt={c.name} title={c.name} className="sobre-tc-logo" />
-                </div>
-              ))}
-            </div>
+      {/* ── NOSSA FILOSOFIA ── */}
+      <section className="sobre-filosofia" id="filosofia">
+        <div className="wrap">
+          <div className="sobre-center-head">
+            <div className="sec-ey sobre-ey-center">Nossa Filosofia</div>
+            <h2 className="sec-t">Eficiência nasce de decisões <em>bem projetadas</em>.</h2>
+            <p className="sec-desc sobre-desc-center">Nossa forma de pensar combina clareza, engenharia e visão de longo prazo. Cada solução precisa funcionar bem hoje, continuar compreensível amanhã e evoluir sem comprometer tudo o que já foi construído.</p>
+          </div>
+          <div className="sobre-principles-list" data-audit="sobre-principles-list">
+            {PRINCIPLES.map((p) => (
+              <div className="sobre-principle-row" key={p.num}>
+                <span className="sobre-pr-num">{p.num}</span>
+                <h3 className="sobre-pr-title">{p.title}</h3>
+                <p className="sobre-pr-text">{p.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── ÁREAS ── */}
-      <section className="sobre-areas">
+      {/* ── COMO PENSAMOS ── */}
+      <section className="sobre-abordagem" id="abordagem">
         <div className="wrap">
-          <div className="sobre-areas-head">
-            <div className="sec-ey">Especialidades</div>
-            <h2 className="sec-t">Áreas em que atuo</h2>
-            <p className="sec-desc">Da transformação digital à operação em produção. Aplico cloud, automação e IA para tornar operações mais eficientes, seguras e escaláveis.</p>
+          <div className="sobre-abordagem-head" data-audit="sobre-abordagem-head">
+            <div className="sobre-abordagem-head-l">
+              <div className="sec-ey">Como Pensamos</div>
+              <h2 className="sobre-abordagem-title">Boa engenharia começa antes da <em>implementação</em>.</h2>
+            </div>
+            <p className="sobre-abordagem-desc">Não começamos escolhendo ferramentas. Primeiro entendemos o contexto, questionamos premissas e simplificamos o problema. A tecnologia entra depois, como consequência de decisões bem fundamentadas.</p>
           </div>
-          <div className="sobre-areas-grid" data-audit="sobre-areas-grid">
-            {EXPERTISE_AREAS.map((area) => (
+          <div className="sobre-modules-grid" data-audit="sobre-modules-grid">
+            {MODULES.map((m) => (
               <div
-                key={area.title}
-                className={`sobre-area-card${area.feat ? ' sobre-feat' : ''}`}
-                data-audit={area.feat ? 'sobre-area-feat' : undefined}
+                className={`sobre-module${m.dark ? ' sobre-module--dark' : ''}`}
+                style={{ gridColumn: `span ${m.span}` }}
+                key={m.num}
               >
-                <span className="sobre-ac-cat">{area.cat}</span>
-                <div className="sobre-ac-title">{area.title}</div>
-                <p className="sobre-ac-desc">{area.desc}</p>
-                <div className="sobre-ac-meta">{area.meta}</div>
+                <div className="sobre-module-top">
+                  <span className="sobre-module-num">{m.num}</span>
+                  <span className="sobre-module-mark" aria-hidden="true">{m.glyph}</span>
+                </div>
+                <h3 className="sobre-module-title">{m.title}</h3>
+                <p className="sobre-module-text">{m.text}</p>
+                <span className="sobre-module-corner" aria-hidden="true" />
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── DIFERENCIAL ── */}
-      <section className="sobre-dif">
-        <div className="wrap" data-audit="sobre-dif-wrap">
-          <div className="sobre-dif-grid">
-            <div className="sobre-dif-col-l">
-              <div className="sobre-dif-ey">O Diferencial</div>
-              <h2 className="sobre-dif-title">Engenharia encontra <em>linguagem</em></h2>
-              <div className="sobre-dif-seal">
-                <span className="k">Formação</span>
-                <span className="v">
-                  <span className="sobre-dif-seal-part">Letras</span>
-                  <span className="sobre-dif-seal-plus">+</span>
-                  <span className="sobre-dif-seal-part">Mestrado em Linguística</span>
-                  <span className="sobre-dif-seal-plus">+</span>
-                  <span className="sobre-dif-seal-part">Sistemas de Informação</span>
-                </span>
-              </div>
-            </div>
-            <div className="sobre-dif-col-r">
-              <span className="sobre-dif-quotemark">&ldquo;</span>
-              <p className="sobre-dif-quote">
-                No mundo atual, onde a IA e os modelos de linguagem dominam a arquitetura,
-                entender a estrutura da palavra é o que me permite conectar o <em>como</em>{' '}
-                técnico ao <em>porquê</em> estratégico.
-              </p>
-              <div className="sobre-dif-by">
-                <span className="nm">Marcelo Gonçalves</span>
-                <span className="ln" />
-              </div>
-            </div>
-          </div>
-          <div className="sobre-dif-langs">
-            <span className="sobre-dif-langs-label">Idiomas</span>
-            <div className="sobre-dif-langs-row">
-              {LANGUAGES.map((lang) => (
-                <span className="sobre-dif-lang" key={lang.name}>
-                  <span className="f" aria-label={lang.name}>{lang.flag}</span>
-                  <span className="n">{lang.name}</span>
-                  <span className="l">{lang.level}</span>
-                </span>
-              ))}
-            </div>
+          <div className="sobre-approach-note">
+            <p>Não é uma sequência rígida. É um conjunto de critérios que orienta cada decisão técnica, do início à evolução da solução.</p>
+            <span className="sobre-approach-sig">Engenharia com propósito</span>
           </div>
         </div>
       </section>
 
-      {/* ── CERTIFICAÇÕES ── */}
-      <section className="sobre-certs">
-        <div className="wrap">
-          <div className="sobre-certs-head">
-            <div className="sec-ey">Credenciais</div>
-            <h2 className="sec-t">Certificações</h2>
-            <p className="sec-desc">Credenciais que validam na prática o que aplico no dia a dia, da arquitetura de soluções à automação de infraestrutura e observabilidade.</p>
-          </div>
-          <div className="sobre-certs-grid" data-audit="sobre-certs-grid">
-            {CERTS.map((cert) => (
-              <div className={`sobre-cert-card${cert.accent ? ' sobre-accent' : ''}`} key={cert.tile}>
-                <div className="sobre-cert-top">
-                  <StaticPicture category="badges" name={cert.badge} alt={`Selo de certificação ${cert.name}`} className="sobre-cert-badge" width={64} height={64} />
-                  <span className="sobre-cert-verified">{CHECK_ICON}Verificada</span>
+      {/* ── O QUE ESTÁ POR TRÁS ── */}
+      <section className="sobre-behind" id="lideranca" aria-labelledby="behind-title">
+        <div className="sobre-behind-container">
+          <header className="sobre-behind-head">
+            <div className="sobre-behind-label"><span /><span className="txt">O que está por trás</span><span /></div>
+            <h2 id="behind-title" className="sobre-behind-h2">Engenharia conduzida por quem <em>constrói todos os dias</em>.</h2>
+          </header>
+
+          <article className="sobre-behind-card" data-audit="sobre-behind-card">
+            <div className="sobre-behind-photo">
+              {author.foto_avatar_url ? (
+                <ResponsiveImage src={author.foto_avatar_url} alt={nome} fill priority />
+              ) : (
+                <img src={FALLBACK_PHOTO} alt={nome} width={720} height={960} loading="lazy" decoding="async" />
+              )}
+              <div className="sobre-behind-photo-note">
+                <div>
+                  <span className="n">Marcelo Gonçalves</span>
+                  <span className="r">Liderança técnica e fundador</span>
                 </div>
-                <div className="sobre-cert-body">
-                  <span className="sobre-cert-issuer">{cert.issuer}</span>
-                  <span className="sobre-cert-name">{cert.name}</span>
+                <span className="sobre-behind-chip">Engenharia</span>
+              </div>
+            </div>
+            <div className="sobre-behind-content">
+              <span className="sobre-behind-label-sm">Liderança técnica</span>
+              <h3 className="sobre-behind-h3">Marcelo Gonçalves</h3>
+              <p>A visão da empresa nasce de experiência prática projetando, modernizando e operando soluções de tecnologia em ambientes com diferentes níveis de escala, maturidade e complexidade.</p>
+              <p>O trabalho conecta engenharia de software, cloud, automação e inteligência artificial às necessidades reais da operação, sem transformar ferramentas em protagonistas do projeto.</p>
+              <p className="sobre-behind-emphasis">Mais do que implementar sistemas, o papel da liderança técnica é ajudar empresas a tomar decisões melhores e construir soluções que continuem fazendo sentido ao longo do tempo.</p>
+              <div className="sobre-behind-metrics" data-audit="sobre-behind-metrics">
+                {METRICS.map((m) => (
+                  <div className="sobre-behind-metric" key={m.value}>
+                    <span className="v">{m.value}</span>
+                    <span className="l">{m.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </article>
+
+          <div className="sobre-evidence-grid" data-audit="sobre-evidence-grid">
+            {EVIDENCE_CARDS.map((c) => (
+              <div className="sobre-evidence-card" key={c.label}>
+                <span className="sobre-ev-label">{c.label}</span>
+                <h3 className="sobre-ev-title">{c.title}</h3>
+                <p className="sobre-ev-text">{c.text}</p>
+                <div className="sobre-ev-tags">
+                  {c.tags.map((tag) => <span key={tag}>{tag}</span>)}
                 </div>
               </div>
             ))}
-
-            <div className="sobre-cert-card sobre-cert-card--soon">
-              <div className="sobre-cert-body">
-                <span className="sobre-cert-issuer">Sempre estudando</span>
-                <span className="sobre-cert-name sobre-cert-name--soon">Próxima certificação a caminho →</span>
-              </div>
-            </div>
           </div>
+
+          <footer className="sobre-behind-footer">
+            <p><strong>A credibilidade não vem de uma lista extensa de ferramentas.</strong> Ela vem da capacidade de escolher, combinar e aplicar a tecnologia certa para cada contexto.</p>
+            <span className="sobre-behind-sig">Engenharia com critério</span>
+          </footer>
         </div>
       </section>
 
-      {/* ── BASE ACADÊMICA ── */}
-      <section className="sobre-acad">
-        <div className="wrap">
-          <div className="sobre-acad-card" data-audit="sobre-acad-card">
-            <div className="sobre-acad-left">
-              <div className="sec-ey">Formação</div>
-              <h2 className="sec-t sobre-acad-title">Base acadêmica multidisciplinar</h2>
-              <p>
-                Uma formação que conecta a precisão da engenharia à clareza da comunicação. Cada
-                disciplina contribui para uma visão única, da arquitetura cloud à estrutura da
-                linguagem.
-              </p>
-            </div>
-            <div className="sobre-acad-right">
-              {ACAD_ITEMS.map((item) => (
-                <div className="sobre-acad-item" key={item.num}>
-                  <div className="sobre-acad-tile">
-                    <StaticPicture category="logos" name={item.logo} alt={item.logoAlt} title={item.logoTitle} />
-                  </div>
-                  <div className="sobre-acad-txt">
-                    <span className="sobre-acad-type">{item.type}</span>
-                    <span className="sobre-acad-name">{item.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* ── NO QUE ACREDITAMOS ── */}
+      <section className="sobre-beliefs" aria-labelledby="belief-title">
+        <div className="sobre-beliefs-glow" aria-hidden="true" />
+        <div className="sobre-beliefs-container">
+          <header className="sobre-beliefs-head">
+            <div className="sobre-beliefs-label"><span />No que acreditamos<span className="sobre-beliefs-label-line-r" /></div>
+            <h2 id="belief-title" className="sobre-beliefs-h2">Tecnologia não existe para impressionar. Existe para tornar empresas <em>mais eficientes</em>.</h2>
+            <p className="sobre-beliefs-desc">Acreditamos em uma engenharia clara, modular e preparada para acompanhar cada etapa do negócio. Tecnologia deve reduzir esforço, eliminar desperdícios e ampliar a capacidade das pessoas de realizar um trabalho melhor.</p>
+          </header>
+
+          <div className="sobre-beliefs-grid" data-audit="sobre-beliefs-grid">
+            {BELIEFS.map((b) => (
+              <article className="sobre-belief" key={b.num}>
+                <span className="sobre-belief-num">{b.num}</span>
+                <h3>{b.title}</h3>
+                <p>{b.text}</p>
+              </article>
+            ))}
           </div>
+
+          <footer className="sobre-beliefs-footer">
+            <p>A melhor tecnologia não é a mais complexa. É aquela que trabalha a favor da empresa todos os dias.</p>
+            <span className="sobre-beliefs-sig"><span />Engenharia para operar melhor</span>
+          </footer>
         </div>
       </section>
 
