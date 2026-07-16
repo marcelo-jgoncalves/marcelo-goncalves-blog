@@ -103,7 +103,31 @@
 
 /* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
 .iaHero {
-  --ph-pad: 88px 40px 56px;
+  --ph-pad: 88px 40px var(--space-5);
+}
+
+/* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
+   var(--space-5) de cada lado de toda transição sem linha divisória real —
+   antes cada seção usava o padding "cru" do próprio module.css (64/80/100px
+   por breakpoint), criando gaps grandes entre seções. Sobrescreve via
+   seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
+   especificidade que .class em qualquer largura. */
+:global(#oquefazemos),
+:global(#beneficios),
+:global(#especialidades),
+:global(#abordagem),
+:global(#faq) {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
+}
+
+/* CTA final (CtaAssessoria, id="contato-final"): .cta-adv-in usa
+   align-items:center, centralizando a coluna de texto contra o card mais
+   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
+   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+:global(#contato-final.cta-adv .cta-adv-in) {
+  align-items: flex-start;
+  padding-top: var(--space-5);
 }
 
 /* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo

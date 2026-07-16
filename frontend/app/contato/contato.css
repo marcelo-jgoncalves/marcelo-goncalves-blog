@@ -1,9 +1,13 @@
 /* frontend/app/contato/contato.css — Contato (Redesign 2026 — Petrol/Clay/Ivory) */
 
+/* padding-bottom 18px: no desktop o botão da hero fica oculto (.ct-hero-actions
+   — ver abaixo) e o último elemento visível é o subtitle, que já tem
+   margin-bottom:30px (PageHero.css) — 18+30=48px (var(--space-5)) de fato até
+   o limite da seção, igualando ao #form abaixo. No mobile (≤860px) o botão
+   volta a aparecer sem margem própria, então o padding-bottom precisa virar
+   var(--space-5) puro — ver media query abaixo (mesmo padrão de home.css). */
 .page-hero.ct-hero {
-  /* PageHero usa padding-bottom:0 por padrão (espera um statsStrip próprio) —
-     sem ele, o CTA/texto auxiliar ficava colado na borda inferior da hero. */
-  --ph-pad: 88px 40px 56px;
+  --ph-pad: 88px 40px 18px;
 }
 
 .ct-hero::before {
@@ -38,6 +42,13 @@
     display: flex;
     justify-content: center;
   }
+  /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
+     precisa virar var(--space-5) "puro" para manter o mesmo espaçamento do
+     desktop (lá o padding é 18px porque soma com os 30px de margin-bottom
+     do subtitle, que é o último elemento visível quando o botão está oculto). */
+  .page-hero.ct-hero .page-hero-in {
+    padding-bottom: var(--space-5);
+  }
 }
 
 .ct-hero-aux {
@@ -50,14 +61,26 @@
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
 }
 
+/* Espaçamento reduzido de --section-pad (96px) para var(--space-5) (48px) de
+   cada lado, igualando ao padrão adotado na Home e nas 4 landing pages —
+   aqui já existe linha divisória real (border-top), mantida como está. */
 .ct-section {
   margin-block: 0;
-  padding: var(--section-pad) 0;
+  padding: var(--space-5) 0;
   border-top: 1px solid var(--line);
 }
 
 .ct-section--surface {
   background: var(--sand);
+}
+
+/* CTA final (CtaAssessoria, id="chamada-final"): .cta-adv-in usa
+   align-items:center, centralizando a coluna de texto contra o card mais
+   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
+   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+#chamada-final.cta-adv .cta-adv-in {
+  align-items: flex-start;
+  padding-top: var(--space-5);
 }
 
 .ct-center-head {

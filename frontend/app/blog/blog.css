@@ -7,11 +7,23 @@
   margin-block: 0;
 }
 
-/* ── Hero ── */
-.home-hero {
+/* ── Hero ──
+   Seletor .page-hero.home-hero (dupla classe, não só .home-hero): a versão
+   anterior com uma classe só perdia a cascata pra .page-hero (PageHero.css)
+   por ordem de origem, mesma especificidade — nenhuma dessas custom
+   properties (--ph-cols/--ph-gap/--ph-sub-max) estava de fato sendo
+   aplicada, a hero sempre caía no default 1fr 1fr em vez de 1.1fr/.9fr.
+   Mesmo padrão de especificidade já usado em home.css/contato.css.
+   padding-bottom 18px: o último elemento visível da coluna esquerda é o
+   subtitle, que já tem margin-bottom:30px (PageHero.css) — 18+30=48px
+   (var(--space-5)) de fato até o limite da seção. Sem isso, herdava o
+   padding-bottom:0 padrão de PageHero.css e o texto ficava colado na borda
+   (bug real, não só de compilação em dev). */
+.page-hero.home-hero {
   --ph-cols:    1.1fr 0.9fr;
   --ph-gap:     64px;
   --ph-sub-max: 510px;
+  --ph-pad:     88px 40px 18px;
 }
 
 .home-hero h1 { letter-spacing: -.045em; }
@@ -339,9 +351,13 @@
 }
 
 
-/* ── Layout de seção compartilhado ── */
+/* ── Layout de seção compartilhado ──
+   Espaçamento reduzido de --section-pad (96px) para var(--space-5) (48px)
+   de cada lado, igualando ao padrão adotado na Home, nas 4 landing pages e
+   em Contato. #recentes (home-section--surface) mantém a linha divisória
+   real (border-top/bottom) que já tinha. */
 .home-section {
-  padding: var(--section-pad) 0;
+  padding: var(--space-5) 0;
 }
 
 .home-section--surface {
@@ -618,7 +634,17 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  padding: var(--section-pad) 0;
+  padding: var(--space-5) 0;
+}
+
+/* CTA final (CtaAssessoria, id default "assessoria"): .cta-adv-in usa
+   align-items:center, centralizando a coluna de texto contra o card mais
+   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
+   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+#assessoria.cta-adv .cta-adv-in {
+  align-items: flex-start;
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
 }
 
 .home-ia-section::before {
