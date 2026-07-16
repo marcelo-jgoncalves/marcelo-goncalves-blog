@@ -151,7 +151,7 @@ export default async function InstitutionalHome() {
         className="ih-hero"
         dataAudit="ih-hero"
         eyebrow="Consultoria em Tecnologia"
-        title={<>Tecnologia que sustenta a operação, aumenta eficiência e destrava <em>crescimento</em>.</>}
+        title={<>Tecnologia que sustenta a operação, aumenta eficiência e <em>destrava crescimento</em>.</>}
         subtitle="Desenvolvimento, IA, Automação, Cloud & DevOps aplicados aos problemas reais da sua empresa."
       >
         <div className="ih-hero-actions">
@@ -205,10 +205,10 @@ export default async function InstitutionalHome() {
             <div className="ih-eyebrow">Como trabalhamos</div>
             <h2 className="sec-t">Processo estruturado, entrega previsível</h2>
             <p className="sec-desc" style={{ maxWidth: 720 }}>
-              Não somos apenas executores. Unimos a governança de grandes projetos à agilidade que o mercado exige, atuando de forma consultiva para mapear gargalos invisíveis na sua operação e sugerir as melhores alternativas tecnológicas.
+              Todo projeto começa pela compreensão do desafio de negócio. Antes de propor qualquer solução, analisamos processos, identificamos oportunidades de melhoria e definimos a abordagem técnica mais adequada para alcançar os resultados esperados.
             </p>
             <p className="sec-desc" style={{ maxWidth: 720 }}>
-              Com base no histórico comprovado do nosso núcleo sênior, desenhamos soluções com escopo enxuto para garantir retorno rápido, custos sob controle e uma entrega totalmente sem surpresas.
+              Desenvolvemos soluções de forma incremental, com escopo bem definido, comunicação transparente e foco em entregas de valor. Assim, reduzimos riscos, mantemos os custos sob controle e garantimos uma evolução consistente do projeto.
             </p>
           </div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
@@ -285,7 +285,7 @@ export default async function InstitutionalHome() {
       <CtaAssessoria
         id="contato"
         eyebrow="Vamos conversar"
-        title={<>Vamos construir a tecnologia que <em>impulsiona</em> seu negócio.</>}
+        title={<>Vamos construir a solução que vai <em>impulsionar</em> seu negócio.</>}
         description="Cada empresa enfrenta desafios diferentes. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para modernizar operações, aumentar a eficiência e apoiar o crescimento do seu negócio."
         ctaHref="/contato"
         ctaLabel="Vamos conversar"
