@@ -22,12 +22,22 @@
   mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
 }
 
+/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
+   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
+   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .ct-hero-actions {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   margin-top: var(--sp-7);
+}
+
+@media (max-width: 860px) {
+  .ct-hero-actions {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .ct-hero-aux {

@@ -387,6 +387,7 @@ img {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.95rem;
+  text-transform: uppercase;
   border: 1px solid transparent;
   text-decoration: none;
   cursor: pointer;

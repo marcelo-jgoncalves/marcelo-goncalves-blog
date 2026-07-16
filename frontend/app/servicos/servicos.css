@@ -43,6 +43,12 @@
   display: none;
 }
 
+/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
+   nunca aparece acima do breakpoint do hamburger (860px, Header.css). */
+.svc-hero-actions-desktop {
+  display: none;
+}
+
 /* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
 .svc-btn-clay-hero {
   box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
@@ -638,16 +644,6 @@
     width: 100%;
     max-width: 380px;
   }
-  .svc-hero-actions-desktop {
-    display: none;
-  }
-  .svc-hero-actions-mobile {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 380px;
-    margin-top: 40px;
-  }
   .svc-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -666,6 +662,16 @@
     border-top: 1px solid var(--line);
     width: 100%;
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 860px) {
+  .svc-hero-actions-mobile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 380px;
+    margin-top: 40px;
   }
 }
 

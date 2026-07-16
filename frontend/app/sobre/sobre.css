@@ -39,8 +39,11 @@
   border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.75);
 }
 .sobre-hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 30px; }
-/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
-.sobre-btn-clay { box-shadow: 0 8px 22px rgba(201,96,60,.35); }
+/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria.
+   Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
+   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
+   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
+.sobre-btn-clay { display: none; box-shadow: 0 8px 22px rgba(201,96,60,.35); }
 .sobre-arrow { font-family: var(--mono); }
 .sobre-hero-socials { display: flex; gap: 9px; }
 .sobre-hero-socials-mobile { display: none; }
@@ -316,6 +319,7 @@
   .sobre-hero .page-hero-right { flex-direction: column; justify-content: flex-start; align-items: center; gap: 36px; }
   .sobre-photo-frame { max-width: 340px; }
   .sobre-hero-actions { justify-content: center; }
+  .sobre-btn-clay { display: inline-flex; }
   .sobre-hero-socials-desktop { display: none; }
   .sobre-hero-socials-mobile { display: flex; }
   .sobre-traj-companies { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
