@@ -6,7 +6,7 @@ export default function LerArtigo({ color }: { color?: string }) {
       className="ler-artigo"
       style={color ? { '--ler-artigo-color': color } as React.CSSProperties : undefined}
     >
-      Ler artigo →
+      Ler artigo
     </span>
   );
 }

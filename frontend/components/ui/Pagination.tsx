@@ -58,11 +58,11 @@ export default function Pagination({
 
       {prevUrl ? (
         <Link href={prevUrl} className="op-page-number" rel="prev" aria-label="Página anterior" scroll={!scrollToId ? false : undefined}>
-          ← Anterior
+          Anterior
         </Link>
       ) : (
         <span className="op-page-number op-page-number--disabled" aria-hidden="true">
-          ← Anterior
+          Anterior
         </span>
       )}
 
@@ -74,11 +74,11 @@ export default function Pagination({
 
       {nextUrl ? (
         <Link href={nextUrl} className="op-page-number" rel="next" aria-label="Próxima página" scroll={!scrollToId ? false : undefined}>
-          Próxima →
+          Próxima
         </Link>
       ) : (
         <span className="op-page-number op-page-number--disabled" aria-hidden="true">
-          Próxima →
+          Próxima
         </span>
       )}
 

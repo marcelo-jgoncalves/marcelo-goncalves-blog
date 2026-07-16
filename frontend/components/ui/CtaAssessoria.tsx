@@ -16,10 +16,10 @@ const DEFAULT_POINTS: ReactNode[] = [
 
 const DEFAULT_CARD_BODY = (
   <div className="cta-adv-svc">
-    <Link href="/engenharia-de-software">Engenharia de Software <span className="arrow">→</span></Link>
-    <Link href="/inteligencia-artificial">Inteligência Artificial <span className="arrow">→</span></Link>
-    <Link href="/integracao-automacao">Integração & Automação <span className="arrow">→</span></Link>
-    <Link href="/cloud-devops">Cloud & DevOps <span className="arrow">→</span></Link>
+    <Link href="/engenharia-de-software">Engenharia de Software</Link>
+    <Link href="/inteligencia-artificial">Inteligência Artificial</Link>
+    <Link href="/integracao-automacao">Integração & Automação</Link>
+    <Link href="/cloud-devops">Cloud & DevOps</Link>
   </div>
 );
 
@@ -78,11 +78,11 @@ export default function CtaAssessoria({
             {cardBody}
             {ctaExternal || ctaHref.includes('#') ? (
               <a className="btn cta-adv-btn" href={ctaHref}>
-                {ctaLabel} <span className="arrow">→</span>
+                {ctaLabel}
               </a>
             ) : (
               <Link className="btn cta-adv-btn" href={ctaHref}>
-                {ctaLabel} <span className="arrow">→</span>
+                {ctaLabel}
               </Link>
             )}
             <div className="cta-adv-reassure">{reassure}</div>

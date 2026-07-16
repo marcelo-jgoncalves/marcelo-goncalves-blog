@@ -10,7 +10,7 @@ const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 // "O Projeto" é item fixo na nav (não mais condicional ao contexto de blog/post).
 const NAV_LINKS_AFTER = [
   { name: 'Contato', href: '/contato' },
-  { name: 'Sobre', href: '/sobre' },
+  { name: 'Nossa Abordagem', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
   { name: 'O Projeto', href: '/o-projeto' },
 ] as const;
@@ -125,11 +125,11 @@ export default function HeaderNav() {
       {isBlogContext ? (
         // eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique
         <a href="/#servicos" className="nav-cta" data-audit="header-cta">
-          Conheça nossos serviços <span className="arrow" aria-hidden="true">→</span>
+          Conheça nossos serviços
         </a>
       ) : (
         <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
-          Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+          Solicitar diagnóstico
         </Link>
       )}
 
@@ -211,11 +211,11 @@ export default function HeaderNav() {
         {isBlogContext ? (
           // eslint-disable-next-line @next/next/no-html-link-for-pages -- ver comentário acima (desktop)
           <a href="/#servicos" className="nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
-            Conheça nossos serviços <span className="arrow" aria-hidden="true">→</span>
+            Conheça nossos serviços
           </a>
         ) : (
           <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
-            Solicitar diagnóstico <span className="arrow" aria-hidden="true">→</span>
+            Solicitar diagnóstico
           </Link>
         )}
       </div>
