@@ -469,6 +469,7 @@
   .ih-results .ih-case-metrics {
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 40px;
   }
   .ih-results .ih-case-metric {
     display: flex;
@@ -484,6 +485,9 @@
   }
   .ih-results .ih-case-metric-l {
     max-width: none;
+  }
+  .ih-results .ih-case-text h3 {
+    margin-bottom: 32px;
   }
   .ih-results .ih-case-tags span {
     border-radius: 14px;

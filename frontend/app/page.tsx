@@ -192,9 +192,6 @@ export default async function InstitutionalHome() {
               </Link>
             ))}
           </div>
-          <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Conte-nos seu desafio <span aria-hidden="true">→</span></Link>
-          </div>
         </div>
       </section>
 
@@ -257,7 +254,7 @@ export default async function InstitutionalHome() {
             })}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Conte-nos seu desafio <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
