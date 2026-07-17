@@ -91,7 +91,7 @@ export default async function Home() {
               <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
               <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
             </div>
-            <span className="btn home-pp-btn">Ver o projeto <span className="home-pp-arrow" aria-hidden="true">→</span></span>
+            <span className="btn home-pp-btn">Ver o projeto</span>
           </Link>
         }
       />

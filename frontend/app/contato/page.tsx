@@ -83,7 +83,7 @@ export default function ContatoPage() {
         subtitle="Conte-nos seus desafios. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para ajudar sua empresa a crescer com mais eficiência, segurança e inovação."
       >
         <div className="ct-hero-actions">
-          <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico <span aria-hidden="true">↓</span></a>
+          <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico</a>
         </div>
       </PageHero>
 

@@ -155,7 +155,7 @@ export default async function InstitutionalHome() {
         subtitle="Desenvolvimento, IA, Automação, Cloud & DevOps aplicados aos problemas reais da sua empresa."
       >
         <div className="ih-hero-actions">
-          <Link href="/contato" className="btn">Solicitar diagnóstico <span aria-hidden="true">→</span></Link>
+          <Link href="/contato" className="btn">Solicitar diagnóstico</Link>
         </div>
       </PageHero>
 
@@ -210,7 +210,7 @@ export default async function InstitutionalHome() {
           </div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Fale conosco <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Fale conosco</Link>
             <span className="ih-method-credit">Conduzido por Marcelo Gonçalves · Arquiteto de soluções</span>
           </div>
         </div>
@@ -254,7 +254,7 @@ export default async function InstitutionalHome() {
             })}
           </div>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Conte-nos seu desafio <span aria-hidden="true">→</span></Link>
+            <Link href="/contato" className="btn">Conte-nos seu desafio</Link>
           </div>
         </div>
       </section>
@@ -273,7 +273,7 @@ export default async function InstitutionalHome() {
               ))}
             </div>
             <div className="ih-section-footer-center">
-              <Link className="btn btn-petrol" href="/blog">Conheça o blog <span aria-hidden="true">→</span></Link>
+              <Link className="btn btn-petrol" href="/blog">Conheça o blog</Link>
             </div>
           </div>
         </section>

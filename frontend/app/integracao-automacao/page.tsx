@@ -170,7 +170,7 @@ export default function IntegracaoAutomacaoPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=integracao-automacao" className="btn">
-            Solicitar diagnóstico <span aria-hidden="true">→</span>
+            Solicitar diagnóstico
           </Link>
         </div>
       </PageHero>

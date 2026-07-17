@@ -138,7 +138,7 @@ export default function CloudDevOpsPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=cloud-devops" className="btn">
-            Solicitar diagnóstico <span aria-hidden="true">→</span>
+            Solicitar diagnóstico
           </Link>
         </div>
       </PageHero>

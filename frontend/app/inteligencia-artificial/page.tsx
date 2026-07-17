@@ -160,7 +160,7 @@ export default function InteligenciaArtificialPage() {
         </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=inteligencia-artificial" className="btn">
-            Solicitar diagnóstico <span aria-hidden="true">→</span>
+            Solicitar diagnóstico
           </Link>
         </div>
       </PageHero>
