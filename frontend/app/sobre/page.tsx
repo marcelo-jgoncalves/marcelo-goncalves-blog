@@ -1,6 +1,8 @@
 /* frontend/app/sobre/page.tsx — specs/ESPECIFICACAO-SOBRE-V2.md */
 
 import type { Metadata } from 'next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faBullseye, faFilter, faCubes, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
@@ -24,11 +26,11 @@ const PRINCIPLES = [
 ];
 
 const MODULES = [
-  { num: '01', glyph: '↳', title: 'Entendemos', text: 'Mapeamos a operação, as limitações e os objetivos reais antes de propor qualquer mudança técnica.', span: 4 },
-  { num: '02', glyph: '?', title: 'Questionamos', text: 'Revisamos premissas, identificamos desperdícios e verificamos se o problema realmente exige mais tecnologia.', span: 4 },
-  { num: '03', glyph: '−', title: 'Simplificamos', text: 'Eliminamos etapas e dependências desnecessárias para tornar a solução mais clara, previsível e sustentável.', span: 4 },
-  { num: '04', glyph: '□', title: 'Construímos', text: 'Transformamos decisões bem fundamentadas em componentes modulares, seguros e preparados para evoluir sem comprometer o restante da operação.', span: 7 },
-  { num: '05', glyph: '↗', title: 'Evoluímos', text: 'Observamos os resultados, aprendemos com o uso real e adaptamos a solução conforme o negócio avança.', span: 5, dark: true },
+  { num: '01', icon: faMagnifyingGlass, title: 'Entendemos', text: 'Mapeamos a operação, as limitações e os objetivos reais antes de propor qualquer mudança técnica.', span: 4 },
+  { num: '02', icon: faBullseye, title: 'Questionamos', text: 'Revisamos premissas, identificamos desperdícios e verificamos se o problema realmente exige mais tecnologia.', span: 4 },
+  { num: '03', icon: faFilter, title: 'Simplificamos', text: 'Eliminamos etapas e dependências desnecessárias para tornar a solução mais clara, previsível e sustentável.', span: 4 },
+  { num: '04', icon: faCubes, title: 'Construímos', text: 'Transformamos decisões bem fundamentadas em componentes modulares, seguros e preparados para evoluir sem comprometer o restante da operação.', span: 7 },
+  { num: '05', icon: faArrowTrendUp, title: 'Evoluímos', text: 'Observamos os resultados, aprendemos com o uso real e adaptamos a solução conforme o negócio avança.', span: 5 },
 ];
 
 const METRICS = [
@@ -105,22 +107,23 @@ export default async function SobrePage() {
         title={<>Toda empresa merece uma tecnologia que <em>acompanhe seu crescimento</em>.</>}
         subtitle="Criamos soluções que aumentam a eficiência operacional por meio de engenharia, automação e inteligência artificial. Porque crescer não deveria significar conviver com processos cada vez mais complexos."
         right={
-          <div className="sobre-hero-panel" data-audit="sobre-hero-panel">
-            <div className="sobre-hp-tag"><span className="sobre-dot" />Nossa Visão</div>
-            <p className="sobre-hp-quote">Tecnologia deve ampliar a capacidade de uma empresa, não aumentar o esforço necessário para operá-la.</p>
-            <div className="sobre-hp-list">
-              <div className="sobre-hp-row"><span className="k">Processos</span><span className="v">mais simples</span></div>
-              <div className="sobre-hp-row"><span className="k">Operações</span><span className="v">mais eficientes</span></div>
-              <div className="sobre-hp-row sobre-hp-row--last"><span className="k">Soluções</span><span className="v">preparadas para evoluir</span></div>
+          <div className="sobre-hero-right-col">
+            <div className="sobre-hero-panel" data-audit="sobre-hero-panel">
+              <div className="sobre-hp-tag"><span className="sobre-dot" />Nossa Visão</div>
+              <p className="sobre-hp-quote">Tecnologia deve ampliar a capacidade de uma empresa, não aumentar o esforço necessário para operá-la.</p>
+              <div className="sobre-hp-list">
+                <div className="sobre-hp-row"><span className="k">Processos</span><span className="v">mais simples</span></div>
+                <div className="sobre-hp-row"><span className="k">Operações</span><span className="v">mais eficientes</span></div>
+                <div className="sobre-hp-row sobre-hp-row--last"><span className="k">Soluções</span><span className="v">preparadas para evoluir</span></div>
+              </div>
+            </div>
+            <div className="sobre-hero-actions">
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique (mesmo padrão de HeaderNav.tsx) */}
+              <a className="btn sobre-btn-clay" href="/#servicos">Conheça nossos serviços</a>
             </div>
           </div>
         }
-      >
-        <div className="sobre-hero-actions">
-          <a className="btn sobre-btn-clay" href="#filosofia">Conheça nossa filosofia <span className="sobre-arrow">→</span></a>
-          <a className="sobre-btn-ghost" href="#assessoria">Fale com a gente</a>
-        </div>
-      </PageHero>
+      />
 
       {/* ── NOSSA ORIGEM ── */}
       <section className="sobre-origem">
@@ -173,13 +176,13 @@ export default async function SobrePage() {
           <div className="sobre-modules-grid" data-audit="sobre-modules-grid">
             {MODULES.map((m) => (
               <div
-                className={`sobre-module${m.dark ? ' sobre-module--dark' : ''}`}
+                className="sobre-module"
                 style={{ gridColumn: `span ${m.span}` }}
                 key={m.num}
               >
                 <div className="sobre-module-top">
                   <span className="sobre-module-num">{m.num}</span>
-                  <span className="sobre-module-mark" aria-hidden="true">{m.glyph}</span>
+                  <span className="sobre-module-mark" aria-hidden="true"><FontAwesomeIcon icon={m.icon} /></span>
                 </div>
                 <h3 className="sobre-module-title">{m.title}</h3>
                 <p className="sobre-module-text">{m.text}</p>
@@ -247,16 +250,11 @@ export default async function SobrePage() {
             ))}
           </div>
 
-          <footer className="sobre-behind-footer">
-            <p><strong>A credibilidade não vem de uma lista extensa de ferramentas.</strong> Ela vem da capacidade de escolher, combinar e aplicar a tecnologia certa para cada contexto.</p>
-            <span className="sobre-behind-sig">Engenharia com critério</span>
-          </footer>
         </div>
       </section>
 
       {/* ── NO QUE ACREDITAMOS ── */}
       <section className="sobre-beliefs" aria-labelledby="belief-title">
-        <div className="sobre-beliefs-glow" aria-hidden="true" />
         <div className="sobre-beliefs-container">
           <header className="sobre-beliefs-head">
             <div className="sobre-beliefs-label"><span />No que acreditamos<span className="sobre-beliefs-label-line-r" /></div>
@@ -274,10 +272,6 @@ export default async function SobrePage() {
             ))}
           </div>
 
-          <footer className="sobre-beliefs-footer">
-            <p>A melhor tecnologia não é a mais complexa. É aquela que trabalha a favor da empresa todos os dias.</p>
-            <span className="sobre-beliefs-sig"><span />Engenharia para operar melhor</span>
-          </footer>
         </div>
       </section>
 
