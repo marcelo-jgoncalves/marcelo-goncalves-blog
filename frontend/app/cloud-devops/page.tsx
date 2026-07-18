@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import Faq from '@/components/ui/Faq';
+import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -17,6 +17,10 @@ import {
   IconContainersKubernetes,
   IconObservabilidade,
   IconSegurancaCloud,
+  IconBolt,
+  IconFinOps,
+  IconAltaDisponibilidade,
+  IconCICD,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
@@ -94,16 +98,16 @@ const BENEFICIOS = [
 ];
 
 const ESPECIALIDADES = [
-  'Arquitetura AWS',
-  'Kubernetes (EKS)',
-  'Serverless',
-  'DevOps',
-  'Infraestrutura como Código',
-  'Observabilidade',
-  'Otimização de Custos (FinOps)',
-  'Alta Disponibilidade',
-  'Segurança em Cloud',
-  'CI/CD',
+  { label: 'Arquitetura AWS', Icon: IconArquiteturaNuvem },
+  { label: 'Kubernetes (EKS)', Icon: IconContainersKubernetes },
+  { label: 'Serverless', Icon: IconBolt },
+  { label: 'DevOps', Icon: IconDevOps },
+  { label: 'Infraestrutura como Código', Icon: IconInfraestruturaCodigo },
+  { label: 'Observabilidade', Icon: IconObservabilidade },
+  { label: 'Otimização de Custos (FinOps)', Icon: IconFinOps },
+  { label: 'Alta Disponibilidade', Icon: IconAltaDisponibilidade },
+  { label: 'Segurança em Cloud', Icon: IconSegurancaCloud },
+  { label: 'CI/CD', Icon: IconCICD },
 ];
 
 const ETAPAS = [
@@ -129,13 +133,10 @@ export default function CloudDevOpsPage() {
         singleColumn
         className={styles.cdHero}
         dataAudit="cd-hero"
-        eyebrow="Especialidades · Cloud & DevOps"
+        eyebrow="Pilar · Cloud & DevOps"
         title={<>Construímos plataformas em nuvem preparadas para <em>crescer</em>.</>}
         subtitle="Projetamos e operamos ambientes cloud modernos, seguros e escaláveis para acelerar entregas, reduzir a complexidade operacional e apoiar o crescimento do seu negócio."
       >
-        <p className={styles.heroParagraph2}>
-          Projetamos, implementamos e operamos plataformas em nuvem utilizando boas práticas de arquitetura, automação e DevOps para que sua empresa possa inovar com confiança e reduzir a complexidade operacional.
-        </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=cloud-devops" className="btn">
             Solicitar diagnóstico
@@ -197,10 +198,10 @@ export default function CloudDevOpsPage() {
             <p className={styles.sectionDesc}>Dez frentes que sustentam cada projeto de nuvem, da arquitetura ao dia a dia operacional.</p>
           </div>
           <div className={styles.especialidadesList}>
-            {ESPECIALIDADES.map((item, i) => (
-              <div className={styles.especialidadeItem} key={item}>
-                <span className={styles.especialidadeNumeral}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.especialidadeTitle}>{item}</span>
+            {ESPECIALIDADES.map(({ label, Icon }) => (
+              <div className={styles.especialidadeItem} key={label}>
+                <span className={styles.especialidadeNumeral}><Icon /></span>
+                <span className={styles.especialidadeTitle}>{label}</span>
               </div>
             ))}
           </div>
@@ -210,11 +211,18 @@ export default function CloudDevOpsPage() {
       {/* NOSSA ABORDAGEM */}
       <section id="abordagem" className={styles.abordagem} data-audit="cd-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemHead}>
-            <span className={styles.eyebrowLight}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Cada empresa, um diagnóstico diferente</h2>
-            <p className={styles.sectionDesc}>Cada empresa possui necessidades diferentes.</p>
-            <p className={styles.sectionDesc}>Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade. Nosso compromisso é construir soluções simples de operar, resilientes e alinhadas às melhores práticas de engenharia.</p>
+          <div className={styles.abordagemGrid} data-audit="cd-abordagem-grid">
+            <div className={styles.abordagemHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Cada empresa, um diagnóstico diferente</h2>
+              <p className={styles.sectionDesc}>Cada empresa possui necessidades diferentes.</p>
+              <p className={styles.sectionDesc}>Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade.</p>
+            </div>
+            <aside className={styles.resultCard} data-audit="cd-result-card">
+              <span className={styles.resultCardLabel}>Compromisso</span>
+              <h3 className={styles.resultCardTitle}>Simples de operar, pronta para durar.</h3>
+              <p className={styles.resultCardText}>Nosso compromisso é construir soluções simples de operar, resilientes e alinhadas às melhores práticas de engenharia.</p>
+            </aside>
           </div>
 
           <div className={styles.etapasGrid}>
@@ -231,15 +239,7 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className={styles.faq} data-audit="cd-faq">
-        <div className={styles.faqWrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Perguntas frequentes</span>
-            <h2 className={styles.h2}>Dúvidas antes de começar</h2>
-          </div>
-          <Faq items={FAQ_ITEMS} dataAudit="cd-faq-accordion" />
-        </div>
-      </section>
+      <FaqSection items={FAQ_ITEMS} dataAudit="cd-faq" />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="cd-cta-final">

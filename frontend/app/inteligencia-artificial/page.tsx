@@ -1,7 +1,7 @@
 /* frontend/app/inteligencia-artificial/page.tsx
    Landing page de pilar — specs/ESPECIFICACAO-INTELIGENCIA-ARTIFICIAL.md
    Estabelece o NOVO FLUXO CANÔNICO de seções (§17): Hero → O que fazemos → Casos de
-   Aplicação (nova) → Benefícios → Como trabalhamos → FAQ → CTA. Sem Especialidades,
+   Aplicação (nova) → Benefícios → Nossa abordagem → FAQ → CTA. Sem Especialidades,
    sem Diferenciais, sem grid de 3 etapas — esse fluxo será retroaplicado às outras 3
    landings (Cloud & DevOps, Engenharia de Software, Integração & Automação) depois. */
 
@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import Faq from '@/components/ui/Faq';
+import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -20,6 +20,10 @@ import {
   IconIaIntegrada,
   IconEngenhariaQualidade,
   IconBolt,
+  IconAtendimentoInteligente,
+  IconPesquisaDocumentos,
+  IconProcessamentoDocumentos,
+  IconGeracaoConteudo,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
@@ -115,12 +119,12 @@ const OQUE_FAZEMOS = [
 ];
 
 const CASOS_DE_APLICACAO = [
-  { title: 'Assistente corporativo', text: 'Disponibilização de um assistente inteligente para consulta de políticas internas, procedimentos e documentação da empresa.' },
-  { title: 'Atendimento inteligente', text: 'Chatbots e agentes capazes de responder clientes, registrar solicitações e direcionar demandas automaticamente.' },
-  { title: 'Pesquisa inteligente em documentos', text: 'Localização rápida de informações em contratos, manuais, regulamentos e bases de conhecimento.' },
-  { title: 'Processamento inteligente de documentos', text: 'Extração automática de informações relevantes de notas fiscais, contratos, formulários e relatórios.' },
-  { title: 'Geração de conteúdo', text: 'Produção de respostas, relatórios, resumos e comunicações corporativas com apoio de IA.' },
-  { title: 'Agentes de IA para processos', text: 'Desenvolvimento de agentes capazes de analisar informações, interagir com sistemas e executar tarefas de forma autônoma.' },
+  { title: 'Assistente corporativo', text: 'Disponibilização de um assistente inteligente para consulta de políticas internas, procedimentos e documentação da empresa.', Icon: IconAssistenteInteligente },
+  { title: 'Atendimento inteligente', text: 'Chatbots e agentes capazes de responder clientes, registrar solicitações e direcionar demandas automaticamente.', Icon: IconAtendimentoInteligente },
+  { title: 'Pesquisa inteligente em documentos', text: 'Localização rápida de informações em contratos, manuais, regulamentos e bases de conhecimento.', Icon: IconPesquisaDocumentos },
+  { title: 'Processamento inteligente de documentos', text: 'Extração automática de informações relevantes de notas fiscais, contratos, formulários e relatórios.', Icon: IconProcessamentoDocumentos },
+  { title: 'Geração de conteúdo', text: 'Produção de respostas, relatórios, resumos e comunicações corporativas com apoio de IA.', Icon: IconGeracaoConteudo },
+  { title: 'Agentes de IA para processos', text: 'Desenvolvimento de agentes capazes de analisar informações, interagir com sistemas e executar tarefas de forma autônoma.', Icon: IconAgenteIA },
 ];
 
 const BENEFICIOS = [
@@ -151,9 +155,8 @@ export default function InteligenciaArtificialPage() {
         singleColumn
         className={styles.aiHero}
         dataAudit="ai-hero"
-        eyebrow="Especialidades · Inteligência Artificial"
+        eyebrow="Pilar · Inteligência Artificial"
         title={<>Transformamos inteligência artificial em resultados para o seu <em>negócio</em>.</>}
-        subtitle="Desenvolvemos soluções de IA integradas aos processos da sua empresa para aumentar a produtividade, apoiar decisões e automatizar tarefas de forma inteligente."
       >
         <p className={styles.heroParagraph2}>
           Desenvolvemos soluções de IA integradas aos processos da sua empresa, sempre com foco em gerar valor real, reduzir custos operacionais e aumentar a produtividade.
@@ -212,7 +215,7 @@ export default function InteligenciaArtificialPage() {
                 className={styles.casoItem}
                 dataAudit={i === 0 ? 'ai-caso-item' : undefined}
               >
-                <span className={styles.casoNumeral}>{String(i + 1).padStart(2, '0')}</span>
+                <span className={styles.casoNumeral}><caso.Icon /></span>
                 <h3 className={styles.casoTitle}>{caso.title}</h3>
                 <p className={styles.casoText}>{caso.text}</p>
               </Reveal>
@@ -242,28 +245,26 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* COMO TRABALHAMOS — só texto, sem grid de etapas, sem bloco Diferenciais */}
+      {/* NOSSA ABORDAGEM — sem grid de etapas, sem bloco Diferenciais */}
       <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemHead}>
-            <span className={styles.eyebrowLight}>Como trabalhamos</span>
-            <h2 className={styles.h2}>Cada projeto começa com uma pergunta simples: onde a IA pode gerar mais valor para o negócio?</h2>
-            <p className={styles.sectionDesc}>Antes de implementar qualquer solução, analisamos os processos existentes, identificamos oportunidades de ganho e definimos como a IA pode atuar de forma segura, eficiente e integrada aos sistemas da empresa.</p>
-            <p className={styles.sectionDesc}>Nosso objetivo não é substituir pessoas, mas ampliar sua capacidade, automatizar tarefas repetitivas e disponibilizar informações relevantes no momento certo.</p>
+          <div className={styles.abordagemGrid} data-audit="ai-abordagem-grid">
+            <div className={styles.abordagemHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Cada projeto começa com uma pergunta simples: onde a IA pode gerar mais valor para o negócio?</h2>
+              <p className={styles.sectionDesc}>Antes de implementar qualquer solução, analisamos os processos existentes, identificamos oportunidades de ganho e definimos como a IA pode atuar de forma segura, eficiente e integrada aos sistemas da empresa.</p>
+            </div>
+            <aside className={styles.resultCard} data-audit="ai-result-card">
+              <span className={styles.resultCardLabel}>Objetivo</span>
+              <h3 className={styles.resultCardTitle}>Liberdade para focar no que importa.</h3>
+              <p className={styles.resultCardText}>Nosso objetivo não é substituir pessoas, mas liberá-las das tarefas repetitivas para que façam mais, com as informações certas disponíveis na hora certa.</p>
+            </aside>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className={styles.faq} data-audit="ai-faq">
-        <div className={styles.faqWrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Perguntas frequentes</span>
-            <h2 className={styles.h2}>Dúvidas antes de começar</h2>
-          </div>
-          <Faq items={FAQ_ITEMS} dataAudit="ai-faq-accordion" />
-        </div>
-      </section>
+      <FaqSection items={FAQ_ITEMS} dataAudit="ai-faq" />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="ai-cta-final">

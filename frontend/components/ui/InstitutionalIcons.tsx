@@ -305,3 +305,127 @@ export function IconIaIntegrada() {
     </svg>
   );
 }
+
+/* Ícones dos chips das seções "mosaico" (Especialidades, Maturidade técnica,
+   Casos de Aplicação) — 16×16 dentro do selo de 28×28 (sessão 2026-07-18). */
+const chipIcon = { ...common, width: 20, height: 20 };
+
+export function IconFinOps() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
+
+export function IconAltaDisponibilidade() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z" />
+      <path d="M7 13h2.5l1.5-3 2 6 1.5-3H17" />
+    </svg>
+  );
+}
+
+export function IconCICD() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M17 2.1l4 4-4 4" />
+      <path d="M3 12.5v-1a4 4 0 0 1 4-4h14" />
+      <path d="M7 21.9l-4-4 4-4" />
+      <path d="M21 11.5v1a4 4 0 0 1-4 4H3" />
+    </svg>
+  );
+}
+
+export function IconEventos() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 2a7 7 0 0 0-7 7c0 5-2 6-2 6h18s-2-1-2-6a7 7 0 0 0-7-7z" />
+      <path d="M9 21a3 3 0 0 0 6 0" />
+    </svg>
+  );
+}
+
+export function IconAsync() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 21a9 9 0 1 1 9-9" />
+      <path d="M21 3v6h-6" />
+      <path d="M12 8v4l3 2" />
+    </svg>
+  );
+}
+
+export function IconCodigoLimpo() {
+  return (
+    <svg {...chipIcon}>
+      <path d="m8 6-6 6 6 6M16 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export function IconTestes() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M9 3h6M10 3v4.5L5.5 16a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 7.5V3" />
+    </svg>
+  );
+}
+
+export function IconDocumentacao() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z" />
+      <path d="M4 19a2.5 2.5 0 0 1 2.5-2.5H20" />
+    </svg>
+  );
+}
+
+export function IconDividaTecnica() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 3a9 9 0 1 0 9 9" />
+      <path d="M12 12l4.5-4.5" />
+      <circle cx="12" cy="12" r="1.2" />
+    </svg>
+  );
+}
+
+export function IconAtendimentoInteligente() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+    </svg>
+  );
+}
+
+export function IconPesquisaDocumentos() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h7" />
+      <circle cx="16.5" cy="16.5" r="3" />
+      <path d="m20.5 20.5-1.7-1.7" />
+    </svg>
+  );
+}
+
+export function IconProcessamentoDocumentos() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M9 15l3 3 3-3" />
+    </svg>
+  );
+}
+
+export function IconGeracaoConteudo() {
+  return (
+    <svg {...chipIcon}>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  );
+}

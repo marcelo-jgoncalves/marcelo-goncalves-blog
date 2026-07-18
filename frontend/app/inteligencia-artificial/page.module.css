@@ -97,8 +97,7 @@
 .oquefazemos,
 .casos,
 .beneficios,
-.abordagem,
-.faq {
+.abordagem {
   margin-block: 0;
 }
 
@@ -217,31 +216,27 @@
 @media (min-width: 1040px) { .casosGrid { grid-template-columns: repeat(3, 1fr); } }
 
 .casoItem {
+  background: rgba(255, 255, 255, .55);
   border-right: 1px solid #DDD4C4;
   border-bottom: 1px solid #DDD4C4;
   padding: 30px 28px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 12px;
-  transition: background-color .2s;
-}
-
-.casoItem:hover {
-  background: rgba(255, 255, 255, .55);
 }
 
 .casoNumeral {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: rgba(201, 96, 60, .14);
   color: var(--clay);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
   flex: none;
 }
 
@@ -357,28 +352,55 @@
 @media (min-width: 680px) { .abordagem { padding: 80px 0; } }
 @media (min-width: 1040px) { .abordagem { padding: 100px 0; } }
 
+/* Grid texto + card, mesmo padrão de "Como trabalhamos"
+   (frontend/app/home.css .ih-method-grid/.ih-method-card/.ih-mc-*) — texto à
+   esquerda, card à direita (alinhado à direita da seção via coluna do grid). */
+.abordagemGrid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: start;
+  gap: 70px;
+}
+
 .abordagemHead {
   max-width: 680px;
 }
 
-/* ===== FAQ ===== */
-.faq {
-  padding: 64px 0;
+.resultCard {
   background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 40px 36px;
+  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
 }
 
-@media (min-width: 680px) { .faq { padding: 80px 0; } }
-@media (min-width: 1040px) { .faq { padding: 100px 0; } }
-
-.faqWrap {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 0 20px;
+.resultCardLabel {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--clay);
 }
 
-@media (min-width: 680px) { .faqWrap { padding: 0 32px; } }
-@media (min-width: 1040px) { .faqWrap { padding: 0 40px; } }
-
-.faqWrap .sectionHead {
-  margin-bottom: 48px;
+.resultCardTitle {
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--petrol);
+  margin: 16px 0 14px;
 }
+
+.resultCardText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .abordagemGrid { grid-template-columns: 1fr; gap: 30px; }
+  .resultCard { padding: 28px 24px; }
+  .resultCardTitle { font-size: 22px; }
+}
+

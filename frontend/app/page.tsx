@@ -9,6 +9,7 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import { IconCycle, IconBolt, IconChip, IconCloud } from '@/components/ui/InstitutionalIcons';
+import IconTile from '@/components/ui/IconTile';
 import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
 
@@ -171,7 +172,7 @@ export default async function InstitutionalHome() {
             {PILLARS.map((pillar) => (
               <Link href={pillar.href} className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
                 <div className="ih-pillar-top">
-                  <div className="ih-pillar-icon"><pillar.Icon /></div>
+                  <IconTile icon={<pillar.Icon />} />
                 </div>
                 <div className="ih-pillar-kicker">{pillar.kicker}</div>
                 <h3>{pillar.title}</h3>
@@ -198,20 +199,25 @@ export default async function InstitutionalHome() {
       {/* Metodologia */}
       <section className="ih-section ih-section--surface" id="abordagem">
         <div className="wrap">
-          <div className="ih-method-text">
-            <div className="ih-eyebrow">Como trabalhamos</div>
-            <h2 className="sec-t">Processo estruturado, entrega previsível</h2>
-            <p className="sec-desc" style={{ maxWidth: 720 }}>
-              Todo projeto começa pela compreensão do desafio de negócio. Antes de propor qualquer solução, analisamos processos, identificamos oportunidades de melhoria e definimos a abordagem técnica mais adequada para alcançar os resultados esperados.
-            </p>
-            <p className="sec-desc" style={{ maxWidth: 720 }}>
-              Desenvolvemos soluções de forma incremental, com escopo bem definido, comunicação transparente e foco em entregas de valor. Assim, reduzimos riscos, mantemos os custos sob controle e garantimos uma evolução consistente do projeto.
-            </p>
+          <div className="ih-method-grid" data-audit="ih-method-grid">
+            <div className="ih-method-text">
+              <div className="ih-eyebrow">Como trabalhamos</div>
+              <h2 className="sec-t">Processo estruturado, entrega previsível</h2>
+              <p className="sec-desc" style={{ maxWidth: 720 }}>
+                Todo projeto começa pela compreensão do desafio de negócio. Antes de propor qualquer solução, analisamos processos, identificamos oportunidades de melhoria e definimos a abordagem técnica mais adequada para alcançar os resultados esperados.
+              </p>
+            </div>
+            <aside className="ih-method-card" data-audit="ih-method-card">
+              <span className="ih-mc-label">Nosso Método</span>
+              <h3 className="ih-mc-title">Entrega incremental, sem surpresas.</h3>
+              <p className="ih-mc-text">
+                Desenvolvemos soluções de forma incremental, com escopo bem definido, comunicação transparente e foco em entregas de valor. Assim, reduzimos riscos, mantemos os custos sob controle e garantimos uma evolução consistente do projeto.
+              </p>
+            </aside>
           </div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
             <Link href="/contato" className="btn">Fale conosco</Link>
-            <span className="ih-method-credit">Conduzido por Marcelo Gonçalves · Arquiteto de soluções</span>
           </div>
         </div>
       </section>

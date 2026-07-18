@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
-import Faq from '@/components/ui/Faq';
+import FaqSection from '@/components/ui/FaqSection';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
@@ -111,18 +111,16 @@ export default function ContatoPage() {
       {/* Como funciona */}
       <section className="ct-section">
         <div className="wrap">
-          <div className="sec-head-row">
-            <div className="left">
-              <div className="sec-ey">Como funciona</div>
-              <h2 className="sec-t">O que acontece depois do envio.</h2>
-            </div>
+          <div className="ct-center-head">
+            <div className="sec-ey sec-ey-dual">Como funciona</div>
+            <h2 className="sec-t">O que acontece depois do envio.</h2>
           </div>
           <StepsTimeline steps={STEPS} dataAudit="ct-steps" />
         </div>
       </section>
 
       {/* Como podemos ajudar */}
-      <section className="ct-section ct-section--surface">
+      <section id="areas-atuacao" className="ct-section ct-section--surface">
         <div className="wrap">
           <div className="sec-head-row">
             <div className="left">
@@ -144,7 +142,7 @@ export default function ContatoPage() {
       </section>
 
       {/* Outras formas de contato */}
-      <section className="ct-section">
+      <section id="outras-formas" className="ct-section">
         <div className="wrap ct-otherways-grid">
           <div>
             <div className="sec-ey">Outras formas de contato</div>
@@ -184,16 +182,7 @@ export default function ContatoPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="ct-section ct-section--surface">
-        <div className="wrap ct-faq-wrap">
-          <div className="ct-center-head">
-            <div className="sec-ey" style={{ justifyContent: 'center' }}>Perguntas frequentes</div>
-            <h2 className="sec-t">Dúvidas antes de começar.</h2>
-          </div>
-          <Faq items={FAQ_ITEMS} dataAudit="ct-faq" />
-        </div>
-      </section>
+      <FaqSection items={FAQ_ITEMS} title="Dúvidas antes de começar." dataAudit="ct-faq" />
 
       <CtaAssessoria
         id="chamada-final"

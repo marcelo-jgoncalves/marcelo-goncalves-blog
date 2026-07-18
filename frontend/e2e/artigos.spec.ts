@@ -62,9 +62,9 @@ test.describe('página /artigos', () => {
   });
 
   test('CTA de assessoria aparece no final da página', async ({ page }) => {
-    const cta = page.locator('.art-cta-adv');
+    const cta = page.locator('.cta-adv');
     await expect(cta).toBeVisible();
-    await expect(cta.locator('.art-btn-adv')).toHaveAttribute('href', '/servicos');
+    await expect(cta.locator('.cta-adv-btn')).toHaveAttribute('href', '/#servicos');
   });
 
   test('clicar em post card navega para /post/', async ({ page }) => {

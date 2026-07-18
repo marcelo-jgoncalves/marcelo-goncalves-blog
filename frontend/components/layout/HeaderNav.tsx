@@ -10,7 +10,7 @@ const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 // "O Projeto" é item fixo na nav (não mais condicional ao contexto de blog/post).
 const NAV_LINKS_AFTER = [
   { name: 'Contato', href: '/contato' },
-  { name: 'Nossa Abordagem', href: '/sobre' },
+  { name: 'Sobre', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
   { name: 'O Projeto', href: '/o-projeto' },
 ] as const;

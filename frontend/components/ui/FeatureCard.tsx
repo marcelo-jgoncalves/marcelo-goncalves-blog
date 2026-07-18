@@ -8,6 +8,7 @@
    dos dois for passado, o card termina no parágrafo (sem rodapé, sem borda). */
 
 import type { ReactNode } from 'react';
+import IconTile from './IconTile';
 import './FeatureCard.css';
 
 interface FeatureCardProps {
@@ -23,7 +24,7 @@ interface FeatureCardProps {
 export default function FeatureCard({ icon, title, text, tags, footer, size = 'md', dataAudit }: FeatureCardProps) {
   return (
     <div className={`feature-card feature-card--${size}`} data-audit={dataAudit}>
-      <div className="feature-card-icon">{icon}</div>
+      <IconTile icon={icon} className="feature-card-icon" />
       <h3 className="feature-card-title">{title}</h3>
       <p className="feature-card-text">{text}</p>
       {footer ?? (tags && tags.length > 0 ? (

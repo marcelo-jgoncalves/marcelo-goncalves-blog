@@ -16,7 +16,6 @@ export const PROTO_URLS = {
   post: fileUrl('Pagina de Postagem (standalone).html'),
   artigos: fileUrl('Artigos (standalone).html'),
   sobre: fileUrl('Sobre (standalone).html'),
-  servicos: fileUrl('Serviços (standalone).html'),
   projeto: fileUrl('O Projeto - Marcelo Gonçalves.html'),
   notFound: fileUrl('404 - Marcelo Gonçalves.html'),
 } as const;

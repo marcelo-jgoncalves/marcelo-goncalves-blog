@@ -2,18 +2,18 @@
 
 .reading-progress {
   position: fixed;
-  top: var(--nav-height);
+  top: 0;
   left: 0;
   right: 0;
   height: 3px;
   overflow: hidden;
   pointer-events: none;
-  z-index: 49;
+  z-index: 51;
 }
 
 .reading-progress__bar {
   height: 100%;
-  background-color: var(--petrol);
+  background-color: var(--clay);
   transform-origin: left center;
   transform: scaleX(0);
   will-change: transform;

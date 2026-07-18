@@ -47,9 +47,9 @@ test.describe('página /o-projeto', () => {
     await expect(cards.last()).toHaveClass(/op-future/);
   });
 
-  test('CTA assessoria linka para /servicos', async ({ page }) => {
-    await expect(page.locator('.op-cta-adv')).toBeVisible();
-    await expect(page.locator('.op-btn-adv')).toHaveAttribute('href', '/servicos');
+  test('CTA assessoria linka para /#servicos', async ({ page }) => {
+    await expect(page.locator('.cta-adv')).toBeVisible();
+    await expect(page.locator('.cta-adv-btn')).toHaveAttribute('href', '/#servicos');
   });
 
   test('clicar em "Ler artigo" navega para /post/ quando há posts', async ({ page }) => {

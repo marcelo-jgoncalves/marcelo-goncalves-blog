@@ -48,10 +48,10 @@ test.describe('página /sobre', () => {
     await expect(page.locator('.sobre-acad-item').first().locator('.sobre-acad-tile img')).toHaveAttribute('alt', 'Estácio');
   });
 
-  test('CTA assessoria linka para /servicos', async ({ page }) => {
+  test('CTA assessoria linka para /contato', async ({ page }) => {
     const btn = page.locator('.cta-adv-btn');
     await expect(btn).toBeVisible();
-    await expect(btn).toHaveAttribute('href', '/servicos');
+    await expect(btn).toHaveAttribute('href', '/contato');
   });
 
   test('navegar para #assessoria via "Trabalhe comigo"', async ({ page }) => {

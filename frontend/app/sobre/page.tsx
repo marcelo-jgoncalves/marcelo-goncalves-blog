@@ -9,6 +9,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
+import IconTile from '@/components/ui/IconTile';
 import './sobre.css';
 
 export const revalidate = 3600;
@@ -117,13 +118,14 @@ export default async function SobrePage() {
                 <div className="sobre-hp-row sobre-hp-row--last"><span className="k">Soluções</span><span className="v">preparadas para evoluir</span></div>
               </div>
             </div>
-            <div className="sobre-hero-actions">
-              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique (mesmo padrão de HeaderNav.tsx) */}
-              <a className="btn sobre-btn-clay" href="/#servicos">Conheça nossos serviços</a>
-            </div>
           </div>
         }
-      />
+      >
+        <div className="sobre-hero-actions">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique (mesmo padrão de HeaderNav.tsx) */}
+          <a className="btn sobre-btn-clay" href="/#servicos">Conheça nossos serviços</a>
+        </div>
+      </PageHero>
 
       {/* ── NOSSA ORIGEM ── */}
       <section className="sobre-origem">
@@ -182,17 +184,17 @@ export default async function SobrePage() {
               >
                 <div className="sobre-module-top">
                   <span className="sobre-module-num">{m.num}</span>
-                  <span className="sobre-module-mark" aria-hidden="true"><FontAwesomeIcon icon={m.icon} /></span>
+                  <IconTile
+                    icon={<FontAwesomeIcon icon={m.icon} />}
+                    variant="clay"
+                    className="sobre-module-mark"
+                  />
                 </div>
                 <h3 className="sobre-module-title">{m.title}</h3>
                 <p className="sobre-module-text">{m.text}</p>
                 <span className="sobre-module-corner" aria-hidden="true" />
               </div>
             ))}
-          </div>
-          <div className="sobre-approach-note">
-            <p>Não é uma sequência rígida. É um conjunto de critérios que orienta cada decisão técnica, do início à evolução da solução.</p>
-            <span className="sobre-approach-sig">Engenharia com propósito</span>
           </div>
         </div>
       </section>

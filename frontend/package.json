@@ -16,7 +16,6 @@
     "audit:post": "playwright test e2e/visual-audit/post.audit.spec.ts",
     "audit:artigos": "playwright test e2e/visual-audit/artigos.audit.spec.ts",
     "audit:sobre": "playwright test e2e/visual-audit/sobre.audit.spec.ts",
-    "audit:servicos": "playwright test e2e/visual-audit/servicos.audit.spec.ts",
     "audit:projeto": "playwright test e2e/visual-audit/o-projeto.audit.spec.ts",
     "audit:404": "playwright test e2e/visual-audit/not-found.audit.spec.ts",
     "audit:engenharia-de-software": "playwright test e2e/visual-audit/engenharia-de-software.audit.spec.ts",

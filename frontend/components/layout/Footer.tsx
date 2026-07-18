@@ -19,7 +19,7 @@ const QUICK_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Serviços', href: '/#servicos' },
   { name: 'Contato', href: '/contato' },
-  { name: 'Nossa Abordagem', href: '/sobre' },
+  { name: 'Sobre', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
   { name: 'O Projeto', href: '/o-projeto' },
 ];

@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import Faq from '@/components/ui/Faq';
+import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -17,6 +17,14 @@ import {
   IconModernizacaoSistemas,
   IconEngenhariaQualidade,
   IconSustentacaoEvolucao,
+  IconArquiteturasEscalaveis,
+  IconCodigoLimpo,
+  IconTestes,
+  IconSegurancaCloud,
+  IconCICD,
+  IconObservabilidade,
+  IconDocumentacao,
+  IconDividaTecnica,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
@@ -74,7 +82,7 @@ const jsonLd = {
 };
 
 const OQUE_FAZEMOS = [
-  { Icon: IconSistemasSobMedida, title: 'Sistemas Sob Medida', text: 'Desenvolvemos aplicações alinhadas às necessidades específicas do seu negócio, eliminando limitações de soluções genéricas.', tags: ['Sistemas Corporativos', 'Portais Empresariais', 'Aplicações Web'] },
+  { Icon: IconSistemasSobMedida, title: 'Sistemas Sob Medida', text: 'Desenvolvemos aplicações alinhadas às necessidades específicas do seu negócio, eliminando limitações de soluções genéricas.', tags: ['Sistemas Corporativos', 'Portais Empresariais', 'Aplicações'] },
   { Icon: IconApisIntegracoes, title: 'APIs e Integrações', text: 'Projetamos APIs modernas que permitem a comunicação segura e eficiente entre sistemas internos e serviços de terceiros.', tags: ['APIs REST', 'Integrações com ERPs', 'Webhooks'] },
   { Icon: IconArquiteturaSoftware, title: 'Arquitetura de Software', text: 'Projetamos soluções preparadas para crescer, priorizando desempenho, escalabilidade e facilidade de manutenção.', tags: ['Arquitetura em Camadas', 'Orientada a Eventos', 'Serverless'] },
   { Icon: IconModernizacaoSistemas, title: 'Modernização de Sistemas', text: 'Atualizamos aplicações legadas para arquiteturas modernas, reduzindo riscos e preparando a empresa para novos desafios.', tags: ['Refatoração', 'Migração Tecnológica', 'Evolução de Sistemas'] },
@@ -109,14 +117,14 @@ const DIFERENCIAIS = [
 ];
 
 const PRINCIPIOS = [
-  'Arquiteturas escaláveis e resilientes',
-  'Código limpo e de fácil manutenção',
-  'Desenvolvimento orientado por testes',
-  'Segurança desde a concepção da solução',
-  'Integração e entrega contínua (CI/CD)',
-  'Observabilidade desde o primeiro deploy',
-  'Documentação e transferência de conhecimento',
-  'Gestão contínua de dívida técnica',
+  { label: 'Arquiteturas escaláveis e resilientes', Icon: IconArquiteturasEscalaveis },
+  { label: 'Código limpo e de fácil manutenção', Icon: IconCodigoLimpo },
+  { label: 'Desenvolvimento orientado por testes', Icon: IconTestes },
+  { label: 'Segurança desde a concepção da solução', Icon: IconSegurancaCloud },
+  { label: 'Integração e entrega contínua (CI/CD)', Icon: IconCICD },
+  { label: 'Observabilidade desde o primeiro deploy', Icon: IconObservabilidade },
+  { label: 'Documentação e transferência de conhecimento', Icon: IconDocumentacao },
+  { label: 'Gestão contínua de dívida técnica', Icon: IconDividaTecnica },
 ];
 
 const FAQ_ITEMS = [
@@ -136,13 +144,10 @@ export default function EngenhariaDeSoftwarePage() {
         singleColumn
         className={styles.esHero}
         dataAudit="esw-hero"
-        eyebrow="Especialidades · Engenharia de Software"
+        eyebrow="Pilar · Engenharia de Software"
         title={<>Desenvolvemos software que <em>impulsiona</em> o seu negócio.</>}
         subtitle="Cada empresa possui desafios únicos. Por isso, desenvolvemos sistemas, aplicações e plataformas sob medida que automatizam processos, integram informações e apoiam o crescimento do seu negócio."
       >
-        <p className={styles.heroParagraph2}>
-          Combinamos arquitetura moderna, boas práticas de engenharia e tecnologias consolidadas para entregar soluções seguras, escaláveis e preparadas para evoluir junto com sua empresa.
-        </p>
         <div className={styles.heroCtaRow}>
           <Link href="/contato?assunto=engenharia-de-software" className="btn">
             Solicitar diagnóstico
@@ -198,11 +203,17 @@ export default function EngenhariaDeSoftwarePage() {
       {/* NOSSA ABORDAGEM + DIFERENCIAIS */}
       <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemHead}>
-            <span className={styles.eyebrowLight}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Um bom software começa pela compreensão do problema</h2>
-            <p className={styles.sectionDesc}>Antes de escrever qualquer linha de código, entendemos os objetivos do negócio, analisamos os processos existentes e identificamos oportunidades de melhoria. Com base nesse entendimento, projetamos a arquitetura da solução, desenvolvemos de forma incremental e validamos continuamente cada etapa do projeto.</p>
-            <p className={styles.sectionDesc}>O resultado é um software robusto, preparado para evoluir e gerar valor desde as primeiras entregas.</p>
+          <div className={styles.abordagemGrid} data-audit="esw-abordagem-grid">
+            <div className={styles.abordagemHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Um bom software começa pela compreensão do problema</h2>
+              <p className={styles.sectionDesc}>Antes de escrever qualquer linha de código, entendemos os objetivos do negócio, analisamos os processos existentes e identificamos oportunidades de melhoria. Com base nesse entendimento, projetamos a arquitetura da solução, desenvolvemos de forma incremental e validamos continuamente cada etapa do projeto.</p>
+            </div>
+            <aside className={styles.resultCard} data-audit="esw-result-card">
+              <span className={styles.resultCardLabel}>Resultado</span>
+              <h3 className={styles.resultCardTitle}>Pronto para evoluir, desde o primeiro dia.</h3>
+              <p className={styles.resultCardText}>O resultado é um software robusto, preparado para evoluir e gerar valor desde as primeiras entregas.</p>
+            </aside>
           </div>
 
           <div className={styles.etapasGrid}>
@@ -218,8 +229,7 @@ export default function EngenhariaDeSoftwarePage() {
 
           <div className={styles.diferenciais} data-audit="esw-diferenciais">
             <div className={styles.diferenciaisHead}>
-              <span className={styles.eyebrowLight}>Diferenciais</span>
-              <h3 className={styles.h2}>O que nos diferencia</h3>
+              <h3 className={styles.h2}>Consistência do código à operação</h3>
             </div>
             <div className={styles.diferenciaisGrid}>
               {DIFERENCIAIS.map((item) => (
@@ -242,10 +252,10 @@ export default function EngenhariaDeSoftwarePage() {
             <p className={styles.principiosDesc}>O que guia cada decisão técnica, do primeiro commit à operação em produção.</p>
           </div>
           <div className={styles.principiosList}>
-            {PRINCIPIOS.map((item, i) => (
-              <div className={styles.principioItem} key={item}>
-                <span className={styles.principioNumeral}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.principioTitle}>{item}</span>
+            {PRINCIPIOS.map(({ label, Icon }) => (
+              <div className={styles.principioItem} key={label}>
+                <span className={styles.principioNumeral}><Icon /></span>
+                <span className={styles.principioTitle}>{label}</span>
               </div>
             ))}
           </div>
@@ -253,15 +263,7 @@ export default function EngenhariaDeSoftwarePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className={styles.faq} data-audit="esw-faq">
-        <div className={styles.faqWrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Perguntas frequentes</span>
-            <h2 className={styles.h2}>Dúvidas antes de começar</h2>
-          </div>
-          <Faq items={FAQ_ITEMS} dataAudit="esw-faq-accordion" />
-        </div>
-      </section>
+      <FaqSection items={FAQ_ITEMS} dataAudit="esw-faq" />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="esw-cta-final">

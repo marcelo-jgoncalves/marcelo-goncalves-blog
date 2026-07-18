@@ -28,7 +28,7 @@
 
 .home-hero h1 { letter-spacing: -.045em; }
 
-.home-hero::before {
+.page-hero.home-hero::before {
   content: "";
   position: absolute;
   inset: 0;

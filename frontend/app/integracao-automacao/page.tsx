@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import Faq from '@/components/ui/Faq';
+import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -16,6 +16,10 @@ import {
   IconOrquestracaoProcessos,
   IconApisServicos,
   IconArquiteturasEscalaveis,
+  IconArquiteturaNuvem,
+  IconObservabilidade,
+  IconEventos,
+  IconAsync,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
@@ -122,14 +126,14 @@ const BENEFICIOS = [
 ];
 
 const ESPECIALIDADES = [
-  'Integração de sistemas corporativos',
-  'Desenvolvimento de APIs',
-  'Automação de processos',
-  'Workflows empresariais',
-  'Arquiteturas orientadas a eventos',
-  'Processamento assíncrono',
-  'Integração com serviços em nuvem',
-  'Monitoramento de integrações',
+  { label: 'Integração de sistemas corporativos', Icon: IconIntegracaoSistemas },
+  { label: 'Desenvolvimento de APIs', Icon: IconApisServicos },
+  { label: 'Automação de processos', Icon: IconAutomacaoProcessos },
+  { label: 'Workflows empresariais', Icon: IconOrquestracaoProcessos },
+  { label: 'Arquiteturas orientadas a eventos', Icon: IconEventos },
+  { label: 'Processamento assíncrono', Icon: IconAsync },
+  { label: 'Integração com serviços em nuvem', Icon: IconArquiteturaNuvem },
+  { label: 'Monitoramento de integrações', Icon: IconObservabilidade },
 ];
 
 const DIFERENCIAIS = [
@@ -158,13 +162,9 @@ export default function IntegracaoAutomacaoPage() {
         singleColumn
         className={styles.iaHero}
         dataAudit="ia2-hero"
-        eyebrow="Especialidades · Integração & Automação"
+        eyebrow="Pilar · Integração & Automação"
         title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação mais <em>inteligente</em>.</>}
-        subtitle="Integramos aplicações e automatizamos processos para que as informações circulem com segurança, reduzindo erros, aumentando a produtividade e simplificando a operação da sua empresa."
       >
-        <p className={styles.heroParagraph2}>
-          Quando essas ferramentas não se comunicam, surgem processos manuais, informações duplicadas e perda de produtividade.
-        </p>
         <p className={styles.heroParagraph3}>
           Desenvolvemos soluções que integram plataformas e automatizam fluxos de trabalho para que as informações circulem de forma segura, rápida e confiável, permitindo que sua equipe concentre esforços no que realmente importa.
         </p>
@@ -235,10 +235,10 @@ export default function IntegracaoAutomacaoPage() {
             <p className={styles.sectionDesc}>Oito frentes que sustentam cada projeto de integração, da arquitetura à operação contínua.</p>
           </div>
           <div className={styles.especialidadesList}>
-            {ESPECIALIDADES.map((item, i) => (
-              <div className={styles.especialidadeItem} key={item}>
-                <span className={styles.especialidadeNumeral}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.especialidadeTitle}>{item}</span>
+            {ESPECIALIDADES.map(({ label, Icon }) => (
+              <div className={styles.especialidadeItem} key={label}>
+                <span className={styles.especialidadeNumeral}><Icon /></span>
+                <span className={styles.especialidadeTitle}>{label}</span>
               </div>
             ))}
           </div>
@@ -248,17 +248,22 @@ export default function IntegracaoAutomacaoPage() {
       {/* NOSSA ABORDAGEM + DIFERENCIAIS — sem grid de 3 etapas nesta landing */}
       <section id="abordagem" className={styles.abordagem} data-audit="ia2-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemHead}>
-            <span className={styles.eyebrowLight}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Cada integração deve resolver um problema real do negócio</h2>
-            <p className={styles.sectionDesc}>Antes de desenvolver qualquer solução, analisamos como as informações circulam entre pessoas, processos e sistemas. A partir desse entendimento, projetamos uma arquitetura que simplifica a operação, reduz a complexidade e cria uma base preparada para acompanhar a evolução da empresa.</p>
-            <p className={styles.sectionDesc}>Nosso objetivo não é apenas conectar aplicações, mas construir uma operação mais eficiente, integrada e sustentável.</p>
+          <div className={styles.abordagemGrid} data-audit="ia2-abordagem-grid">
+            <div className={styles.abordagemHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Cada integração deve resolver um problema real do negócio</h2>
+              <p className={styles.sectionDesc}>Antes de desenvolver qualquer solução, analisamos como as informações circulam entre pessoas, processos e sistemas. A partir desse entendimento, projetamos uma arquitetura que simplifica a operação, reduz a complexidade e cria uma base preparada para acompanhar a evolução da empresa.</p>
+            </div>
+            <aside className={styles.resultCard} data-audit="ia2-result-card">
+              <span className={styles.resultCardLabel}>Objetivo</span>
+              <h3 className={styles.resultCardTitle}>Mais que conectar, integrar de verdade.</h3>
+              <p className={styles.resultCardText}>Nosso objetivo não é apenas conectar aplicações, mas construir uma operação mais eficiente, integrada e sustentável.</p>
+            </aside>
           </div>
 
           <div className={styles.diferenciais} data-audit="ia2-diferenciais">
             <div className={styles.diferenciaisHead}>
-              <span className={styles.eyebrowLight}>Diferenciais</span>
-              <h3 className={styles.h2}>O que nos diferencia</h3>
+              <h3 className={styles.h2}>Confiabilidade em cada integração</h3>
             </div>
             <div className={styles.diferenciaisGrid}>
               {DIFERENCIAIS.map((item) => (
@@ -273,15 +278,7 @@ export default function IntegracaoAutomacaoPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className={styles.faq} data-audit="ia2-faq">
-        <div className={styles.faqWrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Perguntas frequentes</span>
-            <h2 className={styles.h2}>Dúvidas antes de começar</h2>
-          </div>
-          <Faq items={FAQ_ITEMS} dataAudit="ia2-faq-accordion" />
-        </div>
-      </section>
+      <FaqSection items={FAQ_ITEMS} dataAudit="ia2-faq" />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="ia2-cta-final">

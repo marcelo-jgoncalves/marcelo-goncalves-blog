@@ -1,0 +1,24 @@
+/* frontend/components/ui/IconTile.css */
+
+.icon-tile {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.icon-tile--petrol {
+  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  box-shadow: 0 8px 18px -8px rgba(8, 50, 61, .6);
+}
+
+.icon-tile--clay {
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
+  box-shadow: 0 8px 18px -8px rgba(201, 96, 60, .55);
+}
+
+.icon-tile--glass {
+  background: rgba(255, 255, 255, .09);
+  border: 1px solid rgba(255, 255, 255, .16);
+}

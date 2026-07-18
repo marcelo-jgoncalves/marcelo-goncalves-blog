@@ -172,7 +172,7 @@ export default function ContactForm() {
       <div className="contact-form-footer">
         <span className="contact-required-note">* campos obrigatórios</span>
         <button type="submit" className="btn" disabled={enviando}>
-          {enviando ? 'Enviando…' : 'Solicitar diagnóstico'} <span aria-hidden="true">→</span>
+          {enviando ? 'Enviando…' : 'Solicitar diagnóstico'}
         </button>
       </div>
     </form>
