@@ -55,7 +55,7 @@
 /* Título */
 .projeto-widget__title {
   font-family: var(--font-display);
-  font-size: var(--type-h1);
+  font-size: var(--type-h4);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.2;

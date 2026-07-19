@@ -55,10 +55,6 @@
   overflow-wrap: break-word;
 }
 
-@media (min-width: 768px) {
-  .category-card h3 { font-size: var(--type-h4); }
-}
-
 /* Descrição */
 .category-card__description {
   font-family: var(--font-display);

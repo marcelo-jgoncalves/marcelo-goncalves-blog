@@ -75,23 +75,16 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
       ) : (
         // --- CENÁRIO B: Nada Encontrado (Layout de Retenção) ---
         <>
-          <style dangerouslySetInnerHTML={{__html: `
-            .search-icon-container { font-size: 5rem; color: var(--ink); margin-bottom: 20px; position: relative; display: inline-block; }
-            .search-icon-container .fa-robot { text-shadow: 3px 3px 0px rgba(15, 76, 92, 0.2); }
-            .question-mark { position: absolute; top: -10px; right: -15px; font-size: 3rem; color: var(--petrol); animation: float 2s ease-in-out infinite; }
-            @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-            .search-hero-404 { padding: 60px 20px; text-align: center; background: linear-gradient(180deg, rgba(250,248,243,0) 0%, var(--ivory) 100%); }
-          `}} />
           <section className="search-hero-404">
             <div className="container">
               <div className="search-icon-container">
                 <i className="fa-solid fa-robot fa-bounce" style={{ animationDuration: '3s', animationIterationCount: '2' }}></i>
                 <i className="fa-solid fa-question question-mark"></i>
               </div>
-              <h1 style={{ fontSize: '2rem', marginBottom: '20px' }}>
+              <h1 className="search-no-results-title">
                 Oops! Ainda não escrevi sobre &ldquo;<span className="highlight">{q}</span>&rdquo;.
               </h1>
-              <p style={{ color: '#666', maxWidth: '600px', margin: '0 auto 40px', fontSize: '1.1rem' }}>
+              <p className="search-no-results-text">
                 Mas talvez este seja um ótimo tema para um futuro post. Que tal tentar um outro termo?
               </p>
               <div style={{ maxWidth: '600px', margin: '0 auto' }}>

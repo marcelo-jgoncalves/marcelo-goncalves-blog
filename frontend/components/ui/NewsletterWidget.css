@@ -83,7 +83,7 @@
 .card-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--type-h1);
+  font-size: var(--type-h4);
   letter-spacing: -0.01em;
   margin-bottom: var(--sp-6);
   display: block;
