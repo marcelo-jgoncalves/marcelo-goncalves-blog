@@ -66,3 +66,53 @@
 .legal-content a:hover {
   color: var(--petrol-deep);
 }
+
+.legal-content code {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  background: var(--sand);
+  color: var(--petrol-deep);
+  padding: 2px var(--title-gap);
+  border-radius: 4px;
+}
+
+.legal-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 var(--sp-4);
+}
+
+.legal-content table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.legal-content th,
+.legal-content td {
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--type-caption);
+  border-bottom: 1px solid var(--line);
+}
+
+.legal-content th {
+  background: var(--sand);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--petrol);
+  white-space: nowrap;
+}
+
+.legal-content td {
+  color: var(--slate);
+}
+
+.legal-content tbody tr:last-child td {
+  border-bottom: none;
+}
