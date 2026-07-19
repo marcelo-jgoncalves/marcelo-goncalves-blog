@@ -26,6 +26,19 @@
   margin-bottom: var(--sp-4);
 }
 
+.legal-content h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-body);
+  color: var(--ink);
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-2);
+}
+
+.legal-content p strong {
+  color: var(--ink);
+}
+
 .legal-content p {
   font-size: var(--type-body);
   color: var(--slate);
