@@ -124,11 +124,11 @@ export default function HeaderNav() {
 
       {isBlogContext ? (
         // eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique
-        <a href="/#servicos" className="nav-cta" data-audit="header-cta">
+        <a href="/#servicos" className="btn nav-cta" data-audit="header-cta">
           Conheça nossos serviços
         </a>
       ) : (
-        <Link href="/contato" className="nav-cta" prefetch={false} data-audit="header-cta">
+        <Link href="/contato" className="btn nav-cta" prefetch={false} data-audit="header-cta">
           Solicitar diagnóstico
         </Link>
       )}
@@ -210,11 +210,11 @@ export default function HeaderNav() {
         ))}
         {isBlogContext ? (
           // eslint-disable-next-line @next/next/no-html-link-for-pages -- ver comentário acima (desktop)
-          <a href="/#servicos" className="nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
+          <a href="/#servicos" className="btn nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
             Conheça nossos serviços
           </a>
         ) : (
-          <Link href="/contato" className="nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+          <Link href="/contato" className="btn nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
             Solicitar diagnóstico
           </Link>
         )}

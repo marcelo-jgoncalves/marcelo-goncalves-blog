@@ -299,6 +299,29 @@ img {
   margin-top: var(--sp-6);
 }
 
+/* Variante centralizada de sec-head-row/sec-ey — eyebrow com traço dos
+   dois lados, título e subtítulo centralizados. Reutilizável em
+   qualquer seção que use o padrão sec-head-row/sec-ey/sec-t/sec-desc. */
+.sec-head-row--center {
+  justify-content: center;
+}
+
+.sec-head-row--center .left {
+  align-items: center;
+  text-align: center;
+}
+
+.sec-ey--dual {
+  justify-content: center;
+}
+
+.sec-ey--dual::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
 .highlight,
 .accent {
   color: var(--clay);
@@ -332,18 +355,20 @@ img {
 /* =========================================
    3. BOTÕES (design-reference.md §6 Componentes)
    ========================================= */
-/* Botão padrão do site — dois tipos únicos (laranja/clay e petróleo,
-   mesma cor de fundo da hero da Home), reutilizados em toda a
-   plataforma. Variam apenas em texto e largura; no hover, a cor troca
-   para a outra (clay⇄petrol) — mesmo padrão do "Voltar ao topo" do
-   Footer. Forma de referência: hero da Home. */
+/* Botão padrão do site — dois tipos únicos (laranja/clay e petróleo),
+   reutilizados em toda a plataforma. Variam apenas em texto e largura.
+   Cor/hover: mesmo padrão do "Solicitar Diagnóstico" da navbar
+   (HeaderNav .nav-cta) — a cor escurece para sua própria variante de
+   hover, não troca de família (clay→clay-hover, petrol→petrol-deep).
+   Forma (border-radius): mesmo padrão do "Voltar ao topo" do Footer
+   (pílula, 999px). Sessão 2026-07-19. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--sp-4);
   padding: var(--eyebrow-gap) var(--gap-grid);
-  border-radius: 12px;
+  border-radius: 999px;
   background-color: var(--clay);
   color: #ffffff;
   font-family: var(--font-display);
@@ -357,21 +382,20 @@ img {
 }
 
 .btn:hover {
-  background-color: var(--petrol-deep);
-  border-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--clay-hover);
   color: #ffffff;
   transform: translateY(-2px);
 }
 
-/* Variante petróleo — mesma forma, cor invertida (secundário) */
+/* Variante petróleo — mesma forma, cor secundária (mesmo mecanismo de
+   hover: escurece dentro da própria família petrol, não troca pra clay) */
 .btn-petrol {
-  background-color: var(--petrol-deep);
+  background-color: var(--petrol);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
 .btn-petrol:hover {
-  background-color: var(--clay);
-  border-color: var(--clay);
+  background-color: var(--petrol-deep);
   color: #ffffff;
 }
 

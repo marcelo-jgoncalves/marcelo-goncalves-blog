@@ -53,28 +53,10 @@
   color: var(--petrol-soft);
 }
 
+/* Usa o padrão global .btn (globals.css); classe local só cuida do
+   que é específico deste contexto (não encolher no flex do foot-lead). */
 .site-footer .to-top {
   flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-3);
-  cursor: pointer;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .16);
-  color: #fff;
-  font-family: var(--font);
-  font-weight: 600;
-  font-size: var(--type-caption);
-  text-transform: uppercase;
-  padding: var(--sp-3) var(--sp-5);
-  border-radius: 999px;
-  transition: background .2s, border-color .2s, transform .2s;
-}
-
-.site-footer .to-top:hover {
-  background: var(--clay);
-  border-color: var(--clay);
-  transform: translateY(-2px);
 }
 
 .site-footer .to-top svg {
@@ -181,35 +163,50 @@
   height: 17px;
 }
 
-/* ── bottom ── */
+/* ── bottom ──
+   Duas linhas centralizadas: copyright + Aviso de Privacidade + Política
+   de Cookies em cima, Termos de Uso + Preferências de cookies embaixo.
+   RSS removido. */
 .site-footer .foot-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-top: var(--sp-6);
   margin-top: var(--sp-2);
   border-top: 1px solid rgba(255, 255, 255, .08);
-  flex-wrap: wrap;
-  gap: var(--eyebrow-gap);
   font-family: var(--mono);
   font-size: var(--type-caption);
   color: #5E7A82;
   letter-spacing: .06em;
+  text-align: center;
 }
 
-.site-footer .foot-bottom .links {
+.site-footer .foot-legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.site-footer .foot-legal-row {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gap-grid);
+  justify-content: center;
 }
 
-.site-footer .foot-bottom .links a {
+.site-footer .foot-legal-row > *:not(:last-child)::after {
+  content: "·";
+  margin: 0 var(--title-gap);
+  color: #5E7A82;
+}
+
+.site-footer .foot-legal-row a,
+.site-footer .foot-legal-row .cmp-trigger {
   color: inherit;
+  font-weight: inherit;
   text-decoration: none;
   transition: color .2s;
 }
 
-.site-footer .foot-bottom .links a:hover {
+.site-footer .foot-legal-row a:hover,
+.site-footer .foot-legal-row .cmp-trigger:hover {
   color: #fff;
 }
 

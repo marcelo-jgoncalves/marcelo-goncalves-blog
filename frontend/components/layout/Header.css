@@ -173,27 +173,15 @@
   font-weight: 600;
 }
 
-/* ── CTA ── */
+/* ── CTA ── Usa o padrão global .btn (globals.css); classe local só
+   ajusta tamanho (nunca cor/forma) pra caber na altura fixa do nav
+   (--nav-height: 68px) sem ficar colado nas bordas, e não quebrar
+   linha no nav apertado. */
 .site-header .nav-cta {
-  display: inline-flex;
-  align-items: center;
   flex-shrink: 0;
   white-space: nowrap;
-  gap: var(--sp-2);
-  background: var(--clay);
-  color: #fff;
-  font-weight: 600;
+  padding: var(--sp-2) var(--sp-5);
   font-size: var(--type-caption);
-  text-transform: uppercase;
-  padding: var(--sp-3) var(--gap-loose);
-  border-radius: 10px;
-  text-decoration: none;
-  transition: background .2s, transform .15s;
-}
-
-.site-header .nav-cta:hover {
-  background: var(--clay-hover);
-  transform: translateY(-1px);
 }
 
 .site-header .nav-cta .arrow {
@@ -267,31 +255,18 @@
   color: var(--petrol);
 }
 
+/* Usa o padrão global .btn (globals.css); classe local só cuida do
+   que é específico deste contexto (altura fixa no menu, separação do
+   item anterior, sem borda inferior herdada dos outros links do menu). */
 .site-header .nav-mobile-menu a.nav-cta-mobile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
   height: 44px;
-  border-radius: 999px;
-  background: var(--clay);
-  color: #fff;
-  font-weight: 600;
   font-size: var(--type-body);
-  text-transform: uppercase;
-  text-decoration: none;
   margin-top: var(--sp-1);
-  transition: background-color 0.2s ease;
   border-bottom: none;
 }
 
 .site-header .nav-cta-mobile .arrow {
   font-family: var(--mono);
-}
-
-.site-header .nav-mobile-menu a.nav-cta-mobile:hover {
-  background: var(--clay-hover);
-  color: #fff;
 }
 
 /* ── "Serviços" (mobile) ── */

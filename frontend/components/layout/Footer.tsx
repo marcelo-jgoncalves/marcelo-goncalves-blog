@@ -38,7 +38,7 @@ export default function Footer() {
           <div className="manifesto" data-audit="footer-manifesto">
             Engenharia, IA e automação para quem quer <em>destravar valor</em> com tecnologia.
           </div>
-          <button type="button" className="to-top" onClick={scrollToTop} aria-label="Voltar ao topo" data-audit="footer-to-top">
+          <button type="button" className="btn to-top" onClick={scrollToTop} aria-label="Voltar ao topo" data-audit="footer-to-top">
             Voltar ao topo
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>
           </button>
@@ -94,13 +94,16 @@ export default function Footer() {
         </div>
 
         <div className="foot-bottom" data-audit="footer-bottom">
-          <span>© {currentYear} Marcelo Gonçalves · Todos os direitos reservados</span>
-          <div className="links">
-            <Link href="/politica-de-privacidade" prefetch={false}>Aviso de Privacidade</Link>
-            <Link href="/politica-de-cookies" prefetch={false}>Política de Cookies</Link>
-            <Link href="/termos-de-uso" prefetch={false}>Termos de Uso</Link>
-            <ConsentTrigger />
-            <Link href="/feed.xml" prefetch={false}>RSS</Link>
+          <div className="foot-legal">
+            <div className="foot-legal-row">
+              <span>© {currentYear} Marcelo Gonçalves · Todos os direitos reservados</span>
+              <Link href="/politica-de-privacidade" prefetch={false}>Aviso de Privacidade</Link>
+              <Link href="/politica-de-cookies" prefetch={false}>Política de Cookies</Link>
+            </div>
+            <div className="foot-legal-row">
+              <Link href="/termos-de-uso" prefetch={false}>Termos de Uso</Link>
+              <ConsentTrigger />
+            </div>
           </div>
         </div>
       </div>
