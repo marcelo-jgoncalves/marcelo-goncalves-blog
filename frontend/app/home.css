@@ -47,7 +47,7 @@
   gap: 12px;
   margin-top: 44px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .08em;
   color: rgba(250, 248, 243, .5);
 }
@@ -122,7 +122,7 @@
 /* Eyebrow — variante local (suporta traço duplo centralizado) */
 .ih-eyebrow {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--clay);
@@ -169,7 +169,7 @@
   color: var(--slate);
   max-width: 580px;
   margin: 14px auto 0;
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.65;
 }
 
@@ -215,7 +215,7 @@
 
 .ih-pillar-kicker {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: .16em;
   color: var(--petrol);
@@ -223,7 +223,7 @@
 }
 
 .ih-pillar-card h3 {
-  font-size: 1.25rem;
+  font-size: var(--type-body);
   font-weight: 800;
   letter-spacing: -.025em;
   color: var(--ink);
@@ -233,7 +233,7 @@
 
 .ih-pillar-card > p {
   color: var(--slate);
-  font-size: 14.5px;
+  font-size: var(--type-label);
   line-height: 1.65;
   margin: 0 0 18px;
 }
@@ -250,7 +250,7 @@
 .ih-pillar-bullets li {
   position: relative;
   padding-left: 24px;
-  font-size: 13.5px;
+  font-size: var(--type-caption);
   line-height: 1.5;
   color: var(--slate);
 }
@@ -266,7 +266,7 @@
   left: 2px;
   top: 0;
   color: var(--clay);
-  font-size: 12.5px;
+  font-size: var(--type-caption);
   font-weight: 700;
 }
 
@@ -289,7 +289,7 @@
 
 .ih-pillar-tags span {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: .06em;
   color: var(--petrol);
@@ -305,7 +305,7 @@
   gap: 6px;
   flex: none;
   margin-left: auto;
-  font-size: 13.5px;
+  font-size: var(--type-caption);
   font-weight: 600;
   color: var(--clay);
   white-space: nowrap;
@@ -354,20 +354,20 @@
 .ih-mc-label {
   display: block;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--clay);
 }
 
-.ih-mc-title { font-weight: 800; font-size: 26px; color: var(--petrol); margin: 16px 0 14px; }
-.ih-mc-text { font-size: 16px; line-height: 1.6; color: var(--slate); margin: 0; }
+.ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: 16px 0 14px; }
+.ih-mc-text { font-size: var(--type-label); line-height: 1.6; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
   .ih-method-grid { grid-template-columns: 1fr; gap: 30px; }
   .ih-method-card { padding: 28px 24px; }
-  .ih-mc-title { font-size: 22px; }
+  .ih-mc-title { font-size: var(--type-lead); }
 }
 
 
@@ -392,7 +392,7 @@
 
 .ih-results-t {
   font-weight: 800;
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-size: var(--type-h3);
   letter-spacing: -.03em;
   color: #fff;
   margin: 0;
@@ -407,7 +407,7 @@
   max-width: 560px;
   margin: 16px auto 0;
   color: rgba(250, 248, 243, .72);
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.6;
 }
 
@@ -450,28 +450,28 @@
 
 .ih-case-metric-v {
   font-weight: 800;
-  font-size: clamp(2.2rem, 3.4vw, 2.8rem);
+  font-size: var(--type-h2);
   letter-spacing: -.03em;
   color: var(--clay);
 }
 
 .ih-case-metric-l {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: .06em;
   color: rgba(250, 248, 243, .6);
 }
 
 .ih-case-text h3 {
-  font-size: 1.15rem;
+  font-size: var(--type-body-sm);
   font-weight: 700;
   color: #fff;
   margin: 0 0 10px;
 }
 
 .ih-case-text p {
-  font-size: 14.5px;
+  font-size: var(--type-label);
   line-height: 1.65;
   color: rgba(250, 248, 243, .66);
   margin: 0 0 18px;
@@ -485,7 +485,7 @@
 
 .ih-case-tags span {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: .06em;
   color: #fff;

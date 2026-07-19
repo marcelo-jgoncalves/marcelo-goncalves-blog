@@ -14,7 +14,7 @@
 
 .post-r-eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--clay);
@@ -34,7 +34,7 @@
 
 .post-r-head h2 {
   font-weight: 800;
-  font-size: 2rem;
+  font-size: var(--type-h3);
   letter-spacing: -0.03em;
   color: var(--ink);
   margin: 0;
@@ -43,7 +43,7 @@
 .post-r-all {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--type-caption);
   color: var(--petrol);
   display: inline-flex;
   align-items: center;
@@ -83,7 +83,7 @@
     background: var(--clay);
     color: #fff;
     font-weight: 600;
-    font-size: 15px;
+    font-size: var(--type-label);
     padding: 14px 24px;
     border-radius: 12px;
     box-shadow: 0 8px 22px rgba(201, 96, 60, .35);

@@ -21,13 +21,13 @@
 }
 
 .popular-section-header h2 {
-  font-size: 2rem;
+  font-size: var(--type-h3);
   margin-bottom: var(--space-1);
 }
 
 .popular-section-header p {
   color: var(--steel);
-  font-size: 1.1rem;
+  font-size: var(--type-body-sm);
 }
 
 .popular-posts-grid-post {

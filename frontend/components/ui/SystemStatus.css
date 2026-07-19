@@ -21,7 +21,7 @@
 }
 
 .system-status-title {
-  font-size: 0.8rem;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--steel);
@@ -48,7 +48,7 @@
   margin: 0;
   padding: 0;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 0.85rem;
+  font-size: var(--type-caption);
   display: flex;
   flex-direction: column;
   gap: 16px; /* Ritmo 2x 8px */

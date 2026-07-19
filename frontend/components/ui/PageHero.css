@@ -9,7 +9,7 @@
   --ph-gap:      60px;
   --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) var(--space-5);
   --ph-max:      var(--wrap-max);
-  --ph-h1-size:  var(--text-4xl);
+  --ph-h1-size:  var(--type-display-sm);
   --ph-h1-max:   600px;
   --ph-sub-max:  510px;
   --ph-ey-color: rgba(255, 255, 255, .65);
@@ -67,7 +67,7 @@
 
 .page-hero-ey {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--ph-ey-color);
@@ -102,7 +102,7 @@
 }
 
 .page-hero-sub {
-  font-size: 1.075rem;
+  font-size: var(--type-body-sm);
   line-height: 1.68;
   color: rgba(250, 248, 243, .63);
   max-width: var(--ph-sub-max);

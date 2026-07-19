@@ -26,7 +26,7 @@
 /* O Label */
 .share-buttons-label {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--type-h1);
   line-height: 1.1;
   font-weight: 900;
   letter-spacing: -0.05em;
@@ -62,7 +62,7 @@
 }
 
 .share-buttons-btn svg {
-  font-size: 20px;
+  font-size: var(--type-body);
   line-height: 1;
 }
 

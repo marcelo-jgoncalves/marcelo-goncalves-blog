@@ -40,7 +40,7 @@
 /* ── brand ── */
 .site-header .brand {
   font-weight: 800;
-  font-size: var(--text-2xl);
+  font-size: var(--type-h3);
   letter-spacing: -.02em;
   color: var(--ivory);
   display: flex;
@@ -59,7 +59,7 @@
 }
 
 .site-header .menu a {
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   color: rgba(255, 255, 255, .75);
   font-weight: 500;
   text-decoration: none;
@@ -98,7 +98,7 @@
   margin: 0;
   cursor: pointer;
   font-family: inherit;
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   line-height: inherit;
   color: rgba(255, 255, 255, .75);
   font-weight: 500;
@@ -154,7 +154,7 @@
 }
 
 .site-header .nav-dropdown-panel a {
-  font-size: 14.5px;
+  font-size: var(--type-label);
   font-weight: 500;
   color: var(--ink);
   text-decoration: none;
@@ -183,7 +183,7 @@
   background: var(--clay);
   color: #fff;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--type-caption);
   text-transform: uppercase;
   padding: 11px 18px;
   border-radius: 10px;
@@ -257,7 +257,7 @@
   color: var(--ink);
   text-decoration: none;
   padding: 14px 0;
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   border-bottom: 1px solid var(--line);
   transition: color 0.2s ease;
 }
@@ -277,7 +277,7 @@
   background: var(--clay);
   color: #fff;
   font-weight: 600;
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   text-transform: uppercase;
   text-decoration: none;
   margin-top: var(--sp-1);
@@ -307,7 +307,7 @@
   font-weight: 500;
   color: var(--ink);
   padding: 14px 0;
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   border-bottom: 1px solid var(--line);
   transition: color 0.2s ease;
 }
@@ -324,6 +324,6 @@
 
 .site-header .nav-mobile-services-list a {
   padding: 12px 0 12px var(--sp-4);
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   border-bottom: 1px solid var(--line);
 }

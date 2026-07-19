@@ -12,7 +12,7 @@
 .op-page-number {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-sm);
+  font-size: var(--type-label);
   color: var(--ink);
   padding: 10px 20px;
   border: 1px solid var(--line);
@@ -51,7 +51,7 @@ a.op-page-number[rel="next"] {
 
 .op-page-info {
   font-family: var(--font-display);
-  font-size: var(--text-sm);
+  font-size: var(--type-label);
   color: var(--steel);
   padding: 10px 16px;
   white-space: nowrap;

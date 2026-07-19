@@ -20,14 +20,14 @@
 
 .categoria-empty__msg {
   color: var(--steel);
-  font-size: 1.1rem;
+  font-size: var(--type-body-sm);
   margin-bottom: var(--space-3);
 }
 
 .categoria-empty__link {
   color: var(--petrol);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--type-label);
   text-decoration: none;
   transition: color 0.2s;
 }

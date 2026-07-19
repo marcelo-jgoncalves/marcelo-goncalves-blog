@@ -38,7 +38,7 @@
 
 .nl-cta__eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #FEF6E6;
@@ -58,7 +58,7 @@
 .nl-cta__title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-2xl);
+  font-size: var(--type-h3);
   letter-spacing: -0.025em;
   line-height: 1.1;
   color: #FEF6E6;
@@ -74,7 +74,7 @@
 
 .nl-cta__desc {
   font-family: var(--font-display);
-  font-size: 15.5px;
+  font-size: var(--type-label);
   line-height: 1.6;
   color: #FEF6E6;
   max-width: 440px;
@@ -89,7 +89,7 @@
   padding-top: 18px;
   border-top: 1px solid rgba(254, 246, 230, 0.18);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(254, 246, 230, 0.70);
@@ -99,7 +99,7 @@
   font-family: var(--font-display);
   color: #FEF6E6;
   font-weight: 700;
-  font-size: 17px;
+  font-size: var(--type-body-sm);
   letter-spacing: -0.01em;
   margin-right: 6px;
 }
@@ -136,7 +136,7 @@
   outline: none;
   padding: 18px 20px;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: var(--type-label);
   color: #112637;
 }
 
@@ -148,7 +148,7 @@
   border: none;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 14.5px;
+  font-size: var(--type-label);
   padding: 0 28px;
   cursor: pointer;
   display: inline-flex;
@@ -234,7 +234,7 @@
 
 .nl-cta__consent-label {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: var(--type-caption);
   line-height: 1.5;
   color: #FEF6E6;
 }
@@ -254,7 +254,7 @@
 /* Trust */
 .nl-cta__trust {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(254, 246, 230, 0.70);
@@ -283,7 +283,7 @@
   border-radius: 10px;
   padding: var(--space-4);
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   color: #FEF6E6;
   font-weight: 600;
   line-height: 1.5;
@@ -301,7 +301,7 @@
   }
 
   .nl-cta__title {
-    font-size: var(--text-xl);
+    font-size: var(--type-h4);
     max-width: 100%;
   }
 

@@ -19,7 +19,7 @@
   letter-spacing: -.04em;
   color: var(--ink);
   text-wrap: balance;
-  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-size: var(--type-h3);
   font-weight: 800;
   line-height: 1.1;
   margin: 0;
@@ -29,7 +29,7 @@
   letter-spacing: -.04em;
   color: var(--ivory);
   text-wrap: balance;
-  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-size: var(--type-h3);
   font-weight: 800;
   line-height: 1.12;
   margin: 0;
@@ -39,7 +39,7 @@
   color: var(--slate);
   max-width: 580px;
   margin: var(--sp-6) 0 0;
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.65;
 }
 
@@ -58,7 +58,7 @@
 .eyebrowLight,
 .eyebrowDark {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .22em;
   text-transform: uppercase;
   display: flex;
@@ -137,7 +137,7 @@
 .heroParagraph2 {
   color: rgba(250, 248, 243, .68);
   max-width: 800px;
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.68;
   margin: 0;
 }
@@ -145,7 +145,7 @@
 .heroParagraph3 {
   color: rgba(250, 248, 243, .68);
   max-width: 800px;
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.68;
   margin: 16px 0 0;
 }
@@ -277,7 +277,7 @@
 }
 
 .beneficioText {
-  font-size: 15px;
+  font-size: var(--type-label);
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
   overflow-wrap: break-word;
@@ -349,7 +349,7 @@
 }
 
 .especialidadeTitle {
-  font-size: 1.05rem;
+  font-size: var(--type-label);
   font-weight: 800;
   letter-spacing: -.015em;
   color: var(--ink);
@@ -392,7 +392,7 @@
 .resultCardLabel {
   display: block;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -401,13 +401,13 @@
 
 .resultCardTitle {
   font-weight: 800;
-  font-size: 26px;
+  font-size: var(--type-h4);
   color: var(--petrol);
   margin: 16px 0 14px;
 }
 
 .resultCardText {
-  font-size: 16px;
+  font-size: var(--type-label);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
@@ -416,7 +416,7 @@
 @media (max-width: 860px) {
   .abordagemGrid { grid-template-columns: 1fr; gap: 30px; }
   .resultCard { padding: 28px 24px; }
-  .resultCardTitle { font-size: 22px; }
+  .resultCardTitle { font-size: var(--type-lead); }
 }
 
 .diferenciais {
@@ -448,13 +448,13 @@
 .diferencialCheck {
   flex: none;
   color: var(--clay);
-  font-size: 13px;
+  font-size: var(--type-caption);
   font-weight: 700;
   line-height: 1.5;
 }
 
 .diferencialText {
-  font-size: 14px;
+  font-size: var(--type-caption);
   line-height: 1.55;
   color: var(--ink);
   min-width: 0;

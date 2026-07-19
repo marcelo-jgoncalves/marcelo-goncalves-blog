@@ -36,7 +36,7 @@
 }
 
 .ct-hero-aux {
-  font-size: 13.5px;
+  font-size: var(--type-caption);
   color: rgba(250, 248, 243, .5);
 }
 
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 14px;
+  font-size: var(--type-caption);
   color: var(--ink);
 }
 
@@ -142,7 +142,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: var(--type-caption);
 }
 
 /* Áreas de atuação — 4 pilares, mesmo conteúdo de app/page.tsx PILLARS */
@@ -192,14 +192,14 @@
 
 .ct-area-card h3 {
   font-weight: 700;
-  font-size: 1.12rem;
+  font-size: var(--type-body-sm);
   letter-spacing: -.015em;
   color: var(--ink);
   margin: 0 0 9px;
 }
 
 .ct-area-card p {
-  font-size: 14px;
+  font-size: var(--type-caption);
   line-height: 1.62;
   color: var(--slate);
   margin: 0;
@@ -223,7 +223,7 @@
   border: 1px solid rgba(63, 107, 71, .3);
   cursor: pointer;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--type-caption);
   padding: 13px 20px;
   border-radius: 12px;
   text-decoration: none;
@@ -268,14 +268,14 @@
 
 .ct-contact-k {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-caption);
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--steel);
 }
 
 .ct-contact-v {
-  font-size: 13.5px;
+  font-size: var(--type-caption);
   font-weight: 600;
   color: var(--ink);
 }

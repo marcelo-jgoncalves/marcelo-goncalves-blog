@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: var(--type-label);
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.15s, color 0.2s, border-color 0.2s, background 0.2s;
@@ -52,7 +52,7 @@
   transform: translate(-50%, 20px);
   background: var(--ink);
   color: #fff;
-  font-size: 14px;
+  font-size: var(--type-caption);
   font-weight: 500;
   padding: 13px 22px;
   border-radius: 999px;

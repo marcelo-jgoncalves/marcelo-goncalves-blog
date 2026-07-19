@@ -37,7 +37,7 @@
 
 .cta-adv-ey {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .22em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .72);
@@ -56,7 +56,7 @@
 
 .cta-adv-content h2 {
   font-weight: 800;
-  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-size: var(--type-h2);
   line-height: 1.06;
   letter-spacing: -.04em;
   color: #fff;
@@ -69,7 +69,7 @@
 }
 
 .cta-adv-desc {
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: rgba(250, 248, 243, .66);
   max-width: 440px;
@@ -88,7 +88,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 15px;
+  font-size: var(--type-label);
   line-height: 1.5;
   color: rgba(250, 248, 243, .9);
 }
@@ -127,7 +127,7 @@
 
 .cta-adv-tagline {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   letter-spacing: .16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .6);
@@ -147,14 +147,14 @@
 
 .cta-adv-card h3 {
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: var(--type-lead);
   letter-spacing: -.025em;
   color: #fff;
   line-height: 1.2;
 }
 
 .cta-adv-sub {
-  font-size: 14.5px;
+  font-size: var(--type-label);
   line-height: 1.6;
   color: rgba(250, 248, 243, .66);
   margin-top: 20px;
@@ -172,7 +172,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-size: 14.5px;
+  font-size: var(--type-label);
   font-weight: 600;
   color: rgba(250, 248, 243, .9);
   text-decoration: none;
@@ -183,7 +183,7 @@
 
 .cta-adv-svc a .arrow {
   font-family: var(--mono);
-  font-size: 18px;
+  font-size: var(--type-body-sm);
   color: rgba(255, 255, 255, .4);
   transition: color .2s, transform .2s;
 }
@@ -202,7 +202,7 @@
    largura (preenche o card) e a sombra própria deste componente. */
 .cta-adv-btn {
   width: 100%;
-  font-size: 15.5px;
+  font-size: var(--type-label);
   margin-top: 4px;
   box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
 }
@@ -234,7 +234,7 @@
 
 .cta-adv-ml {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   letter-spacing: .1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .5);
@@ -242,7 +242,7 @@
 
 .cta-adv-mv {
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--type-caption);
   color: #fff;
   letter-spacing: -.01em;
 }
@@ -254,7 +254,7 @@
 .cta-adv-reassure {
   text-align: center;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-caption);
   letter-spacing: .1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, .5);

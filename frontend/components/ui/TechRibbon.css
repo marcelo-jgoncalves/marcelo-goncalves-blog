@@ -23,7 +23,7 @@
 
 .op-tech-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 13.6px;
+  font-size: var(--type-caption);
   font-weight: 700;
   color: rgb(74, 85, 104);
   text-transform: uppercase;

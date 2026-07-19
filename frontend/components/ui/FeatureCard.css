@@ -28,7 +28,7 @@
   letter-spacing: -.025em;
   color: var(--ink);
   margin: 0 0 12px;
-  font-size: 1.22rem;
+  font-size: var(--type-body);
   font-weight: 800;
   line-height: 1.25;
 }
@@ -36,7 +36,7 @@
 .feature-card-text {
   color: var(--slate);
   margin: 0 0 20px;
-  font-size: 14.5px;
+  font-size: var(--type-label);
   line-height: 1.65;
 }
 
@@ -63,7 +63,7 @@
   border: 1px solid rgba(15, 76, 92, .14);
   border-radius: 999px;
   padding: 5px 10px;
-  font-size: 10px;
+  font-size: var(--type-caption);
   white-space: nowrap;
 }
 
@@ -73,7 +73,7 @@
 .feature-card-example-label {
   display: block;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-caption);
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--steel);
@@ -82,7 +82,7 @@
 
 .feature-card-example-flow {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-caption);
   line-height: 1.7;
   color: var(--petrol);
   margin: 0;

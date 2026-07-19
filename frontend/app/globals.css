@@ -81,17 +81,23 @@
   --stats-top:          56px;          /* margin-top do stats strip dentro do hero */
 
   /* ─────────────────────────────────────
-     TYPE SCALE — 9 tokens, base 18px (ritmo-vertical-contract.md §1)
+     TYPE SCALE — fluida (clamp), 11 tokens nomeados por papel de conteúdo.
+     Método: interpolação linear entre 400px (mobile) e 1280px (desktop),
+     estilo Utopia (https://utopia.fyi) — cada token já é responsivo, nunca
+     precisa de override em media query. Sessão 2026-07-18 (substitui a
+     escala fixa de 9 tokens --text-*, ver memory/project_type_scale_fluid.md).
      ───────────────────────────────────── */
-  --text-xs:           0.75rem;     /*  13.5px — tags, badges, micro labels */
-  --text-sm:           0.875rem;    /* 15.75px — meta, código, eyebrow, copyright */
-  --text-base:         1rem;        /*    18px — corpo principal (body) */
-  --text-lg:           1.125rem;    /*   ~20px — lead, subtítulo, nav, input, descrição */
-  --text-xl:           1.25rem;     /*    22px — h4, card title, widget header, TOC */
-  --text-2xl:          2rem;        /*    36px — h3, h2 editorial (post, sobre, serviços) */
-  --text-2-5xl:        2.25rem;     /*  40.5px — h2 seção de postagem */
-  --text-3xl:          2.8rem;      /*  50.4px — h1 heroes */
-  --text-4xl:          3.5rem;      /*    63px — h1 artigo (máximo) */
+  --type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px — timestamp, badge numérico, legenda micro */
+  --type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px — eyebrow, tag, meta, texto de botão */
+  --type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px — corpo secundário, excerpt de card */
+  --type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px — parágrafo padrão */
+  --type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px — subtítulo de hero, lead paragraph */
+  --type-h4:           clamp(1.424rem, 1.172rem + 1.01vw, 1.978rem);  /* 22.8 → 31.6px — card title, widget header, TOC */
+  --type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px — h3 editorial */
+  --type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px — h2 de seção */
+  --type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px — h1 padrão de página */
+  --type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px — h1 de hero grande */
+  --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px — display máximo (estilo "manifesto") */
 
   /* ─────────────────────────────────────
      BORDER RADIUS (design-reference.md §4)
@@ -159,7 +165,7 @@ html {
 body {
   overflow-x: hidden;
   font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: var(--type-body-sm);
   color: var(--ink);
   background-color: var(--ivory);
   line-height: 1.6;
@@ -183,19 +189,19 @@ h1 {
 h2 {
   font-weight: 700;
   letter-spacing: -0.02em;
-  font-size: var(--text-2xl);
+  font-size: var(--type-h3);
   line-height: 1.2;
 }
 
 h3 {
   font-weight: 700;
-  font-size: 1.875rem;
+  font-size: var(--type-h3);
   line-height: 1.3;
 }
 
 h4 {
   font-weight: 600;
-  font-size: 1.5rem;
+  font-size: var(--type-lead);
   line-height: 1.3;
 }
 
@@ -265,7 +271,7 @@ img {
 
 .sec-ey {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--clay);
@@ -284,14 +290,14 @@ img {
 
 .sec-t {
   font-weight: 800;
-  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  font-size: var(--type-h3);
   letter-spacing: -.035em;
   color: var(--ink);
   line-height: 1.1;
 }
 
 .sec-desc {
-  font-size: 1.0625rem;
+  font-size: var(--type-body-sm);
   line-height: 1.65;
   color: var(--slate);
   max-width: 520px;
@@ -347,7 +353,7 @@ img {
   color: #ffffff;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--type-label);
   text-transform: uppercase;
   border: 1px solid transparent;
   text-decoration: none;
@@ -377,12 +383,12 @@ img {
 /* Button sizes — variam largura/altura, nunca cor/forma-base */
 .btn-sm {
   padding: 9px 16px;
-  font-size: 0.8rem;
+  font-size: var(--type-caption);
 }
 
 .btn-lg {
   padding: 16px 30px;
-  font-size: 1.05rem;
+  font-size: var(--type-label);
 }
 
 /* =========================================

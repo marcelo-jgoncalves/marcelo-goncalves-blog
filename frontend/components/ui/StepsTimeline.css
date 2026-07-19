@@ -32,7 +32,7 @@
   justify-content: center;
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--type-label);
   background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
   color: #fff;
   position: relative;
@@ -45,13 +45,13 @@
 
 .steps-timeline-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--type-label);
   color: var(--ink);
   margin: 0 0 8px;
 }
 
 .steps-timeline-desc {
-  font-size: 12.8px;
+  font-size: var(--type-caption);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;

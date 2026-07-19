@@ -38,7 +38,7 @@
 /* 3. Título */
 .toc-title {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--type-h1);
   font-weight: 800;
   letter-spacing: -0.05em;
   line-height: 1.1;
@@ -79,7 +79,7 @@
   border-left: 2px solid transparent;
   color: var(--petrol);
   font-family: var(--font-display);
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.4;
@@ -113,7 +113,7 @@
   margin-top: 22px;
   padding-top: 18px;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
+  font-size: var(--type-caption);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--petrol);
@@ -174,7 +174,7 @@
   font-weight: 700;
   color: var(--petrol);
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   margin: 0;
   padding: 0;
 }
@@ -187,7 +187,7 @@
 .toc-chevron {
   transition: transform 0.3s ease;
   color: var(--petrol);
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
 }
 
 .toc-chevron.open {
@@ -217,7 +217,7 @@
   padding: 12px var(--space-3);
   color: var(--steel);
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   font-weight: 400;
   line-height: 1.4;
   text-decoration: none;

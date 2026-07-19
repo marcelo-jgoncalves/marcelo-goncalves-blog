@@ -52,7 +52,7 @@
   border-radius: 999px;
   padding: 5px 12px;
   font-weight: 600;
-  font-size: 11.5px;
+  font-size: var(--type-caption);
   color: var(--petrol);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
 }
@@ -68,7 +68,7 @@
 
 .post-card .pc-cat {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-caption);
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--clay);
@@ -76,7 +76,7 @@
 
 .post-card .pc-title {
   font-weight: 800;
-  font-size: 17.5px;
+  font-size: var(--type-body-sm);
   letter-spacing: -.02em;
   color: var(--petrol);
   line-height: 1.22;
@@ -87,7 +87,7 @@
 }
 
 .post-card .pc-excerpt {
-  font-size: 13.5px;
+  font-size: var(--type-caption);
   line-height: 1.6;
   color: var(--slate);
   flex: 1;
@@ -106,11 +106,11 @@
   align-items: center;
   justify-content: space-between;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   color: var(--steel);
   letter-spacing: .04em;
 }
 
 .post-card .pc-foot .ler-artigo {
-  font-size: 13px;
+  font-size: var(--type-caption);
 }

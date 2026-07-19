@@ -80,7 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-xl);
+  font-size: var(--type-h4);
   flex-shrink: 0;
 }
 
@@ -97,7 +97,7 @@
 /* ── Tipografia ───────────────────────────────────────────── */
 .fwc-title {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--type-h3);
   font-weight: 700;
   color: var(--fwc-title, var(--ink));
   line-height: 1.25;
@@ -108,7 +108,7 @@
 .fwc-title .highlight { color: var(--petrol); }
 
 .fwc-desc {
-  font-size: var(--text-lg);
+  font-size: var(--type-lead);
   color: var(--fwc-desc, var(--steel));
   line-height: 1.65;
   max-width: 560px;
@@ -118,10 +118,10 @@
 /* ── Botão CTA — usa o padrão global .btn/.btn-petrol (globals.css);
    .fwc-btn só ajusta o tamanho de fonte no contexto deste componente. */
 .fwc-btn {
-  font-size: var(--text-base);
+  font-size: var(--type-body);
 }
 
 /* ── Responsivo ───────────────────────────────────────────── */
 @media (min-width: 768px) {
-  .fwc-title { font-size: var(--text-3xl); }
+  .fwc-title { font-size: var(--type-h1); }
 }

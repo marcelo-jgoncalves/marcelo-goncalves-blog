@@ -48,7 +48,7 @@
 /* ── TÍTULO PRINCIPAL ─────────────────────────────────── */
 .popular-widget__title {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: var(--type-h1);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.05em;
@@ -73,7 +73,7 @@
 /* ── NÚMERO — WATERMARK EDITORIAL ──────────────────────── */
 .number {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
+  font-size: var(--type-display-sm);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.06em;
@@ -175,7 +175,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.72),
     0 6px 20px rgba(49,91,146,.06);
-  font-size: 12px;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -202,7 +202,7 @@
 /* ── TÍTULO DO POST ────────────────────────────────────── */
 .popular-widget__post-title {
   font-family: var(--font-display);
-  font-size: var(--text-base);
+  font-size: var(--type-body);
   font-weight: 400;
   line-height: 1.4;
   letter-spacing: 0.02em;
@@ -226,7 +226,7 @@
   padding-top: 16px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-sm);
+  font-size: var(--type-label);
   color: #33567d;
   text-decoration: none;
   transition: all .45s cubic-bezier(.22,1,.36,1);
@@ -354,7 +354,7 @@
   }
 
   .popular-widget__title {
-    font-size: clamp(36px, 5vw, 52px);
+    font-size: var(--type-h2);
     margin-bottom: 24px;
   }
 
@@ -365,16 +365,16 @@
   }
 
   .popular-widget__rank {
-    font-size: 48px;
+    font-size: var(--type-h1);
     letter-spacing: -.08em;
   }
 
   .popular-widget__post-title {
-    font-size: 16px;
+    font-size: var(--type-label);
   }
 
   .category-tag {
     padding: 6px 10px;
-    font-size: 11px;
+    font-size: var(--type-caption);
   }
 }

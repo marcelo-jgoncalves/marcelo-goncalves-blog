@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 12.5px;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: .01em;
   color: var(--slate);
@@ -35,7 +35,7 @@
 
 .contact-optional {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-caption);
   font-weight: 500;
   letter-spacing: .06em;
   color: var(--steel);
@@ -50,7 +50,7 @@
   border: 1px solid var(--line);
   border-radius: 11px;
   padding: 12px 14px;
-  font-size: 14px;
+  font-size: var(--type-caption);
   font-weight: 400;
   color: var(--ink);
   font-family: var(--font-sans);
@@ -86,7 +86,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: var(--type-caption);
   color: var(--clay-hover);
   background: var(--clay-soft);
   border: 1px solid var(--clay);
@@ -104,7 +104,7 @@
 }
 
 .contact-required-note {
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: var(--steel);
   font-family: var(--mono);
 }
@@ -129,14 +129,14 @@
 
 .contact-success h3 {
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: var(--type-lead);
   letter-spacing: -.02em;
   color: var(--ink);
   margin: 0 0 10px;
 }
 
 .contact-success p {
-  font-size: 1rem;
+  font-size: var(--type-label);
   line-height: 1.66;
   color: var(--slate);
   margin: 0 auto 26px;
