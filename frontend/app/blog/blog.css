@@ -23,7 +23,7 @@
   --ph-cols:    1.1fr 0.9fr;
   --ph-gap:     var(--sp-10);
   --ph-sub-max: 510px;
-  --ph-pad:     88px 40px 18px;
+  --ph-pad:     88px 40px var(--gap-loose);
 }
 
 .home-hero h1 { letter-spacing: -.045em; }

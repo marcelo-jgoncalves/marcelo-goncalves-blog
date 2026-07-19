@@ -7,7 +7,7 @@
    volta a aparecer sem margem própria, então o padding-bottom precisa virar
    var(--sp-9) puro — ver media query abaixo (mesmo padrão de home.css). */
 .page-hero.ct-hero {
-  --ph-pad: 88px 40px 18px;
+  --ph-pad: 88px 40px var(--gap-loose);
 }
 
 /* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —

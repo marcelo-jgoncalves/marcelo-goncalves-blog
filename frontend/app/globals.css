@@ -64,7 +64,6 @@
 
   /* ── aliases semânticos (usados no código) ── */
   --gap-grid:           22px;          /* gap entre cards em grade padrão */
-  --gap-grid-sm:        20px;          /* gap entre cards em grids de especialidade */
   --gap-loose:          18px;          /* entre --sp-4 (16) e --sp-5 (20) — não arredonda sem perder ritmo */
   --eyebrow-gap:        14px;          /* eyebrow → título */
   --title-gap:          10px;          /* título → descrição */

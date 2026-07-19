@@ -14,7 +14,7 @@
    ========================================================================== */
 .op-hero {
   --ph-max: var(--wrap-max-narrow);
-  --ph-pad: 88px 40px 48px;
+  --ph-pad: 88px 40px var(--sp-9);
 }
 
 .op-hero-actions {

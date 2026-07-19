@@ -1,5 +1,9 @@
 /* frontend/components/ui/AuthorBox.css */
 
+/* Padding var(--sp-9) é intencional (diferente do var(--sp-7) canônico dos
+   demais cards/widgets) — AuthorBox é um card destacado de largura cheia no
+   fim do post, não um item repetido de grid/sidebar; mesma categoria de
+   "card épico" de NewsletterCTA. */
 .author-box {
   position: relative;
   overflow: hidden;

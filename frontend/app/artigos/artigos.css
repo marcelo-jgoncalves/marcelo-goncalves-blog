@@ -16,6 +16,9 @@
    ========================================================================== */
 .art-hero {
   --ph-cols:    1.08fr .92fr;
+  /* padding-bottom 76px é valor customizado (não cai em nenhum --sp-*)
+     — mantido como está para não alterar a proporção visual do hero;
+     documentado aqui para não parecer um leak não auditado. */
   --ph-pad:     88px 40px 76px;
   --ph-sub-max: 500px;
 }
