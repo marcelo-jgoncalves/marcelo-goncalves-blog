@@ -78,7 +78,7 @@ export default async function Home() {
         className="home-hero"
         dataAudit="home-hero"
         eyebrow="Blog · Build in Public"
-        title="Engenharia, Cloud, Automação e IA aplicadas a problemas reais"
+        title={<>Engenharia, Cloud, Automação e IA aplicadas a <em>necessidades reais</em></>}
         subtitle="Conteúdo técnico construído a partir da prática: custos, performance, observabilidade, automação e transformação operacional."
         right={
           <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
@@ -100,9 +100,9 @@ export default async function Home() {
       {popular.length > 0 && (
         <section className="home-section" id="mais-lidos">
           <div className="wrap">
-            <div className="sec-head-row">
+            <div className="sec-head-row sec-head-row--center">
               <div className="left">
-                <div className="sec-ey">Mais lidos</div>
+                <div className="sec-ey sec-ey--dual">Mais lidos</div>
                 <h2 className="sec-t">Posts que mais engajaram</h2>
                 <p className="sec-desc">Os que mais geraram leitura, debate e compartilhamentos. Comece por aqui.</p>
               </div>
@@ -174,9 +174,9 @@ export default async function Home() {
       {/* Postagens Recentes */}
       <section className="home-section home-section--surface" id="recentes">
         <div className="wrap">
-          <div className="sec-head-row">
+          <div className="sec-head-row sec-head-row--center">
             <div className="left">
-              <div className="sec-ey">Postagens recentes</div>
+              <div className="sec-ey sec-ey--dual">Postagens recentes</div>
               <h2 className="sec-t">Direto do forno</h2>
               <p className="sec-desc">Últimos artigos publicados.<br />Problemas reais. Soluções aplicadas. Aprendizados compartilhados.</p>
             </div>
@@ -187,7 +187,7 @@ export default async function Home() {
             ))}
           </div>
           <div className="home-posts-cta">
-            <Link className="btn btn-petrol home-btn-outline-petrol" href="/artigos">Todos os artigos</Link>
+            <Link className="btn home-btn-outline-petrol" href="/artigos">Todos os artigos</Link>
           </div>
         </div>
       </section>
@@ -196,13 +196,12 @@ export default async function Home() {
       {ia.length > 0 && (
         <section className="home-ia-section" id="ia">
           <div className="wrap">
-            <div className="home-ia-sec-head-row">
+            <div className="home-ia-sec-head-row home-ia-sec-head-row--center">
               <div className="left">
-                <div className="home-ia-ey">Inteligência Artificial</div>
+                <div className="home-ia-ey home-ia-ey--dual">Inteligência Artificial</div>
                 <h2 className="home-ia-title">IA aplicada, sem hype</h2>
                 <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
-              <Link className="btn home-ia-link-desktop" href="/categoria/inteligencia-artificial">Tudo sobre IA</Link>
             </div>
             <div className="home-ia-grid" data-audit="home-ia-grid">
               {iaBig && (
@@ -251,7 +250,9 @@ export default async function Home() {
                 </div>
               )}
             </div>
-            <Link className="btn home-ia-link-mobile" href="/categoria/inteligencia-artificial">Tudo sobre IA</Link>
+            <div className="home-cta-end">
+              <Link className="btn" href="/categoria/inteligencia-artificial">Tudo sobre IA</Link>
+            </div>
           </div>
         </section>
       )}
@@ -260,20 +261,21 @@ export default async function Home() {
       {projeto.length > 0 && (
         <section className="home-section home-projeto-section" id="projeto">
           <div className="wrap">
-            <div className="sec-head-row">
+            <div className="sec-head-row sec-head-row--center">
               <div className="left">
-                <div className="sec-ey">O Projeto · Build in Public</div>
+                <div className="sec-ey sec-ey--dual">O Projeto · Build in Public</div>
                 <h2 className="sec-t">Bastidores da plataforma</h2>
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
-              <Link className="btn home-btn-clay-hero home-btn-clay-hero-desktop" href="/o-projeto">Acompanhe a jornada</Link>
             </div>
             <div className="home-projeto-grid" data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <Link className="btn home-btn-clay-hero home-btn-clay-hero-mobile" href="/o-projeto">Acompanhe a jornada</Link>
+            <div className="home-cta-end">
+              <Link className="btn home-btn-clay-hero" href="/o-projeto">Acompanhe a jornada</Link>
+            </div>
           </div>
         </section>
       )}

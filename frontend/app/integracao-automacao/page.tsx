@@ -163,7 +163,7 @@ export default function IntegracaoAutomacaoPage() {
         className={styles.iaHero}
         dataAudit="ia2-hero"
         eyebrow="Pilar · Integração & Automação"
-        title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação mais <em>inteligente</em>.</>}
+        title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação <em>mais inteligente</em>.</>}
       >
         <p className={styles.heroParagraph3}>
           Desenvolvemos soluções que integram plataformas e automatizam fluxos de trabalho para que as informações circulem de forma segura, rápida e confiável, permitindo que sua equipe concentre esforços no que realmente importa.

@@ -52,14 +52,10 @@
   flex-wrap: wrap;
 }
 
-/* Botões — usam o padrão global .btn/.btn-petrol (globals.css); as
-   classes locais só cuidam de contexto (arrow font, show/hide mobile). */
+/* Botões — usam o padrão global .btn/.btn-petrol (globals.css); a
+   classe local só cuida de contexto (arrow font). */
 .home-btn-clay-hero .arrow {
   font-family: var(--mono);
-}
-
-.home-btn-clay-hero-mobile {
-  display: none;
 }
 
 /* ── Hero — card em destaque ── */
@@ -331,8 +327,11 @@
 }
 
 /* .home-pp-btn é um <span> (todo o card é o link) — usa o padrão global
-   .btn, só ajusta largura/altura no contexto do card e delega o hover
-   ao hover do card pai. */
+   .btn, só ajusta largura/altura no contexto do card. Como o botão fica
+   no rodapé do card (margin-top:auto), o cursor raramente está
+   literalmente sobre ele ao passar o mouse pelo card — por isso o hover
+   também é disparado explicitamente pelo hover do card pai, com a
+   mesma cor do .btn:hover global (nunca uma cor própria). */
 .home-pp-btn {
   margin-top: auto;
   width: 100%;
@@ -342,8 +341,8 @@
 }
 
 .home-proj-panel:hover .home-pp-btn {
-  background: var(--petrol-deep);
-  border-color: rgba(255, 255, 255, .3);
+  background: var(--clay-hover);
+  color: #ffffff;
 }
 
 .home-pp-arrow {
@@ -719,10 +718,36 @@
   margin-top: var(--title-gap);
 }
 
-/* Usa o padrão global .btn (globals.css); classes locais só cuidam de
-   show/hide mobile/desktop. */
-.home-ia-link-mobile {
-  display: none;
+/* Variante centralizada — eyebrow com traço dos dois lados, título e
+   subtítulo centralizados (mesmo padrão de .sec-head-row--center em
+   globals.css, replicado aqui por essa seção usar classes próprias
+   de tema escuro). */
+.home-ia-sec-head-row--center {
+  justify-content: center;
+}
+
+.home-ia-sec-head-row--center .left {
+  align-items: center;
+  text-align: center;
+}
+
+.home-ia-ey--dual {
+  justify-content: center;
+}
+
+.home-ia-ey--dual::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+/* Wrapper genérico pra centralizar um botão único no fim de uma seção
+   (usado por IA e O Projeto). */
+.home-cta-end {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-9);
 }
 
 .home-ia-grid {
@@ -1081,38 +1106,6 @@
 
   .home-projeto-grid {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .home-ia-link-desktop {
-    display: none;
-  }
-
-  .btn.home-ia-link-mobile {
-    display: inline-flex;
-    width: fit-content;
-    margin: var(--sp-9) auto 0;
-  }
-
-  .home-btn-clay-hero-desktop {
-    display: none;
-  }
-
-  .home-btn-clay-hero-mobile {
-    display: flex;
-    width: fit-content;
-    margin: var(--sp-6) auto 0;
-  }
-
-  /* No mobile, este CTA fica laranja/clay (maior destaque no fluxo vertical). */
-  .home-btn-outline-petrol.btn-petrol {
-    background: var(--clay);
-    border-color: var(--clay);
-    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
-  }
-
-  .home-btn-outline-petrol.btn-petrol:hover {
-    background: var(--petrol-deep);
-    border-color: rgba(255, 255, 255, .3);
   }
 }
 

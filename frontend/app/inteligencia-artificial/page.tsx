@@ -156,7 +156,7 @@ export default function InteligenciaArtificialPage() {
         className={styles.aiHero}
         dataAudit="ai-hero"
         eyebrow="Pilar · Inteligência Artificial"
-        title={<>Transformamos inteligência artificial em resultados para o seu <em>negócio</em>.</>}
+        title={<>Transformamos inteligência artificial em <em>resultados</em> para o seu negócio.</>}
       >
         <p className={styles.heroParagraph2}>
           Desenvolvemos soluções de IA integradas aos processos da sua empresa, sempre com foco em gerar valor real, reduzir custos operacionais e aumentar a produtividade.
