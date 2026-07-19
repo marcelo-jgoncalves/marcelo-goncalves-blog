@@ -147,4 +147,9 @@
   .contact-form-grid {
     grid-template-columns: 1fr;
   }
+
+  .contact-form-footer {
+    justify-content: center;
+    text-align: center;
+  }
 }

@@ -204,7 +204,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
                 const isLatest = page === totalPages && i === posts.length - 1;
                 return (
                   <div className={`op-tl-entry${isLatest ? ' op-latest' : ''}`} key={post.slug}>
-                    <div className="op-tl-card" data-audit={i === 0 ? 'op-tl-card' : undefined}>
+                    <Link className="op-tl-card" href={`/post/${post.slug}`} data-audit={i === 0 ? 'op-tl-card' : undefined}>
                       <div className="op-tl-num-bg">{String(num).padStart(2, '0')}</div>
                       {post.imagem_destaque_url && (
                         <div className="op-tl-cover">
@@ -228,10 +228,10 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
                             <span>{formatDateShort(post.data_publicacao)}</span>
                             <span>{post.tempo_leitura_min || 5} min</span>
                           </div>
-                          <Link className="op-read" href={`/post/${post.slug}`}><LerArtigo /></Link>
+                          <span className="op-read"><LerArtigo /></span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 );
               })}

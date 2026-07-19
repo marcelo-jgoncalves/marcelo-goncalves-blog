@@ -298,45 +298,6 @@ img {
   margin-top: var(--sp-6);
 }
 
-.sec-link {
-  font-family: var(--font);
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--petrol);
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  flex: none;
-  border-bottom: 1px solid rgba(15, 76, 92, .25);
-  padding-bottom: 2px;
-  transition: gap .2s, border-color .2s;
-}
-
-.sec-link:hover {
-  gap: 11px;
-  border-color: var(--petrol);
-}
-
-/* ── section header CTA — clay button variant ── */
-.sec-link.sec-link-clay,
-.home-ia-link.sec-link-clay {
-  background: var(--clay);
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  transition: background .2s, transform .15s;
-}
-
-.sec-link.sec-link-clay:hover,
-.home-ia-link.sec-link-clay:hover {
-  background: var(--clay-hover);
-  color: #fff;
-  border-color: transparent;
-  gap: 7px;
-  transform: translateY(-1px);
-}
-
 .highlight,
 .accent {
   color: var(--clay);

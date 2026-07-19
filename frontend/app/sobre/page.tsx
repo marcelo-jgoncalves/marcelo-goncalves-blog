@@ -169,10 +169,8 @@ export default async function SobrePage() {
       <section className="sobre-abordagem" id="abordagem">
         <div className="wrap">
           <div className="sobre-abordagem-head" data-audit="sobre-abordagem-head">
-            <div className="sobre-abordagem-head-l">
-              <div className="sec-ey">Como Pensamos</div>
-              <h2 className="sobre-abordagem-title">Boa engenharia começa antes da <em>implementação</em>.</h2>
-            </div>
+            <div className="sec-ey sobre-ey-center">Como Pensamos</div>
+            <h2 className="sobre-abordagem-title">Boa engenharia começa antes da <em>implementação</em>.</h2>
             <p className="sobre-abordagem-desc">Não começamos escolhendo ferramentas. Primeiro entendemos o contexto, questionamos premissas e simplificamos o problema. A tecnologia entra depois, como consequência de decisões bem fundamentadas.</p>
           </div>
           <div className="sobre-modules-grid" data-audit="sobre-modules-grid">

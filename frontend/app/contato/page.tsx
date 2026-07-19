@@ -11,9 +11,9 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
   IconCycle, IconChip, IconCloud, IconBolt,
-  IconEnvelope, IconLinkedin, IconGithub, IconPin,
+  IconEnvelope, IconLinkedin, IconInstagram, IconPin,
 } from '@/components/ui/InstitutionalIcons';
-import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, AUTHOR_GITHUB_URL } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, AUTHOR_INSTAGRAM_URL } from '@/lib/config';
 
 export const revalidate = 3600;
 
@@ -164,10 +164,10 @@ export default function ContatoPage() {
                 <span className="ct-contact-v">/in/marcelo-jgoncalves</span>
               </span>
             </a>
-            <a className="ct-contact-card" href={AUTHOR_GITHUB_URL} target="_blank" rel="noreferrer">
-              <div className="ct-icon-box ct-icon-box--sm"><IconGithub /></div>
+            <a className="ct-contact-card" href={AUTHOR_INSTAGRAM_URL} target="_blank" rel="noreferrer">
+              <div className="ct-icon-box ct-icon-box--sm"><IconInstagram /></div>
               <span className="ct-contact-card-text">
-                <span className="ct-contact-k">GitHub</span>
+                <span className="ct-contact-k">Instagram</span>
                 <span className="ct-contact-v">/marcelo-jgoncalves</span>
               </span>
             </a>

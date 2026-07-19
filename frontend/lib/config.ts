@@ -12,3 +12,5 @@ export const AUTHOR_NAME = 'Marcelo Gonçalves';
 export const AUTHOR_TWITTER = '@marcelogoncalves';
 export const AUTHOR_LINKEDIN_URL = 'https://www.linkedin.com/in/marcelo-jgoncalves';
 export const AUTHOR_GITHUB_URL = 'https://github.com/marcelo-jgoncalves';
+// TODO: placeholder — Marcelo vai passar a URL real do Instagram (backlog CLAUDE.md §10 #1).
+export const AUTHOR_INSTAGRAM_URL = 'https://instagram.com/foo';

@@ -215,8 +215,7 @@ export default function CloudDevOpsPage() {
             <div className={styles.abordagemHead}>
               <span className={styles.eyebrowLight}>Nossa abordagem</span>
               <h2 className={styles.h2}>Cada empresa, um diagnóstico diferente</h2>
-              <p className={styles.sectionDesc}>Cada empresa possui necessidades diferentes.</p>
-              <p className={styles.sectionDesc}>Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade.</p>
+              <p className={styles.sectionDesc}>Cada empresa possui necessidades diferentes. Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade.</p>
             </div>
             <aside className={styles.resultCard} data-audit="cd-result-card">
               <span className={styles.resultCardLabel}>Compromisso</span>

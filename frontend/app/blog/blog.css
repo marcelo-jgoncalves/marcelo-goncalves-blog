@@ -718,25 +718,8 @@
   margin-top: 10px;
 }
 
-.home-ia-link {
-  font-weight: 600;
-  font-size: 14px;
-  color: rgba(255, 255, 255, .8);
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  flex: none;
-  border-bottom: 1px solid rgba(255, 255, 255, .25);
-  padding-bottom: 2px;
-  transition: gap .2s, color .2s, border-color .2s;
-}
-
-.home-ia-link:hover {
-  gap: 11px;
-  color: #fff;
-  border-color: rgba(255, 255, 255, .5);
-}
-
+/* Usa o padrão global .btn (globals.css); classes locais só cuidam de
+   show/hide mobile/desktop. */
 .home-ia-link-mobile {
   display: none;
 }
@@ -826,6 +809,11 @@
   line-height: 1.65;
   color: rgba(250, 248, 243, .62);
   flex: 1;
+  max-height: 3.3em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .home-ia-big-foot {
@@ -900,6 +888,18 @@
   letter-spacing: -.02em;
   line-height: 1.28;
   color: #fff;
+}
+
+.home-ia-small-excerpt {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .62);
+  flex: 1;
+  max-height: 3.2em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .home-ia-small-foot {
@@ -1086,14 +1086,10 @@
     display: none;
   }
 
-  .home-ia-link.sec-link-clay.home-ia-link-mobile {
-    display: flex;
+  .btn.home-ia-link-mobile {
+    display: inline-flex;
     width: fit-content;
     margin: 44px auto 0;
-    padding: 14px 24px;
-    font-size: 15px;
-    border-radius: 12px;
-    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
   }
 
   .home-btn-clay-hero-desktop {

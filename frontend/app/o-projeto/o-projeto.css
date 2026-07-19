@@ -293,7 +293,7 @@
 .op-tl-cover {
   position: relative;
   flex: none;
-  width: 160px;
+  width: 320px;
   min-height: 140px;
   background: var(--sand);
 }
