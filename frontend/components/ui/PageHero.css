@@ -6,7 +6,7 @@
 /* Defaults (sobrescritos por cada página) */
 .page-hero {
   --ph-cols:     1fr 1fr;
-  --ph-gap:      60px;
+  --ph-gap:      var(--sp-10);
   --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) var(--sp-9);
   --ph-max:      var(--wrap-max);
   --ph-h1-size:  var(--type-display-sm);

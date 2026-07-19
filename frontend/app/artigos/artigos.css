@@ -1336,7 +1336,7 @@
 .svc-makingof-in {
   max-width: var(--wrap-max);
   margin: 0 auto;
-  padding: 84px var(--wrap-pad-h);
+  padding: var(--sp-11) var(--wrap-pad-h);
   display: grid;
   grid-template-columns: 1.35fr 0.65fr;
   grid-template-areas: "text right" "cta right";

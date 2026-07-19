@@ -101,6 +101,18 @@
   --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px — display máximo (estilo "manifesto") */
 
   /* ─────────────────────────────────────
+     PROSE SPACING — escala em `em`, só para ritmo vertical dentro de
+     .post-content (conteúdo longo de artigo). Deliberadamente separada
+     de --sp-* (px, ritmo de layout): espaçamento editorial escala com
+     o tamanho da fonte do elemento, não é uma medida fixa de página.
+     ───────────────────────────────────── */
+  --prose-sp-1: 0.5em;   /* micro — dentro de bloco (ex: legenda → citação) */
+  --prose-sp-2: 1em;     /* pequeno — parágrafo → lista */
+  --prose-sp-3: 1.5em;   /* médio — entre parágrafos, H3 → corpo */
+  --prose-sp-4: 2em;     /* grande — H2 → corpo, bloco → bloco */
+  --prose-sp-5: 2.5em;   /* macro — antes de H2/H3 de nova seção */
+
+  /* ─────────────────────────────────────
      BORDER RADIUS (design-reference.md §4)
      ───────────────────────────────────── */
   --radius-sm:         4px;         /* tags, badges, syntax code */

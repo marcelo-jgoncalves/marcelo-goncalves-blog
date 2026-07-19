@@ -136,7 +136,7 @@
    ========================================================================== */
 .post-cover {
   max-width: 1080px;
-  margin: var(--sp-10) auto -80px;
+  margin: var(--sp-10) auto calc(-1 * var(--sp-11));
   padding: 0 var(--sp-7);
 }
 
@@ -158,7 +158,7 @@
 .post-layout {
   max-width: var(--wrap-max-narrow);
   margin: 0 auto;
-  padding: 128px var(--sp-7) var(--sp-8);
+  padding: var(--sp-13) var(--sp-7) var(--sp-8);
   display: grid;
   grid-template-columns: 212px minmax(0, var(--read)) 52px;
   gap: var(--sp-10);
@@ -176,6 +176,7 @@
 
 @media (max-width: 720px) {
   .post-layout { grid-template-columns: 1fr; padding-top: var(--sp-12); }
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- geometria de sobreposição calculada pela altura real da capa, não ritmo de espaçamento */
   .post-cover { margin-bottom: -60px; }
 }
 
@@ -315,7 +316,7 @@
 }
 
 .post-content .post-content-part > p {
-  margin-bottom: 1.65em;
+  margin-bottom: var(--prose-sp-3);
 }
 
 .post-content .post-content-part:last-child > *:last-child {
@@ -329,7 +330,7 @@
   color: var(--ink);
   font-weight: 400;
   letter-spacing: -.01em;
-  margin: 0 0 1.5em;
+  margin: 0 0 var(--prose-sp-3);
 }
 
 .post-content > .post-lead em { font-style: italic; color: var(--petrol); }
@@ -339,6 +340,7 @@
 .post-content > .post-content-part:first-child > p:first-of-type::first-letter {
   float: left;
   font-weight: 800;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- letra capitular (drop cap), escala com o parágrafo, fora da escala tipográfica de conteúdo */
   font-size: 3.6em;
   line-height: .82;
   padding: var(--sp-2) var(--sp-3) 0 0;
@@ -372,7 +374,7 @@
 .post-content hr {
   height: 1px;
   background: var(--line);
-  margin: 2.6em 0;
+  margin: var(--prose-sp-5) 0;
   border: 0;
 }
 
@@ -389,7 +391,7 @@
   display: flex;
   align-items: center;
   gap: var(--sp-4);
-  margin: 2.4em 0 .9em;
+  margin: var(--prose-sp-5) 0 var(--prose-sp-2);
   font-weight: 800;
   font-size: var(--type-h3);
   line-height: 1.15;
@@ -421,7 +423,7 @@
   font-size: var(--type-body);
   letter-spacing: -.02em;
   color: var(--petrol);
-  margin: 1.6em 0 .5em;
+  margin: var(--prose-sp-3) 0 var(--prose-sp-1);
 }
 
 .post-content h4 {
@@ -429,7 +431,7 @@
   font-size: var(--type-lead);
   letter-spacing: -.02em;
   color: var(--ink);
-  margin: 2em 0 .6em;
+  margin: var(--prose-sp-4) 0 var(--prose-sp-1);
 }
 
 .post-content h5 {
@@ -439,14 +441,14 @@
   text-transform: uppercase;
   letter-spacing: .05em;
   color: var(--ink);
-  margin: 2em 0 .6em;
+  margin: var(--prose-sp-4) 0 var(--prose-sp-1);
 }
 
 /* ── listas ── */
 .post-content ul,
 .post-content ol {
   list-style: none;
-  margin: 1.2em 0 1.65em;
+  margin: var(--prose-sp-2) 0 var(--prose-sp-3);
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
@@ -516,7 +518,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--sp-4);
-  margin: 1.6em 0;
+  margin: var(--prose-sp-3) 0;
 }
 
 .post-content .cmp {
@@ -614,7 +616,7 @@
 
 /* ── AdSense in-article ── */
 .post-adslot {
-  margin: 2.4em 0;
+  margin: var(--prose-sp-5) 0;
   border: 1px dashed var(--line);
   border-radius: 12px;
   background: var(--sand);
@@ -727,7 +729,7 @@ pre.code-block,
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
-  margin: 1.9em 0;
+  margin: var(--prose-sp-4) 0;
 }
 
 .post-content .callout {
@@ -851,7 +853,7 @@ pre.code-block,
 
 /* Pull Quote (.pull) */
 .post-content .pull {
-  margin: 2.4em 0;
+  margin: var(--prose-sp-5) 0;
   padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
   border-left: 3px solid var(--clay);
 }
@@ -877,7 +879,7 @@ pre.code-block,
 
 /* Closing Flourish (.closing) */
 .post-content .closing {
-  margin-top: 2.6em;
+  margin-top: var(--prose-sp-5);
   padding: var(--sp-7) var(--sp-7);
   background: var(--petrol);
   border-radius: 16px;

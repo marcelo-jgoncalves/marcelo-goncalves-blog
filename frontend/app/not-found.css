@@ -9,6 +9,7 @@
 
 .error-404-text {
   font-family: var(--font-display);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral "404" decorativo, fora da escala tipográfica de conteúdo */
   font-size: 6rem;
   font-weight: 700;
   color: var(--petrol);
@@ -41,6 +42,7 @@
 }
 
 @media (min-width: 768px) {
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral "404" decorativo, fora da escala tipográfica de conteúdo */
   .error-404-text { font-size: 8rem; }
   .error-hero h1 { font-size: var(--type-h1); }
   .search-retention-container { padding-top: var(--sp-10); }

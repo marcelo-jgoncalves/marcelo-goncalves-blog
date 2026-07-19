@@ -1,0 +1,26 @@
+{
+  "plugins": ["stylelint-declaration-strict-value"],
+  "ignoreFiles": [
+    ".next/**",
+    "node_modules/**",
+    "new-prots/**",
+    "public/**"
+  ],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      ["font-size", "/^margin/", "/^padding/", "gap", "row-gap", "column-gap"],
+      {
+        "ignoreValues": {
+          "": ["inherit", "unset", "initial"],
+          "/^margin/": ["0", "auto", "/^-?[0-3](\\.\\d+)?px$/"],
+          "/^padding/": ["0", "auto", "/^-?[0-3](\\.\\d+)?px$/"],
+          "gap": ["0", "/^-?[0-3](\\.\\d+)?px$/"],
+          "row-gap": ["0", "/^-?[0-3](\\.\\d+)?px$/"],
+          "column-gap": ["0", "/^-?[0-3](\\.\\d+)?px$/"]
+        },
+        "expandShorthand": true,
+        "message": "Use um token de --sp-*/--type-*/--prose-sp-*/--gap-*/--eyebrow-gap/--title-gap em vez de valor hardcoded (CLAUDE.md §5). Se for uma exceção real (decorativo, geometria calculada, técnica sr-only), documente com um comentário stylelint-disable-next-line explicando o motivo."
+      }
+    ]
+  }
+}

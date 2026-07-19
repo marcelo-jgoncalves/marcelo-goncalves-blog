@@ -21,7 +21,7 @@
    (bug real, não só de compilação em dev). */
 .page-hero.home-hero {
   --ph-cols:    1.1fr 0.9fr;
-  --ph-gap:     64px;
+  --ph-gap:     var(--sp-10);
   --ph-sub-max: 510px;
   --ph-pad:     88px 40px 18px;
 }
@@ -447,6 +447,7 @@
   right: 20px;
   top: -10px;
   font-weight: 900;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral decorativo de fundo, fora da escala tipográfica de conteúdo */
   font-size: 9rem;
   line-height: 1;
   letter-spacing: -.08em;

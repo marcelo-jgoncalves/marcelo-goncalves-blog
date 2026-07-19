@@ -18,7 +18,7 @@
    ========================================================================== */
 .page-hero.sobre-hero {
   --ph-cols:    1.15fr .85fr;
-  --ph-gap:     80px;
+  --ph-gap:     var(--sp-11);
   --ph-h1-size: 44px;
   --ph-h1-max:  620px;
   --ph-sub-max: 520px;

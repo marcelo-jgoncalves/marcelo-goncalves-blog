@@ -298,6 +298,16 @@ Isso substituiu 14 sistemas de botão distintos que existiam antes (`.btn-outlin
 - Variáveis CSS (`--accent`, `--space-*` etc.) continuam globais em `globals.css` independente da escolha — CSS Modules não as afeta, só escopa classes/ids.
 - Os 2 arquivos que já eram `.module.css` antes desta regra (`PostFooter.module.css`, `ShareRail.module.css`) foram a motivação original — escolha pontual de quem escreveu, nunca formalizada até agora.
 
+### Tokens de tipografia e espaçamento — obrigatório, com enforcement automático (sessão 2026-07-18/19)
+
+Nenhuma exceção manual. `font-size`/`margin*`/`padding*`/`gap`/`row-gap`/`column-gap` **só aceitam `var(--sp-*)`, `var(--type-*)` ou `var(--prose-sp-*)`** (mais os aliases `--gap-grid`/`--gap-loose`/`--eyebrow-gap`/`--title-gap`) — nunca valor `px`/`rem`/`em` cru. Isso não é uma convenção de estilo, é uma regra do **Stylelint** (`.stylelintrc.json`, plugin `stylelint-declaration-strict-value`), que roda em `npm run lint` — o mesmo comando que o CI já executa 3x no pipeline (`.github/workflows/deploy.yml`). Um valor hardcoded novo **quebra o build**, não depende de review humano pra ser pego.
+
+- **`--sp-1..13`** (base 4px) — única escala de layout. `--space-1..7` (legacy, base 8px) foi removida por completo, sem alias de compatibilidade.
+- **`--type-caption..--type-display-lg`** (11 tokens, `clamp()` fluido 400px→1280px) — única escala de fonte. `--text-xs..--text-4xl` (fixa) foi removida por completo.
+- **`--prose-sp-1..5`** (em `em`: 0.5/1/1.5/2/2.5) — escala separada, só para ritmo vertical dentro de `.post-content` (parágrafo, H2/H3 do artigo). Deliberadamente em unidade relativa, não `--sp-*`: espaçamento editorial escala com o tamanho da fonte do elemento, não é uma medida fixa de página.
+- **Exceção sem token, mas com teto matemático na própria regra**: `margin`/`padding`/`gap` com magnitude `≤3px` passam sem exigir token (regex `/^-?[0-3](\.\d+)?px$/` no `.stylelintrc.json`) — ajuste óptico de alinhamento (ex. `gap: 2px` entre separador de meta, `margin-top: 1px` de baseline de ícone) é menor que o menor degrau da escala (`--sp-1` = 4px) por natureza, forçar pro grid quebraria o alinhamento que a linha existe pra corrigir.
+- **Exceção pontual, exige comentário no código**: valores fora até dessa margem (numerais decorativos tipo "404", letra capitular, geometria de posicionamento calculada, técnica `sr-only`) precisam de `/* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- motivo */` na linha anterior — a exceção fica visível no diff do PR, nunca silenciosa. Rodar `npm run lint:css` isoladamente pra checar só CSS.
+
 ---
 
 ## 6. Imagens (pipeline obrigatória)
