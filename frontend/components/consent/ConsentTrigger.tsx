@@ -7,7 +7,7 @@ export default function ConsentTrigger() {
       onClick={() => window.dispatchEvent(new CustomEvent('openConsentModal'))}
       aria-label="Abrir painel de gerenciamento de cookies"
     >
-      Gerenciar Cookies
+      Preferências de cookies
     </button>
   );
 }

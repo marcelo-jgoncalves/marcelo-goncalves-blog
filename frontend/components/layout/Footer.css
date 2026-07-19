@@ -199,6 +199,7 @@
 
 .site-footer .foot-bottom .links {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--gap-grid);
 }
 
