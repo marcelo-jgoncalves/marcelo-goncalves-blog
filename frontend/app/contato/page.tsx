@@ -79,7 +79,7 @@ export default function ContatoPage() {
         className="ct-hero"
         dataAudit="ct-hero"
         eyebrow="Contato"
-        title={<>Vamos conversar sobre a tecnologia que <em>impulsiona</em> a sua empresa.</>}
+        title={<>Vamos conversar sobre a tecnologia que vai <em>impulsionar</em> sua empresa.</>}
         subtitle="Conte-nos seus desafios. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para ajudar sua empresa a crescer com mais eficiência, segurança e inovação."
       >
         <div className="ct-hero-actions">
@@ -122,9 +122,9 @@ export default function ContatoPage() {
       {/* Como podemos ajudar */}
       <section id="areas-atuacao" className="ct-section ct-section--surface">
         <div className="wrap">
-          <div className="sec-head-row">
+          <div className="sec-head-row sec-head-row--center">
             <div className="left">
-              <div className="sec-ey">Áreas de atuação</div>
+              <div className="sec-ey sec-ey--dual">Áreas de atuação</div>
               <h2 className="sec-t">Como podemos ajudar.</h2>
               <p className="sec-desc">Identifique rapidamente o cenário mais próximo do seu. Toda solução parte do entendimento do negócio.</p>
             </div>

@@ -1,5 +1,26 @@
 /* frontend/app/legal.css — compartilhado entre páginas legais */
 
+/* Espaçamento maior entre a navbar e o título, só nas 3 páginas LGPD
+   (privacidade/cookies/termos) — override local, não mexe no --hero-top
+   global usado pelas outras heroes do site. */
+.page-hero.page-hero--legal {
+  --hero-top: 140px;
+}
+
+/* Título e subtítulo centralizados — só nessas 3 páginas. PageHero é
+   usado por várias outras (Home, Contato, landings etc) com o mesmo
+   singleColumn, então o alinhamento não pode mudar no componente base. */
+.page-hero.page-hero--legal .page-hero-left {
+  align-items: center;
+  text-align: center;
+}
+
+.page-hero.page-hero--legal h1,
+.page-hero.page-hero--legal .page-hero-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .legal-container {
   padding: var(--sp-10) var(--sp-5);
 }

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function PoliticaDePrivacidadePage() {
   return (
     <>
-      <PageHero singleColumn>
+      <PageHero singleColumn className="page-hero--legal">
         <h1 className="hero-title">Política de <span className="highlight">Privacidade</span></h1>
         <p className="hero-subtitle">
           Como coletamos, usamos e protegemos seus dados pessoais.
