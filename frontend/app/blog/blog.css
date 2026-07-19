@@ -1,6 +1,6 @@
 /* frontend/app/blog/blog.css — Redesign 2026 (Petrol/Clay/Ivory) */
 
-/* Fullwidth sections — sobrescreve `section { margin-block: var(--space-6) }` global */
+/* Fullwidth sections — sobrescreve `section { margin-block: var(--sp-10) }` global */
 .home-hero,
 .home-section,
 .home-ia-section {
@@ -16,7 +16,7 @@
    Mesmo padrão de especificidade já usado em home.css/contato.css.
    padding-bottom 18px: o último elemento visível da coluna esquerda é o
    subtitle, que já tem margin-bottom:30px (PageHero.css) — 18+30=48px
-   (var(--space-5)) de fato até o limite da seção. Sem isso, herdava o
+   (var(--sp-9)) de fato até o limite da seção. Sem isso, herdava o
    padding-bottom:0 padrão de PageHero.css e o texto ficava colado na borda
    (bug real, não só de compilação em dev). */
 .page-hero.home-hero {
@@ -48,7 +48,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   flex-wrap: wrap;
 }
 
@@ -115,7 +115,7 @@
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  padding: 6px 12px;
+  padding: var(--sp-2) var(--sp-3);
   border-radius: 999px;
 }
 
@@ -130,16 +130,16 @@
   font-size: var(--type-caption);
   letter-spacing: .14em;
   text-transform: uppercase;
-  padding: 5px 11px;
+  padding: var(--sp-1) var(--sp-3);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, .2);
 }
 
 .home-hf-body {
-  padding: 26px 28px 24px;
+  padding: var(--sp-6) var(--sp-7) var(--sp-6);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--title-gap);
   flex: 1;
 }
 
@@ -162,9 +162,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
+  padding-top: var(--sp-4);
   border-top: 1px solid rgba(255, 255, 255, .1);
-  margin-top: 4px;
+  margin-top: var(--sp-1);
 }
 
 .home-hf-meta {
@@ -174,19 +174,19 @@
   color: rgba(255, 255, 255, .45);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .home-hf-meta span + span::before {
   content: "·";
-  margin-right: 4px;
+  margin-right: var(--sp-1);
   opacity: .5;
 }
 
 .home-hf-read {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--sp-2);
   font-weight: 700;
   font-size: var(--type-caption);
   color: var(--clay);
@@ -195,7 +195,7 @@
 }
 
 .home-hero-feature:hover .home-hf-read {
-  gap: 11px;
+  gap: var(--sp-3);
   color: var(--clay-soft);
 }
 
@@ -207,7 +207,7 @@
   background: rgba(255, 255, 255, .05);
   border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 20px;
-  padding: 32px 34px;
+  padding: var(--sp-7) var(--sp-7);
   overflow: hidden;
   isolation: isolate;
   backdrop-filter: blur(4px);
@@ -253,8 +253,8 @@
   color: rgba(255, 255, 255, .6);
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-bottom: 20px;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
 }
 
 .home-pp-dot {
@@ -282,31 +282,31 @@
   letter-spacing: -.03em;
   color: #fff;
   line-height: 1.18;
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-5);
 }
 
 .home-pc-sub {
   font-size: var(--type-label);
   line-height: 1.6;
   color: rgba(250, 248, 243, .64);
-  margin-bottom: 22px;
+  margin-bottom: var(--gap-grid);
 }
 
 .home-pp-stats {
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: var(--sp-6);
   border-top: 1px solid rgba(255, 255, 255, .1);
   border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
 .home-pp-stat {
   flex: 1;
-  padding: 16px 0;
+  padding: var(--sp-4) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 4px;
+  gap: var(--sp-1);
   border-right: 1px solid rgba(255, 255, 255, .08);
 }
 
@@ -352,12 +352,12 @@
 
 
 /* ── Layout de seção compartilhado ──
-   Espaçamento reduzido de --section-pad (96px) para var(--space-5) (48px)
+   Espaçamento reduzido de --section-pad (96px) para var(--sp-9) (48px)
    de cada lado, igualando ao padrão adotado na Home, nas 4 landing pages e
    em Contato. #recentes (home-section--surface) mantém a linha divisória
    real (border-top/bottom) que já tinha. */
 .home-section {
-  padding: var(--space-5) 0;
+  padding: var(--sp-9) 0;
 }
 
 .home-section--surface {
@@ -370,7 +370,7 @@
 .home-ml-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: var(--sp-6);
   align-items: stretch;
 }
 
@@ -388,8 +388,8 @@
   color: var(--clay);
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: var(--title-gap);
+  margin-bottom: var(--sp-4);
 }
 
 .home-ml-rank-label::before {
@@ -435,10 +435,10 @@
 .home-ml-card-inner {
   position: relative;
   z-index: 1;
-  padding: 32px 34px 28px;
+  padding: var(--sp-7) var(--sp-7) var(--sp-7);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   flex: 1;
 }
 
@@ -485,7 +485,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
+  padding-top: var(--sp-4);
   border-top: 1px solid rgba(255, 255, 255, .1);
   margin-top: auto;
 }
@@ -496,7 +496,7 @@
   letter-spacing: .04em;
   color: rgba(255, 255, 255, .42);
   display: flex;
-  gap: 12px;
+  gap: var(--sp-3);
 }
 
 .home-ml-card-read {
@@ -506,12 +506,12 @@
   font-family: var(--mono);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--sp-2);
   transition: gap .2s;
 }
 
 .home-ml-card:hover .home-ml-card-read {
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .home-ml-list {
@@ -527,8 +527,8 @@
 .home-ml-item {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
-  padding: 22px 24px;
+  gap: var(--gap-loose);
+  padding: var(--gap-grid) var(--sp-6);
   border-bottom: 1px solid var(--line);
   transition: background .18s;
   color: inherit;
@@ -565,7 +565,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--sp-1);
 }
 
 .home-ml-item-cat {
@@ -594,7 +594,7 @@
   letter-spacing: .04em;
   color: var(--steel);
   display: flex;
-  gap: 10px;
+  gap: var(--title-gap);
   margin-top: 2px;
 }
 
@@ -613,13 +613,13 @@
 .home-posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: var(--gap-grid);
 }
 
 .home-posts-cta {
   display: flex;
   justify-content: center;
-  margin-top: 44px;
+  margin-top: var(--sp-9);
 }
 
 /* Usa o padrão global .btn.btn-petrol (globals.css); mantém só o arrow. */
@@ -634,7 +634,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  padding: var(--space-5) 0;
+  padding: var(--sp-9) 0;
 }
 
 /* CTA final (CtaAssessoria, id default "assessoria"): .cta-adv-in usa
@@ -643,8 +643,8 @@
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
 #assessoria.cta-adv .cta-adv-in {
   align-items: flex-start;
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 .home-ia-section::before {
@@ -672,7 +672,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--sp-6);
   margin-bottom: var(--sechead-gap);
   flex-wrap: wrap;
 }
@@ -691,8 +691,8 @@
   color: rgba(255, 255, 255, .65);
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: var(--sp-3);
+  margin-bottom: var(--eyebrow-gap);
 }
 
 .home-ia-ey::before {
@@ -715,7 +715,7 @@
   line-height: 1.65;
   color: rgba(250, 248, 243, .62);
   max-width: 520px;
-  margin-top: 10px;
+  margin-top: var(--title-gap);
 }
 
 /* Usa o padrão global .btn (globals.css); classes locais só cuidam de
@@ -727,7 +727,7 @@
 .home-ia-grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: 20px;
+  gap: var(--sp-5);
   align-items: stretch;
 }
 
@@ -775,16 +775,16 @@
   font-size: var(--type-caption);
   letter-spacing: .14em;
   text-transform: uppercase;
-  padding: 6px 12px;
+  padding: var(--sp-2) var(--sp-3);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, .2);
 }
 
 .home-ia-big-body {
-  padding: 26px 28px 22px;
+  padding: var(--sp-6) var(--sp-7) var(--gap-grid);
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: var(--sp-3);
   flex: 1;
 }
 
@@ -820,7 +820,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 14px;
+  padding-top: var(--eyebrow-gap);
   border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
@@ -829,7 +829,7 @@
   font-size: var(--type-caption);
   color: rgba(255, 255, 255, .4);
   display: flex;
-  gap: 10px;
+  gap: var(--title-gap);
   letter-spacing: .04em;
 }
 
@@ -840,19 +840,19 @@
   font-family: var(--mono);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--sp-2);
   transition: gap .2s;
 }
 
 .home-ia-big:hover .home-ia-read,
 .home-ia-small:hover .home-ia-read {
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .home-ia-stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--title-gap);
   height: 100%;
 }
 
@@ -860,10 +860,10 @@
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .13);
   border-radius: 14px;
-  padding: 16px 20px;
+  padding: var(--sp-4) var(--sp-5);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--sp-2);
   flex: 1;
   transition: transform .2s, background .2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
@@ -906,7 +906,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: var(--title-gap);
   border-top: 1px solid rgba(255, 255, 255, .09);
   margin-top: auto;
 }
@@ -916,7 +916,7 @@
   font-size: var(--type-caption);
   color: rgba(255, 255, 255, .38);
   display: flex;
-  gap: 9px;
+  gap: var(--sp-2);
   letter-spacing: .04em;
 }
 
@@ -929,18 +929,18 @@
 .home-projeto-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-bottom: 36px;
+  gap: var(--gap-grid);
+  margin-bottom: var(--sp-8);
 }
 
 .home-projeto-cta-strip {
   background: var(--petrol);
   border-radius: 16px;
-  padding: 30px 40px;
+  padding: var(--sp-7) var(--sp-8);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--sp-6);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -964,7 +964,7 @@
 .home-projeto-cta-left {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--sp-2);
 }
 
 .home-projeto-cta-label {
@@ -975,7 +975,7 @@
   color: rgba(255, 255, 255, .55);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .home-projeto-cta-label .dot {
@@ -996,8 +996,8 @@
 
 .home-projeto-cta-stats {
   display: flex;
-  gap: 28px;
-  margin-top: 10px;
+  gap: var(--sp-7);
+  margin-top: var(--title-gap);
 }
 
 .home-projeto-cta-stat {
@@ -1025,12 +1025,12 @@
 .home-btn-clay-strip {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--title-gap);
   background: var(--clay);
   color: #fff;
   font-weight: 600;
   font-size: var(--type-label);
-  padding: 14px 26px;
+  padding: var(--eyebrow-gap) var(--sp-6);
   border-radius: 12px;
   flex: none;
   box-shadow: 0 8px 20px rgba(201, 96, 60, .35);
@@ -1066,8 +1066,8 @@
 @media (max-width: 860px) {
   .home-hero .page-hero-in {
     grid-template-columns: 1fr;
-    gap: 40px;
-    padding-top: 64px;
+    gap: var(--sp-8);
+    padding-top: var(--sp-10);
   }
 
   .home-hero-actions {
@@ -1089,7 +1089,7 @@
   .btn.home-ia-link-mobile {
     display: inline-flex;
     width: fit-content;
-    margin: 44px auto 0;
+    margin: var(--sp-9) auto 0;
   }
 
   .home-btn-clay-hero-desktop {
@@ -1099,7 +1099,7 @@
   .home-btn-clay-hero-mobile {
     display: flex;
     width: fit-content;
-    margin: 24px auto 0;
+    margin: var(--sp-6) auto 0;
   }
 
   /* No mobile, este CTA fica laranja/clay (maior destaque no fluxo vertical). */
@@ -1128,7 +1128,7 @@
   .home-projeto-cta-strip {
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: var(--sp-5);
   }
 
   .home-ia-stack {

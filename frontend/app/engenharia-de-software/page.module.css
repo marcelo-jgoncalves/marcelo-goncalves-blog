@@ -4,15 +4,15 @@
 .wrap {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp-5);
 }
 
 @media (min-width: 680px) {
-  .wrap { padding: 0 32px; }
+  .wrap { padding: 0 var(--sp-7); }
 }
 
 @media (min-width: 1040px) {
-  .wrap { padding: 0 40px; }
+  .wrap { padding: 0 var(--sp-8); }
 }
 
 .h2 {
@@ -48,7 +48,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: var(--sp-10);
 }
 
 /* Eyebrow — mesmo padrão de frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
@@ -62,7 +62,7 @@
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
 }
 
@@ -91,7 +91,7 @@
 }
 
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
-   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--space-6) }") */
+   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
 .oquefazemos,
 .beneficios,
 .abordagem,
@@ -101,11 +101,11 @@
 
 /* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
 .esHero {
-  --ph-pad: 88px 40px var(--space-5);
+  --ph-pad: 88px 40px var(--sp-9);
 }
 
 /* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
-   var(--space-5) de cada lado de toda transição sem linha divisória real
+   var(--sp-9) de cada lado de toda transição sem linha divisória real
    (a maioria é só troca de cor de fundo) — antes cada seção usava o
    padding "cru" do próprio module.css (64/80/100px por breakpoint),
    criando gaps de até ~250px entre seções. Sobrescreve via seletor de
@@ -116,8 +116,8 @@
 :global(#abordagem),
 :global(#principios),
 :global(#faq) {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 /* CTA final (CtaAssessoria, id="contato-final"): .cta-adv-in usa
@@ -126,7 +126,7 @@
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
 :global(#contato-final.cta-adv .cta-adv-in) {
   align-items: flex-start;
-  padding-top: var(--space-5);
+  padding-top: var(--sp-9);
 }
 
 /* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
@@ -145,7 +145,7 @@
    escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .heroCtaRow {
   display: none;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -160,16 +160,16 @@
 
 /* ===== O QUE FAZEMOS ===== */
 .oquefazemos {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
 }
 
-@media (min-width: 680px) { .oquefazemos { padding: 80px 0; } }
-@media (min-width: 1040px) { .oquefazemos { padding: 100px 0; } }
+@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
 .cardGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
+  gap: var(--gap-grid);
 }
 
 @media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
@@ -177,7 +177,7 @@
 
 /* ===== BENEFÍCIOS ===== */
 .beneficios {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: var(--petrol);
   color: var(--ivory);
   position: relative;
@@ -185,8 +185,8 @@
   isolation: isolate;
 }
 
-@media (min-width: 680px) { .beneficios { padding: 80px 0; } }
-@media (min-width: 1040px) { .beneficios { padding: 100px 0; } }
+@media (min-width: 680px) { .beneficios { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .beneficios { padding: var(--sp-12) 0; } }
 
 .beneficiosOverlay {
   position: absolute;
@@ -204,25 +204,25 @@
   z-index: 1;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp-5);
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
-  gap: 36px;
+  gap: var(--sp-8);
 }
 
 @media (min-width: 680px) {
-  .beneficiosWrap { padding: 0 32px; gap: 48px; }
+  .beneficiosWrap { padding: 0 var(--sp-7); gap: var(--sp-9); }
 }
 
 @media (min-width: 1040px) {
-  .beneficiosWrap { padding: 0 40px; grid-template-columns: .8fr 1.2fr; gap: 64px; }
+  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: .8fr 1.2fr; gap: var(--sp-10); }
 }
 
 .beneficiosList {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0 32px;
+  gap: 0 var(--sp-7);
 }
 
 @media (min-width: 680px) {
@@ -235,8 +235,8 @@
 .beneficioItem {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 16px 0;
+  gap: var(--eyebrow-gap);
+  padding: var(--sp-4) 0;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
   min-width: 0;
 }
@@ -263,14 +263,14 @@
 
 /* ===== ABORDAGEM + DIFERENCIAIS ===== */
 .abordagem {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: #fff;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-@media (min-width: 680px) { .abordagem { padding: 80px 0; } }
-@media (min-width: 1040px) { .abordagem { padding: 100px 0; } }
+@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
 /* Grid texto + card, mesmo padrão de "Como trabalhamos"
    (frontend/app/home.css .ih-method-grid/.ih-method-card/.ih-mc-*) — texto à
@@ -279,7 +279,7 @@
   display: grid;
   grid-template-columns: 1.2fr .8fr;
   align-items: start;
-  gap: 70px;
+  gap: var(--sp-10);
 }
 
 .abordagemHead {
@@ -290,7 +290,7 @@
   background: var(--ivory);
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 40px 36px;
+  padding: var(--sp-8) var(--sp-8);
   box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
 }
 
@@ -308,7 +308,7 @@
   font-weight: 800;
   font-size: var(--type-h4);
   color: var(--petrol);
-  margin: 16px 0 14px;
+  margin: var(--sp-4) 0 var(--eyebrow-gap);
 }
 
 .resultCardText {
@@ -319,8 +319,8 @@
 }
 
 @media (max-width: 860px) {
-  .abordagemGrid { grid-template-columns: 1fr; gap: 30px; }
-  .resultCard { padding: 28px 24px; }
+  .abordagemGrid { grid-template-columns: 1fr; gap: var(--sp-7); }
+  .resultCard { padding: var(--sp-7) var(--sp-6); }
   .resultCardTitle { font-size: var(--type-lead); }
 }
 
@@ -328,8 +328,8 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
-  margin-top: 52px;
+  gap: var(--gap-grid);
+  margin-top: var(--sp-9);
 }
 
 @media (min-width: 1040px) {
@@ -353,7 +353,7 @@
 
 .etapa {
   text-align: center;
-  padding: 0 8px;
+  padding: 0 var(--sp-2);
   position: relative;
 }
 
@@ -362,7 +362,7 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  margin: 0 auto 20px;
+  margin: 0 auto var(--sp-5);
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   font-size: var(--type-label);
@@ -386,7 +386,7 @@
   font-weight: 700;
   font-size: var(--type-label);
   color: var(--ink);
-  margin: 0 0 8px;
+  margin: 0 0 var(--sp-2);
 }
 
 .etapaText {
@@ -397,18 +397,18 @@
 }
 
 .diferenciais {
-  margin-top: var(--space-breath);
+  margin-top: var(--sp-11);
 }
 
 .diferenciaisHead {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--sp-10);
   text-align: center;
 }
 
 .diferenciaisGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px 32px;
+  gap: var(--sp-3) var(--sp-7);
 }
 
 @media (min-width: 680px) {
@@ -418,7 +418,7 @@
 .diferencialItem {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .diferencialCheck {
@@ -440,25 +440,25 @@
    (fundo sand, bordas #DDD4C4, hover rgba(255,255,255,.5), texto ink) — a pedido
    de Marcelo (2026-07-11), sobrescrevendo a variação de fundo escuro da spec original. */
 .principios {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: var(--ivory);
 }
 
-@media (min-width: 680px) { .principios { padding: 80px 0; } }
-@media (min-width: 1040px) { .principios { padding: 100px 0; } }
+@media (min-width: 680px) { .principios { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .principios { padding: var(--sp-12) 0; } }
 
 .principiosWrap {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp-5);
 }
 
-@media (min-width: 680px) { .principiosWrap { padding: 0 32px; } }
-@media (min-width: 1040px) { .principiosWrap { padding: 0 40px; } }
+@media (min-width: 680px) { .principiosWrap { padding: 0 var(--sp-7); } }
+@media (min-width: 1040px) { .principiosWrap { padding: 0 var(--sp-8); } }
 
 .principiosHead {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: var(--sp-10);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -467,7 +467,7 @@
 .principiosDesc {
   color: var(--slate);
   max-width: 520px;
-  margin: 14px 0 0;
+  margin: var(--eyebrow-gap) 0 0;
   font-size: var(--type-body-sm);
   line-height: 1.65;
 }
@@ -493,11 +493,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 12px;
+  gap: var(--sp-3);
   background: rgba(255, 255, 255, .55);
   border-right: 1px solid #DDD4C4;
   border-bottom: 1px solid #DDD4C4;
-  padding: 30px 28px;
+  padding: var(--sp-7) var(--sp-7);
   min-width: 0;
 }
 

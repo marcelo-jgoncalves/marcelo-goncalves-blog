@@ -3,13 +3,13 @@
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
   font-family: var(--font-display);
   font-size: var(--type-body);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  margin-bottom: 12px;
+  margin-bottom: var(--sp-3);
   position: relative;
   z-index: 1;
 }

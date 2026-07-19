@@ -4,10 +4,10 @@
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  gap: 8px;
+  gap: var(--sp-2);
   background: var(--petrol);
   color: #fff;
-  padding: 6px 14px;
+  padding: var(--sp-2) var(--eyebrow-gap);
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: var(--type-caption);

@@ -65,6 +65,7 @@
   /* ── aliases semânticos (usados no código) ── */
   --gap-grid:           22px;          /* gap entre cards em grade padrão */
   --gap-grid-sm:        20px;          /* gap entre cards em grids de especialidade */
+  --gap-loose:          18px;          /* entre --sp-4 (16) e --sp-5 (20) — não arredonda sem perder ritmo */
   --eyebrow-gap:        14px;          /* eyebrow → título */
   --title-gap:          10px;          /* título → descrição */
   --sechead-gap:        var(--sp-9);   /* 48px — cabeçalho de seção → conteúdo (left-aligned) */
@@ -121,32 +122,14 @@
   --shadow-lg:         0 10px 20px rgba(0,0,0,0.1);
   --shadow-xl:         0 20px 40px rgba(0,0,0,0.12);
 
-  /* ─────────────────────────────────────
-     SPACING SCALE (LEGACY — sessão 30) — 10 tokens, múltiplos de 8
-     Superseded por --sp-1.. --sp-13 (base 4px) acima. Mantido apenas
-     porque ainda consumido por .container/.page-layout/.btn/section/etc.
-     Remover conforme componentes forem migrados para --sp-*.
-     ───────────────────────────────────── */
-  --space-1:           8px;        /* micro: badges, gap inline, eyebrow→título widget */
-  --space-2:           16px;       /* pequeno: meta-row, margin ícone, gap card */
-  --space-3:           24px;       /* médio: padding interno card, título→desc widget */
-  --space-4:           32px;       /* grande: gap widgets sidebar, título→lista widget */
-  --space-content:     40px;       /* corpo: gap parágrafos, eyebrow→conteúdo */
-  --space-5:           48px;       /* macro: gap coluna/sidebar, margin-bottom post-card */
-  --space-6:           64px;       /* landmark: padding vertical seções */
-  --space-breath:      80px;       /* respiro: hero-pb, meta→imagem */
-  --space-7:           96px;       /* editorial: entre seções H2, hero-pt */
-  --space-epic:        112px;      /* épico: transição conteúdo→autor */
-
   /* Utilities */
   --baseline:          8px;
-  --space-unit:        0.5rem;
-  --post-heading-bottom: var(--space-4);
+  --post-heading-bottom: var(--sp-7);
   --section-min-height: 384px;
   --sidebar-width:     340px;      /* largura padrão sidebar em todas páginas */
 
   /* Vertical rhythm — sticky top para sidebar */
-  --sticky-top-offset: calc(var(--space-7) + var(--space-4)); /* 128px */
+  --sticky-top-offset: calc(var(--sp-12) + var(--sp-7)); /* 128px */
 }
 
 /* =========================================
@@ -237,7 +220,7 @@ img {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--space-2);
+  padding: 0 var(--sp-4);
 }
 
 /* Wrap — container do redesign 2026 (Petrol/Clay/Ivory) */
@@ -258,7 +241,7 @@ img {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--sp-6);
   margin-bottom: var(--sechead-gap);
   flex-wrap: wrap;
 }
@@ -277,7 +260,7 @@ img {
   color: var(--clay);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
 }
 
@@ -322,15 +305,15 @@ img {
 .page-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
-  padding: var(--space-6) var(--space-2);
+  gap: var(--sp-7);
+  padding: var(--sp-10) var(--sp-4);
   align-items: start;
 }
 
 @media (min-width: 1024px) {
   .page-layout {
-    gap: var(--space-4);
-    padding: var(--space-6) 0;
+    gap: var(--sp-7);
+    padding: var(--sp-10) 0;
   }
 }
 
@@ -346,8 +329,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: 14px 22px;
+  gap: var(--sp-4);
+  padding: var(--eyebrow-gap) var(--gap-grid);
   border-radius: 12px;
   background-color: var(--clay);
   color: #ffffff;
@@ -382,12 +365,12 @@ img {
 
 /* Button sizes — variam largura/altura, nunca cor/forma-base */
 .btn-sm {
-  padding: 9px 16px;
+  padding: var(--sp-2) var(--sp-4);
   font-size: var(--type-caption);
 }
 
 .btn-lg {
-  padding: 16px 30px;
+  padding: var(--sp-4) var(--sp-7);
   font-size: var(--type-label);
 }
 
@@ -401,7 +384,7 @@ img {
    4. RITMO EDITORIAL — §6 Seções
    ========================================= */
 section {
-  margin-block: var(--space-6);
+  margin-block: var(--sp-10);
 }
 
 /* =========================================
@@ -409,7 +392,7 @@ section {
    Spacing automático entre irmãos sem margin manual.
    ========================================= */
 .stack > * + * {
-  margin-top: var(--stack-space, var(--space-4));
+  margin-top: var(--stack-space, var(--sp-7));
 }
 
 /* =========================================

@@ -5,7 +5,7 @@
   background: white;
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: var(--space-4);
+  padding: var(--sp-7);
   box-shadow: var(--shadow-sm);
 }
 
@@ -15,14 +15,14 @@
   background-color: var(--petrol);
   color: #ffffff;
   border-radius: 16px;
-  padding: 28px 26px 26px;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
   box-shadow: 0 8px 32px rgba(15,76,92,0.28);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--sp-2);
 }
 
 .widget-newsletter::before {
@@ -75,7 +75,7 @@
   color: #ffffff;
   border-radius: 12px;
   font-size: var(--type-h4);
-  margin: 0 auto var(--space-3);
+  margin: 0 auto var(--sp-6);
   position: relative;
   z-index: 1;
 }
@@ -85,7 +85,7 @@
   font-weight: 700;
   font-size: var(--type-h1);
   letter-spacing: -0.01em;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--sp-6);
   display: block;
   color: #ffffff;
   position: relative;
@@ -96,7 +96,7 @@
   font-size: var(--type-lead);
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.65);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--sp-7);
   position: relative;
   z-index: 1;
 }

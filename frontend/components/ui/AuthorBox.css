@@ -5,8 +5,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: var(--sp-7);
+  padding: var(--sp-9);
   background: var(--surface);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(12, 32, 39, 0.32);
@@ -59,7 +59,7 @@
 .author-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--sp-4);
   position: relative;
 }
 
@@ -88,7 +88,7 @@
 .author-text-flow {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--sp-2);
 }
 
 .author-bio-content {
@@ -105,8 +105,8 @@
 /* Social — glass squares */
 .author-social {
   display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
+  gap: var(--sp-4);
+  margin-top: var(--sp-2);
 }
 
 .author-social a {
@@ -136,7 +136,7 @@
   .author-box {
     flex-direction: row;
     align-items: center;
-    gap: var(--space-5);
-    padding: var(--space-5);
+    gap: var(--sp-9);
+    padding: var(--sp-9);
   }
 }

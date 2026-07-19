@@ -7,15 +7,15 @@
 .wrap {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp-5);
 }
 
 @media (min-width: 680px) {
-  .wrap { padding: 0 32px; }
+  .wrap { padding: 0 var(--sp-7); }
 }
 
 @media (min-width: 1040px) {
-  .wrap { padding: 0 40px; }
+  .wrap { padding: 0 var(--sp-8); }
 }
 
 .h2 {
@@ -51,11 +51,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: var(--sp-10);
 }
 
 /* Eyebrow — mesmo padrão corrigido das 3 landings anteriores: traço à esquerda por
-   padrão, margin-bottom:14px; .eyebrowDual centraliza e adiciona o 2º traço (::after). */
+   padrão, margin-bottom:var(--eyebrow-gap); .eyebrowDual centraliza e adiciona o 2º traço (::after). */
 .eyebrowLight,
 .eyebrowDark {
   font-family: 'JetBrains Mono', monospace;
@@ -64,7 +64,7 @@
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
 }
 
@@ -93,7 +93,7 @@
 }
 
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
-   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--space-6) }") */
+   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
 .oquefazemos,
 .casos,
 .beneficios,
@@ -103,11 +103,11 @@
 
 /* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
 .aiHero {
-  --ph-pad: 88px 40px var(--space-5);
+  --ph-pad: 88px 40px var(--sp-9);
 }
 
 /* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
-   var(--space-5) de cada lado de toda transição sem linha divisória real —
+   var(--sp-9) de cada lado de toda transição sem linha divisória real —
    antes cada seção usava o padding "cru" do próprio module.css (64/80/100px
    por breakpoint), criando gaps grandes entre seções. Sobrescreve via
    seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
@@ -117,8 +117,8 @@
 :global(#beneficios),
 :global(#abordagem),
 :global(#faq) {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 /* CTA final (CtaAssessoria, id="contato-final"): .cta-adv-in usa
@@ -127,7 +127,7 @@
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
 :global(#contato-final.cta-adv .cta-adv-in) {
   align-items: flex-start;
-  padding-top: var(--space-5);
+  padding-top: var(--sp-9);
 }
 
 /* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
@@ -146,7 +146,7 @@
    escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .heroCtaRow {
   display: none;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -161,11 +161,11 @@
 
 /* ===== O QUE FAZEMOS — 5 cards (3+2) ===== */
 .oquefazemos {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
 }
 
-@media (min-width: 680px) { .oquefazemos { padding: 80px 0; } }
-@media (min-width: 1040px) { .oquefazemos { padding: 100px 0; } }
+@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
 /* Agentes de IA e Automação Inteligente são os 2 cards principais (size="lg",
    .cardGridItemLg) — ficam em destaque na primeira linha; os outros 3
@@ -175,7 +175,7 @@
 .cardGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
+  gap: var(--gap-grid);
 }
 
 @media (min-width: 680px) {
@@ -194,12 +194,12 @@
    Container: border-top+border-left; cada célula: border-right+border-bottom —
    fecha em retângulo perfeito porque 6 é divisível por 1, 2 e 3 colunas. */
 .casos {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: var(--ivory);
 }
 
-@media (min-width: 680px) { .casos { padding: 80px 0; } }
-@media (min-width: 1040px) { .casos { padding: 100px 0; } }
+@media (min-width: 680px) { .casos { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .casos { padding: var(--sp-12) 0; } }
 
 .casosGrid {
   display: grid;
@@ -219,12 +219,12 @@
   background: rgba(255, 255, 255, .55);
   border-right: 1px solid #DDD4C4;
   border-bottom: 1px solid #DDD4C4;
-  padding: 30px 28px;
+  padding: var(--sp-7) var(--sp-7);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 12px;
+  gap: var(--sp-3);
 }
 
 .casoNumeral {
@@ -257,7 +257,7 @@
 
 /* ===== BENEFÍCIOS ===== */
 .beneficios {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: var(--petrol);
   color: var(--ivory);
   position: relative;
@@ -265,8 +265,8 @@
   isolation: isolate;
 }
 
-@media (min-width: 680px) { .beneficios { padding: 80px 0; } }
-@media (min-width: 1040px) { .beneficios { padding: 100px 0; } }
+@media (min-width: 680px) { .beneficios { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .beneficios { padding: var(--sp-12) 0; } }
 
 .beneficiosOverlay {
   position: absolute;
@@ -284,25 +284,25 @@
   z-index: 1;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp-5);
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
-  gap: 36px;
+  gap: var(--sp-8);
 }
 
 @media (min-width: 680px) {
-  .beneficiosWrap { padding: 0 32px; gap: 48px; }
+  .beneficiosWrap { padding: 0 var(--sp-7); gap: var(--sp-9); }
 }
 
 @media (min-width: 1040px) {
-  .beneficiosWrap { padding: 0 40px; grid-template-columns: .8fr 1.2fr; gap: 64px; }
+  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: .8fr 1.2fr; gap: var(--sp-10); }
 }
 
 .beneficiosList {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0 32px;
+  gap: 0 var(--sp-7);
 }
 
 @media (min-width: 680px) {
@@ -315,8 +315,8 @@
 .beneficioItem {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 16px 0;
+  gap: var(--eyebrow-gap);
+  padding: var(--sp-4) 0;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
   min-width: 0;
 }
@@ -343,14 +343,14 @@
 
 /* ===== COMO TRABALHAMOS — só texto, sem etapas, sem diferenciais (§10) ===== */
 .abordagem {
-  padding: 64px 0;
+  padding: var(--sp-10) 0;
   background: #fff;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-@media (min-width: 680px) { .abordagem { padding: 80px 0; } }
-@media (min-width: 1040px) { .abordagem { padding: 100px 0; } }
+@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
 /* Grid texto + card, mesmo padrão de "Como trabalhamos"
    (frontend/app/home.css .ih-method-grid/.ih-method-card/.ih-mc-*) — texto à
@@ -359,7 +359,7 @@
   display: grid;
   grid-template-columns: 1.2fr .8fr;
   align-items: start;
-  gap: 70px;
+  gap: var(--sp-10);
 }
 
 .abordagemHead {
@@ -370,7 +370,7 @@
   background: var(--ivory);
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 40px 36px;
+  padding: var(--sp-8) var(--sp-8);
   box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
 }
 
@@ -388,7 +388,7 @@
   font-weight: 800;
   font-size: var(--type-h4);
   color: var(--petrol);
-  margin: 16px 0 14px;
+  margin: var(--sp-4) 0 var(--eyebrow-gap);
 }
 
 .resultCardText {
@@ -399,8 +399,8 @@
 }
 
 @media (max-width: 860px) {
-  .abordagemGrid { grid-template-columns: 1fr; gap: 30px; }
-  .resultCard { padding: 28px 24px; }
+  .abordagemGrid { grid-template-columns: 1fr; gap: var(--sp-7); }
+  .resultCard { padding: var(--sp-7) var(--sp-6); }
   .resultCardTitle { font-size: var(--type-lead); }
 }
 

@@ -12,7 +12,7 @@
   background: #ffffff;
   border-top: 1px solid var(--line);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
-  padding: var(--space-3) 20px;
+  padding: var(--sp-6) var(--sp-5);
 }
 
 .cmp-banner__inner {
@@ -20,7 +20,7 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--sp-6);
   flex-wrap: wrap;
 }
 
@@ -39,7 +39,7 @@
 
 .cmp-banner__actions {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--sp-4);
   flex-wrap: wrap;
   flex-shrink: 0;
 }
@@ -49,7 +49,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--type-caption);
-  padding: 9px 18px;
+  padding: var(--sp-2) var(--gap-loose);
   border-radius: 6px;
   border: none;
   cursor: pointer;
@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: var(--sp-5);
 }
 
 .cmp-modal {
@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-3) var(--space-3) 0;
+  padding: var(--sp-6) var(--sp-6) 0;
 }
 
 .cmp-modal__title {
@@ -148,14 +148,14 @@
 }
 
 .cmp-modal__body {
-  padding: var(--space-3);
+  padding: var(--sp-6);
 }
 
 .cmp-modal__desc {
   font-size: var(--type-label);
   color: var(--slate);
   line-height: 1.6;
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--sp-6);
 }
 
 /* ─── Linhas de consent ──────────────────── */
@@ -163,8 +163,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-2);
-  padding: var(--space-2) 0;
+  gap: var(--sp-4);
+  padding: var(--sp-4) 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -183,7 +183,7 @@
   color: var(--ink);
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--sp-2);
 }
 
 .cmp-row__badge {
@@ -192,7 +192,7 @@
   font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 2px 6px;
+  padding: 2px var(--sp-2);
   border-radius: 4px;
   background: rgba(15, 76, 92, 0.08);
   color: var(--petrol);
@@ -201,7 +201,7 @@
 .cmp-row__desc {
   font-size: var(--type-caption);
   color: var(--steel);
-  margin: 4px 0 0;
+  margin: var(--sp-1) 0 0;
   line-height: 1.5;
 }
 
@@ -263,17 +263,17 @@
 
 /* ─── Rodapé do modal ────────────────────── */
 .cmp-modal__footer {
-  padding: 0 var(--space-3) var(--space-3);
+  padding: 0 var(--sp-6) var(--sp-6);
 }
 
 .cmp-btn--save {
   width: 100%;
   background: var(--petrol);
   color: white;
-  padding: 12px;
+  padding: var(--sp-3);
   font-size: var(--type-label);
   border-radius: 8px;
-  margin-top: var(--space-2);
+  margin-top: var(--sp-4);
 }
 
 .cmp-btn--save:hover {
@@ -315,6 +315,6 @@
 
   .cmp-btn {
     text-align: center;
-    padding: 12px;
+    padding: var(--sp-3);
   }
 }

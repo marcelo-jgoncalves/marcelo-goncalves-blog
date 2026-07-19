@@ -33,22 +33,22 @@
 /* Tamanho Small (Para PostCards e TimelineCards) */
 .category-badge--sm {
   font-size: var(--type-caption);
-  padding: 4px 8px;   /* Ritmo de 8px (0.5x e 1x) */
-  gap: 4px;           /* Substitui o antigo mr-2 */
+  padding: var(--sp-1) var(--sp-2);   /* Ritmo de 8px (0.5x e 1x) */
+  gap: var(--sp-1);           /* Substitui o antigo mr-2 */
 }
 
 /* Tamanho Medium (Para o Cabeçalho da página do Post) */
 .category-badge--md {
   font-size: var(--type-label);
-  padding: 4px 12px;   /* Ritmo de 8px equilibrado */
-  gap: 8px;            /* Ritmo de 8px exato */
+  padding: var(--sp-1) var(--sp-3);   /* Ritmo de 8px equilibrado */
+  gap: var(--sp-2);            /* Ritmo de 8px exato */
 }
 
 
 .category-badge--lg {
   font-size: var(--type-body);
-  padding: 8px 16px;   /* Ritmo de 8px pleno */
-  gap: 8px;
+  padding: var(--sp-2) var(--sp-4);   /* Ritmo de 8px pleno */
+  gap: var(--sp-2);
 }
 
 /* O Ícone */

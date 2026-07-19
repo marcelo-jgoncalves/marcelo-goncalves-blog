@@ -7,7 +7,7 @@
 .page-hero {
   --ph-cols:     1fr 1fr;
   --ph-gap:      60px;
-  --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) var(--space-5);
+  --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) var(--sp-9);
   --ph-max:      var(--wrap-max);
   --ph-h1-size:  var(--type-display-sm);
   --ph-h1-max:   600px;
@@ -73,8 +73,8 @@
   color: var(--ph-ey-color);
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: var(--space-content);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-8);
 }
 
 .page-hero-ey::before {
@@ -93,7 +93,7 @@
   color: #fff;
   max-width: var(--ph-h1-max);
   overflow-wrap: break-word;
-  margin-bottom: var(--space-content);
+  margin-bottom: var(--sp-8);
 }
 
 .page-hero h1 em {
@@ -107,5 +107,5 @@
   color: rgba(250, 248, 243, .63);
   max-width: var(--ph-sub-max);
   overflow-wrap: break-word;
-  margin-bottom: 30px;
+  margin-bottom: var(--sp-7);
 }

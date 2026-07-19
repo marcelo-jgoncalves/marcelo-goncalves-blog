@@ -23,7 +23,7 @@
   z-index: 1;
   max-width: var(--wrap-max);
   margin: 0 auto;
-  padding: 0 var(--sp-8) 26px;
+  padding: 0 var(--sp-8) var(--sp-6);
 }
 
 /* ── lead ── */
@@ -32,7 +32,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--sp-8);
-  padding: 60px 0 var(--sp-8);
+  padding: var(--sp-10) 0 var(--sp-8);
   border-bottom: 1px solid rgba(255, 255, 255, .08);
   flex-wrap: wrap;
 }
@@ -66,7 +66,7 @@
   font-weight: 600;
   font-size: var(--type-caption);
   text-transform: uppercase;
-  padding: 13px 20px;
+  padding: var(--sp-3) var(--sp-5);
   border-radius: 999px;
   transition: background .2s, border-color .2s, transform .2s;
 }
@@ -87,7 +87,7 @@
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
   gap: var(--sp-9);
-  padding: var(--sp-9) 0 44px;
+  padding: var(--sp-9) 0 var(--sp-9);
 }
 
 .site-footer .foot-brand .b {
@@ -130,7 +130,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--sp-2);
   padding: 0;
   margin: 0;
 }
@@ -150,7 +150,7 @@
 
 .site-footer .foot-soc {
   display: flex;
-  gap: 9px;
+  gap: var(--sp-2);
 }
 
 .site-footer .foot-soc a,
@@ -190,7 +190,7 @@
   margin-top: var(--sp-2);
   border-top: 1px solid rgba(255, 255, 255, .08);
   flex-wrap: wrap;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   font-family: var(--mono);
   font-size: var(--type-caption);
   color: #5E7A82;
@@ -199,7 +199,7 @@
 
 .site-footer .foot-bottom .links {
   display: flex;
-  gap: 22px;
+  gap: var(--gap-grid);
 }
 
 .site-footer .foot-bottom .links a {
@@ -216,7 +216,7 @@
 @media (max-width: 1000px) {
   .site-footer .foot-top {
     grid-template-columns: 1fr 1fr;
-    gap: 36px var(--sp-7);
+    gap: var(--sp-8) var(--sp-7);
   }
   .site-footer .foot-brand {
     grid-column: 1 / -1;

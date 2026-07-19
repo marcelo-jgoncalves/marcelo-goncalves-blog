@@ -3,7 +3,7 @@
 .popular-articles-section-wrapper {
   background-color: white;
   width: 100%;
-  margin-top: var(--space-5);
+  margin-top: var(--sp-9);
   padding: 0;
 }
 
@@ -16,13 +16,13 @@
 
 .popular-section-header {
   text-align: center;
-  margin-bottom: var(--space-4);
-  padding: 0 var(--space-2);
+  margin-bottom: var(--sp-7);
+  padding: 0 var(--sp-4);
 }
 
 .popular-section-header h2 {
   font-size: var(--type-h3);
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--sp-2);
 }
 
 .popular-section-header p {
@@ -33,27 +33,27 @@
 .popular-posts-grid-post {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
+  gap: var(--sp-7);
   padding: 0;
 }
 
 @media (min-width: 600px) {
   .popular-posts-grid-post {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
+    gap: var(--sp-6);
   }
 }
 
 .popular-posts-grid-home {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 30px;
-  padding: 0 20px;
+  gap: var(--sp-7);
+  padding: 0 var(--sp-5);
 }
 
 @media (min-width: 768px) {
   .popular-posts-grid-home {
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: var(--sp-6);
   }
 }

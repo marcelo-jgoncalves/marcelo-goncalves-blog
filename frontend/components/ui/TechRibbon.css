@@ -5,7 +5,7 @@
   margin-block: 0; /* cancela a regra global section{margin-block:64px} */
   border-top: 1px dashed rgba(0, 0, 0, 0.15);
   border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
-  padding: var(--space-3) 0;
+  padding: var(--sp-6) 0;
   background-color: transparent;
   overflow-x: auto;
   white-space: nowrap;
@@ -17,7 +17,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px; /* Grid 8px: Corrigido de 15px */
+  gap: var(--sp-4); /* Grid 8px: Corrigido de var(--sp-4) */
   text-align: center;
 }
 
@@ -39,7 +39,7 @@
   width: 40px;
   height: 2px;
   background-color: var(--petrol);
-  margin: 8px auto 0 auto; /* Já estava no Grid */
+  margin: var(--sp-2) auto 0 auto; /* Já estava no Grid */
 }
 
 .op-tech-list {
@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; 
-  gap: 16px; /* Grid 8px: Corrigido de 15px */
+  gap: var(--sp-4); /* Grid 8px: Corrigido de var(--sp-4) */
 }
 
 .op-tech-icon { 
@@ -64,8 +64,8 @@
 
 @media (min-width: 768px) {
   .op-tech-ribbon { display: block; } /* Revela a faixa no Desktop/Tablet */
-  .op-tech-container { gap: 24px; }   /* Aumenta o espaçamento interno */
-  .op-tech-list { gap: 32px; }        /* Afasta os ícones */
+  .op-tech-container { gap: var(--sp-6); }   /* Aumenta o espaçamento interno */
+  .op-tech-list { gap: var(--sp-7); }        /* Afasta os ícones */
   .op-tech-icon { 
     height: 48px;     /* Aumenta os ícones */
     width: auto;      /* 🚀 Proteção de Aspect Ratio e CLS */

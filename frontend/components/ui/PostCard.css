@@ -27,7 +27,7 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 14px;
+  padding: var(--eyebrow-gap);
 }
 
 .post-card .pc-img.t-petrol { background: linear-gradient(150deg, #0F4C5C 0%, #08323D 100%); }
@@ -50,7 +50,7 @@
   z-index: 1;
   background: var(--ivory);
   border-radius: 999px;
-  padding: 5px 12px;
+  padding: var(--sp-1) var(--sp-3);
   font-weight: 600;
   font-size: var(--type-caption);
   color: var(--petrol);
@@ -59,10 +59,10 @@
 
 /* ── corpo ── */
 .post-card .pc-body {
-  padding: 20px 22px 14px;
+  padding: var(--sp-5) var(--gap-grid) var(--eyebrow-gap);
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: var(--sp-2);
   flex: 1;
 }
 
@@ -100,7 +100,7 @@
 /* ── rodapé ── */
 .post-card .pc-foot {
   margin-top: auto;
-  padding: 12px 22px 16px;
+  padding: var(--sp-3) var(--gap-grid) var(--sp-4);
   border-top: 1px solid var(--line);
   display: flex;
   align-items: center;

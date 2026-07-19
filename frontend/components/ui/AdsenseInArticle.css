@@ -32,11 +32,11 @@
 /* 4. Gestão de Ritmo Vertical — espaço simétrico acima e abaixo */
 .adsense-summary-mock {
   margin-top: 0;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--sp-7);
 }
 
 .post-content .op-adsense-wrapper {
-  margin-block: var(--space-4);
+  margin-block: var(--sp-7);
 }
 
 /* 5. Desktop: volta ao leaderboard 90px (igual ao AdSenseBanner) */

@@ -7,10 +7,10 @@
 
 /* padding-bottom 18px: no desktop o botão da hero fica oculto (.ih-hero-actions
    — ver abaixo) e o último elemento visível é o subtitle, que já tem
-   margin-bottom:30px (PageHero.css) — 18+30=48px (var(--space-5)) de fato até
+   margin-bottom:var(--sp-7) (PageHero.css) — 18+30=48px (var(--sp-9)) de fato até
    o limite da seção, igualando ao #servicos abaixo. No mobile (≤860px) o
    botão volta a aparecer sem margem própria, então o padding-bottom precisa
-   virar var(--space-5) puro — ver media query mais abaixo. */
+   virar var(--sp-9) puro — ver media query mais abaixo. */
 .page-hero.ih-hero {
   --ph-pad: 88px 40px 18px;
 }
@@ -21,7 +21,7 @@
 .ih-hero-actions {
   display: none;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   margin-top: var(--sp-7);
 }
 
@@ -31,11 +31,11 @@
     justify-content: center;
   }
   /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
-     precisa virar var(--space-5) "puro" para manter o mesmo espaçamento do
+     precisa virar var(--sp-9) "puro" para manter o mesmo espaçamento do
      desktop (lá o padding é 18px porque soma com os 30px de margin-bottom do
      subtitle, que é o último elemento visível quando o botão está oculto). */
   .page-hero.ih-hero .page-hero-in {
-    padding-bottom: var(--space-5);
+    padding-bottom: var(--sp-9);
   }
 }
 
@@ -44,8 +44,8 @@
 .ih-hero-trust {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 44px;
+  gap: var(--sp-3);
+  margin-top: var(--sp-9);
   font-family: var(--mono);
   font-size: var(--type-caption);
   letter-spacing: .08em;
@@ -68,32 +68,32 @@
 
 .ih-section {
   margin-block: 0;
-  padding: 100px 0;
+  padding: var(--sp-12) 0;
 }
 
 /* Espaçamento até a linha divisória com #abordagem reduzido à metade
-   (100px→var(--space-5)), a pedido de Marcelo — só a borda inferior desta
+   (100px→var(--sp-9)), a pedido de Marcelo — só a borda inferior desta
    seção, não o padding padrão. padding-top também reduzido, para igualar o
    espaço entre a hero e o eyebrow "Serviços" (ver .page-hero.ih-hero acima). */
 #servicos.ih-section {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 /* Espaçamento entre a linha divisória e o eyebrow "Como trabalhamos" reduzido
-   à metade (100px→var(--space-5)) — só o padding superior desta seção. */
+   à metade (100px→var(--sp-9)) — só o padding superior desta seção. */
 #abordagem.ih-section {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 /* Espaçamento entre "Conte-nos seu desafio" (#resultados) e o eyebrow
-   "Conteúdo técnico" reduzido à metade (100px→var(--space-5)). Também reduz
+   "Conteúdo técnico" reduzido à metade (100px→var(--sp-9)). Também reduz
    a borda inferior (até "Conheça o blog"→"Vamos conversar", ver #contato
    abaixo) para manter o mesmo total dos demais casos. */
 #insights.ih-section {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 /* Espaçamento entre "Conheça o blog" (#insights) e o eyebrow "Vamos
@@ -102,11 +102,11 @@
    contra o card, mais alto, à direita) — isso empurrava o eyebrow bem
    além do padding-top sozinho. Troca para align-items:flex-start só
    nesta instância (id="contato", exclusiva da Home) para o eyebrow
-   ficar de fato a var(--space-5) do topo da seção; as outras páginas que
+   ficar de fato a var(--sp-9) do topo da seção; as outras páginas que
    usam CtaAssessoria não são afetadas. */
 #contato.cta-adv .cta-adv-in {
   align-items: flex-start;
-  padding-top: var(--space-5);
+  padding-top: var(--sp-9);
 }
 
 .ih-section--surface {
@@ -128,7 +128,7 @@
   color: var(--clay);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
 }
 
@@ -162,13 +162,13 @@
 .ih-center-head {
   text-align: center;
   max-width: 640px;
-  margin: 0 auto 56px;
+  margin: 0 auto var(--sp-10);
 }
 
 .ih-center-desc {
   color: var(--slate);
   max-width: 580px;
-  margin: 14px auto 0;
+  margin: var(--eyebrow-gap) auto 0;
   font-size: var(--type-body-sm);
   line-height: 1.65;
 }
@@ -178,7 +178,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 22px;
+  gap: var(--gap-grid);
 }
 
 .ih-pillar-card {
@@ -187,7 +187,7 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 32px;
+  padding: var(--sp-7);
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -210,7 +210,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-5);
 }
 
 .ih-pillar-kicker {
@@ -219,7 +219,7 @@
   text-transform: uppercase;
   letter-spacing: .16em;
   color: var(--petrol);
-  margin-bottom: 8px;
+  margin-bottom: var(--sp-2);
 }
 
 .ih-pillar-card h3 {
@@ -228,28 +228,28 @@
   letter-spacing: -.025em;
   color: var(--ink);
   line-height: 1.25;
-  margin: 0 0 10px;
+  margin: 0 0 var(--title-gap);
 }
 
 .ih-pillar-card > p {
   color: var(--slate);
   font-size: var(--type-label);
   line-height: 1.65;
-  margin: 0 0 18px;
+  margin: 0 0 var(--gap-loose);
 }
 
 .ih-pillar-bullets {
   list-style: none;
-  margin: 0 0 22px;
+  margin: 0 0 var(--gap-grid);
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: var(--sp-2);
 }
 
 .ih-pillar-bullets li {
   position: relative;
-  padding-left: 24px;
+  padding-left: var(--sp-6);
   font-size: var(--type-caption);
   line-height: 1.5;
   color: var(--slate);
@@ -276,15 +276,15 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--sp-3);
   border-top: 1px solid var(--line);
-  padding-top: 18px;
+  padding-top: var(--gap-loose);
 }
 
 .ih-pillar-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .ih-pillar-tags span {
@@ -296,13 +296,13 @@
   background: rgba(15, 76, 92, .07);
   border: 1px solid rgba(15, 76, 92, .14);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: var(--sp-2) var(--sp-3);
 }
 
 .ih-pillar-more {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--sp-2);
   flex: none;
   margin-left: auto;
   font-size: var(--type-caption);
@@ -325,9 +325,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   text-align: center;
-  margin-top: 44px;
+  margin-top: var(--sp-9);
 }
 
 /* Metodologia */
@@ -335,8 +335,8 @@
   display: grid;
   grid-template-columns: 1.2fr .8fr;
   align-items: start;
-  gap: 70px;
-  margin-bottom: var(--space-6);
+  gap: var(--sp-10);
+  margin-bottom: var(--sp-10);
 }
 
 .ih-method-text {
@@ -347,7 +347,7 @@
   background: var(--ivory);
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 40px 36px;
+  padding: var(--sp-8) var(--sp-8);
   box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
 }
 
@@ -361,12 +361,12 @@
   color: var(--clay);
 }
 
-.ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: 16px 0 14px; }
+.ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--sp-4) 0 var(--eyebrow-gap); }
 .ih-mc-text { font-size: var(--type-label); line-height: 1.6; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
-  .ih-method-grid { grid-template-columns: 1fr; gap: 30px; }
-  .ih-method-card { padding: 28px 24px; }
+  .ih-method-grid { grid-template-columns: 1fr; gap: var(--sp-7); }
+  .ih-method-card { padding: var(--sp-7) var(--sp-6); }
   .ih-mc-title { font-size: var(--type-lead); }
 }
 
@@ -374,7 +374,7 @@
 /* Resultados */
 .ih-results {
   margin-block: 0;
-  padding: 100px 0;
+  padding: var(--sp-12) 0;
   background: var(--petrol);
   color: var(--ivory);
   position: relative;
@@ -383,11 +383,11 @@
 }
 
 /* Espaçamento entre "Conduzido por Marcelo Gonçalves..." (#abordagem) e o
-   eyebrow "Resultados" reduzido à metade (100px→var(--space-5)), a pedido
+   eyebrow "Resultados" reduzido à metade (100px→var(--sp-9)), a pedido
    de Marcelo. */
 #resultados.ih-results {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-5);
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
 }
 
 .ih-results-t {
@@ -405,7 +405,7 @@
 
 .ih-results-desc {
   max-width: 560px;
-  margin: 16px auto 0;
+  margin: var(--sp-4) auto 0;
   color: rgba(250, 248, 243, .72);
   font-size: var(--type-body-sm);
   line-height: 1.6;
@@ -415,13 +415,13 @@
 .ih-cases {
   display: flex;
   flex-direction: column;
-  gap: 56px;
+  gap: var(--sp-10);
 }
 
 .ih-case {
   display: flex;
   align-items: center;
-  gap: 56px;
+  gap: var(--sp-10);
   flex-wrap: wrap;
 }
 
@@ -438,14 +438,14 @@
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 12px 20px;
-  margin-bottom: 12px;
+  gap: var(--sp-3) var(--sp-5);
+  margin-bottom: var(--sp-3);
 }
 
 .ih-case-metric {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .ih-case-metric-v {
@@ -467,20 +467,20 @@
   font-size: var(--type-body-sm);
   font-weight: 700;
   color: #fff;
-  margin: 0 0 10px;
+  margin: 0 0 var(--title-gap);
 }
 
 .ih-case-text p {
   font-size: var(--type-label);
   line-height: 1.65;
   color: rgba(250, 248, 243, .66);
-  margin: 0 0 18px;
+  margin: 0 0 var(--gap-loose);
 }
 
 .ih-case-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .ih-case-tags span {
@@ -492,7 +492,7 @@
   background: rgba(255, 255, 255, .08);
   border: 1px solid rgba(255, 255, 255, .16);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: var(--sp-2) var(--sp-3);
 }
 
 .ih-case-visual {
@@ -556,7 +556,7 @@
   .ih-results .ih-case-metrics {
     flex-direction: column;
     align-items: stretch;
-    margin-bottom: 40px;
+    margin-bottom: var(--sp-8);
   }
   .ih-results .ih-case-metric {
     display: flex;
@@ -564,17 +564,17 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: 8px;
+    gap: var(--sp-2);
     background: rgba(255, 255, 255, .06);
     border: 1px solid rgba(255, 255, 255, .14);
     border-radius: 10px;
-    padding: 10px 13px;
+    padding: var(--title-gap) var(--sp-3);
   }
   .ih-results .ih-case-metric-l {
     max-width: none;
   }
   .ih-results .ih-case-text h3 {
-    margin-bottom: 32px;
+    margin-bottom: var(--sp-7);
   }
   .ih-results .ih-case-tags span {
     border-radius: 14px;
@@ -585,8 +585,8 @@
 .ih-blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-top: 48px;
+  gap: var(--gap-grid);
+  margin-top: var(--sp-9);
 }
 
 @media (max-width: 900px) {

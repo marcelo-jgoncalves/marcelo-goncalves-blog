@@ -5,7 +5,7 @@
   background: #ffffff;
   border: 1px solid var(--line, var(--line));
   border-radius: var(--radius-lg, 12px);
-  padding: 24px; /* Macro-ritmo de 3x 8px */
+  padding: var(--sp-6); /* Macro-ritmo de 3x 8px */
   box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.05));
   text-align: left;
 }
@@ -15,9 +15,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px; /* Ritmo 2x 8px */
+  margin-bottom: var(--sp-4); /* Ritmo 2x 8px */
   border-bottom: 1px solid var(--line, var(--line));
-  padding-bottom: 8px; /* Ritmo 1x 8px */
+  padding-bottom: var(--sp-2); /* Ritmo 1x 8px */
 }
 
 .system-status-title {
@@ -51,7 +51,7 @@
   font-size: var(--type-caption);
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Ritmo 2x 8px */
+  gap: var(--sp-4); /* Ritmo 2x 8px */
   color: var(--ink);
 }
 
@@ -64,7 +64,7 @@
 .system-status-group {
   display: flex;
   align-items: center;
-  gap: 8px; /* Ritmo 8px */
+  gap: var(--sp-2); /* Ritmo 8px */
 }
 
 .system-status-group svg {
@@ -93,7 +93,7 @@
   color: #2f855a;
   font-weight: 700;
   background: #f0fff4;
-  padding: 4px 8px; /* Ritmo 8px */
+  padding: var(--sp-1) var(--sp-2); /* Ritmo 8px */
   border-radius: 4px;
   border: 1px solid #c6f6d5;
 }

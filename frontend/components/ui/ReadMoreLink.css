@@ -4,7 +4,7 @@
 .read-more-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* Ritmo de 8px */
+  gap: var(--sp-2); /* Ritmo de 8px */
   color: var(--petrol);
   font-family: var(--font-display), sans-serif;
   font-size: var(--type-body);
@@ -14,7 +14,7 @@
   transition: transform 0.2s ease, color 0.2s ease;
   
   /* Touch Target Acessível (Pilar Performance/a11y) */
-  padding: 8px 0; 
+  padding: var(--sp-2) 0; 
   min-height: 44px;
 }
 

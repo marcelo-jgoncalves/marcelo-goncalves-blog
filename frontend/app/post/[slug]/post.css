@@ -5,7 +5,7 @@
    Tokens: petrol / clay / ivory / sand (frontend/app/globals.css)
    ========================================================================== */
 
-/* Fullwidth sections — sobrescreve `section { margin-block: var(--space-6) }` global */
+/* Fullwidth sections — sobrescreve `section { margin-block: var(--sp-10) }` global */
 .post-hero {
   margin-block: 0;
 }
@@ -29,7 +29,7 @@
 .post-hero {
   background: linear-gradient(180deg, var(--ivory) 0%, var(--sand) 100%);
   border-bottom: 1px solid var(--line);
-  padding: 64px var(--sp-7) 0;
+  padding: var(--sp-10) var(--sp-7) 0;
 }
 
 .post-hero-in {
@@ -44,7 +44,7 @@
 .post-cat-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
   background: var(--petrol);
   color: #fff;
   font-family: var(--font-mono);
@@ -52,9 +52,9 @@
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
-  padding: 8px 16px;
+  padding: var(--sp-2) var(--sp-4);
   border-radius: 999px;
-  margin-bottom: 26px;
+  margin-bottom: var(--sp-6);
 }
 
 .post-hero-title {
@@ -74,14 +74,14 @@
   line-height: 1.6;
   color: var(--slate);
   max-width: 600px;
-  margin-top: 22px;
+  margin-top: var(--gap-grid);
 }
 
 .post-byline {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-top: 34px;
+  gap: var(--gap-loose);
+  margin-top: var(--sp-7);
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -126,7 +126,7 @@
   letter-spacing: .04em;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--sp-2);
 }
 
 .post-byline-meta svg { color: var(--clay); font-size: var(--type-caption); }
@@ -136,7 +136,7 @@
    ========================================================================== */
 .post-cover {
   max-width: 1080px;
-  margin: 56px auto -80px;
+  margin: var(--sp-10) auto -80px;
   padding: 0 var(--sp-7);
 }
 
@@ -149,7 +149,7 @@
   box-shadow: 0 30px 60px -24px rgba(8, 50, 61, .5);
   display: flex;
   align-items: flex-end;
-  padding: 24px;
+  padding: var(--sp-6);
 }
 
 /* ==========================================================================
@@ -158,10 +158,10 @@
 .post-layout {
   max-width: var(--wrap-max-narrow);
   margin: 0 auto;
-  padding: 128px var(--sp-7) 40px;
+  padding: 128px var(--sp-7) var(--sp-8);
   display: grid;
   grid-template-columns: 212px minmax(0, var(--read)) 52px;
-  gap: 56px;
+  gap: var(--sp-10);
   justify-content: center;
   align-items: start;
 }
@@ -169,13 +169,13 @@
 .post-article { min-width: 0; grid-column: 2; }
 
 @media (max-width: 1080px) {
-  .post-layout { grid-template-columns: minmax(0, var(--read)) 52px; gap: 40px; }
+  .post-layout { grid-template-columns: minmax(0, var(--read)) 52px; gap: var(--sp-8); }
   .post-toc { display: none; }
   .post-article { grid-column: 1; }
 }
 
 @media (max-width: 720px) {
-  .post-layout { grid-template-columns: 1fr; padding-top: 108px; }
+  .post-layout { grid-template-columns: 1fr; padding-top: var(--sp-12); }
   .post-cover { margin-bottom: -60px; }
 }
 
@@ -198,14 +198,14 @@
   color: var(--steel);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--title-gap);
 }
 
 .post-toc-lbl::before { content: ''; width: 18px; height: 1px; background: var(--clay); }
 
 .post-toc-items {
   position: relative;
-  margin-top: 18px;
+  margin-top: var(--gap-loose);
   padding-left: 0;
 }
 
@@ -236,8 +236,8 @@
   position: relative;
   display: flex;
   align-items: baseline;
-  gap: 9px;
-  padding: 9px 0 9px 26px;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-6);
   color: var(--steel);
   transition: color .2s;
   text-decoration: none;
@@ -284,18 +284,18 @@
 }
 
 .post-toc-read-meta {
-  margin-top: 24px;
-  padding-top: 18px;
+  margin-top: var(--sp-6);
+  padding-top: var(--gap-loose);
   border-top: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: var(--type-caption);
   color: var(--steel);
   letter-spacing: .04em;
   display: flex;
-  gap: 18px;
+  gap: var(--gap-loose);
 }
 
-.post-toc-read-meta span { display: flex; align-items: center; gap: 6px; }
+.post-toc-read-meta span { display: flex; align-items: center; gap: var(--sp-2); }
 .post-toc-read-meta b { color: var(--petrol); font-weight: 600; }
 
 /* TOC removido no mobile/tablet por enquanto — reafirma o display:none da
@@ -341,7 +341,7 @@
   font-weight: 800;
   font-size: 3.6em;
   line-height: .82;
-  padding: 6px 12px 0 0;
+  padding: var(--sp-2) var(--sp-3) 0 0;
   color: var(--petrol);
   letter-spacing: -.04em;
 }
@@ -388,7 +388,7 @@
 .post-content h2 {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--sp-4);
   margin: 2.4em 0 .9em;
   font-weight: 800;
   font-size: var(--type-h3);
@@ -449,13 +449,13 @@
   margin: 1.2em 0 1.65em;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--sp-3);
   padding-left: 0;
 }
 
 .post-content li {
   position: relative;
-  padding-left: 30px;
+  padding-left: var(--sp-7);
   font-size: var(--type-body-sm);
   line-height: 1.65;
   color: var(--slate);
@@ -482,7 +482,7 @@
 }
 
 .post-content ol { counter-reset: post-counter; }
-.post-content ol li { counter-increment: post-counter; padding-left: 34px; }
+.post-content ol li { counter-increment: post-counter; padding-left: var(--sp-7); }
 .post-content ol li::before {
   content: counter(post-counter) '.';
   position: absolute;
@@ -495,8 +495,8 @@
 
 /* ── blockquote (legado) ── */
 .post-content blockquote {
-  margin: 48px 0;
-  padding: 8px 0 8px 32px;
+  margin: var(--sp-9) 0;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
   border-left: 4px solid var(--petrol);
 }
 
@@ -515,13 +515,13 @@
 .post-content .compare {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--sp-4);
   margin: 1.6em 0;
 }
 
 .post-content .cmp {
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: var(--gap-grid) var(--sp-6);
   border: 1px solid var(--line);
 }
 
@@ -533,8 +533,8 @@
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
 }
 
 .post-content .cmp .tag .ic {
@@ -573,7 +573,7 @@
   max-width: 100%;
   height: auto;
   display: block;
-  margin: var(--space-4) auto;
+  margin: var(--sp-7) auto;
   border-radius: 8px;
 }
 
@@ -582,14 +582,14 @@
 .post-content video,
 .post-content-part video {
   display: block;
-  margin: var(--space-4) auto;
+  margin: var(--sp-7) auto;
   max-width: 100%;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .post-content [data-youtube-video],
 .post-content-part [data-youtube-video] {
-  margin: var(--space-4) 0;
+  margin: var(--sp-7) 0;
   aspect-ratio: 16 / 9;
   width: 100%;
   overflow: hidden;
@@ -608,7 +608,7 @@
 .post-content .media {
   display: flex;
   justify-content: center;
-  margin: var(--space-4) 0;
+  margin: var(--sp-7) 0;
   width: 100%;
 }
 
@@ -623,7 +623,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--sp-2);
   overflow: hidden;
 }
 
@@ -636,7 +636,7 @@
   color: var(--clay-hover);
   font-family: var(--font-mono);
   font-size: var(--type-caption);
-  padding: 4px 8px;
+  padding: var(--sp-1) var(--sp-2);
   border-radius: 4px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -644,10 +644,10 @@
 
 pre.code-block,
 .post-content pre {
-  padding: calc(var(--space-unit) * 2);
+  padding: var(--sp-4);
   font-size: var(--type-label);
   border-radius: 8px;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--sp-7);
   overflow-x: auto;
   color: var(--line);
   font-family: var(--font-mono);
@@ -658,20 +658,20 @@ pre.code-block,
 
 .code-wrapper pre {
   margin: 0;
-  padding-top: calc(var(--space-unit) * 6);
+  padding-top: var(--sp-9);
 }
 
 @media (min-width: 768px) {
   pre.code-block,
   .post-content pre {
-    padding: var(--space-4);
+    padding: var(--sp-7);
     font-size: var(--type-label);
   }
 }
 
 .code-wrapper {
   position: relative;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--sp-7);
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--ink);
@@ -682,7 +682,7 @@ pre.code-block,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-unit) calc(var(--space-unit) * 2);
+  padding: var(--sp-2) var(--sp-4);
   background-color: var(--petrol-deep);
   color: var(--steel);
   font-size: var(--type-caption);
@@ -691,13 +691,13 @@ pre.code-block,
 
 .copy-code-btn {
   position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
+  top: var(--sp-4);
+  right: var(--sp-4);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   color: #fff;
-  padding: 4px 12px;
+  padding: var(--sp-1) var(--sp-3);
   cursor: pointer;
   font-size: var(--type-caption);
   transition: all 0.2s ease;
@@ -722,7 +722,7 @@ pre.code-block,
 .post-content .callout,
 .post-content .tip {
   display: flex;
-  gap: 18px;
+  gap: var(--gap-loose);
   align-items: flex-start;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -731,11 +731,11 @@ pre.code-block,
 }
 
 .post-content .callout {
-  padding: 22px 26px;
+  padding: var(--gap-grid) var(--sp-6);
 }
 
 .post-content .tip {
-  padding: 24px 26px;
+  padding: var(--sp-6) var(--sp-6);
   border-left: 4px solid var(--clay);
 }
 
@@ -765,7 +765,7 @@ pre.code-block,
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 500;
-  margin-bottom: 6px;
+  margin-bottom: var(--sp-2);
 }
 
 .post-content .callout .c p,
@@ -845,14 +845,14 @@ pre.code-block,
 @media (max-width: 768px) {
   .post-content .callout,
   .post-content .tip {
-    padding: 16px 18px;
+    padding: var(--sp-4) var(--gap-loose);
   }
 }
 
 /* Pull Quote (.pull) */
 .post-content .pull {
   margin: 2.4em 0;
-  padding: 8px 0 8px 28px;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
   border-left: 3px solid var(--clay);
 }
 
@@ -871,14 +871,14 @@ pre.code-block,
   font-size: var(--type-caption);
   letter-spacing: 0.08em;
   color: var(--steel);
-  margin-top: 14px;
+  margin-top: var(--eyebrow-gap);
   font-style: normal;
 }
 
 /* Closing Flourish (.closing) */
 .post-content .closing {
   margin-top: 2.6em;
-  padding: 30px 32px;
+  padding: var(--sp-7) var(--sp-7);
   background: var(--petrol);
   border-radius: 16px;
   color: var(--ivory);
@@ -906,7 +906,7 @@ pre.code-block,
   font-size: var(--type-lead);
   letter-spacing: -0.025em;
   color: #fff;
-  margin: 0 0 8px;
+  margin: 0 0 var(--sp-2);
 }
 
 .post-content .closing p {
@@ -919,7 +919,7 @@ pre.code-block,
 
 @media (max-width: 768px) {
   .post-content .closing {
-    padding: 22px 24px;
+    padding: var(--gap-grid) var(--sp-6);
   }
 }
 
@@ -930,13 +930,13 @@ pre.code-block,
 .content-callout {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--title-gap);
   background: #ffffff;
   border: 1px solid var(--line);
   border-left: 4px solid var(--petrol);
   border-radius: 14px;
-  padding: 20px 24px;
-  margin: 36px 0;
+  padding: var(--sp-5) var(--sp-6);
+  margin: var(--sp-8) 0;
   box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
   font-size: var(--type-label);
   line-height: 1.65;
@@ -947,7 +947,7 @@ pre.code-block,
 .content-callout .callout-label-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--title-gap);
   font-family: var(--font-mono);
   font-size: var(--type-caption);
   font-weight: 500;
@@ -971,7 +971,7 @@ pre.code-block,
 
 .content-callout .callout-content-area {
   display: block;
-  padding-left: 42px;
+  padding-left: var(--sp-8);
 }
 
 .content-callout p,
@@ -995,7 +995,7 @@ pre.code-block,
 
 @media (max-width: 768px) {
   .content-callout {
-    padding: 16px 18px;
+    padding: var(--sp-4) var(--gap-loose);
   }
   .content-callout .callout-content-area {
     padding-left: 0;
@@ -1011,7 +1011,7 @@ article table,
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin: var(--space-4) 0;
+  margin: var(--sp-7) 0;
   display: block;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -1028,7 +1028,7 @@ article th, article td,
 
 article th,
 .post-content th {
-  padding: 20px var(--space-4);
+  padding: var(--sp-5) var(--sp-7);
   background: var(--sand);
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
@@ -1042,7 +1042,7 @@ article th,
 
 article td,
 .post-content td {
-  padding: 24px var(--space-4);
+  padding: var(--sp-6) var(--sp-7);
   color: var(--slate);
   border-bottom: 1px solid var(--line);
   font-size: var(--type-body);

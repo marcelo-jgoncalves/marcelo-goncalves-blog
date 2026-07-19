@@ -4,7 +4,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 18px;
+  gap: var(--gap-loose);
 }
 
 .steps-timeline-line {
@@ -19,14 +19,14 @@
 .steps-timeline-item {
   position: relative;
   text-align: center;
-  padding: 0 4px;
+  padding: 0 var(--sp-1);
 }
 
 .steps-timeline-circle {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  margin: 0 auto 20px;
+  margin: 0 auto var(--sp-5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +47,7 @@
   font-weight: 700;
   font-size: var(--type-label);
   color: var(--ink);
-  margin: 0 0 8px;
+  margin: 0 0 var(--sp-2);
 }
 
 .steps-timeline-desc {
@@ -60,7 +60,7 @@
 @media (max-width: 860px) {
   .steps-timeline {
     grid-template-columns: repeat(3, 1fr);
-    row-gap: 32px;
+    row-gap: var(--sp-7);
   }
   .steps-timeline-line { display: none; }
 }

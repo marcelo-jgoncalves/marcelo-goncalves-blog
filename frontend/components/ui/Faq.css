@@ -3,14 +3,14 @@
 .faq-accordion {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--sp-3);
 }
 
 .faq-item {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: var(--gap-grid) var(--sp-6);
   cursor: pointer;
   transition: border-color .18s;
 }
@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: var(--gap-loose);
 }
 
 .faq-item-q {
@@ -55,6 +55,6 @@
   font-size: var(--type-label);
   line-height: 1.7;
   color: var(--slate);
-  margin: 16px 0 0;
+  margin: var(--sp-4) 0 0;
   max-width: 68ch;
 }

@@ -5,20 +5,20 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  padding: 32px;
+  padding: var(--sp-7);
   box-shadow: var(--shadow-md);
 }
 
 .contact-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--sp-4);
 }
 
 .contact-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--sp-2);
   font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: .01em;
@@ -26,7 +26,7 @@
 }
 
 .contact-field-wide {
-  margin-top: 16px;
+  margin-top: var(--sp-4);
 }
 
 .contact-required {
@@ -49,7 +49,7 @@
   background: var(--ivory);
   border: 1px solid var(--line);
   border-radius: 11px;
-  padding: 12px 14px;
+  padding: var(--sp-3) var(--eyebrow-gap);
   font-size: var(--type-caption);
   font-weight: 400;
   color: var(--ink);
@@ -65,7 +65,7 @@
 .contact-field select {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: 38px;
+  padding-right: var(--sp-8);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237E969E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
@@ -82,15 +82,15 @@
 }
 
 .contact-error {
-  margin-top: 16px;
+  margin-top: var(--sp-4);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--title-gap);
   font-size: var(--type-caption);
   color: var(--clay-hover);
   background: var(--clay-soft);
   border: 1px solid var(--clay);
-  padding: 11px 14px;
+  padding: var(--sp-3) var(--eyebrow-gap);
   border-radius: 11px;
 }
 
@@ -98,8 +98,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: 24px;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
   flex-wrap: wrap;
 }
 
@@ -111,14 +111,14 @@
 
 .contact-success {
   text-align: center;
-  padding: 36px 12px;
+  padding: var(--sp-8) var(--sp-3);
 }
 
 .contact-success-icon {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  margin: 0 auto 22px;
+  margin: 0 auto var(--gap-grid);
   background: rgba(63, 107, 71, .12);
   border: 1px solid var(--moss);
   display: flex;
@@ -132,14 +132,14 @@
   font-size: var(--type-lead);
   letter-spacing: -.02em;
   color: var(--ink);
-  margin: 0 0 10px;
+  margin: 0 0 var(--title-gap);
 }
 
 .contact-success p {
   font-size: var(--type-label);
   line-height: 1.66;
   color: var(--slate);
-  margin: 0 auto 26px;
+  margin: 0 auto var(--sp-6);
   max-width: 38ch;
 }
 

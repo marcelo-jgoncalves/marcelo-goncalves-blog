@@ -2,10 +2,10 @@
 
 /* padding-bottom 18px: no desktop o botão da hero fica oculto (.ct-hero-actions
    — ver abaixo) e o último elemento visível é o subtitle, que já tem
-   margin-bottom:30px (PageHero.css) — 18+30=48px (var(--space-5)) de fato até
+   margin-bottom:var(--sp-7) (PageHero.css) — 18+30=48px (var(--sp-9)) de fato até
    o limite da seção, igualando ao #form abaixo. No mobile (≤860px) o botão
    volta a aparecer sem margem própria, então o padding-bottom precisa virar
-   var(--space-5) puro — ver media query abaixo (mesmo padrão de home.css). */
+   var(--sp-9) puro — ver media query abaixo (mesmo padrão de home.css). */
 .page-hero.ct-hero {
   --ph-pad: 88px 40px 18px;
 }
@@ -17,7 +17,7 @@
   display: none;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: var(--sp-4);
   margin-top: var(--sp-7);
 }
 
@@ -27,11 +27,11 @@
     justify-content: center;
   }
   /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
-     precisa virar var(--space-5) "puro" para manter o mesmo espaçamento do
+     precisa virar var(--sp-9) "puro" para manter o mesmo espaçamento do
      desktop (lá o padding é 18px porque soma com os 30px de margin-bottom
      do subtitle, que é o último elemento visível quando o botão está oculto). */
   .page-hero.ct-hero .page-hero-in {
-    padding-bottom: var(--space-5);
+    padding-bottom: var(--sp-9);
   }
 }
 
@@ -45,12 +45,12 @@
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
 }
 
-/* Espaçamento reduzido de --section-pad (96px) para var(--space-5) (48px) de
+/* Espaçamento reduzido de --section-pad (96px) para var(--sp-9) (48px) de
    cada lado, igualando ao padrão adotado na Home e nas 4 landing pages —
    aqui já existe linha divisória real (border-top), mantida como está. */
 .ct-section {
   margin-block: 0;
-  padding: var(--space-5) 0;
+  padding: var(--sp-9) 0;
   border-top: 1px solid var(--line);
 }
 
@@ -100,7 +100,7 @@
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
 #chamada-final.cta-adv .cta-adv-in {
   align-items: flex-start;
-  padding-top: var(--space-5);
+  padding-top: var(--sp-9);
 }
 
 .ct-center-head {
@@ -113,21 +113,21 @@
 .ct-form-grid {
   display: grid;
   grid-template-columns: 0.82fr 1.18fr;
-  gap: 56px;
+  gap: var(--sp-10);
   align-items: start;
 }
 
 .ct-guarantees {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-top: 34px;
+  gap: var(--eyebrow-gap);
+  margin-top: var(--sp-7);
 }
 
 .ct-guarantee {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   font-size: var(--type-caption);
   color: var(--ink);
 }
@@ -149,7 +149,7 @@
 .ct-areas-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: var(--gap-loose);
   margin-top: var(--sp-9);
 }
 
@@ -158,7 +158,7 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 26px;
+  padding: var(--sp-6);
   text-decoration: none;
   transition: border-color .18s, transform .18s, box-shadow .18s;
 }
@@ -179,7 +179,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: var(--gap-loose);
 }
 
 .ct-icon-box--sm {
@@ -195,7 +195,7 @@
   font-size: var(--type-body-sm);
   letter-spacing: -.015em;
   color: var(--ink);
-  margin: 0 0 9px;
+  margin: 0 0 var(--sp-2);
 }
 
 .ct-area-card p {
@@ -209,22 +209,22 @@
 .ct-otherways-grid {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  gap: 56px;
+  gap: var(--sp-10);
   align-items: center;
 }
 
 .ct-whatsapp-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 30px;
+  gap: var(--title-gap);
+  margin-top: var(--sp-7);
   background: rgba(63, 107, 71, .1);
   color: var(--moss);
   border: 1px solid rgba(63, 107, 71, .3);
   cursor: pointer;
   font-weight: 600;
   font-size: var(--type-caption);
-  padding: 13px 20px;
+  padding: var(--sp-3) var(--sp-5);
   border-radius: 12px;
   text-decoration: none;
   transition: background .15s;
@@ -237,17 +237,17 @@
 .ct-contact-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
 }
 
 .ct-contact-card {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--eyebrow-gap);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 18px;
+  padding: var(--gap-loose);
   transition: border-color .18s;
   text-decoration: none;
 }
@@ -255,7 +255,7 @@
 .ct-contact-card-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--sp-1);
 }
 
 .ct-contact-card:not(.ct-contact-card--static):hover {

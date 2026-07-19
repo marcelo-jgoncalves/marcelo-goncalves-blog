@@ -4,13 +4,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--sp-2);
   font-family: var(--font-mono);
   font-size: var(--type-caption);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--steel);
-  margin-bottom: 24px;
+  margin-bottom: var(--sp-6);
 }
 
 .breadcrumb a {

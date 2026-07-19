@@ -2,7 +2,7 @@
 
 /* ── Container ─────────────────────────────────────── */
 .formacao-widget {
-  padding: var(--space-3);
+  padding: var(--sp-6);
   border-radius: 16px;
   background: rgba(15, 76, 92, 0.08);
   border: 1px solid rgba(15, 76, 92, 0.12);
@@ -13,7 +13,7 @@
 
 /* ── Header ────────────────────────────────────────── */
 .formacao-widget__header {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--sp-6);
 }
 
 .formacao-widget__title {
@@ -33,15 +33,15 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--sp-4);
 }
 
 /* ── Card individual ────────────────────────────────── */
 .formacao-widget__item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-3);
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.9);

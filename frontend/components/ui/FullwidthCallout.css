@@ -2,13 +2,13 @@
 
 .fwc-section {
   margin-block: 0;
-  padding: var(--space-6) var(--space-2);
+  padding: var(--sp-10) var(--sp-4);
   text-align: center;
 }
 
 .fwc-section[data-size="lg"] {
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-7);
+  padding-top: var(--sp-12);
+  padding-bottom: var(--sp-12);
 }
 
 /* ── Variantes — tokens de cor em cascata ─────────────────── */
@@ -68,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--sp-6);
   padding: 0;
 }
 

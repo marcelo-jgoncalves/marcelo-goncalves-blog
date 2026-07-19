@@ -1,7 +1,7 @@
 /* frontend/app/legal.css — compartilhado entre páginas legais */
 
 .legal-container {
-  padding: var(--space-6) 20px;
+  padding: var(--sp-10) var(--sp-5);
 }
 
 .legal-content {
@@ -12,8 +12,8 @@
 .legal-updated {
   font-size: var(--type-label);
   color: var(--steel);
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3);
+  margin-bottom: var(--sp-7);
+  padding-bottom: var(--sp-6);
   border-bottom: 1px solid var(--line);
 }
 
@@ -22,19 +22,19 @@
   font-weight: 700;
   font-size: var(--type-lead);
   color: var(--petrol);
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-2);
+  margin-top: var(--sp-7);
+  margin-bottom: var(--sp-4);
 }
 
 .legal-content p {
   font-size: var(--type-body);
   color: var(--slate);
   line-height: 1.75;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--sp-4);
 }
 
 .legal-content ul {
-  margin: 0 0 var(--space-2) var(--space-3);
+  margin: 0 0 var(--sp-4) var(--sp-6);
   padding: 0;
 }
 
@@ -42,7 +42,7 @@
   font-size: var(--type-body);
   color: var(--slate);
   line-height: 1.75;
-  margin-bottom: 6px;
+  margin-bottom: var(--sp-2);
 }
 
 .legal-content a {

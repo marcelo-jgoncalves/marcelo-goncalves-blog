@@ -6,8 +6,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px; /* Ritmo 2x 8px */
-  padding: 24px 0; /* Ritmo 3x 8px */
+  gap: var(--sp-4); /* Ritmo 2x 8px */
+  padding: var(--sp-6) 0; /* Ritmo 3x 8px */
   margin: 0;
   border-top: 1px solid var(--line);
   width: 100%;
@@ -19,7 +19,7 @@
     flex-direction: row;
     align-items: center; 
     justify-content: flex-start; /* 🚀 Desloca para a esquerda no Desktop */
-    gap: 24px; /* Ritmo 3x 8px */
+    gap: var(--sp-6); /* Ritmo 3x 8px */
   }
 }
 
@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px; /* Ritmo 2x 8px */
+  gap: var(--sp-4); /* Ritmo 2x 8px */
   flex-wrap: wrap; /* Garante que os botões quebrem de linha em telas minúsculas */
 }
 

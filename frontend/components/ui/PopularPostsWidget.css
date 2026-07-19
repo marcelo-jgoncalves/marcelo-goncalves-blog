@@ -4,8 +4,8 @@
 .popular-widget {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
+  gap: var(--sp-2);
+  padding: var(--sp-7);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
@@ -53,7 +53,7 @@
   line-height: 1.1;
   letter-spacing: -0.05em;
   color: var(--ink);
-  margin: 0 0 var(--space-3) 0;
+  margin: 0 0 var(--sp-6) 0;
   padding: 0;
   position: relative;
   z-index: 1;
@@ -65,7 +65,7 @@
   flex-direction: column;
   list-style: none;
   padding: 0;
-  margin: 0 0 var(--space-3) 0;
+  margin: 0 0 var(--sp-6) 0;
   position: relative;
   z-index: 1;
 }
@@ -88,8 +88,8 @@
 .popular-widget__link {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) 0;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
   color: inherit;
   text-decoration: none;
   position: relative;
@@ -151,7 +151,7 @@
 .popular-widget__body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--title-gap);
   min-width: 0;
   flex: 1;
 }
@@ -161,7 +161,7 @@
   display: inline-flex;
   align-items: center;
   width: max-content;
-  padding: 8px 14px !important;
+  padding: var(--sp-2) var(--eyebrow-gap) !important;
   border-radius: 8px;
   background:
     linear-gradient(
@@ -221,9 +221,9 @@
 .popular-widget__all {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 20px;
-  padding-top: 16px;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--type-label);
@@ -266,8 +266,8 @@
 .popular-widget__item--skeleton {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: 26px 0;
+  gap: var(--sp-4);
+  padding: var(--sp-6) 0;
   position: relative;
   z-index: 1;
   border-bottom: 1px solid transparent;
@@ -306,7 +306,7 @@
 .popular-widget__skeleton-body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--title-gap);
   flex: 1;
 }
 
@@ -337,8 +337,8 @@
 
 /* ── Modificador mobile flow ───────────────────────────── */
 .popular-widget--mobile-flow {
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-4);
+  margin-top: var(--sp-7);
+  margin-bottom: var(--sp-7);
 }
 
 @media (min-width: 1024px) {
@@ -350,18 +350,18 @@
 /* ── RESPONSIVIDADE MOBILE ─────────────────────────────── */
 @media(max-width: 540px) {
   .popular-widget {
-    padding: 32px 24px;
+    padding: var(--sp-7) var(--sp-6);
   }
 
   .popular-widget__title {
     font-size: var(--type-h2);
-    margin-bottom: 24px;
+    margin-bottom: var(--sp-6);
   }
 
   .popular-widget__link {
     grid-template-columns: 60px 1fr;
-    gap: 12px;
-    padding: 18px 0;
+    gap: var(--sp-3);
+    padding: var(--gap-loose) 0;
   }
 
   .popular-widget__rank {
@@ -374,7 +374,7 @@
   }
 
   .category-tag {
-    padding: 6px 10px;
+    padding: var(--sp-2) var(--title-gap);
     font-size: var(--type-caption);
   }
 }

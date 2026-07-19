@@ -21,9 +21,9 @@
   background-color: var(--sand);
   border: 2px dashed var(--line);
   /* 🚀 RITMO MATEMÁTICO: Corrigido de 20px para 24px (3 x 8px) */
-  padding: calc(var(--space-unit) * 3);
+  padding: var(--sp-6);
   /* 🚀 RITMO: 8px (1 x 8px) */
-  border-radius: var(--space-unit); 
+  border-radius: var(--sp-2); 
   color: var(--steel);
   text-align: center;
   font-family: var(--font-display);

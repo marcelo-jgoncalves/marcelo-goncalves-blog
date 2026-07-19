@@ -1,14 +1,14 @@
 /* PostFooter — author box (post.html fixture .authorbox) */
 
 .authorbox {
-  margin: 80px auto 0;
+  margin: var(--sp-11) auto 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 38px 40px;
+  padding: var(--sp-8) var(--sp-8);
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 30px;
+  gap: var(--sp-7);
   align-items: center;
   box-shadow: 0 2px 4px rgba(12, 32, 39, 0.04);
 }
@@ -71,9 +71,9 @@
 .abSocial {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--sp-4);
   align-items: center;
-  padding-left: 30px;
+  padding-left: var(--sp-7);
   border-left: 1px solid var(--line);
   align-self: stretch;
   justify-content: center;
@@ -89,7 +89,7 @@
 
 .row {
   display: flex;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .row a {
@@ -123,7 +123,7 @@
   .abSocial {
     align-items: center;
     padding-left: 0;
-    padding-top: 24px;
+    padding-top: var(--sp-6);
     border-left: none;
     border-top: 1px solid var(--line);
     width: 100%;
