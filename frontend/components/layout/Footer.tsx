@@ -96,7 +96,7 @@ export default function Footer() {
         <div className="foot-bottom" data-audit="footer-bottom">
           <span>© {currentYear} Marcelo Gonçalves · Todos os direitos reservados</span>
           <div className="links">
-            <Link href="/politica-de-privacidade" prefetch={false}>Privacidade</Link>
+            <Link href="/politica-de-privacidade" prefetch={false}>Política de Privacidade</Link>
             <Link href="/termos-de-uso" prefetch={false}>Termos</Link>
             <Link href="/feed.xml" prefetch={false}>RSS</Link>
             <ConsentTrigger />
