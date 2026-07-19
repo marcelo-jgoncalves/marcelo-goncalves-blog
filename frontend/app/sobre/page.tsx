@@ -105,8 +105,8 @@ export default async function SobrePage() {
         className="sobre-hero"
         dataAudit="sobre-hero"
         eyebrow="Sobre Nós"
-        title={<>Toda empresa merece uma tecnologia que <em>acompanhe seu crescimento</em>.</>}
-        subtitle="Criamos soluções que aumentam a eficiência operacional por meio de engenharia, automação e inteligência artificial. Porque crescer não deveria significar conviver com processos cada vez mais complexos."
+        title={<>Toda empresa merece tecnologias que <em>potencializem</em> seu crescimento.</>}
+        subtitle="Criamos soluções que aumentam a eficiência operacional por meio de engenharia, automação e inteligência artificial."
         right={
           <div className="sobre-hero-right-col">
             <div className="sobre-hero-panel" data-audit="sobre-hero-panel">
@@ -132,7 +132,7 @@ export default async function SobrePage() {
         <div className="wrap sobre-origem-grid" data-audit="sobre-origem-grid">
           <div className="sobre-origem-text">
             <div className="sec-ey">Nossa Origem</div>
-            <h2 className="sobre-origem-title">Tecnologia só gera valor quando ajuda uma empresa a <em>operar melhor</em>.</h2>
+            <h2 className="sobre-origem-title">Tecnologia só gera valor quando ajuda uma empresa a operar melhor.</h2>
             <p>Ao longo dos anos, vimos empresas investirem em novas ferramentas esperando mais velocidade e produtividade.</p>
             <p>Muitas vezes o resultado foi o contrário: processos mais complexos e sistemas que deixaram de conversar entre si.</p>
             <p>Por isso construímos uma visão diferente: soluções que simplificam operações e dão espaço para o que realmente importa.</p>
@@ -150,7 +150,7 @@ export default async function SobrePage() {
         <div className="wrap">
           <div className="sobre-center-head">
             <div className="sec-ey sobre-ey-center">Nossa Filosofia</div>
-            <h2 className="sec-t">Eficiência nasce de decisões <em>bem projetadas</em>.</h2>
+            <h2 className="sec-t">Eficiência nasce de decisões bem projetadas.</h2>
             <p className="sec-desc sobre-desc-center">Nossa forma de pensar combina clareza, engenharia e visão de longo prazo. Cada solução precisa funcionar bem hoje, continuar compreensível amanhã e evoluir sem comprometer tudo o que já foi construído.</p>
           </div>
           <div className="sobre-principles-list" data-audit="sobre-principles-list">
@@ -170,7 +170,7 @@ export default async function SobrePage() {
         <div className="wrap">
           <div className="sobre-abordagem-head" data-audit="sobre-abordagem-head">
             <div className="sec-ey sobre-ey-center">Como Pensamos</div>
-            <h2 className="sobre-abordagem-title">Boa engenharia começa antes da <em>implementação</em>.</h2>
+            <h2 className="sobre-abordagem-title">Boa engenharia começa antes da implementação.</h2>
             <p className="sobre-abordagem-desc">Não começamos escolhendo ferramentas. Primeiro entendemos o contexto, questionamos premissas e simplificamos o problema. A tecnologia entra depois, como consequência de decisões bem fundamentadas.</p>
           </div>
           <div className="sobre-modules-grid" data-audit="sobre-modules-grid">
@@ -202,7 +202,7 @@ export default async function SobrePage() {
         <div className="sobre-behind-container">
           <header className="sobre-behind-head">
             <div className="sobre-behind-label"><span /><span className="txt">O que está por trás</span><span /></div>
-            <h2 id="behind-title" className="sobre-behind-h2">Engenharia conduzida por quem <em>constrói todos os dias</em>.</h2>
+            <h2 id="behind-title" className="sobre-behind-h2">Engenharia conduzida por quem constrói todos os dias.</h2>
           </header>
 
           <article className="sobre-behind-card" data-audit="sobre-behind-card">
@@ -258,7 +258,7 @@ export default async function SobrePage() {
         <div className="sobre-beliefs-container">
           <header className="sobre-beliefs-head">
             <div className="sobre-beliefs-label"><span />No que acreditamos<span className="sobre-beliefs-label-line-r" /></div>
-            <h2 id="belief-title" className="sobre-beliefs-h2">Tecnologia não existe para impressionar. Existe para tornar empresas <em>mais eficientes</em>.</h2>
+            <h2 id="belief-title" className="sobre-beliefs-h2">Tecnologia não existe para impressionar. Existe para tornar empresas mais eficientes.</h2>
             <p className="sobre-beliefs-desc">Acreditamos em uma engenharia clara, modular e preparada para acompanhar cada etapa do negócio. Tecnologia deve reduzir esforço, eliminar desperdícios e ampliar a capacidade das pessoas de realizar um trabalho melhor.</p>
           </header>
 

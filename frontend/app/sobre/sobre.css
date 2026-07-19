@@ -19,7 +19,6 @@
 .page-hero.sobre-hero {
   --ph-cols:    1.15fr .85fr;
   --ph-gap:     var(--sp-11);
-  --ph-h1-size: 44px;
   --ph-h1-max:  620px;
   --ph-sub-max: 520px;
   --ph-pad:     96px 40px var(--sp-9);
@@ -117,9 +116,9 @@
 
 .sobre-origem-title {
   font-weight: 800;
-  font-size: var(--type-h2);
-  line-height: 1.16;
-  letter-spacing: -.03em;
+  font-size: var(--type-h3);
+  line-height: 1.1;
+  letter-spacing: -.035em;
   color: var(--ink);
   max-width: 640px;
   margin: var(--sp-4) 0 var(--sp-6);
@@ -158,7 +157,6 @@
 
 @media (max-width: 860px) {
   .sobre-origem-grid { grid-template-columns: 1fr; gap: var(--sp-7); }
-  .sobre-origem-title { font-size: var(--type-h4); }
   .sobre-origem-text p { font-size: var(--type-label); }
   .sobre-origem-mission { padding: var(--sp-7) var(--sp-6); margin-top: 0; }
   .sobre-om-title { font-size: var(--type-lead); }
@@ -266,10 +264,10 @@
 }
 
 .sobre-module-title {
-  font-weight: 750;
-  font-size: var(--type-h4);
-  line-height: 1.08;
-  letter-spacing: -.03em;
+  font-weight: 800;
+  font-size: var(--type-body);
+  line-height: 1.25;
+  letter-spacing: -.025em;
   color: #fff;
   margin: 0 0 var(--title-gap);
 }
@@ -299,22 +297,19 @@
   .sobre-abordagem-desc { max-width: 100%; }
   .sobre-modules-grid { grid-template-columns: 1fr; }
   .sobre-module { min-height: auto; grid-column: span 1 !important; padding: var(--sp-6) var(--sp-6); }
-  .sobre-module-title { font-size: var(--type-lead); }
 }
 
 /* ==========================================================================
-   O QUE ESTÁ POR TRÁS — paleta própria (BI/BM/BA/BS/BC/BSOFT/BB)
+   O QUE ESTÁ POR TRÁS
    ========================================================================== */
 .sobre-behind {
-  --bi: #0b3039;
-  --bm: #596c70;
-  --ba: #d7613b;
   /* --bs/--bc apontam para os tokens globais (mesmo valor de --ivory/--surface,
-     já usados como fundo de seção na Home) em vez de hex fixo à parte. */
+     já usados como fundo de seção na Home) em vez de hex fixo à parte. Texto
+     e bordas usam --ink/--slate/--clay direto (sem paleta local paralela). */
   --bs: var(--ivory);
   --bc: var(--surface);
   --bsoft: #f1ede4;
-  --bb: rgba(11, 48, 57, .12);
+  --bb: rgba(12, 32, 39, .12);
   background: var(--bs);
   padding: var(--sp-9) 0;
 }
@@ -334,28 +329,28 @@
   font-weight: 750;
   letter-spacing: .19em;
   text-transform: uppercase;
-  color: var(--ba);
+  color: var(--clay);
 }
 
 .sobre-behind-label span:not(.txt) { width: 25px; height: 1px; background: currentColor; flex: none; }
 
 .sobre-behind-h2 {
   font-weight: 800;
-  font-size: var(--type-h1);
-  line-height: 1;
-  letter-spacing: -.048em;
-  color: var(--bi);
+  font-size: var(--type-h3);
+  line-height: 1.1;
+  letter-spacing: -.035em;
+  color: var(--ink);
   margin: 0;
 }
 
-.sobre-behind-h2 em { font-style: normal; color: var(--ba); }
+.sobre-behind-h2 em { font-style: normal; color: var(--clay); }
 
 .sobre-behind-card {
   background: var(--bc);
   border: 1px solid var(--bb);
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 16px 40px rgba(11, 48, 57, .05);
+  box-shadow: 0 16px 40px rgba(12, 32, 39, .05);
   display: grid;
   grid-template-columns: minmax(270px, .78fr) minmax(0, 1.42fr);
 }
@@ -382,7 +377,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(11, 48, 57, .90);
+  background: rgba(12, 32, 39, .90);
   border-radius: 13px;
   padding: var(--sp-3) var(--sp-4);
   backdrop-filter: blur(8px);
@@ -409,27 +404,31 @@
   font-weight: 750;
   letter-spacing: .17em;
   text-transform: uppercase;
-  color: var(--ba);
+  color: var(--clay);
   margin-bottom: var(--sp-4);
 }
 
-.sobre-behind-h3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--bi); margin: 0 0 var(--sp-4); }
+.sobre-behind-h3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--ink); margin: 0 0 var(--sp-4); }
 
-.sobre-behind-content p { font-size: var(--type-label); line-height: 1.68; color: var(--bm); max-width: 63ch; margin: 0 0 var(--sp-4); }
+.sobre-behind-content p { font-size: var(--type-label); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
 
 .sobre-behind-emphasis {
-  border-left: 2px solid var(--ba);
+  border-left: 2px solid var(--clay);
   padding-left: var(--gap-loose);
   font-weight: 650;
   font-size: var(--type-label);
   line-height: 1.58;
-  color: var(--bi);
+  color: var(--ink);
 }
 
-.sobre-behind-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-5); margin-top: var(--sp-7); }
+/* flex-wrap (não grid de colunas rígidas) — mesmo padrão de .ih-case-metrics
+   na Home: cada métrica ocupa só a largura do seu próprio conteúdo, o que é
+   necessário aqui porque os valores são palavras ("Engenharia", "DevOps"),
+   não números curtos, e não caberiam em colunas fixas de 1/4 no --type-h2. */
+.sobre-behind-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-6); margin-top: var(--sp-7); }
 .sobre-behind-metric { border-top: 1px solid var(--bb); padding-top: var(--sp-4); }
-.sobre-behind-metric .v { display: block; font-weight: 800; font-size: var(--type-body); color: var(--bi); }
-.sobre-behind-metric .l { display: block; font-size: var(--type-caption); line-height: 1.45; color: var(--bm); }
+.sobre-behind-metric .v { display: block; font-weight: 800; font-size: var(--type-body-sm); letter-spacing: -.03em; color: var(--ink); }
+.sobre-behind-metric .l { display: block; font-size: var(--type-caption); line-height: 1.45; color: var(--slate); }
 
 .sobre-evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--eyebrow-gap); margin-top: var(--eyebrow-gap); }
 
@@ -452,12 +451,12 @@
   font-weight: 750;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--ba);
+  color: var(--clay);
   margin-bottom: var(--title-gap);
 }
 
-.sobre-ev-title { font-weight: 800; font-size: var(--type-lead); color: var(--bi); margin: 0 0 var(--sp-2); }
-.sobre-ev-text { font-size: var(--type-caption); line-height: 1.55; color: var(--bm); margin: 0 0 auto; }
+.sobre-ev-title { font-weight: 800; font-size: var(--type-body); line-height: 1.25; letter-spacing: -.025em; color: var(--ink); margin: 0 0 var(--sp-2); }
+.sobre-ev-text { font-size: var(--type-label); line-height: 1.65; color: var(--slate); margin: 0 0 auto; }
 
 .sobre-ev-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--eyebrow-gap); }
 
@@ -468,7 +467,7 @@
   padding: var(--sp-1) var(--sp-2);
   border-radius: 999px;
   background: var(--bsoft);
-  color: var(--bi);
+  color: var(--ink);
   font-size: var(--type-caption);
   font-weight: 650;
 }
@@ -478,7 +477,6 @@
   .sobre-behind-head { max-width: 100%; text-align: left; margin-bottom: var(--sp-7); }
   .sobre-behind-label { justify-content: flex-start; }
   .sobre-behind-label .sobre-behind-label-line-r { display: none; }
-  .sobre-behind-h2 { font-size: var(--type-h2); }
   .sobre-behind-card { grid-template-columns: 1fr; }
   .sobre-behind-photo { min-height: 430px; }
   .sobre-behind-content { padding: var(--sp-7) var(--sp-6) var(--sp-7); }
@@ -487,9 +485,8 @@
 }
 
 /* ==========================================================================
-   NO QUE ACREDITAMOS — fundo sand, mesma cor da seção "Conteúdo técnico" na
-   Home (var(--sand)); texto invertido para tons escuros (era manifesto
-   escuro no protótipo original).
+   NO QUE ACREDITAMOS — fundo ivory (mesmo tom de --sobre-origem, acima);
+   texto em tons escuros (era manifesto escuro no protótipo original).
    ========================================================================== */
 .sobre-beliefs {
   position: relative;
@@ -521,10 +518,10 @@
 .sobre-beliefs-h2 {
   max-width: 930px;
   margin: 0 auto;
-  font-size: var(--type-display-sm);
+  font-size: var(--type-h3);
   font-weight: 800;
-  line-height: .98;
-  letter-spacing: -.052em;
+  line-height: 1.1;
+  letter-spacing: -.035em;
   color: var(--ink);
 }
 
@@ -560,15 +557,15 @@
   color: var(--clay);
 }
 
-.sobre-belief h3 { margin: 0 0 var(--sp-3); font-size: var(--type-lead); font-weight: 700; line-height: 1.15; letter-spacing: -.025em; color: var(--ink); }
-.sobre-belief p { max-width: 31ch; font-size: var(--type-caption); line-height: 1.62; color: var(--slate); margin: 0; }
+.sobre-belief h3 { margin: 0 0 var(--sp-3); font-size: var(--type-body); font-weight: 800; line-height: 1.25; letter-spacing: -.025em; color: var(--ink); }
+.sobre-belief p { max-width: 31ch; font-size: var(--type-label); line-height: 1.65; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
   .sobre-beliefs { padding: var(--sp-9) var(--wrap-pad-h-mobile); }
   .sobre-beliefs-head { max-width: 100%; text-align: left; }
   .sobre-beliefs-label { justify-content: flex-start; }
   .sobre-beliefs-label-line-r { display: none; }
-  .sobre-beliefs-h2 { font-size: var(--type-h2); text-align: left; margin: 0; }
+  .sobre-beliefs-h2 { text-align: left; margin: 0; }
   .sobre-beliefs-desc { margin: var(--sp-6) 0 0; text-align: left; }
   .sobre-beliefs-grid { grid-template-columns: 1fr; gap: 0; margin-top: var(--sp-9); }
   .sobre-belief { padding: var(--sp-7) 0; border-right: none; border-bottom: 1px solid var(--line); }
