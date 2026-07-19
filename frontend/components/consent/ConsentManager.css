@@ -24,17 +24,23 @@
   flex-wrap: wrap;
 }
 
-.cmp-banner__text {
+.cmp-banner__copy {
   flex: 1 1 280px;
+}
+
+.cmp-banner__title {
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: var(--type-label);
+  color: var(--ink);
+  margin: 0 0 var(--title-gap);
+}
+
+.cmp-banner__text {
+  font-size: var(--type-caption);
   color: var(--slate);
   line-height: 1.5;
   margin: 0;
-}
-
-.cmp-banner__text a {
-  color: var(--petrol);
-  text-decoration: underline;
 }
 
 .cmp-banner__actions {
@@ -58,13 +64,17 @@
   line-height: 1;
 }
 
+/* Aceitar/Rejeitar têm o mesmo peso visual (outline, mesma borda e
+   padding) — só a cor muda. Evita que a escolha de aceitar pareça a
+   opção "padrão"/obrigatória (ver docs/cockie.md, "Conteúdo do banner"). */
 .cmp-btn--accept {
-  background: var(--petrol);
-  color: white;
+  background: transparent;
+  color: var(--petrol);
+  border: 1px solid var(--petrol);
 }
 
 .cmp-btn--accept:hover {
-  background: var(--petrol-deep);
+  background: rgba(15, 76, 92, 0.08);
 }
 
 .cmp-btn--reject {
@@ -183,6 +193,7 @@
   color: var(--ink);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--sp-2);
 }
 
@@ -192,10 +203,16 @@
   font-size: var(--type-caption);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
   padding: 2px var(--sp-2);
   border-radius: 4px;
   background: rgba(15, 76, 92, 0.08);
   color: var(--petrol);
+}
+
+.cmp-row__badge--optional {
+  background: var(--sand);
+  color: var(--steel);
 }
 
 .cmp-row__desc {
@@ -278,6 +295,35 @@
 
 .cmp-btn--save:hover {
   background: var(--petrol-deep);
+}
+
+.cmp-modal__quick-actions {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.cmp-modal__quick-actions .cmp-btn {
+  flex: 1;
+  text-align: center;
+}
+
+.cmp-modal__links {
+  display: flex;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+
+.cmp-modal__links a {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  text-decoration: underline;
+}
+
+.cmp-modal__links a:hover {
+  color: var(--petrol);
 }
 
 /* ═══════════════════════════════════════════

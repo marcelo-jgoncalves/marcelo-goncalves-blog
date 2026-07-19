@@ -8,12 +8,13 @@ import type { ConsentState, ConsentSettings } from '@/lib/consent';
 interface ConsentModalProps {
   current: ConsentState | null;
   onSave: (settings: ConsentSettings) => void;
+  onAcceptAll: () => void;
+  onRejectAll: () => void;
   onClose: () => void;
 }
 
-export default function ConsentModal({ current, onSave, onClose }: ConsentModalProps) {
+export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll, onClose }: ConsentModalProps) {
   const [analytics, setAnalytics] = useState(current?.analytics ?? false);
-  const [ads, setAds] = useState(current?.ads ?? false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   // Foca o dialog ao abrir (não o botão fechar — melhor ergonomia)
@@ -64,7 +65,7 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
       >
         <div className="cmp-modal__header">
           <h2 id="cmp-modal-title" className="cmp-modal__title">
-            Preferências de Privacidade
+            Preferências de cookies
           </h2>
           <button
             className="cmp-modal__close"
@@ -77,60 +78,47 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
 
         <div className="cmp-modal__body">
           <p className="cmp-modal__desc">
-            Escolha quais categorias de cookies você aceita. Cookies essenciais são sempre
-            ativos — são necessários para o funcionamento básico do site.
+            Você pode controlar o uso de cookies analíticos neste site. Os recursos necessários
+            permanecem ativos para registrar sua escolha e manter o funcionamento básico da
+            plataforma.
           </p>
 
-          {/* Essential — sempre ativo */}
+          {/* Necessários — sempre ativo */}
           <div className="cmp-row">
             <div className="cmp-row__info">
               <span className="cmp-row__label">
-                Essenciais
+                Cookies necessários
                 <span className="cmp-row__badge">Sempre ativo</span>
               </span>
               <p className="cmp-row__desc">
-                Necessários para o funcionamento do site. Não podem ser desativados.
+                Utilizados para registrar suas preferências de privacidade e permitir
+                funcionalidades essenciais. Eles não são usados para publicidade.
               </p>
             </div>
-            <label className="cmp-toggle cmp-toggle--disabled" aria-label="Cookies essenciais (sempre ativo)">
+            <label className="cmp-toggle cmp-toggle--disabled" aria-label="Cookies necessários (sempre ativo)">
               <input type="checkbox" checked readOnly disabled aria-checked="true" />
               <span className="cmp-toggle__track" />
             </label>
           </div>
 
-          {/* Analytics */}
+          {/* Analíticos — opcional */}
           <div className="cmp-row">
             <div className="cmp-row__info">
-              <span className="cmp-row__label">Analytics</span>
+              <span className="cmp-row__label">
+                Cookies analíticos
+                <span className="cmp-row__badge cmp-row__badge--optional">Opcionais</span>
+              </span>
               <p className="cmp-row__desc">
-                Ajudam a entender como os visitantes interagem com o site. Dados coletados
-                de forma anônima e agregada.
+                Com sua autorização, utilizamos o Google Analytics para produzir estatísticas
+                sobre visitas, páginas acessadas, dispositivos e interações. Esses dados nos
+                ajudam a melhorar o site e seus conteúdos.
               </p>
             </div>
-            <label className="cmp-toggle" aria-label="Cookies de analytics">
+            <label className="cmp-toggle" aria-label="Cookies analíticos (ativado ou desativado)">
               <input
                 type="checkbox"
                 checked={analytics}
                 onChange={(e) => setAnalytics(e.target.checked)}
-              />
-              <span className="cmp-toggle__track" />
-            </label>
-          </div>
-
-          {/* Personalized Ads */}
-          <div className="cmp-row">
-            <div className="cmp-row__info">
-              <span className="cmp-row__label">Anúncios Personalizados</span>
-              <p className="cmp-row__desc">
-                Permitem exibir anúncios relevantes com base nos seus interesses.
-                Sem este consent, os anúncios exibidos serão contextuais (não personalizados).
-              </p>
-            </div>
-            <label className="cmp-toggle" aria-label="Cookies de anúncios personalizados">
-              <input
-                type="checkbox"
-                checked={ads}
-                onChange={(e) => setAds(e.target.checked)}
               />
               <span className="cmp-toggle__track" />
             </label>
@@ -140,11 +128,33 @@ export default function ConsentModal({ current, onSave, onClose }: ConsentModalP
         <div className="cmp-modal__footer">
           <button
             className="cmp-btn cmp-btn--save"
-            onClick={() => onSave({ analytics, ads })}
+            onClick={() => onSave({ analytics, ads: false })}
             aria-label="Salvar preferências de cookies"
           >
             Salvar preferências
           </button>
+
+          <div className="cmp-modal__quick-actions">
+            <button
+              className="cmp-btn cmp-btn--reject"
+              onClick={onRejectAll}
+              aria-label="Rejeitar cookies analíticos"
+            >
+              Rejeitar análise
+            </button>
+            <button
+              className="cmp-btn cmp-btn--accept"
+              onClick={onAcceptAll}
+              aria-label="Aceitar cookies analíticos"
+            >
+              Aceitar análise
+            </button>
+          </div>
+
+          <div className="cmp-modal__links">
+            <a href="/politica-de-privacidade">Aviso de Privacidade</a>
+            <a href="/politica-de-cookies">Política de Cookies</a>
+          </div>
         </div>
       </div>
     </div>

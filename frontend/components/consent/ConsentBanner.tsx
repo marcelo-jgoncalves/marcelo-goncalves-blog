@@ -15,34 +15,36 @@ export default function ConsentBanner({ onAcceptAll, onRejectAll, onCustomize }:
       aria-live="polite"
     >
       <div className="cmp-banner__inner">
-        <p className="cmp-banner__text">
-          Utilizamos cookies para melhorar sua experiência e, futuramente, exibir anúncios
-          relevantes. Você pode aceitar todos, rejeitar os não essenciais ou personalizar suas
-          preferências. Saiba mais em nossa{' '}
-          <a href="/politica-de-cookies">Política de Cookies</a>.
-        </p>
+        <div className="cmp-banner__copy">
+          <p className="cmp-banner__title">Sua privacidade importa</p>
+          <p className="cmp-banner__text">
+            Utilizamos recursos necessários para o funcionamento do site e, com sua autorização,
+            cookies do Google Analytics para entender como nossos conteúdos são utilizados e
+            melhorar a experiência de navegação.
+          </p>
+        </div>
 
         <div className="cmp-banner__actions">
           <button
             className="cmp-btn cmp-btn--customize"
             onClick={onCustomize}
-            aria-label="Personalizar preferências de cookies"
+            aria-label="Ver detalhes das preferências de cookies"
           >
-            Personalizar
+            Ver detalhes
           </button>
           <button
             className="cmp-btn cmp-btn--reject"
             onClick={onRejectAll}
-            aria-label="Rejeitar cookies não essenciais"
+            aria-label="Rejeitar cookies analíticos"
           >
-            Rejeitar
+            Rejeitar análise
           </button>
           <button
             className="cmp-btn cmp-btn--accept"
             onClick={onAcceptAll}
-            aria-label="Aceitar todos os cookies"
+            aria-label="Aceitar cookies analíticos"
           >
-            Aceitar Tudo
+            Aceitar análise
           </button>
         </div>
       </div>

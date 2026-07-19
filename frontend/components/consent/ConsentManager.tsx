@@ -45,7 +45,9 @@ export default function ConsentManager() {
   }, []);
 
   const acceptAll = () => {
-    const state = saveConsent({ analytics: true, ads: true });
+    // Só existe uma categoria opcional hoje (analítico) — ads fica reservado
+    // para quando o AdSense for configurado (ver CLAUDE.md §10, item #5).
+    const state = saveConsent({ analytics: true, ads: false });
     setConsent(state);
     applyConsent(state);
     setShowBanner(false);
@@ -83,6 +85,8 @@ export default function ConsentManager() {
         <ConsentModal
           current={consent}
           onSave={saveCustom}
+          onAcceptAll={acceptAll}
+          onRejectAll={rejectAll}
           onClose={() => {
             setShowModal(false);
             if (!consent) setShowBanner(true);
