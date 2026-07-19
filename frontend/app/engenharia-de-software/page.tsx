@@ -160,7 +160,7 @@ export default function EngenhariaDeSoftwarePage() {
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que fazemos</span>
-            <h2 className={styles.h2}>Software sob medida, do código à operação</h2>
+            <h2 className={styles.h2}>Software sob medida para aumentar a eficiência do seu negócio</h2>
             <p className={styles.sectionDesc}>Seis frentes que cobrem da concepção à evolução contínua do seu sistema.</p>
           </div>
           <div className={styles.cardGrid}>
@@ -229,7 +229,7 @@ export default function EngenhariaDeSoftwarePage() {
 
           <div className={styles.diferenciais} data-audit="esw-diferenciais">
             <div className={styles.diferenciaisHead}>
-              <h3 className={styles.h2}>Consistência do código à operação</h3>
+              <h3 className={styles.h2}>Boas práticas em todo o ciclo de desenvolvimento</h3>
             </div>
             <div className={styles.diferenciaisGrid}>
               {DIFERENCIAIS.map((item) => (
