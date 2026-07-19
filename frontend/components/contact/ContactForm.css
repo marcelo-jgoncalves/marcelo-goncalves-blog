@@ -94,6 +94,22 @@
   border-radius: 11px;
 }
 
+.contact-privacy-note {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  line-height: 1.6;
+  margin-top: var(--sp-4);
+}
+
+.contact-privacy-note a {
+  color: var(--petrol);
+  text-decoration: underline;
+}
+
+.contact-privacy-note a:hover {
+  color: var(--petrol-deep);
+}
+
 .contact-form-footer {
   display: flex;
   align-items: center;

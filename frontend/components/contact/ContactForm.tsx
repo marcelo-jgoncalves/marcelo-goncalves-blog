@@ -169,6 +169,11 @@ export default function ContactForm() {
         </div>
       )}
 
+      <p className="contact-privacy-note">
+        Utilizaremos seus dados para analisar sua solicitação e entrar em contato. Saiba mais em nosso{' '}
+        <a href="/politica-de-privacidade">Aviso de Privacidade</a>.
+      </p>
+
       <div className="contact-form-footer">
         <span className="contact-required-note">* campos obrigatórios</span>
         <button type="submit" className="btn" disabled={enviando}>
