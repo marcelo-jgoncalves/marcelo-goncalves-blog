@@ -46,10 +46,10 @@ const STEPS = [
 // Mesmos 4 pilares de frontend/app/page.tsx (PILLARS) — mantidos em sincronia
 // manualmente (não há módulo compartilhado ainda). Ver docs/analise-funil-ctas-servicos.md.
 const AREAS = [
-  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', Icon: IconCycle, href: '/engenharia-de-software' },
+  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', Icon: IconCycle, href: '/software' },
   { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', Icon: IconChip, href: '/inteligencia-artificial' },
-  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', Icon: IconCloud, href: '/cloud-devops' },
-  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', Icon: IconBolt, href: '/integracao-automacao' },
+  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', Icon: IconCloud, href: '/plataforma' },
+  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', Icon: IconBolt, href: '/automacao' },
 ];
 
 const FAQ_ITEMS = [

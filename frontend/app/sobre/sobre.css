@@ -238,7 +238,7 @@
 .sobre-modules-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--eyebrow-gap);
+  gap: var(--gap-grid);
 }
 
 /* Cards translúcidos sobre o fundo petrol — mesmo tratamento usado nas
@@ -317,22 +317,6 @@
 .sobre-behind-container { max-width: var(--wrap-max); margin: 0 auto; padding: 0 var(--wrap-pad-h); }
 
 .sobre-behind-head { max-width: 760px; margin: 0 auto var(--sp-9); text-align: center; }
-
-.sobre-behind-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 750;
-  letter-spacing: .19em;
-  text-transform: uppercase;
-  color: var(--clay);
-}
-
-.sobre-behind-label span:not(.txt) { width: 25px; height: 1px; background: currentColor; flex: none; }
 
 .sobre-behind-h2 {
   font-weight: 800;
@@ -430,53 +414,13 @@
 .sobre-behind-metric .v { display: block; font-weight: 800; font-size: var(--type-body-sm); letter-spacing: -.03em; color: var(--ink); }
 .sobre-behind-metric .l { display: block; font-size: var(--type-caption); line-height: 1.45; color: var(--slate); }
 
-.sobre-evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--eyebrow-gap); margin-top: var(--eyebrow-gap); }
-
-.sobre-evidence-card {
-  min-height: 205px;
-  padding: var(--sp-6);
-  background: var(--bc);
-  border: 1px solid var(--bb);
-  border-radius: 18px;
-  display: flex;
-  flex-direction: column;
-  transition: transform .22s, border-color .22s;
-}
-
-.sobre-evidence-card:hover { transform: translateY(-3px); border-color: rgba(215, 97, 59, .36); }
-
-.sobre-ev-label {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 750;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--clay);
-  margin-bottom: var(--title-gap);
-}
-
-.sobre-ev-title { font-weight: 800; font-size: var(--type-body); line-height: 1.25; letter-spacing: -.025em; color: var(--ink); margin: 0 0 var(--sp-2); }
-.sobre-ev-text { font-size: var(--type-label); line-height: 1.65; color: var(--slate); margin: 0 0 auto; }
-
-.sobre-ev-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--eyebrow-gap); }
-
-.sobre-ev-tags span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 27px;
-  padding: var(--sp-1) var(--sp-2);
-  border-radius: 999px;
-  background: var(--bsoft);
-  color: var(--ink);
-  font-size: var(--type-caption);
-  font-weight: 650;
-}
+.sobre-evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-grid); margin-top: var(--eyebrow-gap); }
 
 @media (max-width: 860px) {
   .sobre-behind-container { padding: 0 var(--wrap-pad-h-mobile); }
   .sobre-behind-head { max-width: 100%; text-align: left; margin-bottom: var(--sp-7); }
-  .sobre-behind-label { justify-content: flex-start; }
-  .sobre-behind-label .sobre-behind-label-line-r { display: none; }
+  .sobre-behind-head .sec-ey--dual { justify-content: flex-start; }
+  .sobre-behind-head .sec-ey--dual::after { content: none; }
   .sobre-behind-card { grid-template-columns: 1fr; }
   .sobre-behind-photo { min-height: 430px; }
   .sobre-behind-content { padding: var(--sp-7) var(--sp-6) var(--sp-7); }
@@ -498,22 +442,6 @@
 .sobre-beliefs-container { position: relative; z-index: 1; max-width: var(--wrap-max); margin: 0 auto; }
 
 .sobre-beliefs-head { max-width: 950px; margin: 0 auto; text-align: center; }
-
-.sobre-beliefs-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-6);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 750;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--clay);
-}
-
-.sobre-beliefs-label span:first-child { width: 28px; height: 1px; background: currentColor; flex: none; }
-.sobre-beliefs-label-line-r { width: 28px; height: 1px; background: currentColor; flex: none; }
 
 .sobre-beliefs-h2 {
   max-width: 930px;
@@ -538,7 +466,7 @@
 .sobre-beliefs-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--eyebrow-gap);
+  gap: var(--gap-grid);
   margin-top: var(--sp-10);
   padding-top: var(--gap-loose);
   border-top: 1px solid var(--line);
@@ -563,8 +491,8 @@
 @media (max-width: 860px) {
   .sobre-beliefs { padding: var(--sp-9) var(--wrap-pad-h-mobile); }
   .sobre-beliefs-head { max-width: 100%; text-align: left; }
-  .sobre-beliefs-label { justify-content: flex-start; }
-  .sobre-beliefs-label-line-r { display: none; }
+  .sobre-beliefs-head .sec-ey--dual { justify-content: flex-start; }
+  .sobre-beliefs-head .sec-ey--dual::after { content: none; }
   .sobre-beliefs-h2 { text-align: left; margin: 0; }
   .sobre-beliefs-desc { margin: var(--sp-6) 0 0; text-align: left; }
   .sobre-beliefs-grid { grid-template-columns: 1fr; gap: 0; margin-top: var(--sp-9); }

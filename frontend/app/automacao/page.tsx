@@ -1,4 +1,4 @@
-/* frontend/app/integracao-automacao/page.tsx
+/* frontend/app/automacao/page.tsx
    Landing page de pilar — specs/ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md */
 
 import type { Metadata } from 'next';
@@ -23,9 +23,9 @@ import {
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
-const TITLE = `Integração & Automação | ${SITE_NAME}`;
+const TITLE = `Automação | ${SITE_NAME}`;
 const DESCRIPTION = 'Conectamos sistemas e automatizamos processos para eliminar retrabalho, acelerar operações e garantir que as informações fluam de forma confiável entre toda a empresa.';
-const PAGE_URL = `${SITE_URL}/integracao-automacao`;
+const PAGE_URL = `${SITE_URL}/automacao`;
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -52,7 +52,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Integração & Automação | ${AUTHOR_NAME}`,
+  name: `Automação | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -64,7 +64,7 @@ const jsonLd = {
   serviceType: 'Systems Integration Consulting',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Serviços de Integração & Automação',
+    name: 'Serviços de Automação',
     itemListElement: [
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Integração entre Sistemas', description: 'Conectamos aplicações corporativas para que informações sejam compartilhadas automaticamente entre diferentes plataformas, eliminando atividades manuais e reduzindo erros.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automação de Processos', description: 'Transformamos atividades repetitivas em fluxos automatizados que executam tarefas de forma consistente e rastreável.' } },
@@ -162,8 +162,8 @@ export default function IntegracaoAutomacaoPage() {
         singleColumn
         className={styles.iaHero}
         dataAudit="ia2-hero"
-        eyebrow="Pilar · Integração & Automação"
-        title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação <em>mais inteligente</em>.</>}
+        eyebrow="Pilar · Automação"
+        title={<>Conectamos sistemas e eliminamos retrabalho para tornar sua operação <em>mais eficiente</em>.</>}
       >
         <p className={styles.heroParagraph3}>
           Desenvolvemos soluções que integram plataformas e automatizam fluxos de trabalho para que as informações circulem de forma segura, rápida e confiável, permitindo que sua equipe concentre esforços no que realmente importa.
@@ -231,7 +231,7 @@ export default function IntegracaoAutomacaoPage() {
         <div className={styles.especialidadesWrap}>
           <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Especialidades</span>
-            <h2 className={styles.h2}>Onde temos profundidade real</h2>
+            <h2 className={styles.h2}>Onde fazemos a diferença</h2>
             <p className={styles.sectionDesc}>Oito frentes que sustentam cada projeto de integração, da arquitetura à operação contínua.</p>
           </div>
           <div className={styles.especialidadesList}>
@@ -285,21 +285,20 @@ export default function IntegracaoAutomacaoPage() {
         <CtaAssessoria
           id="contato-final"
           eyebrow="Vamos começar"
-          title={<>Vamos conversar sobre a sua <em>operação</em>.</>}
-          description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso, só clareza sobre como podemos conectar seus sistemas e eliminar retrabalho."
+          title={<>Vamos conversar sobre <em>sua operação</em>.</>}
+          description="Agende uma chamada inicial de 60 minutos e sem custo e sem compromisso para discutirmos como podemos conectar seus sistemas e eliminar retrabalho."
           points={[
             <span key="p1">Diagnóstico objetivo da sua <b>operação atual</b></span>,
             <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
           ]}
           cardTagline="Disponível para novos projetos"
-          cardTitle="Diagnóstico inicial gratuito"
-          cardSubtitle="Conte o desafio e retornamos com um plano objetivo."
+          cardTitle="Agende um diagnóstico inicial gratuito"
           cardBody={
             <div className="cta-adv-meta">
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">30 min · gratuita</span>
+                <span className="cta-adv-mv clay">60 min · gratuita</span>
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Formato</span>
@@ -307,7 +306,7 @@ export default function IntegracaoAutomacaoPage() {
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">até 24h</span>
+                <span className="cta-adv-mv">max. 2h</span>
               </div>
             </div>
           }

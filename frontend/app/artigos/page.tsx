@@ -102,39 +102,12 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
 
       {/* HERO */}
       <PageHero
+        singleColumn
         className="art-hero"
         dataAudit="art-hero"
         eyebrow="Arquivo · Todos os artigos"
-        title="Artigos, bastidores e engenharia aplicada"
-        subtitle="Um acervo de aprendizados reais sobre cloud, automação, IA e operações. Do problema à solução."
-        right={feature ? (
-          <article className="art-hf-card" data-audit="art-hero-feature">
-            <div className="art-hf-cover">
-              {feature.imagem_destaque_url && (
-                <ResponsiveImage
-                  src={feature.imagem_destaque_url}
-                  alt={feature.imagem_destaque_alt_text || feature.titulo}
-                  fill
-                  priority
-                  lqip={feature.imagem_lqip_base64}
-                />
-              )}
-              <span className="art-hf-badge">Em destaque</span>
-              <span className="art-hf-cover-tag">{categoryName(feature)}</span>
-            </div>
-            <div className="art-hf-body">
-              <h2 className="art-hf-title">{feature.titulo}</h2>
-              {feature.resumo && <p className="art-hf-excerpt">{feature.resumo}</p>}
-              <div className="art-hf-foot">
-                <div className="art-hf-meta">
-                  <span>{formatDateShort(feature.data_publicacao)}</span>
-                  <span>{feature.tempo_leitura_min || 5} min</span>
-                </div>
-                <Link className="art-hf-read" href={`/post/${feature.slug}`}><LerArtigo /></Link>
-              </div>
-            </div>
-          </article>
-        ) : undefined}
+        title="Engenharia aplicada, aprendizados reais e bastidores de projetos em produção"
+        subtitle="Conteúdos sobre cloud, automação, IA e operações, construídos a partir de desafios reais, decisões técnicas e soluções colocadas em prática."
       >
         <form className="art-search" action="/busca" method="get" role="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
@@ -210,10 +183,10 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       )}
 
       {/* GRADE PRINCIPAL — 1ª metade */}
-      <section className="wrap art-section after-sticky">
-        <div className="sec-head-row">
+      <section className="wrap art-section">
+        <div className="sec-head-row sec-head-row--center">
           <div className="left">
-            <div className="sec-ey">O arquivo</div>
+            <div className="sec-ey sec-ey--dual">O arquivo</div>
             <h2 className="sec-t" id="art-grid-title">Todos os artigos</h2>
           </div>
         </div>
@@ -229,61 +202,16 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
       <section className="svc-makingof">
         <div className="svc-makingof-in">
           <div className="svc-mo-text">
-            <div className="svc-mo-ey">Prova viva</div>
+            <div className="sec-ey sec-ey--dual">Prova viva</div>
             <h2>Quer saber como esta plataforma foi construída? Veja o <em>making of</em>.</h2>
-            <p>Da infraestrutura serverless ao frontend Next.js, tudo documentado desde o primeiro commit.</p>
-          </div>
-          <Link className="svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot; <span className="svc-arrow">→</span></Link>
-          <div className="svc-mo-right">
-            <div className="proof-card">
-              <div className="proof-label"><span className="dot"></span>Construído em público</div>
-              <div className="proof-body">
-                <div className="proof-stack">
-                  <div className="proof-item">
-                    <span className="pi-ic">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8z" /></svg>
-                    </span>
-                    <span className="pi-txt">
-                      <span className="pi-t">Backend 100% serverless</span>
-                      <span className="pi-d">Lambda · API Gateway · DynamoDB</span>
-                    </span>
-                  </div>
-                  <div className="proof-item">
-                    <span className="pi-ic">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" /></svg>
-                    </span>
-                    <span className="pi-txt">
-                      <span className="pi-t">Deploy e infra por código</span>
-                      <span className="pi-d">GitHub Actions · Terraform</span>
-                    </span>
-                  </div>
-                  <div className="proof-item">
-                    <span className="pi-ic">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16" /><path d="M7 16V9M11.5 16V5M16 16v-4" /></svg>
-                    </span>
-                    <span className="pi-txt">
-                      <span className="pi-t">Observabilidade de ponta a ponta</span>
-                      <span className="pi-d">X-Ray · CloudWatch · Logs estruturados</span>
-                    </span>
-                  </div>
-                  <div className="proof-item">
-                    <span className="pi-ic">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.4-.7 2.6-1.8 3.3L16 21H8l1.8-11.7A4 4 0 0 1 8 6a4 4 0 0 1 4-4z" /><path d="M9 21h6" /></svg>
-                    </span>
-                    <span className="pi-txt">
-                      <span className="pi-t">IA como copiloto</span>
-                      <span className="pi-d">Claude · Cursor · Automações</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="svc-mo-sub">Da infraestrutura serverless ao frontend Next.js, tudo documentado desde o primeiro commit.</p>
+            <Link className="btn svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot;</Link>
           </div>
         </div>
       </section>
 
       {/* GRADE PRINCIPAL — 2ª metade */}
-      <section className="wrap art-section after-sticky art-section-end">
+      <section className="wrap art-section art-section--paginated">
         {grid2.length > 0 && (
           <div className="posts-grid art-grid" id="art-grid2" data-audit="art-grid2">
             {grid2.map((post) => (
@@ -305,6 +233,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
             nextToken={nextPageToken}
             currentPageToken={nextToken}
             prevTokens={prevTokens}
+            scrollToId="art-grid-title"
           />
         </div>
       </section>

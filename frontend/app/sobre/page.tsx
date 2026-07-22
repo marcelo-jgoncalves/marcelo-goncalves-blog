@@ -2,7 +2,7 @@
 
 import type { Metadata } from 'next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBullseye, faFilter, faCubes, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faBullseye, faFilter, faCubes, faArrowTrendUp, faGlobe, faCertificate, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
@@ -10,6 +10,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import IconTile from '@/components/ui/IconTile';
+import FeatureCard from '@/components/ui/FeatureCard';
 import './sobre.css';
 
 export const revalidate = 3600;
@@ -42,9 +43,9 @@ const METRICS = [
 ];
 
 const EVIDENCE_CARDS = [
-  { label: 'Experiência internacional', title: 'Contextos complexos e distribuídos', text: 'Experiência em projetos corporativos, equipes internacionais e ambientes que exigem confiabilidade, segurança e clareza técnica.', tags: ['Enterprise', 'Times globais', 'Ambientes críticos'] },
-  { label: 'Certificações principais', title: 'Conhecimento validado na prática', text: 'Certificações estratégicas em arquitetura cloud, operação, infraestrutura como código e observabilidade.', tags: ['AWS', 'Terraform', 'Observabilidade'] },
-  { label: 'Especialidades', title: 'Competências que trabalham juntas', text: 'Uma atuação integrada, conectando estratégia, arquitetura, implementação, automação e evolução contínua.', tags: ['Cloud e arquitetura', 'Software', 'Automação', 'IA e integrações'] },
+  { icon: faGlobe, kicker: 'Experiência internacional', title: 'Contextos complexos e distribuídos', text: 'Experiência em projetos corporativos, equipes internacionais e ambientes que exigem confiabilidade, segurança e clareza técnica.', tags: ['Enterprise', 'Times globais', 'Ambientes críticos'] },
+  { icon: faCertificate, kicker: 'Certificações principais', title: 'Conhecimento validado na prática', text: 'Certificações estratégicas em arquitetura cloud, operação, infraestrutura como código e observabilidade.', tags: ['AWS', 'Terraform', 'Observabilidade'] },
+  { icon: faLayerGroup, kicker: 'Especialidades', title: 'Competências que trabalham juntas', text: 'Uma atuação integrada, conectando estratégia, arquitetura, implementação, automação e evolução contínua.', tags: ['Cloud e arquitetura', 'Software', 'Automação', 'IA e integrações'] },
 ];
 
 const BELIEFS = [
@@ -201,7 +202,7 @@ export default async function SobrePage() {
       <section className="sobre-behind" id="lideranca" aria-labelledby="behind-title">
         <div className="sobre-behind-container">
           <header className="sobre-behind-head">
-            <div className="sobre-behind-label"><span /><span className="txt">O que está por trás</span><span /></div>
+            <div className="sec-ey sec-ey--dual">O que está por trás</div>
             <h2 id="behind-title" className="sobre-behind-h2">Engenharia conduzida por quem constrói todos os dias.</h2>
           </header>
 
@@ -239,14 +240,14 @@ export default async function SobrePage() {
 
           <div className="sobre-evidence-grid" data-audit="sobre-evidence-grid">
             {EVIDENCE_CARDS.map((c) => (
-              <div className="sobre-evidence-card" key={c.label}>
-                <span className="sobre-ev-label">{c.label}</span>
-                <h3 className="sobre-ev-title">{c.title}</h3>
-                <p className="sobre-ev-text">{c.text}</p>
-                <div className="sobre-ev-tags">
-                  {c.tags.map((tag) => <span key={tag}>{tag}</span>)}
-                </div>
-              </div>
+              <FeatureCard
+                key={c.kicker}
+                icon={<FontAwesomeIcon icon={c.icon} />}
+                kicker={c.kicker}
+                title={c.title}
+                text={c.text}
+                tags={c.tags}
+              />
             ))}
           </div>
 
@@ -257,7 +258,7 @@ export default async function SobrePage() {
       <section className="sobre-beliefs" aria-labelledby="belief-title">
         <div className="sobre-beliefs-container">
           <header className="sobre-beliefs-head">
-            <div className="sobre-beliefs-label"><span />No que acreditamos<span className="sobre-beliefs-label-line-r" /></div>
+            <div className="sec-ey sec-ey--dual">No que acreditamos</div>
             <h2 id="belief-title" className="sobre-beliefs-h2">Tecnologia não existe para impressionar. Existe para tornar empresas mais eficientes.</h2>
             <p className="sobre-beliefs-desc">Acreditamos em uma engenharia clara, modular e preparada para acompanhar cada etapa do negócio. Tecnologia deve reduzir esforço, eliminar desperdícios e ampliar a capacidade das pessoas de realizar um trabalho melhor.</p>
           </header>

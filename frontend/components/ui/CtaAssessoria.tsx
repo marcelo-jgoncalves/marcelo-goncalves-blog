@@ -16,10 +16,10 @@ const DEFAULT_POINTS: ReactNode[] = [
 
 const DEFAULT_CARD_BODY = (
   <div className="cta-adv-svc">
-    <Link href="/engenharia-de-software">Engenharia de Software</Link>
+    <Link href="/software">Engenharia de Software</Link>
     <Link href="/inteligencia-artificial">Inteligência Artificial</Link>
-    <Link href="/integracao-automacao">Integração & Automação</Link>
-    <Link href="/cloud-devops">Cloud & DevOps</Link>
+    <Link href="/automacao">Integração & Automação</Link>
+    <Link href="/plataforma">Cloud & DevOps</Link>
   </div>
 );
 
@@ -31,7 +31,6 @@ interface CtaAssessoriaProps {
   points?: ReactNode[];
   cardTagline?: string;
   cardTitle?: string;
-  cardSubtitle?: string;
   cardBody?: ReactNode;
   ctaHref?: string;
   ctaLabel?: string;
@@ -47,7 +46,6 @@ export default function CtaAssessoria({
   points = DEFAULT_POINTS,
   cardTagline = 'Disponível para novos projetos',
   cardTitle = 'Conte-nos seu desafio. Nós ajudamos a encontrar a melhor solução.',
-  cardSubtitle = 'Desenvolvimento, IA, automação, infraestrutura e mais. Veja como podemos ajudar.',
   cardBody = DEFAULT_CARD_BODY,
   ctaHref = '/#servicos',
   ctaLabel = 'Explorar os serviços',
@@ -74,7 +72,6 @@ export default function CtaAssessoria({
           <div className="cta-adv-card" data-audit="cta-adv-card">
             <div className="cta-adv-tagline"><span className="dot" />{cardTagline}</div>
             <h3>{cardTitle}</h3>
-            <p className="cta-adv-sub">{cardSubtitle}</p>
             {cardBody}
             {ctaExternal || ctaHref.includes('#') ? (
               <a className="btn cta-adv-btn" href={ctaHref}>

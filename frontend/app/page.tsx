@@ -35,7 +35,7 @@ const PILLARS = [
   {
     kicker: 'Pilar · Software',
     title: 'Engenharia de Software',
-    description: 'Desenvolvemos aplicações web, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.',
+    description: 'Desenvolvemos aplicações, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.',
     bullets: [
       <><strong>Sistemas sob medida</strong> para atender necessidades específicas</>,
       <><strong>Arquiteturas modernas</strong> preparadas para crescer com sua empresa</>,
@@ -44,7 +44,7 @@ const PILLARS = [
     tags: ['Aplicações', 'APIs', 'Arquitetura'],
     Icon: IconCycle,
     wide: true,
-    href: '/engenharia-de-software',
+    href: '/software',
   },
   {
     kicker: 'Pilar · Inteligência',
@@ -72,7 +72,7 @@ const PILLARS = [
     tags: ['Integrações', 'Automação', 'Produtividade'],
     Icon: IconBolt,
     wide: true,
-    href: '/integracao-automacao',
+    href: '/automacao',
   },
   {
     kicker: 'Pilar · Plataforma',
@@ -86,7 +86,7 @@ const PILLARS = [
     tags: ['AWS', 'DevOps', 'Infraestrutura'],
     Icon: IconCloud,
     wide: true,
-    href: '/cloud-devops',
+    href: '/plataforma',
   },
 ];
 

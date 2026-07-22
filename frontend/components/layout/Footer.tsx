@@ -7,10 +7,10 @@ import ConsentTrigger from '@/components/consent/ConsentTrigger';
 // Os 4 pilares (mesmas landing pages de frontend/app/<slug>/page.tsx) — não são mais
 // categorias de blog, ver ESPECIFICACAO-FOOTER.md (atualização 2026-07-12).
 const ESPECIALIDADES_LINKS = [
-  { name: 'Engenharia de Software', href: '/engenharia-de-software' },
+  { name: 'Engenharia de Software', href: '/software' },
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
-  { name: 'Integração & Automação', href: '/integracao-automacao' },
-  { name: 'Cloud & DevOps', href: '/cloud-devops' },
+  { name: 'Integração & Automação', href: '/automacao' },
+  { name: 'Cloud & DevOps', href: '/plataforma' },
 ];
 
 // Mesma ordem do nav principal (HeaderNav.tsx): Home, Serviços, Contato, Sobre, Blog, O Projeto.

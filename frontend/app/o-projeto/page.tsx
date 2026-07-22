@@ -13,6 +13,10 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
+import IconTile from '@/components/ui/IconTile';
+import { IconCICD } from '@/components/ui/InstitutionalIcons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faBrain, faGear } from '@fortawesome/free-solid-svg-icons';
 import './o-projeto.css';
 
 const DESCRIPTION = 'Acompanhe a jornada, os desafios técnicos, custos e aprendizados de construir um blog de alta performance do zero usando IA, AWS e OpenNext.';
@@ -61,47 +65,22 @@ const PRINCIPLES = [
   {
     t: 'Transparência radical',
     d: 'Custos, erros e decisões erradas são tão importantes quanto os acertos.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M2 12s3.64-7 10-7 10 7 10 7-3.64 7-10 7-10-7-10-7Z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-    ),
+    icon: <FontAwesomeIcon icon={faEye} />,
   },
   {
     t: 'IA como copiloto real',
     d: 'Não como hype, mas como ferramenta com limitações documentadas.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-        <rect x="9" y="9" width="6" height="6" />
-        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
-      </svg>
-    ),
+    icon: <FontAwesomeIcon icon={faBrain} />,
   },
   {
     t: 'Engenharia em produção',
     d: 'Arquitetura que precisa funcionar de verdade, não só em demos.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-        <line x1="6" y1="6" x2="6.01" y2="6" />
-        <line x1="6" y1="18" x2="6.01" y2="18" />
-      </svg>
-    ),
+    icon: <FontAwesomeIcon icon={faGear} />,
   },
   {
     t: 'Sem pular etapas',
     d: 'Do primeiro commit ao primeiro real de receita, tudo documentado.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="6" y1="3" x2="6" y2="15" />
-        <circle cx="18" cy="6" r="3" />
-        <circle cx="6" cy="18" r="3" />
-        <path d="M18 9a9 9 0 0 1-9 9" />
-      </svg>
-    ),
+    icon: <IconCICD />,
   },
 ];
 
@@ -151,7 +130,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         className="op-hero"
         dataAudit="op-hero"
         eyebrow="O Projeto · Build in Public"
-        title={<>Mais que um blog. Uma <em>plataforma editorial</em> completa, automatizada e construída para escalar com baixo custo.</>}
+        title={<>Mais que um blog. Uma <em>plataforma editorial</em> completa e construída para escalar com baixo custo.</>}
         subtitle="Cada decisão de arquitetura, cada erro, cada custo e cada automação documentados em tempo real. Um registro honesto de como construir uma plataforma com cloud, IA e engenharia aplicada."
       >
         <div className="op-hero-actions">
@@ -172,7 +151,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           <div className="op-right">
             {PRINCIPLES.map((p, i) => (
               <div className="op-principle" key={p.t} data-audit={i === 0 ? 'op-principle' : undefined}>
-                <div className="op-tile">{p.icon}</div>
+                <IconTile icon={p.icon} variant="petrol" />
                 <div className="op-txt">
                   <div className="op-t">{p.t}</div>
                   <div className="op-d">{p.d}</div>
@@ -184,14 +163,11 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
         {/* TIMELINE DE POSTS */}
         <section className="op-section" id="timeline">
-          <div className="op-sec-header" data-audit="op-sec-header">
-            <div>
-              <div className="op-sec-eyebrow">A jornada</div>
-              <h2 className="op-sec-title">Tudo que foi documentado</h2>
-              <p className="op-sec-desc">Em ordem cronológica: cada post é um registro real de uma decisão, erro ou aprendizado.</p>
-            </div>
-            <div>
-              <div className="op-count"><strong>{totalCount}</strong> posts publicados</div>
+          <div className="sec-head-row sec-head-row--center" data-audit="op-sec-header">
+            <div className="left">
+              <div className="sec-ey sec-ey--dual">A jornada</div>
+              <h2 className="sec-t">Tudo que foi documentado</h2>
+              <p className="sec-desc">Em ordem cronológica: cada post é um registro real de uma decisão, erro ou aprendizado.</p>
             </div>
           </div>
 
@@ -256,11 +232,11 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
       {/* PRÓXIMAS ETAPAS */}
       <section className="op-section op-section--surface" id="roadmap">
         <div className="op-wrap">
-          <div className="op-sec-header">
-            <div>
-              <div className="op-sec-eyebrow">O que vem por aí</div>
-              <h2 className="op-sec-title">Próximas etapas</h2>
-              <p className="op-sec-desc">Visão de alto nível do que está sendo construído agora e o que está planejado para os próximos meses.</p>
+          <div className="sec-head-row sec-head-row--center">
+            <div className="left">
+              <div className="sec-ey sec-ey--dual">O que vem por aí</div>
+              <h2 className="sec-t">Próximas etapas</h2>
+              <p className="sec-desc">Visão de alto nível do que está sendo construído agora e o que está planejado para os próximos meses.</p>
             </div>
           </div>
 

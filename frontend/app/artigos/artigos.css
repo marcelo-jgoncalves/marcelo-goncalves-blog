@@ -15,12 +15,10 @@
    HERO (escuro)
    ========================================================================== */
 .art-hero {
-  --ph-cols:    1.08fr .92fr;
   /* padding-bottom 76px é valor customizado (não cai em nenhum --sp-*)
      — mantido como está para não alterar a proporção visual do hero;
      documentado aqui para não parecer um leak não auditado. */
-  --ph-pad:     88px 40px 76px;
-  --ph-sub-max: 500px;
+  --ph-pad: 88px 40px 76px;
 }
 
 .art-hero .page-hero-in {
@@ -35,7 +33,6 @@
   pointer-events: none;
   opacity: .55;
   background:
-    radial-gradient(52% 80% at 100% 0%, rgba(201, 96, 60, .3), transparent 55%),
     radial-gradient(42% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
     linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
@@ -129,12 +126,6 @@
   background: rgba(255, 255, 255, .18);
 }
 
-/* ── hero · CTA O Projeto ── */
-.art-hero .page-hero-right {
-  display: flex;
-  align-items: stretch;
-}
-
 .art-proj-card {
   position: relative;
   flex: 1;
@@ -167,7 +158,6 @@
   pointer-events: none;
   opacity: .5;
   background:
-    radial-gradient(62% 70% at 88% 8%, rgba(201, 96, 60, .34), transparent 58%),
     linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 48px,
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 100%;
   -webkit-mask-image: radial-gradient(ellipse at 78% 14%, #000 30%, transparent 82%);
@@ -300,130 +290,6 @@
   font-family: var(--mono);
 }
 
-/* ── Hero — compact feature card (replaces proj card) ── */
-.art-hf-card {
-  background: rgba(255, 255, 255, .055);
-  border: 1px solid rgba(255, 255, 255, .13);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  box-shadow: 0 32px 64px -32px rgba(0, 0, 0, .5);
-  transition: transform .2s, box-shadow .2s;
-}
-
-@media (hover: hover) {
-  .art-hf-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 40px 72px -32px rgba(0, 0, 0, .65);
-  }
-}
-
-.art-hf-cover {
-  aspect-ratio: 16 / 9;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(145deg, rgba(201, 96, 60, .35) 0%, rgba(15, 76, 92, .6) 50%, rgba(8, 50, 61, .85) 100%);
-}
-
-.art-hf-badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 1;
-  background: rgba(255, 255, 255, .1);
-  color: rgba(255, 255, 255, .85);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, .2);
-}
-
-.art-hf-cover-tag {
-  position: absolute;
-  bottom: 14px;
-  left: 16px;
-  z-index: 1;
-  background: var(--clay);
-  color: #fff;
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 500;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: var(--sp-2) var(--sp-3);
-  border-radius: 999px;
-}
-
-.art-hf-body {
-  padding: var(--sp-6) var(--sp-7) var(--sp-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--title-gap);
-  flex: 1;
-}
-
-.art-hf-title {
-  font-weight: 800;
-  font-size: var(--type-body);
-  line-height: 1.22;
-  letter-spacing: -.025em;
-  color: #fff;
-}
-
-.art-hf-excerpt {
-  font-size: var(--type-label);
-  line-height: 1.65;
-  color: rgba(250, 248, 243, .62);
-  flex: 1;
-}
-
-.art-hf-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--sp-4);
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  margin-top: var(--sp-1);
-}
-
-.art-hf-meta {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .04em;
-  color: rgba(255, 255, 255, .45);
-  display: flex;
-  align-items: center;
-  gap: var(--title-gap);
-}
-
-.art-hf-meta span + span::before {
-  content: "·";
-  margin-right: var(--sp-1);
-  opacity: .5;
-}
-
-.art-hf-read {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  font-weight: 700;
-  font-size: var(--type-caption);
-  color: var(--clay);
-  font-family: var(--mono);
-  text-decoration: none;
-  transition: gap .2s, color .2s;
-}
-
-.art-hf-card:hover .art-hf-read {
-  gap: var(--sp-3);
-  color: var(--clay-soft);
-}
-
 /* ==========================================================================
    FILTROS (sticky)
    ========================================================================== */
@@ -536,21 +402,19 @@
 
 /* ==========================================================================
    SHELL — seções com padding próprio
+   Padding reduzido à metade (var(--sp-11)→var(--sp-9)) e simétrico,
+   mesmo padrão de #servicos/#abordagem/#insights em home.css.
    ========================================================================== */
 .art-section {
-  padding-block: var(--sp-11);
+  padding-block: var(--sp-9);
 }
 
-.art-section.after-sticky {
-  padding-top: var(--sp-10);
-}
-
-.art-section.after-sticky:not(.art-section-end) {
-  padding-bottom: 0;
-}
-
-.art-section-end {
-  padding-bottom: var(--sp-11);
+/* .op-pagination (Pagination.tsx, componente compartilhado) já tem
+   padding: var(--sp-7) 0 (32px) embutido — sem este desconto, o total
+   card→paginação e paginação→próxima seção somava 48+32=80px em vez dos
+   48px padrão. sp-4(16px) aqui + 32px do componente = 48px. */
+.art-section--paginated {
+  padding-bottom: var(--sp-4);
 }
 
 /* ==========================================================================
@@ -848,10 +712,12 @@
   letter-spacing: .04em;
 }
 
+/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
+   (mesmo desconto de .art-section--paginated acima). */
 .art-load-wrap {
   display: flex;
   justify-content: center;
-  margin-top: var(--sp-9);
+  margin-top: var(--sp-4);
 }
 
 /* ==========================================================================
@@ -1041,7 +907,6 @@
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(50% 70% at 100% 0%, rgba(201, 96, 60, .32), transparent 55%),
     radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
     linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
@@ -1326,254 +1191,83 @@
 /* ============================================================
    MAKING OF — O PROJETO (band intercalado)
    ============================================================ */
-.svc-arrow {
-  font-family: var(--mono);
+.svc-makingof {
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-block: 0;
 }
 
-.svc-makingof {
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+.svc-makingof::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .55;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
 }
 
 .svc-makingof-in {
+  position: relative;
+  z-index: 1;
   max-width: var(--wrap-max);
   margin: 0 auto;
-  padding: var(--sp-11) var(--wrap-pad-h);
-  display: grid;
-  grid-template-columns: 1.35fr 0.65fr;
-  grid-template-areas: "text right" "cta right";
-  column-gap: var(--sp-10);
-  row-gap: 0;
-  align-items: center;
+  padding: var(--sp-9) var(--wrap-pad-h);
+  display: flex;
+  justify-content: center;
 }
 
 .svc-mo-text {
-  grid-area: text;
   display: flex;
   flex-direction: column;
-}
-
-.svc-mo-ey {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--clay);
-  display: flex;
   align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--gap-loose);
+  max-width: 1080px;
+  text-align: center;
 }
 
-.svc-mo-ey::before {
-  content: "";
-  width: 30px;
-  height: 1px;
+.svc-mo-text .sec-ey--dual {
+  color: rgba(255, 255, 255, .72);
+}
+
+.svc-mo-text .sec-ey--dual::before,
+.svc-mo-text .sec-ey--dual::after {
   background: var(--clay);
 }
 
 .svc-mo-text h2 {
   font-weight: 800;
-  font-size: var(--type-h3);
+  font-size: clamp(1.85rem, 5.5vw + 1rem, var(--type-display-sm));
   letter-spacing: -.04em;
-  color: var(--ink);
-  line-height: 1.1;
+  color: #fff;
+  line-height: 1.04;
   text-wrap: balance;
   margin-bottom: var(--sp-4);
 }
 
 .svc-mo-text h2 em {
   font-style: italic;
-  color: var(--petrol);
+  color: var(--petrol-soft);
 }
 
-.svc-mo-text p {
-  font-size: var(--type-body-sm);
-  line-height: 1.7;
-  color: var(--slate);
-  max-width: 480px;
+.svc-mo-sub {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: rgba(255, 255, 255, .8);
+  line-height: 1.2;
   margin-bottom: var(--sp-7);
 }
 
 .svc-mo-cta {
-  grid-area: cta;
-  display: inline-flex;
-  align-items: center;
-  justify-self: center;
-  gap: var(--title-gap);
   width: fit-content;
-  font-weight: 600;
-  font-size: var(--type-label);
-  color: #fff;
-  background: var(--petrol);
-  padding: var(--eyebrow-gap) var(--sp-6);
-  border-radius: 12px;
-  text-decoration: none;
-  transition: background .2s, transform .15s;
-}
-
-.svc-mo-cta:hover {
-  background: var(--petrol-deep);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-.svc-mo-right {
-  grid-area: right;
-  position: relative;
-}
-
-/* ── Proof Card ── */
-.proof-card {
-  background: linear-gradient(145deg, #0F4C5C 0%, #08323D 100%);
-  border-radius: 18px;
-  padding: var(--sp-7) var(--sp-7);
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  box-shadow: 0 28px 56px -24px rgba(8, 50, 61, .65);
-}
-
-.proof-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(55% 75% at 102% 0%, rgba(201, 96, 60, .52), transparent 52%),
-    radial-gradient(40% 55% at 0% 105%, rgba(91, 139, 150, .28), transparent 62%),
-    linear-gradient(rgba(255, 255, 255, .028) 1px, transparent 1px) 0 0/100% 48px,
-    linear-gradient(90deg, rgba(255, 255, 255, .028) 1px, transparent 1px) 0 0/48px 100%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 78%);
-          mask-image: linear-gradient(to bottom, #000 35%, transparent 78%);
-}
-
-.proof-card::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(90deg, #C9603C 0%, rgba(201, 96, 60, .35) 55%, transparent 85%);
-  border-radius: 18px 18px 0 0;
-}
-
-.proof-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.proof-label {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .75);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--gap-grid);
-}
-
-.proof-label .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #3F6B47;
-  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
-  animation: proof-pulse 2.4s ease-in-out infinite;
-  flex: none;
-}
-
-@keyframes proof-pulse {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
-  50%       { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .proof-label .dot { animation: none; }
-}
-
-.proof-body {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-7);
-}
-
-.proof-stack {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--eyebrow-gap);
-}
-
-.proof-item {
-  display: flex;
-  align-items: center;
-  gap: var(--eyebrow-gap);
-}
-
-.proof-item .pi-ic {
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  background: #C9603C;
-  border: 1px solid rgba(201, 96, 60, .7);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.proof-item .pi-ic svg {
-  width: 20px;
-  height: 20px;
-}
-
-.proof-item .pi-txt {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.proof-item .pi-t {
-  font-weight: 700;
-  font-size: var(--type-label);
-  color: #fff;
-  letter-spacing: -.01em;
-}
-
-.proof-item .pi-d {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .04em;
-  color: rgba(201, 96, 60, .9);
-}
-
-
-@media (max-width: 1040px) {
-  .svc-makingof-in {
-    grid-template-columns: 1fr;
-    grid-template-areas: "text" "right" "cta";
-    row-gap: var(--sp-9);
-    column-gap: 0;
-  }
-
-  .svc-mo-cta {
-    background: transparent;
-    color: var(--petrol);
-    border: 1.5px solid rgba(15, 76, 92, .35);
-  }
-
-  .svc-mo-cta:hover {
-    background: var(--petrol);
-    color: #fff;
-    border-color: var(--petrol);
-  }
 }
 
 @media (max-width: 680px) {

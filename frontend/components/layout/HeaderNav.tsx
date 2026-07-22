@@ -18,9 +18,9 @@ const NAV_LINKS_AFTER = [
 // Landing pages de pilar (specs/ESPECIFICACAO-*.md) — as 4 já estão implementadas.
 // Ver project_engenharia_software_landing (memória).
 const SERVICE_LINKS = [
-  { name: 'Engenharia de Software', href: '/engenharia-de-software' },
-  { name: 'Cloud & DevOps', href: '/cloud-devops' },
-  { name: 'Integração & Automação', href: '/integracao-automacao' },
+  { name: 'Engenharia de Software', href: '/software' },
+  { name: 'Cloud & DevOps', href: '/plataforma' },
+  { name: 'Integração & Automação', href: '/automacao' },
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
 ] as const;
 

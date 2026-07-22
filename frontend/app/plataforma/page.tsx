@@ -1,4 +1,4 @@
-/* frontend/app/cloud-devops/page.tsx
+/* frontend/app/plataforma/page.tsx
    Landing page de pilar — specs/ESPECIFICACAO-CLOUD-DEVOPS.md */
 
 import type { Metadata } from 'next';
@@ -26,7 +26,7 @@ import styles from './page.module.css';
 
 const TITLE = `Cloud & DevOps | ${SITE_NAME}`;
 const DESCRIPTION = 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.';
-const PAGE_URL = `${SITE_URL}/cloud-devops`;
+const PAGE_URL = `${SITE_URL}/plataforma`;
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -133,7 +133,7 @@ export default function CloudDevOpsPage() {
         singleColumn
         className={styles.cdHero}
         dataAudit="cd-hero"
-        eyebrow="Pilar · Cloud & DevOps"
+        eyebrow="Pilar · Plataforma"
         title={<>Construímos plataformas em nuvem preparadas para <em>crescer</em>.</>}
         subtitle="Projetamos e operamos ambientes cloud modernos, seguros e escaláveis para acelerar entregas, reduzir a complexidade operacional e apoiar o crescimento do seu negócio."
       >
@@ -194,7 +194,7 @@ export default function CloudDevOpsPage() {
         <div className={styles.especialidadesWrap}>
           <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Especialidades</span>
-            <h2 className={styles.h2}>Onde temos profundidade real</h2>
+            <h2 className={styles.h2}>Onde fazemos a diferença</h2>
             <p className={styles.sectionDesc}>Dez frentes que sustentam cada projeto de nuvem, da arquitetura ao dia a dia operacional.</p>
           </div>
           <div className={styles.especialidadesList}>
@@ -245,21 +245,20 @@ export default function CloudDevOpsPage() {
         <CtaAssessoria
           id="contato-final"
           eyebrow="Vamos começar"
-          title={<>Vamos conversar sobre a sua <em>infraestrutura</em>.</>}
-          description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso, só clareza sobre como podemos preparar sua plataforma para crescer."
+          title={<>Vamos conversar sobre a sua <em>infraestrutura</em>?</>}
+          description="Agende uma chamada inicial de 60 minutos sem custo e sem compromisso para discutirmos como podemos cuidar dos seus ambientes."
           points={[
             <span key="p1">Diagnóstico objetivo da sua <b>infraestrutura</b> atual</span>,
             <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
           ]}
           cardTagline="Disponível para novos projetos"
           cardTitle="Diagnóstico inicial gratuito"
-          cardSubtitle="Conte o desafio e retornamos com um plano objetivo."
           cardBody={
             <div className="cta-adv-meta">
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">30 min · gratuita</span>
+                <span className="cta-adv-mv clay">60 min · gratuita</span>
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Formato</span>
@@ -267,7 +266,7 @@ export default function CloudDevOpsPage() {
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">até 24h</span>
+                <span className="cta-adv-mv">max. 2h</span>
               </div>
             </div>
           }

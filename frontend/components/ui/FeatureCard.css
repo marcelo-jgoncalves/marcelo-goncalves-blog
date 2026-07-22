@@ -24,6 +24,19 @@
   margin-bottom: var(--gap-grid);
 }
 
+/* Mesmo padrão de "kicker" mono/uppercase usado acima do título nos cards de
+   pilar da Home (.ih-pillar-kicker, home.css) — reaproveitado aqui como campo
+   opcional em vez de cada uso inventar seu próprio rótulo. */
+.feature-card-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--petrol);
+  margin-bottom: var(--sp-2);
+}
+
 .feature-card-title {
   letter-spacing: -.025em;
   color: var(--ink);

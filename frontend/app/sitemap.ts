@@ -20,9 +20,9 @@ const now = new Date();
 // do sitemap por estar órfão de navegação desde que o dropdown "Serviços" do nav
 // passou a linkar direto pra elas (docs/analise-funil-ctas-servicos.md, achado 4).
 const PILLAR_SLUGS = [
-  'engenharia-de-software',
-  'cloud-devops',
-  'integracao-automacao',
+  'software',
+  'plataforma',
+  'automacao',
   'inteligencia-artificial',
 ];
 

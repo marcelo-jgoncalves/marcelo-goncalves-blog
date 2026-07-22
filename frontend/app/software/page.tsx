@@ -1,4 +1,4 @@
-/* frontend/app/engenharia-de-software/page.tsx
+/* frontend/app/software/page.tsx
    Landing page de pilar — specs/ESPECIFICACAO-ENGENHARIA-SOFTWARE.md */
 
 import type { Metadata } from 'next';
@@ -30,7 +30,7 @@ import styles from './page.module.css';
 
 const TITLE = `Engenharia de Software | ${SITE_NAME}`;
 const DESCRIPTION = 'Desenvolvemos aplicações web, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.';
-const PAGE_URL = `${SITE_URL}/engenharia-de-software`;
+const PAGE_URL = `${SITE_URL}/software`;
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -144,7 +144,7 @@ export default function EngenhariaDeSoftwarePage() {
         singleColumn
         className={styles.esHero}
         dataAudit="esw-hero"
-        eyebrow="Pilar · Engenharia de Software"
+        eyebrow="Pilar · Software"
         title={<>Desenvolvemos software que <em>impulsiona</em> o seu negócio.</>}
         subtitle="Cada empresa possui desafios únicos. Por isso, desenvolvemos sistemas, aplicações e plataformas sob medida que automatizam processos, integram informações e apoiam o crescimento do seu negócio."
       >
@@ -160,7 +160,7 @@ export default function EngenhariaDeSoftwarePage() {
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que fazemos</span>
-            <h2 className={styles.h2}>Software sob medida para aumentar a eficiência do seu negócio</h2>
+            <h2 className={styles.h2}>Software sob medida<br />para aumentar a eficiência do seu negócio</h2>
             <p className={styles.sectionDesc}>Seis frentes que cobrem da concepção à evolução contínua do seu sistema.</p>
           </div>
           <div className={styles.cardGrid}>
@@ -229,7 +229,7 @@ export default function EngenhariaDeSoftwarePage() {
 
           <div className={styles.diferenciais} data-audit="esw-diferenciais">
             <div className={styles.diferenciaisHead}>
-              <h3 className={styles.h2}>Boas práticas em todo o ciclo de desenvolvimento</h3>
+              <h3 className={styles.h2}>Boas práticas<br />em todo o ciclo de desenvolvimento</h3>
             </div>
             <div className={styles.diferenciaisGrid}>
               {DIFERENCIAIS.map((item) => (
@@ -270,21 +270,20 @@ export default function EngenhariaDeSoftwarePage() {
         <CtaAssessoria
           id="contato-final"
           eyebrow="Vamos começar"
-          title={<>Vamos conversar sobre o seu <em>software</em>.</>}
-          description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso, só clareza sobre como podemos construir o software certo para o seu negócio."
+          title={<>Vamos conversar sobre <em>o seu software</em>?</>}
+          description="Agende uma chamada inicial de 60 minutos sem custo e sem compromisso para discutirmos sobre como podemos construir o software certo para o seu negócio."
           points={[
             <span key="p1">Diagnóstico objetivo do seu <b>sistema atual</b></span>,
             <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
           ]}
           cardTagline="Disponível para novos projetos"
-          cardTitle="Diagnóstico inicial gratuito"
-          cardSubtitle="Conte o desafio e retornamos com um plano objetivo."
+          cardTitle="Agende um diagnóstico inicial gratuito"
           cardBody={
             <div className="cta-adv-meta">
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">30 min · gratuita</span>
+                <span className="cta-adv-mv clay">60 min · gratuita</span>
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Formato</span>
@@ -292,7 +291,7 @@ export default function EngenhariaDeSoftwarePage() {
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">até 24h</span>
+                <span className="cta-adv-mv">max. 2h</span>
               </div>
             </div>
           }

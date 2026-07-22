@@ -418,9 +418,16 @@
   gap: var(--sp-10);
 }
 
+/* align-items:flex-start (não center): com align-items:center, sempre que a
+   coluna de texto ficasse mais alta que os 340px fixos da ilustração (casos
+   2 e 4, que têm métrica dupla e por isso texto mais alto), a ilustração
+   era centralizada no espaço sobrando e ficava visualmente distante das
+   pills/texto acima dela. Com flex-start os dois topos sempre alinham,
+   igual já acontecia nos casos 1 e 3 (onde a ilustração já era o elemento
+   mais alto da linha). */
 .ih-case {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--sp-10);
   flex-wrap: wrap;
 }

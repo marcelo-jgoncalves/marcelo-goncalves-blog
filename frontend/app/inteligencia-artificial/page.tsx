@@ -155,7 +155,7 @@ export default function InteligenciaArtificialPage() {
         singleColumn
         className={styles.aiHero}
         dataAudit="ai-hero"
-        eyebrow="Pilar · Inteligência Artificial"
+        eyebrow="Pilar · Inteligência"
         title={<>Transformamos inteligência artificial em <em>resultados</em> para o seu negócio.</>}
       >
         <p className={styles.heroParagraph2}>
@@ -272,20 +272,19 @@ export default function InteligenciaArtificialPage() {
           id="contato-final"
           eyebrow="Vamos começar"
           title={<>Vamos conversar sobre como aplicar IA no seu <em>negócio</em>.</>}
-          description="Agende uma chamada inicial de 30 minutos. Sem custo, sem compromisso, só clareza sobre como a inteligência artificial pode gerar valor real para sua empresa."
+          description="Agende uma chamada inicial de 60 minutos sem custo e sem compromisso para discutirmos como a inteligência artificial pode gerar valor real para sua empresa."
           points={[
             <span key="p1">Diagnóstico objetivo de onde a <b>IA gera mais valor</b></span>,
             <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta em até <b>24h</b>, 100% remoto</span>,
+            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
           ]}
           cardTagline="Disponível para novos projetos"
-          cardTitle="Diagnóstico inicial gratuito"
-          cardSubtitle="Conte o desafio e retornamos com um plano objetivo."
+          cardTitle="Agende um diagnóstico inicial gratuito"
           cardBody={
             <div className="cta-adv-meta">
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">30 min · gratuita</span>
+                <span className="cta-adv-mv clay">60 min · gratuita</span>
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Formato</span>
@@ -293,7 +292,7 @@ export default function InteligenciaArtificialPage() {
               </div>
               <div className="cta-adv-meta-row">
                 <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">até 24h</span>
+                <span className="cta-adv-mv">max. 2h</span>
               </div>
             </div>
           }

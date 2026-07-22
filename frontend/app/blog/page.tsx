@@ -83,7 +83,7 @@ export default async function Home() {
         right={
           <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
             <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
-            <h2>Acompanhe a construção do blog</h2>
+            <h2>Acompanhe a construção desta plataforma</h2>
             <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
             <div className="home-pp-stats">
               <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
