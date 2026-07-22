@@ -524,24 +524,24 @@
   height: 72%;
 }
 
-.ih-illustration--74 {
-  width: 74%;
-  height: 74%;
-}
-
-.ih-illustration--76 {
-  width: 76%;
-  height: 76%;
-}
-
 .ih-case-visual--alt {
   border-radius: 150px 28px 28px 150px;
 }
 
 @media (max-width: 640px) {
+  /* Gap entre cases e gap imagem→texto dentro do mesmo case (var(--sp-10)=64px
+     nos dois, herdado do layout lado a lado do desktop) empilhados no mobile
+     viravam dois vãos DIFERENTES ao redor da imagem (64px de um lado, outro
+     valor do outro) — padronizados no mesmo token (--sp-7=32px) pra todo
+     espaçamento ao redor de imagem nesta seção ficar igual. */
+  .ih-results .ih-cases {
+    gap: var(--sp-7);
+  }
+
   .ih-results .ih-case,
   .ih-results .ih-case--reverse {
     flex-direction: column;
+    gap: var(--sp-7);
   }
   .ih-results .ih-case-visual,
   .ih-results .ih-case-visual--alt {
@@ -550,13 +550,18 @@
     height: 170px;
     border-radius: 90px;
   }
-  .ih-results .ih-illustration,
-  .ih-results .ih-illustration--74,
-  .ih-results .ih-illustration--76 {
+  .ih-results .ih-illustration {
     width: 95%;
     height: 95%;
   }
   .ih-results .ih-case-text {
+    /* flex: 1 1 440px (base) usa esse 440px como largura preferida no layout
+       lado a lado do desktop — no mobile (coluna), o mesmo valor vira altura
+       MÍNIMA do bloco de texto, sobrando espaço vazio embaixo das tags quando
+       o conteúdo é mais curto que 440px (variava por case, já que cada um
+       tem uma quantidade de texto/tags diferente). flex-basis:auto deixa a
+       altura seguir o conteúdo real em vez desse valor herdado do desktop. */
+    flex: 1 1 auto;
     order: 2;
     width: 100%;
   }
