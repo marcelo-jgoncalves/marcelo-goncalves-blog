@@ -1,108 +1,14 @@
-/* frontend/app/busca/busca.css */
+/* frontend/app/busca/busca.css
+   Redesign 2026 (petrol/clay/ivory). Barra de busca vem do componente
+   compartilhado frontend/components/ui/SearchBar. */
 
-/* Tipografia do hero — layout via PageHero */
-.page-hero h1 {
-  font-size: var(--type-h1);
-  line-height: 1.2;
-  margin-bottom: var(--sp-7);
+.busca-section {
+  margin-block: 0;
+  padding-block: var(--sp-9);
 }
 
-.search-results-subtitle {
-  font-size: var(--type-lead);
-  color: #666;
-}
-
-.archive-search-bar {
+.busca-pag-wrap {
   display: flex;
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-  border: 1px solid var(--line);
-  background: white;
-}
-
-.search-input {
-  flex-grow: 1;
-  border: none;
-  padding: var(--gap-loose) var(--sp-6);
-  font-size: var(--type-lead);
-  color: var(--slate);
-  outline: none;
-  text-align: left;
-}
-
-.search-input:focus {
-  background-color: #fff;
-}
-
-.search-button {
-  border: none;
-  background-color: var(--petrol);
-  color: white;
-  padding: 0 var(--sp-7);
-  font-size: var(--type-lead);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.search-button:hover {
-  background-color: var(--petrol-deep);
-}
-
-@media (min-width: 768px) {
-  .search-hero h1 { font-size: var(--type-display-sm); }
-}
-
-/* ── Cenário B: nenhum resultado (layout de retenção) ── */
-.search-hero-404 {
-  padding: var(--sp-8) var(--sp-6);
-  text-align: center;
-  background: linear-gradient(180deg, rgba(250, 248, 243, 0) 0%, var(--ivory) 100%);
-}
-
-.search-icon-container {
-  /* Ícone decorativo (não é texto de escala tipográfica) — tamanho fixo do
-     glifo, mesma categoria dos numerais 404/decorativos do projeto. */
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- glifo decorativo, não segue a escala de texto */
-  font-size: 5rem;
-  color: var(--ink);
-  margin-bottom: var(--sp-5);
-  position: relative;
-  display: inline-block;
-}
-
-.search-icon-container .fa-robot {
-  text-shadow: 3px 3px 0px rgba(15, 76, 92, 0.2);
-}
-
-.search-icon-container .question-mark {
-  position: absolute;
-  top: -10px;
-  right: -15px;
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- glifo decorativo, não segue a escala de texto */
-  font-size: 3rem;
-  color: var(--petrol);
-  animation: search-question-float 2s ease-in-out infinite;
-}
-
-@keyframes search-question-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.search-no-results-title {
-  font-size: var(--type-h1);
-  margin-bottom: var(--sp-5);
-}
-
-.search-no-results-text {
-  color: var(--slate);
-  max-width: 600px;
-  margin: 0 auto var(--sp-9);
-  font-size: var(--type-body-sm);
+  margin-top: var(--sp-4);
 }

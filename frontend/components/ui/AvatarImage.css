@@ -1,0 +1,7 @@
+/* frontend/components/ui/AvatarImage.css */
+
+.avatar-fallback-icon {
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- ícone de fallback decorativo, fora da escala tipográfica de conteúdo */
+  font-size: 4rem;
+  color: #ccc;
+}

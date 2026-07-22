@@ -1,12 +1,9 @@
 import './busca.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { searchPosts, getPopularPosts } from '@/lib/api';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
-import AdSenseBanner from '@/components/ui/AdSenseBanner';
-import NewsletterCTA from '@/components/ui/NewsletterCTA';
 import PageHero from '@/components/ui/PageHero';
+import SearchBar from '@/components/ui/SearchBar';
 import { SITE_NAME } from '@/lib/config';
 
 // SEO: Não indexar resultados de busca interna
@@ -47,75 +44,69 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
 
   const hasResults = posts.length > 0;
 
+  const searchForm = <SearchBar defaultValue={q} />;
+
   return (
     <>
       {hasResults ? (
         // --- CENÁRIO A: Encontrou Resultados ---
         <>
-          <PageHero singleColumn>
-            <h1>
-              Resultados para: <span className="highlight">{q}</span>
-            </h1>
-            <p className="search-results-subtitle">
-              Encontramos estes artigos para sua pesquisa.
-            </p>
+          <PageHero
+            singleColumn
+            className="busca-hero"
+            dataAudit="busca-hero"
+            eyebrow="Resultados da busca"
+            title={<>Resultados para <em>&ldquo;{q}&rdquo;</em></>}
+            subtitle="Encontramos estes artigos para sua pesquisa."
+          >
+            {searchForm}
           </PageHero>
-          <div className="page-layout container">
-            <main>
-              <AdSenseBanner />
-              <div className="posts-grid">
-                {posts.map((post) => (
-                  <PostCard key={post.slug} post={post} />
-                ))}
-              </div>
-              <Pagination nextToken={nextPageToken} basePath="/busca" />
-            </main>
-          </div>
+          <section className="wrap busca-section" id="busca-resultados">
+            <div className="posts-grid">
+              {posts.map((post) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
+            </div>
+            <div className="busca-pag-wrap">
+              <Pagination
+                nextToken={nextPageToken}
+                basePath="/busca"
+                currentPageToken={nextToken}
+                scrollToId="busca-resultados"
+              />
+            </div>
+          </section>
         </>
       ) : (
         // --- CENÁRIO B: Nada Encontrado (Layout de Retenção) ---
         <>
-          <section className="search-hero-404">
-            <div className="container">
-              <div className="search-icon-container">
-                <i className="fa-solid fa-robot fa-bounce" style={{ animationDuration: '3s', animationIterationCount: '2' }}></i>
-                <i className="fa-solid fa-question question-mark"></i>
-              </div>
-              <h1 className="search-no-results-title">
-                Oops! Ainda não escrevi sobre &ldquo;<span className="highlight">{q}</span>&rdquo;.
-              </h1>
-              <p className="search-no-results-text">
-                Mas talvez este seja um ótimo tema para um futuro post. Que tal tentar um outro termo?
-              </p>
-              <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                <form className="archive-search-bar" action="/busca" method="get">
-                  <input type="text" name="q" className="search-input" placeholder="Tente buscar por 'AWS', 'RAG'..." defaultValue={q} aria-label="Buscar no blog" />
-                  <button type="submit" className="search-button" aria-label="Pesquisar">
-                    <FontAwesomeIcon icon={faSearch} />
-                  </button>
-                </form>
-              </div>
-            </div>
-          </section>
-          <div className="page-layout container">
-            <main>
-              <div className="section-header">
-                <h2>Ou comece pelos artigos mais lidos:</h2>
+          <PageHero
+            singleColumn
+            className="busca-hero"
+            dataAudit="busca-hero-empty"
+            eyebrow="Busca"
+            title={<>Ainda não escrevi sobre <em>&ldquo;{q}&rdquo;</em></>}
+            subtitle="Mas talvez este seja um ótimo tema para um futuro post. Que tal tentar um outro termo?"
+          >
+            {searchForm}
+          </PageHero>
+          {popularPosts.length > 0 && (
+            <section className="wrap busca-section">
+              <div className="sec-head-row sec-head-row--center">
+                <div className="left">
+                  <div className="sec-ey sec-ey--dual">Sugestões</div>
+                  <h2 className="sec-t">Comece pelos artigos mais lidos</h2>
+                </div>
               </div>
               <div className="posts-grid">
-                {popularPosts.length > 0 ? (
-                  popularPosts.slice(0, 3).map((post) => (
-                    <PostCard key={post.slug} post={post} />
-                  ))
-                ) : null}
+                {popularPosts.slice(0, 3).map((post) => (
+                  <PostCard key={post.slug} post={post} />
+                ))}
               </div>
-            </main>
-          </div>
+            </section>
+          )}
         </>
       )}
-
-      {/* Componente Reutilizável de Newsletter */}
-      <NewsletterCTA />
     </>
   );
 }

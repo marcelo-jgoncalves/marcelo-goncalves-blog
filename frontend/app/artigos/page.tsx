@@ -12,6 +12,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
+import SearchBar from '@/components/ui/SearchBar';
 import './artigos.css';
 
 const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software, quase 100% construído com IA.';
@@ -109,11 +110,7 @@ export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
         title="Engenharia aplicada, aprendizados reais e bastidores de projetos em produção"
         subtitle="Conteúdos sobre cloud, automação, IA e operações, construídos a partir de desafios reais, decisões técnicas e soluções colocadas em prática."
       >
-        <form className="art-search" action="/busca" method="get" role="search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
-          <input type="search" name="q" placeholder="Buscar por título, tema ou tecnologia…" aria-label="Buscar artigos" required />
-          <span className="art-kbd">⌘K</span>
-        </form>
+        <SearchBar ariaLabel="Buscar artigos" />
       </PageHero>
 
 

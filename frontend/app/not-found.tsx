@@ -1,9 +1,8 @@
 import './not-found.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { getPopularPosts } from '@/lib/api';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
-import NewsletterCTA from '@/components/ui/NewsletterCTA';
+import PageHero from '@/components/ui/PageHero';
+import SearchBar from '@/components/ui/SearchBar';
 
 // Metadados são automáticos no not-found, mas podemos definir o título via layout se necessário,
 // ou confiar no padrão. Como é um Server Component, fazemos o fetch aqui.
@@ -11,63 +10,36 @@ import NewsletterCTA from '@/components/ui/NewsletterCTA';
 export default async function NotFound() {
   // Busca populares para retenção (fallback seguro para array vazio)
   const popularData = await getPopularPosts().catch(() => ({ posts: [] }));
-  const popularPosts = popularData.posts || [];
+  const popularPosts: PostCardProps['post'][] = popularData.posts || [];
 
   return (
     <>
-      {/* 1. Hero de Erro */}
-      <section className="error-hero">
-        <div className="error-header-content">
-          <div className="error-404-text">404</div>
-          <h1>Página Não Encontrada</h1>
-          <p className="error-subtitle">
-            Ops! Parece que o link que você seguiu está quebrado ou a página que você procurava foi removida.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        singleColumn
+        className="error-hero"
+        dataAudit="error-hero"
+        eyebrow="Erro 404"
+        title="Página não encontrada"
+        subtitle="Ops! Parece que o link que você seguiu está quebrado ou a página que você procurava foi removida."
+      >
+        <SearchBar ariaLabel="Buscar artigos" placeholder="Buscar por AWS, Terraform, RAG…" />
+      </PageHero>
 
-      {/* 2. Busca de Retenção */}
-      <section className="search-retention-container">
-        <div className="container" style={{ padding: 0 }}> 
-            <h2 className="retention-title">Tente buscar pelo assunto:</h2>
-            <form className="archive-search-bar" action="/busca" method="get">
-                <input 
-                  type="search" 
-                  name="q" 
-                  className="search-input" 
-                  placeholder="Buscar por AWS, Terraform, RAG..." 
-                  aria-label="Buscar artigos"
-                  required
-                />
-                <button type="submit" className="search-button">
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
-            </form>
-        </div>
-      </section>
-
-      {/* 3. Sugestões (Populares) */}
-      <section className="container" style={{ padding: '60px 20px', marginTop: '40px' }}>
-        <div className="section-header">
-            {/* Reutilizando a classe visual do título de retenção */}
-            <h2 className="retention-title" style={{ marginTop: 0 }}>
-              Ou comece por um dos nossos artigos mais populares:
-            </h2>
-        </div>
-        
-        <div className="posts-grid">
-            {popularPosts.length > 0 ? (
-                popularPosts.slice(0, 3).map((post: PostCardProps['post']) => (
-                    <PostCard key={post.slug} post={post} />
-                ))
-            ) : (
-                <p className="text-center w-full text-gray-500">Carregando sugestões...</p>
-            )}
-        </div>
-      </section>
-
-      {/* 4. CTA Newsletter */}
-      <NewsletterCTA />
+      {popularPosts.length > 0 && (
+        <section className="wrap error-section">
+          <div className="sec-head-row sec-head-row--center">
+            <div className="left">
+              <div className="sec-ey sec-ey--dual">Sugestões</div>
+              <h2 className="sec-t">Comece pelos artigos mais populares</h2>
+            </div>
+          </div>
+          <div className="posts-grid">
+            {popularPosts.slice(0, 3).map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

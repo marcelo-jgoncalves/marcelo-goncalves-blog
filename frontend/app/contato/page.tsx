@@ -7,13 +7,16 @@ import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import FaqSection from '@/components/ui/FaqSection';
+import FeatureCard from '@/components/ui/FeatureCard';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
-  IconCycle, IconChip, IconCloud, IconBolt,
+  IconCloud,
   IconEnvelope, IconLinkedin, IconInstagram, IconPin,
 } from '@/components/ui/InstitutionalIcons';
 import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, AUTHOR_INSTAGRAM_URL } from '@/lib/config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 export const revalidate = 3600;
 
@@ -46,10 +49,10 @@ const STEPS = [
 // Mesmos 4 pilares de frontend/app/page.tsx (PILLARS) — mantidos em sincronia
 // manualmente (não há módulo compartilhado ainda). Ver docs/analise-funil-ctas-servicos.md.
 const AREAS = [
-  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', Icon: IconCycle, href: '/software' },
-  { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', Icon: IconChip, href: '/inteligencia-artificial' },
-  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', Icon: IconCloud, href: '/plataforma' },
-  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', Icon: IconBolt, href: '/automacao' },
+  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', icon: <FontAwesomeIcon icon={faGear} />, href: '/software' },
+  { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', icon: <FontAwesomeIcon icon={faBrain} />, href: '/inteligencia-artificial' },
+  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', icon: <IconCloud />, href: '/plataforma' },
+  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', icon: <FontAwesomeIcon icon={faRobot} />, href: '/automacao' },
 ];
 
 const FAQ_ITEMS = [
@@ -131,10 +134,8 @@ export default function ContatoPage() {
           </div>
           <div className="ct-areas-grid" data-audit="ct-areas-grid">
             {AREAS.map((area) => (
-              <Link href={area.href} className="ct-area-card" key={area.title}>
-                <div className="ct-icon-box"><area.Icon /></div>
-                <h3>{area.title}</h3>
-                <p>{area.description}</p>
+              <Link href={area.href} className="ct-area-link" key={area.title}>
+                <FeatureCard icon={area.icon} title={area.title} text={area.description} />
               </Link>
             ))}
           </div>
@@ -146,7 +147,7 @@ export default function ContatoPage() {
         <div className="wrap ct-otherways-grid">
           <div>
             <div className="sec-ey">Outras formas de contato</div>
-            <h2 className="sec-t" style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.4rem)' }}>Prefere falar direto? Estamos por aqui.</h2>
+            <h2 className="sec-t ct-otherways-title">Prefere falar direto? Estamos por aqui.</h2>
             {/* WhatsApp fica pendente até termos um número real (backlog #1, .project-context.md) */}
           </div>
           <div className="ct-contact-cards">

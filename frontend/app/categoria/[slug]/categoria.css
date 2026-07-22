@@ -1,18 +1,5 @@
 /* frontend/app/categoria/[slug]/categoria.css */
 
-.posts-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--sp-7);
-  margin-block: var(--sp-7);
-}
-
-@media (min-width: 1024px) {
-  .posts-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 .categoria-empty {
   text-align: center;
   padding: var(--sp-10) 0;

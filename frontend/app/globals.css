@@ -234,6 +234,23 @@ img {
   padding: 0 var(--sp-4);
 }
 
+/* Grid de PostCard — compartilhado entre /artigos (.art-grid sobrescreve pra
+   3 colunas), /categoria e /busca. Antes vivia só em categoria.css, com as
+   outras páginas dependendo dele por acoplamento implícito — movido pra cá
+   como único ponto de verdade. */
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-7);
+  margin-block: var(--sp-7);
+}
+
+@media (min-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* Wrap — container do redesign 2026 (Petrol/Clay/Ivory) */
 .wrap {
   max-width: var(--wrap-max);

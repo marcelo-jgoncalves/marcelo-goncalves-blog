@@ -8,8 +8,10 @@ import PostCard from '@/components/ui/PostCard';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
-import { IconCycle, IconBolt, IconChip, IconCloud } from '@/components/ui/InstitutionalIcons';
+import { IconCloud } from '@/components/ui/InstitutionalIcons';
 import IconTile from '@/components/ui/IconTile';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
 
@@ -42,7 +44,7 @@ const PILLARS = [
       <><strong>APIs e microsserviços</strong> para soluções flexíveis e integradas</>,
     ],
     tags: ['Aplicações', 'APIs', 'Arquitetura'],
-    Icon: IconCycle,
+    icon: <FontAwesomeIcon icon={faGear} />,
     wide: true,
     href: '/software',
   },
@@ -56,7 +58,7 @@ const PILLARS = [
       <><strong>IA integrada aos sistemas</strong> para processos mais rápidos e eficientes</>,
     ],
     tags: ['IA Generativa', 'Agentes', 'Produtividade'],
-    Icon: IconChip,
+    icon: <FontAwesomeIcon icon={faBrain} />,
     wide: true,
     href: '/inteligencia-artificial',
   },
@@ -70,7 +72,7 @@ const PILLARS = [
       <><strong>Workflows inteligentes</strong> que reduzem erros e aumentam a produtividade</>,
     ],
     tags: ['Integrações', 'Automação', 'Produtividade'],
-    Icon: IconBolt,
+    icon: <FontAwesomeIcon icon={faRobot} />,
     wide: true,
     href: '/automacao',
   },
@@ -84,7 +86,7 @@ const PILLARS = [
       <><strong>Infraestrutura como Código</strong> para ambientes padronizados e seguros</>,
     ],
     tags: ['AWS', 'DevOps', 'Infraestrutura'],
-    Icon: IconCloud,
+    icon: <IconCloud />,
     wide: true,
     href: '/plataforma',
   },
@@ -172,7 +174,7 @@ export default async function InstitutionalHome() {
             {PILLARS.map((pillar) => (
               <Link href={pillar.href} className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
                 <div className="ih-pillar-top">
-                  <IconTile icon={<pillar.Icon />} />
+                  <IconTile icon={pillar.icon} />
                 </div>
                 <div className="ih-pillar-kicker">{pillar.kicker}</div>
                 <h3>{pillar.title}</h3>

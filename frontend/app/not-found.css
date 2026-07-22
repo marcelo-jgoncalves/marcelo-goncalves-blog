@@ -1,50 +1,8 @@
-/* frontend/app/not-found.css */
+/* frontend/app/not-found.css
+   Redesign 2026 (petrol/clay/ivory) — mesmo padrão de hero/busca já usado
+   em /artigos e /busca. */
 
-.error-hero {
-  background: var(--sand);
-  padding: var(--sp-10) var(--sp-5);
-  text-align: center;
-  min-height: var(--section-min-height);
-}
-
-.error-404-text {
-  font-family: var(--font-display);
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral "404" decorativo, fora da escala tipográfica de conteúdo */
-  font-size: 6rem;
-  font-weight: 700;
-  color: var(--petrol);
-  line-height: 1;
-}
-
-.error-hero h1 {
-  font-size: var(--type-h3);
-  margin-top: var(--title-gap);
-  margin-bottom: var(--sp-5);
-}
-
-.error-subtitle {
-  font-size: var(--type-lead);
-  color: #555;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.search-retention-container {
-  padding: var(--sp-10) var(--sp-5) 0 var(--sp-5);
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.retention-title {
-  font-size: var(--type-h4);
-  text-align: center;
-  margin-bottom: var(--sp-5);
-}
-
-@media (min-width: 768px) {
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral "404" decorativo, fora da escala tipográfica de conteúdo */
-  .error-404-text { font-size: 8rem; }
-  .error-hero h1 { font-size: var(--type-h1); }
-  .search-retention-container { padding-top: var(--sp-10); }
-  .retention-title { font-size: var(--type-h3); margin-bottom: var(--sp-7); }
+.error-section {
+  margin-block: 0;
+  padding-block: var(--sp-9);
 }

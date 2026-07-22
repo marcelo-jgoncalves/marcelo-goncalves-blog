@@ -1,0 +1,6 @@
+/* frontend/app/newsletter/newsletter.css */
+
+.newsletter-cta-wrap {
+  padding: var(--sp-10) var(--sp-5);
+  text-align: center;
+}

@@ -40,60 +40,7 @@
   mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
 }
 
-/* search */
-.art-search {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 14px;
-  padding: 0 var(--sp-4);
-  height: 58px;
-  backdrop-filter: blur(4px);
-  transition: border-color .2s, background .2s;
-}
-
-.art-search:focus-within {
-  border-color: rgba(201, 96, 60, .45);
-  background: rgba(255, 255, 255, .09);
-}
-
-.art-search svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  color: rgba(255, 255, 255, .5);
-}
-
-.art-search input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-family: var(--font);
-  font-size: var(--type-label);
-  letter-spacing: -.005em;
-}
-
-.art-search input::placeholder {
-  color: rgba(255, 255, 255, .46);
-}
-
-.art-kbd {
-  flex: none;
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .04em;
-  color: rgba(255, 255, 255, .5);
-  background: rgba(255, 255, 255, .07);
-  border: 1px solid rgba(255, 255, 255, .14);
-  padding: var(--sp-1) var(--sp-2);
-  border-radius: 7px;
-}
+/* Barra de busca — componente compartilhado (frontend/components/ui/SearchBar) */
 
 .art-hero-stats {
   display: flex;
