@@ -137,10 +137,6 @@
   --baseline:          8px;
   --post-heading-bottom: var(--sp-7);
   --section-min-height: 384px;
-  --sidebar-width:     340px;      /* largura padrão sidebar em todas páginas */
-
-  /* Vertical rhythm — sticky top para sidebar */
-  --sticky-top-offset: calc(var(--sp-12) + var(--sp-7)); /* 128px */
 }
 
 /* =========================================
@@ -372,7 +368,6 @@ img {
   .desktop-only { display: block; }
 }
 
-/* Grid padrão de 2 colunas — main + sidebar (--sidebar-width = 340px) */
 .page-layout {
   display: grid;
   grid-template-columns: 1fr;

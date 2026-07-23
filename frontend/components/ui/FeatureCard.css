@@ -80,27 +80,6 @@
   white-space: nowrap;
 }
 
-/* Bloco "Exemplo" — variante de rodapé usada quando o card mostra um fluxo em vez
-   de tags (specs/ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md §7, card "Orquestração de
-   Processos"). Reaproveita .feature-card-footer para o mesmo espaçamento/borda. */
-.feature-card-example-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--steel);
-  margin-bottom: var(--sp-2);
-}
-
-.feature-card-example-flow {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  line-height: 1.7;
-  color: var(--petrol);
-  margin: 0;
-}
-
 /* size="lg" — cards maiores (ex.: pilares da Home) */
 .feature-card--lg {
   border-radius: 18px;

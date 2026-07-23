@@ -24,10 +24,18 @@
   --ph-pad:     96px 40px var(--sp-9);
 }
 
+/* Título→subtítulo reduzido nesta hero especificamente: coluna mais estreita
+   (620px, compartilhada com o card "Nossa Visão") faz o título quebrar em
+   4 linhas em vez de 3 — o gap de 40px (padrão do componente) parecia maior
+   por causa do bloco de título mais alto, mesmo sendo o mesmo valor exato
+   das demais heroes. Reduzido pra --sp-6 (24px) só aqui. */
+.page-hero.sobre-hero h1 {
+  margin-bottom: var(--sp-6);
+}
+
 .sobre-hero-actions { display: flex; align-items: center; justify-content: flex-start; gap: var(--eyebrow-gap); flex-wrap: wrap; margin-top: var(--sp-7); }
 
 .sobre-btn-clay { box-shadow: 0 8px 22px rgba(201, 96, 60, .35); }
-.sobre-arrow { font-family: var(--mono); }
 
 .sobre-hero-right-col {
   display: flex;
@@ -83,8 +91,18 @@
 .sobre-hp-row .v { font-size: var(--type-body-sm); font-weight: 700; color: #fff; }
 
 @media (max-width: 860px) {
-  .page-hero.sobre-hero { --ph-pad: 52px 20px var(--sp-9); }
-  .page-hero.sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: var(--sp-7); }
+  /* 88px (não 52px) — o header fixo tem 68px de altura; 52px deixava o
+     eyebrow "Sobre Nós" escondido atrás dele. Mesmo valor de padding-top
+     mobile usado nas outras heroes de coluna única do site. */
+  .page-hero.sobre-hero { --ph-pad: 88px 20px var(--sp-9); }
+  /* gap:0 (não var(--sp-7)) — .page-hero-left vira display:contents logo
+     abaixo, então eyebrow/h1/subtítulo passam a ser itens diretos deste
+     grid. Um `gap` aqui soma por cima da margin-bottom própria de cada um
+     (grid/flex não colapsam margens), dobrando o espaçamento real (24px de
+     margin + 32px de gap = 56px, quase o dobro do usado em qualquer outra
+     hero do site). Cada elemento já carrega a própria margem — o grid não
+     precisa adicionar mais nada. */
+  .page-hero.sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: 0; }
   .page-hero.sobre-hero .page-hero-right { justify-content: flex-start; order: 1; }
   .sobre-hero-right-col { align-items: stretch; width: 100%; }
   .sobre-hero-panel { width: 100%; padding: var(--sp-7) var(--sp-6); }

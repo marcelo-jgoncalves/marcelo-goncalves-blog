@@ -11,19 +11,6 @@
 }
 
 /* ==========================================================================
-   1. READING PROGRESS BAR
-   ========================================================================== */
-.post-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  width: 0;
-  z-index: 60;
-  background: linear-gradient(90deg, var(--petrol), var(--clay));
-}
-
-/* ==========================================================================
    2. HERO
    ========================================================================== */
 .post-hero {
@@ -658,37 +645,12 @@ pre.code-block,
   -webkit-overflow-scrolling: touch;
 }
 
-.code-wrapper pre {
-  margin: 0;
-  padding-top: var(--sp-9);
-}
-
 @media (min-width: 768px) {
   pre.code-block,
   .post-content pre {
     padding: var(--sp-7);
     font-size: var(--type-label);
   }
-}
-
-.code-wrapper {
-  position: relative;
-  margin-bottom: var(--sp-7);
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: var(--ink);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-.code-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--sp-2) var(--sp-4);
-  background-color: var(--petrol-deep);
-  color: var(--steel);
-  font-size: var(--type-caption);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .copy-code-btn {
@@ -711,7 +673,6 @@ pre.code-block,
   border-color: var(--petrol);
 }
 
-.code-wrapper pre::-webkit-scrollbar,
 .post-content pre::-webkit-scrollbar {
   height: 8px;
 }
@@ -922,85 +883,6 @@ pre.code-block,
 @media (max-width: 768px) {
   .post-content .closing {
     padding: var(--gap-grid) var(--sp-6);
-  }
-}
-
-/* ==========================================================================
-   9. CALLOUT LEGADO (compat — posts anteriores ao redesign 2026)
-   ========================================================================== */
-
-.content-callout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--title-gap);
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--petrol);
-  border-radius: 14px;
-  padding: var(--sp-5) var(--sp-6);
-  margin: var(--sp-8) 0;
-  box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
-  color: var(--slate);
-  overflow-wrap: break-word;
-}
-
-.content-callout .callout-label-container {
-  display: flex;
-  align-items: center;
-  gap: var(--title-gap);
-  font-family: var(--font-mono);
-  font-size: var(--type-caption);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--petrol);
-  user-select: none;
-  pointer-events: none;
-}
-
-.content-callout .callout-icon {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(15, 76, 92, 0.10);
-  display: grid;
-  place-items: center;
-  font-size: var(--type-label);
-}
-
-.content-callout .callout-content-area {
-  display: block;
-  padding-left: var(--sp-8);
-}
-
-.content-callout p,
-.content-callout br {
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.callout-warning {
-  border-left-color: var(--clay);
-}
-
-.callout-warning .callout-label-container {
-  color: var(--clay);
-}
-
-.callout-warning .callout-icon {
-  background: rgba(201, 96, 60, 0.10);
-}
-
-@media (max-width: 768px) {
-  .content-callout {
-    padding: var(--sp-4) var(--gap-loose);
-  }
-  .content-callout .callout-content-area {
-    padding-left: 0;
   }
 }
 

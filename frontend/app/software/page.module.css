@@ -129,17 +129,6 @@
   padding-top: var(--sp-9);
 }
 
-/* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
-   anterior já vem do margin-bottom:30px de .page-hero-sub (PageHero.css), então
-   este 2º parágrafo não soma margem própria por cima. */
-.heroParagraph2 {
-  color: rgba(250, 248, 243, .68);
-  max-width: 800px;
-  font-size: var(--type-body-sm);
-  line-height: 1.68;
-  margin: 0;
-}
-
 /* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
    só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
    escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */

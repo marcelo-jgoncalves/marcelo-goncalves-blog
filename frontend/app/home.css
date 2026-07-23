@@ -1,10 +1,5 @@
 /* frontend/app/home.css — Home institucional (specs/SPEC-Home.md — Home v6) */
 
-@keyframes ih-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .3; }
-}
-
 /* padding-bottom 18px: no desktop o botão da hero fica oculto (.ih-hero-actions
    — ver abaixo) e o último elemento visível é o subtitle, que já tem
    margin-bottom:var(--sp-7) (PageHero.css) — 18+30=48px (var(--sp-9)) de fato até
@@ -40,31 +35,6 @@
 }
 
 /* Botão — usa o padrão global .btn/.btn-petrol (globals.css). */
-
-.ih-hero-trust {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-top: var(--sp-9);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .08em;
-  color: rgba(250, 248, 243, .5);
-}
-
-.ih-hero-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--moss);
-  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
-  animation: ih-pulse 2.4s ease-in-out infinite;
-  flex: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ih-hero-dot { animation: none; }
-}
 
 .ih-section {
   margin-block: 0;
