@@ -266,7 +266,7 @@
   transition: color .2s;
 }
 
-.post-toc-tx { font-size: var(--type-caption); line-height: 1.4; letter-spacing: -.005em; }
+.post-toc-tx { font-size: var(--type-label); line-height: 1.4; letter-spacing: -.005em; }
 
 .post-toc-item:hover { color: var(--slate); }
 .post-toc-item:hover .post-toc-mk { border-color: var(--petrol-soft); transform: scale(1.08); }
@@ -551,7 +551,7 @@
 }
 
 .post-content .cmp p {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--ink);
   font-style: italic;
@@ -772,7 +772,7 @@ pre.code-block,
 
 .post-content .callout .c p,
 .post-content .tip .c p {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--ink);
   margin: 0;
@@ -912,7 +912,7 @@ pre.code-block,
 }
 
 .post-content .closing p {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: rgba(250, 248, 243, 0.72);
   max-width: 520px;
@@ -940,7 +940,7 @@ pre.code-block,
   padding: var(--sp-5) var(--sp-6);
   margin: var(--sp-8) 0;
   box-shadow: 0 2px 8px rgba(26, 37, 53, 0.05);
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.65;
   color: var(--slate);
   overflow-wrap: break-word;

@@ -44,7 +44,7 @@
 /* ─────── BODY ─────── */
 .abBody {
   min-width: 0;
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   max-width: 560px;

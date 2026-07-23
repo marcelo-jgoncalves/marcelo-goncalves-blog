@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 export default function PoliticaDeCookiesPage() {
   return (
     <>
-      <PageHero singleColumn className="page-hero--legal">
-        <h1 className="hero-title">Política de <span className="highlight">Cookies</span></h1>
-        <p className="hero-subtitle">
-          O que são cookies, quais usamos e como você pode gerenciá-los.
-        </p>
-      </PageHero>
+      <PageHero
+        singleColumn
+        className="page-hero--legal"
+        title={<>Política de <span className="highlight">Cookies</span></>}
+        subtitle="O que são cookies, quais usamos e como você pode gerenciá-los."
+      />
 
       <div className="legal-container container">
         <div className="legal-content">

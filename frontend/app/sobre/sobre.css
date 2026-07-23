@@ -79,8 +79,8 @@
 }
 
 .sobre-hp-row--last { border-bottom: none; padding-bottom: 0; }
-.sobre-hp-row .k { font-size: var(--type-label); color: rgba(255, 255, 255, .65); }
-.sobre-hp-row .v { font-size: var(--type-label); font-weight: 700; color: #fff; }
+.sobre-hp-row .k { font-size: var(--type-body-sm); color: rgba(255, 255, 255, .65); }
+.sobre-hp-row .v { font-size: var(--type-body-sm); font-weight: 700; color: #fff; }
 
 @media (max-width: 860px) {
   .page-hero.sobre-hero { --ph-pad: 52px 20px var(--sp-9); }
@@ -121,7 +121,7 @@
   letter-spacing: -.035em;
   color: var(--ink);
   max-width: 640px;
-  margin: var(--sp-4) 0 var(--sp-6);
+  margin: var(--sp-4) 0 var(--sp-4);
 }
 
 .sobre-origem-title em { font-style: normal; color: var(--clay); }
@@ -152,12 +152,11 @@
   color: var(--clay);
 }
 
-.sobre-om-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--sp-4) 0 var(--eyebrow-gap); }
-.sobre-om-text { font-size: var(--type-label); line-height: 1.6; color: var(--slate); margin: 0; }
+.sobre-om-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--sp-4) 0 var(--sp-4); }
+.sobre-om-text { font-size: var(--type-body-sm); line-height: 1.6; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
   .sobre-origem-grid { grid-template-columns: 1fr; gap: var(--sp-7); }
-  .sobre-origem-text p { font-size: var(--type-label); }
   .sobre-origem-mission { padding: var(--sp-7) var(--sp-6); margin-top: 0; }
   .sobre-om-title { font-size: var(--type-lead); }
 }
@@ -169,7 +168,7 @@
    trabalhamos") na Home — não um branco hardcoded à parte. */
 .sobre-filosofia { background: var(--surface); padding: var(--sp-9) 0; }
 
-.sobre-center-head { text-align: center; max-width: 680px; margin: 0 auto var(--sp-10); }
+.sobre-center-head { text-align: center; max-width: 680px; margin: 0 auto var(--sechead-center-gap); }
 .sobre-ey-center { justify-content: center; }
 .sobre-ey-center::after { content: ""; width: 30px; height: 1px; background: var(--clay); }
 .sobre-desc-center { margin-left: auto; margin-right: auto; max-width: 560px; }
@@ -198,7 +197,6 @@
   .sobre-principle-row { grid-template-columns: 1fr; gap: var(--title-gap); padding: var(--sp-6) 0; }
   .sobre-principle-row:hover { padding-left: 0; }
   .sobre-pr-title { font-size: var(--type-lead); }
-  .sobre-pr-text { font-size: var(--type-label); }
 }
 
 /* ==========================================================================
@@ -213,7 +211,7 @@
   align-items: center;
   text-align: center;
   max-width: 680px;
-  margin: 0 auto var(--sp-9);
+  margin: 0 auto var(--sechead-center-gap);
 }
 
 .sobre-abordagem-title {
@@ -222,7 +220,7 @@
   line-height: 1.18;
   letter-spacing: -.03em;
   color: #fff;
-  margin: 0 0 var(--sp-5);
+  margin: 0 0 var(--sp-4);
 }
 
 .sobre-abordagem-title em { font-style: normal; color: var(--clay); }
@@ -265,14 +263,14 @@
 
 .sobre-module-title {
   font-weight: 800;
-  font-size: var(--type-body);
+  font-size: var(--type-lead);
   line-height: 1.25;
   letter-spacing: -.025em;
   color: #fff;
   margin: 0 0 var(--title-gap);
 }
 
-.sobre-module-text { max-width: 52ch; font-size: var(--type-label); line-height: 1.6; color: rgba(250, 248, 243, .66); margin: 0; }
+.sobre-module-text { max-width: 52ch; font-size: var(--type-body-sm); line-height: 1.6; color: rgba(250, 248, 243, .66); margin: 0; }
 
 .sobre-module-corner {
   position: absolute;
@@ -316,7 +314,7 @@
 
 .sobre-behind-container { max-width: var(--wrap-max); margin: 0 auto; padding: 0 var(--wrap-pad-h); }
 
-.sobre-behind-head { max-width: 760px; margin: 0 auto var(--sp-9); text-align: center; }
+.sobre-behind-head { max-width: 760px; margin: 0 auto var(--sechead-center-gap); text-align: center; }
 
 .sobre-behind-h2 {
   font-weight: 800;
@@ -394,13 +392,13 @@
 
 .sobre-behind-h3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--ink); margin: 0 0 var(--sp-4); }
 
-.sobre-behind-content p { font-size: var(--type-label); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
+.sobre-behind-content p { font-size: var(--type-body-sm); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
 
 .sobre-behind-emphasis {
   border-left: 2px solid var(--clay);
   padding-left: var(--gap-loose);
   font-weight: 650;
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.58;
   color: var(--ink);
 }
@@ -485,8 +483,8 @@
   color: var(--clay);
 }
 
-.sobre-belief h3 { margin: 0 0 var(--sp-3); font-size: var(--type-body); font-weight: 800; line-height: 1.25; letter-spacing: -.025em; color: var(--ink); }
-.sobre-belief p { max-width: 31ch; font-size: var(--type-label); line-height: 1.65; color: var(--slate); margin: 0; }
+.sobre-belief h3 { margin: 0 0 var(--sp-3); font-size: var(--type-lead); font-weight: 800; line-height: 1.25; letter-spacing: -.025em; color: var(--ink); }
+.sobre-belief p { max-width: 31ch; font-size: var(--type-body-sm); line-height: 1.65; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
   .sobre-beliefs { padding: var(--sp-9) var(--wrap-pad-h-mobile); }

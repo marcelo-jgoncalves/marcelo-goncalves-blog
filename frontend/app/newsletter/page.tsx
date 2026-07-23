@@ -14,12 +14,11 @@ export const metadata: Metadata = {
 export default function NewsletterPage() {
   return (
     <>
-      <PageHero singleColumn>
-        <h1 className="hero-title">Newsletter — Em Breve</h1>
-        <p className="hero-subtitle">
-          Estamos preparando algo especial. Em breve você poderá se inscrever para receber análises exclusivas sobre IA, AWS e DevOps.
-        </p>
-      </PageHero>
+      <PageHero
+        singleColumn
+        title="Newsletter — Em breve"
+        subtitle="Estamos preparando algo especial. Em breve você poderá se inscrever para receber análises exclusivas sobre IA, AWS e DevOps."
+      />
       <div className="container newsletter-cta-wrap">
         <Link href="/artigos" className="btn">
           Explorar artigos enquanto isso →

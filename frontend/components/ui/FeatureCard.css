@@ -41,7 +41,7 @@
   letter-spacing: -.025em;
   color: var(--ink);
   margin: 0 0 var(--sp-3);
-  font-size: var(--type-body);
+  font-size: var(--type-lead);
   font-weight: 800;
   line-height: 1.25;
 }
@@ -49,7 +49,7 @@
 .feature-card-text {
   color: var(--slate);
   margin: 0 0 var(--sp-5);
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.65;
 }
 

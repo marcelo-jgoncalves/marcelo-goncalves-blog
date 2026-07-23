@@ -50,7 +50,7 @@
   border: 1px solid var(--line);
   border-radius: 11px;
   padding: var(--sp-3) var(--eyebrow-gap);
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   font-weight: 400;
   color: var(--ink);
   font-family: var(--font-sans);
@@ -95,7 +95,7 @@
 }
 
 .contact-privacy-note {
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   color: var(--steel);
   line-height: 1.6;
   margin-top: var(--sp-4);
@@ -152,7 +152,7 @@
 }
 
 .contact-success p {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.66;
   color: var(--slate);
   margin: 0 auto var(--sp-6);

@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 export default function TermosDeUsoPage() {
   return (
     <>
-      <PageHero singleColumn className="page-hero--legal">
-        <h1 className="hero-title">Termos de <span className="highlight">Uso</span></h1>
-        <p className="hero-subtitle">
-          Condições que regem o acesso e uso deste site.
-        </p>
-      </PageHero>
+      <PageHero
+        singleColumn
+        className="page-hero--legal"
+        title={<>Termos de <span className="highlight">Uso</span></>}
+        subtitle="Condições que regem o acesso e uso deste site."
+      />
 
       <div className="legal-container container">
         <div className="legal-content">

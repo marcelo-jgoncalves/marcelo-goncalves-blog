@@ -35,11 +35,6 @@
   }
 }
 
-.ct-hero-aux {
-  font-size: var(--type-caption);
-  color: rgba(250, 248, 243, .5);
-}
-
 /* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
 .ct-btn-primary {
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
@@ -128,7 +123,7 @@
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   color: var(--ink);
 }
 
@@ -194,31 +189,10 @@
   font-size: var(--type-h4);
 }
 
-.ct-whatsapp-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--title-gap);
-  margin-top: var(--sp-7);
-  background: rgba(63, 107, 71, .1);
-  color: var(--moss);
-  border: 1px solid rgba(63, 107, 71, .3);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: var(--type-caption);
-  padding: var(--sp-3) var(--sp-5);
-  border-radius: 12px;
-  text-decoration: none;
-  transition: background .15s;
-}
-
-.ct-whatsapp-btn:hover {
-  background: rgba(63, 107, 71, .18);
-}
-
 .ct-contact-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--eyebrow-gap);
+  gap: var(--gap-grid);
 }
 
 .ct-contact-card {

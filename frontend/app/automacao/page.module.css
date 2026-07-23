@@ -129,25 +129,17 @@
   padding-top: var(--sp-9);
 }
 
-/* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
-   anterior já vem do margin-bottom:30px de .page-hero-sub (PageHero.css), então
-   este 2º parágrafo não soma margem própria por cima. Hero desta página tem 3
-   parágrafos (não 2, diferença deliberada — ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md
-   §6); o 3º usa margin-top próprio para se separar do 2º. */
-.heroParagraph2 {
-  color: rgba(250, 248, 243, .68);
-  max-width: 800px;
-  font-size: var(--type-body-sm);
-  line-height: 1.68;
-  margin: 0;
-}
-
+/* .page-hero-left é flex-column (sem colapso de margens) — o gap até o título
+   já vem do margin-bottom:40px do h1 (PageHero.css), então este parágrafo não
+   soma margem própria por cima (mesmo padrão de todas as outras heroes —
+   ver docs/plano-auditoria-tokens-papel.md, achado de divergência 56px vs 40px).
+   Só há 1 parágrafo nesta hero hoje; `.heroParagraph2` (não usado) foi removido. */
 .heroParagraph3 {
   color: rgba(250, 248, 243, .68);
   max-width: 800px;
   font-size: var(--type-body-sm);
   line-height: 1.68;
-  margin: var(--sp-4) 0 0;
+  margin: 0;
 }
 
 /* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
@@ -277,7 +269,7 @@
 }
 
 .beneficioText {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
   overflow-wrap: break-word;
@@ -349,7 +341,7 @@
 }
 
 .especialidadeTitle {
-  font-size: var(--type-label);
+  font-size: var(--type-lead);
   font-weight: 800;
   letter-spacing: -.015em;
   color: var(--ink);
@@ -403,11 +395,11 @@
   font-weight: 800;
   font-size: var(--type-h4);
   color: var(--petrol);
-  margin: var(--sp-4) 0 var(--eyebrow-gap);
+  margin: var(--sp-4) 0 var(--sp-4);
 }
 
 .resultCardText {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
@@ -454,7 +446,7 @@
 }
 
 .diferencialText {
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   line-height: 1.55;
   color: var(--ink);
   min-width: 0;

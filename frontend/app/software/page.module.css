@@ -254,7 +254,7 @@
 }
 
 .beneficioText {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
   overflow-wrap: break-word;
@@ -308,11 +308,11 @@
   font-weight: 800;
   font-size: var(--type-h4);
   color: var(--petrol);
-  margin: var(--sp-4) 0 var(--eyebrow-gap);
+  margin: var(--sp-4) 0 var(--sp-4);
 }
 
 .resultCardText {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
@@ -384,13 +384,13 @@
 
 .etapaTitle {
   font-weight: 700;
-  font-size: var(--type-label);
+  font-size: var(--type-lead);
   color: var(--ink);
   margin: 0 0 var(--sp-2);
 }
 
 .etapaText {
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
@@ -430,7 +430,7 @@
 }
 
 .diferencialText {
-  font-size: var(--type-caption);
+  font-size: var(--type-body-sm);
   line-height: 1.55;
   color: var(--ink);
 }
@@ -515,7 +515,7 @@
 }
 
 .principioTitle {
-  font-size: var(--type-label);
+  font-size: var(--type-lead);
   font-weight: 800;
   letter-spacing: -.015em;
   color: var(--ink);

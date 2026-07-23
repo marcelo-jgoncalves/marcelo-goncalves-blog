@@ -122,14 +122,11 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
       {/* Hero da Categoria */}
-      <PageHero singleColumn>
-        <h1>
-          Artigos na Categoria: <span className="highlight">{meta.title}</span>
-        </h1>
-        <p className="search-results-subtitle">
-          {meta.description}
-        </p>
-      </PageHero>
+      <PageHero
+        singleColumn
+        title={<>Artigos na categoria: <span className="highlight">{meta.title}</span></>}
+        subtitle={meta.description}
+      />
 
       {/* Layout principal + sidebar */}
       <div className="page-layout container">
