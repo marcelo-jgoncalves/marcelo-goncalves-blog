@@ -312,7 +312,11 @@ img {
   line-height: 1.65;
   color: var(--slate);
   max-width: 520px;
-  margin-top: var(--sp-6);
+  /* --sp-4 (16px) — convergido com .ih-center-desc/.ih-results-desc
+     (home.css) pro mesmo papel "eyebrow/título → descrição" (decisão
+     2026-07-23, ver CLAUDE.md §5 "Papel → token mínimo"). Era --sp-6
+     (24px) antes; os 3 usos divergiam sem token semântico dedicado. */
+  margin-top: var(--sp-4);
 }
 
 /* Modificadores para título/descrição de seção sobre fundo escuro (ex.:

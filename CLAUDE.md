@@ -308,6 +308,21 @@ Nenhuma exceção manual. `font-size`/`margin*`/`padding*`/`gap`/`row-gap`/`colu
 - **Exceção sem token, mas com teto matemático na própria regra**: `margin`/`padding`/`gap` com magnitude `≤3px` passam sem exigir token (regex `/^-?[0-3](\.\d+)?px$/` no `.stylelintrc.json`) — ajuste óptico de alinhamento (ex. `gap: 2px` entre separador de meta, `margin-top: 1px` de baseline de ícone) é menor que o menor degrau da escala (`--sp-1` = 4px) por natureza, forçar pro grid quebraria o alinhamento que a linha existe pra corrigir.
 - **Exceção pontual, exige comentário no código**: valores fora até dessa margem (numerais decorativos tipo "404", letra capitular, geometria de posicionamento calculada, técnica `sr-only`) precisam de `/* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- motivo */` na linha anterior — a exceção fica visível no diff do PR, nunca silenciosa. Rodar `npm run lint:css` isoladamente pra checar só CSS.
 
+#### Papel → token mínimo (sessão 2026-07-23) — a regra que falta no Stylelint
+
+O Stylelint acima garante *que* um token seja usado, nunca *qual* token cabe a cada papel — `font-size: var(--type-label)` num parágrafo de leitura passa no lint com a mesma limpeza que `var(--type-body-sm)` no mesmo lugar. Essa lacuna já causou uma auditoria inteira (7 elementos da Home + Footer pousados no menor token da escala, sem decisão, só ausência de regra — ver `git log`, commit `311e522`). Tabela de referência pra não repetir:
+
+| Papel do elemento | Token mínimo | Nunca abaixo de |
+|---|---|---|
+| Texto de leitura corrida (parágrafo, descrição, excerpt) | `--type-body-sm` | 16px mobile |
+| Link/CTA interativo (nav, "ler mais", botão textual) | `--type-label` | 14.2px mobile |
+| Título de card/widget (H3 dentro de card) | `--type-lead` | 20.25px mobile |
+| Metadado/decorativo (eyebrow, tag, badge, timestamp, copyright) | `--type-caption` | sem piso — papel é intencionalmente pequeno |
+
+Mesma lacuna existe no lado de espaçamento — exemplo real e **ainda não corrigido**, deixado aqui de propósito como lembrete: `--title-gap` (10px, comentário `/* título → descrição */` no próprio token) não é usado por nenhuma das 3 implementações reais desse papel no projeto (`sec-desc` usa `--sp-6`=24px, `.ih-center-desc` usa `--eyebrow-gap`=14px, `.ih-results-desc` usa `--sp-4`=16px). Não convergir sem validação visual dedicada — `.sec-desc` é usado em 5 páginas (`page.tsx`, `contato`, `o-projeto`, `blog`, `sobre`).
+
+Antes de escrever `font-size`/`margin`/`padding` novo: identificar o papel do elemento na tabela acima, não só "parece do tamanho certo".
+
 ---
 
 ## 6. Imagens (pipeline obrigatória)

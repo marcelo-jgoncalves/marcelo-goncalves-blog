@@ -87,7 +87,7 @@
 }
 
 .post-card .pc-excerpt {
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   flex: 1;
@@ -112,5 +112,5 @@
 }
 
 .post-card .pc-foot .ler-artigo {
-  font-size: var(--type-caption);
+  font-size: var(--type-label);
 }

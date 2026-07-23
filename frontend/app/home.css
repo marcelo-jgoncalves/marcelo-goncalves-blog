@@ -157,7 +157,11 @@
 
 .ih-center-desc {
   max-width: 580px;
-  margin: var(--eyebrow-gap) auto 0;
+  /* --sp-4 (16px) — convergido com .sec-desc/.ih-results-desc pro mesmo
+     papel "eyebrow/título → descrição" (decisão 2026-07-23, ver CLAUDE.md
+     §5). Era --eyebrow-gap (14px, token de papel diferente reaproveitado
+     por coincidência de valor) antes. */
+  margin: var(--sp-4) auto 0;
 }
 
 /* Pilares (Serviços) */
@@ -353,7 +357,10 @@
   color: var(--clay);
 }
 
-.ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--sp-4) 0 var(--eyebrow-gap); }
+/* margin: topo = "eyebrow → título" (--eyebrow-gap), fundo = "título →
+   corpo" (--title-gap) — antes usava --sp-4/--eyebrow-gap, os tokens do
+   papel um do outro (decisão 2026-07-23, ver CLAUDE.md §5). */
+.ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--eyebrow-gap) 0 var(--title-gap); }
 .ih-mc-text { font-size: var(--type-body-sm); line-height: 1.6; color: var(--slate); margin: 0; }
 
 @media (max-width: 860px) {
@@ -380,6 +387,8 @@
 
 .ih-results-desc {
   max-width: 560px;
+  /* --sp-4 (16px) — já era este valor; .sec-desc/.ih-center-desc foram
+     convergidos pra ele (decisão 2026-07-23, ver CLAUDE.md §5). */
   margin: var(--sp-4) auto 0;
   line-height: 1.6;
 }
