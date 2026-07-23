@@ -48,6 +48,19 @@
   align-items: start;
 }
 
+/* Topo→eyebrow no mobile: cada página fixava esse valor em ~88px dentro do
+   próprio --ph-pad (pensado pro desktop), deixando um vão grande demais
+   entre o header (68px) e o eyebrow numa tela estreita. padding-top aqui
+   (longhand, depois do shorthand `padding` acima, mesma especificidade)
+   sobrescreve só o topo em qualquer página que não defina o seu próprio
+   `padding-top`/`.page-hero-in` mais específico — ver --hero-top-mobile
+   pra páginas que precisam de um valor diferente (ex.: legal.css). */
+@media (max-width: 680px) {
+  .page-hero-in {
+    padding-top: var(--hero-top-mobile, var(--sp-9));
+  }
+}
+
 .page-hero--single {
   --ph-cols:    1fr;
   --ph-h1-max:  32ch;
@@ -107,4 +120,13 @@
   max-width: var(--ph-sub-max);
   overflow-wrap: break-word;
   margin-bottom: var(--sp-7);
+}
+
+/* Mobile: eyebrow→título ficava com o mesmo respiro do desktop (40px),
+   proporcionalmente grande demais numa tela estreita — reduzido pro
+   mesmo degrau usado em outras transições mobile do site (--sp-6=24px). */
+@media (max-width: 680px) {
+  .page-hero-ey {
+    margin-bottom: var(--sp-6);
+  }
 }

@@ -2,9 +2,12 @@
 
 /* Espaçamento maior entre a navbar e o título, só nas 3 páginas LGPD
    (privacidade/cookies/termos) — override local, não mexe no --hero-top
-   global usado pelas outras heroes do site. */
+   global usado pelas outras heroes do site (desktop). Era 140px; mantém-se
+   maior que a nova base mobile (--sp-9=48px, ver PageHero.css) mas reduzido
+   pra --sp-10=64px — 140px ficava desproporcional numa tela de celular. */
 .page-hero.page-hero--legal {
   --hero-top: 140px;
+  --hero-top-mobile: var(--sp-10);
 }
 
 /* Título e subtítulo centralizados — só nessas 3 páginas. PageHero é

@@ -847,7 +847,7 @@
   .home-hero .page-hero-in {
     grid-template-columns: 1fr;
     gap: var(--sp-8);
-    padding-top: var(--sp-10);
+    padding-top: var(--sp-9);
   }
 
   .home-hero-actions {
