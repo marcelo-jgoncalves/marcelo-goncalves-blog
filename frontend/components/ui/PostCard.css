@@ -87,7 +87,7 @@
 }
 
 .post-card .pc-excerpt {
-  font-size: var(--type-caption);
+  font-size: var(--type-label);
   line-height: 1.6;
   color: var(--slate);
   flex: 1;

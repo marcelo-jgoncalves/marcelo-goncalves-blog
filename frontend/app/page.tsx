@@ -168,7 +168,7 @@ export default async function InstitutionalHome() {
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual">Serviços</div>
             <h2 className="sec-t">Quatro pilares que cobrem toda a sua operação</h2>
-            <p className="ih-center-desc">Atuamos com profundidade em cada um deles, da estratégia ao código, da implementação à operação em produção.</p>
+            <p className="sec-desc ih-center-desc">Atuamos com profundidade em cada um deles, da estratégia ao código, da implementação à operação em produção.</p>
           </div>
           <div className="ih-pillars-grid">
             {PILLARS.map((pillar) => (
@@ -229,8 +229,8 @@ export default async function InstitutionalHome() {
         <div className="wrap">
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual ih-eyebrow--onDark">Resultados</div>
-            <h2 className="ih-results-t">Resultado que aparece na <em>fatura</em></h2>
-            <p className="ih-results-desc">Projetos reais de otimização de nuvem e arquitetura, com redução de custo mensurável e sem abrir mão de performance ou disponibilidade.</p>
+            <h2 className="sec-t sec-t--onDark ih-results-t">Resultado que aparece na <em>fatura</em></h2>
+            <p className="sec-desc sec-desc--onDark ih-results-desc">Projetos reais de otimização de nuvem e arquitetura, com redução de custo mensurável e sem abrir mão de performance ou disponibilidade.</p>
           </div>
           <div className="ih-cases">
             {CASES.map((c, i) => {

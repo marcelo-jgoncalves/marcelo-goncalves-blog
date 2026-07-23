@@ -315,6 +315,22 @@ img {
   margin-top: var(--sp-6);
 }
 
+/* Modificadores para título/descrição de seção sobre fundo escuro (ex.:
+   .ih-results na Home) — reaproveitam .sec-t/.sec-desc em vez de duplicar
+   font-size/weight/letter-spacing numa classe paralela. */
+.sec-t--onDark {
+  color: #fff;
+}
+
+.sec-t--onDark em {
+  font-style: italic;
+  color: var(--petrol-soft);
+}
+
+.sec-desc--onDark {
+  color: rgba(250, 248, 243, .72);
+}
+
 /* Variante centralizada de sec-head-row/sec-ey — eyebrow com traço dos
    dois lados, título e subtítulo centralizados. Reutilizável em
    qualquer seção que use o padrão sec-head-row/sec-ey/sec-t/sec-desc. */

@@ -83,10 +83,15 @@
   color: var(--petrol-soft);
 }
 
-.site-footer .foot-brand p {
-  font-size: var(--type-caption);
-  line-height: 1.65;
+.site-footer .foot-brand p,
+.site-footer .foot-col-lead,
+.site-footer .foot-col ul li a {
+  font-size: var(--type-label);
   color: #8FAAB1;
+}
+
+.site-footer .foot-brand p {
+  line-height: 1.65;
   max-width: 300px;
   margin-top: var(--sp-4);
 }
@@ -102,9 +107,7 @@
 }
 
 .site-footer .foot-col-lead {
-  font-size: var(--type-caption);
   line-height: 1.5;
-  color: #8FAAB1;
   margin: 0 0 var(--sp-4);
 }
 
@@ -120,8 +123,6 @@
 .site-footer .foot-col ul li a {
   display: inline-flex;
   align-items: center;
-  font-size: var(--type-caption);
-  color: #8FAAB1;
   text-decoration: none;
   transition: color .2s;
 }

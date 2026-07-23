@@ -45,13 +45,13 @@
 
 .steps-timeline-title {
   font-weight: 700;
-  font-size: var(--type-label);
+  font-size: var(--type-body-sm);
   color: var(--ink);
   margin: 0 0 var(--sp-2);
 }
 
 .steps-timeline-desc {
-  font-size: var(--type-caption);
+  font-size: var(--type-label);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
