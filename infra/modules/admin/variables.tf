@@ -19,3 +19,13 @@ variable "enable_cloudfront_logging" {
   type        = bool
   default     = false
 }
+
+variable "api_gateway_domain_name" {
+  description = "Domínio do API Gateway (sem stage), usado como origin do proxy same-origin /admin/* — evita CORS cross-origin e permite cookie SameSite=Strict na sessão do BFF."
+  type        = string
+}
+
+variable "api_gateway_stage_path" {
+  description = "Path do stage do API Gateway (ex: /v1), usado como origin_path do proxy /admin/*"
+  type        = string
+}

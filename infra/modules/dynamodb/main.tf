@@ -198,3 +198,31 @@ resource "aws_dynamodb_table" "categorias" {
     type = "S"
   }
 }
+
+# --- Tabela 4: Sessões do Admin (BFF) ---
+# Sessão de servidor pro painel admin: o cookie httpOnly que o browser recebe
+# carrega só um session_id opaco (UUID aleatório), nunca o JWT do Cognito. Este
+# item é a fonte de verdade da sessão — revogar é só um DeleteItem, sem esperar
+# o token expirar sozinho. `expires_at` é checado manualmente no código (Lambda
+# adminSession/adminAuthorizer), não só via TTL — o TTL do DynamoDB é faxina
+# best-effort (pode levar até 48h pra varrer), não é garantia de expiração
+# imediata. Decisão da sessão 2026-07-24 (auditoria world-class → BFF).
+resource "aws_dynamodb_table" "admin_sessions" {
+  name         = "${var.project_name}-${var.environment}-admin-sessions"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "session_id"
+
+  server_side_encryption {
+    enabled = true
+  }
+
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
+
+  attribute {
+    name = "session_id"
+    type = "S"
+  }
+}

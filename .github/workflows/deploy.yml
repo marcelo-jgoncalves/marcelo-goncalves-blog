@@ -14,6 +14,23 @@ permissions:
   contents: read
 
 jobs:
+  # --- JOB 0: Checar deriva de tipos entre backend e admin (Post) ---
+  check-types-drift:
+    runs-on: ubuntu-latest
+    name: 0. Checar deriva de tipos (backend/admin)
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+
+      - name: Checar deriva de tipos
+        run: npm run check:types-drift
+
   # --- JOB 1: Testar o Backend (Jest + audit) ---
   test-backend:
     runs-on: ubuntu-latest

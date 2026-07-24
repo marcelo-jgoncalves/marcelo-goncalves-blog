@@ -8,12 +8,40 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
-# Autorizador Cognito (O "Porteiro")
+# Autorizador Cognito nativo — mantido só como referência histórica; nenhum
+# método usa mais este authorizer (todos migraram para admin_cookie_auth,
+# que suporta cookie de sessão + fallback Bearer no mesmo Lambda). Remover
+# depois que o rollout do BFF estiver validado em produção (ver
+# admin_authorizer/index.ts para a lógica do fallback).
 resource "aws_api_gateway_authorizer" "cognito_auth" {
   name          = "CognitoAuthorizer"
   type          = "COGNITO_USER_POOLS"
   rest_api_id   = aws_api_gateway_rest_api.main.id
   provider_arns = [var.cognito_user_pool_arn]
+}
+
+# Lambda Authorizer (REQUEST) — substitui o COGNITO_USER_POOLS acima em
+# todas as rotas /admin/* protegidas. Suporta cookie de sessão opaca (BFF,
+# fluxo novo) e Authorization Bearer (Amplify client-side, fluxo legado
+# mantido durante a transição) — ver backend/src/functions/adminAuthorizer.
+# TTL de cache = 0: revogação de sessão (logout, exclusão manual) precisa
+# ter efeito imediato, nunca servir uma decisão Allow cacheada de uma
+# sessão já apagada.
+resource "aws_api_gateway_authorizer" "admin_cookie_auth" {
+  name                             = "AdminCookieAuthorizer"
+  type                             = "REQUEST"
+  rest_api_id                      = aws_api_gateway_rest_api.main.id
+  authorizer_uri                   = var.admin_authorizer_invoke_arn
+  identity_source                  = "method.request.header.Cookie,method.request.header.Authorization"
+  authorizer_result_ttl_in_seconds = 0
+}
+
+resource "aws_lambda_permission" "apigw_admin_authorizer" {
+  statement_id  = "AllowAPIGatewayInvokeAdminAuthorizer"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_authorizer_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/authorizers/${aws_api_gateway_authorizer.admin_cookie_auth.id}"
 }
 
 # Gateway Responses — quando o autorizador Cognito rejeita a requisição
@@ -140,6 +168,42 @@ resource "aws_api_gateway_resource" "admin" {
   path_part   = "admin"
 }
 
+# /admin/session — login/me/logout do BFF. Sem authorizer em nenhum método:
+# POST (login) precisa ser alcançável sem sessão prévia (é o que a cria);
+# GET (me) e DELETE (logout) fazem sua própria checagem do cookie dentro do
+# handler (backend/src/functions/adminSession), então um authorizer em
+# frente seria checagem duplicada e impediria "sem sessão" de responder
+# 401 de forma limpa (um Lambda Authorizer com Deny devolve 403, não 401).
+resource "aws_api_gateway_resource" "admin_session" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  parent_id   = aws_api_gateway_resource.admin.id
+  path_part   = "session"
+}
+
+resource "aws_api_gateway_method" "admin_session_any" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_session.id
+  http_method   = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_session_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_session.id
+  http_method             = aws_api_gateway_method.admin_session_any.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_session_invoke_arn
+}
+
+resource "aws_lambda_permission" "apigw_admin_session" {
+  statement_id  = "AllowAPIGatewayInvokeAdminSession"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_session_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
 # /admin/posts
 resource "aws_api_gateway_resource" "admin_posts" {
   rest_api_id = aws_api_gateway_rest_api.main.id
@@ -166,8 +230,8 @@ resource "aws_api_gateway_method" "admin_post_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_post_slug.id
   http_method   = "ANY"
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 resource "aws_api_gateway_integration" "admin_post_slug_integration" {
@@ -199,8 +263,8 @@ resource "aws_api_gateway_method" "admin_autor_id_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_autor_id.id
   http_method   = "ANY"
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 resource "aws_api_gateway_integration" "admin_autor_id_integration" {
@@ -336,8 +400,8 @@ resource "aws_api_gateway_method" "admin_posts_any" {
   http_method = "ANY"
 
   # 🔒 AQUI ESTÁ A SEGURANÇA:
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 # Integração com a Lambda adminPosts
@@ -441,8 +505,8 @@ resource "aws_api_gateway_method" "media_upload_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_media_upload.id
   http_method   = "POST"
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 # Integração com a Lambda mediaUpload
@@ -735,8 +799,8 @@ resource "aws_api_gateway_method" "admin_categorias_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_categorias.id
   http_method   = "ANY"
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 resource "aws_api_gateway_integration" "admin_categorias_integration" {
@@ -797,8 +861,8 @@ resource "aws_api_gateway_method" "admin_categorias_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
   http_method   = "ANY"
-  authorization = "COGNITO_USER_POOLS"
-  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
 resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
@@ -871,6 +935,11 @@ resource "aws_api_gateway_deployment" "main" {
   # O trigger calcula um hash de todos os recursos. Se qualquer um mudar, ele faz redeploy.
   triggers = {
     redeployment = sha1(jsonencode([
+      # --- BFF de sessão do admin (/admin/session) + novo authorizer ---
+      aws_api_gateway_authorizer.admin_cookie_auth.id,
+      aws_api_gateway_resource.admin_session,
+      aws_api_gateway_method.admin_session_any,
+      aws_api_gateway_integration.admin_session_integration,
       # --- Recursos Públicos (Antigos) ---
       aws_api_gateway_resource.post_slug,
       aws_api_gateway_method.get_post,

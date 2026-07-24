@@ -23,6 +23,8 @@ locals {
     adminCategorias = aws_lambda_function.admin_categorias.function_name
     mediaUpload     = aws_lambda_function.media_upload.function_name
     postScheduler   = aws_lambda_function.post_scheduler.function_name
+    adminSession    = aws_lambda_function.admin_session.function_name
+    adminAuthorizer = aws_lambda_function.admin_authorizer.function_name
   } : {}
 }
 

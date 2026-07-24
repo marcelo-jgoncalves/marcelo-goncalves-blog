@@ -28,11 +28,33 @@ env:
 jobs:
 
   # ==============================================================
+  # JOB 0: Checagem de deriva de tipos (backend vs admin)
+  # Achado da auditoria world-class 2026-07-24: e_popular/e_projeto tinham
+  # tipos incompatíveis entre os dois workspaces sem nenhum mecanismo que
+  # detectasse isso. Script puro (sem deps) comparando a interface Post —
+  # roda antes do build pra falhar rápido, sem gastar minutos de CI.
+  # ==============================================================
+  check-types-drift:
+    name: 0. Checar deriva de tipos (backend/admin)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Checar deriva de tipos
+        run: npm run check:types-drift
+
+  # ==============================================================
   # JOB 1a: Build Backend (Lambdas) — paralelo com 1b
   # ==============================================================
   build-backend:
     name: 1a. Build Backend
     runs-on: ubuntu-latest
+    needs: [check-types-drift]
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -71,6 +93,7 @@ jobs:
   build-frontend:
     name: 1b. Build Frontend
     runs-on: ubuntu-latest
+    needs: [check-types-drift]
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4

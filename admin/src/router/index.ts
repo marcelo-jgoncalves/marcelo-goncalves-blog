@@ -62,7 +62,7 @@ const router = createRouter({
 // Navigation Guard (MANTIDO IGUAL)
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
-  if (!auth.user) await auth.checkSession()
+  if (!auth.email) await auth.checkSession()
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     next('/login')

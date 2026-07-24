@@ -280,8 +280,8 @@ function onSubtitleKeydown(e: KeyboardEvent) {
 
 onMounted(async () => {
   // autor_id vem do Cognito username (não mais hardcoded)
-  if (auth.user?.username) {
-    form.value.autor_id = auth.user.username
+  if (auth.username) {
+    form.value.autor_id = auth.username
   }
 
   try {

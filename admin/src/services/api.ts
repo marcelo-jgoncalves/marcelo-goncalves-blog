@@ -1,58 +1,33 @@
 /**admin/src/services/api.ts */
 
-import { fetchAuthSession, signOut } from 'aws-amplify/auth'
 import type { Post, Autor } from '../types'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL
+// Sem prefixo por padrão: o CloudFront do admin faz proxy same-origin de
+// /admin/* para o API Gateway (ver infra/modules/admin/cloudfront.tf) — a
+// sessão (cookie httpOnly) viaja automaticamente com `credentials: 'include'`,
+// sem precisar montar Authorization header. VITE_API_BASE_URL só é usado em
+// dev local direto contra a API real (cross-origin, sem cookie de sessão
+// funcionando — ver reference_admin_local_dev_env).
+const API_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
-if (import.meta.env.DEV && !API_URL) console.error('VITE_API_BASE_URL não definida!')
-
-async function getToken(forceRefresh = false): Promise<string> {
-  const session = await fetchAuthSession({ forceRefresh })
-  const token = session.tokens?.idToken?.toString()
-  if (!token) throw new Error('Sessão inválida')
-  return token
-}
-
-async function redirectToLogin() {
-  await signOut().catch(() => {})
+function redirectToLogin() {
   window.location.href = '/login'
 }
 
 export async function apiCall(endpoint: string, options: RequestInit = {}) {
-  let token: string
-  try {
-    token = await getToken()
-  } catch {
-    await redirectToLogin()
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {}),
+  }
+
+  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers, credentials: 'include' })
+
+  // 401 (sem sessão/Lambda authorizer lançou "Unauthorized") ou 403 (policy
+  // Deny do Lambda Authorizer — cookie ausente/sessão expirada/token Bearer
+  // inválido) significam a mesma coisa aqui: sessão inválida, refazer login.
+  if (res.status === 401 || res.status === 403) {
+    redirectToLogin()
     throw new Error('Sessão expirada')
-  }
-
-  const makeRequest = async (authToken: string) => {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authToken}`,
-      ...(options.headers || {})
-    }
-    return fetch(`${API_URL}${endpoint}`, { ...options, headers })
-  }
-
-  let res = await makeRequest(token)
-
-  // Token expirou no servidor — tenta refresh uma vez
-  if (res.status === 401) {
-    try {
-      token = await getToken(true)
-      res = await makeRequest(token)
-    } catch {
-      await redirectToLogin()
-      throw new Error('Sessão expirada')
-    }
-    // Ainda 401 após refresh: sessão inválida
-    if (res.status === 401) {
-      await redirectToLogin()
-      throw new Error('Sessão expirada')
-    }
   }
 
   if (!res.ok) {

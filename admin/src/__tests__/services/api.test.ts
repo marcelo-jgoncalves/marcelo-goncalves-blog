@@ -1,22 +1,6 @@
 // admin/src/__tests__/services/api.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-// ─── Mocks ────────────────────────────────────────────────────────────────────
-
-const mockToken = 'mock-id-token-value'
-
-vi.mock('aws-amplify/auth', () => ({
-  fetchAuthSession: vi.fn().mockResolvedValue({
-    tokens: { idToken: { toString: () => mockToken } },
-  }),
-}))
-
-vi.mock('../../services/api', async () => {
-  // Re-importa o módulo real mas com import.meta.env mockado
-  const mod = await vi.importActual<typeof import('../../services/api')>('../../services/api')
-  return mod
-})
-
 // Sobrescreve import.meta.env antes de importar o módulo
 vi.stubGlobal('import', { meta: { env: { VITE_API_BASE_URL: 'https://test-api.example.com/v1' } } })
 
@@ -31,38 +15,41 @@ function mockFetch(status: number, body: unknown) {
 }
 
 // ─── apiCall ──────────────────────────────────────────────────────────────────
+// A sessão do BFF viaja num cookie httpOnly enviado automaticamente pelo
+// browser (credentials: 'include') — sem token/Authorization header montado
+// no client. 401/403 significam "sessão inválida" e redirecionam pro login
+// (ver services/api.ts e o Lambda Authorizer, que devolve 403 numa policy
+// Deny explícita e 401 só quando não identifica a requisição de jeito nenhum).
 
 describe('apiCall', () => {
   let apiCall: (endpoint: string, options?: RequestInit) => Promise<unknown>
 
   beforeEach(async () => {
     vi.resetModules()
-    vi.doMock('aws-amplify/auth', () => ({
-      fetchAuthSession: vi.fn().mockResolvedValue({
-        tokens: { idToken: { toString: () => mockToken } },
-      }),
-      signOut: vi.fn().mockResolvedValue(undefined),
-    }))
-    // Importa dinamicamente para garantir que os mocks estão aplicados
     const mod = await import('../../services/api')
     apiCall = mod.apiCall
   })
 
   afterEach(() => vi.clearAllMocks())
 
-  it('throws when user is not authenticated (no token)', async () => {
+  it.each([401, 403])('redireciona pro login e lança erro quando a API responde %i', async (status) => {
     vi.stubGlobal('window', { location: { href: '' } })
-    const { fetchAuthSession } = await import('aws-amplify/auth')
-    vi.mocked(fetchAuthSession).mockResolvedValueOnce({ tokens: undefined } as never)
-    mockFetch(200, {})
+    mockFetch(status, {})
     await expect(apiCall('/admin/posts')).rejects.toThrow('Sessão expirada')
   })
 
-  it('includes Authorization Bearer token in headers', async () => {
-    mockFetch(200, { items: [] })
+  it('inclui credentials: include (cookie de sessão same-origin)', async () => {
+    mockFetch(200, {})
     await apiCall('/admin/posts')
     const call = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]
-    expect(call[1].headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    expect(call[1].credentials).toBe('include')
+  })
+
+  it('não monta header Authorization (sessão vem só do cookie)', async () => {
+    mockFetch(200, {})
+    await apiCall('/admin/posts')
+    const call = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]
+    expect(call[1].headers['Authorization']).toBeUndefined()
   })
 
   it('includes Content-Type application/json', async () => {
@@ -107,11 +94,6 @@ describe('categoriesApi', () => {
 
   beforeEach(async () => {
     vi.resetModules()
-    vi.doMock('aws-amplify/auth', () => ({
-      fetchAuthSession: vi.fn().mockResolvedValue({
-        tokens: { idToken: { toString: () => mockToken } },
-      }),
-    }))
     const mod = await import('../../services/api')
     categoriesApi = mod.categoriesApi
   })
@@ -157,11 +139,6 @@ describe('postsApi', () => {
 
   beforeEach(async () => {
     vi.resetModules()
-    vi.doMock('aws-amplify/auth', () => ({
-      fetchAuthSession: vi.fn().mockResolvedValue({
-        tokens: { idToken: { toString: () => mockToken } },
-      }),
-    }))
     const mod = await import('../../services/api')
     postsApi = mod.postsApi
   })

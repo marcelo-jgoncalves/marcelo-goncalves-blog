@@ -273,6 +273,82 @@ resource "aws_iam_role_policy_attachment" "adminCategorias_attach" {
   policy_arn = aws_iam_policy.adminCategorias_policy.arn
 }
 
+# --- adminSession: PutItem/GetItem/DeleteItem só na tabela de sessões.
+# Nenhuma permissão de Cognito é necessária — o idToken é verificado via
+# JWKS público (HTTPS), sem chamada a nenhuma API da AWS. ---
+resource "aws_iam_role" "adminSession_role" {
+  name = "${var.project_name}-${var.environment}-adminSession-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "lambda.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_policy" "adminSession_policy" {
+  name = "${var.project_name}-${var.environment}-adminSession-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      local.logs_statement,
+      {
+        Action   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem"]
+        Effect   = "Allow"
+        Resource = var.admin_sessions_table_arn
+      },
+      local.xray_statement
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "adminSession_attach" {
+  role       = aws_iam_role.adminSession_role.name
+  policy_arn = aws_iam_policy.adminSession_policy.arn
+}
+
+# --- adminAuthorizer: GetItem só na tabela de sessões (leitura, nunca
+# escreve). Mesma observação sobre Cognito: verificação via JWKS, sem
+# permissão IAM de nenhuma API do Cognito. ---
+resource "aws_iam_role" "adminAuthorizer_role" {
+  name = "${var.project_name}-${var.environment}-adminAuthorizer-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "lambda.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_policy" "adminAuthorizer_policy" {
+  name = "${var.project_name}-${var.environment}-adminAuthorizer-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      local.logs_statement,
+      {
+        Action   = ["dynamodb:GetItem"]
+        Effect   = "Allow"
+        Resource = var.admin_sessions_table_arn
+      },
+      local.xray_statement
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "adminAuthorizer_attach" {
+  role       = aws_iam_role.adminAuthorizer_role.name
+  policy_arn = aws_iam_policy.adminAuthorizer_policy.arn
+}
+
 # --- mediaUpload: S3 PutObject only on uploads bucket ---
 resource "aws_iam_role" "mediaUpload_role" {
   name = "${var.project_name}-${var.environment}-mediaUpload-role"

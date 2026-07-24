@@ -26,3 +26,8 @@ provisioned_concurrency = 1
 # apply em prod. Ver comentário em infra/variables.tf sobre por que é um valor
 # literal e não uma referência de módulo.
 frontend_cloudfront_distribution_id = ""
+
+# Domínio do API Gateway — TODO: ambiente de prod ainda não existe. Atualizar
+# com o domínio real (aws apigateway get-rest-apis) antes do primeiro apply em
+# prod. Ver comentário em infra/variables.tf sobre por que é um valor literal.
+admin_api_gateway_domain_name = ""

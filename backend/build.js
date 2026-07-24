@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const functions = ['getPost', 'getAuthor', 'imageProcessor', 'adminPosts', 'mediaUpload', 'getPosts', 'adminAuthors', 'postScheduler', 'adminCategorias'];
+const functions = ['getPost', 'getAuthor', 'imageProcessor', 'adminPosts', 'mediaUpload', 'getPosts', 'adminAuthors', 'postScheduler', 'adminCategorias', 'adminSession', 'adminAuthorizer'];
 async function build() {
   const rootDir = path.resolve(__dirname, '..');
   const infraBuildsDir = path.join(rootDir, 'infra', 'builds');

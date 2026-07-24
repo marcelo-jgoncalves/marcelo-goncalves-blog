@@ -104,6 +104,47 @@ resource "aws_cloudfront_distribution" "admin" {
     origin_access_control_id = aws_cloudfront_origin_access_control.admin_oac.id
   }
 
+  # Origin do API Gateway — faz o browser enxergar o admin e a API como a
+  # MESMA origem (proxy /admin/* -> API Gateway). Isso é o que permite o
+  # cookie de sessão do BFF usar SameSite=Strict sem token CSRF separado
+  # (ver backend/src/functions/adminSession) — sem este proxy, admin e API
+  # seriam origens diferentes e o cookie exigiria SameSite=None + CSRF.
+  origin {
+    domain_name = var.api_gateway_domain_name
+    origin_id   = "API-Gateway-Admin"
+    origin_path = var.api_gateway_stage_path
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # /admin/* nunca deve ser cacheado (respostas dinâmicas, autenticadas) e
+  # precisa repassar o cookie de sessão + o header Cookie na requisição de
+  # origem — sem isso o Lambda Authorizer/adminSession nunca veria o cookie.
+  ordered_cache_behavior {
+    path_pattern     = "/admin/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "API-Gateway-Admin"
+
+    forwarded_values {
+      query_string = true
+      headers      = ["Authorization", "Content-Type"]
+      cookies {
+        forward = "all"
+      }
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0
+  }
+
   default_cache_behavior {
     allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]

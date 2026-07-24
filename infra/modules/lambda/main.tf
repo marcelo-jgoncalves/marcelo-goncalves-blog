@@ -44,6 +44,16 @@ resource "aws_cloudwatch_log_group" "admin_categorias" {
   retention_in_days = var.log_retention_days
 }
 
+resource "aws_cloudwatch_log_group" "admin_session" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-adminSession"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "admin_authorizer" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-adminAuthorizer"
+  retention_in_days = var.log_retention_days
+}
+
 # --- Lambda Functions ---
 
 resource "aws_lambda_function" "media_upload" {
@@ -204,6 +214,59 @@ resource "aws_lambda_function" "admin_categorias" {
 
   tracing_config { mode = local.xray_mode }
   depends_on = [aws_cloudwatch_log_group.admin_categorias]
+}
+
+# --- adminSession (BFF): troca o idToken do SRP client-side por sessão opaca ---
+resource "aws_lambda_function" "admin_session" {
+  function_name = "${var.project_name}-${var.environment}-adminSession"
+  role          = aws_iam_role.adminSession_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs20.x"
+  memory_size   = 256
+
+  filename         = "${path.root}/builds/adminSession.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminSession.zip")
+
+  environment {
+    variables = {
+      ADMIN_SESSIONS_TABLE = "${var.project_name}-${var.environment}-admin-sessions"
+      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
+      COGNITO_CLIENT_ID    = var.cognito_client_id
+      ADMIN_ORIGIN         = var.admin_origin
+      LOG_LEVEL            = var.log_level
+      XRAY_ENABLED         = tostring(var.enable_xray_tracing)
+    }
+  }
+
+  tracing_config { mode = local.xray_mode }
+  depends_on = [aws_cloudwatch_log_group.admin_session]
+}
+
+# --- adminAuthorizer (REQUEST): substitui o COGNITO_USER_POOLS nativo nas
+# rotas /admin/* protegidas — valida cookie de sessão (fluxo novo) ou
+# Authorization Bearer (fluxo legado, mantido durante a transição). ---
+resource "aws_lambda_function" "admin_authorizer" {
+  function_name = "${var.project_name}-${var.environment}-adminAuthorizer"
+  role          = aws_iam_role.adminAuthorizer_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs20.x"
+  memory_size   = 256
+
+  filename         = "${path.root}/builds/adminAuthorizer.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminAuthorizer.zip")
+
+  environment {
+    variables = {
+      ADMIN_SESSIONS_TABLE = "${var.project_name}-${var.environment}-admin-sessions"
+      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
+      COGNITO_CLIENT_ID    = var.cognito_client_id
+      LOG_LEVEL            = var.log_level
+      XRAY_ENABLED         = tostring(var.enable_xray_tracing)
+    }
+  }
+
+  tracing_config { mode = local.xray_mode }
+  depends_on = [aws_cloudwatch_log_group.admin_authorizer]
 }
 
 # --- PostSchedulerLambda ---

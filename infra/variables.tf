@@ -103,3 +103,14 @@ variable "frontend_cloudfront_distribution_id" {
   description = "ID da distribution CloudFront do frontend (module.frontend), usado por adminPosts/postScheduler para invalidar cache sob demanda. Valor literal, não referência de módulo — module.lambda -> module.frontend -> module.api-gateway -> module.lambda criaria um ciclo no Terraform. Atualizar manualmente se a distribution for recriada (raro)."
   type        = string
 }
+
+variable "admin_api_gateway_domain_name" {
+  description = "Domínio do API Gateway (ex: abc123.execute-api.us-east-1.amazonaws.com), usado pelo CloudFront do admin (module.admin) como origin do proxy same-origin /admin/*. Valor literal, não referência de módulo — module.admin -> module.api-gateway -> module.lambda -> module.admin (via admin_origin) criaria um ciclo no Terraform. Atualizar manualmente se a REST API for recriada (raro)."
+  type        = string
+}
+
+variable "admin_api_gateway_stage_path" {
+  description = "Path do stage do API Gateway (ex: /v1), usado junto com admin_api_gateway_domain_name no origin_path do proxy /admin/* do CloudFront do admin. Mesmo motivo de valor literal do var acima."
+  type        = string
+  default     = "/v1"
+}

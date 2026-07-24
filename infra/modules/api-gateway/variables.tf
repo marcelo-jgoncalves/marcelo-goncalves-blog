@@ -16,6 +16,10 @@ variable "admin_authors_invoke_arn" {}
 variable "admin_authors_function_name" {}
 variable "admin_categorias_invoke_arn" {}
 variable "admin_categorias_function_name" {}
+variable "admin_session_invoke_arn" {}
+variable "admin_session_function_name" {}
+variable "admin_authorizer_invoke_arn" {}
+variable "admin_authorizer_function_name" {}
 
 variable "enable_xray_tracing" {
   description = "Habilita AWS X-Ray tracing no API Gateway stage"

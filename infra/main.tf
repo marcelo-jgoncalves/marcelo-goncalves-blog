@@ -19,12 +19,15 @@ module "lambda" {
   enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
   alarm_email              = var.alarm_email
 
-  posts_table_arn      = module.dynamodb.posts_table_arn
-  autores_table_arn    = module.dynamodb.autores_table_arn
-  categorias_table_arn = module.dynamodb.categorias_table_arn
-  uploads_bucket_name  = module.media.uploads_bucket_name
-  uploads_bucket_arn   = module.media.uploads_bucket_arn
-  admin_origin         = "https://${module.admin.cloudfront_url}"
+  posts_table_arn          = module.dynamodb.posts_table_arn
+  autores_table_arn        = module.dynamodb.autores_table_arn
+  categorias_table_arn     = module.dynamodb.categorias_table_arn
+  admin_sessions_table_arn = module.dynamodb.admin_sessions_table_arn
+  uploads_bucket_name      = module.media.uploads_bucket_name
+  uploads_bucket_arn       = module.media.uploads_bucket_arn
+  admin_origin             = "https://${module.admin.cloudfront_url}"
+  cognito_user_pool_id     = module.cognito.user_pool_id
+  cognito_client_id        = module.cognito.user_pool_client_id
 
   # Valor literal (var.frontend_cloudfront_distribution_id), não
   # module.frontend.cloudfront_distribution_id — essa referência criaria um
@@ -58,6 +61,10 @@ module "api-gateway" {
   admin_authors_function_name    = module.lambda.admin_authors_function_name
   admin_categorias_invoke_arn    = module.lambda.admin_categorias_invoke_arn
   admin_categorias_function_name = module.lambda.admin_categorias_function_name
+  admin_session_invoke_arn       = module.lambda.admin_session_invoke_arn
+  admin_session_function_name    = module.lambda.admin_session_function_name
+  admin_authorizer_invoke_arn    = module.lambda.admin_authorizer_invoke_arn
+  admin_authorizer_function_name = module.lambda.admin_authorizer_function_name
 }
 
 module "frontend" {
@@ -85,6 +92,12 @@ module "admin" {
   project_name              = var.project_name
   enable_cloudfront_logging = var.enable_cloudfront_logging
   log_retention_days        = var.log_retention_days
+
+  # Valores literais (var.admin_api_gateway_*), não module.api-gateway.* —
+  # essa referência criaria um ciclo: module.admin -> module.api-gateway ->
+  # module.lambda -> module.admin (via admin_origin). Ver infra/variables.tf.
+  api_gateway_domain_name = var.admin_api_gateway_domain_name
+  api_gateway_stage_path  = var.admin_api_gateway_stage_path
 }
 
 module "media" {
@@ -126,6 +139,8 @@ module "observability" {
     mediaUpload     = module.lambda.media_upload_function_name
     postScheduler   = module.lambda.post_scheduler_function_name
     imageProcessor  = module.media.image_processor_function_name
+    adminSession    = module.lambda.admin_session_function_name
+    adminAuthorizer = module.lambda.admin_authorizer_function_name
   }
 }
 

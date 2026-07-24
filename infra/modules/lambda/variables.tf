@@ -50,3 +50,18 @@ variable "alarm_email" {
   type        = string
   default     = ""
 }
+
+variable "admin_sessions_table_arn" {
+  description = "ARN da tabela DynamoDB de sessões do admin (BFF), usada por adminSession/adminAuthorizer"
+  type        = string
+}
+
+variable "cognito_user_pool_id" {
+  description = "ID do User Pool do Cognito, usado por adminSession/adminAuthorizer para verificar o idToken via JWKS"
+  type        = string
+}
+
+variable "cognito_client_id" {
+  description = "ID do App Client do Cognito, usado por adminSession/adminAuthorizer para verificar o idToken via JWKS"
+  type        = string
+}

@@ -32,3 +32,10 @@ provisioned_concurrency = 0
 # Confirmado via `aws cloudfront list-distributions` (dominio dsns2wusdrj9z.cloudfront.net).
 # Se a distribution for recriada, atualizar este ID manualmente.
 frontend_cloudfront_distribution_id = "E1XI31PS4HFJIH"
+
+# Domínio do API Gateway existente — valor literal (mesmo motivo de ciclo,
+# ver comentário em infra/variables.tf). REST API já deployada (sessão 53,
+# BFF do admin): https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1.
+# Se a REST API for recriada, atualizar este domínio manualmente.
+admin_api_gateway_domain_name = "5duus31al8.execute-api.us-east-1.amazonaws.com"
+admin_api_gateway_stage_path  = "/v1"

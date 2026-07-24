@@ -57,3 +57,19 @@ output "admin_categorias_function_name" {
 output "post_scheduler_function_name" {
   value = aws_lambda_function.post_scheduler.function_name
 }
+
+output "admin_session_invoke_arn" {
+  value = aws_lambda_function.admin_session.invoke_arn
+}
+
+output "admin_session_function_name" {
+  value = aws_lambda_function.admin_session.function_name
+}
+
+output "admin_authorizer_invoke_arn" {
+  value = aws_lambda_function.admin_authorizer.invoke_arn
+}
+
+output "admin_authorizer_function_name" {
+  value = aws_lambda_function.admin_authorizer.function_name
+}
