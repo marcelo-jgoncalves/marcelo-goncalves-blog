@@ -736,7 +736,7 @@ function generateSlug() {
             </div>
           </div>
           <div v-if="coverFullUrl" class="ia-preview-cover" :style="{ backgroundImage: `url(${coverFullUrl})` }"></div>
-          <div class="ia-read" v-html="form.conteudo_html || '<p style=\'color:#7E969E\'>Sem conteúdo ainda.</p>'"></div>
+          <div class="ia-read" v-html="sanitizeHtml(form.conteudo_html) || '<p style=\'color:#7E969E\'>Sem conteúdo ainda.</p>'"></div>
         </article>
       </div>
     </Transition>

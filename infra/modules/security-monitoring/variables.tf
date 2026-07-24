@@ -1,13 +1,16 @@
 variable "project_name" {
-  type = string
+  description = "Nome do projeto, usado como prefixo de nomenclatura de recursos (alarmes, detector GuardDuty)"
+  type        = string
 }
 
 variable "environment" {
-  type = string
+  description = "Ambiente de deploy (dev/prd), usado como sufixo de nomenclatura de recursos"
+  type        = string
 }
 
 variable "log_retention_days" {
-  type = number
+  description = "Dias de retenção dos logs monitorados (usado para alinhar alarmes/janelas de avaliação ao período de retenção real)"
+  type        = number
 }
 
 variable "enable_guardduty" {

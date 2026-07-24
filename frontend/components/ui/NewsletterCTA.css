@@ -140,6 +140,13 @@
   color: #112637;
 }
 
+/* Indicação visível de foco por teclado (a11y) — a regra global de
+   :focus-visible em globals.css não vence aqui por especificidade. */
+.nl-cta__input:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: -2px;
+}
+
 .nl-cta__input::placeholder {
   color: #6F8AA8;
 }

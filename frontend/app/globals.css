@@ -152,6 +152,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Foco visível global (a11y) — navegação por teclado precisa de indicação clara.
+   :focus-visible (não :focus) evita o anel aparecer em clique de mouse, só em
+   Tab/navegação por teclado. Alguns componentes (SearchBar, NewsletterCTA)
+   removiam outline sem substituto — cobertos pelo seletor genérico abaixo. */
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 2px;
+}
+
 body {
   overflow-x: hidden;
   font-family: var(--font-sans);

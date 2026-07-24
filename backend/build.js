@@ -40,8 +40,8 @@ async function build() {
         console.log(`🐧 Installing Linux binaries for Sharp...`);
         // Cria um package.json temporário para instalar apenas o sharp
         fs.writeFileSync(
-            path.join(funcDistDir, 'package.json'), 
-            JSON.stringify({ dependencies: { sharp: "^0.33.2" } }) // Versão compatível
+            path.join(funcDistDir, 'package.json'),
+            JSON.stringify({ dependencies: { sharp: "^0.35.3" } }) // CVEs de libvips corrigidos (>=0.35.0)
         );
         
         // Instala especificamente para Linux x64

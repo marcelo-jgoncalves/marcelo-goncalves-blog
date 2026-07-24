@@ -77,7 +77,13 @@
   font-weight: 600;
 }
 
-@media (max-width: 860px) {
+/* Breakpoint em 1300px, não 860px (achado de auditoria 2026-07-24): o menu
+   desktop (brand + links + dropdown + nav-cta, sem wrap/shrink) só cabe sem
+   overflow horizontal a partir de ~1290px de viewport — medido via
+   scrollWidth/clientWidth real (1280px ainda estourava ~7px). Entre 861px e
+   1300px o layout "desktop" ficava cortado/com scroll horizontal; agora essa
+   faixa inteira (tablet) cai no menu mobile (hambúrguer), que já funciona. */
+@media (max-width: 1300px) {
   .site-header .menu {
     display: none;
   }
@@ -188,7 +194,7 @@
   font-family: var(--mono);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1300px) {
   .site-header .nav-cta {
     display: none;
   }
@@ -206,7 +212,7 @@
   padding: var(--sp-2);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1300px) {
   .site-header .nav-mobile-btn {
     display: flex;
   }

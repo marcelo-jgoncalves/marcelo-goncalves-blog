@@ -80,6 +80,17 @@ resource "aws_cloudfront_response_headers_policy" "frontend_security_headers" {
       content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://youtube-nocookie.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
       override                = true
     }
+
+    # HSTS ausente até aqui (achado de auditoria 2026-07-24) — protege contra
+    # downgrade HTTP mesmo sem domínio customizado ainda (funciona em
+    # *.cloudfront.net normalmente). preload não habilitado: exigiria domínio
+    # definitivo e envio à lista de preload do Chrome, fora de escopo agora.
+    strict_transport_security {
+      access_control_max_age_sec = 63072000 # 2 anos
+      include_subdomains         = true
+      preload                    = false
+      override                   = true
+    }
   }
 }
 
@@ -225,10 +236,10 @@ resource "aws_cloudfront_distribution" "frontend" {
   # sem isso, /artigos?nextToken=abc serviria o conteúdo da página 1.
 
   ordered_cache_behavior {
-    path_pattern     = "/artigos"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "Lambda-SSR"
+    path_pattern               = "/artigos"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
     forwarded_values {
@@ -247,10 +258,10 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/categoria/*"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "Lambda-SSR"
+    path_pattern               = "/categoria/*"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
     forwarded_values {

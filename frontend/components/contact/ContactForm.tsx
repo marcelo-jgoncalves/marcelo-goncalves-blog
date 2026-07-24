@@ -43,6 +43,13 @@ const EMPTY_FORM: FormState = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const REQUIRED_FIELD_LABELS: Record<'nome' | 'empresa' | 'email' | 'mensagem', string> = {
+  nome: 'Nome',
+  empresa: 'Empresa',
+  email: 'E-mail válido',
+  mensagem: 'Como podemos ajudar',
+};
+
 // TODO: integração real fica para uma sessão futura — hoje não existe endpoint de contato.
 // Substituir este envio simulado por um POST para uma Lambda nova, mantendo esta validação
 // client-side como primeira barreira.
@@ -56,34 +63,47 @@ export default function ContactForm() {
   const interesseInicial = INTERESSE_VALUES.includes(assuntoParam) ? assuntoParam : '';
 
   const [form, setForm] = useState<FormState>({ ...EMPTY_FORM, interesse: interesseInicial });
-  const [erro, setErro] = useState(false);
+  const [camposInvalidos, setCamposInvalidos] = useState<Set<keyof typeof REQUIRED_FIELD_LABELS>>(new Set());
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
+
+  const erro = camposInvalidos.size > 0;
 
   const set = (key: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
-    setErro(false);
+    setCamposInvalidos((prev) => {
+      if (!prev.has(key as keyof typeof REQUIRED_FIELD_LABELS)) return prev;
+      const next = new Set(prev);
+      next.delete(key as keyof typeof REQUIRED_FIELD_LABELS);
+      return next;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const emailOk = EMAIL_RE.test(form.email.trim());
-    if (!form.nome.trim() || !form.empresa.trim() || !emailOk || !form.mensagem.trim()) {
-      setErro(true);
+    const invalidos = new Set<keyof typeof REQUIRED_FIELD_LABELS>();
+    if (!form.nome.trim()) invalidos.add('nome');
+    if (!form.empresa.trim()) invalidos.add('empresa');
+    if (!emailOk) invalidos.add('email');
+    if (!form.mensagem.trim()) invalidos.add('mensagem');
+    if (invalidos.size > 0) {
+      setCamposInvalidos(invalidos);
       return;
     }
     setEnviando(true);
     await submitContact(form);
     setEnviando(false);
     setEnviado(true);
-    setErro(false);
+    setCamposInvalidos(new Set());
   };
 
   const novoEnvio = () => {
     setEnviado(false);
     setForm(EMPTY_FORM);
+    setCamposInvalidos(new Set());
   };
 
   if (enviado) {
@@ -108,11 +128,25 @@ export default function ContactForm() {
       <div className="contact-form-grid">
         <label className="contact-field">
           <span>Nome <span className="contact-required">*</span></span>
-          <input value={form.nome} onChange={set('nome')} placeholder="Seu nome" required />
+          <input
+            value={form.nome}
+            onChange={set('nome')}
+            placeholder="Seu nome"
+            required
+            aria-invalid={camposInvalidos.has('nome')}
+            aria-describedby={camposInvalidos.has('nome') ? 'contact-form-error' : undefined}
+          />
         </label>
         <label className="contact-field">
           <span>Empresa <span className="contact-required">*</span></span>
-          <input value={form.empresa} onChange={set('empresa')} placeholder="Nome da empresa" required />
+          <input
+            value={form.empresa}
+            onChange={set('empresa')}
+            placeholder="Nome da empresa"
+            required
+            aria-invalid={camposInvalidos.has('empresa')}
+            aria-describedby={camposInvalidos.has('empresa') ? 'contact-form-error' : undefined}
+          />
         </label>
         <label className="contact-field">
           <span>Cargo <span className="contact-optional">opcional</span></span>
@@ -120,7 +154,15 @@ export default function ContactForm() {
         </label>
         <label className="contact-field">
           <span>E-mail <span className="contact-required">*</span></span>
-          <input type="email" value={form.email} onChange={set('email')} placeholder="voce@empresa.com" required />
+          <input
+            type="email"
+            value={form.email}
+            onChange={set('email')}
+            placeholder="voce@empresa.com"
+            required
+            aria-invalid={camposInvalidos.has('email')}
+            aria-describedby={camposInvalidos.has('email') ? 'contact-form-error' : undefined}
+          />
         </label>
         <label className="contact-field">
           <span>Telefone <span className="contact-optional">opcional</span></span>
@@ -160,12 +202,14 @@ export default function ContactForm() {
           onChange={set('mensagem')}
           placeholder="Conte um pouco sobre sua empresa, seus desafios ou o objetivo do projeto."
           required
+          aria-invalid={camposInvalidos.has('mensagem')}
+          aria-describedby={camposInvalidos.has('mensagem') ? 'contact-form-error' : undefined}
         />
       </label>
 
       {erro && (
-        <div className="contact-error">
-          Preencha nome, empresa, um e-mail válido e a mensagem para continuar.
+        <div id="contact-form-error" className="contact-error" role="alert" aria-live="assertive">
+          Preencha corretamente: {Array.from(camposInvalidos).map((campo) => REQUIRED_FIELD_LABELS[campo]).join(', ')}.
         </div>
       )}
 

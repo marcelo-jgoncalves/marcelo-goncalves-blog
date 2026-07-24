@@ -34,6 +34,14 @@
   letter-spacing: -.005em;
 }
 
+/* :focus-within acima já indica foco no wrapper, mas navegação por teclado
+   também precisa de indicação visível no próprio input (a11y) — a regra global
+   de :focus-visible em globals.css não vence aqui por especificidade. */
+.search-bar input:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 2px;
+}
+
 .search-bar input::placeholder {
   color: rgba(255, 255, 255, .46);
 }

@@ -46,7 +46,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     if (httpMethod === "POST") {
       if (!body) throw new Error("Body is required");
       const postData = JSON.parse(body);
-      return await savePost(postData, true);
+      return await savePost(postData, true, requestId);
     }
 
     // 4. Atualizar
@@ -54,7 +54,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if (!body) throw new Error("Body is required");
       const postData = JSON.parse(body);
       if (postData.slug !== slug) throw new Error("Slug mismatch");
-      return await savePost(postData, false);
+      return await savePost(postData, false, requestId);
     }
 
     // 5. Deletar
@@ -73,7 +73,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     logger.error("admin_posts_error", { requestId, httpMethod, slug, error: message });
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal Server Error" }),
+      body: JSON.stringify({ message: "Internal Server Error", requestId }),
       headers,
     };
   }
@@ -129,12 +129,14 @@ async function getPost(slug: string) {
   };
 }
 
-async function savePost(rawData: unknown, isNew: boolean) {
+async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   const parsed = postInputSchema.safeParse(rawData);
   if (!parsed.success) {
+    const issues = parsed.error.issues.map((issue) => ({ path: issue.path.join("."), message: issue.message }));
+    logger.warn("admin_posts_validation_error", { requestId, issues });
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: "Invalid post data" }),
+      body: JSON.stringify({ message: "Invalid post data", issues }),
       headers,
     };
   }

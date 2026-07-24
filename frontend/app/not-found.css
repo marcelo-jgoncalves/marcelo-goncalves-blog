@@ -6,3 +6,10 @@
   margin-block: 0;
   padding-block: var(--sp-9);
 }
+
+/* app/error.tsx (error boundary global) */
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
