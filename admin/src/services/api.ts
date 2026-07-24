@@ -2,13 +2,14 @@
 
 import type { Post, Autor } from '../types'
 
-// Sem prefixo por padrão: o CloudFront do admin faz proxy same-origin de
-// /admin/* para o API Gateway (ver infra/modules/admin/cloudfront.tf) — a
-// sessão (cookie httpOnly) viaja automaticamente com `credentials: 'include'`,
-// sem precisar montar Authorization header. VITE_API_BASE_URL só é usado em
-// dev local direto contra a API real (cross-origin, sem cookie de sessão
-// funcionando — ver reference_admin_local_dev_env).
-const API_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+// Sempre caminho relativo — nunca VITE_API_BASE_URL (URL absoluta do API
+// Gateway) aqui. O CloudFront do admin faz proxy same-origin de /admin/*
+// para o API Gateway (infra/modules/admin/cloudfront.tf); chamar a URL
+// absoluta contornaria esse proxy, tornando a chamada cross-origin de
+// verdade — e uma requisição cross-origin com `credentials: 'include'`
+// nunca funciona com Access-Control-Allow-Origin: '*' (exigência do
+// próprio spec de CORS), então o cookie de sessão jamais seria enviado.
+// Achado ao validar o login em produção pela primeira vez (sessão 2026-07-24).
 
 function redirectToLogin() {
   window.location.href = '/login'
@@ -20,7 +21,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
     ...(options.headers || {}),
   }
 
-  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers, credentials: 'include' })
+  const res = await fetch(endpoint, { ...options, headers, credentials: 'include' })
 
   // 401 (sem sessão/Lambda authorizer lançou "Unauthorized") ou 403 (policy
   // Deny do Lambda Authorizer — cookie ausente/sessão expirada/token Bearer
