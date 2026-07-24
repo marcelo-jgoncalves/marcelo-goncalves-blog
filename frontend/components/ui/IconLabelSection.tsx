@@ -1,11 +1,16 @@
 // frontend/components/ui/IconLabelSection.tsx
 // Extraído de 3 landings de pilar (automacao/plataforma "Especialidades", software
 // "Princípios") — mesmo papel semântico ("grade de competências com ícone e rótulo"),
-// só o nome de cada campo do domínio muda. Recebe as classes de CSS Module de cada
-// página via prop `classes` para não alterar nenhum seletor CSS existente (zero
-// risco visual).
+// só o nome de cada campo do domínio muda. `section`/`wrap`/`head`/`eyebrow`/
+// `heading`/`desc` continuam vindo do CSS Module de cada página (variam pouco e não
+// eram o problema); a grade em si (`list`/`item`/`numeral`/`itemTitle`) é fixa,
+// definida em IconLabelSection.module.css no padrão de /plataforma (2 colunas) —
+// antes cada página tinha sua própria cópia, com /automacao e /software divergindo
+// de /plataforma (4 colunas em telas largas) sem motivo real (decisão de Marcelo,
+// 2026-07-24: unificar no padrão de /plataforma).
 
 import type { ComponentType, ReactNode } from 'react';
+import styles from './IconLabelSection.module.css';
 
 export interface IconLabelItem {
   label: string;
@@ -19,10 +24,6 @@ export interface IconLabelSectionClasses {
   eyebrow: string;
   heading: string;
   desc: string;
-  list: string;
-  item: string;
-  numeral: string;
-  itemTitle: string;
 }
 
 interface IconLabelSectionProps {
@@ -52,13 +53,13 @@ export default function IconLabelSection({
           <h2 className={classes.heading}>{title}</h2>
           <p className={classes.desc}>{description}</p>
         </div>
-        <div className={classes.list}>
+        <div className={styles.list}>
           {items.map(({ label, Icon }) => (
-            <div className={classes.item} key={label}>
-              <span className={classes.numeral}>
+            <div className={styles.item} key={label}>
+              <span className={styles.numeral}>
                 <Icon />
               </span>
-              <span className={classes.itemTitle}>{label}</span>
+              <span className={styles.itemTitle}>{label}</span>
             </div>
           ))}
         </div>

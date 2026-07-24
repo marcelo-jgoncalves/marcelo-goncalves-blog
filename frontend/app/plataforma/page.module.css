@@ -276,54 +276,9 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Grade "mosaico" com hairlines, mesmo padrão de Casos de Aplicação
-   (frontend/app/inteligencia-artificial/page.module.css .casosGrid/.casoItem) —
-   container: border-top+border-left; cada célula: border-right+border-bottom —
-   fecha em retângulo perfeito porque 10 é divisível por 1 e 2 colunas. */
-.especialidadesList {
-  display: grid;
-  grid-template-columns: 1fr;
-  border-top: 1px solid #DDD4C4;
-  border-left: 1px solid #DDD4C4;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-@media (min-width: 680px) { .especialidadesList { grid-template-columns: repeat(2, 1fr); } }
-
-.especialidadeItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--sp-3);
-  background: rgba(255, 255, 255, .55);
-  border-right: 1px solid #DDD4C4;
-  border-bottom: 1px solid #DDD4C4;
-  padding: var(--sp-7) var(--sp-7);
-  min-width: 0;
-}
-
-.especialidadeNumeral {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(201, 96, 60, .14);
-  color: var(--clay);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  flex: none;
-}
-
-.especialidadeTitle {
-  font-size: var(--type-lead);
-  font-weight: 800;
-  letter-spacing: -.015em;
-  color: var(--ink);
-  min-width: 0;
-}
+/* Grade "mosaico" com hairlines — movida para IconLabelSection.module.css
+   (componente compartilhado), decisão de Marcelo (2026-07-24) para unificar
+   o visual entre as 3 páginas que usam essa grade. */
 
 /* ===== NOSSA ABORDAGEM ===== */
 .abordagem {

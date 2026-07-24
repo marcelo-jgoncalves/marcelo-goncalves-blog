@@ -266,10 +266,6 @@ export default function EngenhariaDeSoftwarePage() {
           eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
           heading: styles.h2,
           desc: styles.principiosDesc,
-          list: styles.principiosList,
-          item: styles.principioItem,
-          numeral: styles.principioNumeral,
-          itemTitle: styles.principioTitle,
         }}
       />
 

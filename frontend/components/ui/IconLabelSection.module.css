@@ -1,0 +1,54 @@
+/* frontend/components/ui/IconLabelSection.module.css
+   Grade "mosaico" com hairlines (container: border-top+border-left; cada célula:
+   border-right+border-bottom — fecha em retângulo perfeito). Antes vivia duplicada
+   em 3 page.module.css (automacao/plataforma/software) com uma divergência real:
+   automacao/software adicionavam um breakpoint 1040px→4 colunas que /plataforma não
+   tinha (ficava em 2 colunas sempre). Padronizado no padrão de /plataforma (2
+   colunas) — decisão de Marcelo (2026-07-24) para que a "tabela" de especialidades/
+   princípios seja visualmente idêntica em toda página que a usa. */
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid #DDD4C4;
+  border-left: 1px solid #DDD4C4;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+@media (min-width: 680px) { .list { grid-template-columns: repeat(2, 1fr); } }
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-3);
+  background: rgba(255, 255, 255, .55);
+  border-right: 1px solid #DDD4C4;
+  border-bottom: 1px solid #DDD4C4;
+  padding: var(--sp-7) var(--sp-7);
+  min-width: 0;
+}
+
+.numeral {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(201, 96, 60, .14);
+  color: var(--clay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  flex: none;
+}
+
+.itemTitle {
+  font-size: var(--type-lead);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  min-width: 0;
+  overflow-wrap: break-word;
+}

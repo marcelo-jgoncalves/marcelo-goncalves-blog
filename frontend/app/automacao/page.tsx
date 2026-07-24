@@ -241,10 +241,6 @@ export default function IntegracaoAutomacaoPage() {
           eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
           heading: styles.h2,
           desc: styles.sectionDesc,
-          list: styles.especialidadesList,
-          item: styles.especialidadeItem,
-          numeral: styles.especialidadeNumeral,
-          itemTitle: styles.especialidadeTitle,
         }}
       />
 
