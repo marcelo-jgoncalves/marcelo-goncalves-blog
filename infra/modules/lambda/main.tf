@@ -243,8 +243,10 @@ resource "aws_lambda_function" "admin_session" {
 }
 
 # --- adminAuthorizer (REQUEST): substitui o COGNITO_USER_POOLS nativo nas
-# rotas /admin/* protegidas — valida cookie de sessão (fluxo novo) ou
-# Authorization Bearer (fluxo legado, mantido durante a transição). ---
+# rotas /admin/* protegidas — valida só o cookie de sessão opaca. O
+# fallback Authorization Bearer (fluxo legado da transição) foi removido
+# em 2026-07-24 depois de confirmar o fluxo de cookie funcionando ponta a
+# ponta em produção. ---
 resource "aws_lambda_function" "admin_authorizer" {
   function_name = "${var.project_name}-${var.environment}-adminAuthorizer"
   role          = aws_iam_role.adminAuthorizer_role.arn
@@ -255,11 +257,11 @@ resource "aws_lambda_function" "admin_authorizer" {
   filename         = "${path.root}/builds/adminAuthorizer.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminAuthorizer.zip")
 
+  # COGNITO_USER_POOL_ID/COGNITO_CLIENT_ID removidos junto com o fallback
+  # Bearer — não são mais lidos por este handler.
   environment {
     variables = {
       ADMIN_SESSIONS_TABLE = "${var.project_name}-${var.environment}-admin-sessions"
-      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
-      COGNITO_CLIENT_ID    = var.cognito_client_id
       LOG_LEVEL            = var.log_level
       XRAY_ENABLED         = tostring(var.enable_xray_tracing)
     }

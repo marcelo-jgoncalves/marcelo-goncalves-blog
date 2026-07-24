@@ -1,18 +1,12 @@
 import { APIGatewayEventRequestContextWithAuthorizer, APIGatewayRequestAuthorizerEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
-import { verifyIdToken } from '../../common/cognitoJwt';
 
 jest.mock('../../common/dynamodb', () => ({
   dynamo: { send: jest.fn() },
 }));
 
-jest.mock('../../common/cognitoJwt', () => ({
-  verifyIdToken: jest.fn(),
-}));
-
 const mockSend = dynamo.send as jest.Mock;
-const mockVerifyIdToken = verifyIdToken as jest.Mock;
 
 const METHOD_ARN = 'arn:aws:execute-api:us-east-1:123:abc/v1/GET/admin/posts';
 
@@ -38,7 +32,6 @@ function event(headers: Record<string, string> = {}): APIGatewayRequestAuthorize
 describe('adminAuthorizer handler', () => {
   beforeEach(() => {
     mockSend.mockReset();
-    mockVerifyIdToken.mockReset();
   });
 
   it('Allow quando o cookie de sessão é válido', async () => {
@@ -49,7 +42,6 @@ describe('adminAuthorizer handler', () => {
 
     expect(result?.policyDocument.Statement[0].Effect).toBe('Allow');
     expect(result?.principalId).toBe('user-sub-1');
-    expect(mockVerifyIdToken).not.toHaveBeenCalled();
   });
 
   it('Deny quando o cookie de sessão não existe/expirou no Dynamo', async () => {
@@ -58,24 +50,15 @@ describe('adminAuthorizer handler', () => {
     expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
   });
 
-  it('Allow via fallback Bearer legado quando não há cookie', async () => {
-    mockVerifyIdToken.mockResolvedValue({ sub: 'user-sub-2', email: 'e2@x.com', username: 'user2' });
-    const result = await handler(event({ Authorization: 'Bearer good-token' }), ctx, jest.fn());
-    expect(result?.policyDocument.Statement[0].Effect).toBe('Allow');
-    expect(result?.principalId).toBe('user-sub-2');
-    expect(mockSend).not.toHaveBeenCalled();
-  });
-
-  it('Deny quando o Bearer token é inválido', async () => {
-    mockVerifyIdToken.mockRejectedValue(new Error('invalid'));
-    const result = await handler(event({ Authorization: 'Bearer bad-token' }), ctx, jest.fn());
+  it('Deny quando um Authorization Bearer é enviado sem cookie (fallback legado removido)', async () => {
+    const result = await handler(event({ Authorization: 'Bearer any-token' }), ctx, jest.fn());
     expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
+    expect(mockSend).not.toHaveBeenCalled();
   });
 
   it('Deny quando não há cookie nem Authorization header', async () => {
     const result = await handler(event({}), ctx, jest.fn());
     expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
     expect(mockSend).not.toHaveBeenCalled();
-    expect(mockVerifyIdToken).not.toHaveBeenCalled();
   });
 });

@@ -646,6 +646,26 @@ resource "aws_api_gateway_method_settings" "throttle_all" {
   }
 }
 
+# Limite mais rígido só no endpoint de sessão do admin (login/me/logout do
+# BFF) — POST /admin/session (login) faz InitiateAuth indiretamente via
+# verificação de JWT e é o alvo natural de tentativa de força bruta/replay
+# de sessão; o throttle global (var.throttle_rate_limit) é dimensionado
+# pro tráfego de leitura pública, generoso demais pra um endpoint de auth
+# de admin único. Aplica ao recurso inteiro (ANY cobre GET/POST/DELETE),
+# não só POST, porque method_settings não permite mirar um verbo dentro de
+# um método ANY único — aceitável, os 3 verbos aqui são igualmente
+# sensíveis (sessão do único admin do sistema).
+resource "aws_api_gateway_method_settings" "throttle_admin_session" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  stage_name  = aws_api_gateway_stage.main.stage_name
+  method_path = "admin/session/ANY"
+
+  settings {
+    throttling_rate_limit  = 5
+    throttling_burst_limit = 10
+  }
+}
+
 # --- 1. Recursos para Listagem ---
 
 # /posts (Já existe /post singular, agora criamos o plural)
