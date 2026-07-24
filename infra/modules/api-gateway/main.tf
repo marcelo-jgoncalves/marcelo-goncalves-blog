@@ -28,22 +28,25 @@ resource "aws_api_gateway_authorizer" "cognito_auth" {
 # ter efeito imediato, nunca servir uma decisão Allow cacheada de uma
 # sessão já apagada.
 #
-# identity_source = Host (não Cookie/Authorization): achado real em
-# produção (sessão 2026-07-24) — quando o identity_source lista múltiplos
-# headers, o API Gateway trata TODOS como obrigatórios e retorna 401 SEM
-# nunca invocar a Lambda se qualquer um estiver ausente (confirmado via
-# CloudWatch: zero log streams do adminAuthorizer, apesar de config e
-# permissão corretas). Como o fluxo normal manda só Cookie (sem
-# Authorization), isso bloqueava 100% das chamadas autenticadas. Host
-# sempre existe em qualquer requisição HTTP — garante que a Lambda seja
-# sempre invocada, que decide internamente com base em qual header (Cookie
-# ou Authorization) realmente veio.
+# identity_source = "" (vazio): achado real em produção (sessão 2026-07-24)
+# — quando o identity_source lista um ou mais headers, o API Gateway trata
+# TODOS como obrigatórios e retorna 401 (UnauthorizedException) SEM nunca
+# invocar a Lambda se qualquer um estiver ausente (confirmado via
+# CloudWatch: zero log streams do adminAuthorizer). Tentativa 1 (Cookie +
+# Authorization juntos) falhou porque o fluxo normal manda só Cookie.
+# Tentativa 2 (só "Host", header sempre presente em qualquer request) TAMBÉM
+# falhou com o mesmo 401 sem invocação — Host é um header reservado/
+# pseudo-header que o API Gateway não aceita como identity source válido
+# (confirmado via curl direto contra o API Gateway, sem CloudFront no meio).
+# Identity source vazio é o padrão documentado da AWS para "invocar sempre,
+# sem exigir nenhum header específico" — a Lambda decide internamente com
+# base em qual header (Cookie ou Authorization) realmente veio.
 resource "aws_api_gateway_authorizer" "admin_cookie_auth" {
   name                             = "AdminCookieAuthorizer"
   type                             = "REQUEST"
   rest_api_id                      = aws_api_gateway_rest_api.main.id
   authorizer_uri                   = var.admin_authorizer_invoke_arn
-  identity_source                  = "method.request.header.Host"
+  identity_source                  = ""
   authorizer_result_ttl_in_seconds = 0
 }
 
