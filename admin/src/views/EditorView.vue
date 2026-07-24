@@ -67,7 +67,17 @@ const authorAvatarUrl = computed(() => {
   return `${base}-480.webp`
 })
 
-const form = ref<Post>({
+// e_popular/e_projeto viram boolean só aqui (estado de UI do toggle) — o
+// tipo real de Post (contrato da API) é 0|1 (backend/src/common/types.ts,
+// DynamoDB não tem boolean em índice). A conversão pra 0|1 já acontecia no
+// save (handleSubmit, "? 1 : 0"); só o tipo do form estava errado, herdando
+// Post diretamente em vez de ter seu próprio tipo de estado local.
+type PostFormState = Omit<Post, 'e_popular' | 'e_projeto'> & {
+  e_popular: boolean
+  e_projeto: boolean
+}
+
+const form = ref<PostFormState>({
   titulo: '',
   slug: '',
   conteudo_html: '',
