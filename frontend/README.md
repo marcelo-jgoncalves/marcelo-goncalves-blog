@@ -28,4 +28,4 @@ npm run test:e2e     # Playwright (e2e)
 
 ## Mais contexto
 
-Ver `CLAUDE.md` e `docs/contract.md` na raiz do monorepo.
+Ver `CLAUDE.md` e `contexto/contract.md` na raiz do monorepo.

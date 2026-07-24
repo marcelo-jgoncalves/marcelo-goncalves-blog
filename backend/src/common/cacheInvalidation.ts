@@ -5,7 +5,8 @@
 // de escrita que mudam o conteúdo público de um post (adminPosts.savePost/
 // deletePost, postScheduler.publishPost). Sem isso, o `revalidate=60` do
 // Next.js só expira naturalmente; com isso, uma edição/publicação aparece
-// no site público sem esperar a janela de cache (docs/plano-cache-invalidation-cloudfront.md).
+// no site público sem esperar a janela de cache (plano completo arquivado fora do
+// repo: marcelo-goncalves-blog-arquivo/docs-historico/plano-cache-invalidation-cloudfront.md).
 //
 // Fase 1 apenas: não cobre o cache interno do OpenNext (efêmero, por
 // instância Lambda) — deliberadamente deferido (CLAUDE.md, backlog #28)

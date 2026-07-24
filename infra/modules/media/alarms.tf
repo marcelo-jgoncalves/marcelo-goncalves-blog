@@ -1,7 +1,8 @@
 # infra/modules/media/alarms.tf
 # Alarme CloudWatch para a Lambda imageProcessor — ausente da lista original
 # de monitored_functions do modulo lambda porque imageProcessor vive no
-# modulo media (achado #2, docs/auditoria-engenharia/06-observabilidade.md).
+# modulo media (achado #2, registro historico arquivado fora do repo em
+# marcelo-goncalves-blog-arquivo/docs-historico/auditoria-engenharia/06-observabilidade.md).
 # Topico SNS proprio, seguindo o mesmo padrao dos modulos lambda/api-gateway
 # (cada modulo cria seu topico — evita dependencia circular entre modulos).
 

@@ -9,7 +9,7 @@ variable "project_name" {
 }
 
 # Point-in-Time Recovery — desabilitado em dev por padrão (custo real, ~$0.20/GB-mês
-# em us-east-1, achado de docs/investigacao-dynamodb.md ponto 2). Mesmo padrão de
+# em us-east-1, achado de registro histórico arquivado fora do repo (marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md), ponto 2). Mesmo padrão de
 # toggle de enable_xray_tracing/enable_guardduty — ligar só quando convier.
 variable "enable_point_in_time_recovery" {
   description = "Habilita Point-in-Time Recovery nas 3 tabelas (posts/autores/categorias). Desativado em dev por custo; ativar em produção."
@@ -69,7 +69,8 @@ resource "aws_dynamodb_table" "posts" {
   # hash_key das GSIs ProjetoPorData/PopularesPorData. O atributo só existe
   # no item quando o respectivo flag é 1 (REMOVE quando 0), então a GSI
   # nunca concentra 100% dos itens numa única partição de valor fixo "0".
-  # Ver docs/plano-migracao-gsi-dynamodb.md.
+  # Plano de migração completo: registro histórico arquivado fora do repo
+  # (marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
   attribute {
     name = "e_projeto_marker"
     type = "S"
@@ -80,12 +81,13 @@ resource "aws_dynamodb_table" "posts" {
     type = "S"
   }
 
-  # Projections trocadas de ALL para INCLUDE (achado #13 de
-  # docs/auditoria-engenharia/07-*.md): ALL duplicava conteudo_html (maior
-  # campo do item) em cada uma das 5 GSIs. A lista de non_key_attributes
-  # abaixo foi extraída dos consumidores reais (getPosts/adminPosts/
-  # postScheduler no backend + componentes de listagem no frontend) — ver
-  # docs/investigacao-dynamodb.md. As keys (hash/range da própria GSI +
+  # Projections trocadas de ALL para INCLUDE (achado #13 da auditoria de
+  # engenharia, registro histórico arquivado fora do repo em
+  # marcelo-goncalves-blog-arquivo/docs-historico/auditoria-engenharia/07-*.md):
+  # ALL duplicava conteudo_html (maior campo do item) em cada uma das 5 GSIs.
+  # A lista de non_key_attributes abaixo foi extraída dos consumidores reais
+  # (getPosts/adminPosts/postScheduler no backend + componentes de listagem
+  # no frontend) — ver registro histórico arquivado (marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md). As keys (hash/range da própria GSI +
   # chave primária da tabela) são sempre projetadas automaticamente pela AWS,
   # independente do projection_type, e não precisam aparecer na lista.
 
@@ -119,8 +121,9 @@ resource "aws_dynamodb_table" "posts" {
   # GSI 3: ProjetoPorData_v2 (Para /o-projeto) — sparse index via
   # e_projeto_marker (string, só existe quando e_projeto=1). Substitui a
   # GSI original (hash_key = e_projeto, Number 0/1 — anti-padrão de baixa
-  # cardinalidade, achado #2 de docs/auditoria-engenharia/07-*.md). Migração
-  # completa em docs/plano-migracao-gsi-dynamodb.md.
+  # cardinalidade, achado #2 da auditoria de engenharia, mesmo registro
+  # histórico arquivado citado acima). Migração completa: registro histórico
+  # arquivado (marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
   global_secondary_index {
     name            = "ProjetoPorData_v2"
     hash_key        = "e_projeto_marker"

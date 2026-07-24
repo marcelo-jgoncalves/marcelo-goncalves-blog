@@ -3,7 +3,7 @@
 // Contador atômico de posts publicados — substitui a Query com
 // `Select: "COUNT"` que getAllPosts/getProjectPosts disparavam em paralelo
 // a cada requisição (achado real da auditoria de performance dedicada,
-// docs/auditoria-performance/01-perf-load.md: essa segunda query dobrava o
+// contexto/auditoria-performance/01-perf-load.md: essa segunda query dobrava o
 // custo de leitura e tornava /artigos a rota mais lenta no teste de carga).
 //
 // Vive como um item próprio na tabela `posts` (slug = COUNTERS_SLUG), nunca

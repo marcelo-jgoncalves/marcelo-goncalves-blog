@@ -4,7 +4,7 @@ Thumbs.db
 *.log
 
 # --- Credenciais locais (nunca versionar) ---
-docs/creds*.txt
+contexto/creds*.txt
 
 # --- Auditoria de Performance (artefatos brutos, não versionar) ---
 .lighthouseci/
@@ -86,14 +86,8 @@ admin/coverage/
 .claude/
 
 # --- Documentação interna e contexto de projeto (mantidos só localmente) ---
-docs/
+contexto/
 .project-context.md
-specs/
-new-prots/
-style-reference/
-verify-eyebrow-fix/
-visual-test.md
-maislidos.md
 
 # --- IDEs (Configurações locais) ---
 .vscode/

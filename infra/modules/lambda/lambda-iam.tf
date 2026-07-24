@@ -23,7 +23,8 @@ locals {
   }
 
   # adminPosts/postScheduler invalidam o cache do CloudFront sob demanda
-  # após save/publish/delete (docs/plano-cache-invalidation-cloudfront.md).
+  # após save/publish/delete (plano completo arquivado fora do repo:
+  # marcelo-goncalves-blog-arquivo/docs-historico/plano-cache-invalidation-cloudfront.md).
   cloudfront_invalidation_statement = {
     Action   = ["cloudfront:CreateInvalidation"]
     Effect   = "Allow"

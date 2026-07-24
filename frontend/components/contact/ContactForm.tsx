@@ -18,7 +18,8 @@ interface FormState {
 
 // Mesmos slugs das 4 landing pages de pilar (frontend/app/<slug>/page.tsx) — usados
 // como valor de ?assunto= no link de cada landing para /contato, e como value do
-// <select> aqui. Ver docs/analise-funil-ctas-servicos.md, achado 5.
+// <select> aqui. Achado 5 da análise de funil de CTAs — registro histórico
+// arquivado fora do repo (marcelo-goncalves-blog-arquivo/docs-historico/analise-funil-ctas-servicos.md).
 export const INTERESSE_OPTIONS = [
   { value: 'engenharia-de-software', label: 'Engenharia de Software' },
   { value: 'cloud-devops', label: 'Cloud & DevOps' },

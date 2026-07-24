@@ -24,4 +24,4 @@ Não usamos `.env`/`dotenv` neste workspace — todo env var de Lambda é injeta
 
 ## Mais contexto
 
-Ver `CLAUDE.md` e `docs/contract.md` na raiz do monorepo.
+Ver `CLAUDE.md` e `contexto/contract.md` na raiz do monorepo.

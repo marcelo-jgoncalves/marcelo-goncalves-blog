@@ -22,8 +22,10 @@ export interface Post {
   e_projeto: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
   // Sparse index markers — só existem no item quando o respectivo flag é 1.
   // hash_key de PopularesPorData_v2/ProjetoPorData_v2 (substituem GSIs com
-  // hash_key = e_popular/e_projeto, baixa cardinalidade — ver
-  // docs/plano-migracao-gsi-dynamodb.md). Nunca lidos/escritos fora de
+  // hash_key = e_popular/e_projeto, baixa cardinalidade — ver registro
+  // histórico arquivado fora do repo em
+  // marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
+  // Nunca lidos/escritos fora de
   // savePost() e getPosts() — e_popular/e_projeto continuam a fonte de
   // verdade para toda lógica de negócio e UI.
   e_popular_marker?: "POP";

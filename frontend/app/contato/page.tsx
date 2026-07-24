@@ -47,7 +47,8 @@ const STEPS = [
 ];
 
 // Mesmos 4 pilares de frontend/app/page.tsx (PILLARS) — mantidos em sincronia
-// manualmente (não há módulo compartilhado ainda). Ver docs/analise-funil-ctas-servicos.md.
+// manualmente (não há módulo compartilhado ainda). Mesmo registro histórico
+// arquivado citado em ContactForm.tsx.
 const AREAS = [
   { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', icon: <FontAwesomeIcon icon={faGear} />, href: '/software' },
   { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', icon: <FontAwesomeIcon icon={faBrain} />, href: '/inteligencia-artificial' },
