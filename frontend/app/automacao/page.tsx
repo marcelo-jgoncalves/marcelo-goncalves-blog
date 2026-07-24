@@ -7,9 +7,12 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
+import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import IconLabelSection from '@/components/ui/IconLabelSection';
+import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconIntegracaoSistemas,
   IconAutomacaoProcessos,
@@ -206,60 +209,68 @@ export default function IntegracaoAutomacaoPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <section id="beneficios" className={styles.beneficios} data-audit="ia2-beneficios">
-        <div className={styles.beneficiosOverlay} aria-hidden="true" />
-        <div className={styles.beneficiosWrap}>
-          <div>
-            <span className={styles.eyebrowDark}>Benefícios</span>
-            <h2 className={styles.h2Dark}>Uma operação conectada, do primeiro ao último sistema</h2>
-          </div>
-          <div className={styles.beneficiosList}>
-            {BENEFICIOS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BeneficiosSection
+        dataAudit="ia2-beneficios"
+        title="Uma operação conectada, do primeiro ao último sistema"
+        items={BENEFICIOS}
+        classes={{
+          section: styles.beneficios,
+          overlay: styles.beneficiosOverlay,
+          wrap: styles.beneficiosWrap,
+          eyebrow: styles.eyebrowDark,
+          heading: styles.h2Dark,
+          list: styles.beneficiosList,
+          item: styles.beneficioItem,
+          checkIcon: styles.checkIcon,
+          text: styles.beneficioText,
+        }}
+      />
 
       {/* ESPECIALIDADES — 8 itens, não 10 */}
-      <section id="especialidades" className={styles.especialidades} data-audit="ia2-especialidades">
-        <div className={styles.especialidadesWrap}>
-          <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Especialidades</span>
-            <h2 className={styles.h2}>Onde fazemos a diferença</h2>
-            <p className={styles.sectionDesc}>Oito frentes que sustentam cada projeto de integração, da arquitetura à operação contínua.</p>
-          </div>
-          <div className={styles.especialidadesList}>
-            {ESPECIALIDADES.map(({ label, Icon }) => (
-              <div className={styles.especialidadeItem} key={label}>
-                <span className={styles.especialidadeNumeral}><Icon /></span>
-                <span className={styles.especialidadeTitle}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IconLabelSection
+        id="especialidades"
+        dataAudit="ia2-especialidades"
+        eyebrow="Especialidades"
+        title="Onde fazemos a diferença"
+        description="Oito frentes que sustentam cada projeto de integração, da arquitetura à operação contínua."
+        items={ESPECIALIDADES}
+        classes={{
+          section: styles.especialidades,
+          wrap: styles.especialidadesWrap,
+          head: `${styles.sectionHead} ${styles.especialidadesHead}`,
+          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
+          heading: styles.h2,
+          desc: styles.sectionDesc,
+          list: styles.especialidadesList,
+          item: styles.especialidadeItem,
+          numeral: styles.especialidadeNumeral,
+          itemTitle: styles.especialidadeTitle,
+        }}
+      />
 
       {/* NOSSA ABORDAGEM + DIFERENCIAIS — sem grid de 3 etapas nesta landing */}
       <section id="abordagem" className={styles.abordagem} data-audit="ia2-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemGrid} data-audit="ia2-abordagem-grid">
-            <div className={styles.abordagemHead}>
-              <span className={styles.eyebrowLight}>Nossa abordagem</span>
-              <h2 className={styles.h2}>Cada integração deve resolver um problema real do negócio</h2>
-              <p className={styles.sectionDesc}>Antes de desenvolver qualquer solução, analisamos como as informações circulam entre pessoas, processos e sistemas. A partir desse entendimento, projetamos uma arquitetura que simplifica a operação, reduz a complexidade e cria uma base preparada para acompanhar a evolução da empresa.</p>
-            </div>
-            <aside className={styles.resultCard} data-audit="ia2-result-card">
-              <span className={styles.resultCardLabel}>Objetivo</span>
-              <h3 className={styles.resultCardTitle}>Mais que conectar, integrar de verdade.</h3>
-              <p className={styles.resultCardText}>Nosso objetivo não é apenas conectar aplicações, mas construir uma operação mais eficiente, integrada e sustentável.</p>
-            </aside>
-          </div>
+          <AbordagemHead
+            dataAudit="ia2-abordagem-grid"
+            resultDataAudit="ia2-result-card"
+            title="Cada integração deve resolver um problema real do negócio"
+            description="Antes de desenvolver qualquer solução, analisamos como as informações circulam entre pessoas, processos e sistemas. A partir desse entendimento, projetamos uma arquitetura que simplifica a operação, reduz a complexidade e cria uma base preparada para acompanhar a evolução da empresa."
+            resultLabel="Objetivo"
+            resultTitle="Mais que conectar, integrar de verdade."
+            resultText="Nosso objetivo não é apenas conectar aplicações, mas construir uma operação mais eficiente, integrada e sustentável."
+            classes={{
+              grid: styles.abordagemGrid,
+              head: styles.abordagemHead,
+              eyebrow: styles.eyebrowLight,
+              heading: styles.h2,
+              desc: styles.sectionDesc,
+              resultCard: styles.resultCard,
+              resultLabel: styles.resultCardLabel,
+              resultTitle: styles.resultCardTitle,
+              resultText: styles.resultCardText,
+            }}
+          />
 
           <div className={styles.diferenciais} data-audit="ia2-diferenciais">
             <div className={styles.diferenciaisHead}>
@@ -294,22 +305,7 @@ export default function IntegracaoAutomacaoPage() {
           ]}
           cardTagline="Disponível para novos projetos"
           cardTitle="Agende um diagnóstico inicial gratuito"
-          cardBody={
-            <div className="cta-adv-meta">
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">60 min · gratuita</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Formato</span>
-                <span className="cta-adv-mv">100% remoto</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">max. 2h</span>
-              </div>
-            </div>
-          }
+          cardBody={CTA_DIAGNOSIS_META}
           ctaHref="/contato?assunto=integracao-automacao"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"

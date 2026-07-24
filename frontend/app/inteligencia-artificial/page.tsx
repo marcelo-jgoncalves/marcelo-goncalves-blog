@@ -11,9 +11,11 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
+import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconAssistenteInteligente,
   IconAgenteIA,
@@ -225,41 +227,46 @@ export default function InteligenciaArtificialPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <section id="beneficios" className={styles.beneficios} data-audit="ai-beneficios">
-        <div className={styles.beneficiosOverlay} aria-hidden="true" />
-        <div className={styles.beneficiosWrap}>
-          <div>
-            <span className={styles.eyebrowDark}>Benefícios</span>
-            <h2 className={styles.h2Dark}>IA que gera valor mensurável para a operação</h2>
-          </div>
-          <div className={styles.beneficiosList}>
-            {BENEFICIOS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BeneficiosSection
+        dataAudit="ai-beneficios"
+        title="IA que gera valor mensurável para a operação"
+        items={BENEFICIOS}
+        classes={{
+          section: styles.beneficios,
+          overlay: styles.beneficiosOverlay,
+          wrap: styles.beneficiosWrap,
+          eyebrow: styles.eyebrowDark,
+          heading: styles.h2Dark,
+          list: styles.beneficiosList,
+          item: styles.beneficioItem,
+          checkIcon: styles.checkIcon,
+          text: styles.beneficioText,
+        }}
+      />
 
       {/* NOSSA ABORDAGEM — sem grid de etapas, sem bloco Diferenciais */}
       <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemGrid} data-audit="ai-abordagem-grid">
-            <div className={styles.abordagemHead}>
-              <span className={styles.eyebrowLight}>Nossa abordagem</span>
-              <h2 className={styles.h2}>Cada projeto começa com uma pergunta simples: onde a IA pode gerar mais valor para o negócio?</h2>
-              <p className={styles.sectionDesc}>Antes de implementar qualquer solução, analisamos os processos existentes, identificamos oportunidades de ganho e definimos como a IA pode atuar de forma segura, eficiente e integrada aos sistemas da empresa.</p>
-            </div>
-            <aside className={styles.resultCard} data-audit="ai-result-card">
-              <span className={styles.resultCardLabel}>Objetivo</span>
-              <h3 className={styles.resultCardTitle}>Liberdade para focar no que importa.</h3>
-              <p className={styles.resultCardText}>Nosso objetivo não é substituir pessoas, mas liberá-las das tarefas repetitivas para que façam mais, com as informações certas disponíveis na hora certa.</p>
-            </aside>
-          </div>
+          <AbordagemHead
+            dataAudit="ai-abordagem-grid"
+            resultDataAudit="ai-result-card"
+            title="Cada projeto começa com uma pergunta simples: onde a IA pode gerar mais valor para o negócio?"
+            description="Antes de implementar qualquer solução, analisamos os processos existentes, identificamos oportunidades de ganho e definimos como a IA pode atuar de forma segura, eficiente e integrada aos sistemas da empresa."
+            resultLabel="Objetivo"
+            resultTitle="Liberdade para focar no que importa."
+            resultText="Nosso objetivo não é substituir pessoas, mas liberá-las das tarefas repetitivas para que façam mais, com as informações certas disponíveis na hora certa."
+            classes={{
+              grid: styles.abordagemGrid,
+              head: styles.abordagemHead,
+              eyebrow: styles.eyebrowLight,
+              heading: styles.h2,
+              desc: styles.sectionDesc,
+              resultCard: styles.resultCard,
+              resultLabel: styles.resultCardLabel,
+              resultTitle: styles.resultCardTitle,
+              resultText: styles.resultCardText,
+            }}
+          />
         </div>
       </section>
 
@@ -280,22 +287,7 @@ export default function InteligenciaArtificialPage() {
           ]}
           cardTagline="Disponível para novos projetos"
           cardTitle="Agende um diagnóstico inicial gratuito"
-          cardBody={
-            <div className="cta-adv-meta">
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">60 min · gratuita</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Formato</span>
-                <span className="cta-adv-mv">100% remoto</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">max. 2h</span>
-              </div>
-            </div>
-          }
+          cardBody={CTA_DIAGNOSIS_META}
           ctaHref="/contato?assunto=inteligencia-artificial"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"

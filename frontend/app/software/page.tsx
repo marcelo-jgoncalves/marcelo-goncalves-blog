@@ -7,9 +7,12 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
+import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import IconLabelSection from '@/components/ui/IconLabelSection';
+import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconSistemasSobMedida,
   IconApisIntegracoes,
@@ -180,41 +183,46 @@ export default function EngenhariaDeSoftwarePage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <section id="beneficios" className={styles.beneficios} data-audit="esw-beneficios">
-        <div className={styles.beneficiosOverlay} aria-hidden="true" />
-        <div className={styles.beneficiosWrap}>
-          <div>
-            <span className={styles.eyebrowDark}>Benefícios</span>
-            <h2 className={styles.h2Dark}>Soluções desenvolvidas para a realidade da sua empresa</h2>
-          </div>
-          <div className={styles.beneficiosList}>
-            {BENEFICIOS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BeneficiosSection
+        dataAudit="esw-beneficios"
+        title="Soluções desenvolvidas para a realidade da sua empresa"
+        items={BENEFICIOS}
+        classes={{
+          section: styles.beneficios,
+          overlay: styles.beneficiosOverlay,
+          wrap: styles.beneficiosWrap,
+          eyebrow: styles.eyebrowDark,
+          heading: styles.h2Dark,
+          list: styles.beneficiosList,
+          item: styles.beneficioItem,
+          checkIcon: styles.checkIcon,
+          text: styles.beneficioText,
+        }}
+      />
 
       {/* NOSSA ABORDAGEM + DIFERENCIAIS */}
       <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemGrid} data-audit="esw-abordagem-grid">
-            <div className={styles.abordagemHead}>
-              <span className={styles.eyebrowLight}>Nossa abordagem</span>
-              <h2 className={styles.h2}>Um bom software começa pela compreensão do problema</h2>
-              <p className={styles.sectionDesc}>Antes de escrever qualquer linha de código, entendemos os objetivos do negócio, analisamos os processos existentes e identificamos oportunidades de melhoria. Com base nesse entendimento, projetamos a arquitetura da solução, desenvolvemos de forma incremental e validamos continuamente cada etapa do projeto.</p>
-            </div>
-            <aside className={styles.resultCard} data-audit="esw-result-card">
-              <span className={styles.resultCardLabel}>Resultado</span>
-              <h3 className={styles.resultCardTitle}>Pronto para evoluir, desde o primeiro dia.</h3>
-              <p className={styles.resultCardText}>O resultado é um software robusto, preparado para evoluir e gerar valor desde as primeiras entregas.</p>
-            </aside>
-          </div>
+          <AbordagemHead
+            dataAudit="esw-abordagem-grid"
+            resultDataAudit="esw-result-card"
+            title="Um bom software começa pela compreensão do problema"
+            description="Antes de escrever qualquer linha de código, entendemos os objetivos do negócio, analisamos os processos existentes e identificamos oportunidades de melhoria. Com base nesse entendimento, projetamos a arquitetura da solução, desenvolvemos de forma incremental e validamos continuamente cada etapa do projeto."
+            resultLabel="Resultado"
+            resultTitle="Pronto para evoluir, desde o primeiro dia."
+            resultText="O resultado é um software robusto, preparado para evoluir e gerar valor desde as primeiras entregas."
+            classes={{
+              grid: styles.abordagemGrid,
+              head: styles.abordagemHead,
+              eyebrow: styles.eyebrowLight,
+              heading: styles.h2,
+              desc: styles.sectionDesc,
+              resultCard: styles.resultCard,
+              resultLabel: styles.resultCardLabel,
+              resultTitle: styles.resultCardTitle,
+              resultText: styles.resultCardText,
+            }}
+          />
 
           <div className={styles.etapasGrid}>
             <div className={styles.etapasLine} aria-hidden="true" />
@@ -244,23 +252,26 @@ export default function EngenhariaDeSoftwarePage() {
       </section>
 
       {/* PRINCÍPIOS DE ENGENHARIA */}
-      <section id="principios" className={styles.principios} data-audit="esw-principios">
-        <div className={styles.principiosWrap}>
-          <div className={styles.principiosHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Maturidade técnica</span>
-            <h2 className={styles.h2}>Princípios de Engenharia</h2>
-            <p className={styles.principiosDesc}>O que guia cada decisão técnica, do primeiro commit à operação em produção.</p>
-          </div>
-          <div className={styles.principiosList}>
-            {PRINCIPIOS.map(({ label, Icon }) => (
-              <div className={styles.principioItem} key={label}>
-                <span className={styles.principioNumeral}><Icon /></span>
-                <span className={styles.principioTitle}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IconLabelSection
+        id="principios"
+        dataAudit="esw-principios"
+        eyebrow="Maturidade técnica"
+        title="Princípios de Engenharia"
+        description="O que guia cada decisão técnica, do primeiro commit à operação em produção."
+        items={PRINCIPIOS}
+        classes={{
+          section: styles.principios,
+          wrap: styles.principiosWrap,
+          head: styles.principiosHead,
+          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
+          heading: styles.h2,
+          desc: styles.principiosDesc,
+          list: styles.principiosList,
+          item: styles.principioItem,
+          numeral: styles.principioNumeral,
+          itemTitle: styles.principioTitle,
+        }}
+      />
 
       {/* FAQ */}
       <FaqSection items={FAQ_ITEMS} dataAudit="esw-faq" />
@@ -279,22 +290,7 @@ export default function EngenhariaDeSoftwarePage() {
           ]}
           cardTagline="Disponível para novos projetos"
           cardTitle="Agende um diagnóstico inicial gratuito"
-          cardBody={
-            <div className="cta-adv-meta">
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">60 min · gratuita</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Formato</span>
-                <span className="cta-adv-mv">100% remoto</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">max. 2h</span>
-              </div>
-            </div>
-          }
+          cardBody={CTA_DIAGNOSIS_META}
           ctaHref="/contato?assunto=engenharia-de-software"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"

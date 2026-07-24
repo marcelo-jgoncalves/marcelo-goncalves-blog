@@ -7,9 +7,12 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
+import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import IconLabelSection from '@/components/ui/IconLabelSection';
+import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconArquiteturaNuvem,
   IconDevOps,
@@ -169,60 +172,68 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <section id="beneficios" className={styles.beneficios} data-audit="cd-beneficios">
-        <div className={styles.beneficiosOverlay} aria-hidden="true" />
-        <div className={styles.beneficiosWrap}>
-          <div>
-            <span className={styles.eyebrowDark}>Benefícios</span>
-            <h2 className={styles.h2Dark}>Infraestrutura preparada para crescer com o negócio</h2>
-          </div>
-          <div className={styles.beneficiosList}>
-            {BENEFICIOS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BeneficiosSection
+        dataAudit="cd-beneficios"
+        title="Infraestrutura preparada para crescer com o negócio"
+        items={BENEFICIOS}
+        classes={{
+          section: styles.beneficios,
+          overlay: styles.beneficiosOverlay,
+          wrap: styles.beneficiosWrap,
+          eyebrow: styles.eyebrowDark,
+          heading: styles.h2Dark,
+          list: styles.beneficiosList,
+          item: styles.beneficioItem,
+          checkIcon: styles.checkIcon,
+          text: styles.beneficioText,
+        }}
+      />
 
       {/* ESPECIALIDADES */}
-      <section id="especialidades" className={styles.especialidades} data-audit="cd-especialidades">
-        <div className={styles.especialidadesWrap}>
-          <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Especialidades</span>
-            <h2 className={styles.h2}>Onde fazemos a diferença</h2>
-            <p className={styles.sectionDesc}>Dez frentes que sustentam cada projeto de nuvem, da arquitetura ao dia a dia operacional.</p>
-          </div>
-          <div className={styles.especialidadesList}>
-            {ESPECIALIDADES.map(({ label, Icon }) => (
-              <div className={styles.especialidadeItem} key={label}>
-                <span className={styles.especialidadeNumeral}><Icon /></span>
-                <span className={styles.especialidadeTitle}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IconLabelSection
+        id="especialidades"
+        dataAudit="cd-especialidades"
+        eyebrow="Especialidades"
+        title="Onde fazemos a diferença"
+        description="Dez frentes que sustentam cada projeto de nuvem, da arquitetura ao dia a dia operacional."
+        items={ESPECIALIDADES}
+        classes={{
+          section: styles.especialidades,
+          wrap: styles.especialidadesWrap,
+          head: `${styles.sectionHead} ${styles.especialidadesHead}`,
+          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
+          heading: styles.h2,
+          desc: styles.sectionDesc,
+          list: styles.especialidadesList,
+          item: styles.especialidadeItem,
+          numeral: styles.especialidadeNumeral,
+          itemTitle: styles.especialidadeTitle,
+        }}
+      />
 
       {/* NOSSA ABORDAGEM */}
       <section id="abordagem" className={styles.abordagem} data-audit="cd-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemGrid} data-audit="cd-abordagem-grid">
-            <div className={styles.abordagemHead}>
-              <span className={styles.eyebrowLight}>Nossa abordagem</span>
-              <h2 className={styles.h2}>Cada empresa, um diagnóstico diferente</h2>
-              <p className={styles.sectionDesc}>Cada empresa possui necessidades diferentes. Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade.</p>
-            </div>
-            <aside className={styles.resultCard} data-audit="cd-result-card">
-              <span className={styles.resultCardLabel}>Compromisso</span>
-              <h3 className={styles.resultCardTitle}>Simples de operar, pronta para durar.</h3>
-              <p className={styles.resultCardText}>Nosso compromisso é construir soluções simples de operar, resilientes e alinhadas às melhores práticas de engenharia.</p>
-            </aside>
-          </div>
+          <AbordagemHead
+            dataAudit="cd-abordagem-grid"
+            resultDataAudit="cd-result-card"
+            title="Cada empresa, um diagnóstico diferente"
+            description="Cada empresa possui necessidades diferentes. Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade."
+            resultLabel="Compromisso"
+            resultTitle="Simples de operar, pronta para durar."
+            resultText="Nosso compromisso é construir soluções simples de operar, resilientes e alinhadas às melhores práticas de engenharia."
+            classes={{
+              grid: styles.abordagemGrid,
+              head: styles.abordagemHead,
+              eyebrow: styles.eyebrowLight,
+              heading: styles.h2,
+              desc: styles.sectionDesc,
+              resultCard: styles.resultCard,
+              resultLabel: styles.resultCardLabel,
+              resultTitle: styles.resultCardTitle,
+              resultText: styles.resultCardText,
+            }}
+          />
 
           <div className={styles.etapasGrid}>
             <div className={styles.etapasLine} aria-hidden="true" />
@@ -254,22 +265,7 @@ export default function CloudDevOpsPage() {
           ]}
           cardTagline="Disponível para novos projetos"
           cardTitle="Diagnóstico inicial gratuito"
-          cardBody={
-            <div className="cta-adv-meta">
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Chamada inicial</span>
-                <span className="cta-adv-mv clay">60 min · gratuita</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Formato</span>
-                <span className="cta-adv-mv">100% remoto</span>
-              </div>
-              <div className="cta-adv-meta-row">
-                <span className="cta-adv-ml">Tempo de resposta</span>
-                <span className="cta-adv-mv">max. 2h</span>
-              </div>
-            </div>
-          }
+          cardBody={CTA_DIAGNOSIS_META}
           ctaHref="/contato?assunto=cloud-devops"
           ctaLabel="Entrar em contato"
           reassure="Sem compromisso · sem custo"

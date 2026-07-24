@@ -9,7 +9,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
-import { formatDateShort } from '@/lib/format';
+import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, BLOG_DESCRIPTION } from '@/lib/config';
 
 export const revalidate = 300;
@@ -44,11 +44,6 @@ interface HomePost {
   imagem_destaque_url?: string;
   imagem_destaque_alt_text?: string;
   imagem_lqip_base64?: string;
-}
-
-function categoryName(post: HomePost): string {
-  if (post?.categoria?.nome_exibicao) return post.categoria.nome_exibicao;
-  return (post?.categoria_slug || '').replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
 }
 
 export default async function Home() {

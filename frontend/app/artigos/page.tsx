@@ -6,7 +6,7 @@ import { getAllPosts, getRecentPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
-import { formatDateShort } from '@/lib/format';
+import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
@@ -51,11 +51,6 @@ interface ArtigoPost {
   imagem_destaque_url?: string;
   imagem_destaque_alt_text?: string;
   imagem_lqip_base64?: string;
-}
-
-function categoryName(post: ArtigoPost): string {
-  if (post?.categoria?.nome_exibicao) return post.categoria.nome_exibicao;
-  return (post?.categoria_slug || '').replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
 }
 
 interface ArtigosPageProps {

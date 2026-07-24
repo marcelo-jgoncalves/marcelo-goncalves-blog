@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getProjectPosts } from '@/lib/api';
 import Pagination from '@/components/ui/Pagination';
-import { formatDateShort } from '@/lib/format';
+import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
@@ -54,11 +54,6 @@ interface ProjectPost {
   imagem_destaque_url?: string;
   imagem_destaque_alt_text?: string;
   imagem_lqip_base64?: string;
-}
-
-function categoryName(post: ProjectPost): string {
-  if (post?.categoria?.nome_exibicao) return post.categoria.nome_exibicao;
-  return (post?.categoria_slug || '').replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
 }
 
 const PRINCIPLES = [

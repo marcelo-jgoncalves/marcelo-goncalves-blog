@@ -23,6 +23,25 @@ const DEFAULT_CARD_BODY = (
   </div>
 );
 
+// Bloco de garantias padrão do diagnóstico gratuito — usado como `cardBody` pelas
+// 4 landings de pilar (software, inteligencia-artificial, automacao, plataforma).
+export const CTA_DIAGNOSIS_META = (
+  <div className="cta-adv-meta">
+    <div className="cta-adv-meta-row">
+      <span className="cta-adv-ml">Chamada inicial</span>
+      <span className="cta-adv-mv clay">60 min · gratuita</span>
+    </div>
+    <div className="cta-adv-meta-row">
+      <span className="cta-adv-ml">Formato</span>
+      <span className="cta-adv-mv">100% remoto</span>
+    </div>
+    <div className="cta-adv-meta-row">
+      <span className="cta-adv-ml">Tempo de resposta</span>
+      <span className="cta-adv-mv">max. 2h</span>
+    </div>
+  </div>
+);
+
 interface CtaAssessoriaProps {
   id?: string;
   eyebrow?: string;
