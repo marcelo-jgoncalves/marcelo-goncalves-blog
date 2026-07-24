@@ -22,7 +22,6 @@ Site empresarial de consultoria em tecnologia (IA, AWS, DevOps), com blog de aut
 
 ### Arquivos de contexto obrigatórios
 - **`.project-context.md`** — memória viva do projeto. Leia a seção "⚡ PRÓXIMA SESSÃO" ao iniciar.
-- **`contexto/contract.md`** — padrões de engenharia não-negociáveis (logging, SEO, design system, segurança).
 - **`contexto/seo-audit.md`** — status de 20 itens SEO (18/20 feitos).
 
 ---
@@ -231,8 +230,7 @@ marcelo-goncalves-blog/
 **Nunca** usar `--accent` em cor de título/heading — usar `--text-default` (#1E374C navy).
 
 **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos do frontend e do admin.  
-Referência completa: `contexto/design-system/design-reference.md`.  
-Layout de referência da home: `contexto/design-system/home-layout-description.md`.
+Referência histórica arquivada fora do repo (`marcelo-goncalves-blog-arquivo/docs-historico/design-system/design-reference.md`) — desatualizada, contradiz regras atuais (DM Sans, sistema antigo de botões); esta seção do `CLAUDE.md` é a fonte de verdade corrente.
 
 **Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseInArticle.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
