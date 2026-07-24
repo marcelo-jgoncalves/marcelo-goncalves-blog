@@ -194,17 +194,56 @@ resource "aws_api_gateway_resource" "admin_session" {
   path_part   = "session"
 }
 
-resource "aws_api_gateway_method" "admin_session_any" {
+# 3 métodos separados (não um único ANY) — achado real ao configurar rate
+# limit dedicado (2026-07-24): o UpdateStage do API Gateway só aceita
+# method_path como "{resourcePath}/{httpMethod real}" ou "*/*" — não existe
+# combinação "recurso específico + todos os verbos" quando o método é
+# modelado como ANY. Separar em GET/POST/DELETE permite mirar só o POST
+# (login, o verbo sensível a força bruta) com o limite mais restritivo,
+# deixando GET (me)/DELETE (logout) só no throttle_all global.
+resource "aws_api_gateway_method" "admin_session_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_session.id
-  http_method   = "ANY"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "admin_session_integration" {
+resource "aws_api_gateway_method" "admin_session_get" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_session.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method" "admin_session_delete" {
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  resource_id   = aws_api_gateway_resource.admin_session.id
+  http_method   = "DELETE"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "admin_session_post_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.admin_session.id
-  http_method             = aws_api_gateway_method.admin_session_any.http_method
+  http_method             = aws_api_gateway_method.admin_session_post.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_session_invoke_arn
+}
+
+resource "aws_api_gateway_integration" "admin_session_get_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_session.id
+  http_method             = aws_api_gateway_method.admin_session_get.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.admin_session_invoke_arn
+}
+
+resource "aws_api_gateway_integration" "admin_session_delete_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.main.id
+  resource_id             = aws_api_gateway_resource.admin_session.id
+  http_method             = aws_api_gateway_method.admin_session_delete.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.admin_session_invoke_arn
@@ -646,25 +685,22 @@ resource "aws_api_gateway_method_settings" "throttle_all" {
   }
 }
 
-# Limite mais rígido só no endpoint de sessão do admin (login/me/logout do
-# BFF) — POST /admin/session (login) faz InitiateAuth indiretamente via
-# verificação de JWT e é o alvo natural de tentativa de força bruta/replay
-# de sessão; o throttle global (var.throttle_rate_limit) é dimensionado
-# pro tráfego de leitura pública, generoso demais pra um endpoint de auth
-# de admin único. Aplica ao recurso inteiro (todos os verbos), não só
-# POST, porque method_settings não permite mirar um verbo específico
-# dentro de um método ANY único — aceitável, os 3 verbos aqui são
-# igualmente sensíveis (sessão do único admin do sistema).
+# Limite mais rígido só no login (POST /admin/session) — faz verificação de
+# JWT e cria sessão, é o alvo natural de força bruta/replay; o throttle
+# global (var.throttle_rate_limit) é dimensionado pro tráfego de leitura
+# pública, generoso demais pra um endpoint de auth de admin único.
 #
-# method_path usa "*" (curinga de verbo), não "ANY" — achado real ao
-# aplicar: a API do API Gateway (UpdateStage) rejeita "ANY" como segmento
-# de verbo literal em method_path, só aceita verbos HTTP reais (GET, POST,
-# ...) ou "*" (todos), mesmo esse método sendo configurado como "ANY" no
-# recurso em si (aws_api_gateway_method.admin_session_any).
+# Achado real (2026-07-24): method_path não aceita um verbo curinga (nem
+# "*" nem "ANY") combinado com um resourcePath específico — só
+# "{resourcePath}/{httpMethod real}" ou "*/*" (confirmado via erro real da
+# API: "'admin/session/*' is not a valid method path"). Por isso o recurso
+# /admin/session foi dividido em 3 métodos reais (POST/GET/DELETE, ver
+# acima) em vez de um único ANY — só assim dá pra mirar exclusivamente o
+# POST aqui. GET (me)/DELETE (logout) ficam só no throttle_all global.
 resource "aws_api_gateway_method_settings" "throttle_admin_session" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = aws_api_gateway_stage.main.stage_name
-  method_path = "admin/session/*"
+  method_path = "admin/session/POST"
 
   settings {
     throttling_rate_limit  = 5
@@ -983,8 +1019,12 @@ resource "aws_api_gateway_deployment" "main" {
       # porque o stage continuava servindo o deployment antigo.
       aws_api_gateway_authorizer.admin_cookie_auth,
       aws_api_gateway_resource.admin_session,
-      aws_api_gateway_method.admin_session_any,
-      aws_api_gateway_integration.admin_session_integration,
+      aws_api_gateway_method.admin_session_post,
+      aws_api_gateway_method.admin_session_get,
+      aws_api_gateway_method.admin_session_delete,
+      aws_api_gateway_integration.admin_session_post_integration,
+      aws_api_gateway_integration.admin_session_get_integration,
+      aws_api_gateway_integration.admin_session_delete_integration,
       # --- Recursos Públicos (Antigos) ---
       aws_api_gateway_resource.post_slug,
       aws_api_gateway_method.get_post,
