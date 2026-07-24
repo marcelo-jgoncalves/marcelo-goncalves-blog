@@ -651,14 +651,20 @@ resource "aws_api_gateway_method_settings" "throttle_all" {
 # verificação de JWT e é o alvo natural de tentativa de força bruta/replay
 # de sessão; o throttle global (var.throttle_rate_limit) é dimensionado
 # pro tráfego de leitura pública, generoso demais pra um endpoint de auth
-# de admin único. Aplica ao recurso inteiro (ANY cobre GET/POST/DELETE),
-# não só POST, porque method_settings não permite mirar um verbo dentro de
-# um método ANY único — aceitável, os 3 verbos aqui são igualmente
-# sensíveis (sessão do único admin do sistema).
+# de admin único. Aplica ao recurso inteiro (todos os verbos), não só
+# POST, porque method_settings não permite mirar um verbo específico
+# dentro de um método ANY único — aceitável, os 3 verbos aqui são
+# igualmente sensíveis (sessão do único admin do sistema).
+#
+# method_path usa "*" (curinga de verbo), não "ANY" — achado real ao
+# aplicar: a API do API Gateway (UpdateStage) rejeita "ANY" como segmento
+# de verbo literal em method_path, só aceita verbos HTTP reais (GET, POST,
+# ...) ou "*" (todos), mesmo esse método sendo configurado como "ANY" no
+# recurso em si (aws_api_gateway_method.admin_session_any).
 resource "aws_api_gateway_method_settings" "throttle_admin_session" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = aws_api_gateway_stage.main.stage_name
-  method_path = "admin/session/ANY"
+  method_path = "admin/session/*"
 
   settings {
     throttling_rate_limit  = 5
