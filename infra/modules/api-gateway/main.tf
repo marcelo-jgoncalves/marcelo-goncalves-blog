@@ -950,7 +950,12 @@ resource "aws_api_gateway_deployment" "main" {
   triggers = {
     redeployment = sha1(jsonencode([
       # --- BFF de sessão do admin (/admin/session) + novo authorizer ---
-      aws_api_gateway_authorizer.admin_cookie_auth.id,
+      # Objeto inteiro, não só .id: o id não muda num update in-place (ex:
+      # mudança de identity_source), então usar só .id nunca forçava um
+      # redeploy — achado real em produção (sessão 2026-07-24): 2 fixes
+      # seguidos de identity_source não tiveram efeito nenhum no runtime
+      # porque o stage continuava servindo o deployment antigo.
+      aws_api_gateway_authorizer.admin_cookie_auth,
       aws_api_gateway_resource.admin_session,
       aws_api_gateway_method.admin_session_any,
       aws_api_gateway_integration.admin_session_integration,
