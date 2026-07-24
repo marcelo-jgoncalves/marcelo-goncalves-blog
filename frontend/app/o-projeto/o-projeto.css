@@ -75,12 +75,12 @@
   padding-bottom: var(--sp-9);
 }
 
-/* Timeline termina em paginação (Anterior/Próxima), não em conteúdo comum —
-   mesmo caso de .art-section-end em artigos.css: a seção que fecha com um
-   paginador ganha um respiro maior (--sp-11) antes do próximo bloco visual,
-   em vez do --sp-9 padrão usado nas demais transições da página. */
+/* Timeline termina em paginação (Anterior/Próxima) — mesmo padrão de
+   .art-section--paginated em artigos.css: sp-4(16px) aqui + padding-top/bottom
+   de 32px já embutido em .op-pagination = 48px total de cada lado (igual ao
+   respiro padrão --sp-9 das demais transições da página, não maior). */
 #timeline.op-section {
-  padding-bottom: var(--sp-11);
+  padding-bottom: var(--sp-4);
 }
 
 .op-section--surface {
@@ -345,10 +345,10 @@
 }
 
 /* ── paginação ── */
-/* margin-top único (sem padding somado) — mesmo padrão de .art-load-wrap
-   em artigos.css: um só valor de gap por lado, não dois empilhados. */
+/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
+   (mesmo valor de .art-load-wrap em artigos.css). */
 .op-pag-wrap {
-  margin-top: var(--sp-9);
+  margin-top: var(--sp-4);
 }
 
 /* ==========================================================================
@@ -356,7 +356,7 @@
    ========================================================================== */
 .op-roadmap-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   gap: var(--sp-5);
 }
 
@@ -480,7 +480,11 @@
   }
 
   .op-roadmap-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .op-rm-card {
+    grid-column: span 1 !important;
   }
 }
 

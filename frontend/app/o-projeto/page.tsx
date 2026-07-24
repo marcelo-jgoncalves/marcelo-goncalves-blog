@@ -85,12 +85,16 @@ const PRINCIPLES = [
 ];
 
 const ROADMAP = [
-  { num: 'P-01', status: 'planned', statusLabel: 'Planejado', title: 'Automação para LinkedIn', desc: 'Cada novo post publicado gera automaticamente uma versão adaptada para LinkedIn, ampliando alcance, fortalecendo autoridade e criando um canal recorrente de aquisição.', foot: 'Previsão · Q1 2026' },
-  { num: 'P-02', status: 'planned', statusLabel: 'Planejado', title: 'Newsletter automatizada', desc: 'Entrega automática de novos conteúdos por e-mail. Construção de audiência própria, sem dependência exclusiva de algoritmos, com foco em retenção e relacionamento.', foot: 'Previsão · Q1 2026' },
-  { num: 'P-03', status: 'planned', statusLabel: 'Planejado', title: 'Resumos com IA', desc: 'Síntese inteligente para cada artigo, facilitando leitura rápida, consumo técnico e navegação eficiente, sem perder profundidade no conteúdo completo.', foot: 'Previsão · Q1 2026' },
-  { num: 'P-04', status: 'planned', statusLabel: 'Planejado', title: 'Integração de AdSense', desc: 'Integração estratégica de anúncios via Google AdSense com posicionamento pensado para preservar experiência e gerar receita complementar.', foot: 'Previsão · Q2 2026' },
-  { num: 'P-05', status: 'planned', statusLabel: 'Planejado', title: 'Versão em inglês', desc: 'Expansão internacional com tradução assistida por IA e revisão humana. Conteúdo técnico acessível para novas audiências e mercados globais.', foot: 'Previsão · Q2 2026' },
-  { num: 'F-01', status: 'future', statusLabel: 'Futuro', title: 'Ebook proprietário', desc: 'Material estruturado com os aprendizados e frameworks do projeto. Primeiro produto editorial da plataforma e base para novos cursos e materiais premium.', foot: 'Sem data definida' },
+  { num: 'P-01', status: 'planned', statusLabel: 'Planejado', title: 'Google Analytics', desc: 'Introdução de métricas reais de audiência, base para toda decisão de conteúdo e distribuição que vem a seguir.', foot: 'Previsão · Q1 2026', span: 4 },
+  { num: 'P-02', status: 'planned', statusLabel: 'Planejado', title: 'Automação para LinkedIn', desc: 'Cada novo post publicado gera automaticamente uma versão adaptada para LinkedIn, ampliando alcance, fortalecendo autoridade e criando um canal recorrente de aquisição.', foot: 'Previsão · Q1 2026', span: 5 },
+  { num: 'P-03', status: 'planned', statusLabel: 'Planejado', title: 'Automação para Instagram', desc: 'Mesma lógica do LinkedIn: adaptação automática do post original por IA e publicação direta na rede.', foot: 'Previsão · Q1 2026', span: 3 },
+  { num: 'P-04', status: 'planned', statusLabel: 'Planejado', title: 'Newsletter automatizada', desc: 'Entrega automática de novos conteúdos por e-mail. Construção de audiência própria, sem dependência exclusiva de algoritmos, com foco em retenção e relacionamento.', foot: 'Previsão · Q1 2026', span: 5 },
+  { num: 'P-05', status: 'planned', statusLabel: 'Planejado', title: 'Resumos com IA', desc: 'Síntese inteligente para cada artigo, facilitando leitura rápida, consumo técnico e navegação eficiente, sem perder profundidade no conteúdo completo.', foot: 'Previsão · Q2 2026', span: 4 },
+  { num: 'P-06', status: 'planned', statusLabel: 'Planejado', title: 'Versão em inglês', desc: 'Expansão internacional com tradução assistida por IA e revisão humana, linguística e cultural, de cada artigo do blog.', foot: 'Previsão · Q2 2026', span: 3 },
+  { num: 'P-07', status: 'planned', statusLabel: 'Planejado', title: 'Atendimento via WhatsApp com IA', desc: 'Triagem inicial automatizada por IA direto no WhatsApp, com escalonamento para atendimento humano quando necessário.', foot: 'Previsão · Q2 2026', span: 4 },
+  { num: 'P-08', status: 'planned', statusLabel: 'Planejado', title: 'Nutrição automatizada de leads', desc: 'Sequência automatizada por IA a partir da assinatura da newsletter, combinada a gatilhos por comportamento de leitura, conduzindo o contato até o diagnóstico de consultoria.', foot: 'Previsão · Q3 2026', span: 8 },
+  { num: 'F-01', status: 'future', statusLabel: 'Futuro', title: 'Ebook proprietário', desc: 'Material estruturado com os aprendizados e frameworks do projeto. Primeiro produto editorial pago da plataforma e base para novos cursos e materiais premium.', foot: 'Sem data definida', span: 6 },
+  { num: 'F-02', status: 'future', statusLabel: 'Futuro', title: 'Ebook em inglês', desc: 'Versão traduzida do ebook proprietário, com revisão humana, para expansão do produto a mercados internacionais.', foot: 'Sem data definida', span: 6 },
 ];
 
 interface PageProps {
@@ -242,7 +246,12 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
 
           <div className="op-roadmap-grid" data-audit="op-roadmap-grid">
             {ROADMAP.map((item, i) => (
-              <div className={`op-rm-card op-${item.status}`} key={item.num} data-audit={i === 0 ? 'op-rm-card' : undefined}>
+              <div
+                className={`op-rm-card op-${item.status}`}
+                style={{ gridColumn: `span ${item.span}` }}
+                key={item.num}
+                data-audit={i === 0 ? 'op-rm-card' : undefined}
+              >
                 <div className="op-rm-top">
                   <span className="op-rm-num">{item.num}</span>
                   <span className={`op-rm-status op-s-${item.status}`}>
