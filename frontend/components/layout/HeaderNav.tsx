@@ -6,14 +6,20 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
-// Ordem pedida por Marcelo (2026-07-15): Home, Serviços (dropdown), Contato, Sobre, Blog, O Projeto.
-// "O Projeto" é item fixo na nav (não mais condicional ao contexto de blog/post).
+// Ordem definitiva (ajuste-17a §3): Home, Serviços, Sobre, Artigos, O Projeto, Contato, CTA.
 const NAV_LINKS_AFTER = [
-  { name: 'Contato', href: '/contato' },
   { name: 'Sobre', href: '/sobre' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'Artigos', href: '/artigos' },
   { name: 'O Projeto', href: '/o-projeto' },
+  { name: 'Contato', href: '/contato' },
 ] as const;
+
+// Artigos ativo em /artigos, /todos-artigos, /post/[slug] e /categoria/[slug] (ajuste-17a §5).
+const isArticlesActive = (pathname: string) =>
+  pathname === '/artigos' ||
+  pathname === '/todos-artigos' ||
+  pathname.startsWith('/post/') ||
+  pathname.startsWith('/categoria/');
 
 // Landing pages de pilar (specs/ESPECIFICACAO-*.md) — as 4 já estão implementadas.
 // Ver project_engenharia_software_landing (memória).
@@ -24,6 +30,10 @@ const SERVICE_LINKS = [
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
 ] as const;
 
+// /servicos (página central, ajuste-05) — primeiro item do dropdown, acima
+// dos 4 links individuais (ajuste-07 §5.3).
+const SERVICES_OVERVIEW_LINK = { name: 'Visão geral dos serviços', href: '/servicos' } as const;
+
 export default function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
@@ -32,19 +42,57 @@ export default function HeaderNav() {
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const servicesTriggerRef = useRef<HTMLButtonElement>(null);
 
-  const isServicesActive = SERVICE_LINKS.some((link) => isActive(link.href));
-  // No contexto de blog/post/o-projeto o visitante ainda não escolheu um pilar —
-  // o CTA do nav aponta pro menu de serviços em vez de pular direto pro formulário.
-  const isBlogContext = pathname === '/blog' || pathname.startsWith('/post/') || pathname === '/o-projeto';
+  const isActive = (href: string) =>
+    href === '/'
+      ? pathname === '/'
+      : href === '/artigos'
+        ? isArticlesActive(pathname)
+        : pathname.startsWith(href);
+
+  const isServicesActive = pathname === SERVICES_OVERVIEW_LINK.href || SERVICE_LINKS.some((link) => isActive(link.href));
 
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsServicesMobileOpen(false);
     menuBtnRef.current?.focus();
   };
+
+  // Fecha os dois menus ao cruzar o breakpoint desktop/mobile (ajuste-17a §27.3).
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1300) {
+        setIsMenuOpen(false);
+        setIsServicesMobileOpen(false);
+      } else {
+        setIsServicesOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Fecha o dropdown/drawer imediatamente em toda mudança de rota (ajuste-17a §17.6/§28.2).
+  const previousPathnameRef = useRef(pathname);
+  useEffect(() => {
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza com mudança de rota (fonte externa ao React), não com props/state
+    setIsServicesOpen(false);
+    setIsMenuOpen(false);
+    setIsServicesMobileOpen(false);
+  }, [pathname]);
+
+  // Bloqueio de scroll do body enquanto o drawer mobile estiver aberto (ajuste-17a §23).
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (!isServicesOpen) return;
@@ -55,7 +103,10 @@ export default function HeaderNav() {
       }
     };
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsServicesOpen(false);
+      if (e.key === 'Escape') {
+        setIsServicesOpen(false);
+        servicesTriggerRef.current?.focus();
+      }
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
@@ -82,23 +133,42 @@ export default function HeaderNav() {
         ))}
 
         <div className="nav-dropdown" ref={servicesRef}>
-          <button
-            type="button"
-            className={`nav-dropdown-trigger${isServicesActive ? ' active' : ''}`}
-            aria-haspopup="true"
-            aria-expanded={isServicesOpen}
-            onClick={() => setIsServicesOpen((v) => !v)}
-          >
-            Serviços
-            <svg className="nav-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
-          </button>
-          <div className={`nav-dropdown-panel${isServicesOpen ? ' is-active' : ''}`} role="menu">
+          <span className={`nav-dropdown-trigger${isServicesActive ? ' active' : ''}`}>
+            <Link
+              href="/servicos"
+              prefetch={false}
+              className={isActive('/servicos') ? 'active' : ''}
+              aria-current={isActive('/servicos') ? 'page' : undefined}
+            >
+              Serviços
+            </Link>
+            <button
+              ref={servicesTriggerRef}
+              type="button"
+              className="nav-dropdown-toggle"
+              aria-expanded={isServicesOpen}
+              aria-controls="services-dropdown"
+              aria-label={isServicesOpen ? 'Ocultar páginas de serviços' : 'Mostrar páginas de serviços'}
+              onClick={() => setIsServicesOpen((v) => !v)}
+            >
+              <svg className="nav-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+            </button>
+          </span>
+          <div id="services-dropdown" className={`nav-dropdown-panel${isServicesOpen ? ' is-active' : ''}`}>
+            <Link
+              href={SERVICES_OVERVIEW_LINK.href}
+              prefetch={false}
+              onClick={() => setIsServicesOpen(false)}
+              className={`nav-dropdown-overview${pathname === SERVICES_OVERVIEW_LINK.href ? ' active' : ''}`}
+              aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
+            >
+              {SERVICES_OVERVIEW_LINK.name}
+            </Link>
             {SERVICE_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 prefetch={false}
-                role="menuitem"
                 onClick={() => setIsServicesOpen(false)}
                 className={isActive(link.href) ? 'active' : ''}
                 aria-current={isActive(link.href) ? 'page' : undefined}
@@ -122,16 +192,9 @@ export default function HeaderNav() {
         ))}
       </nav>
 
-      {isBlogContext ? (
-        // eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique
-        <a href="/#servicos" className="btn nav-cta" data-audit="header-cta">
-          Conheça nossos serviços
-        </a>
-      ) : (
-        <Link href="/contato" className="btn nav-cta" prefetch={false} data-audit="header-cta">
-          Solicitar diagnóstico
-        </Link>
-      )}
+      <Link href="/contato" className="btn nav-cta" prefetch={false} data-audit="header-cta">
+        Apresentar um desafio
+      </Link>
 
       <button
         ref={menuBtnRef}
@@ -167,18 +230,40 @@ export default function HeaderNav() {
           </Link>
         ))}
 
-        <button
-          type="button"
-          className={`nav-mobile-services-toggle${isServicesActive ? ' active' : ''}`}
-          aria-expanded={isServicesMobileOpen}
-          onClick={() => setIsServicesMobileOpen((v) => !v)}
-          tabIndex={isMenuOpen ? 0 : -1}
-        >
-          Serviços
-          <svg className={`nav-dropdown-chevron${isServicesMobileOpen ? ' is-open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
-        </button>
+        <div className={`nav-mobile-services-toggle${isServicesActive ? ' active' : ''}`}>
+          <Link
+            href="/servicos"
+            prefetch={false}
+            onClick={closeMenu}
+            tabIndex={isMenuOpen ? 0 : -1}
+            className={isActive('/servicos') ? 'active' : ''}
+            aria-current={isActive('/servicos') ? 'page' : undefined}
+          >
+            Serviços
+          </Link>
+          <button
+            type="button"
+            aria-expanded={isServicesMobileOpen}
+            aria-controls="mobile-services-list"
+            aria-label={isServicesMobileOpen ? 'Ocultar páginas de serviços' : 'Mostrar páginas de serviços'}
+            onClick={() => setIsServicesMobileOpen((v) => !v)}
+            tabIndex={isMenuOpen ? 0 : -1}
+          >
+            <svg className={`nav-dropdown-chevron${isServicesMobileOpen ? ' is-open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+          </button>
+        </div>
         {isServicesMobileOpen && (
-          <div className="nav-mobile-services-list">
+          <div id="mobile-services-list" className="nav-mobile-services-list">
+            <Link
+              href={SERVICES_OVERVIEW_LINK.href}
+              prefetch={false}
+              onClick={closeMenu}
+              tabIndex={isMenuOpen ? 0 : -1}
+              className={`nav-dropdown-overview${pathname === SERVICES_OVERVIEW_LINK.href ? ' active' : ''}`}
+              aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
+            >
+              {SERVICES_OVERVIEW_LINK.name}
+            </Link>
             {SERVICE_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -208,16 +293,9 @@ export default function HeaderNav() {
             {link.name}
           </Link>
         ))}
-        {isBlogContext ? (
-          // eslint-disable-next-line @next/next/no-html-link-for-pages -- ver comentário acima (desktop)
-          <a href="/#servicos" className="btn nav-cta-mobile" onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
-            Conheça nossos serviços
-          </a>
-        ) : (
-          <Link href="/contato" className="btn nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
-            Solicitar diagnóstico
-          </Link>
-        )}
+        <Link href="/contato" className="btn nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+          Apresentar um desafio
+        </Link>
       </div>
     </>
   );

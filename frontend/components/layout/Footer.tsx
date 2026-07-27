@@ -1,110 +1,132 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import './Footer.css';
 import ConsentTrigger from '@/components/consent/ConsentTrigger';
+import { AUTHOR_EMAIL, AUTHOR_LOCATION } from '@/lib/config';
 
-// Os 4 pilares (mesmas landing pages de frontend/app/<slug>/page.tsx) — não são mais
-// categorias de blog, ver ESPECIFICACAO-FOOTER.md (atualização 2026-07-12).
-const ESPECIALIDADES_LINKS = [
-  { name: 'Engenharia de Software', href: '/software' },
-  { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
-  { name: 'Integração & Automação', href: '/automacao' },
-  { name: 'Cloud & DevOps', href: '/plataforma' },
+// Ordem definitiva (ajuste-17b §8.2/§8.3): Visão geral primeiro, depois os 4 pilares.
+const SERVICES_LINKS = [
+  { name: 'Visão geral', href: '/servicos' },
+  { name: 'Automação e Integração', href: '/automacao' },
+  { name: 'Inteligência Artificial Aplicada', href: '/inteligencia-artificial' },
+  { name: 'Sistemas e Plataformas', href: '/software' },
+  { name: 'Cloud, DevOps e Confiabilidade', href: '/plataforma' },
 ];
 
-// Mesma ordem do nav principal (HeaderNav.tsx): Home, Serviços, Contato, Sobre, Blog, O Projeto.
-// "O Projeto" é item fixo (2026-07-15) — não mais condicional ao contexto de blog/post.
-const QUICK_LINKS = [
+// Ordem definitiva (ajuste-17b §9.2) — sem "Serviços" (já tem coluna própria) e sem "Blog".
+const NAVIGATION_LINKS = [
   { name: 'Home', href: '/' },
-  { name: 'Serviços', href: '/#servicos' },
-  { name: 'Contato', href: '/contato' },
   { name: 'Sobre', href: '/sobre' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'Artigos', href: '/artigos' },
   { name: 'O Projeto', href: '/o-projeto' },
+  { name: 'Contato', href: '/contato' },
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="site-footer" data-audit="footer">
+    <footer className="site-footer" aria-labelledby="site-footer-title" data-audit="footer">
+      <h2 id="site-footer-title" className="sr-only">Rodapé do site</h2>
       <div className="foot-in" data-audit="footer-in">
-        <div className="foot-lead" data-audit="footer-lead">
-          <div className="manifesto" data-audit="footer-manifesto">
-            Engenharia, IA e automação para quem quer <em>destravar valor</em> com tecnologia.
-          </div>
-          <button type="button" className="btn to-top" onClick={scrollToTop} aria-label="Voltar ao topo" data-audit="footer-to-top">
-            Voltar ao topo
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>
-          </button>
-        </div>
-
         <div className="foot-top" data-audit="footer-top">
           <div className="foot-brand" data-audit="footer-brand">
-            <div className="b">Marcelo<span className="b2">Gonçalves</span></div>
-            <p>Desenvolvemos software, plataformas em nuvem, integrações e soluções com inteligência artificial para empresas que desejam crescer com tecnologia.</p>
+            <Link href="/" className="b" aria-label="Marcelo Gonçalves — Página inicial">
+              Marcelo<span className="b2">Gonçalves</span>
+            </Link>
+            <p>Consultoria boutique liderada por Marcelo Gonçalves, com atuação em automação, inteligência artificial, sistemas e arquitetura AWS.</p>
+            <p className="foot-tagline">Engenharia e tecnologia para operações mais integradas, eficientes e preparadas para crescer.</p>
           </div>
 
-          <div className="foot-col" data-audit="footer-col">
-            <h5>Especialidades</h5>
+          <nav className="foot-col" aria-label="Serviços no rodapé" data-audit="footer-col">
+            <h3>Serviços</h3>
             <ul>
-              {ESPECIALIDADES_LINKS.map((link) => (
+              {SERVICES_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} prefetch={false}>{link.name}</Link>
+                  <Link
+                    href={link.href}
+                    prefetch={false}
+                    className={isActive(link.href) ? 'active' : ''}
+                    aria-current={isActive(link.href) ? 'page' : undefined}
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          <div className="foot-col">
-            <h5>Links Rápidos</h5>
+          <nav className="foot-col" aria-label="Navegação no rodapé">
+            <h3>Navegação</h3>
             <ul>
-              {QUICK_LINKS.map((link) => (
-                <li key={link.name}>
-                  {link.href.includes('#') ? (
-                    <a href={link.href}>{link.name}</a>
-                  ) : (
-                    <Link href={link.href} prefetch={false}>{link.name}</Link>
-                  )}
+              {NAVIGATION_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    prefetch={false}
+                    className={isActive(link.href) ? 'active' : ''}
+                    aria-current={isActive(link.href) ? 'page' : undefined}
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          <div className="foot-col">
-            <h5>Contato</h5>
-            <p className="foot-col-lead">Vamos conversar sobre seu próximo projeto.</p>
-            <div className="foot-soc" data-audit="footer-soc">
-              <Link href="/contato" title="Contato" aria-label="Contato" data-audit="footer-contact">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
-              </Link>
-              <a href="https://www.linkedin.com/in/marcelo-jgoncalves" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.96-1.8-2.96s-2.08 1.4-2.08 2.86V21H9z"></path></svg>
-              </a>
-              <span role="img" aria-label="Instagram (em breve)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
-              </span>
-            </div>
-          </div>
+          <section className="foot-col foot-contact" data-audit="footer-contact">
+            <h3>Contato</h3>
+            <p className="foot-col-lead">Conte o que sua empresa precisa melhorar.</p>
+            <a className="foot-contact-email" href={`mailto:${AUTHOR_EMAIL}`}>{AUTHOR_EMAIL}</a>
+            <p className="foot-contact-location">{AUTHOR_LOCATION}</p>
+            <Link href="/contato" className="foot-contact-cta" prefetch={false}>
+              Apresentar um desafio <span className="arrow" aria-hidden="true">→</span>
+            </Link>
+          </section>
         </div>
 
         <div className="foot-bottom" data-audit="footer-bottom">
-          <div className="foot-legal">
-            <div className="foot-legal-row">
-              <span>© {currentYear} Marcelo Gonçalves · Todos os direitos reservados</span>
-              <Link href="/politica-de-privacidade" prefetch={false}>Aviso de Privacidade</Link>
-              <Link href="/politica-de-cookies" prefetch={false}>Política de Cookies</Link>
-            </div>
-            <div className="foot-legal-row">
-              <Link href="/termos-de-uso" prefetch={false}>Termos de Uso</Link>
-              <ConsentTrigger />
-            </div>
+          <span className="foot-copyright">© {currentYear} Marcelo Gonçalves. Todos os direitos reservados.</span>
+          <div className="foot-legal-row">
+            <Link
+              href="/politica-de-privacidade"
+              prefetch={false}
+              className={isActive('/politica-de-privacidade') ? 'active' : ''}
+              aria-current={isActive('/politica-de-privacidade') ? 'page' : undefined}
+            >
+              Aviso de Privacidade
+            </Link>
+            <Link
+              href="/politica-de-cookies"
+              prefetch={false}
+              className={isActive('/politica-de-cookies') ? 'active' : ''}
+              aria-current={isActive('/politica-de-cookies') ? 'page' : undefined}
+            >
+              Política de Cookies
+            </Link>
+            <Link
+              href="/termos-de-uso"
+              prefetch={false}
+              className={isActive('/termos-de-uso') ? 'active' : ''}
+              aria-current={isActive('/termos-de-uso') ? 'page' : undefined}
+            >
+              Termos de Uso
+            </Link>
+            <ConsentTrigger />
           </div>
+          <button type="button" className="foot-to-top" onClick={scrollToTop}>
+            Voltar ao topo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>
+          </button>
         </div>
       </div>
     </footer>

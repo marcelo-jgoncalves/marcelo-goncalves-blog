@@ -953,3 +953,51 @@ article tbody tr:last-child td,
   margin: 0 auto;
   padding: 0 var(--sp-7);
 }
+
+/* ==========================================================================
+   12. CTA CONTEXTUAL — editorial compacto (entre corpo e autor)
+   ========================================================================== */
+.post-cta-editorial {
+  margin-block: 0;
+  padding-top: var(--sp-9);
+  border-top: 1px solid var(--line);
+}
+
+.post-cta-in {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-cta-in h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.post-cta-in p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.post-cta-actions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .post-cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}

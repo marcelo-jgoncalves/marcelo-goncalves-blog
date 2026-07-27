@@ -29,8 +29,8 @@ const PILLAR_SLUGS = [
 
 const staticPages: MetadataRoute.Sitemap = [
   { url: SITE_URL,                     lastModified: now, changeFrequency: 'daily',   priority: 1.0 },
-  { url: `${SITE_URL}/blog`,           lastModified: now, changeFrequency: 'daily',   priority: 0.9 },
   { url: `${SITE_URL}/artigos`,        lastModified: now, changeFrequency: 'daily',   priority: 0.9 },
+  { url: `${SITE_URL}/todos-artigos`,  lastModified: now, changeFrequency: 'daily',   priority: 0.8 },
   { url: `${SITE_URL}/o-projeto`,      lastModified: now, changeFrequency: 'weekly',  priority: 0.7 },
   { url: `${SITE_URL}/sobre`,          lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${SITE_URL}/contato`,        lastModified: now, changeFrequency: 'monthly', priority: 0.6 },

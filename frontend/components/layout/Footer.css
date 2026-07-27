@@ -26,57 +26,21 @@
   padding: 0 var(--sp-8) var(--sp-6);
 }
 
-/* ── lead ── */
-.site-footer .foot-lead {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--sp-8);
-  padding: var(--sp-10) 0 var(--sp-8);
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  flex-wrap: wrap;
-}
-
-.site-footer .manifesto {
-  font-family: var(--font);
-  font-weight: 800;
-  font-size: var(--type-h3);
-  line-height: 1.18;
-  letter-spacing: -.03em;
-  color: #fff;
-  max-width: 560px;
-  text-wrap: balance;
-}
-
-.site-footer .manifesto em {
-  font-style: italic;
-  color: var(--petrol-soft);
-}
-
-/* Usa o padrão global .btn (globals.css); classe local só cuida do
-   que é específico deste contexto (não encolher no flex do foot-lead). */
-.site-footer .to-top {
-  flex: none;
-}
-
-.site-footer .to-top svg {
-  width: 15px;
-  height: 15px;
-}
-
 /* ── top grid ── */
 .site-footer .foot-top {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
   gap: var(--sp-9);
-  padding: var(--sp-9) 0 var(--sp-9);
+  padding: var(--sp-10) 0 var(--sp-9);
 }
 
 .site-footer .foot-brand .b {
+  display: inline-block;
   font-weight: 800;
   font-size: var(--type-lead);
   color: #fff;
   letter-spacing: -.02em;
+  text-decoration: none;
 }
 
 .site-footer .foot-brand .b .b2 {
@@ -96,14 +60,23 @@
   margin-top: var(--sp-4);
 }
 
+.site-footer .foot-tagline {
+  line-height: 1.6;
+  max-width: 300px;
+  margin-top: var(--sp-4);
+  padding-left: var(--sp-3);
+  border-left: 2px solid var(--clay);
+  color: #A8C0C6;
+}
+
 /* ── columns ── */
-.site-footer .foot-col h5 {
+.site-footer .foot-col h3 {
   font-weight: 600;
   font-size: var(--type-caption);
   letter-spacing: .18em;
   text-transform: uppercase;
   color: #fff;
-  margin-bottom: var(--sp-5);
+  margin: 0 0 var(--sp-5);
 }
 
 .site-footer .foot-col-lead {
@@ -127,48 +100,62 @@
   transition: color .2s;
 }
 
-.site-footer .foot-col ul li a:hover {
+.site-footer .foot-col ul li a:hover,
+.site-footer .foot-col ul li a.active {
   color: #fff;
 }
 
-.site-footer .foot-soc {
-  display: flex;
-  gap: var(--sp-2);
+/* ── coluna Contato ── */
+.site-footer .foot-contact-email {
+  display: inline-block;
+  font-size: var(--type-label);
+  color: #8FAAB1;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color .2s;
 }
 
-.site-footer .foot-soc a,
-.site-footer .foot-soc span {
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .1);
-  color: #A8C0C6;
-  display: flex;
+.site-footer .foot-contact-email:hover {
+  color: #fff;
+}
+
+.site-footer .foot-contact-location {
+  font-size: var(--type-label);
+  color: #8FAAB1;
+  margin: var(--sp-2) 0 var(--sp-4);
+}
+
+.site-footer .foot-contact-cta {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  transition: all .2s;
+  gap: var(--sp-1);
+  font-size: var(--type-label);
+  font-weight: 600;
+  color: var(--clay);
+  text-decoration: none;
+  transition: color .2s;
 }
 
-.site-footer .foot-soc a:hover,
-.site-footer .foot-soc span:hover {
-  background: var(--clay);
-  border-color: var(--clay);
+.site-footer .foot-contact-cta:hover {
   color: #fff;
-  transform: translateY(-2px);
 }
 
-.site-footer .foot-soc a svg,
-.site-footer .foot-soc span svg {
-  width: 17px;
-  height: 17px;
+.site-footer .foot-contact-cta .arrow {
+  font-family: var(--mono);
+  transition: transform .2s;
 }
 
-/* ── bottom ──
-   Duas linhas centralizadas: copyright + Aviso de Privacidade + Política
-   de Cookies em cima, Termos de Uso + Preferências de cookies embaixo.
-   RSS removido. */
+.site-footer .foot-contact-cta:hover .arrow {
+  transform: translateX(2px);
+}
+
+/* ── faixa legal ──
+   Três blocos: copyright, links legais + preferências, voltar ao topo. */
 .site-footer .foot-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--sp-5);
   padding-top: var(--sp-6);
   margin-top: var(--sp-2);
   border-top: 1px solid rgba(255, 255, 255, .08);
@@ -176,25 +163,22 @@
   font-size: var(--type-caption);
   color: #5E7A82;
   letter-spacing: .06em;
-  text-align: center;
 }
 
-.site-footer .foot-legal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-2);
+.site-footer .foot-copyright {
+  min-width: 0;
 }
 
 .site-footer .foot-legal-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
+  gap: var(--sp-1);
 }
 
 .site-footer .foot-legal-row > *:not(:last-child)::after {
   content: "·";
-  margin: 0 var(--title-gap);
+  margin-left: var(--title-gap);
   color: #5E7A82;
 }
 
@@ -207,8 +191,36 @@
 }
 
 .site-footer .foot-legal-row a:hover,
+.site-footer .foot-legal-row a.active,
 .site-footer .foot-legal-row .cmp-trigger:hover {
   color: #fff;
+}
+
+/* Usa o padrão global .btn não se aplica aqui — botão textual discreto,
+   não CTA primário (ajuste-17b §15). */
+.site-footer .foot-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  padding: var(--sp-1) 0;
+  transition: color .2s;
+}
+
+.site-footer .foot-to-top:hover {
+  color: #fff;
+}
+
+.site-footer .foot-to-top svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ── responsive ── */
@@ -229,12 +241,38 @@
   .site-footer .foot-in {
     padding: 0 var(--wrap-pad-h-mobile) var(--sp-5);
   }
-  .site-footer .foot-lead {
-    justify-content: center;
+  .site-footer .foot-brand {
     text-align: center;
   }
-  .site-footer .to-top {
-    justify-content: center;
-    width: 100%;
+  .site-footer .foot-brand p,
+  .site-footer .foot-tagline {
+    margin-inline: auto;
+  }
+  .site-footer .foot-tagline {
+    text-align: left;
+  }
+  .site-footer .foot-col {
+    text-align: center;
+  }
+  .site-footer .foot-col ul {
+    align-items: center;
+  }
+  .site-footer .foot-contact {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .site-footer .foot-bottom {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+/* Rodapé global oculto na impressão (ajuste-17b §24) — o documento impresso
+   não depende deste menu/CTA. */
+@media print {
+  .site-footer {
+    display: none;
   }
 }

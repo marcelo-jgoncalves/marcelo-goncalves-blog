@@ -1,38 +1,27 @@
-/* frontend/app/contato/contato.css — Contato (Redesign 2026 — Petrol/Clay/Ivory) */
+/* frontend/app/contato/contato.css — ajustes/ajuste-14-pagina-contato-conversao.md */
 
-/* padding-bottom 18px: no desktop o botão da hero fica oculto (.ct-hero-actions
-   — ver abaixo) e o último elemento visível é o subtitle, que já tem
-   margin-bottom:var(--sp-7) (PageHero.css) — 18+30=48px (var(--sp-9)) de fato até
-   o limite da seção, igualando ao #form abaixo. No mobile (≤860px) o botão
-   volta a aparecer sem margem própria, então o padding-bottom precisa virar
-   var(--sp-9) puro — ver media query abaixo (mesmo padrão de home.css). */
 .page-hero.ct-hero {
-  --ph-pad: 88px 40px var(--gap-loose);
+  --ph-pad: 88px 40px var(--sp-9);
 }
 
-/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
-   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
-   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
 .ct-hero-actions {
-  display: none;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--sp-4);
   margin-top: var(--sp-7);
 }
 
+.ct-hero-microcopy {
+  margin-top: var(--sp-3);
+  color: var(--slate);
+  font-size: var(--type-caption);
+}
+
 @media (max-width: 860px) {
-  .ct-hero-actions {
-    display: flex;
-    justify-content: center;
-  }
-  /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
-     precisa virar var(--sp-9) "puro" para manter o mesmo espaçamento do
-     desktop (lá o padding é 18px porque soma com os 30px de margin-bottom
-     do subtitle, que é o último elemento visível quando o botão está oculto). */
-  .page-hero.ct-hero .page-hero-in {
-    padding-bottom: var(--sp-9);
-  }
+  .ct-hero-actions { justify-content: center; }
+  .ct-hero-microcopy { text-align: center; }
 }
 
 /* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
@@ -40,74 +29,33 @@
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
 }
 
-/* Espaçamento reduzido de --section-pad (96px) para var(--sp-9) (48px) de
-   cada lado, igualando ao padrão adotado na Home e nas 4 landing pages —
-   aqui já existe linha divisória real (border-top), mantida como está. */
 .ct-section {
   margin-block: 0;
   padding: var(--sp-9) 0;
   border-top: 1px solid var(--line);
+  scroll-margin-top: 100px;
 }
 
 .ct-section--surface {
-  background: var(--sand);
-}
-
-/* Mesma cor de fundo (implícita, herdada do body) usada na seção "Serviços"
-   da Home — só a seção de Solicitação, não as outras que reaproveitam
-   .ct-section--surface. */
-#form + .ct-section {
-  border-top: none;
-}
-
-#form.ct-section--surface {
   background: var(--ivory);
 }
 
-/* "Como funciona" — eyebrow centralizado com traço nos dois lados. */
-.sec-ey-dual {
-  justify-content: center;
-}
-
-.sec-ey-dual::after {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--clay);
-  flex: none;
-}
-
-/* Mesma cor de fundo usada em "Como trabalhamos" na Home (.ih-section--surface),
-   sem a linha divisória que separa de "Áreas de atuação" acima. */
-#outras-formas {
-  background: var(--surface);
+#formulario-contato {
   border-top: none;
 }
 
-/* Mesma cor de fundo usada em "Como trabalhamos" na Home (.ih-section--surface). */
-#areas-atuacao.ct-section--surface {
+#canais {
   background: var(--surface);
 }
 
-/* CTA final (CtaAssessoria, id="chamada-final"): .cta-adv-in usa
-   align-items:center, centralizando a coluna de texto contra o card mais
-   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
-   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
-#chamada-final.cta-adv .cta-adv-in {
-  align-items: flex-start;
-  padding-top: var(--sp-9);
+#perguntas {
+  scroll-margin-top: 100px;
 }
 
-.ct-center-head {
-  text-align: center;
-  max-width: 52ch;
-  margin: 0 auto var(--sechead-center-gap);
-}
-
-/* Formulário */
-.ct-form-grid {
+/* Bloco principal — formulário (maior) + próximos passos (menor), lado a lado */
+.ct-main-grid {
   display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
+  grid-template-columns: 1.65fr 1fr;
   gap: var(--sp-10);
   align-items: start;
 }
@@ -116,12 +64,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--eyebrow-gap);
-  margin-top: var(--sp-7);
+  margin: var(--sp-7) 0 var(--sp-8);
 }
 
 .ct-guarantee {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--sp-3);
   font-size: var(--type-body-sm);
   color: var(--ink);
@@ -140,49 +88,82 @@
   font-size: var(--type-caption);
 }
 
-/* Áreas de atuação — 4 pilares, mesmo conteúdo de app/page.tsx PILLARS.
-   Cards via FeatureCard (componente compartilhado) — .ct-area-link só
-   reseta o <Link> que envolve o card, sem cor/forma própria. */
-.ct-areas-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--gap-grid);
-  margin-top: var(--sp-9);
+/* Próximos passos — painel lateral */
+.ct-next-steps {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: var(--sp-8);
+  position: sticky;
+  top: var(--sp-8);
 }
 
-.ct-area-link {
-  display: block;
-  text-decoration: none;
-  height: 100%;
+.ct-next-steps-title {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.02em;
+  margin: var(--sp-3) 0 var(--sp-6);
 }
 
-.ct-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+.ct-next-steps-list {
+  list-style: none;
+  margin: 0 0 var(--sp-7);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.ct-next-steps-list li {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.ct-next-steps-num {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
   background: var(--clay-soft);
-  border: 1px solid rgba(201, 96, 60, .28);
   color: var(--clay);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: var(--type-caption);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--gap-loose);
 }
 
-.ct-icon-box--sm {
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  margin-bottom: 0;
+.ct-next-steps-list h3 {
+  font-size: var(--type-body-sm);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 var(--sp-1);
 }
 
-/* Outras formas de contato */
+.ct-next-steps-list p {
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  color: var(--slate);
+  margin: 0;
+}
+
+.ct-next-steps-note {
+  font-size: var(--type-caption);
+  line-height: 1.5;
+  color: var(--steel);
+  border-top: 1px solid var(--line);
+  padding-top: var(--sp-5);
+  margin: 0;
+}
+
+/* Canais alternativos */
 .ct-otherways-grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.8fr 1.2fr;
   gap: var(--sp-10);
-  align-items: center;
+  align-items: start;
 }
 
 .ct-otherways-title {
@@ -195,9 +176,24 @@
   gap: var(--gap-grid);
 }
 
-.ct-contact-card {
+.ct-icon-box--sm {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--clay-soft);
+  border: 1px solid rgba(201, 96, 60, .28);
+  color: var(--clay);
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.ct-icon-box--sm svg { width: 18px; height: 18px; }
+
+.ct-contact-card {
+  display: flex;
+  align-items: flex-start;
   gap: var(--eyebrow-gap);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -235,16 +231,48 @@
   color: var(--ink);
 }
 
+.ct-contact-aux {
+  font-size: var(--type-caption);
+  line-height: 1.5;
+  color: var(--steel);
+  margin-top: var(--sp-1);
+}
+
+/* Link discreto após a FAQ (§46) — não é um CTA de grande porte. */
+.ct-faq-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding: var(--sp-8) var(--wrap-pad-h) var(--sp-9);
+  text-align: center;
+  font-size: var(--type-body-sm);
+  color: var(--slate);
+}
+
+.ct-faq-footer-link {
+  font-weight: 600;
+  color: var(--petrol);
+  text-decoration: none;
+}
+
+.ct-faq-footer-link:hover {
+  color: var(--petrol-deep);
+  text-decoration: underline;
+}
+
 @media (max-width: 860px) {
-  .ct-form-grid,
+  .ct-main-grid,
   .ct-otherways-grid {
     grid-template-columns: 1fr;
   }
-  .ct-areas-grid { grid-template-columns: repeat(2, 1fr); }
+  .ct-next-steps {
+    position: static;
+  }
 }
 
 @media (max-width: 620px) {
-  .ct-areas-grid,
   .ct-contact-cards {
     grid-template-columns: 1fr;
   }

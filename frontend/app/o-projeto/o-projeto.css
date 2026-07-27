@@ -23,37 +23,12 @@
   flex-wrap: wrap;
 }
 
-.op-status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
+.op-hero-micro {
   font-family: var(--mono);
   font-size: var(--type-caption);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .75);
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .14);
-  padding: var(--title-gap) var(--sp-4);
-  border-radius: 999px;
-}
-
-.op-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--moss);
-  box-shadow: 0 0 0 3px rgba(63, 107, 71, .3);
-  animation: op-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes op-pulse {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
-  50%      { box-shadow: 0 0 0 5px rgba(63, 107, 71, .15); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .op-status-dot { animation: none; }
+  letter-spacing: .1em;
+  color: rgba(255, 255, 255, .6);
+  margin-top: var(--sp-5);
 }
 
 /* ==========================================================================
@@ -90,88 +65,373 @@
 }
 
 /* ==========================================================================
-   SOBRE O PROJETO (about strip)
+   POR QUE CONSTRUIR
    ========================================================================== */
-.op-about-strip {
-  margin-top: var(--sp-9);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: var(--sp-9) var(--sp-9);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--sp-10);
-  align-items: center;
-}
-
-.op-about-strip .op-ey2 {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--clay);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--gap-loose);
-}
-
-.op-about-strip .op-ey2::before {
-  content: "";
-  width: 30px;
-  height: 1px;
-  background: var(--clay);
-}
-
-.op-about-strip .op-left h2 {
-  font-weight: 800;
-  font-size: var(--type-h3);
-  letter-spacing: -.035em;
-  color: var(--ink);
-  line-height: 1.1;
-  margin-bottom: var(--sp-4);
-  text-wrap: balance;
-}
-
-.op-about-strip .op-left p {
+.op-why-body {
+  max-width: 780px;
+  margin: var(--sp-7) auto 0;
   font-size: var(--type-body-sm);
   line-height: 1.7;
   color: var(--slate);
 }
 
-.op-about-strip .op-left p + p {
+.op-why-body p + p {
   margin-top: var(--sp-3);
 }
 
-.op-about-strip .op-left p strong {
-  color: var(--clay-hover);
-  font-weight: 600;
+/* ==========================================================================
+   CALLOUT (reutilizado em "Por que construir" e "Fluxo editorial")
+   ========================================================================== */
+.op-callout {
+  margin-top: var(--sp-7);
+  background: var(--sand);
+  border-left: 4px solid var(--clay);
+  border-radius: 12px;
+  padding: var(--gap-grid) var(--sp-6);
 }
 
-.op-about-strip .op-right {
+.op-callout-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay-hover);
+  margin-bottom: var(--sp-2);
+}
+
+.op-callout p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ==========================================================================
+   ESTADO ATUAL — capacidades por status
+   ========================================================================== */
+.op-cap-grid {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.op-cap-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: var(--title-gap) var(--sp-4);
+  border-radius: 999px;
+  font-weight: 500;
+  margin-bottom: var(--sp-5);
+}
+
+.op-cap-status-delivered {
+  background: rgba(63, 107, 71, .12);
+  color: var(--moss);
+  border: 1px solid rgba(63, 107, 71, .25);
+}
+
+.op-cap-status-in_development {
+  background: var(--clay-soft);
+  color: var(--clay-hover);
+  border: 1px solid rgba(201, 96, 60, .25);
+}
+
+.op-cap-status-planned {
+  background: rgba(15, 76, 92, .08);
+  color: var(--petrol);
+  border: 1px solid rgba(15, 76, 92, .18);
+}
+
+.op-cap-list {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-7);
+  gap: var(--sp-5);
+  padding: 0;
+  list-style: none;
 }
 
-.op-principle {
+.op-cap-title {
+  display: block;
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.op-cap-desc {
+  display: block;
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  color: var(--steel);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ARQUITETURA
+   ========================================================================== */
+.op-layers {
+  margin-top: var(--sp-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.op-layer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.op-layer-num {
+  font-family: var(--mono);
+  font-size: var(--type-lead);
+  font-weight: 700;
+  color: var(--clay);
+  flex: none;
+}
+
+.op-layer-body h3 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin-bottom: var(--sp-2);
+}
+
+.op-layer-body p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-3);
+}
+
+.op-layer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.op-layer-tags span {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .06em;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .08);
+  border: 1px solid rgba(15, 76, 92, .18);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 999px;
+}
+
+.op-diagram {
+  margin-top: var(--sp-7);
+  background: var(--petrol);
+  color: var(--ivory);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.op-diagram-row {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: rgba(255, 255, 255, .88);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.op-diagram-row + .op-diagram-row {
+  margin-top: var(--sp-3);
+}
+
+.op-diagram-foot {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: rgba(255, 255, 255, .6);
+}
+
+/* ==========================================================================
+   PRINCÍPIOS DE ENGENHARIA
+   ========================================================================== */
+.op-principles-grid {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-7) var(--sp-8);
+}
+
+.op-principle-card {
   display: flex;
   align-items: flex-start;
   gap: var(--sp-5);
 }
 
-.op-principle .op-txt .op-t {
+.op-principle-card .op-txt .op-t {
   font-weight: 700;
   font-size: var(--type-lead);
   color: var(--ink);
   letter-spacing: -.01em;
 }
 
-.op-principle .op-txt .op-d {
+.op-principle-card .op-txt .op-d {
   font-size: var(--type-body-sm);
   line-height: 1.55;
   color: var(--slate);
   margin-top: 3px;
+}
+
+/* ==========================================================================
+   FLUXO EDITORIAL E IA
+   ========================================================================== */
+.op-flow-list {
+  margin: var(--sp-8) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.op-flow-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.op-flow-num {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--petrol);
+  color: var(--ivory);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+}
+
+.op-flow-list h3 {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.01em;
+  margin-bottom: var(--sp-2);
+}
+
+.op-flow-list p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+/* ==========================================================================
+   EVOLUÇÃO — grupos sem datas
+   ========================================================================== */
+.op-roadmap-groups {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.op-roadmap-group-label {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-5);
+}
+
+.op-roadmap-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.op-roadmap-item h4 {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--ink);
+  letter-spacing: -.01em;
+  margin-bottom: 2px;
+}
+
+.op-roadmap-item p {
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  color: var(--steel);
+  margin: 0;
+}
+
+/* ==========================================================================
+   CTA FINAL — editorial compacto
+   ========================================================================== */
+.op-cta-editorial {
+  margin-block: 0;
+  padding-block: var(--sp-9);
+}
+
+.op-cta-in {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.op-cta-in h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.op-cta-in p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.op-cta-actions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .op-cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 /* ==========================================================================
@@ -352,139 +612,13 @@
 }
 
 /* ==========================================================================
-   PRÓXIMAS ETAPAS (roadmap)
-   ========================================================================== */
-.op-roadmap-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--sp-5);
-}
-
-.op-rm-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: var(--sp-6) var(--sp-6) var(--gap-grid);
-  display: flex;
-  flex-direction: column;
-  gap: var(--eyebrow-gap);
-  transition: transform .2s, box-shadow .2s;
-}
-
-@media (hover: hover) {
-  .op-rm-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px -12px rgba(12, 32, 39, .1);
-  }
-}
-
-.op-rm-card.op-doing {
-  border-color: rgba(201, 96, 60, .35);
-  background: linear-gradient(180deg, var(--surface) 0%, rgba(243, 221, 208, .12) 100%);
-}
-
-.op-rm-card.op-planned {
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(243, 221, 208, .18) 100%);
-  border-color: rgba(201, 96, 60, .3);
-}
-
-.op-rm-card.op-future {
-  background: var(--sand);
-  border-style: dashed;
-}
-
-.op-rm-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--title-gap);
-}
-
-.op-rm-num {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .1em;
-  color: var(--steel);
-}
-
-.op-rm-status {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: 999px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-
-.op-rm-status.op-s-doing {
-  background: var(--clay-soft);
-  color: var(--clay-hover);
-  border: 1px solid rgba(201, 96, 60, .25);
-}
-
-.op-rm-status.op-s-doing .op-sdot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--clay);
-}
-
-.op-rm-status.op-s-planned {
-  background: rgba(15, 76, 92, .08);
-  color: var(--petrol);
-  border: 1px solid rgba(15, 76, 92, .18);
-}
-
-.op-rm-status.op-s-future {
-  background: var(--sand);
-  color: var(--steel);
-  border: 1px solid var(--line);
-}
-
-.op-rm-card h4 {
-  font-weight: 700;
-  font-size: var(--type-lead);
-  letter-spacing: -.015em;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-.op-rm-card p {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
-  flex: 1;
-}
-
-.op-rm-card .op-rm-foot {
-  padding-top: var(--eyebrow-gap);
-  border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .06em;
-  color: var(--steel);
-}
-
-/* ==========================================================================
    RESPONSIVO
    ========================================================================== */
 @media (max-width: 1000px) {
-  .op-about-strip {
+  .op-cap-grid,
+  .op-principles-grid,
+  .op-roadmap-groups {
     grid-template-columns: 1fr;
-    gap: var(--sp-8);
-    padding: var(--sp-8) var(--sp-8);
-  }
-
-  .op-roadmap-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .op-rm-card {
-    grid-column: span 1 !important;
   }
 }
 
@@ -494,8 +628,9 @@
     gap: var(--sp-7);
   }
 
-  .op-roadmap-grid {
-    grid-template-columns: 1fr;
+  .op-layer {
+    flex-direction: column;
+    gap: var(--sp-3);
   }
 
   .op-tl-card {
@@ -510,10 +645,6 @@
 
   .op-tl-body {
     padding: var(--sp-5);
-  }
-
-  .op-about-strip {
-    padding: var(--sp-7) var(--sp-6);
   }
 
   .op-wrap {

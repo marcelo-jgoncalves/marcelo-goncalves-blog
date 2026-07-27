@@ -24,7 +24,7 @@ const EXPECTED_MARGIN_TOP = '16px';
 
 // Toda página que usa .sec-desc (globals.css) — base compartilhada do
 // papel "eyebrow/título → descrição".
-const PAGES_WITH_SEC_DESC = ['/', '/contato', '/o-projeto', '/blog', '/sobre'];
+const PAGES_WITH_SEC_DESC = ['/', '/contato', '/o-projeto', '/artigos', '/sobre'];
 
 test.describe('Espaçamento "eyebrow/título → descrição" consistente entre páginas — CLAUDE.md §5', () => {
   for (const url of PAGES_WITH_SEC_DESC) {

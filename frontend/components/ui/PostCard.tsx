@@ -21,6 +21,7 @@ export interface PostCardProps {
     imagem_destaque_url?: string;
     imagem_destaque_alt_text?: string;
     imagem_lqip_base64?: string;
+    tempo_leitura_min?: number;
   };
   dataAudit?: string;
   dataCat?: string;
@@ -65,7 +66,10 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
       </div>
 
       <div className="pc-foot">
-        <span>{formatDateShort(post.data_publicacao)}</span>
+        <span>
+          {formatDateShort(post.data_publicacao)}
+          {post.tempo_leitura_min ? ` · ${post.tempo_leitura_min} min de leitura` : ''}
+        </span>
         <LerArtigo color="var(--petrol)" />
       </div>
     </Link>

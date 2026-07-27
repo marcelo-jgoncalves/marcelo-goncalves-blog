@@ -142,7 +142,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 <p className="categoria-empty__msg">
                   Ainda não publicamos artigos nesta categoria.
                 </p>
-                <Link href="/artigos" className="categoria-empty__link">
+                <Link href="/todos-artigos" className="categoria-empty__link">
                   Ver todos os artigos &rarr;
                 </Link>
               </div>

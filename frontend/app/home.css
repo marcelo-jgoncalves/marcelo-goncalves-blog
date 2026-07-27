@@ -1,36 +1,34 @@
 /* frontend/app/home.css — Home institucional (specs/SPEC-Home.md — Home v6) */
 
-/* padding-bottom 18px: no desktop o botão da hero fica oculto (.ih-hero-actions
-   — ver abaixo) e o último elemento visível é o subtitle, que já tem
-   margin-bottom:var(--sp-7) (PageHero.css) — 18+30=48px (var(--sp-9)) de fato até
-   o limite da seção, igualando ao #servicos abaixo. No mobile (≤860px) o
-   botão volta a aparecer sem margem própria, então o padding-bottom precisa
-   virar var(--sp-9) puro — ver media query mais abaixo. */
 .page-hero.ih-hero {
   --ph-pad: 88px 40px var(--gap-loose);
 }
 
-/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
-   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
-   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
+/* Ajuste 07: hero passa a ter 2 CTAs sempre visíveis (principal + secundário),
+   lado a lado no desktop, empilhados no mobile — não duplica mais o CTA do
+   nav (agora os dois convivem: nav leva a /contato, hero também oferece
+   #servicos). */
 .ih-hero-actions {
-  display: none;
+  display: flex;
   flex-wrap: wrap;
   gap: var(--eyebrow-gap);
   margin-top: var(--sp-7);
 }
 
+.ih-hero-microcopy {
+  margin-top: var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--type-caption);
+}
+
 @media (max-width: 860px) {
   .ih-hero-actions {
-    display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
-  /* Botão volta a ficar visível (sem margin-bottom próprio) — padding-bottom
-     precisa virar var(--sp-9) "puro" para manter o mesmo espaçamento do
-     desktop (lá o padding é 18px porque soma com os 30px de margin-bottom do
-     subtitle, que é o último elemento visível quando o botão está oculto). */
-  .page-hero.ih-hero .page-hero-in {
-    padding-bottom: var(--sp-9);
+  .ih-hero-microcopy {
+    text-align: center;
   }
 }
 
@@ -39,6 +37,7 @@
 .ih-section {
   margin-block: 0;
   padding: var(--sp-12) 0;
+  scroll-margin-top: 100px;
 }
 
 /* Espaçamento entre todas as transições internas da Home reduzido à metade
@@ -142,113 +141,9 @@
   gap: var(--gap-grid);
 }
 
-.ih-pillar-card {
-  flex: 1 1 340px;
-  max-width: 392px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: var(--sp-7);
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform .2s, box-shadow .2s, border-color .2s;
-}
+/* Cards dos 4 pilares migrados para components/ui/PillarCard.tsx (.pillar-*),
+   reaproveitado também em /servicos — ver PillarCard.css. */
 
-.ih-pillar-card--wide {
-  flex: 1 1 480px;
-  max-width: 600px;
-}
-
-.ih-pillar-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px -18px rgba(12, 32, 39, .18);
-  border-color: rgba(15, 76, 92, .22);
-}
-
-.ih-pillar-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--sp-5);
-}
-
-.ih-pillar-kicker {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  text-transform: uppercase;
-  letter-spacing: .16em;
-  color: var(--petrol);
-  margin-bottom: var(--sp-2);
-}
-
-.ih-pillar-card h3 {
-  font-size: var(--type-lead);
-  font-weight: 800;
-  letter-spacing: -.025em;
-  color: var(--ink);
-  line-height: 1.25;
-  margin: 0 0 var(--title-gap);
-}
-
-.ih-pillar-card > p {
-  color: var(--slate);
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
-  margin: 0 0 var(--gap-loose);
-}
-
-.ih-pillar-bullets {
-  list-style: none;
-  margin: 0 0 var(--gap-grid);
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-}
-
-.ih-pillar-bullets li {
-  position: relative;
-  padding-left: var(--sp-6);
-  font-size: var(--type-label);
-  line-height: 1.5;
-  color: var(--slate);
-}
-
-.ih-pillar-bullets li strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.ih-pillar-bullets li::before {
-  content: "✓";
-  position: absolute;
-  left: 2px;
-  top: 0;
-  color: var(--clay);
-  font-size: var(--type-label);
-  font-weight: 700;
-}
-
-.ih-pillar-footer {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--sp-3);
-  border-top: 1px solid var(--line);
-  padding-top: var(--gap-loose);
-}
-
-.ih-pillar-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2);
-}
-
-.ih-pillar-tags span,
 .ih-case-tags span {
   font-family: var(--mono);
   font-size: var(--type-caption);
@@ -257,32 +152,9 @@
   border-radius: 999px;
   padding: var(--sp-2) var(--sp-3);
   border: 1px solid transparent;
-}
-
-.ih-pillar-tags span {
   color: var(--petrol);
   background: rgba(15, 76, 92, .07);
   border-color: rgba(15, 76, 92, .14);
-}
-
-.ih-pillar-more {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  flex: none;
-  margin-left: auto;
-  font-size: var(--type-label);
-  font-weight: 600;
-  color: var(--clay);
-  white-space: nowrap;
-}
-
-.ih-pillar-more .arrow {
-  transition: transform .2s;
-}
-
-.ih-pillar-card:hover .ih-pillar-more .arrow {
-  transform: translateX(3px);
 }
 
 /* Botão de fechamento de seção — sempre no fim da seção, sempre
@@ -349,6 +221,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  scroll-margin-top: 100px;
 }
 
 .ih-results-t {
@@ -368,6 +241,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-10);
+}
+
+.ih-results-note {
+  margin: var(--sp-7) 0 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--type-caption);
+  text-align: center;
 }
 
 /* align-items:flex-start (não center): com align-items:center, sempre que a

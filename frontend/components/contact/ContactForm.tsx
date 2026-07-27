@@ -1,228 +1,347 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import './ContactForm.css';
 
 interface FormState {
-  nome: string;
-  empresa: string;
-  cargo: string;
+  name: string;
   email: string;
-  telefone: string;
-  porte: string;
+  company: string;
+  role: string;
+  phone: string;
+  companySize: string;
   area: string;
-  interesse: string;
-  mensagem: string;
+  message: string;
+  website: string; // honeypot — nunca enviado no e-mail, ver ajuste-14 §16.1
 }
 
-// Mesmos slugs das 4 landing pages de pilar (frontend/app/<slug>/page.tsx) — usados
-// como valor de ?assunto= no link de cada landing para /contato, e como value do
-// <select> aqui. Achado 5 da análise de funil de CTAs — registro histórico
-// arquivado fora do repo (marcelo-goncalves-blog-arquivo/docs-historico/analise-funil-ctas-servicos.md).
-export const INTERESSE_OPTIONS = [
-  { value: 'engenharia-de-software', label: 'Engenharia de Software' },
-  { value: 'cloud-devops', label: 'Cloud & DevOps' },
-  { value: 'integracao-automacao', label: 'Integração & Automação' },
-  { value: 'inteligencia-artificial', label: 'Inteligência Artificial' },
-  { value: 'outro', label: 'Ainda não sei / outro assunto' },
+// §14.6: opções e valores do campo "area" — usadas também como query string
+// (?area=...) vinda dos CTAs específicos das 4 landings de pilar.
+export const AREA_OPTIONS = [
+  { value: 'automacao-integracao', label: 'Automação e Integração de Processos' },
+  { value: 'inteligencia-artificial', label: 'Inteligência Artificial Aplicada' },
+  { value: 'sistemas-plataformas', label: 'Sistemas e Plataformas Digitais' },
+  { value: 'cloud-devops-confiabilidade', label: 'Cloud, DevOps e Confiabilidade' },
+  { value: 'multiplas-areas', label: 'Mais de uma área' },
+  { value: 'nao-sei', label: 'Ainda não sei' },
+  { value: 'outro', label: 'Outro assunto' },
 ] as const;
 
-const INTERESSE_VALUES: readonly string[] = INTERESSE_OPTIONS.map((o) => o.value);
+const AREA_VALUES: readonly string[] = AREA_OPTIONS.map((o) => o.value);
+
+const COMPANY_SIZE_OPTIONS = [
+  { value: '1-10', label: '1 a 10 pessoas' },
+  { value: '11-50', label: '11 a 50 pessoas' },
+  { value: '51-200', label: '51 a 200 pessoas' },
+  { value: '201-500', label: '201 a 500 pessoas' },
+  { value: '501-plus', label: 'Mais de 500 pessoas' },
+] as const;
 
 const EMPTY_FORM: FormState = {
-  nome: '',
-  empresa: '',
-  cargo: '',
+  name: '',
   email: '',
-  telefone: '',
-  porte: '',
+  company: '',
+  role: '',
+  phone: '',
+  companySize: '',
   area: '',
-  interesse: '',
-  mensagem: '',
+  message: '',
+  website: '',
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MESSAGE_MIN = 50;
+const MESSAGE_MAX = 3000;
+const MESSAGE_COUNTER_THRESHOLD = 2500;
 
-const REQUIRED_FIELD_LABELS: Record<'nome' | 'empresa' | 'email' | 'mensagem', string> = {
-  nome: 'Nome',
-  empresa: 'Empresa',
-  email: 'E-mail válido',
-  mensagem: 'Como podemos ajudar',
+type RequiredField = 'name' | 'email' | 'company' | 'area' | 'message';
+
+const FIELD_ERROR_LABELS: Record<RequiredField, string> = {
+  name: 'Seu nome',
+  email: 'Seu e-mail',
+  company: 'Empresa ou projeto',
+  area: 'Qual área está mais relacionada ao desafio?',
+  message: 'Conte o que está acontecendo hoje',
 };
 
-// TODO: integração real fica para uma sessão futura — hoje não existe endpoint de contato.
-// Substituir este envio simulado por um POST para uma Lambda nova, mantendo esta validação
-// client-side como primeira barreira.
-function submitContact(_form: FormState): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, 250));
+function validate(form: FormState): Partial<Record<RequiredField, string>> {
+  const errors: Partial<Record<RequiredField, string>> = {};
+  if (!form.name.trim()) errors.name = 'Informe seu nome.';
+  if (!form.email.trim()) errors.email = 'Informe seu e-mail.';
+  else if (!EMAIL_RE.test(form.email.trim())) errors.email = 'Informe um e-mail válido.';
+  if (!form.company.trim()) errors.company = 'Informe a empresa ou o projeto.';
+  if (!form.area) errors.area = 'Selecione a área mais próxima do desafio.';
+  if (!form.message.trim() || form.message.trim().length < MESSAGE_MIN) {
+    errors.message = `Descreva o desafio com pelo menos ${MESSAGE_MIN} caracteres.`;
+  } else if (form.message.length > MESSAGE_MAX) {
+    errors.message = `A mensagem deve ter no máximo ${MESSAGE_MAX} caracteres.`;
+  }
+  return errors;
+}
+
+// TODO (ajuste-14 §20): substituir por POST real assim que a Lambda de
+// contato (SES + honeypot + rate limit) existir — hoje é só o mock local.
+// Contrato alvo: ContactRequest (§20.3) com { name, email, company, role?,
+// phone?, companySize?, area, message, website?, context } → 200 { success,
+// referenceId } | 400/429/500 conforme §20.5-20.7.
+function submitContact(_form: FormState): Promise<{ referenceId: string }> {
+  return new Promise((resolve) => setTimeout(() => resolve({ referenceId: 'local-mock' }), 250));
 }
 
 export default function ContactForm() {
   const searchParams = useSearchParams();
-  const assuntoParam = searchParams.get('assunto') || '';
-  const interesseInicial = INTERESSE_VALUES.includes(assuntoParam) ? assuntoParam : '';
+  const areaParam = searchParams.get('area') || '';
+  const areaInicial = AREA_VALUES.includes(areaParam) ? areaParam : '';
 
-  const [form, setForm] = useState<FormState>({ ...EMPTY_FORM, interesse: interesseInicial });
-  const [camposInvalidos, setCamposInvalidos] = useState<Set<keyof typeof REQUIRED_FIELD_LABELS>>(new Set());
+  const [form, setForm] = useState<FormState>({ ...EMPTY_FORM, area: areaInicial });
+  const [errors, setErrors] = useState<Partial<Record<RequiredField, string>>>({});
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
+  const [referenceId, setReferenceId] = useState('');
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const firstFieldRef = useRef<HTMLInputElement>(null);
 
-  const erro = camposInvalidos.size > 0;
+  const errorKeys = Object.keys(errors) as RequiredField[];
+  const hasErrors = errorKeys.length > 0;
 
   const set = (key: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm((f) => ({ ...f, [key]: e.target.value }));
-    setCamposInvalidos((prev) => {
-      if (!prev.has(key as keyof typeof REQUIRED_FIELD_LABELS)) return prev;
-      const next = new Set(prev);
-      next.delete(key as keyof typeof REQUIRED_FIELD_LABELS);
-      return next;
-    });
+    const value = e.target.value;
+    setForm((f) => ({ ...f, [key]: value }));
+    // Validação progressiva (§19.4): só corrige o resumo após a 1ª tentativa de envio.
+    if (hasErrors && key in errors) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key as RequiredField];
+        return next;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const emailOk = EMAIL_RE.test(form.email.trim());
-    const invalidos = new Set<keyof typeof REQUIRED_FIELD_LABELS>();
-    if (!form.nome.trim()) invalidos.add('nome');
-    if (!form.empresa.trim()) invalidos.add('empresa');
-    if (!emailOk) invalidos.add('email');
-    if (!form.mensagem.trim()) invalidos.add('mensagem');
-    if (invalidos.size > 0) {
-      setCamposInvalidos(invalidos);
+
+    // Honeypot (§16.1): se preenchido, finge sucesso sem enviar nada.
+    if (form.website) {
+      setEnviado(true);
+      setReferenceId('');
       return;
     }
+
+    const found = validate(form);
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      requestAnimationFrame(() => summaryRef.current?.focus());
+      return;
+    }
+
     setEnviando(true);
-    await submitContact(form);
+    const result = await submitContact(form);
     setEnviando(false);
     setEnviado(true);
-    setCamposInvalidos(new Set());
+    setReferenceId(result.referenceId);
+    setErrors({});
   };
 
   const novoEnvio = () => {
     setEnviado(false);
-    setForm(EMPTY_FORM);
-    setCamposInvalidos(new Set());
+    setForm({ ...EMPTY_FORM, area: areaInicial });
+    setErrors({});
+    requestAnimationFrame(() => firstFieldRef.current?.focus());
   };
 
   if (enviado) {
     return (
-      <div className="contact-form-card contact-success">
+      <div className="contact-form-card contact-success" role="status">
         <div className="contact-success-icon" aria-hidden="true">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
             <path d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3>Solicitação recebida.</h3>
-        <p>Obrigado pelo contato. Analisaremos as informações e retornaremos em até um dia útil.</p>
-        <button type="button" className="btn btn-petrol" onClick={novoEnvio}>
-          Enviar nova solicitação
-        </button>
+        <h3>Mensagem recebida.</h3>
+        <p>Obrigado pelo contato. Vamos analisar as informações e retornar em até um dia útil.</p>
+        {referenceId && <p className="contact-reference">Referência: {referenceId}</p>}
+        <div className="contact-success-actions">
+          <Link className="btn" href="/">Voltar à página inicial</Link>
+          <button type="button" className="contact-success-again" onClick={novoEnvio}>
+            Enviar outra mensagem
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <form className="contact-form-card" onSubmit={handleSubmit} noValidate>
+      <p className="contact-required-hint">Campos marcados com <span className="contact-required">*</span> são obrigatórios.</p>
+
+      {hasErrors && (
+        <div ref={summaryRef} className="contact-error-summary" role="alert" tabIndex={-1}>
+          <p className="contact-error-summary-title">Revise os campos indicados.</p>
+          <ul>
+            {errorKeys.map((key) => (
+              <li key={key}><a href={`#field-${key}`}>{FIELD_ERROR_LABELS[key]}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Honeypot — invisível, fora da ordem de tabulação, nunca enviado no e-mail. */}
+      <label className="contact-honeypot" aria-hidden="true">
+        Não preencha este campo
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={set('website')}
+        />
+      </label>
+
       <div className="contact-form-grid">
-        <label className="contact-field">
-          <span>Nome <span className="contact-required">*</span></span>
+        <label className="contact-field" htmlFor="field-name">
+          <span>Seu nome <span className="contact-required">*</span></span>
           <input
-            value={form.nome}
-            onChange={set('nome')}
-            placeholder="Seu nome"
+            id="field-name"
+            ref={firstFieldRef}
+            name="name"
+            autoComplete="name"
+            value={form.name}
+            onChange={set('name')}
+            placeholder="Como podemos chamar você?"
+            maxLength={100}
             required
-            aria-invalid={camposInvalidos.has('nome')}
-            aria-describedby={camposInvalidos.has('nome') ? 'contact-form-error' : undefined}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? 'error-name' : undefined}
           />
+          {errors.name && <span id="error-name" className="contact-field-error">{errors.name}</span>}
         </label>
-        <label className="contact-field">
-          <span>Empresa <span className="contact-required">*</span></span>
+
+        <label className="contact-field" htmlFor="field-email">
+          <span>Seu e-mail <span className="contact-required">*</span></span>
           <input
-            value={form.empresa}
-            onChange={set('empresa')}
-            placeholder="Nome da empresa"
-            required
-            aria-invalid={camposInvalidos.has('empresa')}
-            aria-describedby={camposInvalidos.has('empresa') ? 'contact-form-error' : undefined}
-          />
-        </label>
-        <label className="contact-field">
-          <span>Cargo <span className="contact-optional">opcional</span></span>
-          <input value={form.cargo} onChange={set('cargo')} placeholder="Seu cargo" />
-        </label>
-        <label className="contact-field">
-          <span>E-mail <span className="contact-required">*</span></span>
-          <input
+            id="field-email"
             type="email"
+            name="email"
+            autoComplete="email"
             value={form.email}
             onChange={set('email')}
-            placeholder="voce@empresa.com"
+            placeholder="voce@empresa.com.br"
+            maxLength={254}
             required
-            aria-invalid={camposInvalidos.has('email')}
-            aria-describedby={camposInvalidos.has('email') ? 'contact-form-error' : undefined}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'error-email' : undefined}
+          />
+          {errors.email && <span id="error-email" className="contact-field-error">{errors.email}</span>}
+        </label>
+
+        <label className="contact-field" htmlFor="field-company">
+          <span>Empresa ou projeto <span className="contact-required">*</span></span>
+          <input
+            id="field-company"
+            name="company"
+            autoComplete="organization"
+            value={form.company}
+            onChange={set('company')}
+            placeholder="Nome da empresa ou iniciativa"
+            maxLength={120}
+            required
+            aria-invalid={!!errors.company}
+            aria-describedby={errors.company ? 'error-company' : undefined}
+          />
+          {errors.company && <span id="error-company" className="contact-field-error">{errors.company}</span>}
+        </label>
+
+        <label className="contact-field" htmlFor="field-role">
+          <span>Sua função <span className="contact-optional">opcional</span></span>
+          <input
+            id="field-role"
+            name="role"
+            autoComplete="organization-title"
+            value={form.role}
+            onChange={set('role')}
+            placeholder="Ex.: Sócio, Operações, Tecnologia"
+            maxLength={120}
           />
         </label>
-        <label className="contact-field">
-          <span>Telefone <span className="contact-optional">opcional</span></span>
-          <input value={form.telefone} onChange={set('telefone')} placeholder="(00) 00000-0000" />
+
+        <label className="contact-field" htmlFor="field-phone">
+          <span>Telefone ou WhatsApp <span className="contact-optional">opcional</span></span>
+          <input
+            id="field-phone"
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            value={form.phone}
+            onChange={set('phone')}
+            placeholder="(31) 99999-9999"
+            maxLength={30}
+          />
         </label>
-        <label className="contact-field">
-          <span>Nº de colaboradores <span className="contact-optional">opcional</span></span>
-          <select value={form.porte} onChange={set('porte')}>
-            <option value="">Selecione</option>
-            <option value="1-10">1 a 10</option>
-            <option value="11-50">11 a 50</option>
-            <option value="51-200">51 a 200</option>
-            <option value="200+">Mais de 200</option>
-          </select>
-        </label>
-        <label className="contact-field">
-          <span>Área de interesse <span className="contact-optional">opcional</span></span>
-          <select value={form.interesse} onChange={set('interesse')}>
-            <option value="">Selecione</option>
-            {INTERESSE_OPTIONS.map((opt) => (
+
+        <label className="contact-field" htmlFor="field-companySize">
+          <span>Tamanho da empresa <span className="contact-optional">opcional</span></span>
+          <select id="field-companySize" name="companySize" value={form.companySize} onChange={set('companySize')}>
+            <option value="">Selecione, se quiser</option>
+            {COMPANY_SIZE_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
         </label>
       </div>
 
-      <label className="contact-field contact-field-wide">
-        <span>Área de atuação <span className="contact-optional">opcional</span></span>
-        <input value={form.area} onChange={set('area')} placeholder="Ex.: varejo, saúde, indústria, serviços…" />
-      </label>
-
-      <label className="contact-field contact-field-wide">
-        <span>Como podemos ajudar? <span className="contact-required">*</span></span>
-        <textarea
-          rows={5}
-          value={form.mensagem}
-          onChange={set('mensagem')}
-          placeholder="Conte um pouco sobre sua empresa, seus desafios ou o objetivo do projeto."
+      <label className="contact-field contact-field-wide" htmlFor="field-area">
+        <span>Qual área está mais relacionada ao desafio? <span className="contact-required">*</span></span>
+        <select
+          id="field-area"
+          name="area"
+          value={form.area}
+          onChange={set('area')}
           required
-          aria-invalid={camposInvalidos.has('mensagem')}
-          aria-describedby={camposInvalidos.has('mensagem') ? 'contact-form-error' : undefined}
-        />
+          aria-invalid={!!errors.area}
+          aria-describedby={errors.area ? 'error-area' : undefined}
+        >
+          <option value="">Selecione uma opção</option>
+          {AREA_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        {errors.area && <span id="error-area" className="contact-field-error">{errors.area}</span>}
       </label>
 
-      {erro && (
-        <div id="contact-form-error" className="contact-error" role="alert" aria-live="assertive">
-          Preencha corretamente: {Array.from(camposInvalidos).map((campo) => REQUIRED_FIELD_LABELS[campo]).join(', ')}.
-        </div>
-      )}
+      <label className="contact-field contact-field-wide" htmlFor="field-message">
+        <span>Conte o que está acontecendo hoje <span className="contact-required">*</span></span>
+        <textarea
+          id="field-message"
+          name="message"
+          rows={5}
+          value={form.message}
+          onChange={set('message')}
+          placeholder="Descreva o processo, sistema ou dificuldade, quem é afetado e o resultado que você gostaria de alcançar."
+          maxLength={MESSAGE_MAX}
+          required
+          aria-invalid={!!errors.message}
+          aria-describedby={[errors.message ? 'error-message' : null, 'message-helper', form.message.length >= MESSAGE_COUNTER_THRESHOLD ? 'message-counter' : null].filter(Boolean).join(' ') || undefined}
+        />
+        <span id="message-helper" className="contact-helper">Não inclua senhas, chaves de acesso, dados bancários, informações médicas ou documentos confidenciais.</span>
+        {form.message.length >= MESSAGE_COUNTER_THRESHOLD && (
+          <span id="message-counter" className="contact-counter">{form.message.length}/{MESSAGE_MAX}</span>
+        )}
+        {errors.message && <span id="error-message" className="contact-field-error">{errors.message}</span>}
+      </label>
 
       <p className="contact-privacy-note">
-        Utilizaremos seus dados para analisar sua solicitação e entrar em contato. Saiba mais em nosso{' '}
+        Ao enviar, você declara ciência de que os dados informados serão usados para responder à solicitação e conduzir os próximos passos, conforme o{' '}
         <a href="/politica-de-privacidade">Aviso de Privacidade</a>.
       </p>
 
       <div className="contact-form-footer">
-        <span className="contact-required-note">* campos obrigatórios</span>
         <button type="submit" className="btn" disabled={enviando}>
-          {enviando ? 'Enviando…' : 'Solicitar diagnóstico'}
+          {enviando ? 'Enviando...' : 'Enviar mensagem'}
         </button>
       </div>
     </form>

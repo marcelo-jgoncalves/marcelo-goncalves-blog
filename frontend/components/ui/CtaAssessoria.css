@@ -5,6 +5,7 @@
   overflow: hidden;
   isolation: isolate;
   margin-block: 0;
+  scroll-margin-top: 100px;
 }
 
 .cta-adv::before {
@@ -144,12 +145,28 @@
   box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
 }
 
+.cta-adv-label {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+  margin-bottom: var(--sp-2);
+}
+
 .cta-adv-card h3 {
   font-weight: 800;
   font-size: var(--type-lead);
   letter-spacing: -.025em;
   color: #fff;
   line-height: 1.2;
+}
+
+.cta-adv-body-text {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .78);
+  margin: var(--sp-5) 0 var(--sp-6);
 }
 
 .cta-adv-svc {

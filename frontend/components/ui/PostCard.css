@@ -113,4 +113,12 @@
 
 .post-card .pc-foot .ler-artigo {
   font-size: var(--type-label);
+  flex: none;
+}
+
+.post-card .pc-foot > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

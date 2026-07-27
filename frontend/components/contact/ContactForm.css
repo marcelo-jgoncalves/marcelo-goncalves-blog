@@ -81,17 +81,67 @@
   background: var(--surface);
 }
 
-.contact-error {
-  margin-top: var(--sp-4);
-  display: flex;
-  align-items: center;
-  gap: var(--title-gap);
+.contact-required-hint {
   font-size: var(--type-caption);
+  color: var(--steel);
+  margin: 0 0 var(--sp-5);
+}
+
+.contact-error-summary {
+  margin-bottom: var(--sp-5);
   color: var(--clay-hover);
   background: var(--clay-soft);
   border: 1px solid var(--clay);
-  padding: var(--sp-3) var(--eyebrow-gap);
+  padding: var(--sp-4) var(--eyebrow-gap);
   border-radius: 11px;
+}
+
+.contact-error-summary-title {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  margin: 0 0 var(--sp-2);
+}
+
+.contact-error-summary ul {
+  margin: 0;
+  padding-left: var(--sp-5);
+}
+
+.contact-error-summary a {
+  color: var(--clay-hover);
+  font-size: var(--type-caption);
+  text-decoration: underline;
+}
+
+.contact-field-error {
+  font-size: var(--type-caption);
+  font-weight: 500;
+  color: var(--clay-hover);
+}
+
+.contact-helper {
+  font-size: var(--type-caption);
+  font-weight: 400;
+  color: var(--steel);
+}
+
+.contact-counter {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  text-align: right;
+}
+
+/* Honeypot — invisível visualmente, mas presente no DOM/tabulação evitada
+   via tabindex=-1 (não usar display:none, que alguns bloqueadores de spam
+   simples ignoram na detecção). */
+.contact-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .contact-privacy-note {
@@ -155,8 +205,36 @@
   font-size: var(--type-body-sm);
   line-height: 1.66;
   color: var(--slate);
-  margin: 0 auto var(--sp-6);
+  margin: 0 auto var(--sp-4);
   max-width: 38ch;
+}
+
+.contact-reference {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  margin: 0 auto var(--sp-6) !important;
+}
+
+.contact-success-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.contact-success-again {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--type-caption);
+  color: var(--petrol);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.contact-success-again:hover {
+  color: var(--petrol-deep);
 }
 
 @media (max-width: 620px) {

@@ -9,83 +9,86 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
 import StepsTimeline from '@/components/ui/StepsTimeline';
 import { IconCloud } from '@/components/ui/InstitutionalIcons';
-import IconTile from '@/components/ui/IconTile';
+import PillarCard from '@/components/ui/PillarCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/config';
+import { SITE_URL, SITE_NAME, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
 
 export const revalidate = 300;
 
+const HOME_TITLE = `Consultoria em Automação, Software e AWS | ${SITE_NAME}`;
+const HOME_DESCRIPTION = 'Consultoria boutique para automatizar processos, integrar sistemas, desenvolver plataformas e modernizar ambientes AWS com segurança e confiabilidade.';
+
 export const metadata: Metadata = {
-  title: { absolute: `${SITE_NAME} | Consultoria em Tecnologia` },
-  description: SITE_DESCRIPTION,
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME} | Consultoria em Tecnologia`,
-    description: SITE_DESCRIPTION,
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     url: SITE_URL,
     type: 'website',
   },
   twitter: {
-    title: `${SITE_NAME} | Consultoria em Tecnologia`,
-    description: SITE_DESCRIPTION,
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
   },
 };
 
 const PILLARS = [
   {
-    kicker: 'Pilar · Software',
-    title: 'Engenharia de Software',
-    description: 'Desenvolvemos aplicações, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.',
+    kicker: 'Eficiência operacional',
+    title: 'Automação e Integração de Processos',
+    description: 'Conectamos sistemas e automatizamos atividades repetitivas para reduzir erros, retrabalho e tempo operacional.',
     bullets: [
-      <><strong>Sistemas sob medida</strong> para atender necessidades específicas</>,
-      <><strong>Arquiteturas modernas</strong> preparadas para crescer com sua empresa</>,
-      <><strong>APIs e microsserviços</strong> para soluções flexíveis e integradas</>,
+      <>Integração entre <strong>ERP, CRM e sistemas internos</strong></>,
+      <>Workflows para <strong>aprovações, documentos e tarefas recorrentes</strong></>,
+      <>Sincronização de <strong>dados, relatórios e notificações</strong></>,
     ],
-    tags: ['Aplicações', 'APIs', 'Arquitetura'],
-    icon: <FontAwesomeIcon icon={faGear} />,
-    wide: true,
-    href: '/software',
-  },
-  {
-    kicker: 'Pilar · Inteligência',
-    title: 'Inteligência Artificial',
-    description: 'Aplicamos inteligência artificial para automatizar atividades, acelerar decisões e aumentar a produtividade da equipe com soluções práticas e integradas ao dia a dia.',
-    bullets: [
-      <><strong>Assistentes inteligentes</strong> para apoiar equipes e clientes</>,
-      <><strong>Automação com IA</strong> para documentos, análises e atendimento</>,
-      <><strong>IA integrada aos sistemas</strong> para processos mais rápidos e eficientes</>,
-    ],
-    tags: ['IA Generativa', 'Agentes', 'Produtividade'],
-    icon: <FontAwesomeIcon icon={faBrain} />,
-    wide: true,
-    href: '/inteligencia-artificial',
-  },
-  {
-    kicker: 'Pilar · Automação',
-    title: 'Integração & Automação',
-    description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho, acelerar operações e garantir que as informações fluam de forma confiável entre toda a empresa.',
-    bullets: [
-      <><strong>Integração entre sistemas</strong> por APIs e eventos em tempo real</>,
-      <><strong>Automação de processos</strong> para eliminar tarefas repetitivas</>,
-      <><strong>Workflows inteligentes</strong> que reduzem erros e aumentam a produtividade</>,
-    ],
-    tags: ['Integrações', 'Automação', 'Produtividade'],
+    tags: ['Integrações', 'Workflows', 'Automação'],
     icon: <FontAwesomeIcon icon={faRobot} />,
     wide: true,
     href: '/automacao',
   },
   {
-    kicker: 'Pilar · Plataforma',
-    title: 'Cloud & DevOps',
-    description: 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.',
+    kicker: 'IA aplicada',
+    title: 'Inteligência Artificial Aplicada',
+    description: 'Integramos inteligência artificial a processos, documentos e sistemas para ampliar produtividade, acesso à informação e capacidade de decisão.',
     bullets: [
-      <><strong>Arquitetura em nuvem</strong> para ambientes resilientes e escaláveis</>,
-      <><strong>DevOps e CI/CD</strong> para implantações rápidas e confiáveis</>,
-      <><strong>Infraestrutura como Código</strong> para ambientes padronizados e seguros</>,
+      <>Assistentes conectados ao <strong>conhecimento da empresa</strong></>,
+      <>Extração, classificação e <strong>pesquisa em documentos</strong></>,
+      <>Agentes com <strong>regras, permissões e ações controladas</strong></>,
     ],
-    tags: ['AWS', 'DevOps', 'Infraestrutura'],
+    tags: ['Assistentes', 'Documentos', 'Agentes'],
+    icon: <FontAwesomeIcon icon={faBrain} />,
+    wide: true,
+    href: '/inteligencia-artificial',
+  },
+  {
+    kicker: 'Engenharia de software',
+    title: 'Sistemas e Plataformas Digitais',
+    description: 'Construímos e modernizamos sistemas ligados à operação, à integração de informações e à evolução do negócio.',
+    bullets: [
+      <>Sistemas internos e <strong>portais operacionais</strong></>,
+      <>APIs e backends para <strong>integrar dados e serviços</strong></>,
+      <>Modernização gradual de <strong>aplicações existentes</strong></>,
+    ],
+    tags: ['Sistemas', 'APIs', 'Modernização'],
+    icon: <FontAwesomeIcon icon={faGear} />,
+    wide: true,
+    href: '/software',
+  },
+  {
+    kicker: 'Plataformas em nuvem',
+    title: 'Cloud, DevOps e Confiabilidade',
+    description: 'Estruturamos plataformas em nuvem seguras, automatizadas, observáveis e preparadas para crescer.',
+    bullets: [
+      <>Arquitetura AWS, modernização e <strong>infraestrutura como código</strong></>,
+      <>CI/CD, containers e <strong>automação de ambientes</strong></>,
+      <>Observabilidade, segurança e <strong>recuperação de desastres</strong></>,
+    ],
+    tags: ['AWS', 'DevOps', 'Confiabilidade'],
     icon: <IconCloud />,
     wide: true,
     href: '/plataforma',
@@ -93,40 +96,43 @@ const PILLARS = [
 ];
 
 const STEPS = [
-  { title: 'Diagnóstico & Oportunidades', description: 'Mapeamos sua operação atual para identificar onde a tecnologia vai destravar o seu negócio.' },
-  { title: 'Engenharia de Soluções', description: 'Apresentamos as alternativas ideais sob medida, priorizando eficiência e economia.' },
-  { title: 'Implementação', description: 'Executamos o projeto de forma ágil, com arquitetura leve (Serverless) e segurança nativa.' },
-  { title: 'Homologação & Entrega', description: 'Validamos cada fluxo junto com a sua equipe para garantir o impacto real combinado.' },
-  { title: 'Evolução Contínua', description: 'Mantemos seu sistema otimizado, seguro e pronto para novos desafios de crescimento.' },
+  { title: 'Entendimento do desafio', description: 'Na conversa inicial, você apresenta o contexto, os principais sintomas e o resultado que espera alcançar. Avaliamos a aderência e definimos o próximo passo.' },
+  { title: 'Diagnóstico e plano de ação', description: 'Quando o desafio exige análise aprofundada, mapeamos processos, sistemas, restrições, riscos e oportunidades para definir prioridades e uma abordagem viável.' },
+  { title: 'Implementação incremental', description: 'Construímos a solução em ciclos testáveis, priorizando entregas úteis, segurança, manutenibilidade e controle de custos.' },
+  { title: 'Validação e entrada em operação', description: 'Validamos os fluxos com as pessoas envolvidas, tratamos ajustes e preparamos a entrada em produção com critérios claros de aceite.' },
+  { title: 'Acompanhamento e evolução', description: 'Acompanhamos o comportamento da solução, corrigimos desvios e planejamos novas etapas quando elas geram valor real para a operação.' },
 ];
 
+// Ajuste 07 (§19.2): cases hardcoded — validar contra registros/medições reais
+// antes de publicar em produção. Enquanto não validado, não descrever como
+// "projetos reais" em nenhum texto desta seção.
 const CASES = [
   {
-    metrics: [{ value: '-40%', label: 'custo de infraestrutura' }],
-    title: 'Redução de 40% no custo de infraestrutura',
-    text: 'A infraestrutura apresentava desperdício de recursos e custos crescentes em um ambiente Kubernetes na AWS. Revisamos a arquitetura, ajustamos o right-sizing de CPU e memória, configuramos autoscaling e adotamos uma estratégia híbrida de instâncias On-Demand e Spot, mantendo a disponibilidade e a performance da aplicação.',
-    tags: ['FinOps', 'Kubernetes', 'AWS'],
-  },
-  {
-    metrics: [
-      { value: '-60%', label: 'custo operacional' },
-      { value: '+40%', label: 'performance', accent: true },
-    ],
-    title: 'Aumento de 40% na performance da aplicação',
-    text: 'A aplicação apresentava baixo desempenho, alto consumo de recursos e uma infraestrutura que limitava sua capacidade de crescimento. Reprojetamos a arquitetura da solução, revisamos a configuração do ambiente e implementamos melhorias de infraestrutura que reduziram o custo operacional em 60% e elevaram significativamente a performance da aplicação.',
-    tags: ['Arquitetura', 'Cloud', 'Performance'],
-  },
-  {
-    metrics: [{ value: '-70%', label: 'tempo de ciclo de aprovação' }],
-    title: 'Redução de 70% no tempo de aprovação de contratos',
-    text: 'O processo dependia de planilhas, troca de e-mails e aprovações manuais, gerando atrasos, retrabalho e pouca rastreabilidade. Desenvolvemos um portal interno com fluxo de aprovação automatizado, trilha de auditoria e notificações em cada etapa, tornando o processo mais ágil, seguro e transparente.',
-    tags: ['Portal Interno', 'Automação de Fluxo', 'Auditoria'],
+    metrics: [{ value: '-70%', label: 'tempo do ciclo de aprovação' }],
+    title: 'Redução de 70% no ciclo de aprovação de contratos',
+    text: 'O processo dependia de planilhas, trocas de e-mail e aprovações manuais, gerando atrasos, retrabalho e pouca rastreabilidade. Desenvolvemos um portal interno com fluxo automatizado, trilha de auditoria e notificações em cada etapa, tornando o processo mais rápido, seguro e transparente.',
+    tags: ['Portal interno', 'Automação de fluxo', 'Auditoria'],
   },
   {
     metrics: [{ value: '-85%', label: 'tempo de fechamento mensal' }],
     title: 'Redução de 85% no tempo de fechamento financeiro',
-    text: 'O fechamento mensal exigia consolidação manual de dados, conferências repetitivas e geração de relatórios em diferentes sistemas, consumindo tempo da equipe financeira. Automatizamos a consolidação das informações, os lançamentos e a geração de indicadores, reduzindo significativamente o esforço operacional e permitindo que a equipe se concentrasse em análises estratégicas.',
-    tags: ['Automação', 'Relatórios', 'Fechamento Financeiro'],
+    text: 'O fechamento mensal exigia consolidação manual de dados, conferências repetitivas e relatórios produzidos em diferentes sistemas. Automatizamos a consolidação das informações, os lançamentos e a geração de indicadores, reduzindo o esforço operacional e liberando a equipe para análises de maior valor.',
+    tags: ['Automação', 'Relatórios', 'Operação financeira'],
+  },
+  {
+    metrics: [{ value: '-40%', label: 'custo de infraestrutura' }],
+    title: 'Redução de 40% no custo de infraestrutura',
+    text: 'O ambiente Kubernetes na AWS apresentava desperdício de recursos e custos crescentes. Revisamos a arquitetura, ajustamos o dimensionamento de CPU e memória, configuramos autoscaling e adotamos uma combinação adequada de instâncias On-Demand e Spot, preservando disponibilidade e desempenho.',
+    tags: ['FinOps', 'Kubernetes', 'AWS'],
+  },
+  {
+    metrics: [
+      { value: '+40%', label: 'performance', accent: true },
+      { value: '-60%', label: 'custo operacional' },
+    ],
+    title: 'Mais performance com menor custo operacional',
+    text: 'A aplicação apresentava baixo desempenho, alto consumo de recursos e uma infraestrutura que limitava sua evolução. Reprojetamos a arquitetura da solução e revisamos a configuração do ambiente, elevando a performance em 40% e reduzindo o custo operacional em 60%.',
+    tags: ['Arquitetura', 'Cloud', 'Performance'],
   },
 ];
 
@@ -144,8 +150,20 @@ interface HomePost {
 }
 
 export default async function InstitutionalHome() {
-  const recentData = await getRecentPosts(3).catch(() => ({ posts: [] }));
-  const recent: HomePost[] = recentData?.posts || [];
+  // Ajuste 07 (§20.4/§20.6): busca mais que 3 porque a filtragem de posts de
+  // teste acontece aqui, antes da renderização — nunca só por CSS. O backend
+  // já restringe a consulta a status="Publicado" (getPosts/index.ts), então
+  // rascunhos já não chegam aqui.
+  const recentData = await getRecentPosts(9).catch(() => ({ posts: [] }));
+  const recent: HomePost[] = (recentData?.posts || [])
+    .filter((post: HomePost) =>
+      post.titulo &&
+      post.slug &&
+      post.data_publicacao &&
+      post.resumo &&
+      !post.titulo.toLowerCase().startsWith('[teste]'),
+    )
+    .slice(0, 3);
 
   return (
     <>
@@ -153,13 +171,15 @@ export default async function InstitutionalHome() {
         singleColumn
         className="ih-hero"
         dataAudit="ih-hero"
-        eyebrow="Consultoria em Tecnologia"
-        title={<>Tecnologia que sustenta a operação, aumenta eficiência e <em>destrava crescimento</em>.</>}
-        subtitle="Desenvolvimento, IA, Automação, Cloud & DevOps aplicados aos problemas reais da sua empresa."
+        eyebrow="Consultoria boutique de tecnologia"
+        title="Engenharia para uma operação mais eficiente, integrada e preparada para crescer."
+        subtitle="Ajudamos pequenas e médias empresas em crescimento a eliminar gargalos, automatizar processos, conectar sistemas e modernizar as plataformas que sustentam o negócio."
       >
         <div className="ih-hero-actions">
-          <Link href="/contato" className="btn">Solicitar diagnóstico</Link>
+          <Link href="/contato" className="btn">Apresentar um desafio</Link>
+          <a href="#servicos" className="btn btn-petrol">Conhecer os serviços</a>
         </div>
+        <p className="ih-hero-microcopy">Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
       {/* Serviços */}
@@ -167,59 +187,49 @@ export default async function InstitutionalHome() {
         <div className="wrap">
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual">Serviços</div>
-            <h2 className="sec-t">Quatro pilares que cobrem toda a sua operação</h2>
-            <p className="sec-desc ih-center-desc">Atuamos com profundidade em cada um deles, da estratégia ao código, da implementação à operação em produção.</p>
+            <h2 className="sec-t">Quatro competências que trabalham juntas para melhorar sua operação.</h2>
+            <p className="sec-desc ih-center-desc">Partimos do problema, não da ferramenta. Combinamos automação, inteligência artificial, software e cloud conforme o contexto, sem exigir que você escolha previamente uma tecnologia.</p>
           </div>
           <div className="ih-pillars-grid">
             {PILLARS.map((pillar) => (
-              <Link href={pillar.href} className={`ih-pillar-card${pillar.wide ? ' ih-pillar-card--wide' : ''}`} key={pillar.title}>
-                <div className="ih-pillar-top">
-                  <IconTile icon={pillar.icon} />
-                </div>
-                <div className="ih-pillar-kicker">{pillar.kicker}</div>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.description}</p>
-                <ul className="ih-pillar-bullets">
-                  {pillar.bullets.map((bullet, bi) => (
-                    <li key={bi}>{bullet}</li>
-                  ))}
-                </ul>
-                <div className="ih-pillar-footer">
-                  <div className="ih-pillar-tags">
-                    {pillar.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-                  <span className="ih-pillar-more">Saiba mais <span className="arrow" aria-hidden="true">→</span></span>
-                </div>
-              </Link>
+              <PillarCard
+                key={pillar.title}
+                icon={pillar.icon}
+                kicker={pillar.kicker}
+                title={pillar.title}
+                description={pillar.description}
+                bullets={pillar.bullets}
+                tags={pillar.tags}
+                href={pillar.href}
+                wide={pillar.wide}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* Metodologia */}
-      <section className="ih-section ih-section--surface" id="abordagem">
+      <section className="ih-section ih-section--surface" id="como-trabalhamos">
         <div className="wrap">
           <div className="ih-method-grid" data-audit="ih-method-grid">
             <div className="ih-method-text">
               <div className="ih-eyebrow">Como trabalhamos</div>
-              <h2 className="sec-t">Processo estruturado, entrega previsível</h2>
+              <h2 className="sec-t">Um processo claro para reduzir incerteza e construir o que realmente precisa evoluir.</h2>
               <p className="sec-desc" style={{ maxWidth: 720 }}>
-                Todo projeto começa pela compreensão do desafio de negócio. Antes de propor qualquer solução, analisamos processos, identificamos oportunidades de melhoria e definimos a abordagem técnica mais adequada para alcançar os resultados esperados.
+                Cada projeto começa pela compreensão do contexto, dos processos e dos resultados esperados. A tecnologia é definida somente depois que o problema, as restrições e as prioridades estão claros.
               </p>
             </div>
             <aside className="ih-method-card" data-audit="ih-method-card">
-              <span className="ih-mc-label">Nosso Método</span>
-              <h3 className="ih-mc-title">Entrega incremental, sem surpresas.</h3>
+              <span className="ih-mc-label">Nosso método</span>
+              <h3 className="ih-mc-title">Entregas incrementais, decisões transparentes.</h3>
               <p className="ih-mc-text">
-                Desenvolvemos soluções de forma incremental, com escopo bem definido, comunicação transparente e foco em entregas de valor. Assim, reduzimos riscos, mantemos os custos sob controle e garantimos uma evolução consistente do projeto.
+                Estruturamos o trabalho em etapas úteis e testáveis, com escopo visível, comunicação direta e validação contínua. Isso reduz riscos, evita compromissos prematuros e permite que a solução evolua com base no que aprendemos durante o projeto.
               </p>
             </aside>
           </div>
           <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Fale conosco</Link>
+            <Link href="/contato" className="btn">Apresentar um desafio</Link>
           </div>
         </div>
       </section>
@@ -229,8 +239,8 @@ export default async function InstitutionalHome() {
         <div className="wrap">
           <div className="ih-center-head">
             <div className="ih-eyebrow ih-eyebrow--dual ih-eyebrow--onDark">Resultados</div>
-            <h2 className="sec-t sec-t--onDark ih-results-t">Resultado que aparece na <em>fatura</em></h2>
-            <p className="sec-desc sec-desc--onDark ih-results-desc">Projetos reais de otimização de nuvem e arquitetura, com redução de custo mensurável e sem abrir mão de performance ou disponibilidade.</p>
+            <h2 className="sec-t sec-t--onDark ih-results-t">Impacto mensurável em processos e plataformas.</h2>
+            <p className="sec-desc sec-desc--onDark ih-results-desc">Exemplos de melhorias alcançadas por meio de automação, software, arquitetura e otimização de ambientes em nuvem.</p>
           </div>
           <div className="ih-cases">
             {CASES.map((c, i) => {
@@ -261,39 +271,51 @@ export default async function InstitutionalHome() {
               );
             })}
           </div>
+          <p className="ih-results-note">Os resultados variam conforme o contexto, o escopo e as condições de cada projeto.</p>
           <div className="ih-section-footer-center">
-            <Link href="/contato" className="btn">Conte-nos seu desafio</Link>
+            <Link href="/contato" className="btn">Apresentar um desafio</Link>
           </div>
         </div>
       </section>
 
       {/* Blog */}
-      {recent.length > 0 && (
-        <section className="ih-section ih-section--sand" id="insights">
-          <div className="wrap">
-            <div className="ih-center-head">
-              <div className="ih-eyebrow ih-eyebrow--dual">Conteúdo técnico</div>
-              <h2 className="sec-t">Engenharia compartilhada por quem a vive no dia a dia</h2>
-            </div>
+      <section className="ih-section ih-section--sand" id="conteudo">
+        <div className="wrap">
+          <div className="ih-center-head">
+            <div className="ih-eyebrow ih-eyebrow--dual">Conteúdo técnico</div>
+            <h2 className="sec-t">Engenharia aplicada, decisões explicadas e aprendizados de produção.</h2>
+            <p className="sec-desc ih-center-desc">Artigos sobre cloud, automação, inteligência artificial e desenvolvimento, com contexto, escolhas técnicas, erros e resultados observados na prática.</p>
+          </div>
+          {recent.length > 0 && (
             <div className="ih-blog-grid">
               {recent.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <div className="ih-section-footer-center">
-              <Link className="btn btn-petrol" href="/blog">Conheça o blog</Link>
-            </div>
+          )}
+          <div className="ih-section-footer-center">
+            <Link className="btn btn-petrol" href="/artigos">Explorar o blog</Link>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <CtaAssessoria
-        id="contato"
+        id="vamos-conversar"
         eyebrow="Vamos conversar"
-        title={<>Vamos construir a solução que vai <em>impulsionar</em> seu negócio.</>}
-        description="Cada empresa enfrenta desafios diferentes. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para modernizar operações, aumentar a eficiência e apoiar o crescimento do seu negócio."
+        title="Conte o que está limitando sua operação."
+        description="Descreva o processo, sistema ou desafio que precisa evoluir. Vamos avaliar a aderência, esclarecer os primeiros caminhos e definir se faz sentido avançar para um diagnóstico."
+        points={[
+          <span key="p1">Processos manuais que consomem tempo e geram retrabalho</span>,
+          <span key="p2">Sistemas desconectados ou difíceis de evoluir</span>,
+          <span key="p3">Plataformas que precisam ganhar segurança, confiabilidade ou escala</span>,
+        ]}
+        cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
+        cardLabel="Primeira conversa"
+        cardTitle="Vamos entender o problema e avaliar o próximo passo."
+        cardBody={<p className="cta-adv-body-text">Você não precisa saber qual tecnologia ou serviço contratar. Começamos pelo contexto e identificamos o caminho mais adequado.</p>}
         ctaHref="/contato"
-        ctaLabel="Vamos conversar"
+        ctaLabel="Apresentar um desafio"
+        reassure="Sem compromisso · Retorno em até um dia útil"
       />
     </>
   );

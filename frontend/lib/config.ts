@@ -12,5 +12,17 @@ export const AUTHOR_NAME = 'Marcelo Gonçalves';
 export const AUTHOR_TWITTER = '@marcelogoncalves';
 export const AUTHOR_LINKEDIN_URL = 'https://www.linkedin.com/in/marcelo-jgoncalves';
 export const AUTHOR_GITHUB_URL = 'https://github.com/marcelo-jgoncalves';
+export const AUTHOR_EMAIL = 'contato@marcelogoncalves.com';
+export const AUTHOR_LOCATION = 'Belo Horizonte, MG · Atendimento remoto';
 // TODO: placeholder — Marcelo vai passar a URL real do Instagram (backlog CLAUDE.md §10 #1).
 export const AUTHOR_INSTAGRAM_URL = 'https://instagram.com/foo';
+
+// Controla a exibição do badge "Disponível para novos projetos" no CTA final da Home.
+export const ACCEPTING_NEW_PROJECTS = true;
+
+// Ajuste 14 (§33.1): canal WhatsApp da página /contato só aparece quando
+// whatsappUrl estiver preenchida com um número real (formato https://wa.me/{numero}).
+// Backlog CLAUDE.md §10 #1 — Marcelo ainda não passou o número.
+export const contactChannels = {
+  whatsappUrl: '',
+};

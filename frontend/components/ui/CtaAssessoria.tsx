@@ -48,7 +48,8 @@ interface CtaAssessoriaProps {
   title?: ReactNode;
   description?: string;
   points?: ReactNode[];
-  cardTagline?: string;
+  cardTagline?: string | null;
+  cardLabel?: string;
   cardTitle?: string;
   cardBody?: ReactNode;
   ctaHref?: string;
@@ -64,6 +65,7 @@ export default function CtaAssessoria({
   description = 'O que você lê aqui, aplicado ao seu negócio. Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.',
   points = DEFAULT_POINTS,
   cardTagline = 'Disponível para novos projetos',
+  cardLabel,
   cardTitle = 'Conte-nos seu desafio. Nós ajudamos a encontrar a melhor solução.',
   cardBody = DEFAULT_CARD_BODY,
   ctaHref = '/#servicos',
@@ -89,7 +91,8 @@ export default function CtaAssessoria({
         </div>
         <div className="cta-adv-card-wrap">
           <div className="cta-adv-card" data-audit="cta-adv-card">
-            <div className="cta-adv-tagline"><span className="dot" />{cardTagline}</div>
+            {cardTagline && <div className="cta-adv-tagline"><span className="dot" />{cardTagline}</div>}
+            {cardLabel && <div className="cta-adv-label">{cardLabel}</div>}
             <h3>{cardTitle}</h3>
             {cardBody}
             {ctaExternal || ctaHref.includes('#') ? (

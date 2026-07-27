@@ -1,34 +1,33 @@
 /* frontend/app/plataforma/page.tsx
-   Landing page de pilar — specs/ESPECIFICACAO-CLOUD-DEVOPS.md */
+   Landing page de pilar — ajustes/ajuste-10-pagina-cloud-devops-confiabilidade.md */
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
 import IconLabelSection from '@/components/ui/IconLabelSection';
-import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconArquiteturaNuvem,
-  IconDevOps,
   IconInfraestruturaCodigo,
+  IconCICD,
   IconContainersKubernetes,
   IconObservabilidade,
   IconSegurancaCloud,
+  IconLayers,
   IconBolt,
-  IconFinOps,
   IconAltaDisponibilidade,
-  IconCICD,
+  IconFinOps,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
-const TITLE = `Cloud & DevOps | ${SITE_NAME}`;
-const DESCRIPTION = 'Projetamos e operamos ambientes em nuvem com foco em escalabilidade, segurança e automação, acelerando entregas e garantindo alta disponibilidade.';
+const TITLE = `Cloud, DevOps e Confiabilidade AWS | ${SITE_NAME}`;
+const DESCRIPTION = 'Arquitetura AWS, infraestrutura como código, CI/CD, containers, observabilidade, segurança, recuperação de desastres e otimização de custos.';
 const PAGE_URL = `${SITE_URL}/plataforma`;
 
 export const metadata: Metadata = {
@@ -56,7 +55,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Cloud & DevOps | ${AUTHOR_NAME}`,
+  name: `Cloud, DevOps e Confiabilidade | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -65,7 +64,7 @@ const jsonLd = {
     url: `${SITE_URL}/sobre`,
   },
   areaServed: { '@type': 'Country', name: 'Brazil' },
-  serviceType: 'Cloud Computing Consulting',
+  serviceType: 'Arquitetura e modernização de plataformas AWS',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Serviços de Cloud & DevOps',
@@ -80,50 +79,73 @@ const jsonLd = {
   },
 };
 
-const OQUE_FAZEMOS = [
-  { Icon: IconArquiteturaNuvem, title: 'Arquitetura em Nuvem', text: 'Projetamos ambientes modernos, resilientes e escaláveis utilizando serviços gerenciados e arquiteturas orientadas à alta disponibilidade.', tags: ['Arquitetura AWS', 'Multiambiente', 'Alta Disponibilidade'] },
-  { Icon: IconDevOps, title: 'DevOps', text: 'Automatizamos todo o ciclo de entrega de software para reduzir erros, acelerar implantações e aumentar a confiabilidade das aplicações.', tags: ['CI/CD', 'Blue/Green', 'GitOps'] },
-  { Icon: IconInfraestruturaCodigo, title: 'Infraestrutura como Código', text: 'Toda a infraestrutura é descrita em código, permitindo padronização, rastreabilidade e implantação consistente em qualquer ambiente.', tags: ['Terraform', 'Versionamento', 'Ambientes Reproduzíveis'] },
-  { Icon: IconContainersKubernetes, title: 'Containers e Kubernetes', text: 'Construímos plataformas baseadas em containers para facilitar escalabilidade, isolamento de aplicações e maior eficiência operacional.', tags: ['Kubernetes', 'Amazon EKS', 'Docker'] },
-  { Icon: IconObservabilidade, title: 'Observabilidade', text: 'Monitoramos aplicações e infraestrutura para identificar problemas rapidamente e garantir disponibilidade contínua.', tags: ['Logs Centralizados', 'Métricas', 'Alertas'] },
-  { Icon: IconSegurancaCloud, title: 'Segurança em Cloud', text: 'Aplicamos boas práticas de segurança desde a arquitetura até a operação dos ambientes.', tags: ['IAM', 'Gestão de Segredos', 'Criptografia'] },
+// §7-13: seis áreas de atuação comercialmente distintas.
+const ATUACAO = [
+  { Icon: IconArquiteturaNuvem, title: 'Arquitetura e modernização AWS', text: 'Projetamos novas arquiteturas e evoluímos ambientes existentes considerando requisitos de segurança, disponibilidade, desempenho, custo e capacidade de manutenção.', tags: ['Arquitetura AWS', 'Modernização', 'Well-Architected'] },
+  { Icon: IconInfraestruturaCodigo, title: 'Infraestrutura como código', text: 'Transformamos configurações manuais em definições versionadas, revisáveis e reproduzíveis para reduzir divergências entre ambientes e aumentar a segurança das mudanças.', tags: ['Terraform', 'OpenTofu', 'CloudFormation'] },
+  { Icon: IconCICD, title: 'Entrega contínua e automação', text: 'Estruturamos pipelines, validações e estratégias de implantação para tornar mudanças mais previsíveis, rastreáveis e fáceis de interromper ou reverter quando necessário.', tags: ['CI/CD', 'Quality gates', 'Deploys'] },
+  { Icon: IconContainersKubernetes, title: 'Containers e plataformas de execução', text: 'Avaliamos e implementamos a forma de execução mais adequada para cada workload, incluindo containers, serviços gerenciados e arquiteturas serverless quando elas reduzem complexidade operacional.', tags: ['ECS', 'EKS', 'Serverless'] },
+  { Icon: IconObservabilidade, title: 'Observabilidade e confiabilidade', text: 'Organizamos métricas, logs, traces, dashboards e alertas para reduzir o tempo de detecção, facilitar diagnósticos e acompanhar o comportamento real das aplicações.', tags: ['Métricas', 'Logs e traces', 'Alertas'] },
+  { Icon: IconSegurancaCloud, title: 'Segurança, continuidade e custos', text: 'Revisamos identidades, permissões, backups, recuperação de desastres e consumo de recursos para reduzir riscos e tornar decisões de continuidade e custo mais explícitas.', tags: ['IAM', 'Recuperação', 'FinOps'] },
 ];
 
+// §14.5: oito benefícios.
 const BENEFICIOS = [
-  'Redução do tempo de implantação',
-  'Maior disponibilidade das aplicações',
-  'Menor risco operacional',
-  'Automação de tarefas repetitivas',
-  'Padronização dos ambientes',
-  'Redução de custos em nuvem',
-  'Maior segurança e governança',
-  'Previsibilidade de custos com FinOps',
+  'Ambientes reproduzíveis e versionados',
+  'Deploys mais seguros e rastreáveis',
+  'Detecção mais rápida de falhas',
+  'Diagnósticos apoiados por métricas, logs e traces',
+  'Permissões e responsabilidades mais claras',
+  'Maior visibilidade sobre custos e capacidade',
+  'Recuperação planejada para cenários de falha',
+  'Menor dependência de procedimentos manuais',
 ];
 
-const ESPECIALIDADES = [
-  { label: 'Arquitetura AWS', Icon: IconArquiteturaNuvem },
-  { label: 'Kubernetes (EKS)', Icon: IconContainersKubernetes },
-  { label: 'Serverless', Icon: IconBolt },
-  { label: 'DevOps', Icon: IconDevOps },
-  { label: 'Infraestrutura como Código', Icon: IconInfraestruturaCodigo },
-  { label: 'Observabilidade', Icon: IconObservabilidade },
-  { label: 'Otimização de Custos (FinOps)', Icon: IconFinOps },
-  { label: 'Alta Disponibilidade', Icon: IconAltaDisponibilidade },
-  { label: 'Segurança em Cloud', Icon: IconSegurancaCloud },
-  { label: 'CI/CD', Icon: IconCICD },
+// §15.5-15.7: três subblocos da abordagem (não são etapas sequenciais).
+const ABORDAGEM_SUBBLOCOS = [
+  { label: 'AWS como especialização principal', title: 'Profundidade onde ela gera decisões melhores.', text: 'A principal especialização em nuvem da consultoria é AWS. Integrações com ambientes existentes, serviços externos e componentes híbridos são consideradas quando o cenário exige.' },
+  { label: 'Modernização incremental', title: 'Evoluir sem reescrever tudo.', text: 'Sempre que possível, priorizamos mudanças graduais: automatizar um ambiente, melhorar um pipeline, adicionar observabilidade ou modernizar um componente antes de comprometer toda a plataforma.' },
+  { label: 'Operação desde o projeto', title: 'Construir considerando quem vai manter.', text: 'Documentação, automação, observabilidade, segurança e transferência de conhecimento fazem parte da solução. O objetivo é evitar uma arquitetura que funcione apenas enquanto quem a criou está presente.' },
 ];
 
-const ETAPAS = [
-  { title: 'Diagnóstico do ambiente', text: 'Entendemos os objetivos do negócio e avaliamos a infraestrutura existente.' },
-  { title: 'Arquitetura & automação', text: 'Projetamos a arquitetura moderna e implementamos toda a automação necessária.' },
-  { title: 'Evolução contínua', text: 'Entregamos uma plataforma pronta para evoluir com segurança e escalabilidade.' },
+// §16.6: dez capacidades técnicas — não são links, não viram subpáginas.
+const CAPACIDADES = [
+  { label: 'Arquitetura AWS e Well-Architected Framework', Icon: IconArquiteturaNuvem },
+  { label: 'AWS Organizations, governança e ambientes multi-conta', Icon: IconLayers },
+  { label: 'IAM, identidade e princípio do menor privilégio', Icon: IconSegurancaCloud },
+  { label: 'Terraform, OpenTofu e CloudFormation', Icon: IconInfraestruturaCodigo },
+  { label: 'Docker, ECS, EKS e Kubernetes', Icon: IconContainersKubernetes },
+  { label: 'Lambda, API Gateway e arquiteturas serverless', Icon: IconBolt },
+  { label: 'GitHub Actions, GitLab CI, Jenkins e CodePipeline', Icon: IconCICD },
+  { label: 'CloudWatch, X-Ray, Prometheus, Grafana e Splunk', Icon: IconObservabilidade },
+  { label: 'Alta disponibilidade, backup e recuperação de desastres', Icon: IconAltaDisponibilidade },
+  { label: 'FinOps, dimensionamento e otimização de custos', Icon: IconFinOps },
 ];
 
+// §17.5: oito itens do checklist de segurança, confiabilidade e continuidade.
+const CONFIABILIDADE_ITEMS = [
+  'Infraestrutura versionada e revisada',
+  'Segregação de ambientes e responsabilidades',
+  'Acessos temporários e menor privilégio',
+  'Validações e bloqueios antes do deploy',
+  'Métricas, logs, traces e alertas acionáveis',
+  'Estratégias de rollback e recuperação',
+  'Backups e restauração testados conforme a criticidade',
+  'Documentação e transferência de conhecimento',
+];
+
+// §18: dez perguntas frequentes.
 const FAQ_ITEMS = [
-  { question: 'Minha empresa precisa estar na AWS?', answer: 'Não. Trabalhamos principalmente com AWS, mas os princípios de arquitetura e automação podem ser aplicados em outros ambientes de nuvem ou infraestrutura híbrida.' },
-  { question: 'Vocês assumem ambientes já existentes?', answer: 'Sim. Podemos modernizar ambientes legados, revisar arquiteturas, otimizar custos e implantar novas práticas de DevOps sem a necessidade de reconstruir toda a infraestrutura.' },
-  { question: 'É possível reduzir custos em nuvem?', answer: 'Sim. Avaliamos continuamente a utilização dos recursos para eliminar desperdícios, otimizar arquiteturas e adotar estratégias que reduzam o custo operacional sem comprometer desempenho ou disponibilidade.' },
-  { question: 'Vocês oferecem suporte após a implantação?', answer: 'Sim. Podemos atuar tanto na implantação quanto na evolução contínua da plataforma, acompanhando o crescimento da infraestrutura e a operação dos ambientes.' },
+  { question: 'A consultoria trabalha apenas com AWS?', answer: 'AWS é a principal especialização em nuvem da consultoria. Também avaliamos integrações com ambientes existentes, serviços externos e componentes híbridos quando eles fazem parte do contexto da empresa.' },
+  { question: 'Precisamos migrar toda a aplicação para a nuvem?', answer: 'Não. A modernização pode começar por um ambiente, pipeline, serviço ou problema específico. A migração completa só deve ser considerada quando houver justificativa técnica, operacional e econômica.' },
+  { question: 'Toda aplicação precisa de Kubernetes?', answer: 'Não. Kubernetes é adequado para alguns cenários, mas adiciona responsabilidades operacionais. ECS, serviços gerenciados, máquinas virtuais ou arquiteturas serverless podem ser opções mais simples, dependendo do workload e da equipe.' },
+  { question: 'Serverless é sempre a opção de menor custo?', answer: 'Não. O custo depende do volume, do padrão de uso, da duração das execuções, da transferência de dados e de outros serviços envolvidos. Serverless deve ser escolhido quando seus benefícios técnicos e operacionais compensam suas limitações.' },
+  { question: 'É possível melhorar a plataforma sem reescrever a aplicação?', answer: 'Sim. Muitas melhorias podem ser realizadas na infraestrutura, nos pipelines, na observabilidade, na segurança ou em componentes específicos, preservando a maior parte da aplicação existente.' },
+  { question: 'Vocês conseguem reduzir nossos custos de AWS?', answer: 'Podemos identificar desperdícios, revisar dimensionamento, modelos de compra, armazenamento e padrões de uso. A economia possível depende do ambiente e não pode ser garantida antes da análise.' },
+  { question: 'Como a segurança é tratada?', answer: 'Avaliamos identidade, permissões, segregação de ambientes, proteção de dados, exposição de serviços, trilhas de auditoria e controles de implantação. As medidas são definidas conforme o risco e a responsabilidade compartilhada entre AWS, aplicação e operação.' },
+  { question: 'Vocês trabalham com a equipe interna da empresa?', answer: 'Sim. Podemos atuar em conjunto com desenvolvedores, infraestrutura, segurança e produto, contribuindo com arquitetura, implementação, revisão técnica e transferência de conhecimento.' },
+  { question: 'Como funciona recuperação de desastres?', answer: 'Primeiro definimos quais falhas precisam ser cobertas, quanto tempo de indisponibilidade é aceitável e quanto dado pode ser perdido. A partir disso, projetamos backups, replicação, procedimentos e testes proporcionais à criticidade.' },
+  { question: 'Existe acompanhamento depois da entrega?', answer: 'O modelo de sustentação é definido conforme a solução. Pode incluir acompanhamento inicial, observabilidade, correções, evolução, apoio à operação ou transferência estruturada para a equipe do cliente.' },
 ];
 
 export default function CloudDevOpsPage() {
@@ -136,27 +158,28 @@ export default function CloudDevOpsPage() {
         singleColumn
         className={styles.cdHero}
         dataAudit="cd-hero"
-        eyebrow="Pilar · Plataforma"
-        title={<>Construímos plataformas em nuvem preparadas para <em>crescer</em>.</>}
-        subtitle="Projetamos e operamos ambientes cloud modernos, seguros e escaláveis para acelerar entregas, reduzir a complexidade operacional e apoiar o crescimento do seu negócio."
+        eyebrow="Cloud, DevOps e Confiabilidade"
+        title="Plataformas AWS mais seguras, observáveis e preparadas para evoluir."
+        subtitle="Projetamos e modernizamos arquiteturas, ambientes e processos de entrega para reduzir trabalho manual, aumentar a confiabilidade e dar mais visibilidade sobre desempenho, riscos e custos."
       >
         <div className={styles.heroCtaRow}>
-          <Link href="/contato?assunto=cloud-devops" className="btn">
-            Solicitar diagnóstico
+          <Link href="/contato?area=cloud-devops-confiabilidade" className="btn">
+            Apresentar um desafio de plataforma
           </Link>
         </div>
+        <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE FAZEMOS */}
-      <section id="oquefazemos" className={styles.oquefazemos} data-audit="cd-oquefazemos">
+      {/* O QUE ESTRUTURAMOS E MODERNIZAMOS */}
+      <section id="atuacao" className={styles.oquefazemos} data-audit="cd-atuacao">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que fazemos</span>
-            <h2 className={styles.h2}>Engenharia de nuvem, de ponta a ponta</h2>
-            <p className={styles.sectionDesc}>Seis frentes que cobrem da arquitetura ao dia a dia operacional da sua infraestrutura.</p>
+            <h2 className={styles.h2}>Da arquitetura à operação contínua da plataforma.</h2>
+            <p className={styles.sectionDesc}>Atuamos nos pontos em que a base tecnológica limita entregas, aumenta riscos ou exige esforço operacional excessivo. A solução pode envolver modernização incremental, automação de ambientes, melhoria da observabilidade ou revisão da arquitetura existente.</p>
           </div>
           <div className={styles.cardGrid}>
-            {OQUE_FAZEMOS.map(({ Icon, title, text, tags }, i) => (
+            {ATUACAO.map(({ Icon, title, text, tags }, i) => (
               <Reveal as="div" key={title} delay={i * 60}>
                 <FeatureCard
                   icon={<Icon />}
@@ -173,8 +196,9 @@ export default function CloudDevOpsPage() {
 
       {/* BENEFÍCIOS */}
       <BeneficiosSection
+        id="beneficios"
         dataAudit="cd-beneficios"
-        title="Infraestrutura preparada para crescer com o negócio"
+        title="Menos improviso na infraestrutura. Mais previsibilidade para entregar e operar."
         items={BENEFICIOS}
         classes={{
           section: styles.beneficios,
@@ -189,14 +213,34 @@ export default function CloudDevOpsPage() {
         }}
       />
 
-      {/* ESPECIALIDADES */}
+      {/* NOSSA ABORDAGEM */}
+      <section id="abordagem" className={styles.abordagem} data-audit="cd-abordagem">
+        <div className={styles.wrap}>
+          <div className={styles.sectionHead}>
+            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
+            <h2 className={styles.h2}>A arquitetura deve responder ao contexto, não ao modismo.</h2>
+            <p className={styles.sectionDesc}>Antes de propor serviços ou ferramentas, entendemos os workloads, as dependências, os riscos, a frequência de mudanças, a capacidade da equipe e os objetivos de negócio. A arquitetura é escolhida a partir dessas condições.</p>
+          </div>
+          <div className={styles.subblocosGrid}>
+            {ABORDAGEM_SUBBLOCOS.map((s) => (
+              <div className={styles.subbloco} key={s.label}>
+                <span className={styles.subblocoLabel}>{s.label}</span>
+                <h3 className={styles.subblocoTitle}>{s.title}</h3>
+                <p className={styles.subblocoText}>{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CAPACIDADES TÉCNICAS */}
       <IconLabelSection
-        id="especialidades"
-        dataAudit="cd-especialidades"
-        eyebrow="Especialidades"
-        title="Onde fazemos a diferença"
-        description="Dez frentes que sustentam cada projeto de nuvem, da arquitetura ao dia a dia operacional."
-        items={ESPECIALIDADES}
+        id="capacidades"
+        dataAudit="cd-capacidades"
+        eyebrow="Capacidades técnicas"
+        title="Da fundação da conta à operação das aplicações."
+        description="As capacidades são combinadas conforme o estágio da plataforma e o problema que precisa ser resolvido. Nenhum projeto precisa utilizar todas elas."
+        items={CAPACIDADES}
         classes={{
           section: styles.especialidades,
           wrap: styles.especialidadesWrap,
@@ -207,64 +251,57 @@ export default function CloudDevOpsPage() {
         }}
       />
 
-      {/* NOSSA ABORDAGEM */}
-      <section id="abordagem" className={styles.abordagem} data-audit="cd-abordagem">
+      {/* SEGURANÇA, CONFIABILIDADE E CONTINUIDADE */}
+      <section id="confiabilidade" className={styles.confiabilidade} data-audit="cd-confiabilidade">
+        <div className={styles.confiabilidadeOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
-          <AbordagemHead
-            dataAudit="cd-abordagem-grid"
-            resultDataAudit="cd-result-card"
-            title="Cada empresa, um diagnóstico diferente"
-            description="Cada empresa possui necessidades diferentes. Por isso, iniciamos cada projeto entendendo os objetivos do negócio e avaliando o ambiente existente. A partir desse diagnóstico, projetamos uma arquitetura moderna, implementamos toda a automação necessária e entregamos uma plataforma preparada para evoluir com segurança, desempenho e escalabilidade."
-            resultLabel="Compromisso"
-            resultTitle="Simples de operar, pronta para durar."
-            resultText="Nosso compromisso é construir soluções simples de operar, resilientes e alinhadas às melhores práticas de engenharia."
-            classes={{
-              grid: styles.abordagemGrid,
-              head: styles.abordagemHead,
-              eyebrow: styles.eyebrowLight,
-              heading: styles.h2,
-              desc: styles.sectionDesc,
-              resultCard: styles.resultCard,
-              resultLabel: styles.resultCardLabel,
-              resultTitle: styles.resultCardTitle,
-              resultText: styles.resultCardText,
-            }}
-          />
-
-          <div className={styles.etapasGrid}>
-            <div className={styles.etapasLine} aria-hidden="true" />
-            {ETAPAS.map((etapa, i) => (
-              <div className={styles.etapa} key={etapa.title}>
-                <div className={i === 2 ? styles.etapaCirculoClay : styles.etapaCirculo}>{i + 1}</div>
-                <h4 className={styles.etapaTitle}>{etapa.title}</h4>
-                <p className={styles.etapaText}>{etapa.text}</p>
+          <div className={styles.sectionHead}>
+            <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Segurança e confiabilidade</span>
+            <h2 className={styles.h2Dark}>Falhas, mudanças e recuperação precisam ser tratadas antes de se tornarem incidentes.</h2>
+            <p className={styles.sectionDescDark}>A confiabilidade não depende de um único serviço. Ela resulta da combinação entre arquitetura, automação, visibilidade, segurança e procedimentos testados para responder quando algo não funciona como esperado.</p>
+          </div>
+          <div className={styles.beneficiosList}>
+            {CONFIABILIDADE_ITEMS.map((item) => (
+              <div className={styles.beneficioItem} key={item}>
+                <span className={styles.checkIcon} aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
+                </span>
+                <span className={styles.beneficioText}>{item}</span>
               </div>
             ))}
           </div>
+          <p className={styles.confiabilidadeClosing}>O nível de redundância, disponibilidade e recuperação deve ser proporcional ao impacto da indisponibilidade e ao investimento que a operação consegue sustentar.</p>
         </div>
       </section>
 
       {/* FAQ */}
-      <FaqSection items={FAQ_ITEMS} dataAudit="cd-faq" />
+      <FaqSection
+        id="perguntas"
+        items={FAQ_ITEMS}
+        dataAudit="cd-faq"
+        eyebrow="Perguntas frequentes"
+        title="Dúvidas antes de modernizar uma plataforma"
+      />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="cd-cta-final">
         <CtaAssessoria
-          id="contato-final"
+          id="contato"
           eyebrow="Vamos começar"
-          title={<>Vamos conversar sobre a sua <em>infraestrutura</em>?</>}
-          description="Agende uma chamada inicial de 60 minutos sem custo e sem compromisso para discutirmos como podemos cuidar dos seus ambientes."
+          title="Qual parte da sua plataforma está limitando a operação?"
+          description="Conte o que está acontecendo hoje: deploys arriscados, falhas difíceis de diagnosticar, custos crescentes, ambientes manuais ou uma arquitetura que já não acompanha a aplicação."
           points={[
-            <span key="p1">Diagnóstico objetivo da sua <b>infraestrutura</b> atual</span>,
-            <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
+            <span key="p1">Arquitetura que precisa evoluir sem interromper o negócio</span>,
+            <span key="p2">Ambientes e deploys que dependem de procedimentos manuais</span>,
+            <span key="p3">Aplicações que precisam ganhar visibilidade, segurança ou confiabilidade</span>,
           ]}
-          cardTagline="Disponível para novos projetos"
-          cardTitle="Diagnóstico inicial gratuito"
-          cardBody={CTA_DIAGNOSIS_META}
-          ctaHref="/contato?assunto=cloud-devops"
-          ctaLabel="Entrar em contato"
-          reassure="Sem compromisso · sem custo"
+          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
+          cardLabel="Primeira conversa"
+          cardTitle="Vamos entender o ambiente e avaliar o próximo passo."
+          cardBody={<p className="cta-adv-body-text">A conversa inicial serve para verificar a aderência e esclarecer os primeiros caminhos. Análises que exigem levantamento, acesso ao ambiente ou recomendações detalhadas podem ser estruturadas como um diagnóstico comercial.</p>}
+          ctaHref="/contato?area=cloud-devops-confiabilidade"
+          ctaLabel="Apresentar um desafio de plataforma"
+          reassure="Sem compromisso · Retorno em até um dia útil"
         />
       </div>
     </>

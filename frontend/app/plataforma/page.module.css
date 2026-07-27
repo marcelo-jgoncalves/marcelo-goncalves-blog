@@ -98,7 +98,8 @@
 .oquefazemos,
 .beneficios,
 .especialidades,
-.abordagem {
+.abordagem,
+.confiabilidade {
   margin-block: 0;
 }
 
@@ -114,20 +115,33 @@
    por breakpoint), criando gaps grandes entre seções. Sobrescreve via
    seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
    especificidade que .class em qualquer largura. */
-:global(#oquefazemos),
+:global(#atuacao),
 :global(#beneficios),
-:global(#especialidades),
 :global(#abordagem),
-:global(#faq) {
+:global(#capacidades),
+:global(#confiabilidade),
+:global(#perguntas) {
   padding-top: var(--sp-9);
   padding-bottom: var(--sp-9);
 }
 
-/* CTA final (CtaAssessoria, id="contato-final"): .cta-adv-in usa
+/* Ajuste 10 (§22): scroll-margin-top nas âncoras da página, mesmo padrão
+   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+:global(#atuacao),
+:global(#beneficios),
+:global(#abordagem),
+:global(#capacidades),
+:global(#confiabilidade),
+:global(#perguntas),
+:global(#contato) {
+  scroll-margin-top: 100px;
+}
+
+/* CTA final (CtaAssessoria, id="contato"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
-:global(#contato-final.cta-adv .cta-adv-in) {
+:global(#contato.cta-adv .cta-adv-in) {
   align-items: flex-start;
   padding-top: var(--sp-9);
 }
@@ -145,7 +159,19 @@
   margin-top: var(--sp-7);
 }
 
+.heroMicrocopy {
+  display: none;
+  margin-top: var(--sp-3);
+  color: var(--slate);
+  font-size: var(--type-caption);
+  text-align: center;
+}
+
 @media (max-width: 860px) {
+  .heroMicrocopy {
+    display: block;
+  }
+
   .heroCtaRow {
     display: flex;
   }
@@ -291,29 +317,24 @@
 @media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
-/* Grid texto + card, mesmo padrão de "Como trabalhamos"
-   (frontend/app/home.css .ih-method-grid/.ih-method-card/.ih-mc-*) — texto à
-   esquerda, card à direita (alinhado à direita da seção via coluna do grid). */
-.abordagemGrid {
+/* Três subblocos lado a lado (não são etapas sequenciais — sem numeração,
+   sem linha de conexão) — §15 da especificação. */
+.subblocosGrid {
   display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  align-items: start;
-  gap: var(--sp-10);
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
 }
 
-.abordagemHead {
-  max-width: 680px;
+@media (min-width: 1040px) {
+  .subblocosGrid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.resultCard {
-  background: var(--ivory);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: var(--sp-8) var(--sp-8);
-  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+.subbloco {
+  text-align: center;
+  padding: 0 var(--sp-2);
 }
 
-.resultCardLabel {
+.subblocoLabel {
   display: block;
   font-family: var(--mono);
   font-size: var(--type-caption);
@@ -321,97 +342,66 @@
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--clay);
+  margin-bottom: var(--sp-3);
 }
 
-.resultCardTitle {
-  font-weight: 800;
-  font-size: var(--type-h4);
-  color: var(--petrol);
-  margin: var(--sp-4) 0 var(--sp-4);
-}
-
-.resultCardText {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
-  margin: 0;
-}
-
-@media (max-width: 860px) {
-  .abordagemGrid { grid-template-columns: 1fr; gap: var(--sp-7); }
-  .resultCard { padding: var(--sp-7) var(--sp-6); }
-  .resultCardTitle { font-size: var(--type-lead); }
-}
-
-.etapasGrid {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-grid);
-  margin-top: var(--sp-9);
-}
-
-@media (min-width: 1040px) {
-  .etapasGrid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.etapasLine {
-  position: absolute;
-  top: 24px;
-  left: 14%;
-  right: 14%;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--line);
-  display: none;
-}
-
-@media (min-width: 1040px) {
-  .etapasLine { display: block; }
-}
-
-.etapa {
-  text-align: center;
-  padding: 0 var(--sp-2);
-  position: relative;
-}
-
-.etapaCirculo,
-.etapaCirculoClay {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  margin: 0 auto var(--sp-5);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: var(--type-label);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.etapaCirculo {
-  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
-  box-shadow: 0 8px 18px -8px rgba(8, 50, 61, .6);
-}
-
-.etapaCirculoClay {
-  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
-  box-shadow: 0 8px 18px -8px rgba(201, 96, 60, .55);
-}
-
-.etapaTitle {
+.subblocoTitle {
   font-weight: 700;
   font-size: var(--type-lead);
   color: var(--ink);
   margin: 0 0 var(--sp-2);
 }
 
-.etapaText {
+.subblocoText {
   font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
+}
+
+/* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE ===== */
+.confiabilidade {
+  padding: var(--sp-10) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 680px) { .confiabilidade { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .confiabilidade { padding: var(--sp-12) 0; } }
+
+.confiabilidadeOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
+    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
+}
+
+.confiabilidade .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.sectionDescDark {
+  color: rgba(250, 248, 243, .78);
+  max-width: 640px;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.confiabilidadeClosing {
+  max-width: 720px;
+  margin: var(--sp-8) auto 0;
+  text-align: center;
+  color: rgba(250, 248, 243, .6);
+  font-size: var(--type-caption);
+  line-height: 1.6;
 }
 

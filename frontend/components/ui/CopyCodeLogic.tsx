@@ -18,19 +18,34 @@ const COPY_ICON_HTML = icon(faCopy).html.join('');
  */
 export default function CopyCodeLogic() {
   useEffect(() => {
+    // Região aria-live única, compartilhada por todos os botões de cópia,
+    // pra anunciar o status pra leitores de tela mesmo sem foco visual.
+    let liveRegion = document.getElementById('copy-code-status');
+    if (!liveRegion) {
+      liveRegion = document.createElement('div');
+      liveRegion.id = 'copy-code-status';
+      liveRegion.setAttribute('role', 'status');
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.className = 'sr-only';
+      document.body.appendChild(liveRegion);
+    }
+
     const copyToClipboard = async (text: string, button: HTMLButtonElement) => {
       try {
         // Limpamos possíveis espaços extras no início/fim do código ao copiar
         await navigator.clipboard.writeText(text.trim());
-        
+
         const originalInner = button.innerHTML;
         // Feedback visual: Muda para ícone de check (estilizado via classe .copied no CSS)
         button.innerHTML = CHECK_ICON_HTML;
         button.classList.add('copied');
-        
+        button.setAttribute('aria-label', 'Código copiado');
+        if (liveRegion) liveRegion.textContent = 'Código copiado';
+
         setTimeout(() => {
           button.innerHTML = originalInner;
           button.classList.remove('copied');
+          button.setAttribute('aria-label', 'Copiar código');
         }, 2000);
       } catch (err) {
         console.error('Falha ao copiar:', err);

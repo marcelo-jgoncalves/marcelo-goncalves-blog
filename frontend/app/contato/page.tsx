@@ -1,78 +1,55 @@
-/**frontend/app/contato/page.tsx */
+/**frontend/app/contato/page.tsx — ajustes/ajuste-14-pagina-contato-conversao.md */
 
 import './contato.css';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
-import StepsTimeline from '@/components/ui/StepsTimeline';
 import FaqSection from '@/components/ui/FaqSection';
-import FeatureCard from '@/components/ui/FeatureCard';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import ContactForm from '@/components/contact/ContactForm';
 import {
-  IconCloud,
-  IconEnvelope, IconLinkedin, IconInstagram, IconPin,
+  IconEnvelope, IconLinkedin, IconPin,
 } from '@/components/ui/InstitutionalIcons';
-import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, AUTHOR_INSTAGRAM_URL } from '@/lib/config';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, contactChannels } from '@/lib/config';
 
 export const revalidate = 3600;
 
-const PAGE_DESCRIPTION = 'Solicite um diagnóstico gratuito. Cada empresa possui desafios diferentes: vamos entender o seu cenário e identificar oportunidades de evolução.';
+const PAGE_TITLE = `Contato | Consultoria em Tecnologia | ${SITE_NAME}`;
+const PAGE_DESCRIPTION = 'Apresente um desafio de automação, inteligência artificial, sistemas ou AWS e receba um retorno sobre aderência e próximos passos em até um dia útil.';
 
 export const metadata: Metadata = {
-  title: { absolute: `Contato | ${SITE_NAME}` },
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/contato` },
   openGraph: {
-    title: `Contato | ${SITE_NAME}`,
+    title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: `${SITE_URL}/contato`,
     type: 'website',
   },
   twitter: {
-    title: `Contato | ${SITE_NAME}`,
+    title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
 };
 
-const STEPS = [
-  { title: 'Recebemos sua solicitação', description: 'Analisamos as informações enviadas para compreender o contexto inicial da sua empresa.' },
-  { title: 'Entramos em contato', description: 'Retornamos em até um dia útil para esclarecer dúvidas e entender melhor suas necessidades.' },
-  { title: 'Agendamos uma conversa', description: 'Realizamos uma reunião para conhecer sua empresa, seus desafios e seus objetivos.' },
-  { title: 'Avaliamos oportunidades', description: 'Identificamos como tecnologia, automação, cloud ou Inteligência Artificial podem gerar valor para o seu negócio.' },
-  { title: 'Elaboramos uma proposta', description: 'Caso exista aderência entre suas necessidades e nossos serviços, apresentamos uma proposta personalizada.' },
+// §30: quatro etapas de "o que acontece depois do envio" (não são as 5 etapas antigas).
+const NEXT_STEPS = [
+  { title: 'Você apresenta o contexto', text: 'O formulário reúne as informações necessárias para uma primeira compreensão do desafio.' },
+  { title: 'Avaliamos a aderência', text: 'Analisamos se a necessidade está relacionada às competências da consultoria e se precisamos esclarecer algum ponto.' },
+  { title: 'Realizamos uma conversa inicial', text: 'Quando houver aderência, combinamos uma conversa para entender melhor o problema, as restrições e os resultados esperados.' },
+  { title: 'Definimos o próximo passo', text: 'O próximo passo pode ser uma proposta, um diagnóstico comercial, uma etapa de descoberta ou a indicação de que outro caminho é mais adequado.' },
 ];
 
-// Mesmos 4 pilares de frontend/app/page.tsx (PILLARS) — mantidos em sincronia
-// manualmente (não há módulo compartilhado ainda). Mesmo registro histórico
-// arquivado citado em ContactForm.tsx.
-const AREAS = [
-  { title: 'Engenharia de Software', description: 'Aplicações web, APIs e plataformas sob medida, com foco em desempenho e escalabilidade.', icon: <FontAwesomeIcon icon={faGear} />, href: '/software' },
-  { title: 'Inteligência Artificial', description: 'IA aplicada para automatizar atividades, acelerar decisões e aumentar a produtividade.', icon: <FontAwesomeIcon icon={faBrain} />, href: '/inteligencia-artificial' },
-  { title: 'Cloud & DevOps', description: 'Ambientes em nuvem escaláveis, seguros e automatizados, com alta disponibilidade.', icon: <IconCloud />, href: '/plataforma' },
-  { title: 'Integração & Automação', description: 'Conectamos sistemas e automatizamos processos para eliminar retrabalho.', icon: <FontAwesomeIcon icon={faRobot} />, href: '/automacao' },
-];
-
+// §38-45: oito perguntas frequentes.
 const FAQ_ITEMS = [
-  {
-    question: 'Atendem empresas de qualquer porte?',
-    answer: 'Nosso foco principal são pequenas e médias empresas, mas também atuamos em projetos específicos para organizações maiores.',
-  },
-  {
-    question: 'É necessário utilizar AWS?',
-    answer: 'Não. A tecnologia utilizada depende das necessidades do projeto. Nosso objetivo é encontrar a solução mais adequada para cada cenário.',
-  },
-  {
-    question: 'Vocês trabalham remotamente?',
-    answer: 'Sim. Atendemos empresas em todo o Brasil de forma remota e, quando necessário, também podemos realizar atendimentos presenciais.',
-  },
-  {
-    question: 'O diagnóstico possui custo?',
-    answer: 'O primeiro contato é destinado ao entendimento do cenário e à avaliação inicial das necessidades da empresa. Caso seja necessário um trabalho mais aprofundado de diagnóstico ou consultoria estratégica, isso será discutido de forma transparente antes do início do projeto.',
-  },
+  { question: 'Preciso saber qual serviço contratar?', answer: 'Não. Descreva o problema, o processo ou o sistema que precisa evoluir. A primeira análise serve justamente para identificar se existe aderência e qual competência pode participar da solução.' },
+  { question: 'A primeira conversa possui custo?', answer: 'Não. A conversa inicial serve para conhecer o contexto, avaliar aderência e esclarecer os primeiros caminhos. Quando o desafio exige levantamento, acesso a ambientes ou recomendações detalhadas, o diagnóstico pode ser estruturado como uma etapa comercial própria.' },
+  { question: 'Atendem empresas de qualquer porte?', answer: 'O foco principal são pequenas e médias empresas em crescimento. Também podem ser avaliados projetos específicos para organizações maiores, especialmente quando envolvem AWS, DevOps, automação, integração ou modernização.' },
+  { question: 'É necessário utilizar AWS?', answer: 'Não. AWS é a principal especialização em nuvem da consultoria, mas o ponto de partida é o contexto da empresa. Projetos de automação, integração, software e inteligência artificial podem envolver sistemas e ambientes já existentes.' },
+  { question: 'O atendimento é remoto?', answer: 'Sim. O atendimento e a maior parte das entregas são realizados remotamente. Eventuais necessidades presenciais devem ser avaliadas separadamente.' },
+  { question: 'Em quanto tempo receberei uma resposta?', answer: 'O retorno ocorre em até um dia útil. Mensagens enviadas em fins de semana ou feriados começam a ser consideradas no próximo dia útil.' },
+  { question: 'Posso enviar documentos ou acessos pelo formulário?', answer: 'Não. O formulário não aceita anexos e não deve ser usado para enviar senhas, chaves, dados sensíveis ou documentos confidenciais. Caso essas informações sejam necessárias, o canal e os controles adequados serão definidos depois.' },
+  { question: 'O envio do formulário garante uma proposta?', answer: 'Não. Primeiro avaliamos a aderência e o nível de definição disponível. O próximo passo pode ser uma conversa, uma etapa de descoberta, um diagnóstico comercial, uma proposta ou a indicação de outro caminho.' },
 ];
 
 export default function ContatoPage() {
@@ -83,73 +60,60 @@ export default function ContatoPage() {
         className="ct-hero"
         dataAudit="ct-hero"
         eyebrow="Contato"
-        title={<>Vamos conversar sobre a tecnologia que vai <em>impulsionar</em> sua empresa.</>}
-        subtitle="Conte-nos seus desafios. Desenvolvemos soluções em software, cloud, integração e inteligência artificial para ajudar sua empresa a crescer com mais eficiência, segurança e inovação."
+        title="Conte o que está limitando sua operação."
+        subtitle="Você não precisa saber qual serviço contratar. Descreva o processo, sistema ou desafio que precisa evoluir e vamos avaliar a aderência e o próximo passo."
       >
         <div className="ct-hero-actions">
-          <a href="#form" className="btn ct-btn-primary">Solicitar diagnóstico</a>
+          <a href="#formulario-contato" className="btn ct-btn-primary">Ir para o formulário</a>
         </div>
+        <p className="ct-hero-microcopy">Retorno em até um dia útil · Primeira conversa sem compromisso</p>
       </PageHero>
 
-      {/* Formulário */}
-      <section className="ct-section ct-section--surface" id="form">
-        <div className="wrap ct-form-grid">
-          <div>
-            <div className="sec-ey">Solicitação</div>
-            <h2 className="sec-t">Conte um pouco sobre a sua empresa.</h2>
-            <p className="sec-desc" style={{ maxWidth: 400 }}>
-              Pedimos apenas o essencial para iniciar uma boa conversa. Os campos opcionais ajudam a entender melhor o seu cenário, mas fique à vontade.
+      {/* Bloco principal: formulário + próximos passos, lado a lado */}
+      <section className="ct-section ct-section--surface" id="formulario-contato">
+        <div className="wrap ct-main-grid">
+          <div className="ct-form-col">
+            <div className="sec-ey">Apresente o contexto</div>
+            <h2 className="sec-t">O que sua empresa precisa melhorar?</h2>
+            <p className="sec-desc" style={{ maxWidth: 460 }}>
+              Informe apenas o necessário para entendermos a situação inicial. Não envie senhas, credenciais, documentos confidenciais ou dados pessoais sensíveis pelo formulário.
             </p>
             <div className="ct-guarantees">
               <div className="ct-guarantee"><span className="ck">✓</span>Retorno em até um dia útil</div>
-              <div className="ct-guarantee"><span className="ck">✓</span>Conversa consultiva, sem compromisso</div>
-              <div className="ct-guarantee"><span className="ck">✓</span>Seus dados ficam apenas conosco</div>
+              <div className="ct-guarantee"><span className="ck">✓</span>Primeira conversa sem compromisso</div>
+              <div className="ct-guarantee"><span className="ck">✓</span>Seus dados serão usados apenas para responder à solicitação e conduzir os próximos passos</div>
             </div>
+            <Suspense fallback={<div className="contact-form-card" />}>
+              <ContactForm />
+            </Suspense>
           </div>
-          <Suspense fallback={<div className="contact-form-card" />}>
-            <ContactForm />
-          </Suspense>
+
+          <aside className="ct-next-steps" data-audit="ct-next-steps">
+            <div className="sec-ey">Próximos passos</div>
+            <h2 className="ct-next-steps-title">O que acontece depois do envio</h2>
+            <ol className="ct-next-steps-list">
+              {NEXT_STEPS.map((step, i) => (
+                <li key={step.title}>
+                  <span className="ct-next-steps-num">{i + 1}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="ct-next-steps-note">O envio do formulário não cria obrigação de contratação ou de apresentação de proposta.</p>
+          </aside>
         </div>
       </section>
 
-      {/* Como funciona */}
-      <section className="ct-section">
-        <div className="wrap">
-          <div className="ct-center-head">
-            <div className="sec-ey sec-ey-dual">Como funciona</div>
-            <h2 className="sec-t">O que acontece depois do envio.</h2>
-          </div>
-          <StepsTimeline steps={STEPS} dataAudit="ct-steps" />
-        </div>
-      </section>
-
-      {/* Como podemos ajudar */}
-      <section id="areas-atuacao" className="ct-section ct-section--surface">
-        <div className="wrap">
-          <div className="sec-head-row sec-head-row--center">
-            <div className="left">
-              <div className="sec-ey sec-ey--dual">Áreas de atuação</div>
-              <h2 className="sec-t">Como podemos ajudar.</h2>
-              <p className="sec-desc">Identifique rapidamente o cenário mais próximo do seu. Toda solução parte do entendimento do negócio.</p>
-            </div>
-          </div>
-          <div className="ct-areas-grid" data-audit="ct-areas-grid">
-            {AREAS.map((area) => (
-              <Link href={area.href} className="ct-area-link" key={area.title}>
-                <FeatureCard icon={area.icon} title={area.title} text={area.description} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Outras formas de contato */}
-      <section id="outras-formas" className="ct-section">
+      {/* Canais alternativos */}
+      <section id="canais" className="ct-section">
         <div className="wrap ct-otherways-grid">
           <div>
-            <div className="sec-ey">Outras formas de contato</div>
-            <h2 className="sec-t ct-otherways-title">Prefere falar direto? Estamos por aqui.</h2>
-            {/* WhatsApp fica pendente até termos um número real (backlog #1, .project-context.md) */}
+            <div className="sec-ey">Outros canais</div>
+            <h2 className="sec-t ct-otherways-title">Prefere entrar em contato de outra forma?</h2>
+            <p className="sec-desc" style={{ maxWidth: 420 }}>Use o canal mais conveniente. Para projetos, o formulário costuma ajudar a reunir o contexto inicial.</p>
           </div>
           <div className="ct-contact-cards">
             <a className="ct-contact-card" href="mailto:contato@marcelogoncalves.com">
@@ -157,43 +121,51 @@ export default function ContatoPage() {
               <span className="ct-contact-card-text">
                 <span className="ct-contact-k">E-mail</span>
                 <span className="ct-contact-v">contato@marcelogoncalves.com</span>
+                <span className="ct-contact-aux">Para mensagens mais detalhadas ou quando preferir usar seu próprio cliente de e-mail.</span>
               </span>
             </a>
-            <a className="ct-contact-card" href={AUTHOR_LINKEDIN_URL} target="_blank" rel="noreferrer">
+            {contactChannels.whatsappUrl && (
+              <a className="ct-contact-card" href={contactChannels.whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <div className="ct-icon-box ct-icon-box--sm">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.6 6.6 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.6c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.5.5 0 0 0 0-.5c-.1-.1-.5-1.2-.7-1.7s-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2 4.7 4.7 0 0 0 1 2.5 10.8 10.8 0 0 0 4.1 3.6c.6.2 1 .4 1.4.5a3.3 3.3 0 0 0 1.5.1 2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c-.1-.1-.2-.1-.4-.2z" /></svg>
+                </div>
+                <span className="ct-contact-card-text">
+                  <span className="ct-contact-k">WhatsApp</span>
+                  <span className="ct-contact-v">Conversar pelo WhatsApp</span>
+                  <span className="ct-contact-aux">Para iniciar uma conversa breve. Informações detalhadas podem ser enviadas depois pelos canais adequados.</span>
+                </span>
+              </a>
+            )}
+            <a className="ct-contact-card" href={AUTHOR_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
               <div className="ct-icon-box ct-icon-box--sm"><IconLinkedin /></div>
               <span className="ct-contact-card-text">
                 <span className="ct-contact-k">LinkedIn</span>
-                <span className="ct-contact-v">/in/marcelo-jgoncalves</span>
-              </span>
-            </a>
-            <a className="ct-contact-card" href={AUTHOR_INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              <div className="ct-icon-box ct-icon-box--sm"><IconInstagram /></div>
-              <span className="ct-contact-card-text">
-                <span className="ct-contact-k">Instagram</span>
-                <span className="ct-contact-v">/marcelo-jgoncalves</span>
+                <span className="ct-contact-v">Acessar perfil no LinkedIn</span>
+                <span className="ct-contact-aux">Para conhecer a trajetória profissional e acompanhar publicações técnicas.</span>
               </span>
             </a>
             <div className="ct-contact-card ct-contact-card--static">
               <div className="ct-icon-box ct-icon-box--sm"><IconPin /></div>
               <span className="ct-contact-card-text">
                 <span className="ct-contact-k">Localização</span>
-                <span className="ct-contact-v">Brasil · atendimento remoto</span>
+                <span className="ct-contact-v">Belo Horizonte, MG · Atendimento remoto</span>
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      <FaqSection items={FAQ_ITEMS} title="Dúvidas antes de começar." dataAudit="ct-faq" />
-
-      <CtaAssessoria
-        id="chamada-final"
-        eyebrow="Vamos conversar"
-        title={<>Vamos construir o próximo passo da tecnologia que <em>impulsiona</em> a sua empresa.</>}
-        description="A tecnologia evolui constantemente. Empresas que conseguem transformar essa evolução em vantagem competitiva estão mais preparadas para crescer, inovar e enfrentar novos desafios."
-        ctaHref="#form"
-        ctaLabel="Solicitar diagnóstico"
+      <FaqSection
+        id="perguntas"
+        items={FAQ_ITEMS}
+        eyebrow="Perguntas frequentes"
+        title="Dúvidas antes do primeiro contato"
+        dataAudit="ct-faq"
       />
+      <div className="wrap ct-faq-footer">
+        <span>Pronto para apresentar o contexto?</span>
+        <a href="#formulario-contato" className="ct-faq-footer-link">Ir para o formulário →</a>
+      </div>
     </>
   );
 }

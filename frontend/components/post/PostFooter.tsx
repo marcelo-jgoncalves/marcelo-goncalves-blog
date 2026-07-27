@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedinIn, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import styles from './PostFooter.module.css';
@@ -5,6 +6,7 @@ import styles from './PostFooter.module.css';
 export interface PostFooterProps {
   author: {
     name: string;
+    role?: string;
     bio: string;
     avatarInitials: string;
   };
@@ -22,9 +24,11 @@ export default function PostFooter({ author, social }: PostFooterProps) {
     <div className={styles.authorbox} data-audit="post-authorbox">
       <div className={styles.av} aria-hidden="true">{author.avatarInitials}</div>
       <div className={styles.abBody}>
-        <b className={styles.abName}>{author.name}</b>{' '}
+        <b className={styles.abName}>{author.name}</b>
+        {author.role && <span className={styles.abRole}>{author.role}</span>}{' '}
         {/* nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- bio é sanitizado no backend (adminAuthors/index.ts, sanitizePostHtml) antes de persistir */}
         <span dangerouslySetInnerHTML={{ __html: author.bio }} />
+        <Link href="/sobre" className={styles.abCta}>Conhecer a trajetória</Link>
       </div>
       {hasSocial && (
         <div className={styles.abSocial}>

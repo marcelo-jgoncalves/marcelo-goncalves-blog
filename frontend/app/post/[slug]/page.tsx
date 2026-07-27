@@ -12,7 +12,6 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import AdsenseInArticle from '@/components/ui/AdsenseInArticle';
 import RelatedPostsSection from '@/components/ui/RelatedPostsSection';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import PostFooter from '@/components/post/PostFooter';
 import ShareRail from '@/components/post/ShareRail';
@@ -271,11 +270,25 @@ export default async function PostPage({ params }: Props) {
         />
       </div>
 
+      {/* CTA CONTEXTUAL — editorial compacto */}
+      <section className="wrap post-cta-editorial" data-audit="post-cta-editorial">
+        <div className="post-cta-in">
+          <div className="sec-ey sec-ey--dual">Aplicação prática</div>
+          <h2>Precisa aplicar esse tipo de engenharia na sua operação?</h2>
+          <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que sua empresa precisa resolver.</p>
+          <div className="post-cta-actions">
+            <Link className="btn" href="/servicos">Conhecer os serviços</Link>
+            <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
+          </div>
+        </div>
+      </section>
+
       <div className="post-wide">
         <PostFooter
           author={{
             name: autorNome,
-            bio: autor?.bio || 'é Engenheiro Cloud especialista em AWS e DevOps.',
+            role: 'Fundador e líder técnico',
+            bio: autor?.bio || 'Engenheiro de Cloud e DevOps com mais de dez anos de experiência em tecnologia, atuando com AWS, automação, sistemas e confiabilidade.',
             avatarInitials: 'MG',
           }}
           social={{
@@ -286,15 +299,7 @@ export default async function PostPage({ params }: Props) {
         />
       </div>
 
-      <RelatedPostsSection />
-
-      <CtaAssessoria
-        eyebrow="Gostou do artigo?"
-        title="Leve esse tipo de solução para o seu projeto."
-        description="Esse artigo mostrou uma solução real. Se sua empresa tem um desafio parecido, ajudamos a resolver com a mesma abordagem prática."
-        ctaHref={categorySlug ? `/contato?assunto=${categorySlug}` : '/contato'}
-        ctaLabel="Vamos conversar"
-      />
+      <RelatedPostsSection excludeSlug={post.slug} />
     </article>
   );
 }

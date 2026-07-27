@@ -1,0 +1,498 @@
+/* frontend/app/servicos/page.module.css
+   ajustes/ajuste-05-pagina-central-servicos.md — breakpoints próprios da página (680/1040) */
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--sp-5);
+}
+
+@media (min-width: 680px) { .wrap { padding: 0 var(--sp-7); } }
+@media (min-width: 1040px) { .wrap { padding: 0 var(--sp-8); } }
+
+.h2 {
+  letter-spacing: -.04em;
+  color: var(--ink);
+  text-wrap: balance;
+  font-size: var(--type-h3);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.h2Dark {
+  letter-spacing: -.04em;
+  color: var(--ivory);
+  text-wrap: balance;
+  font-size: var(--type-h3);
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.sectionDesc {
+  color: var(--slate);
+  max-width: 580px;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--sp-10);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.eyebrowLight,
+.eyebrowDark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.eyebrowDark { color: rgba(255, 255, 255, .65); }
+.eyebrowLight { color: var(--clay); }
+
+.eyebrowLight::before,
+.eyebrowDark::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+.eyebrowDual { justify-content: center; }
+
+.eyebrowDual::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+.oquefazemos,
+.frentes,
+.especialidades,
+.abordagem,
+.comoComeca,
+.paraQuem,
+.diferenciaisSection {
+  margin-block: 0;
+}
+
+/* ===== HERO ===== */
+.svcHero {
+  --ph-pad: 88px 40px var(--sp-9);
+}
+
+.heroCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--eyebrow-gap);
+  margin-top: var(--sp-7);
+}
+
+.heroMicrocopy {
+  margin-top: var(--sp-3);
+  color: var(--slate);
+  font-size: var(--type-caption);
+}
+
+@media (max-width: 860px) {
+  .heroCtaRow { justify-content: center; flex-direction: column; align-items: center; }
+  .heroMicrocopy { text-align: center; }
+}
+
+/* Ajuste 05: scroll-margin-top nas âncoras da página (100px — mesmo padrão
+   já usado no projeto, ver frontend/app/post/[slug]/post.css). */
+:global(#problemas),
+:global(#frentes),
+:global(#servicos-especializados),
+:global(#solucoes-integradas),
+:global(#como-comeca),
+:global(#para-quem),
+:global(#diferenciais),
+:global(#perguntas),
+:global(#contato) {
+  scroll-margin-top: 100px;
+}
+
+/* ===== PROBLEMAS QUE RESOLVEMOS ===== */
+.oquefazemos {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.problemasClosing {
+  max-width: 720px;
+  margin: var(--sp-9) auto 0;
+  text-align: center;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+}
+
+/* ===== DUAS FRENTES ===== */
+.frentes {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .frentes { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .frentes { padding: var(--sp-12) 0; } }
+
+.frentesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .frentesGrid { grid-template-columns: repeat(2, 1fr); } }
+
+.frenteCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: var(--sp-8);
+}
+
+.frenteTitle {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-3);
+}
+
+.frenteText {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0 0 var(--sp-6);
+}
+
+.frenteList {
+  list-style: none;
+  margin: 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.frenteList a {
+  font-weight: 600;
+  font-size: var(--type-body-sm);
+  color: var(--petrol);
+  text-decoration: none;
+}
+
+.frenteList a:hover {
+  color: var(--petrol-deep);
+  text-decoration: underline;
+}
+
+/* ===== SERVIÇOS ESPECIALIZADOS ===== */
+.especialidades {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
+
+/* Grid flex-wrap (não CSS grid) — PillarCard.css define flex:1 1 340px por
+   card, mesmo padrão de .ih-pillars-grid na Home. */
+.pillarsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap-grid);
+}
+
+/* ===== SOLUÇÕES INTEGRADAS ===== */
+.abordagem {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
+
+.exemploCard {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: var(--sp-8);
+  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+}
+
+.subblocoLabel {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-4);
+}
+
+.exemploIntro {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0 0 var(--sp-5);
+}
+
+.exemploList {
+  list-style: none;
+  margin: 0 0 var(--sp-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.exemploList li {
+  position: relative;
+  padding-left: var(--sp-6);
+  font-size: var(--type-body-sm);
+  color: var(--slate);
+}
+
+.exemploList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--clay);
+  font-weight: 700;
+}
+
+.exemploResultado {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+}
+
+/* ===== COMO O TRABALHO COMEÇA ===== */
+.comoComeca {
+  padding: var(--sp-10) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 680px) { .comoComeca { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .comoComeca { padding: var(--sp-12) 0; } }
+
+.confiabilidadeOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
+    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
+}
+
+.comoComeca .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.etapasGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .etapasGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .etapasGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.etapa {
+  text-align: center;
+  padding: 0 var(--sp-2);
+}
+
+.etapaCirculo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  margin: 0 auto var(--sp-5);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
+  box-shadow: 0 8px 18px -8px rgba(201, 96, 60, .55);
+}
+
+.etapaTitle {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: #fff;
+  margin: 0 0 var(--sp-2);
+}
+
+.etapaText {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .72);
+  margin: 0;
+}
+
+.comoComecaNota {
+  max-width: 720px;
+  margin: var(--sp-9) auto 0;
+  text-align: center;
+  color: rgba(250, 248, 243, .6);
+  font-size: var(--type-caption);
+  line-height: 1.6;
+}
+
+/* ===== PARA QUEM É INDICADA ===== */
+.paraQuem {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .paraQuem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .paraQuem { padding: var(--sp-12) 0; } }
+
+.paraQuemGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
+}
+
+@media (min-width: 680px) { .paraQuemGrid { grid-template-columns: repeat(2, 1fr); } }
+
+.paraQuemTitle {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-5);
+}
+
+.paraQuemList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.paraQuemList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.checkPos {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(63, 107, 71, .14);
+  color: var(--moss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.checkNeg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--line);
+  color: var(--steel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+/* ===== DIFERENCIAIS DA ENTREGA ===== */
+.diferenciaisSection {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .diferenciaisSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .diferenciaisSection { padding: var(--sp-12) 0; } }
+
+.diferenciaisGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3) var(--sp-7);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (min-width: 680px) {
+  .diferenciaisGrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.diferencialItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--title-gap);
+  min-width: 0;
+}
+
+.diferencialCheck {
+  flex: none;
+  color: var(--clay);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.diferencialText {
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+  color: var(--ink);
+  min-width: 0;
+}

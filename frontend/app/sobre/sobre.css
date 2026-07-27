@@ -5,119 +5,85 @@
  */
 
 .sobre-hero,
+.sobre-visao,
 .sobre-origem,
 .sobre-filosofia,
 .sobre-abordagem,
-.sobre-behind,
-.sobre-beliefs {
+.sobre-behind {
   margin-block: 0;
 }
 
+/* Ajuste 08 (§17): scroll-margin-top nas âncoras da página, mesmo padrão
+   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+#visao,
+#origem,
+#principios,
+#decisoes,
+#lideranca,
+#experiencia,
+#contato {
+  scroll-margin-top: 100px;
+}
+
 /* ==========================================================================
-   HERO
+   HERO — coluna única (Ajuste 08 removeu o card "Nossa Visão" do hero;
+   a visão virou seção própria logo abaixo, ver .sobre-visao).
    ========================================================================== */
 .page-hero.sobre-hero {
-  --ph-cols:    1.15fr .85fr;
-  --ph-gap:     var(--sp-11);
-  --ph-h1-max:  620px;
-  --ph-sub-max: 520px;
-  --ph-pad:     96px 40px var(--sp-9);
+  --ph-pad: 88px 40px var(--sp-9);
 }
 
-/* Título→subtítulo reduzido nesta hero especificamente: coluna mais estreita
-   (620px, compartilhada com o card "Nossa Visão") faz o título quebrar em
-   4 linhas em vez de 3 — o gap de 40px (padrão do componente) parecia maior
-   por causa do bloco de título mais alto, mesmo sendo o mesmo valor exato
-   das demais heroes. Reduzido pra --sp-6 (24px) só aqui. */
-.page-hero.sobre-hero h1 {
-  margin-bottom: var(--sp-6);
+.sobre-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--eyebrow-gap);
+  flex-wrap: wrap;
+  margin-top: var(--sp-7);
 }
-
-.sobre-hero-actions { display: flex; align-items: center; justify-content: flex-start; gap: var(--eyebrow-gap); flex-wrap: wrap; margin-top: var(--sp-7); }
 
 .sobre-btn-clay { box-shadow: 0 8px 22px rgba(201, 96, 60, .35); }
 
-.sobre-hero-right-col {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--sp-6);
+@media (max-width: 860px) {
+  .page-hero.sobre-hero { --ph-pad: 88px 20px var(--sp-9); }
+  .sobre-hero-actions { justify-content: center; }
 }
 
-.sobre-hero-panel {
-  width: 400px;
-  max-width: 100%;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .13);
-  border-radius: 22px;
-  padding: var(--sp-8);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6);
+/* ==========================================================================
+   NOSSA VISÃO
+   ========================================================================== */
+.sobre-visao { background: var(--surface); padding: var(--sp-9) 0; }
+
+.sobre-visao-quote {
+  font-weight: 800;
+  font-size: var(--type-h4);
+  line-height: 1.3;
+  color: var(--ink);
+  max-width: 720px;
+  margin: var(--sp-4) auto 0;
 }
 
-.sobre-hp-tag {
+.sobre-visao-list {
   display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--gap-loose);
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-8);
+}
+
+.sobre-visao-item {
   font-family: var(--mono);
   font-size: var(--type-caption);
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--clay);
+  letter-spacing: .04em;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .07);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: var(--sp-3) var(--sp-5);
 }
-
-.sobre-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--clay); flex: none; }
-
-.sobre-hp-quote {
-  font-weight: 800;
-  font-size: var(--type-lead);
-  line-height: 1.35;
-  color: #fff;
-  margin: 0 0 var(--sp-7);
-}
-
-.sobre-hp-list { display: flex; flex-direction: column; gap: var(--sp-4); }
-
-.sobre-hp-row {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: var(--sp-4);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-}
-
-.sobre-hp-row--last { border-bottom: none; padding-bottom: 0; }
-.sobre-hp-row .k { font-size: var(--type-body-sm); color: rgba(255, 255, 255, .65); }
-.sobre-hp-row .v { font-size: var(--type-body-sm); font-weight: 700; color: #fff; }
 
 @media (max-width: 860px) {
-  /* 88px (não 52px) — o header fixo tem 68px de altura; 52px deixava o
-     eyebrow "Sobre Nós" escondido atrás dele. Mesmo valor de padding-top
-     mobile usado nas outras heroes de coluna única do site. */
-  .page-hero.sobre-hero { --ph-pad: 88px 20px var(--sp-9); }
-  /* gap:0 (não var(--sp-7)) — .page-hero-left vira display:contents logo
-     abaixo, então eyebrow/h1/subtítulo passam a ser itens diretos deste
-     grid. Um `gap` aqui soma por cima da margin-bottom própria de cada um
-     (grid/flex não colapsam margens), dobrando o espaçamento real (24px de
-     margin + 32px de gap = 56px, quase o dobro do usado em qualquer outra
-     hero do site). Cada elemento já carrega a própria margem — o grid não
-     precisa adicionar mais nada. */
-  .page-hero.sobre-hero .page-hero-in { grid-template-columns: 1fr; gap: 0; }
-  .page-hero.sobre-hero .page-hero-right { justify-content: flex-start; order: 1; }
-  .sobre-hero-right-col { align-items: stretch; width: 100%; }
-  .sobre-hero-panel { width: 100%; padding: var(--sp-7) var(--sp-6); }
-  .sobre-hp-quote { font-size: var(--type-body); }
-
-  /* Botão passa a vir depois do card "Nossa Visão" e centralizado — só no
-     mobile. .page-hero-left "desaparece" como caixa (display:contents) para
-     que .sobre-hero-actions vire item direto do grid do hero e possa ser
-     reordenado independente do resto do texto via `order`. */
-  .page-hero.sobre-hero .page-hero-left { display: contents; }
-  .page-hero.sobre-hero .sobre-hero-actions {
-    order: 2;
-    width: 100%;
-    justify-content: center;
-  }
+  .sobre-visao-quote { font-size: var(--type-lead); }
 }
 
 /* ==========================================================================
@@ -215,6 +181,40 @@
   .sobre-principle-row { grid-template-columns: 1fr; gap: var(--title-gap); padding: var(--sp-6) 0; }
   .sobre-principle-row:hover { padding-left: 0; }
   .sobre-pr-title { font-size: var(--type-lead); }
+}
+
+/* Manifesto — pertence visualmente à seção de princípios (§10.3), não é uma
+   seção nova. Faixa escura de encerramento, sem numeração nem CTA — mesmo
+   tratamento visual de fundo petrol com glow usado em .sobre-abordagem. */
+.sobre-manifesto {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--sp-10);
+  padding: var(--sp-9) var(--sp-8);
+  background: var(--petrol);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.sobre-manifesto-frase {
+  max-width: 780px;
+  margin: 0 auto var(--sp-4);
+  font-weight: 800;
+  font-size: var(--type-h4);
+  line-height: 1.3;
+  color: #fff;
+}
+
+.sobre-manifesto-texto {
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .72);
+}
+
+@media (max-width: 860px) {
+  .sobre-manifesto { padding: var(--sp-7) var(--sp-6); }
 }
 
 /* ==========================================================================
@@ -349,13 +349,24 @@
   background: var(--bc);
   border: 1px solid var(--bb);
   border-radius: 22px;
-  overflow: hidden;
   box-shadow: 0 16px 40px rgba(12, 32, 39, .05);
   display: grid;
-  grid-template-columns: minmax(270px, .78fr) minmax(0, 1.42fr);
+  grid-template-columns: minmax(240px, .6fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: var(--sp-9);
+  padding: var(--sp-8);
 }
 
-.sobre-behind-photo { position: relative; min-height: 520px; overflow: hidden; }
+/* Foto contida (não mais esticada à altura total da coluna de texto) e
+   centralizada verticalmente no card via align-items:center do grid acima. */
+.sobre-behind-photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--bb);
+}
+
 .sobre-behind-photo picture img { object-position: center top; }
 
 /* ResponsiveImage com fill já se posiciona/cobre via style inline (ver componente);
@@ -369,34 +380,7 @@
   object-position: center top;
 }
 
-.sobre-behind-photo-note {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(12, 32, 39, .90);
-  border-radius: 13px;
-  padding: var(--sp-3) var(--sp-4);
-  backdrop-filter: blur(8px);
-}
-
-.sobre-behind-photo-note .n { display: block; font-size: var(--type-label); font-weight: 700; color: #fff; }
-.sobre-behind-photo-note .r { display: block; font-size: var(--type-caption); color: rgba(255, 255, 255, .7); }
-
-.sobre-behind-chip {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  text-transform: uppercase;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, .3);
-  border-radius: 999px;
-  padding: var(--sp-1) var(--title-gap);
-}
-
-.sobre-behind-content { padding: var(--sp-9) var(--sp-9); display: flex; flex-direction: column; justify-content: center; }
+.sobre-behind-content { display: flex; flex-direction: column; justify-content: center; }
 
 .sobre-behind-label-sm {
   font-family: var(--mono);
@@ -410,120 +394,97 @@
 
 .sobre-behind-h3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--ink); margin: 0 0 var(--sp-4); }
 
-.sobre-behind-content p { font-size: var(--type-body-sm); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
-
-.sobre-behind-emphasis {
-  border-left: 2px solid var(--clay);
-  padding-left: var(--gap-loose);
-  font-weight: 650;
-  font-size: var(--type-body-sm);
-  line-height: 1.58;
-  color: var(--ink);
+/* §12.6: tags de função — mesmo tratamento visual de .ih-pillar-tags (Home). */
+.sobre-behind-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
 }
 
-/* flex-wrap (não grid de colunas rígidas) — mesmo padrão de .ih-case-metrics
-   na Home: cada métrica ocupa só a largura do seu próprio conteúdo, o que é
-   necessário aqui porque os valores são palavras ("Engenharia", "DevOps"),
-   não números curtos, e não caberiam em colunas fixas de 1/4 no --type-h2. */
-.sobre-behind-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-6); margin-top: var(--sp-7); }
-.sobre-behind-metric { border-top: 1px solid var(--bb); padding-top: var(--sp-4); }
-.sobre-behind-metric .v { display: block; font-weight: 800; font-size: var(--type-body-sm); letter-spacing: -.03em; color: var(--ink); }
-.sobre-behind-metric .l { display: block; font-size: var(--type-caption); line-height: 1.45; color: var(--slate); }
+.sobre-behind-tags span {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .07);
+  border: 1px solid rgba(15, 76, 92, .14);
+  border-radius: 999px;
+  padding: var(--sp-2) var(--sp-3);
+}
 
-.sobre-evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-grid); margin-top: var(--eyebrow-gap); }
+.sobre-behind-content p { font-size: var(--type-body-sm); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
+
+/* §12.8: bloco "Uma estrutura adaptável ao projeto" — pertence ao mesmo
+   macrobloco de liderança, logo após a biografia. */
+.sobre-boutique {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--bb);
+}
+
+.sobre-boutique-title { font-weight: 800; font-size: var(--type-lead); color: var(--ink); margin: 0 0 var(--sp-3); }
+.sobre-boutique-text { font-size: var(--type-body-sm); line-height: 1.65; color: var(--slate); max-width: 63ch; margin: 0; }
+
+.sobre-evidence-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+  margin-top: var(--sp-8);
+}
+
+@media (min-width: 680px) {
+  .sobre-evidence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1040px) {
+  .sobre-evidence-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.sobre-exp-destaque {
+  display: inline-block;
+  margin-top: var(--gap-loose);
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: var(--type-h4);
+  color: var(--clay);
+}
+
+/* Nomes de certificação por extenso — lista simples (não pill), porque
+   .feature-card-tags usa white-space:nowrap, o que quebrava/vazava com
+   textos longos como "AWS Certified Solutions Architect – Associate". */
+.sobre-cert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sobre-cert-list li {
+  font-size: var(--type-caption);
+  line-height: 1.5;
+  color: var(--petrol);
+}
 
 @media (max-width: 860px) {
   .sobre-behind-container { padding: 0 var(--wrap-pad-h-mobile); }
   .sobre-behind-head { max-width: 100%; text-align: left; margin-bottom: var(--sp-7); }
   .sobre-behind-head .sec-ey--dual { justify-content: flex-start; }
   .sobre-behind-head .sec-ey--dual::after { content: none; }
-  .sobre-behind-card { grid-template-columns: 1fr; }
-  .sobre-behind-photo { min-height: 430px; }
-  .sobre-behind-content { padding: var(--sp-7) var(--sp-6) var(--sp-7); }
-  .sobre-behind-metrics { grid-template-columns: 1fr 1fr; }
-  .sobre-evidence-grid { grid-template-columns: 1fr; }
+  .sobre-behind-card { grid-template-columns: 1fr; gap: var(--sp-6); padding: var(--sp-7) var(--sp-6); }
+  .sobre-behind-photo { max-width: 260px; margin: 0 auto; }
 }
 
 /* ==========================================================================
-   NO QUE ACREDITAMOS — fundo ivory (mesmo tom de --sobre-origem, acima);
-   texto em tons escuros (era manifesto escuro no protótipo original).
-   ========================================================================== */
-.sobre-beliefs {
-  position: relative;
-  overflow: hidden;
-  background: var(--ivory);
-  padding: var(--sp-9) var(--wrap-pad-h);
-}
-
-.sobre-beliefs-container { position: relative; z-index: 1; max-width: var(--wrap-max); margin: 0 auto; }
-
-.sobre-beliefs-head { max-width: 950px; margin: 0 auto; text-align: center; }
-
-.sobre-beliefs-h2 {
-  max-width: 930px;
-  margin: 0 auto;
-  font-size: var(--type-h3);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -.035em;
-  color: var(--ink);
-}
-
-.sobre-beliefs-h2 em { font-style: normal; color: var(--clay); }
-
-.sobre-beliefs-desc {
-  max-width: 700px;
-  margin: var(--sp-7) auto 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.68;
-  color: var(--slate);
-}
-
-.sobre-beliefs-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--gap-grid);
-  margin-top: var(--sp-10);
-  padding-top: var(--gap-loose);
-  border-top: 1px solid var(--line);
-}
-
-.sobre-belief { padding: var(--gap-grid) var(--sp-6) var(--sp-1); border-right: 1px solid var(--line); }
-.sobre-belief:last-child { border-right: none; }
-
-.sobre-belief-num {
-  display: block;
-  margin-bottom: var(--gap-grid);
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 750;
-  letter-spacing: .18em;
-  color: var(--clay);
-}
-
-.sobre-belief h3 { margin: 0 0 var(--sp-3); font-size: var(--type-lead); font-weight: 800; line-height: 1.25; letter-spacing: -.025em; color: var(--ink); }
-.sobre-belief p { max-width: 31ch; font-size: var(--type-body-sm); line-height: 1.65; color: var(--slate); margin: 0; }
-
-@media (max-width: 860px) {
-  .sobre-beliefs { padding: var(--sp-9) var(--wrap-pad-h-mobile); }
-  .sobre-beliefs-head { max-width: 100%; text-align: left; }
-  .sobre-beliefs-head .sec-ey--dual { justify-content: flex-start; }
-  .sobre-beliefs-head .sec-ey--dual::after { content: none; }
-  .sobre-beliefs-h2 { text-align: left; margin: 0; }
-  .sobre-beliefs-desc { margin: var(--sp-6) 0 0; text-align: left; }
-  .sobre-beliefs-grid { grid-template-columns: 1fr; gap: 0; margin-top: var(--sp-9); }
-  .sobre-belief { padding: var(--sp-7) 0; border-right: none; border-bottom: 1px solid var(--line); }
-  .sobre-belief:last-child { border-bottom: none; }
-  .sobre-belief p { max-width: 58ch; }
-}
-
-/* ==========================================================================
-   CTA FINAL (#assessoria, instância default do CtaAssessoria)
+   CTA FINAL (#contato, instância do CtaAssessoria)
    ========================================================================== */
 /* Mesmo ajuste aplicado em #contato (Home) e nas demais páginas que usam
    CtaAssessoria: align-items:center empurrava o eyebrow para baixo do centro
    vertical do card à direita, além do padding-top sozinho. */
-#assessoria.cta-adv .cta-adv-in {
+#contato.cta-adv .cta-adv-in {
   align-items: flex-start;
   padding-top: var(--sp-9);
 }

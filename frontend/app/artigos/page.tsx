@@ -1,50 +1,43 @@
 /* frontend/app/artigos/page.tsx */
 
+import './artigos.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllPosts, getRecentPosts } from '@/lib/api';
+import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
-import Pagination from '@/components/ui/Pagination';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
-import { formatDateShort, categoryName } from '@/lib/format';
-import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
-import { jsonLdScript } from '@/lib/json-ld';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import LerArtigo from '@/components/ui/LerArtigo';
 import PageHero from '@/components/ui/PageHero';
-import SearchBar from '@/components/ui/SearchBar';
-import './artigos.css';
-
-const DESCRIPTION = 'Explore o arquivo completo de tutoriais AWS, análises de IA generativa e engenharia de software, quase 100% construído com IA.';
-
-export const metadata: Metadata = {
-  title: { absolute: `Todos os Artigos | ${SITE_NAME}` },
-  description: DESCRIPTION,
-  alternates: { canonical: `${SITE_URL}/artigos` },
-  openGraph: {
-    title: `Todos os Artigos | ${SITE_NAME}`,
-    description: DESCRIPTION,
-    url: `${SITE_URL}/artigos`,
-    type: 'website',
-    siteName: SITE_NAME,
-    locale: 'pt_BR',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `Todos os Artigos | ${SITE_NAME}`,
-    description: DESCRIPTION,
-    creator: AUTHOR_TWITTER,
-  },
-};
+import { formatDateShort, categoryName } from '@/lib/format';
+import { SITE_URL, SITE_NAME, BLOG_DESCRIPTION } from '@/lib/config';
 
 export const revalidate = 300;
 
-interface ArtigoPost {
+export const metadata: Metadata = {
+  title: { absolute: `Artigos | ${SITE_NAME}` },
+  description: BLOG_DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/artigos` },
+  openGraph: {
+    title: `Artigos | ${SITE_NAME}`,
+    description: BLOG_DESCRIPTION,
+    url: `${SITE_URL}/artigos`,
+    type: 'website',
+  },
+  twitter: {
+    title: `Artigos | ${SITE_NAME}`,
+    description: BLOG_DESCRIPTION,
+  },
+};
+
+interface HomePost {
   slug: string;
   titulo: string;
   resumo?: string;
   categoria_slug: string;
-  categoria?: { nome_exibicao: string };
+  categoria?: {
+    nome_exibicao: string;
+  };
   subcategoria_nome?: string;
   data_publicacao?: string;
   tempo_leitura_min?: number;
@@ -53,187 +46,239 @@ interface ArtigoPost {
   imagem_lqip_base64?: string;
 }
 
-interface ArtigosPageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-const LIMIT = 12;
-
-export default async function ArtigosPage({ searchParams }: ArtigosPageProps) {
-  const params = await searchParams;
-  const nextToken  = typeof params.nextToken  === 'string' ? params.nextToken  : undefined;
-  const prevTokens = typeof params.prevTokens === 'string' ? params.prevTokens : '';
-  const page       = typeof params.page       === 'string' ? Math.max(1, parseInt(params.page)) : 1;
-
-  const [allData, recentData] = await Promise.all([
-    getAllPosts(nextToken, LIMIT).catch(() => null),
-    getRecentPosts(3).catch(() => ({ posts: [] })),
+export default async function ArtigosPage() {
+  const [popularData, recentData, iaData, projetoData] = await Promise.all([
+    getPopularPosts(5).catch(() => ({ posts: [] })),
+    getRecentPosts(6).catch(() => ({ posts: [] })),
+    getPostsByCategory('inteligencia-artificial', undefined, 5).catch(() => null),
+    getProjectPosts(undefined, 3).catch(() => ({ posts: [] })),
   ]);
 
-  const posts: ArtigoPost[] = allData?.posts || [];
-  const nextPageToken = allData?.nextToken ?? undefined;
-  const totalCount = allData?.totalCount ?? 0;
-  const totalPages = totalCount > 0 ? Math.ceil(totalCount / LIMIT) : 0;
+  const popular: HomePost[] = popularData?.posts || [];
+  const recent: HomePost[] = recentData?.posts || [];
+  const ia: HomePost[] = iaData?.posts || [];
+  const projeto: HomePost[] = projetoData?.posts || [];
 
-  const recent: ArtigoPost[] = recentData?.posts || [];
+  const mlFeature1 = popular[0];
+  const mlFeature2 = popular[1];
+  const mlList = popular.slice(2, 5);
 
-  const feature = recent[0];
-  const twoup = recent.slice(1, 3);
-
-  const grid1 = posts.slice(0, 6);
-  const grid2 = posts.slice(6, 12);
-
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
-      { "@type": "ListItem", "position": 2, "name": "Artigos", "item": `${SITE_URL}/artigos` },
-    ],
-  };
+  const iaBig = ia[0];
+  const iaStack = ia.slice(1, 5);
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
-
-      {/* HERO */}
+      {/* Hero */}
       <PageHero
-        singleColumn
-        className="art-hero"
-        dataAudit="art-hero"
-        eyebrow="Arquivo · Todos os artigos"
-        title="Engenharia aplicada, aprendizados reais e bastidores de projetos em produção"
-        subtitle="Conteúdos sobre cloud, automação, IA e operações, construídos a partir de desafios reais, decisões técnicas e soluções colocadas em prática."
-      >
-        <SearchBar ariaLabel="Buscar artigos" />
-      </PageHero>
+        className="home-hero"
+        dataAudit="home-hero"
+        eyebrow="Blog · Build in Public"
+        title={<>Engenharia, Cloud, Automação e IA aplicadas a <em>necessidades reais</em></>}
+        subtitle="Conteúdo técnico construído a partir da prática: custos, performance, observabilidade, automação e transformação operacional."
+        right={
+          <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
+            <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
+            <h2>Acompanhe a construção desta plataforma</h2>
+            <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
+            <div className="home-pp-stats">
+              <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">Infra</span><span className="home-pp-l">como código</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
+              <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
+            </div>
+            <span className="btn home-pp-btn">Ver o projeto</span>
+          </Link>
+        }
+      />
 
-
-      {/* MASTHEAD (destaque + mini cards) */}
-      {(feature || twoup.length > 0) && (
-        <section className="wrap art-masthead" data-audit="art-masthead">
-          {feature && (
-            <Link className="art-feature" href={`/post/${feature.slug}`} data-audit="art-feature">
-              <div className="art-f-cover">
-                {feature.imagem_destaque_url && (
-                  <ResponsiveImage
-                    src={feature.imagem_destaque_url}
-                    alt={feature.imagem_destaque_alt_text || feature.titulo}
-                    fill
-                    priority
-                    lqip={feature.imagem_lqip_base64}
-                  />
-                )}
-                <span className="art-f-badge">Em destaque</span>
-                <span className="art-f-cover-tag">{categoryName(feature)}</span>
+      {/* Mais Lidos */}
+      {popular.length > 0 && (
+        <section className="home-section" id="mais-lidos">
+          <div className="wrap">
+            <div className="sec-head-row sec-head-row--center">
+              <div className="left">
+                <div className="sec-ey sec-ey--dual">Mais lidos</div>
+                <h2 className="sec-t">Posts que mais engajaram</h2>
+                <p className="sec-desc">Os que mais geraram leitura, debate e compartilhamentos. Comece por aqui.</p>
               </div>
-              <div className="art-f-body">
-                <div className="art-f-cat">{categoryName(feature)}</div>
-                <h2>{feature.titulo}</h2>
-                {feature.resumo && <p>{feature.resumo}</p>}
-                <div className="art-f-foot">
-                  <div className="art-f-avatar">MG</div>
-                  <div className="art-f-who">
-                    <span className="art-f-name">Marcelo Gonçalves</span>
-                    <span className="art-f-meta">{formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min</span>
-                  </div>
-                  <LerArtigo color="var(--petrol)" />
+            </div>
+            <div className="home-ml-grid" data-audit="home-ml-grid">
+              {mlFeature1 && (
+                <div className="home-ml-feature">
+                  <div className="home-ml-rank-label">Mais lido · #1</div>
+                  <Link className="home-ml-card" href={`/post/${mlFeature1.slug}`} data-audit="home-ml-card">
+                    <div className="home-ml-num-bg">01</div>
+                    <div className="home-ml-card-inner">
+                      <span className="home-ml-card-cat">{categoryName(mlFeature1)}</span>
+                      <h3 className="home-ml-card-title">{mlFeature1.titulo}</h3>
+                      {mlFeature1.resumo && <p className="home-ml-card-excerpt">{mlFeature1.resumo}</p>}
+                      <div className="home-ml-card-foot">
+                        <div className="home-ml-card-meta">
+                          <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
+                          <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
+                        </div>
+                        <span className="home-ml-card-read"><LerArtigo /></span>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-              </div>
-            </Link>
-          )}
-          <div className="art-twoup" data-audit="art-twoup">
-            {twoup.map((post, i) => (
-              <Link
-                key={post.slug}
-                className="art-mini"
-                href={`/post/${post.slug}`}
-                data-audit={i === 0 ? 'art-mini' : undefined}
-              >
-                <div className={`art-m-cover ${i === 0 ? 't-soft' : 't-clay'}`}>
-                  {post.imagem_destaque_url && (
-                    <ResponsiveImage
-                      src={post.imagem_destaque_url}
-                      alt={post.imagem_destaque_alt_text || post.titulo}
-                      fill
-                      lqip={post.imagem_lqip_base64}
-                    />
-                  )}
+              )}
+              {mlFeature2 && (
+                <div className="home-ml-feature">
+                  <div className="home-ml-rank-label">Mais lido · #2</div>
+                  <Link className="home-ml-card" href={`/post/${mlFeature2.slug}`}>
+                    <div className="home-ml-num-bg">02</div>
+                    <div className="home-ml-card-inner">
+                      <span className="home-ml-card-cat">{categoryName(mlFeature2)}</span>
+                      <h3 className="home-ml-card-title">{mlFeature2.titulo}</h3>
+                      {mlFeature2.resumo && <p className="home-ml-card-excerpt">{mlFeature2.resumo}</p>}
+                      <div className="home-ml-card-foot">
+                        <div className="home-ml-card-meta">
+                          <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
+                          <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
+                        </div>
+                        <span className="home-ml-card-read"><LerArtigo /></span>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-                <div className="art-m-body">
-                  <span className="art-m-cat">{categoryName(post)}</span>
-                  <span className="art-m-title">{post.titulo}</span>
-                  <div className="art-m-foot">
-                    <span>{formatDateShort(post.data_publicacao)} · {post.tempo_leitura_min || 5} min</span>
-                    <LerArtigo />
-                  </div>
+              )}
+              {mlList.length > 0 && (
+                <div className="home-ml-list" data-audit="home-ml-list">
+                  {mlList.map((post: HomePost, i: number) => (
+                    <Link key={post.slug} className="home-ml-item" href={`/post/${post.slug}`}>
+                      <span className="home-ml-item-num">{String(i + 3).padStart(2, '0')}</span>
+                      <div className="home-ml-item-body">
+                        <span className="home-ml-item-cat">{categoryName(post)}</span>
+                        <span className="home-ml-item-title">{post.titulo}</span>
+                        <div className="home-ml-item-meta">
+                          <span>{formatDateShort(post.data_publicacao)}</span>
+                          <span>{post.tempo_leitura_min || 5} min</span>
+                        </div>
+                      </div>
+                      <span className="home-ml-item-arrow" aria-hidden="true">→</span>
+                    </Link>
+                  ))}
                 </div>
-              </Link>
-            ))}
+              )}
+            </div>
           </div>
         </section>
       )}
 
-      {/* GRADE PRINCIPAL — 1ª metade */}
-      <section className="wrap art-section">
-        <div className="sec-head-row sec-head-row--center">
-          <div className="left">
-            <div className="sec-ey sec-ey--dual">O arquivo</div>
-            <h2 className="sec-t" id="art-grid-title">Todos os artigos</h2>
+      {/* Postagens Recentes */}
+      <section className="home-section home-section--surface" id="recentes">
+        <div className="wrap">
+          <div className="sec-head-row sec-head-row--center">
+            <div className="left">
+              <div className="sec-ey sec-ey--dual">Postagens recentes</div>
+              <h2 className="sec-t">Direto do forno</h2>
+              <p className="sec-desc">Últimos artigos publicados.<br />Problemas reais. Soluções aplicadas. Aprendizados compartilhados.</p>
+            </div>
           </div>
-        </div>
-
-        <div className="posts-grid art-grid" id="art-grid" data-audit="art-grid">
-          {grid1.map((post) => (
-            <PostCard key={post.slug} post={post} dataCat={post.categoria_slug} />
-          ))}
-        </div>
-      </section>
-
-      {/* MAKING OF — O PROJETO */}
-      <section className="svc-makingof">
-        <div className="svc-makingof-in">
-          <div className="svc-mo-text">
-            <div className="sec-ey sec-ey--dual">Prova viva</div>
-            <h2>Quer saber como esta plataforma foi construída? Veja o <em>making of</em>.</h2>
-            <p className="svc-mo-sub">Da infraestrutura serverless ao frontend Next.js, tudo documentado desde o primeiro commit.</p>
-            <Link className="btn svc-mo-cta" href="/o-projeto">Conheça &quot;O Projeto&quot;</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* GRADE PRINCIPAL — 2ª metade */}
-      <section className="wrap art-section art-section--paginated">
-        {grid2.length > 0 && (
-          <div className="posts-grid art-grid" id="art-grid2" data-audit="art-grid2">
-            {grid2.map((post) => (
-              <PostCard key={post.slug} post={post} dataCat={post.categoria_slug} />
+          <div className="home-posts-grid" data-audit="home-posts-grid">
+            {recent.map((post: HomePost, i: number) => (
+              <PostCard key={post.slug} post={post} dataAudit={i === 0 ? 'home-post-card' : undefined} />
             ))}
           </div>
-        )}
-
-        <div className="art-empty" id="art-empty">
-          <div className="art-e-t">Nenhum artigo nesta categoria ainda</div>
-          <div className="art-e-s">Tente outro filtro ou volte para &quot;Todos&quot;.</div>
-        </div>
-
-        <div className="art-load-wrap">
-          <Pagination
-            basePath="/artigos"
-            page={page}
-            totalPages={totalPages}
-            nextToken={nextPageToken}
-            currentPageToken={nextToken}
-            prevTokens={prevTokens}
-            scrollToId="art-grid-title"
-          />
+          <div className="home-posts-cta">
+            <Link className="btn home-btn-outline-petrol" href="/todos-artigos">Todos os artigos</Link>
+          </div>
         </div>
       </section>
 
+      {/* Posts sobre IA */}
+      {ia.length > 0 && (
+        <section className="home-ia-section" id="ia">
+          <div className="wrap">
+            <div className="home-ia-sec-head-row home-ia-sec-head-row--center">
+              <div className="left">
+                <div className="home-ia-ey home-ia-ey--dual">Inteligência Artificial</div>
+                <h2 className="home-ia-title">IA aplicada, sem hype</h2>
+                <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
+              </div>
+            </div>
+            <div className="home-ia-grid" data-audit="home-ia-grid">
+              {iaBig && (
+                <Link className="home-ia-big" href={`/post/${iaBig.slug}`} data-audit="home-ia-big">
+                  <div className="home-ia-big-cover">
+                    {iaBig.imagem_destaque_url && (
+                      <ResponsiveImage
+                        src={iaBig.imagem_destaque_url}
+                        alt={iaBig.imagem_destaque_alt_text || iaBig.titulo}
+                        fill
+                        lqip={iaBig.imagem_lqip_base64}
+                      />
+                    )}
+                    <span className="home-ia-big-cover-tag">{categoryName(iaBig)}</span>
+                  </div>
+                  <div className="home-ia-big-body">
+                    <span className="home-ia-big-cat">{categoryName(iaBig)}</span>
+                    <h3 className="home-ia-big-title">{iaBig.titulo}</h3>
+                    {iaBig.resumo && <p className="home-ia-big-excerpt">{iaBig.resumo}</p>}
+                    <div className="home-ia-big-foot">
+                      <div className="home-ia-big-meta">
+                        <span>{formatDateShort(iaBig.data_publicacao)}</span>
+                        <span>{iaBig.tempo_leitura_min || 5} min</span>
+                      </div>
+                      <span className="home-ia-read"><LerArtigo /></span>
+                    </div>
+                  </div>
+                </Link>
+              )}
+              {iaStack.length > 0 && (
+                <div className="home-ia-stack">
+                  {iaStack.map((post: HomePost, i: number) => (
+                    <Link key={post.slug} className="home-ia-small" href={`/post/${post.slug}`} data-audit={i === 0 ? 'home-ia-small' : undefined}>
+                      <span className="home-ia-small-cat">{categoryName(post)}</span>
+                      <h3 className="home-ia-small-title">{post.titulo}</h3>
+                      {post.resumo && <p className="home-ia-small-excerpt">{post.resumo}</p>}
+                      <div className="home-ia-small-foot">
+                        <div className="home-ia-small-meta">
+                          <span>{formatDateShort(post.data_publicacao)}</span>
+                          <span>{post.tempo_leitura_min || 5} min</span>
+                        </div>
+                        <span className="home-ia-read"><LerArtigo /></span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="home-cta-end">
+              <Link className="btn" href="/categoria/inteligencia-artificial">Tudo sobre IA</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* O Projeto */}
+      {projeto.length > 0 && (
+        <section className="home-section home-projeto-section" id="projeto">
+          <div className="wrap">
+            <div className="sec-head-row sec-head-row--center">
+              <div className="left">
+                <div className="sec-ey sec-ey--dual">O Projeto · Build in Public</div>
+                <h2 className="sec-t">Bastidores da plataforma</h2>
+                <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
+              </div>
+            </div>
+            <div className="home-projeto-grid" data-audit="home-projeto-grid">
+              {projeto.map((post: HomePost) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
+            </div>
+            <div className="home-cta-end">
+              <Link className="btn home-btn-clay-hero" href="/o-projeto">Acompanhe a jornada</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       <CtaAssessoria
-        eyebrow="Além dos artigos"
-        title="Prefere aplicar isso direto no seu projeto?"
-        description="Nem todo desafio cabe num artigo. Se você quer aplicar essas técnicas na sua operação, sem tentativa e erro, ajudamos diretamente."
+        eyebrow="Do blog para o seu projeto"
+        title="Gosta do que lê aqui? Aplico o mesmo na sua empresa."
+        description="Tudo que você vê neste blog nasce de projetos reais. Se sua empresa enfrenta um desafio parecido com os que aparecem por aqui, ajudamos a resolver."
       />
     </>
   );

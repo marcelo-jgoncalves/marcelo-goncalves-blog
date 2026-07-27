@@ -1,24 +1,22 @@
 /* frontend/app/software/page.tsx
-   Landing page de pilar — specs/ESPECIFICACAO-ENGENHARIA-SOFTWARE.md */
+   Landing page de pilar — ajustes/ajuste-12-pagina-sistemas-plataformas-digitais.md */
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria, { CTA_DIAGNOSIS_META } from '@/components/ui/CtaAssessoria';
+import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
 import IconLabelSection from '@/components/ui/IconLabelSection';
-import AbordagemHead from '@/components/ui/AbordagemHead';
 import {
   IconSistemasSobMedida,
   IconApisIntegracoes,
   IconArquiteturaSoftware,
   IconModernizacaoSistemas,
-  IconEngenhariaQualidade,
   IconSustentacaoEvolucao,
   IconArquiteturasEscalaveis,
   IconCodigoLimpo,
@@ -27,12 +25,11 @@ import {
   IconCICD,
   IconObservabilidade,
   IconDocumentacao,
-  IconDividaTecnica,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
-const TITLE = `Engenharia de Software | ${SITE_NAME}`;
-const DESCRIPTION = 'Desenvolvemos aplicações web, APIs e plataformas sob medida com foco em desempenho, escalabilidade e qualidade para impulsionar a inovação do seu negócio.';
+const TITLE = `Sistemas e Plataformas Digitais | ${SITE_NAME}`;
+const DESCRIPTION = 'Desenvolvimento e modernização de sistemas internos, portais operacionais, APIs, plataformas documentais e aplicações integradas à operação.';
 const PAGE_URL = `${SITE_URL}/software`;
 
 export const metadata: Metadata = {
@@ -60,7 +57,7 @@ export const revalidate = 3600;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: `Engenharia de Software | ${AUTHOR_NAME}`,
+  name: `Sistemas e Plataformas Digitais | ${AUTHOR_NAME}`,
   description: DESCRIPTION,
   url: PAGE_URL,
   provider: {
@@ -69,7 +66,7 @@ const jsonLd = {
     url: `${SITE_URL}/sobre`,
   },
   areaServed: { '@type': 'Country', name: 'Brazil' },
-  serviceType: 'Software Engineering Consulting',
+  serviceType: 'Desenvolvimento e modernização de sistemas empresariais',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Serviços de Engenharia de Software',
@@ -84,60 +81,92 @@ const jsonLd = {
   },
 };
 
-const OQUE_FAZEMOS = [
-  { Icon: IconSistemasSobMedida, title: 'Sistemas Sob Medida', text: 'Desenvolvemos aplicações alinhadas às necessidades específicas do seu negócio, eliminando limitações de soluções genéricas.', tags: ['Sistemas Corporativos', 'Portais Empresariais', 'Aplicações'] },
-  { Icon: IconApisIntegracoes, title: 'APIs e Integrações', text: 'Projetamos APIs modernas que permitem a comunicação segura e eficiente entre sistemas internos e serviços de terceiros.', tags: ['APIs REST', 'Integrações com ERPs', 'Webhooks'] },
-  { Icon: IconArquiteturaSoftware, title: 'Arquitetura de Software', text: 'Projetamos soluções preparadas para crescer, priorizando desempenho, escalabilidade e facilidade de manutenção.', tags: ['Arquitetura em Camadas', 'Orientada a Eventos', 'Serverless'] },
-  { Icon: IconModernizacaoSistemas, title: 'Modernização de Sistemas', text: 'Atualizamos aplicações legadas para arquiteturas modernas, reduzindo riscos e preparando a empresa para novos desafios.', tags: ['Refatoração', 'Migração Tecnológica', 'Evolução de Sistemas'] },
-  { Icon: IconEngenhariaQualidade, title: 'Engenharia de Qualidade', text: 'Incorporamos qualidade ao processo de desenvolvimento para garantir maior confiabilidade e reduzir problemas em produção.', tags: ['Testes Automatizados', 'Testes E2E', 'Revisão de Código'] },
-  { Icon: IconSustentacaoEvolucao, title: 'Sustentação e Evolução', text: 'Após a entrega, continuamos apoiando a evolução da solução, implementando melhorias e novas funcionalidades conforme o crescimento do negócio.', tags: ['Evolução Contínua', 'Novos Módulos', 'Suporte Técnico'] },
+// §9-14: seis soluções, sem qualidades técnicas (arquitetura/qualidade/sustentação) como entregas comerciais separadas.
+const SOLUCOES = [
+  { Icon: IconSistemasSobMedida, title: 'Sistemas internos', text: 'Ferramentas para organizar processos, regras, cadastros, aprovações, tarefas e informações que hoje dependem de planilhas ou aplicações fragmentadas.', tags: ['Processos', 'Cadastros', 'Operação'] },
+  { Icon: IconArquiteturaSoftware, title: 'Portais operacionais', text: 'Interfaces para clientes, parceiros ou equipes acompanharem solicitações, documentos, etapas e responsabilidades em um fluxo centralizado.', tags: ['Acompanhamento', 'Workflows', 'Perfis de acesso'] },
+  { Icon: IconApisIntegracoes, title: 'APIs e backends', text: 'Serviços para concentrar regras de negócio, integrar dados e disponibilizar capacidades de forma documentada para aplicações e parceiros autorizados.', tags: ['APIs', 'Regras de negócio', 'Integrações'] },
+  { Icon: IconDocumentacao, title: 'Plataformas documentais e de conteúdo', text: 'Soluções para criar, organizar, revisar, publicar, distribuir ou consultar documentos e conteúdos com controle de acesso e histórico.', tags: ['Documentos', 'Conteúdo', 'Versionamento'] },
+  { Icon: IconSustentacaoEvolucao, title: 'Módulos e integrações', text: 'Componentes que complementam sistemas existentes, automatizam etapas e conectam aplicações sem exigir a substituição imediata da base atual.', tags: ['Módulos', 'Extensões', 'Integrações'] },
+  { Icon: IconModernizacaoSistemas, title: 'Modernização de aplicações', text: 'Evolução gradual de sistemas com arquitetura difícil de manter, baixa cobertura de testes, limitações de integração ou risco elevado a cada mudança.', tags: ['Arquitetura', 'Testes', 'Evolução gradual'] },
 ];
 
+// §15.5: oito benefícios — item 8 usa a formulação neutra (§15.6), condicionada ao contrato.
 const BENEFICIOS = [
-  'Maior produtividade das equipes',
-  'Redução de retrabalho',
-  'Processos mais eficientes',
-  'Sistemas preparados para crescer',
-  'Integração entre plataformas',
-  'Maior segurança e confiabilidade',
-  'Facilidade de manutenção',
-  'Redução de custos operacionais',
+  'Processos centralizados em uma interface adequada à operação',
+  'Menor dependência de planilhas e controles paralelos',
+  'Informações consistentes entre sistemas',
+  'Regras de negócio aplicadas de forma previsível',
+  'Maior rastreabilidade de ações e alterações',
+  'Integrações mais fáceis de manter',
+  'Evolução por módulos e etapas',
+  'Clareza sobre código, documentação e responsabilidades de manutenção',
 ];
 
+// §17-21: cinco etapas da abordagem (construir é decisão de negócio, não só técnica).
 const ETAPAS = [
-  { title: 'Entendimento do problema', text: 'Entendemos os objetivos do negócio e identificamos oportunidades de melhoria.' },
-  { title: 'Arquitetura & desenvolvimento incremental', text: 'Projetamos a arquitetura da solução e desenvolvemos de forma incremental, validando cada etapa.' },
-  { title: 'Software robusto e evolutivo', text: 'Entregamos um sistema preparado para evoluir e gerar valor desde as primeiras entregas.' },
+  { numero: '01', title: 'Entender o processo', text: 'Mapeamos usuários, regras, informações, exceções, sistemas envolvidos e o resultado que a solução precisa produzir.' },
+  { numero: '02', title: 'Avaliar construir, integrar ou adaptar', text: 'Comparamos ferramentas existentes, possibilidades de integração e desenvolvimento próprio para evitar a criação de um sistema desnecessário.' },
+  { numero: '03', title: 'Definir a primeira entrega útil', text: 'Priorizamos um conjunto de funcionalidades que resolva parte relevante do problema e possa ser validado antes de ampliar o escopo.' },
+  { numero: '04', title: 'Construir com critérios verificáveis', text: 'Implementamos regras, integrações, segurança, testes e observabilidade com critérios de aceite definidos para cada etapa.' },
+  { numero: '05', title: 'Operar, aprender e evoluir', text: 'Acompanhamos o uso real, corrigimos desvios e priorizamos novas funcionalidades conforme o impacto observado na operação.' },
 ];
 
-const DIFERENCIAIS = [
-  'Arquiteturas modernas e escaláveis',
-  'Desenvolvimento orientado por boas práticas de engenharia',
-  'Integração nativa com plataformas em nuvem',
-  'APIs projetadas para facilitar futuras integrações',
-  'Código limpo, documentado e versionado',
-  'Foco em desempenho, segurança e manutenibilidade',
+// §21.4-21.6: três subblocos dentro da mesma seção da abordagem.
+const ABORDAGEM_SUBBLOCOS = [
+  { label: 'Escopo', title: 'Decisões visíveis antes de compromissos maiores.', text: 'Funcionalidades, integrações, restrições e critérios de aceite são registrados para reduzir interpretações diferentes durante o projeto.' },
+  { label: 'Participação do cliente', title: 'O processo precisa ser validado por quem o conhece.', text: 'Responsáveis pelo negócio participam da priorização, esclarecem regras e validam as entregas. A tecnologia não substitui o conhecimento operacional.' },
+  { label: 'Evolução', title: 'Arquitetura proporcional ao estágio da solução.', text: 'A base técnica deve suportar o próximo ciclo de crescimento sem antecipar complexidade e custos que ainda não são necessários.' },
 ];
 
-const PRINCIPIOS = [
-  { label: 'Arquiteturas escaláveis e resilientes', Icon: IconArquiteturasEscalaveis },
-  { label: 'Código limpo e de fácil manutenção', Icon: IconCodigoLimpo },
-  { label: 'Desenvolvimento orientado por testes', Icon: IconTestes },
-  { label: 'Segurança desde a concepção da solução', Icon: IconSegurancaCloud },
-  { label: 'Integração e entrega contínua (CI/CD)', Icon: IconCICD },
-  { label: 'Observabilidade desde o primeiro deploy', Icon: IconObservabilidade },
-  { label: 'Documentação e transferência de conhecimento', Icon: IconDocumentacao },
-  { label: 'Gestão contínua de dívida técnica', Icon: IconDividaTecnica },
+// §22.6: dez capacidades de engenharia.
+const CAPACIDADES = [
+  { label: 'Arquitetura de software e definição de componentes', Icon: IconArquiteturasEscalaveis },
+  { label: 'APIs REST e integração entre serviços', Icon: IconApisIntegracoes },
+  { label: 'Backends e processamento assíncrono', Icon: IconArquiteturaSoftware },
+  { label: 'Aplicações web e interfaces operacionais', Icon: IconSistemasSobMedida },
+  { label: 'Autenticação, autorização e perfis de acesso', Icon: IconSegurancaCloud },
+  { label: 'Modelagem e persistência de dados', Icon: IconDocumentacao },
+  { label: 'Integração com serviços AWS', Icon: IconObservabilidade },
+  { label: 'Testes automatizados e quality gates', Icon: IconTestes },
+  { label: 'Observabilidade, logs e rastreabilidade', Icon: IconCodigoLimpo },
+  { label: 'CI/CD e infraestrutura como código', Icon: IconCICD },
 ];
 
+// §23.6: oito itens do checklist de qualidade, manutenção e evolução.
+const QUALIDADE_ITEMS = [
+  'Código versionado e revisado',
+  'Testes proporcionais ao risco de cada fluxo',
+  'Validação automática antes de mudanças',
+  'Logs, métricas e rastreabilidade de erros',
+  'Documentação técnica e operacional',
+  'Gestão de dependências e vulnerabilidades',
+  'Estratégias de implantação e reversão',
+  'Modelo de manutenção definido antes da entrega',
+];
+
+// §23.7-23.9: três subblocos da seção de qualidade (sem rótulo, só H3 + texto).
+const QUALIDADE_SUBBLOCOS = [
+  { title: 'Manutenção após a entrega', text: 'O modelo pode incluir acompanhamento inicial, correções, evolução contínua, observabilidade ou transferência estruturada para a equipe do cliente. Escopo, prazo de atendimento e responsabilidades devem ser definidos contratualmente.' },
+  { title: 'Propriedade e acesso', text: 'Repositórios, credenciais, ambientes e documentação devem ter responsáveis definidos. A forma de entrega e os direitos sobre o código precisam estar explícitos na proposta e no contrato.' },
+  { title: 'Dívida técnica', text: 'Atalhos, limitações e decisões temporárias devem ser registrados para que a empresa consiga avaliar riscos e priorizar correções futuras.' },
+];
+
+// §25-34: dez perguntas frequentes.
 const FAQ_ITEMS = [
-  { question: 'Vocês desenvolvem apenas sistemas novos?', answer: 'Não. Também evoluímos sistemas existentes, modernizamos aplicações legadas e implementamos novas funcionalidades em plataformas já utilizadas pela empresa.' },
-  { question: 'O software pode ser integrado aos sistemas que já utilizamos?', answer: 'Sim. Desenvolvemos integrações com ERPs, CRMs, plataformas financeiras, sistemas internos e serviços de terceiros por meio de APIs e outros mecanismos de integração.' },
-  { question: 'Como acompanho o andamento do projeto?', answer: 'Trabalhamos com entregas incrementais, permitindo acompanhar a evolução do desenvolvimento, validar funcionalidades e incorporar ajustes ao longo do projeto.' },
-  { question: 'O sistema poderá crescer no futuro?', answer: 'Sim. Todas as soluções são projetadas pensando em escalabilidade, manutenção e evolução contínua, reduzindo custos e facilitando a implementação de novas funcionalidades.' },
+  { question: 'Como saber se precisamos de um sistema próprio?', answer: 'Um sistema próprio costuma fazer sentido quando o processo é relevante, possui regras específicas e não é atendido adequadamente por ferramentas existentes. Antes de desenvolver, avaliamos alternativas prontas, integrações e adaptações.' },
+  { question: 'Vocês desenvolvem qualquer tipo de software?', answer: 'A atuação é concentrada em sistemas e plataformas ligados à operação, integração de informações, documentos, automação e serviços empresariais. Projetos como sites simples, jogos ou aplicativos de entretenimento não são o foco principal.' },
+  { question: 'É possível começar por uma versão menor?', answer: 'Sim. Priorizamos uma primeira entrega que resolva parte relevante do problema e permita validar regras, uso e integração antes de ampliar o escopo.' },
+  { question: 'É necessário substituir o sistema atual?', answer: 'Não necessariamente. Podemos criar módulos, integrações ou modernizar componentes de forma gradual. A substituição completa só deve ser considerada quando a base atual impede uma evolução segura e economicamente viável.' },
+  { question: 'Como funciona a definição do escopo?', answer: 'Mapeamos usuários, processos, regras, integrações, restrições e critérios de aceite. Em projetos com alto nível de incerteza, o diagnóstico e a descoberta podem ser estruturados como uma etapa comercial antes da implementação.' },
+  { question: 'O prazo e o preço podem ser definidos na primeira conversa?', answer: 'Normalmente não. A primeira conversa permite avaliar aderência e contexto. Prazo e investimento dependem do escopo, das integrações, dos riscos e do nível de definição disponível.' },
+  { question: 'Quem participa do projeto?', answer: 'Marcelo Gonçalves lidera o entendimento, a arquitetura e as principais decisões técnicas. Especialistas complementares podem ser incorporados quando o escopo exige competências adicionais.' },
+  { question: 'O código e a documentação são entregues?', answer: 'A forma de entrega, os acessos, os repositórios e os direitos sobre o código devem ser definidos na proposta e no contrato. A recomendação é evitar dependências ocultas e garantir clareza sobre manutenção e continuidade.' },
+  { question: 'Existe manutenção depois que o sistema entra em produção?', answer: 'O modelo de sustentação é definido conforme a solução. Pode incluir acompanhamento inicial, correções, monitoramento, evolução contínua ou transferência estruturada para a equipe do cliente.' },
+  { question: 'É possível integrar inteligência artificial ou automações ao sistema?', answer: 'Sim, quando existe um caso de uso adequado. Automação e inteligência artificial podem ser incorporadas como capacidades do sistema, com regras, permissões, avaliação e controles proporcionais ao impacto.' },
 ];
 
-export default function EngenhariaDeSoftwarePage() {
+export default function SistemasPlataformasPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
@@ -147,27 +176,28 @@ export default function EngenhariaDeSoftwarePage() {
         singleColumn
         className={styles.esHero}
         dataAudit="esw-hero"
-        eyebrow="Pilar · Software"
-        title={<>Desenvolvemos software que <em>impulsiona</em> o seu negócio.</>}
-        subtitle="Cada empresa possui desafios únicos. Por isso, desenvolvemos sistemas, aplicações e plataformas sob medida que automatizam processos, integram informações e apoiam o crescimento do seu negócio."
+        eyebrow="Sistemas e Plataformas Digitais"
+        title="Sistemas que organizam a operação e evoluem com o negócio."
+        subtitle="Construímos e modernizamos sistemas internos, portais, APIs e plataformas ligados a processos específicos da empresa, com integração, segurança e capacidade de manutenção desde o projeto."
       >
         <div className={styles.heroCtaRow}>
-          <Link href="/contato?assunto=engenharia-de-software" className="btn">
-            Solicitar diagnóstico
+          <Link href="/contato?area=sistemas-plataformas" className="btn">
+            Apresentar uma necessidade de sistema
           </Link>
         </div>
+        <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE FAZEMOS */}
-      <section id="oquefazemos" className={styles.oquefazemos} data-audit="esw-oquefazemos">
+      {/* O QUE CONSTRUÍMOS E MODERNIZAMOS */}
+      <section id="solucoes" className={styles.oquefazemos} data-audit="esw-solucoes">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que fazemos</span>
-            <h2 className={styles.h2}>Software sob medida<br />para aumentar a eficiência do seu negócio</h2>
-            <p className={styles.sectionDesc}>Seis frentes que cobrem da concepção à evolução contínua do seu sistema.</p>
+            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que desenvolvemos</span>
+            <h2 className={styles.h2}>Soluções digitais ligadas ao funcionamento real da empresa.</h2>
+            <p className={styles.sectionDesc}>Atuamos quando ferramentas prontas não atendem adequadamente ao processo, quando sistemas existentes precisam evoluir ou quando uma nova camada digital pode reduzir fragmentação e dependência de controles manuais.</p>
           </div>
           <div className={styles.cardGrid}>
-            {OQUE_FAZEMOS.map(({ Icon, title, text, tags }, i) => (
+            {SOLUCOES.map(({ Icon, title, text, tags }, i) => (
               <Reveal as="div" key={title} delay={i * 60}>
                 <FeatureCard
                   icon={<Icon />}
@@ -184,8 +214,10 @@ export default function EngenhariaDeSoftwarePage() {
 
       {/* BENEFÍCIOS */}
       <BeneficiosSection
+        id="beneficios"
         dataAudit="esw-beneficios"
-        title="Soluções desenvolvidas para a realidade da sua empresa"
+        title="Menos fragmentação. Mais clareza sobre processos, dados e responsabilidades."
+        description="Um sistema próprio só faz sentido quando reduz limitações relevantes ou cria uma capacidade que as ferramentas existentes não oferecem de forma adequada."
         items={BENEFICIOS}
         classes={{
           section: styles.beneficios,
@@ -193,6 +225,7 @@ export default function EngenhariaDeSoftwarePage() {
           wrap: styles.beneficiosWrap,
           eyebrow: styles.eyebrowDark,
           heading: styles.h2Dark,
+          description: styles.beneficiosDescription,
           list: styles.beneficiosList,
           item: styles.beneficioItem,
           checkIcon: styles.checkIcon,
@@ -200,65 +233,46 @@ export default function EngenhariaDeSoftwarePage() {
         }}
       />
 
-      {/* NOSSA ABORDAGEM + DIFERENCIAIS */}
+      {/* NOSSA ABORDAGEM — 5 etapas + 3 subblocos */}
       <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <AbordagemHead
-            dataAudit="esw-abordagem-grid"
-            resultDataAudit="esw-result-card"
-            title="Um bom software começa pela compreensão do problema"
-            description="Antes de escrever qualquer linha de código, entendemos os objetivos do negócio, analisamos os processos existentes e identificamos oportunidades de melhoria. Com base nesse entendimento, projetamos a arquitetura da solução, desenvolvemos de forma incremental e validamos continuamente cada etapa do projeto."
-            resultLabel="Resultado"
-            resultTitle="Pronto para evoluir, desde o primeiro dia."
-            resultText="O resultado é um software robusto, preparado para evoluir e gerar valor desde as primeiras entregas."
-            classes={{
-              grid: styles.abordagemGrid,
-              head: styles.abordagemHead,
-              eyebrow: styles.eyebrowLight,
-              heading: styles.h2,
-              desc: styles.sectionDesc,
-              resultCard: styles.resultCard,
-              resultLabel: styles.resultCardLabel,
-              resultTitle: styles.resultCardTitle,
-              resultText: styles.resultCardText,
-            }}
-          />
+          <div className={styles.sectionHead}>
+            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
+            <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
+            <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando existe uma justificativa clara para construir e manter.</p>
+          </div>
 
           <div className={styles.etapasGrid}>
             <div className={styles.etapasLine} aria-hidden="true" />
-            {ETAPAS.map((etapa, i) => (
+            {ETAPAS.map((etapa) => (
               <div className={styles.etapa} key={etapa.title}>
-                <div className={i === 2 ? styles.etapaCirculoClay : styles.etapaCirculo}>{i + 1}</div>
-                <h4 className={styles.etapaTitle}>{etapa.title}</h4>
+                <div className={styles.etapaCirculo}>{etapa.numero}</div>
+                <h3 className={styles.etapaTitle}>{etapa.title}</h3>
                 <p className={styles.etapaText}>{etapa.text}</p>
               </div>
             ))}
           </div>
 
-          <div className={styles.diferenciais} data-audit="esw-diferenciais">
-            <div className={styles.diferenciaisHead}>
-              <h3 className={styles.h2}>Boas práticas<br />em todo o ciclo de desenvolvimento</h3>
-            </div>
-            <div className={styles.diferenciaisGrid}>
-              {DIFERENCIAIS.map((item) => (
-                <div className={styles.diferencialItem} key={item}>
-                  <span className={styles.diferencialCheck} aria-hidden="true">✓</span>
-                  <span className={styles.diferencialText}>{item}</span>
-                </div>
-              ))}
-            </div>
+          <div className={styles.subblocosGrid}>
+            {ABORDAGEM_SUBBLOCOS.map((s) => (
+              <div className={styles.subbloco} key={s.label}>
+                <span className={styles.subblocoLabel}>{s.label}</span>
+                <h3 className={styles.subblocoTitle}>{s.title}</h3>
+                <p className={styles.subblocoText}>{s.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* PRINCÍPIOS DE ENGENHARIA */}
+      {/* CAPACIDADES DE ENGENHARIA */}
       <IconLabelSection
-        id="principios"
-        dataAudit="esw-principios"
-        eyebrow="Maturidade técnica"
-        title="Princípios de Engenharia"
-        description="O que guia cada decisão técnica, do primeiro commit à operação em produção."
-        items={PRINCIPIOS}
+        id="capacidades"
+        dataAudit="esw-capacidades"
+        eyebrow="Capacidades de engenharia"
+        title="Da regra de negócio à operação em produção."
+        description="As capacidades são combinadas conforme o tipo de sistema, o estágio do produto, as integrações e os requisitos de segurança e manutenção."
+        items={CAPACIDADES}
         classes={{
           section: styles.principios,
           wrap: styles.principiosWrap,
@@ -269,27 +283,64 @@ export default function EngenhariaDeSoftwarePage() {
         }}
       />
 
+      {/* QUALIDADE, MANUTENÇÃO E EVOLUÇÃO */}
+      <section id="qualidade" className={styles.qualidade} data-audit="esw-qualidade">
+        <div className={styles.qualidadeOverlay} aria-hidden="true" />
+        <div className={styles.wrap}>
+          <div className={styles.sectionHead}>
+            <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Qualidade e continuidade</span>
+            <h2 className={styles.h2Dark}>A entrega não termina quando a primeira versão entra em produção.</h2>
+            <p className={styles.sectionDescDark}>Um sistema útil precisa continuar compreensível, observável e modificável. Por isso, qualidade não é uma etapa final: ela influencia arquitetura, testes, documentação, implantação e sustentação.</p>
+          </div>
+          <div className={styles.beneficiosList}>
+            {QUALIDADE_ITEMS.map((item) => (
+              <div className={styles.beneficioItem} key={item}>
+                <span className={styles.checkIcon} aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
+                </span>
+                <span className={styles.beneficioText}>{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className={styles.qualidadeSubblocos}>
+            {QUALIDADE_SUBBLOCOS.map((s) => (
+              <div className={styles.qualidadeSubbloco} key={s.title}>
+                <h3 className={styles.privacidadeTitle}>{s.title}</h3>
+                <p className={styles.privacidadeText}>{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <FaqSection items={FAQ_ITEMS} dataAudit="esw-faq" />
+      <FaqSection
+        id="perguntas"
+        items={FAQ_ITEMS}
+        dataAudit="esw-faq"
+        eyebrow="Perguntas frequentes"
+        title="Dúvidas antes de desenvolver ou modernizar um sistema"
+      />
 
       {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
       <div data-audit="esw-cta-final">
         <CtaAssessoria
-          id="contato-final"
+          id="contato"
           eyebrow="Vamos começar"
-          title={<>Vamos conversar sobre <em>o seu software</em>?</>}
-          description="Agende uma chamada inicial de 60 minutos sem custo e sem compromisso para discutirmos sobre como podemos construir o software certo para o seu negócio."
+          title="Qual processo ou sistema precisa evoluir?"
+          description="Conte como a operação funciona hoje, o que está limitando o trabalho e quais sistemas estão envolvidos. Vamos avaliar se o melhor caminho é desenvolver, integrar ou modernizar."
           points={[
-            <span key="p1">Diagnóstico objetivo do seu <b>sistema atual</b></span>,
-            <span key="p2">Plano de ação claro, <b>sem pressão de venda</b></span>,
-            <span key="p3">Resposta <b>rápida</b>, 100% remoto</span>,
+            <span key="p1">Processos importantes ainda dependentes de planilhas</span>,
+            <span key="p2">Sistemas que não acompanham novas regras ou integrações</span>,
+            <span key="p3">Necessidade de uma plataforma operacional específica</span>,
           ]}
-          cardTagline="Disponível para novos projetos"
-          cardTitle="Agende um diagnóstico inicial gratuito"
-          cardBody={CTA_DIAGNOSIS_META}
-          ctaHref="/contato?assunto=engenharia-de-software"
-          ctaLabel="Entrar em contato"
-          reassure="Sem compromisso · sem custo"
+          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
+          cardLabel="Primeira conversa"
+          cardTitle="Vamos entender a necessidade antes de propor um sistema."
+          cardBody={<p className="cta-adv-body-text">A conversa inicial serve para avaliar a aderência e esclarecer os primeiros caminhos. Descoberta, levantamento de requisitos e definição detalhada de escopo podem ser estruturados como uma etapa comercial própria.</p>}
+          ctaHref="/contato?area=sistemas-plataformas"
+          ctaLabel="Apresentar uma necessidade de sistema"
+          reassure="Sem compromisso · Retorno em até um dia útil"
         />
       </div>
     </>

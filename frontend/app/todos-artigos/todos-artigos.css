@@ -1,0 +1,421 @@
+/* frontend/app/artigos/artigos.css
+   Redesign 2026 (petrol/clay/ivory) — réplica de specs/ESPECIFICACAO-ARTIGOS.md
+   e e2e/visual-audit/fixtures/artigos.html, com dados reais do projeto. */
+
+/* Seções desta página têm padding próprio — remove o ritmo global de 64px */
+.art-hero,
+.art-masthead,
+.art-search-section,
+.art-cta-editorial,
+.art-section {
+  margin-block: 0;
+}
+
+/* ==========================================================================
+   HERO (escuro)
+   ========================================================================== */
+.art-hero {
+  /* padding-bottom 76px é valor customizado (não cai em nenhum --sp-*)
+     — mantido como está para não alterar a proporção visual do hero;
+     documentado aqui para não parecer um leak não auditado. */
+  --ph-pad: 88px 40px 76px;
+}
+
+.art-hero .page-hero-in {
+  padding-bottom: var(--sp-11);
+}
+
+.page-hero.art-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(42% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
+}
+
+/* Barra de busca — componente compartilhado (frontend/components/ui/SearchBar) */
+
+/* ==========================================================================
+   SHELL — seções com padding próprio
+   Padding reduzido à metade (var(--sp-11)→var(--sp-9)) e simétrico,
+   mesmo padrão de #servicos/#abordagem/#insights em home.css.
+   ========================================================================== */
+.art-section {
+  padding-block: var(--sp-9);
+}
+
+/* .op-pagination (Pagination.tsx, componente compartilhado) já tem
+   padding: var(--sp-7) 0 (32px) embutido — sem este desconto, o total
+   card→paginação e paginação→próxima seção somava 48+32=80px em vez dos
+   48px padrão. sp-4(16px) aqui + 32px do componente = 48px. */
+.art-section--paginated {
+  padding-bottom: var(--sp-4);
+}
+
+/* ==========================================================================
+   MASTHEAD (revista)
+   ========================================================================== */
+.art-masthead {
+  padding-top: var(--sp-10);
+}
+
+.art-feature {
+  display: grid;
+  grid-template-columns: 1.18fr 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(12, 32, 39, .05);
+  transition: transform .22s, box-shadow .22s;
+}
+
+@media (hover: hover) {
+  .art-feature:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 46px -22px rgba(12, 32, 39, .22);
+  }
+}
+
+.art-f-cover {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #0F4C5C 0%, #08323D 60%, #0C2027 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-6);
+}
+
+.art-f-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .55;
+  background:
+    radial-gradient(70% 80% at 78% 16%, rgba(201, 96, 60, .4), transparent 55%),
+    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/100% 52px,
+    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/52px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
+}
+
+.art-f-cover-tag {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--clay);
+  padding: var(--sp-2) var(--eyebrow-gap);
+  border-radius: 999px;
+}
+
+.art-f-badge {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: var(--sp-2) var(--eyebrow-gap);
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(201, 96, 60, .4);
+}
+
+.art-f-body {
+  padding: var(--sp-8) var(--sp-9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.art-f-cat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-4);
+}
+
+.art-f-body h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  line-height: 1.14;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  text-wrap: balance;
+  margin-bottom: var(--sp-4);
+}
+
+.art-f-body p {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: var(--slate);
+  margin-bottom: var(--sp-7);
+  max-width: 440px;
+}
+
+.art-f-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.art-f-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  flex: none;
+  background: linear-gradient(150deg, var(--petrol-soft), var(--petrol));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--type-caption);
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--line);
+}
+
+.art-f-who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.art-f-name {
+  font-weight: 700;
+  font-size: var(--type-caption);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.art-f-meta {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: var(--steel);
+}
+
+.art-f-foot .ler-artigo {
+  margin-left: auto;
+  font-size: var(--type-label);
+}
+
+@media (hover: hover) {
+  .art-feature:hover .art-f-foot .ler-artigo {
+    gap: var(--sp-3);
+    --ler-artigo-color: var(--clay);
+  }
+}
+
+/* ==========================================================================
+   GRADE PRINCIPAL (.pc-* herdado de PostCard.css)
+   ========================================================================== */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+}
+
+.art-grid .post-card.is-hidden {
+  display: none;
+}
+
+/* ==========================================================================
+   ESTADO VAZIO + CARREGAR MAIS
+   ========================================================================== */
+.art-empty {
+  display: none;
+  text-align: center;
+  padding: var(--sp-10) 0;
+  color: var(--steel);
+}
+
+.art-empty.show {
+  display: block;
+}
+
+.art-e-t {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--slate);
+  margin-bottom: var(--sp-2);
+}
+
+.art-e-s {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+}
+
+/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
+   (mesmo desconto de .art-section--paginated acima). */
+.art-load-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-4);
+}
+
+/* ==========================================================================
+   RESPONSIVO
+   ========================================================================== */
+@media (max-width: 900px) {
+  .art-hero .page-hero-in {
+    grid-template-columns: 1fr;
+    gap: var(--sp-8);
+    padding-top: var(--sp-9);
+    padding-bottom: var(--sp-10);
+  }
+
+  .art-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .art-f-cover {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 860px) {
+  .art-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .art-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .art-hero .page-hero-in {
+    padding-left: var(--sp-5);
+    padding-right: var(--sp-5);
+  }
+}
+
+/* ==========================================================================
+   BUSCA (seção escura, entre destaque e listagem)
+   ========================================================================== */
+.art-search-section {
+  background: var(--petrol);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-block: 0;
+}
+
+.art-search-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .55;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+}
+
+.art-search-in {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--sp-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.art-search-label {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .72);
+}
+
+.art-search-in .search-bar {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ==========================================================================
+   CABEÇALHO DA LISTAGEM
+   ========================================================================== */
+.art-count {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: var(--steel);
+  margin-top: var(--sp-2);
+}
+
+/* ==========================================================================
+   CTA EDITORIAL COMPACTO
+   ========================================================================== */
+.art-cta-editorial {
+  padding-block: var(--sp-9);
+}
+
+.art-cta-in {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.art-cta-in h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.art-cta-in p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.art-cta-actions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .art-cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}

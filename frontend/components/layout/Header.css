@@ -97,29 +97,47 @@
 .site-header .nav-dropdown-trigger {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  font-family: inherit;
+  gap: var(--sp-1);
   font-size: var(--type-body);
   line-height: inherit;
   color: rgba(255, 255, 255, .75);
   font-weight: 500;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.site-header .nav-dropdown-trigger a {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
   transition: color .2s;
 }
 
-.site-header .nav-dropdown-trigger:hover {
+.site-header .nav-dropdown-trigger a:hover {
   color: #fff;
 }
 
-.site-header .nav-dropdown-trigger.active {
+.site-header .nav-dropdown-trigger a.active,
+.site-header .nav-dropdown-trigger.active a {
   color: var(--clay);
   font-weight: 600;
+}
+
+.site-header .nav-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: var(--sp-1);
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  transition: color .2s;
+}
+
+.site-header .nav-dropdown-toggle:hover {
+  color: #fff;
 }
 
 .site-header .nav-dropdown-chevron {
@@ -127,7 +145,7 @@
   transition: transform .2s ease;
 }
 
-.site-header .nav-dropdown-trigger[aria-expanded="true"] .nav-dropdown-chevron {
+.site-header .nav-dropdown-toggle[aria-expanded="true"] .nav-dropdown-chevron {
   transform: rotate(180deg);
 }
 
@@ -177,6 +195,15 @@
 .site-header .nav-dropdown-panel a.active {
   color: var(--petrol);
   font-weight: 600;
+}
+
+/* "Visão geral dos serviços" (ajuste-07 §5.3) — primeiro item do dropdown,
+   separado dos 4 links individuais por uma borda. */
+.site-header .nav-dropdown-panel a.nav-dropdown-overview {
+  font-weight: 700;
+  margin-bottom: var(--sp-1);
+  padding-bottom: var(--title-gap);
+  border-bottom: 1px solid var(--line);
 }
 
 /* ── CTA ── Usa o padrão global .btn (globals.css); classe local só
@@ -281,20 +308,35 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
   font-weight: 500;
   color: var(--ink);
   padding: var(--eyebrow-gap) 0;
   font-size: var(--type-lead);
   border-bottom: 1px solid var(--line);
+}
+
+.site-header .nav-mobile-services-toggle a {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  flex: 1;
   transition: color 0.2s ease;
 }
 
-.site-header .nav-mobile-services-toggle.active {
+.site-header .nav-mobile-services-toggle a.active,
+.site-header .nav-mobile-services-toggle.active a {
   color: var(--petrol);
+}
+
+.site-header .nav-mobile-services-toggle button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: var(--sp-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .site-header .nav-mobile-services-list {
@@ -307,4 +349,8 @@
   padding: var(--sp-3) 0 var(--sp-3) var(--sp-4);
   font-size: var(--type-body);
   border-bottom: 1px solid var(--line);
+}
+
+.site-header .nav-mobile-services-list a.nav-dropdown-overview {
+  font-weight: 700;
 }

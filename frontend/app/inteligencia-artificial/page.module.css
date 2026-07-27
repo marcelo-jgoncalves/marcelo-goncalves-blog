@@ -97,7 +97,8 @@
 .oquefazemos,
 .casos,
 .beneficios,
-.abordagem {
+.abordagem,
+.governanca {
   margin-block: 0;
 }
 
@@ -112,33 +113,35 @@
    por breakpoint), criando gaps grandes entre seções. Sobrescreve via
    seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
    especificidade que .class em qualquer largura. */
-:global(#oquefazemos),
-:global(#casos),
+:global(#solucoes),
+:global(#aplicacoes),
 :global(#beneficios),
 :global(#abordagem),
-:global(#faq) {
+:global(#governanca),
+:global(#perguntas) {
   padding-top: var(--sp-9);
   padding-bottom: var(--sp-9);
 }
 
-/* CTA final (CtaAssessoria, id="contato-final"): .cta-adv-in usa
+/* Ajuste 11 (§42): scroll-margin-top nas âncoras da página, mesmo padrão
+   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+:global(#solucoes),
+:global(#aplicacoes),
+:global(#beneficios),
+:global(#abordagem),
+:global(#governanca),
+:global(#perguntas),
+:global(#contato) {
+  scroll-margin-top: 100px;
+}
+
+/* CTA final (CtaAssessoria, id="contato"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
-:global(#contato-final.cta-adv .cta-adv-in) {
+:global(#contato.cta-adv .cta-adv-in) {
   align-items: flex-start;
   padding-top: var(--sp-9);
-}
-
-/* .page-hero-left é flex-column (sem colapso de margens) — o gap até o parágrafo
-   anterior já vem do margin-bottom:30px de .page-hero-sub (PageHero.css). Esta
-   página tem só 2 parágrafos de corpo (não 3, como Integração & Automação). */
-.heroParagraph2 {
-  color: rgba(250, 248, 243, .68);
-  max-width: 900px;
-  font-size: var(--type-body-sm);
-  line-height: 1.68;
-  margin: 0;
 }
 
 /* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
@@ -153,7 +156,19 @@
   margin-top: var(--sp-7);
 }
 
+.heroMicrocopy {
+  display: none;
+  margin-top: var(--sp-3);
+  color: var(--slate);
+  font-size: var(--type-caption);
+  text-align: center;
+}
+
 @media (max-width: 860px) {
+  .heroMicrocopy {
+    display: block;
+  }
+
   .heroCtaRow {
     display: flex;
   }
@@ -167,28 +182,16 @@
 @media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
-/* Agentes de IA e Automação Inteligente são os 2 cards principais (size="lg",
-   .cardGridItemLg) — ficam em destaque na primeira linha; os outros 3
-   (.cardGridItem, size padrão) vêm abaixo, menores, mas juntos somam a mesma
-   largura dos 2 grandes (grid de 6 colunas: item grande = span 3, pequeno = span 2;
-   mesmo padrão de frontend/app/integracao-automacao/page.module.css). */
+/* Cinco cards uniformes (sem variação de tamanho) — desktop em 3 colunas
+   (3+2, sem comprimir os 2 últimos), tablet em 2, mobile em 1. */
 .cardGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--gap-grid);
 }
 
-@media (min-width: 680px) {
-  .cardGrid { grid-template-columns: repeat(2, 1fr); }
-  .cardGridItem { grid-column: span 1; }
-  .cardGridItemLg { grid-column: span 2; }
-}
-
-@media (min-width: 1040px) {
-  .cardGrid { grid-template-columns: repeat(6, 1fr); }
-  .cardGridItem { grid-column: span 2; }
-  .cardGridItemLg { grid-column: span 3; }
-}
+@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
 
 /* ===== CASOS DE APLICAÇÃO — nova, seção "grade mosaico" sem cards (§8) =====
    Container: border-top+border-left; cada célula: border-right+border-bottom —
@@ -299,6 +302,14 @@
   .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: .8fr 1.2fr; gap: var(--sp-10); }
 }
 
+.beneficiosDescription {
+  color: rgba(250, 248, 243, .7);
+  max-width: 480px;
+  margin: var(--sp-5) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+}
+
 .beneficiosList {
   display: grid;
   grid-template-columns: 1fr;
@@ -341,7 +352,7 @@
   min-width: 0;
 }
 
-/* ===== COMO TRABALHAMOS — só texto, sem etapas, sem diferenciais (§10) ===== */
+/* ===== NOSSA ABORDAGEM — 5 etapas numeradas + manifesto ===== */
 .abordagem {
   padding: var(--sp-10) 0;
   background: #fff;
@@ -352,55 +363,134 @@
 @media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
-/* Grid texto + card, mesmo padrão de "Como trabalhamos"
-   (frontend/app/home.css .ih-method-grid/.ih-method-card/.ih-mc-*) — texto à
-   esquerda, card à direita (alinhado à direita da seção via coluna do grid). */
-.abordagemGrid {
+.etapasGrid {
   display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  align-items: start;
-  gap: var(--sp-10);
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
 }
 
-.abordagemHead {
-  max-width: 680px;
+@media (min-width: 680px) { .etapasGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .etapasGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.etapa {
+  text-align: center;
+  padding: 0 var(--sp-2);
 }
 
-.resultCard {
-  background: var(--ivory);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: var(--sp-8) var(--sp-8);
-  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
-}
-
-.resultCardLabel {
+.etapaNumero {
   display: block;
   font-family: var(--mono);
   font-size: var(--type-caption);
   font-weight: 700;
   letter-spacing: .18em;
-  text-transform: uppercase;
   color: var(--clay);
+  margin-bottom: var(--sp-3);
 }
 
-.resultCardTitle {
-  font-weight: 800;
-  font-size: var(--type-h4);
-  color: var(--petrol);
-  margin: var(--sp-4) 0 var(--sp-4);
+.etapaTitle {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-2);
 }
 
-.resultCardText {
+.etapaText {
   font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--slate);
   margin: 0;
 }
 
-@media (max-width: 860px) {
-  .abordagemGrid { grid-template-columns: 1fr; gap: var(--sp-7); }
-  .resultCard { padding: var(--sp-7) var(--sp-6); }
-  .resultCardTitle { font-size: var(--type-lead); }
+.manifesto {
+  max-width: 720px;
+  margin: var(--sp-10) auto 0;
+  text-align: center;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: var(--sp-8);
+  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+}
+
+.manifestoFrase {
+  font-weight: 800;
+  font-size: var(--type-h4);
+  color: var(--petrol);
+  margin: 0 0 var(--sp-4);
+}
+
+.manifestoTexto {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+/* ===== GOVERNANÇA, SEGURANÇA E CONTROLE ===== */
+.governanca {
+  padding: var(--sp-10) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 680px) { .governanca { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .governanca { padding: var(--sp-12) 0; } }
+
+.governancaOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
+    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
+}
+
+.governanca .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.sectionDescDark {
+  color: rgba(250, 248, 243, .78);
+  max-width: 640px;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.governancaClosing {
+  max-width: 720px;
+  margin: var(--sp-8) auto 0;
+  text-align: center;
+  color: rgba(250, 248, 243, .6);
+  font-size: var(--type-caption);
+  line-height: 1.6;
+}
+
+.privacidadeBlock {
+  max-width: 720px;
+  margin: var(--sp-8) auto 0;
+  padding-top: var(--sp-8);
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  text-align: center;
+}
+
+.privacidadeTitle {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: #fff;
+  margin: 0 0 var(--sp-3);
+}
+
+.privacidadeText {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .78);
+  margin: 0;
 }
 

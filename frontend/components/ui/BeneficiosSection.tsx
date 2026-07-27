@@ -18,6 +18,7 @@ export interface BeneficiosSectionClasses {
   wrap: string;
   eyebrow: string;
   heading: string;
+  description?: string;
   list: string;
   item: string;
   checkIcon: string;
@@ -29,6 +30,7 @@ interface BeneficiosSectionProps {
   dataAudit?: string;
   eyebrow?: string;
   title: ReactNode;
+  description?: string;
   items: string[];
   classes: BeneficiosSectionClasses;
 }
@@ -38,6 +40,7 @@ export default function BeneficiosSection({
   dataAudit,
   eyebrow = 'Benefícios',
   title,
+  description,
   items,
   classes,
 }: BeneficiosSectionProps) {
@@ -48,6 +51,7 @@ export default function BeneficiosSection({
         <div>
           <span className={classes.eyebrow}>{eyebrow}</span>
           <h2 className={classes.heading}>{title}</h2>
+          {description && <p className={classes.description}>{description}</p>}
         </div>
         <div className={classes.list}>
           {items.map((item) => (

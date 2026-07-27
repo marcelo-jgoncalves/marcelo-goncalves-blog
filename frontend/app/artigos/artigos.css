@@ -1,29 +1,34 @@
-/* frontend/app/artigos/artigos.css
-   Redesign 2026 (petrol/clay/ivory) — réplica de specs/ESPECIFICACAO-ARTIGOS.md
-   e e2e/visual-audit/fixtures/artigos.html, com dados reais do projeto. */
+/* frontend/app/blog/blog.css — Redesign 2026 (Petrol/Clay/Ivory) */
 
-/* Seções desta página têm padding próprio — remove o ritmo global de 64px */
-.art-hero,
-.art-masthead,
-.art-section {
+/* Fullwidth sections — sobrescreve `section { margin-block: var(--sp-10) }` global */
+.home-hero,
+.home-section,
+.home-ia-section {
   margin-block: 0;
 }
 
-/* ==========================================================================
-   HERO (escuro)
-   ========================================================================== */
-.art-hero {
-  /* padding-bottom 76px é valor customizado (não cai em nenhum --sp-*)
-     — mantido como está para não alterar a proporção visual do hero;
-     documentado aqui para não parecer um leak não auditado. */
-  --ph-pad: 88px 40px 76px;
+/* ── Hero ──
+   Seletor .page-hero.home-hero (dupla classe, não só .home-hero): a versão
+   anterior com uma classe só perdia a cascata pra .page-hero (PageHero.css)
+   por ordem de origem, mesma especificidade — nenhuma dessas custom
+   properties (--ph-cols/--ph-gap/--ph-sub-max) estava de fato sendo
+   aplicada, a hero sempre caía no default 1fr 1fr em vez de 1.1fr/.9fr.
+   Mesmo padrão de especificidade já usado em home.css/contato.css.
+   padding-bottom 18px: o último elemento visível da coluna esquerda é o
+   subtitle, que já tem margin-bottom:30px (PageHero.css) — 18+30=48px
+   (var(--sp-9)) de fato até o limite da seção. Sem isso, herdava o
+   padding-bottom:0 padrão de PageHero.css e o texto ficava colado na borda
+   (bug real, não só de compilação em dev). */
+.page-hero.home-hero {
+  --ph-cols:    1.1fr 0.9fr;
+  --ph-gap:     var(--sp-10);
+  --ph-sub-max: 510px;
+  --ph-pad:     88px 40px var(--gap-loose);
 }
 
-.art-hero .page-hero-in {
-  padding-bottom: var(--sp-11);
-}
+.home-hero h1 { letter-spacing: -.045em; }
 
-.page-hero.art-hero::before {
+.page-hero.home-hero::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -31,471 +36,856 @@
   pointer-events: none;
   opacity: .55;
   background:
-    radial-gradient(42% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    radial-gradient(40% 55% at 0% 100%, rgba(91, 139, 150, .18), transparent 60%),
     linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
     linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
-  -webkit-mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
-  mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
 }
 
-/* Barra de busca — componente compartilhado (frontend/components/ui/SearchBar) */
-
-/* ==========================================================================
-   SHELL — seções com padding próprio
-   Padding reduzido à metade (var(--sp-11)→var(--sp-9)) e simétrico,
-   mesmo padrão de #servicos/#abordagem/#insights em home.css.
-   ========================================================================== */
-.art-section {
-  padding-block: var(--sp-9);
+/* Botões — usam o padrão global .btn/.btn-petrol (globals.css); a
+   classe local só cuida de contexto (arrow font). */
+.home-btn-clay-hero .arrow {
+  font-family: var(--mono);
 }
 
-/* .op-pagination (Pagination.tsx, componente compartilhado) já tem
-   padding: var(--sp-7) 0 (32px) embutido — sem este desconto, o total
-   card→paginação e paginação→próxima seção somava 48+32=80px em vez dos
-   48px padrão. sp-4(16px) aqui + 32px do componente = 48px. */
-.art-section--paginated {
-  padding-bottom: var(--sp-4);
+/* ── Hero — card em destaque ── */
+.home-hero .page-hero-right {
+  display: flex;
+  align-items: stretch;
 }
 
-/* ==========================================================================
-   MASTHEAD (revista)
-   ========================================================================== */
-.art-masthead {
-  padding-top: var(--sp-10);
-}
-
-.art-feature {
-  display: grid;
-  grid-template-columns: 1.18fr 1fr;
-  gap: 0;
-  background: var(--surface);
-  border: 1px solid var(--line);
+/* ── Hero — project panel (mirrors art-proj-card exactly) ── */
+.home-proj-panel {
+  position: relative;
+  flex: 1;
+  color: var(--ivory);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 20px;
+  padding: var(--sp-7) var(--sp-7);
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(12, 32, 39, .05);
-  transition: transform .22s, box-shadow .22s;
+  isolation: isolate;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .6);
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
 }
 
 @media (hover: hover) {
-  .art-feature:hover {
+  .home-proj-panel:hover {
     transform: translateY(-3px);
-    box-shadow: 0 22px 46px -22px rgba(12, 32, 39, .22);
+    box-shadow: 0 40px 80px -32px rgba(0, 0, 0, .7);
   }
 }
 
-.art-f-cover {
-  position: relative;
-  min-height: 380px;
-  overflow: hidden;
-  background: linear-gradient(145deg, #0F4C5C 0%, #08323D 60%, #0C2027 100%);
-  display: flex;
-  align-items: flex-end;
-  padding: var(--sp-6);
-}
-
-.art-f-cover::before {
+.home-proj-panel::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: .55;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .5;
   background:
-    radial-gradient(70% 80% at 78% 16%, rgba(201, 96, 60, .4), transparent 55%),
-    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/100% 52px,
-    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/52px 100%;
-  -webkit-mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
-  mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 48px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 78% 14%, #000 30%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 78% 14%, #000 30%, transparent 82%);
 }
 
-.art-f-cover-tag {
+.home-proj-panel > * {
   position: relative;
   z-index: 1;
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 500;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--clay);
-  padding: var(--sp-2) var(--eyebrow-gap);
-  border-radius: 999px;
 }
 
-.art-f-badge {
-  position: absolute;
-  top: 20px;
-  left: 24px;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  background: var(--clay);
-  color: #fff;
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  font-weight: 500;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: var(--sp-2) var(--eyebrow-gap);
-  border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(201, 96, 60, .4);
-}
-
-.art-f-body {
-  padding: var(--sp-8) var(--sp-9);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.art-f-cat {
+.home-pp-label {
   font-family: var(--mono);
   font-size: var(--type-caption);
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--clay);
-  margin-bottom: var(--sp-4);
-}
-
-.art-f-body h2 {
-  font-weight: 800;
-  font-size: var(--type-h3);
-  line-height: 1.14;
-  letter-spacing: -.03em;
-  color: var(--ink);
-  text-wrap: balance;
-  margin-bottom: var(--sp-4);
-}
-
-.art-f-body p {
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
-  color: var(--slate);
-  margin-bottom: var(--sp-7);
-  max-width: 440px;
-}
-
-.art-f-foot {
+  color: rgba(255, 255, 255, .6);
   display: flex;
   align-items: center;
-  gap: var(--sp-4);
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
 }
 
-.art-f-avatar {
-  width: 42px;
-  height: 42px;
+.home-pp-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
+  background: var(--moss);
+  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
+  animation: home-pp-pulse 2.4s ease-in-out infinite;
   flex: none;
-  background: linear-gradient(150deg, var(--petrol-soft), var(--petrol));
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: var(--type-caption);
-  box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--line);
 }
 
-.art-f-who {
+@keyframes home-pp-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(63, 107, 71, .3); }
+  50%       { box-shadow: 0 0 0 5px rgba(63, 107, 71, .12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-pp-dot { animation: none; }
+}
+
+.home-proj-panel h2 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -.03em;
+  color: #fff;
+  line-height: 1.18;
+  margin-bottom: var(--sp-5);
+  text-align: center;
+}
+
+.home-pc-sub {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .64);
+  margin-bottom: var(--gap-grid);
+}
+
+.home-pp-stats {
+  display: flex;
+  margin-bottom: var(--sp-6);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.home-pp-stat {
+  flex: 1;
+  padding: var(--sp-4) 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-1);
+  border-right: 1px solid rgba(255, 255, 255, .08);
 }
 
-.art-f-name {
-  font-weight: 700;
+.home-pp-stat:last-child {
+  border-right: none;
+}
+
+.home-pp-v {
+  font-weight: 800;
+  font-size: var(--type-body);
+  letter-spacing: -.03em;
+  color: #fff;
+  line-height: 1;
+}
+
+.home-pp-l {
+  font-family: var(--mono);
   font-size: var(--type-caption);
-  color: var(--ink);
-  letter-spacing: -.01em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .48);
 }
 
-.art-f-meta {
+/* .home-pp-btn é um <span> (todo o card é o link) — usa o padrão global
+   .btn, só ajusta largura/altura no contexto do card. Como o botão fica
+   no rodapé do card (margin-top:auto), o cursor raramente está
+   literalmente sobre ele ao passar o mouse pelo card — por isso o hover
+   também é disparado explicitamente pelo hover do card pai, com a
+   mesma cor do .btn:hover global (nunca uma cor própria). */
+.home-pp-btn {
+  margin-top: auto;
+  width: 100%;
+  height: 54px;
+  font-size: var(--type-label);
+  box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
+}
+
+.home-proj-panel:hover .home-pp-btn {
+  background: var(--clay-hover);
+  color: #ffffff;
+}
+
+.home-pp-arrow {
+  font-family: var(--mono);
+}
+
+
+/* ── Layout de seção compartilhado ──
+   Espaçamento reduzido de --section-pad (96px) para var(--sp-9) (48px)
+   de cada lado, igualando ao padrão adotado na Home, nas 4 landing pages e
+   em Contato. #recentes (home-section--surface) mantém a linha divisória
+   real (border-top/bottom) que já tinha. */
+.home-section {
+  padding: var(--sp-9) 0;
+}
+
+.home-section--surface {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── Mais lidos ── */
+.home-ml-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-6);
+  align-items: stretch;
+}
+
+.home-ml-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.home-ml-rank-label {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: flex;
+  align-items: center;
+  gap: var(--title-gap);
+  margin-bottom: var(--sp-4);
+}
+
+.home-ml-rank-label::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.home-ml-card {
+  background: var(--petrol);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  transition: transform .22s, box-shadow .22s;
+  box-shadow: 0 4px 12px rgba(8, 50, 61, .12);
+}
+
+.home-ml-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(8, 50, 61, .22);
+}
+
+.home-ml-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .5;
+  background:
+    radial-gradient(55% 60% at 88% 12%, rgba(201, 96, 60, .32), transparent 58%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 52px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/52px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 20%, #000 28%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 70% 20%, #000 28%, transparent 72%);
+}
+
+.home-ml-card-inner {
+  position: relative;
+  z-index: 1;
+  padding: var(--sp-7) var(--sp-7) var(--sp-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--eyebrow-gap);
+  flex: 1;
+}
+
+.home-ml-num-bg {
+  position: absolute;
+  right: 20px;
+  top: -10px;
+  font-weight: 900;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral decorativo de fundo, fora da escala tipográfica de conteúdo */
+  font-size: 9rem;
+  line-height: 1;
+  letter-spacing: -.08em;
+  color: #fff;
+  opacity: .06;
+  z-index: 0;
+  user-select: none;
+  pointer-events: none;
+  font-family: var(--font);
+}
+
+.home-ml-card-cat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+
+.home-ml-card-title {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  line-height: 1.22;
+  letter-spacing: -.025em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.home-ml-card-excerpt {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .62);
+}
+
+.home-ml-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  margin-top: auto;
+}
+
+.home-ml-card-meta {
   font-family: var(--mono);
   font-size: var(--type-caption);
   letter-spacing: .04em;
-  color: var(--steel);
+  color: rgba(255, 255, 255, .42);
+  display: flex;
+  gap: var(--sp-3);
 }
 
-.art-f-foot .ler-artigo {
-  margin-left: auto;
+.home-ml-card-read {
+  font-weight: 700;
   font-size: var(--type-label);
+  color: var(--clay);
+  font-family: var(--mono);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: gap .2s;
 }
 
-@media (hover: hover) {
-  .art-feature:hover .art-f-foot .ler-artigo {
-    gap: var(--sp-3);
-    --ler-artigo-color: var(--clay);
-  }
+.home-ml-card:hover .home-ml-card-read {
+  gap: var(--title-gap);
 }
 
-/* destaque secundário 2-up */
-.art-twoup {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gap-grid);
-  margin-top: var(--gap-grid);
-}
-
-.art-mini {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  color: var(--ink);
+.home-ml-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
-  transition: transform .2s, box-shadow .2s;
 }
 
-@media (hover: hover) {
-  .art-mini:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 34px -18px rgba(12, 32, 39, .2);
-  }
+.home-ml-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-loose);
+  padding: var(--gap-grid) var(--sp-6);
+  border-bottom: 1px solid var(--line);
+  transition: background .18s;
+  color: inherit;
+  text-decoration: none;
 }
 
-.art-m-cover {
-  position: relative;
+.home-ml-item:last-child {
+  border-bottom: none;
+}
+
+.home-ml-item:hover {
+  background: var(--sand);
+}
+
+.home-ml-item:hover .home-ml-item-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+.home-ml-item-num {
+  flex: none;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: var(--type-caption);
+  letter-spacing: .08em;
+  color: var(--clay);
+  width: 24px;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.home-ml-item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.home-ml-item-cat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.home-ml-item-title {
+  font-weight: 700;
+  font-size: var(--type-label);
+  letter-spacing: -.015em;
+  color: var(--petrol);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.art-m-cover.t-soft { background: linear-gradient(150deg, #5B8B96, #0F4C5C); }
-.art-m-cover.t-clay { background: linear-gradient(150deg, #C9603C, #A94C2D); }
-
-.art-m-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/100% 36px,
-    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/36px 100%;
-  opacity: .5;
-}
-
-.art-m-body {
-  padding: var(--gap-grid) var(--sp-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-}
-
-.art-m-cat {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--clay);
-}
-
-.art-m-title {
-  font-weight: 800;
-  font-size: var(--type-lead);
-  line-height: 1.24;
-  letter-spacing: -.02em;
-  color: var(--petrol);
-}
-
-.art-m-foot {
-  margin-top: auto;
+.home-ml-item-meta {
   font-family: var(--mono);
   font-size: var(--type-caption);
   letter-spacing: .04em;
   color: var(--steel);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--sp-3);
-  border-top: 1px solid var(--line);
+  gap: var(--title-gap);
+  margin-top: 2px;
 }
 
-.art-m-foot .ler-artigo {
-  font-size: var(--type-label);
-  --ler-artigo-color: var(--petrol);
+.home-ml-item-arrow {
+  flex: none;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: var(--type-caption);
+  color: var(--petrol);
+  opacity: 0;
+  transition: opacity .18s, transform .18s;
+  align-self: center;
 }
 
-/* ==========================================================================
-   GRADE PRINCIPAL (.pc-* herdado de PostCard.css)
-   ========================================================================== */
-.art-grid {
+/* ── Postagens recentes ── */
+.home-posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap-grid);
 }
 
-.art-grid .post-card.is-hidden {
-  display: none;
-}
-
-/* ==========================================================================
-   ESTADO VAZIO + CARREGAR MAIS
-   ========================================================================== */
-.art-empty {
-  display: none;
-  text-align: center;
-  padding: var(--sp-10) 0;
-  color: var(--steel);
-}
-
-.art-empty.show {
-  display: block;
-}
-
-.art-e-t {
-  font-weight: 700;
-  font-size: var(--type-body-sm);
-  color: var(--slate);
-  margin-bottom: var(--sp-2);
-}
-
-.art-e-s {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .04em;
-}
-
-/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
-   (mesmo desconto de .art-section--paginated acima). */
-.art-load-wrap {
+.home-posts-cta {
   display: flex;
   justify-content: center;
-  margin-top: var(--sp-4);
+  margin-top: var(--sp-9);
 }
 
-/* ==========================================================================
-   RESPONSIVO
-   ========================================================================== */
-@media (max-width: 900px) {
-  .art-hero .page-hero-in {
-    grid-template-columns: 1fr;
-    gap: var(--sp-8);
-    padding-top: var(--sp-9);
-    padding-bottom: var(--sp-10);
-  }
-
-  .art-feature {
-    grid-template-columns: 1fr;
-  }
-
-  .art-f-cover {
-    min-height: 220px;
-  }
-
-  .art-twoup {
-    grid-template-columns: 1fr;
-  }
+/* Usa o padrão global .btn.btn-petrol (globals.css); mantém só o arrow. */
+.home-btn-outline-petrol .arrow {
+  font-family: var(--mono);
 }
 
-@media (max-width: 860px) {
-  .art-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 680px) {
-  .art-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .art-hero .page-hero-in {
-    padding-left: var(--sp-5);
-    padding-right: var(--sp-5);
-  }
-}
-
-@media (max-width: 480px) {
-  .art-mini {
-    grid-template-columns: 1fr;
-  }
-
-  .art-m-cover {
-    min-height: 140px;
-  }
-}
-
-/* ============================================================
-   MAKING OF — O PROJETO (band intercalado)
-   ============================================================ */
-.svc-makingof {
+/* ── Posts sobre IA (dark) ── */
+.home-ia-section {
   background: var(--petrol);
   color: var(--ivory);
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  margin-block: 0;
+  padding: var(--sp-9) 0;
 }
 
-.svc-makingof::before {
+/* CTA final (CtaAssessoria, id default "assessoria"): .cta-adv-in usa
+   align-items:center, centralizando a coluna de texto contra o card mais
+   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
+   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+#assessoria.cta-adv .cta-adv-in {
+  align-items: flex-start;
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
+}
+
+.home-ia-section::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: .55;
   pointer-events: none;
+  opacity: .55;
   background:
-    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
-    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
-    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
-  -webkit-mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
-  mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
+    radial-gradient(50% 65% at 100% 0%, rgba(201, 96, 60, .3), transparent 55%),
+    radial-gradient(42% 55% at 0% 100%, rgba(91, 139, 150, .22), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 76px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/76px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 55% 30%, #000 28%, transparent 78%);
+  mask-image: radial-gradient(ellipse at 55% 30%, #000 28%, transparent 78%);
 }
 
-.svc-makingof-in {
+.home-ia-section .wrap {
   position: relative;
   z-index: 1;
-  max-width: var(--wrap-max);
-  margin: 0 auto;
-  padding: var(--sp-9) var(--wrap-pad-h);
-  display: flex;
-  justify-content: center;
 }
 
-.svc-mo-text {
+.home-ia-sec-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  margin-bottom: var(--sechead-gap);
+  flex-wrap: wrap;
+}
+
+.home-ia-sec-head-row .left {
   display: flex;
   flex-direction: column;
+  gap: 0;
+}
+
+.home-ia-ey {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .65);
+  display: flex;
   align-items: center;
-  max-width: 1080px;
-  text-align: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--eyebrow-gap);
 }
 
-.svc-mo-text .sec-ey--dual {
-  color: rgba(255, 255, 255, .72);
-}
-
-.svc-mo-text .sec-ey--dual::before,
-.svc-mo-text .sec-ey--dual::after {
+.home-ia-ey::before {
+  content: "";
+  width: 30px;
+  height: 1px;
   background: var(--clay);
 }
 
-.svc-mo-text h2 {
-  font-weight: 800;
-  font-size: clamp(1.85rem, 5.5vw + 1rem, var(--type-display-sm));
-  letter-spacing: -.04em;
-  color: #fff;
-  line-height: 1.04;
-  text-wrap: balance;
-  margin-bottom: var(--sp-4);
-}
-
-.svc-mo-text h2 em {
-  font-style: italic;
-  color: var(--petrol-soft);
-}
-
-.svc-mo-sub {
+.home-ia-title {
   font-weight: 800;
   font-size: var(--type-h3);
-  letter-spacing: -.03em;
-  color: rgba(255, 255, 255, .8);
-  line-height: 1.2;
-  margin-bottom: var(--sp-7);
+  letter-spacing: -.035em;
+  color: #fff;
+  line-height: 1.1;
 }
 
-.svc-mo-cta {
-  width: fit-content;
+.home-ia-desc {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .62);
+  max-width: 520px;
+  margin-top: var(--title-gap);
 }
+
+/* Variante centralizada — eyebrow com traço dos dois lados, título e
+   subtítulo centralizados (mesmo padrão de .sec-head-row--center em
+   globals.css, replicado aqui por essa seção usar classes próprias
+   de tema escuro). */
+.home-ia-sec-head-row--center {
+  justify-content: center;
+}
+
+.home-ia-sec-head-row--center .left {
+  align-items: center;
+  text-align: center;
+}
+
+.home-ia-ey--dual {
+  justify-content: center;
+}
+
+.home-ia-ey--dual::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+/* Wrapper genérico pra centralizar um botão único no fim de uma seção
+   (usado por IA e O Projeto). */
+.home-cta-end {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-9);
+}
+
+.home-ia-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--sp-5);
+  align-items: stretch;
+}
+
+.home-ia-big {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
+}
+
+.home-ia-big:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .32);
+}
+
+.home-ia-big-cover {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(201, 96, 60, .4) 0%, rgba(8, 50, 61, .8) 60%, rgba(8, 50, 61, 1) 100%);
+}
+
+.home-ia-big-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px) 0 0/100% 44px,
+    linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px) 0 0/44px 100%;
+  opacity: .55;
+}
+
+.home-ia-big-cover-tag {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  z-index: 1;
+  background: rgba(255, 255, 255, .1);
+  color: rgba(255, 255, 255, .9);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .2);
+}
+
+.home-ia-big-body {
+  padding: var(--sp-6) var(--sp-7) var(--gap-grid);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  flex: 1;
+}
+
+.home-ia-big-cat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+.home-ia-big-title {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -.025em;
+  line-height: 1.22;
+  color: #fff;
+}
+
+.home-ia-big-excerpt {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .62);
+  flex: 1;
+  max-height: 3.3em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.home-ia-big-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--eyebrow-gap);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.home-ia-big-meta {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: rgba(255, 255, 255, .4);
+  display: flex;
+  gap: var(--title-gap);
+  letter-spacing: .04em;
+}
+
+.home-ia-read {
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--clay);
+  font-family: var(--mono);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: gap .2s;
+}
+
+.home-ia-big:hover .home-ia-read,
+.home-ia-small:hover .home-ia-read {
+  gap: var(--title-gap);
+}
+
+.home-ia-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--title-gap);
+  height: 100%;
+}
+
+.home-ia-small {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 14px;
+  padding: var(--sp-4) var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  flex: 1;
+  transition: transform .2s, background .2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+}
+
+.home-ia-small:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, .09);
+}
+
+.home-ia-small-cat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+.home-ia-small-title {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -.02em;
+  line-height: 1.28;
+  color: #fff;
+}
+
+.home-ia-small-excerpt {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .62);
+  flex: 1;
+  max-height: 3.2em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.home-ia-small-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--title-gap);
+  border-top: 1px solid rgba(255, 255, 255, .09);
+  margin-top: auto;
+}
+
+.home-ia-small-meta {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: rgba(255, 255, 255, .38);
+  display: flex;
+  gap: var(--sp-2);
+  letter-spacing: .04em;
+}
+
+/* ── O Projeto ── */
+.home-projeto-section {
+  background: var(--sand);
+  border-top: 1px solid var(--line);
+}
+
+.home-projeto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+  margin-bottom: var(--sp-8);
+}
+
+/* ── Responsivo ── */
+@media (max-width: 1040px) {
+  .home-ml-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-ia-stack {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+@media (max-width: 860px) {
+  /* Card (.home-proj-panel) empilha abaixo do texto no mobile — o
+     --ph-pad padrão (var(--gap-loose)=18px) foi pensado para o desktop,
+     onde a coluna de texto é o elemento mais baixo. Mesmo ajuste de
+     .page-hero.sobre-hero em sobre.css para o mesmo cenário. */
+  .page-hero.home-hero {
+    --ph-pad: 88px 40px var(--sp-9);
+  }
+
+  .home-hero .page-hero-in {
+    grid-template-columns: 1fr;
+    gap: var(--sp-8);
+    padding-top: var(--sp-9);
+  }
+
+  .home-hero-actions {
+    justify-content: center;
+  }
+
+  .home-posts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home-projeto-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 
 @media (max-width: 680px) {
-  .svc-makingof-in {
-    padding-left: var(--sp-5);
-    padding-right: var(--sp-5);
+  .home-posts-grid {
+    grid-template-columns: 1fr;
   }
+
+  .home-projeto-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-projeto-cta-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-5);
+  }
+
+  .home-ia-stack {
+    flex-direction: column;
+  }
+
+  .home-hero .page-hero-in {
+    padding-left: var(--wrap-pad-h-mobile);
+    padding-right: var(--wrap-pad-h-mobile);
+  }
+
 }

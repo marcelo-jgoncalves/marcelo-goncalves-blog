@@ -6,9 +6,13 @@ import './RelatedPostsSection.css';
 
 type RelatedPost = NonNullable<Parameters<typeof PostCard>[0]['post']>;
 
-export default async function RelatedPostsSection() {
-  const { posts } = await getPopularPosts(3).catch(() => ({ posts: [] }));
-  const related: RelatedPost[] = (posts || []).slice(0, 3);
+interface RelatedPostsSectionProps {
+  excludeSlug?: string;
+}
+
+export default async function RelatedPostsSection({ excludeSlug }: RelatedPostsSectionProps) {
+  const { posts }: { posts: RelatedPost[] } = await getPopularPosts(4).catch(() => ({ posts: [] }));
+  const related: RelatedPost[] = (posts || []).filter((p) => p.slug !== excludeSlug).slice(0, 3);
 
   if (related.length === 0) return null;
 
@@ -16,10 +20,9 @@ export default async function RelatedPostsSection() {
     <div className="post-wide post-related" data-audit="post-related">
       <div className="post-r-head" data-audit="post-r-head">
         <div>
-          <div className="post-r-eyebrow">Continue explorando</div>
-          <h2>Mais sobre IA &amp; engenharia</h2>
+          <h2>Continue explorando</h2>
         </div>
-        <Link className="post-r-all post-r-all-desktop" href="/artigos">Todos os artigos →</Link>
+        <Link className="post-r-all post-r-all-desktop" href="/todos-artigos">Todos os artigos →</Link>
       </div>
       <div className="post-r-grid" data-audit="post-r-grid">
         {related.map((post) => (
@@ -31,7 +34,7 @@ export default async function RelatedPostsSection() {
         ))}
       </div>
       <div className="post-r-all-mobile-wrap">
-        <Link className="post-r-all-mobile" href="/artigos">Todos os artigos <span className="arrow">→</span></Link>
+        <Link className="post-r-all-mobile" href="/todos-artigos">Todos os artigos <span className="arrow">→</span></Link>
       </div>
     </div>
   );
