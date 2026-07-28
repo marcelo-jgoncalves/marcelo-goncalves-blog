@@ -7,7 +7,7 @@ import { getRecentPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import PageHero from '@/components/ui/PageHero';
-import StepsTimeline from '@/components/ui/StepsTimeline';
+import StepsList from '@/components/ui/StepsList';
 import { IconCloud } from '@/components/ui/InstitutionalIcons';
 import PillarCard from '@/components/ui/PillarCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -82,7 +82,7 @@ const PILLARS = [
   {
     kicker: 'Plataformas em nuvem',
     title: 'Cloud, DevOps e Confiabilidade',
-    description: 'Estruturamos plataformas em nuvem seguras, automatizadas, observáveis e preparadas para crescer.',
+    description: 'Estruturamos plataformas em nuvem seguras, automatizadas, observáveis e preparadas para crescer com previsibilidade de custos.',
     bullets: [
       <>Arquitetura AWS, modernização e <strong>infraestrutura como código</strong></>,
       <>CI/CD, containers e <strong>automação de ambientes</strong></>,
@@ -227,7 +227,7 @@ export default async function InstitutionalHome() {
               </p>
             </aside>
           </div>
-          <StepsTimeline steps={STEPS} dataAudit="ih-steps" />
+          <StepsList steps={STEPS} dataAudit="ih-steps" />
           <div className="ih-section-footer-center">
             <Link href="/contato" className="btn">Apresentar um desafio</Link>
           </div>

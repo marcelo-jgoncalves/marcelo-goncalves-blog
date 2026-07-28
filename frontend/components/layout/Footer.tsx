@@ -27,6 +27,7 @@ const NAVIGATION_LINKS = [
 export default function Footer() {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+  const [locationCity, locationMode] = AUTHOR_LOCATION.split(' · ');
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
@@ -87,8 +88,8 @@ export default function Footer() {
             <h3>Contato</h3>
             <p className="foot-col-lead">Conte o que sua empresa precisa melhorar.</p>
             <a className="foot-contact-email" href={`mailto:${AUTHOR_EMAIL}`}>{AUTHOR_EMAIL}</a>
-            <p className="foot-contact-location">{AUTHOR_LOCATION}</p>
-            <Link href="/contato" className="foot-contact-cta" prefetch={false}>
+            <p className="foot-contact-location">{locationCity}<br />{locationMode}</p>
+            <Link href="/contato" className="btn foot-contact-cta" prefetch={false}>
               Apresentar um desafio <span className="arrow" aria-hidden="true">→</span>
             </Link>
           </section>

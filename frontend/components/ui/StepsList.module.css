@@ -1,0 +1,84 @@
+/* frontend/components/ui/StepsList.module.css
+   Lista vertical de etapas — substitui StepsTimeline (círculos em linha) na Home
+   (revisão visual 2026-07-27). StepsTimeline continua em uso em /contato. */
+
+.list {
+  max-width: 1080px;
+  margin-inline: auto;
+  border-top: 1px solid var(--line);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 52px minmax(210px, .72fr) minmax(0, 1.45fr);
+  align-items: start;
+  column-gap: var(--sp-7);
+  padding: var(--sp-6) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.index {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(15, 76, 92, .2);
+  border-radius: var(--radius-xl);
+  background: rgba(15, 76, 92, .06);
+  color: var(--petrol);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.indexDone {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+}
+
+.title {
+  margin: var(--sp-1) 0 0;
+  color: var(--ink);
+  font-size: var(--type-lead);
+  font-weight: 750;
+  letter-spacing: -.025em;
+  line-height: 1.22;
+}
+
+.desc {
+  max-width: 68ch;
+  margin: 2px 0 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.62;
+}
+
+@media (max-width: 720px) {
+  .step {
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-areas:
+      "index title"
+      "index description";
+    gap: var(--sp-2) var(--sp-4);
+    padding: var(--sp-6) 0;
+  }
+
+  .index {
+    grid-area: index;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-lg);
+  }
+
+  .title {
+    grid-area: title;
+    margin-top: 1px;
+  }
+
+  .desc {
+    grid-area: description;
+    margin-top: 0;
+  }
+}

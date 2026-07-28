@@ -157,125 +157,89 @@ marcelo-goncalves-blog/
 
 **Nunca** usar `Space Grotesk` ou `DM Sans` — foram removidos do frontend e do admin.
 
-### Paleta base
+### Paleta de cores — Petrol / Clay / Ivory (redesign 2026, fonte de verdade corrente)
+
+Declarada em `frontend/app/globals.css` (`:root`). Substituiu por completo a paleta azul (`--accent`/`--dark-900`/`--surface-*`/`--dark-warm-*`/etc.) de uma versão anterior do design system — nenhum desses tokens antigos existe mais no código (confirmado via grep em todo `frontend/`); não usá-los em nenhuma referência nova.
+
 ```css
---accent: #3B5F8A        /* Classic Blue — CTA, links, ativo, eyebrow lines */
---accent-hover: #2D4F76
---accent-light: #EBF1F8
---accent-dark: #1E3A57   /* Navy profundo — ServiceCallout, service-proof-fullwidth */
---accent-10: rgba(59, 95, 138, 0.10)  /* frames subtis, hovers, box H2 */
---accent-18: rgba(59, 95, 138, 0.18)  /* bordas de tag */
---dark-900: #111827      /* Headings global (fora do tema warm) */
---dark-700: #374151      /* Body text global */
---slate-50:  #F8FAFC     /* bg fallback */
---border-color: #E2E8F0
+--petrol:        #0F4C5C;   /* cor primária de marca */
+--petrol-deep:   #08323D;   /* header/footer escuro */
+--petrol-soft:   #5B8B96;   /* acentos suaves sobre fundo escuro */
+--ink:           #0C2027;   /* texto mais escuro */
+--slate:         #3C5A64;   /* texto secundário */
+--steel:         #7E969E;   /* texto terciário/muted */
+--ivory:         #FAF8F3;   /* fundo claro (base) */
+--surface:       #FFFFFF;   /* cartões, superfícies elevadas */
+--sand:          #F0ECE2;   /* fundo alternativo suave */
+--line:          #E4DDD0;   /* bordas discretas */
+--clay:          #C9603C;   /* cor de destaque/CTA (laranja) */
+--clay-hover:    #A94C2D;   /* hover do clay */
+--clay-soft:     #F3DDD0;   /* tint suave do clay */
+--moss:          #3F6B47;   /* verde de apoio (uso pontual) */
 ```
-
-### Sistema editorial (sessão 30) — cores semânticas
-```css
-/* Superfícies */
---surface-page:     #EEF3FA;  /* fundo das páginas */
---surface-elevated: #E6EEF8;  /* hero/nav — levemente mais escuro */
---surface-card:     #F5F8FC;  /* cards e widgets — degrau acima da página */
---surface-inset:    #E0ECF7;  /* th, tint de callout warning */
-
-/* Bordas */
---border-subtle:  #DDE8F3;   /* separadores internos leves */
---border-default: #C8D9EE;   /* = --dark-warm-border — bordas padrão de cards */
---border-strong:  #A3BDD9;   /* inputs enfatizados */
-
-/* Texto semântico */
---text-ghost:   rgba(30, 55, 76, 0.40);  /* placeholder, disabled */
---text-muted:   rgba(30, 55, 76, 0.65);  /* = --dark-warm-muted */
---text-body:    rgba(30, 55, 76, 0.80);  /* = --dark-warm-body */
---text-default: #1E374C;                 /* navy — TODOS os headings e títulos de card */
---text-heading: #3B5F8A;                 /* = --accent */
-
-/* Links de conteúdo editorial */
---link:       #3182CE;   /* links dentro de artigos */
---link-hover: #1E374C;   /* hover → navy */
-
-/* Neumorphism — elevação soft (base: #EEF3FA) */
---neu-raised:  8px 8px 20px rgba(59,95,138,0.10), -8px -8px 20px rgba(255,255,255,0.80);
---neu-soft:    4px 4px 12px rgba(59,95,138,0.08), -4px -4px 12px rgba(255,255,255,0.70);
---neu-subtle:  2px 2px 8px  rgba(59,95,138,0.06), -2px -2px 8px  rgba(255,255,255,0.60);
---neu-inset:   inset 3px 3px 8px rgba(59,95,138,0.10), inset -3px -3px 8px rgba(255,255,255,0.70);
-
-/* Coral scale — NewsletterCTA */
---coral: #E89B8E;  --coral-light: #F2B0A4;  --coral-pale: #F0CCC4;  --coral-muted: #B47D72;
-
-/* Tema warm / post page */
---bg-warm: #EEF3FA;  --bg-warm-strong: #E6EEF8;  /* paleta azul-fria */
---accent-warm: #da7b26;   /* amber — ícones meta */
---dark-warm: #1E374C;     /* navy — texto primário (= --text-default) */
---dark-warm-border:    #C8D9EE;               /* borda padrão do projeto */
---dark-warm-separator: rgba(30, 55, 76, 0.12);
---dark-warm-muted:     rgba(30, 55, 76, 0.65);
---dark-warm-body:      rgba(30, 55, 76, 0.80);
-
-/* Code theme */
---code-inline-bg: #edf2f7   --code-inline-color: #d53f8c
---code-header-bg: #19212c   --code-header-text:  #a0aec0
-
-/* Callout semantic */
---callout-info-text: #2c5282   --callout-warning-text: #744210
-```
-
-**Regra de reserva da cor accent:** `var(--accent)` = `#3B5F8A` é usado **apenas** para:
-- Box numerador H2 (background sólido via `--accent-10`)
-- TOC item ativo (border-left + texto claro)
-- Links editoriais de conteúdo
-- Eyebrow lines (`::before`)
-- CTAs, botões e tags de categoria
-**Nunca** usar `--accent` em cor de título/heading — usar `--text-default` (#1E374C navy).
 
 **Nunca** usar `--aws-orange`, `--aws-dark`, `--gray-*` — foram removidos do frontend e do admin.  
-Referência histórica arquivada fora do repo (`marcelo-goncalves-blog-arquivo/docs-historico/design-system/design-reference.md`) — desatualizada, contradiz regras atuais (DM Sans, sistema antigo de botões); esta seção do `CLAUDE.md` é a fonte de verdade corrente.
-
-**Footer usa `#1F2937`** (não `--dark-900`/`#111827`) — tom diferenciado do dark CTA.  
 **AdSense:** usar flag `ADSENSE_CONFIGURED` em `AdsenseInArticle.tsx`, nunca `NODE_ENV` — em produção `NODE_ENV === 'production'` torna o bloco invisível.
 
-### Escala tipográfica (9 tokens — base 18px frontend / 16px admin)
-```css
---text-xs:    0.75rem;   /* tags, badges, meta tiny */
---text-sm:    0.875rem;  /* meta, código, eyebrow, copyright */
---text-base:  1rem;      /* corpo (body padrão) */
---text-lg:    1.125rem;  /* lead, subtítulo, nav, input, descrições */
---text-xl:    1.5rem;    /* h4, card titles, widget headers, TOC */
---text-2xl:   2rem;      /* h3, h2 editorial (post, sobre, serviços) */
---text-2-5xl: 2.25rem;   /* h2 seção de postagem (match protótipo) */
---text-3xl:   2.8rem;    /* h1 heroes — tamanho preferido do projeto */
---text-4xl:   3.5rem;    /* h1 artigo (máximo editorial) */
-```
-**Nunca** usar valores de font-size ad-hoc — sempre um dos tokens acima.  
-Exceção permitida: `14px` para código inline (sub-pixel preciso) e `0.9375rem` para código desktop.
+Lista completa de tokens (cor, espaçamento, tipografia, radius, sombra) com papel de cada um: `prints/tokens.md`.
 
-### Escala de espaçamento (10 tokens, 8px grid — ritmo-vertical-contract.md)
+### Escala de espaçamento — base 4px (13 tokens, `--sp-1..13`)
 ```css
---space-1:       8px   /* Micro: badges, gap inline, eyebrow→título widget */
---space-2:       16px  /* Pequeno: meta-row, margin ícone */
---space-3:       24px  /* Médio: padding interno de card, título→descrição widget */
---space-4:       32px  /* Grande: gap widgets sidebar, título→lista/botões widget */
---space-content: 40px  /* Corpo: gap parágrafos, eyebrow→conteúdo, badge→H1 */
---space-5:       48px  /* Macro: gap coluna/sidebar, margin-bottom post-card */
---space-6:       64px  /* Landmark: padding vertical de seções */
---space-breath:  80px  /* Respiro: hero-pb, meta→imagem, separação de blocos */
---space-7:       96px  /* Editorial: entre seções H2, hero-pt */
---space-epic:    112px /* Épico: transição conteúdo→autor no post */
---section-min-height: 384px
+--sp-1:    4px;   /* micro — pontos, separadores finos */
+--sp-2:    8px;   /* xs — gap de ícone/label, padding de badge */
+--sp-3:   12px;   /* sm — gap de nav links, gap de lista no footer */
+--sp-4:   16px;   /* base — margin-top de texto secundário, badge margin */
+--sp-5:   20px;   /* md — gap de grid especialidade, margin de badge */
+--sp-6:   24px;   /* lg — gap de botão, padding nav h */
+--sp-7:   32px;   /* xl — inset compacto de card, hero-actions margin */
+--sp-8:   40px;   /* 2xl — padding horizontal do wrap */
+--sp-9:   48px;   /* 3xl — margin-bottom do sec-head, padding XL de card */
+--sp-10:  64px;   /* 4xl — padding seção apertada / hero postagem */
+--sp-11:  80px;   /* 5xl — padding seção accent/band escura */
+--sp-12:  96px;   /* 6xl — padding canônico de seção */
+--sp-13: 128px;   /* 7xl — padding-top do layout de postagem */
+```
+Única escala de layout — `--space-1..7` (legacy, base 8px) foi removida por completo, sem alias de compatibilidade.
+
+### Escala tipográfica fluida — 11 tokens (`--type-*`, `clamp()` 400px→1280px)
+```css
+--type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px */
+--type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px */
+--type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px */
+--type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px */
+--type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px */
+--type-h4:           clamp(1.424rem, 1.172rem + 1.01vw, 1.978rem);  /* 22.8 → 31.6px */
+--type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px */
+--type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px */
+--type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px */
+--type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px */
+--type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px */
+```
+Única escala de fonte — `--text-xs..--text-4xl` (fixa, legacy) foi removida por completo.
+
+### Espaçamento de prosa (`--prose-sp-*`, só dentro de `.post-content`)
+```css
+--prose-sp-1: 0.5em;  --prose-sp-2: 1em;  --prose-sp-3: 1.5em;  --prose-sp-4: 2em;  --prose-sp-5: 2.5em;
+```
+Deliberadamente em `em`, não `--sp-*`: espaçamento editorial escala com o tamanho da fonte do elemento, não é uma medida fixa de página.
+
+### Border radius
+```css
+--radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 10px;  --radius-xl: 12px;  --radius-full: 9999px;
 ```
 
-**Regra global:** `section { margin-block: var(--space-6) }` aplicada em `globals.css`.  
+### Ritmo vertical entre seções
+**Regra global:** `section { margin-block: var(--sp-10) }` (64px) aplicada em `globals.css`.  
 **Exceções obrigatórias** (`margin-block: 0`): `PageHero`, `SuperDestaque` e qualquer seção fullwidth com padding próprio.  
-**Sidebars:** filhos diretos com `margin-block: 0` — `gap` do flex é o único responsável pelo ritmo entre widgets. Gap entre widgets = `var(--space-4)` (32px).  
-**Ritmo interno de widget sidebar:** eyebrow → título = `--space-1` (8px); título → corpo/lista = `--space-4` (32px); corpo → botões = `--space-4` (32px).  
-**Colunas editoriais** (home-main, op-articles-feed, op-timeline-feed): sections com `margin-block: var(--space-4)` = 32px (sobrescreve global); banners com `margin: var(--space-4)`; primeiro filho sempre `margin-top: 0`.
+**Sidebars:** filhos diretos com `margin-block: 0` — `gap` do flex é o único responsável pelo ritmo entre widgets.  
+**Colunas editoriais** (home-main, op-articles-feed, op-timeline-feed): sections sobrescrevem o global com `margin-block` menor; primeiro filho sempre `margin-top: 0`.
 
 ### Logo
 ```
-Marcelo    → color: var(--dark-900)  — DM Sans 700
-Gonçalves  → color: var(--accent)   — DM Sans 700
+Marcelo    → header: color var(--ivory) · footer: color #fff
+Gonçalves  → header: color var(--clay) · footer: color var(--petrol-soft)
 ```
+Fonte: Inter (`--font-display`) — nunca DM Sans/Space Grotesk.
 
 ### Botões — sistema único (sessão 42, `f1f6a4c`)
 
@@ -292,7 +256,7 @@ Isso substituiu 14 sistemas de botão distintos que existiam antes (`.btn-outlin
 
 - **Componente novo a partir de agora → `.module.css`.** Evita colisão de nome de classe (sem garantia de tooling hoje — convenção de prefixo manual `sobre-*`/`op-*`/`pc-*`/`post-*` depende de disciplina, não de compilador) e dá uma rede de segurança mínima contra typo (`styles.foo` inexistente vira `undefined`, em vez de uma string solta que silenciosamente não estiliza nada).
 - **CSS existente (177 arquivos `.css` globais) → não migrar retroativamente.** Custo real (reescrever seletores `:nth-child`/descendentes que cruzam elementos, ex. `.sobre-tc-item:nth-child(1) .sobre-tc-logo`, com risco de regressão visual em todas as páginas) maior que o ganho (proteção contra um problema que a convenção de prefixo já mitiga na prática). Só editar um arquivo `.css` existente se já estiver tocando naquele componente por outro motivo — não é proibido, só não é prioridade isolada.
-- Variáveis CSS (`--accent`, `--space-*` etc.) continuam globais em `globals.css` independente da escolha — CSS Modules não as afeta, só escopa classes/ids.
+- Variáveis CSS (`--petrol`, `--sp-*` etc.) continuam globais em `globals.css` independente da escolha — CSS Modules não as afeta, só escopa classes/ids.
 - Os 2 arquivos que já eram `.module.css` antes desta regra (`PostFooter.module.css`, `ShareRail.module.css`) foram a motivação original — escolha pontual de quem escreveu, nunca formalizada até agora.
 
 ### Tokens de tipografia e espaçamento — obrigatório, com enforcement automático (sessão 2026-07-18/19)
@@ -316,7 +280,7 @@ O Stylelint acima garante *que* um token seja usado, nunca *qual* token cabe a c
 | Título de card/widget (H3 dentro de card) | `--type-lead` | 20.25px mobile |
 | Metadado/decorativo (eyebrow, tag, badge, timestamp, copyright) | `--type-caption` | sem piso — papel é intencionalmente pequeno |
 
-Mesma lacuna existe no lado de espaçamento — exemplo real e **ainda não corrigido**, deixado aqui de propósito como lembrete: `--title-gap` (10px, comentário `/* título → descrição */` no próprio token) não é usado por nenhuma das 3 implementações reais desse papel no projeto (`sec-desc` usa `--sp-6`=24px, `.ih-center-desc` usa `--eyebrow-gap`=14px, `.ih-results-desc` usa `--sp-4`=16px). Não convergir sem validação visual dedicada — `.sec-desc` é usado em 5 páginas (`page.tsx`, `contato`, `o-projeto`, `blog`, `sobre`).
+Mesma lacuna existe no lado de espaçamento — exemplo real e **ainda não corrigido**, deixado aqui de propósito como lembrete: `--title-gap` (10px, comentário `/* título → descrição */` no próprio token) não é usado por nenhuma das 3 implementações reais desse papel no projeto (`sec-desc` usa `--sp-6`=24px, `.ih-center-desc` usa `--eyebrow-gap`=14px, `.ih-results-desc` usa `--sp-4`=16px). Não convergir sem validação visual dedicada — `.sec-desc` é usado em 5 páginas (`page.tsx`, `contato`, `o-projeto`, `artigos`, `sobre`).
 
 Antes de escrever `font-size`/`margin`/`padding` novo: identificar o papel do elemento na tabela acima, não só "parece do tamanho certo".
 

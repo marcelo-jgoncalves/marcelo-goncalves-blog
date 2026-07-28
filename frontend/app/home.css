@@ -182,11 +182,12 @@
 }
 
 .ih-method-card {
-  background: var(--ivory);
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid rgba(15, 76, 92, .13);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 14px 14px 0;
   padding: var(--sp-8) var(--sp-8);
-  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+  box-shadow: var(--shadow-sm);
 }
 
 .ih-mc-label {
