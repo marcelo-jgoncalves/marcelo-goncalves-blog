@@ -95,6 +95,16 @@ Motivo: auditoria de nomenclatura (sessão 2026-07-29) achou substantivo em port
 
 Ver `memory/feedback_bash_commands.md` para todos os padrões com exemplos.
 
+### Conteúdo de comentário de código — regra "why, not what" (sessão 2026-07-29)
+
+Comentário novo (ou editado) deve explicar **por que** o código existe daquela forma — restrição não-óbvia, workaround de bug específico, trade-off consciente — nunca **o que** ele faz (nome bem escolhido já responde isso).
+
+**Nunca incluir dentro do comentário**: número de sessão, data, nome de quem pediu, referência a ticket/issue, ou qualquer contexto de processo ("sessão 43", "decisão de Marcelo em 2026-07-23", "achado da auditoria X"). Esse tipo de informação pertence à **mensagem de commit** ou a `memory/`/`.project-context.md`, nunca ao código-fonte — o código sobrevive ao processo que o gerou, mas o comentário com "sessão 43" não significa nada pra quem ler daqui a 2 anos sem esse contexto.
+
+**Retroativo, sessão dedicada planejada**: ao contrário da convenção de nomenclatura (§ acima, que não migra retroativamente), os ~730 comentários existentes (quase 100% em português, vários citando sessão/data/decisão dentro do texto) **serão revisados e ajustados a este padrão numa sessão própria** — traduzir para inglês e remover contexto de processo, preservando o "why" real. Até essa sessão acontecer, não trate um comentário antigo fora do padrão como bug a corrigir de passagem — é trabalho da sessão dedicada, não de edições pontuais.
+
+Também não marcar no código que uma mudança foi feita por IA (nem comentário `// gerado por IA`, nem assinatura no corpo do arquivo) — a atribuição de autoria de IA fica só na mensagem de commit (`Co-Authored-By: Claude ...`), nunca no código.
+
 ---
 
 ## 3. Arquitetura
