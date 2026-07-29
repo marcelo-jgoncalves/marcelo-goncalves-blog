@@ -185,14 +185,77 @@
 @media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
-.cardGrid {
+/* Camadas empilhadas (não cards em grade) — cada linha é uma frente de
+   atuação, sempre alinhada no mesmo eixo esquerdo. */
+.layers {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-grid);
+  gap: var(--sp-3);
 }
 
-@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
+.layer {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--sp-2) var(--gap-loose);
+  align-items: start;
+  padding: var(--sp-5) var(--gap-loose);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-left: 3px solid var(--petrol);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  background: var(--surface);
+}
+
+.layer > :global(.icon-tile) {
+  grid-row: 1 / span 3;
+}
+
+.layerTitle {
+  grid-column: 2;
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--type-lead);
+  font-weight: 760;
+}
+
+.layerDesc {
+  grid-column: 2;
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+}
+
+.layerTags {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.layerTags span {
+  font-family: var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .07);
+  border: 1px solid rgba(15, 76, 92, .14);
+  border-radius: 999px;
+  padding: var(--sp-1) var(--title-gap);
+  font-size: var(--type-caption);
+  white-space: nowrap;
+}
+
+@media (min-width: 1040px) {
+  .layer {
+    grid-template-columns: 54px minmax(220px, .62fr) minmax(0, 1.25fr) auto;
+    align-items: center;
+  }
+
+  .layer > :global(.icon-tile) { grid-row: auto; }
+  .layerTitle,
+  .layerDesc,
+  .layerTags { grid-column: auto; }
+  .layerTags { justify-content: flex-end; }
+}
 
 /* ===== BENEFÍCIOS ===== */
 .beneficios {
@@ -302,9 +365,68 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Grade "mosaico" com hairlines — movida para IconLabelSection.module.css
-   (componente compartilhado), decisão de Marcelo (2026-07-24) para unificar
-   o visual entre as 3 páginas que usam essa grade. */
+/* Ciclo de 5 estágios (Governar → Provisionar → Executar → Observar →
+   Recuperar e otimizar), cada um agrupando 2 das 10 capacidades técnicas.
+   Substitui a grade "mosaico" do IconLabelSection (componente
+   compartilhado com /software) — decisão de Marcelo (2026-07-28) de
+   divergir só esta página, sem alterar o componente compartilhado. */
+.cycle {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+}
+
+@media (min-width: 680px) {
+  .cycle { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1040px) {
+  .cycle { grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch; }
+}
+
+.stage {
+  position: relative;
+  padding: var(--sp-5) var(--sp-4);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+
+@media (min-width: 1040px) {
+  .stage:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: -12px;
+    transform: translateY(-50%);
+    color: var(--clay);
+    font-size: var(--type-label);
+  }
+}
+
+.stageIndex {
+  display: block;
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.stage h3 {
+  margin: var(--sp-2) 0 var(--sp-4);
+  color: var(--ink);
+  font-size: var(--type-label);
+}
+
+.stageItems {
+  display: grid;
+  gap: var(--sp-2);
+  color: var(--slate);
+  font-size: var(--type-caption);
+  line-height: 1.4;
+}
 
 /* ===== NOSSA ABORDAGEM ===== */
 .abordagem {
@@ -317,45 +439,154 @@
 @media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
-/* Três subblocos lado a lado (não são etapas sequenciais — sem numeração,
-   sem linha de conexão) — §15 da especificação. */
-.subblocosGrid {
+/* Layout de 2 partes: princípios numerados (esquerda) + card "Como
+   decidimos" com os critérios usados pra calibrar a profundidade da
+   mudança (direita). Substitui a grade de 3 subblocos sem numeração. */
+.approach {
   display: grid;
-  grid-template-columns: 1fr;
   gap: var(--sp-9);
 }
 
-@media (min-width: 1040px) {
-  .subblocosGrid { grid-template-columns: repeat(3, 1fr); }
+.principles {
+  display: grid;
+  gap: var(--sp-7);
+  max-width: 1120px;
 }
 
-.subbloco {
-  text-align: center;
-  padding: 0 var(--sp-2);
+.principle {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--sp-2) var(--sp-6);
 }
 
-.subblocoKicker {
+.principleIndex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(201, 96, 60, .1);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.principleHeading {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.principleKicker {
   display: block;
+  margin-bottom: var(--sp-2);
+  color: var(--clay);
   font-family: var(--mono);
   font-size: var(--type-caption);
-  letter-spacing: .18em;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--clay);
-  margin-bottom: var(--sp-3);
 }
 
-.subblocoTitle {
-  font-weight: 700;
-  font-size: var(--type-lead);
-  color: var(--ink);
-  margin: 0 0 var(--sp-2);
-}
-
-.subblocoText {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
+.principleHeading h3 {
   margin: 0;
+  max-width: 40ch;
+  color: var(--ink);
+  font-size: var(--type-lead);
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+
+.principle > p {
+  grid-column: 2;
+  margin: var(--sp-1) 0 0;
+  max-width: 65ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.72;
+}
+
+@media (min-width: 1040px) {
+  .principle {
+    grid-template-columns: 56px minmax(260px, .78fr) minmax(0, 1.22fr);
+    align-items: start;
+  }
+
+  .principleHeading,
+  .principle > p { grid-column: auto; }
+}
+
+.decision {
+  display: grid;
+  gap: var(--sp-7);
+  padding: var(--sp-7);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  background: var(--surface);
+  box-shadow: 0 10px 28px rgba(12, 32, 39, .045);
+}
+
+@media (min-width: 1040px) {
+  .decision { grid-template-columns: minmax(260px, .76fr) minmax(0, 1.24fr); }
+}
+
+.decisionKicker {
+  display: inline-flex;
+  align-items: center;
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.decisionCopy h3 {
+  margin: var(--sp-2) 0 var(--sp-3);
+  color: var(--ink);
+  font-size: var(--type-lead);
+  line-height: 1.16;
+  letter-spacing: -.025em;
+}
+
+.decisionCopy p {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.decisionList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 560px) {
+  .decisionList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4) var(--sp-6); }
+}
+
+.decisionList li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+  min-width: 0;
+  color: var(--ink);
+  font-size: var(--type-body-sm);
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.decisionList li span {
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
 }
 
 /* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE ===== */

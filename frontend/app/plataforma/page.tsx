@@ -8,10 +8,8 @@ import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
-import FeatureCard from '@/components/ui/FeatureCard';
-import Reveal from '@/components/ui/Reveal';
+import IconTile from '@/components/ui/IconTile';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
-import IconLabelSection from '@/components/ui/IconLabelSection';
 import {
   IconArquiteturaNuvem,
   IconInfraestruturaCodigo,
@@ -19,10 +17,6 @@ import {
   IconContainersKubernetes,
   IconObservabilidade,
   IconSegurancaCloud,
-  IconLayers,
-  IconBolt,
-  IconAltaDisponibilidade,
-  IconFinOps,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
@@ -101,25 +95,29 @@ const BENEFICIOS = [
   'Menor dependência de procedimentos manuais',
 ];
 
-// §15.5-15.7: três subblocos da abordagem (não são etapas sequenciais).
-const ABORDAGEM_SUBBLOCOS = [
+// §15.5-15.7: três princípios da abordagem (não são etapas sequenciais).
+const ABORDAGEM_PRINCIPIOS = [
   { label: 'AWS como especialização principal', title: 'Profundidade onde ela gera decisões melhores.', text: 'A principal especialização em nuvem da consultoria é AWS. Integrações com ambientes existentes, serviços externos e componentes híbridos são consideradas quando o cenário exige.' },
   { label: 'Modernização incremental', title: 'Evoluir sem reescrever tudo.', text: 'Sempre que possível, priorizamos mudanças graduais: automatizar um ambiente, melhorar um pipeline, adicionar observabilidade ou modernizar um componente antes de comprometer toda a plataforma.' },
   { label: 'Operação desde o projeto', title: 'Construir considerando quem vai manter.', text: 'Documentação, automação, observabilidade, segurança e transferência de conhecimento fazem parte da solução. O objetivo é evitar uma arquitetura que funcione apenas enquanto quem a criou está presente.' },
 ];
 
-// §16.6: dez capacidades técnicas — não são links, não viram subpáginas.
-const CAPACIDADES = [
-  { label: 'Arquitetura AWS e Well-Architected Framework', Icon: IconArquiteturaNuvem },
-  { label: 'AWS Organizations, governança e ambientes multi-conta', Icon: IconLayers },
-  { label: 'IAM, identidade e princípio do menor privilégio', Icon: IconSegurancaCloud },
-  { label: 'Terraform, OpenTofu e CloudFormation', Icon: IconInfraestruturaCodigo },
-  { label: 'Docker, ECS, EKS e Kubernetes', Icon: IconContainersKubernetes },
-  { label: 'Lambda, API Gateway e arquiteturas serverless', Icon: IconBolt },
-  { label: 'GitHub Actions, GitLab CI, Jenkins e CodePipeline', Icon: IconCICD },
-  { label: 'CloudWatch, X-Ray, Prometheus, Grafana e Splunk', Icon: IconObservabilidade },
-  { label: 'Alta disponibilidade, backup e recuperação de desastres', Icon: IconAltaDisponibilidade },
-  { label: 'FinOps, dimensionamento e otimização de custos', Icon: IconFinOps },
+// Critérios usados para decidir a profundidade da mudança em cada projeto.
+const DECISAO_CRITERIOS = [
+  'Contexto atual',
+  'Risco operacional',
+  'Capacidade da equipe',
+  'Criticidade da aplicação',
+  'Custo e impacto da mudança',
+];
+
+// §16.6: dez capacidades técnicas, agrupadas em 5 estágios do ciclo de plataforma.
+const ESTAGIOS = [
+  { title: 'Governar', items: ['Arquitetura AWS e Well-Architected Framework', 'AWS Organizations, governança e ambientes multi-conta'] },
+  { title: 'Provisionar', items: ['IAM, identidade e princípio do menor privilégio', 'Terraform, OpenTofu e CloudFormation'] },
+  { title: 'Executar', items: ['Docker, ECS, EKS e Kubernetes', 'Lambda, API Gateway e arquiteturas serverless'] },
+  { title: 'Observar', items: ['GitHub Actions, GitLab CI, Jenkins e CodePipeline', 'CloudWatch, X-Ray, Prometheus, Grafana e Splunk'] },
+  { title: 'Recuperar e otimizar', items: ['Alta disponibilidade, backup e recuperação de desastres', 'FinOps, dimensionamento e otimização de custos'] },
 ];
 
 // §17.5: oito itens do checklist de segurança, confiabilidade e continuidade.
@@ -178,17 +176,16 @@ export default function CloudDevOpsPage() {
             <h2 className={styles.h2}>Da arquitetura à operação contínua da plataforma.</h2>
             <p className={styles.sectionDesc}>Atuamos nos pontos em que a base tecnológica limita entregas, aumenta riscos ou exige esforço operacional excessivo. A solução pode envolver modernização incremental, automação de ambientes, melhoria da observabilidade ou revisão da arquitetura existente.</p>
           </div>
-          <div className={styles.cardGrid}>
+          <div className={styles.layers}>
             {ATUACAO.map(({ Icon, title, text, tags }, i) => (
-              <Reveal as="div" key={title} delay={i * 60}>
-                <FeatureCard
-                  icon={<Icon />}
-                  title={title}
-                  text={text}
-                  tags={tags}
-                  dataAudit={i === 0 ? 'cd-card' : undefined}
-                />
-              </Reveal>
+              <article className={styles.layer} key={title} data-audit={i === 0 ? 'cd-card' : undefined}>
+                <IconTile icon={<Icon />} />
+                <h3 className={styles.layerTitle}>{title}</h3>
+                <p className={styles.layerDesc}>{text}</p>
+                <div className={styles.layerTags}>
+                  {tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -221,35 +218,56 @@ export default function CloudDevOpsPage() {
             <h2 className={styles.h2}>A arquitetura deve responder ao contexto, não ao modismo.</h2>
             <p className={styles.sectionDesc}>Antes de propor serviços ou ferramentas, entendemos os workloads, as dependências, os riscos, a frequência de mudanças, a capacidade da equipe e os objetivos de negócio. A arquitetura é escolhida a partir dessas condições.</p>
           </div>
-          <div className={styles.subblocosGrid}>
-            {ABORDAGEM_SUBBLOCOS.map((s) => (
-              <div className={styles.subbloco} key={s.label}>
-                <span className={styles.subblocoKicker}>{s.label}</span>
-                <h3 className={styles.subblocoTitle}>{s.title}</h3>
-                <p className={styles.subblocoText}>{s.text}</p>
+          <div className={styles.approach}>
+            <div className={styles.principles} aria-label="Princípios da abordagem">
+              {ABORDAGEM_PRINCIPIOS.map((p, i) => (
+                <article className={styles.principle} key={p.label}>
+                  <span className={styles.principleIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <div className={styles.principleHeading}>
+                    <span className={styles.principleKicker}>{p.label}</span>
+                    <h3>{p.title}</h3>
+                  </div>
+                  <p>{p.text}</p>
+                </article>
+              ))}
+            </div>
+            <aside className={styles.decision} aria-label="Critérios de decisão arquitetural">
+              <div className={styles.decisionCopy}>
+                <span className={styles.decisionKicker}>Como decidimos</span>
+                <h3>A profundidade certa depende do contexto.</h3>
+                <p>Não começamos pela ferramenta. Primeiro avaliamos as condições que determinam o nível adequado de mudança.</p>
               </div>
-            ))}
+              <ul className={styles.decisionList}>
+                {DECISAO_CRITERIOS.map((criterio, i) => (
+                  <li key={criterio}><span>{String(i + 1).padStart(2, '0')}</span>{criterio}</li>
+                ))}
+              </ul>
+            </aside>
           </div>
         </div>
       </section>
 
       {/* CAPACIDADES TÉCNICAS */}
-      <IconLabelSection
-        id="capacidades"
-        dataAudit="cd-capacidades"
-        eyebrow="Capacidades técnicas"
-        title="Da fundação da conta à operação das aplicações."
-        description="As capacidades são combinadas conforme o estágio da plataforma e o problema que precisa ser resolvido. Nenhum projeto precisa utilizar todas elas."
-        items={CAPACIDADES}
-        classes={{
-          section: styles.especialidades,
-          wrap: styles.especialidadesWrap,
-          head: `${styles.sectionHead} ${styles.especialidadesHead}`,
-          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
-          heading: styles.h2,
-          desc: styles.sectionDesc,
-        }}
-      />
+      <section id="capacidades" className={styles.especialidades} data-audit="cd-capacidades">
+        <div className={styles.especialidadesWrap}>
+          <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
+            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Capacidades técnicas</span>
+            <h2 className={styles.h2}>Da fundação da conta à operação das aplicações.</h2>
+            <p className={styles.sectionDesc}>As capacidades são combinadas conforme o estágio da plataforma e o problema que precisa ser resolvido. Nenhum projeto precisa utilizar todas elas.</p>
+          </div>
+          <div className={styles.cycle} aria-label="Ciclo de capacidades técnicas">
+            {ESTAGIOS.map((e, i) => (
+              <article className={styles.stage} key={e.title}>
+                <span className={styles.stageIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{e.title}</h3>
+                <div className={styles.stageItems}>
+                  {e.items.map((item) => <span key={item}>{item}</span>)}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* SEGURANÇA, CONFIABILIDADE E CONTINUIDADE */}
       <section id="confiabilidade" className={styles.confiabilidade} data-audit="cd-confiabilidade">
