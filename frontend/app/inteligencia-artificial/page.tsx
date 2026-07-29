@@ -8,20 +8,6 @@ import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
-import FeatureCard from '@/components/ui/FeatureCard';
-import Reveal from '@/components/ui/Reveal';
-import BeneficiosSection from '@/components/ui/BeneficiosSection';
-import {
-  IconAssistenteInteligente,
-  IconAgenteIA,
-  IconIaIntegrada,
-  IconEngenhariaQualidade,
-  IconBolt,
-  IconAtendimentoInteligente,
-  IconPesquisaDocumentos,
-  IconProcessamentoDocumentos,
-  IconGeracaoConteudo,
-} from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
 const TITLE = `Inteligência Artificial Aplicada | ${SITE_NAME}`;
@@ -76,23 +62,48 @@ const jsonLd = {
   },
 };
 
-// §8-12: cinco soluções, sem sobreposição entre assistente/documento/classificação/integração/agente.
-const SOLUCOES = [
-  { Icon: IconAssistenteInteligente, title: 'Assistentes de conhecimento', text: 'Criamos assistentes conectados a políticas, procedimentos, manuais e bases internas para ajudar equipes e clientes a localizar informações com mais rapidez.', tags: ['Busca contextual', 'Bases internas', 'Respostas com fontes'] },
-  { Icon: IconProcessamentoDocumentos, title: 'Processamento inteligente de documentos', text: 'Aplicamos IA à leitura, ao resumo e à organização de contratos, formulários, notas fiscais, relatórios e outros documentos, mantendo validação humana quando a criticidade exige.', tags: ['Leitura', 'Resumo', 'Validação'] },
-  { Icon: IconEngenhariaQualidade, title: 'Classificação, triagem e extração', text: 'Identificamos categorias, prioridades, campos e informações relevantes para encaminhar solicitações, estruturar dados e reduzir etapas manuais.', tags: ['Classificação', 'Triagem', 'Extração'] },
-  { Icon: IconIaIntegrada, title: 'IA integrada a sistemas e workflows', text: 'Incorporamos capacidades de IA a aplicações e processos existentes para apoiar análises, sugerir próximos passos e acionar fluxos sem substituir desnecessariamente os sistemas atuais.', tags: ['Integrações', 'APIs', 'Apoio operacional'] },
-  { Icon: IconAgenteIA, title: 'Agentes com ações controladas', text: 'Desenvolvemos agentes capazes de consultar informações e executar ações específicas dentro de limites definidos, com permissões, registros, aprovações e possibilidade de interrupção.', tags: ['Permissões', 'Aprovações', 'Auditoria'] },
+// §8-12: cinco soluções organizadas em 3 territórios editoriais (conhecimento,
+// documentos e informação, ações e processos) — sem grade de cards equivalentes.
+interface TerritorioItem {
+  title: string;
+  text: string;
+  tags?: string[];
+}
+
+const TERRITORIOS: { kicker: string; title: string; items: TerritorioItem[] }[] = [
+  {
+    kicker: 'Conhecimento',
+    title: 'Informação interna acessível com contexto e permissão.',
+    items: [
+      { title: 'Assistentes de conhecimento', text: 'Criamos assistentes conectados a políticas, procedimentos, manuais e bases internas para ajudar equipes e clientes a localizar informações com mais rapidez.', tags: ['Busca contextual', 'Bases internas', 'Respostas com fontes'] },
+    ],
+  },
+  {
+    kicker: 'Documentos e informação',
+    title: 'Leitura, organização e extração com validação proporcional ao risco.',
+    items: [
+      { title: 'Processamento inteligente de documentos', text: 'Aplicamos IA à leitura, ao resumo e à organização de contratos, formulários, notas fiscais, relatórios e outros documentos, mantendo validação humana quando a criticidade exige.' },
+      { title: 'Classificação, triagem e extração', text: 'Identificamos categorias, prioridades, campos e informações relevantes para encaminhar solicitações, estruturar dados e reduzir etapas manuais.' },
+    ],
+  },
+  {
+    kicker: 'Ações e processos',
+    title: 'Capacidades de IA incorporadas aos sistemas que a empresa já utiliza.',
+    items: [
+      { title: 'IA integrada a sistemas e workflows', text: 'Incorporamos capacidades de IA a aplicações e processos existentes para apoiar análises, sugerir próximos passos e acionar fluxos sem substituir desnecessariamente os sistemas atuais.' },
+      { title: 'Agentes com ações controladas', text: 'Desenvolvemos agentes capazes de consultar informações e executar ações específicas dentro de limites definidos, com permissões, registros, aprovações e possibilidade de interrupção.' },
+    ],
+  },
 ];
 
 // §14-19: seis casos de aplicação — pontos de partida, não promessas de resultado.
 const CASOS_DE_APLICACAO = [
-  { title: 'Consulta ao conhecimento interno', text: 'Assistente para localizar políticas, procedimentos, manuais e respostas em bases internas, respeitando as permissões de cada usuário.', Icon: IconPesquisaDocumentos },
-  { title: 'Atendimento com transferência para pessoas', text: 'Atendimento inicial para responder dúvidas conhecidas, registrar solicitações e encaminhar a conversa para uma pessoa quando houver incerteza, exceção ou necessidade de decisão.', Icon: IconAtendimentoInteligente },
-  { title: 'Leitura e extração de documentos', text: 'Identificação de campos, cláusulas, datas, valores e categorias em documentos, com revisão proporcional ao impacto de eventuais erros.', Icon: IconProcessamentoDocumentos },
-  { title: 'Triagem de solicitações', text: 'Classificação de e-mails, tickets, formulários ou mensagens por assunto, urgência e destino, reduzindo o tempo até o encaminhamento correto.', Icon: IconEngenhariaQualidade },
-  { title: 'Geração assistida de relatórios e comunicações', text: 'Produção de rascunhos, resumos e relatórios a partir de informações autorizadas, com revisão antes do envio ou da publicação.', Icon: IconGeracaoConteudo },
-  { title: 'Apoio a decisões operacionais', text: 'Organização de informações, identificação de padrões e sugestão de próximos passos para que a decisão final seja tomada com mais contexto.', Icon: IconBolt },
+  { title: 'Consulta ao conhecimento interno', text: 'Assistente para localizar políticas, procedimentos, manuais e respostas em bases internas, respeitando as permissões de cada usuário.' },
+  { title: 'Atendimento com transferência para pessoas', text: 'Atendimento inicial para responder dúvidas conhecidas, registrar solicitações e encaminhar a conversa para uma pessoa quando houver incerteza, exceção ou necessidade de decisão.' },
+  { title: 'Leitura e extração de documentos', text: 'Identificação de campos, cláusulas, datas, valores e categorias em documentos, com revisão proporcional ao impacto de eventuais erros.' },
+  { title: 'Triagem de solicitações', text: 'Classificação de e-mails, tickets, formulários ou mensagens por assunto, urgência e destino, reduzindo o tempo até o encaminhamento correto.' },
+  { title: 'Geração assistida de relatórios e comunicações', text: 'Produção de rascunhos, resumos e relatórios a partir de informações autorizadas, com revisão antes do envio ou da publicação.' },
+  { title: 'Apoio a decisões operacionais', text: 'Organização de informações, identificação de padrões e sugestão de próximos passos para que a decisão final seja tomada com mais contexto.' },
 ];
 
 // §20.5: oito benefícios, sem promessa genérica de redução de custo.
@@ -107,25 +118,22 @@ const BENEFICIOS = [
   'Novas capacidades incorporadas aos sistemas existentes',
 ];
 
-// §22-26: cinco etapas da abordagem (avaliação de adequação antes de qualquer implementação).
+// §22-26: cinco decisões de projeto, apresentadas como percurso vertical
+// (problema → dados → qualidade → integração → operação).
 const ETAPAS = [
-  { numero: '01', title: 'Identificar uma tarefa adequada', text: 'Selecionamos um problema com entradas, usuários, resultado esperado e impacto identificáveis. A IA não deve ser adotada apenas porque a tecnologia está disponível.' },
-  { numero: '02', title: 'Avaliar dados e acessos', text: 'Verificamos quais informações são necessárias, quem pode acessá-las, como serão protegidas e quais restrições impedem o uso de determinados dados.' },
-  { numero: '03', title: 'Definir critérios de qualidade', text: 'Estabelecemos exemplos de referência, métricas, níveis de confiança e situações em que a resposta deve ser recusada, revisada ou encaminhada para uma pessoa.' },
-  { numero: '04', title: 'Integrar com controle', text: 'Conectamos a solução aos sistemas e fluxos necessários, limitando permissões, registrando ações e mantendo aprovações humanas onde o risco exige.' },
-  { numero: '05', title: 'Monitorar e evoluir', text: 'Acompanhamos qualidade, falhas, custo, tempo de resposta e comportamento de uso para ajustar prompts, dados, regras, modelos ou etapas do processo.' },
+  { numero: '01', categoria: 'Problema', title: 'Identificar uma tarefa adequada', text: 'Selecionamos um problema com entradas, usuários, resultado esperado e impacto identificáveis. A IA não deve ser adotada apenas porque a tecnologia está disponível.' },
+  { numero: '02', categoria: 'Dados', title: 'Avaliar informações e acessos', text: 'Verificamos quais informações são necessárias, quem pode acessá-las, como serão protegidas e quais restrições impedem o uso de determinados dados.' },
+  { numero: '03', categoria: 'Qualidade', title: 'Definir como o resultado será avaliado', text: 'Estabelecemos exemplos de referência, métricas, níveis de confiança e situações em que a resposta deve ser recusada, revisada ou encaminhada para uma pessoa.' },
+  { numero: '04', categoria: 'Integração', title: 'Conectar a solução com controle', text: 'Conectamos a solução aos sistemas e fluxos necessários, limitando permissões, registrando ações e mantendo aprovações humanas onde o risco exige.' },
+  { numero: '05', categoria: 'Operação', title: 'Monitorar, aprender e evoluir', text: 'Acompanhamos qualidade, falhas, custo, tempo de resposta e comportamento de uso para ajustar prompts, dados, regras, modelos ou etapas do processo.' },
 ];
 
-// §27.6: oito itens de governança, segurança e controle.
-const GOVERNANCA_ITEMS = [
-  'Dados e fontes autorizados para cada caso de uso',
-  'Permissões limitadas ao necessário',
-  'Critérios de qualidade e conjuntos de avaliação',
-  'Respostas fundamentadas e referências quando aplicável',
-  'Aprovação humana para ações de maior impacto',
-  'Logs e trilhas de auditoria',
-  'Fallback e transferência para pessoas',
-  'Monitoramento de qualidade, uso e custos',
+// §27.6: oito itens de governança agrupados em 4 domínios.
+const GOVERNANCA_DOMINIOS = [
+  { numero: '01', title: 'Dados e acesso', items: ['Dados e fontes autorizados para cada caso de uso', 'Permissões limitadas ao necessário'] },
+  { numero: '02', title: 'Qualidade e evidência', items: ['Critérios de qualidade e conjuntos de avaliação', 'Respostas fundamentadas e referências quando aplicável'] },
+  { numero: '03', title: 'Ações e supervisão', items: ['Aprovação humana para ações de maior impacto', 'Fallback e transferência para pessoas'] },
+  { numero: '04', title: 'Operação e evolução', items: ['Logs e trilhas de auditoria', 'Monitoramento de qualidade, uso e custos'] },
 ];
 
 // §29-38: dez perguntas frequentes.
@@ -164,121 +172,140 @@ export default function InteligenciaArtificialPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* SOLUÇÕES QUE DESENVOLVEMOS */}
+      {/* O QUE DESENVOLVEMOS — 3 territórios editoriais, sem grade de cards */}
       <section id="solucoes" className={styles.oquefazemos} data-audit="ai-solucoes">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que desenvolvemos</span>
+            <span className={styles.eyebrowLight}>O que desenvolvemos</span>
             <h2 className={styles.h2}>Soluções de IA conectadas ao contexto real da operação.</h2>
             <p className={styles.sectionDesc}>A solução pode consultar conhecimento, interpretar documentos, apoiar decisões ou executar ações limitadas. O desenho depende do problema, dos dados disponíveis e do nível de controle exigido.</p>
           </div>
-          <div className={styles.cardGrid}>
-            {SOLUCOES.map(({ Icon, title, text, tags }, i) => (
-              <Reveal as="div" key={title} delay={i * 60}>
-                <FeatureCard
-                  icon={<Icon />}
-                  title={title}
-                  text={text}
-                  tags={tags}
-                  dataAudit={i === 0 ? 'ai-card' : undefined}
-                />
-              </Reveal>
+          <div className={styles.territorios}>
+            {TERRITORIOS.map((t, i) => (
+              <article className={styles.territorio} key={t.kicker} data-audit={i === 0 ? 'ai-card' : undefined}>
+                <span className={styles.territorioIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div className={styles.territorioHeading}>
+                  <span className={styles.territorioKicker}>{t.kicker}</span>
+                  <h3>{t.title}</h3>
+                </div>
+                <div className={`${styles.territorioBody} ${t.items.length > 1 ? styles.territorioBodyTwo : ''}`}>
+                  {t.items.map((item) => (
+                    <div className={styles.territorioItem} key={item.title}>
+                      <h4>{item.title}</h4>
+                      <p>{item.text}</p>
+                      {item.tags && (
+                        <div className={styles.territorioTags}>
+                          {item.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CASOS DE APLICAÇÃO — grade mosaico com hairlines (sem cards) */}
+      {/* CASOS DE APLICAÇÃO — composição assimétrica, cabeçalho fixo + catálogo numerado */}
       <section id="aplicacoes" className={styles.casos} data-audit="ai-aplicacoes">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Casos de aplicação</span>
-            <h2 className={styles.h2}>Onde a IA pode apoiar a operação.</h2>
-            <p className={styles.sectionDesc}>Os exemplos abaixo representam pontos de partida. A viabilidade depende dos dados, das integrações, dos riscos e da forma como o resultado será avaliado.</p>
-          </div>
-          <div className={styles.casosGrid}>
-            {CASOS_DE_APLICACAO.map((caso, i) => (
-              <Reveal
-                as="div"
-                key={caso.title}
-                delay={i * 60}
-                className={styles.casoItem}
-                dataAudit={i === 0 ? 'ai-caso-item' : undefined}
-              >
-                <span className={styles.casoNumeral}><caso.Icon /></span>
-                <h3 className={styles.casoTitle}>{caso.title}</h3>
-                <p className={styles.casoText}>{caso.text}</p>
-              </Reveal>
-            ))}
+          <div className={styles.aplicacoesLayout}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowLight}>Casos de aplicação</span>
+              <h2 className={styles.h2}>Onde a IA pode apoiar a operação.</h2>
+              <p className={styles.sectionDesc}>Os exemplos abaixo representam pontos de partida. A viabilidade depende dos dados, das integrações, dos riscos e da forma como o resultado será avaliado.</p>
+            </div>
+            <div className={styles.usecases}>
+              {CASOS_DE_APLICACAO.map((caso, i) => (
+                <article className={styles.usecase} key={caso.title} data-audit={i === 0 ? 'ai-caso-item' : undefined}>
+                  <span className={styles.usecaseIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3 className={styles.usecaseTitle}>{caso.title}</h3>
+                    <p className={styles.usecaseText}>{caso.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* BENEFÍCIOS */}
-      <BeneficiosSection
-        id="beneficios"
-        dataAudit="ai-beneficios"
-        title="Mais acesso à informação, menos esforço em tarefas de interpretação."
-        description="Os ganhos dependem da qualidade dos dados, do desenho do processo, da integração e dos critérios de avaliação. A IA deve ser medida pelo resultado da tarefa, não apenas pela capacidade de gerar uma resposta."
-        items={BENEFICIOS}
-        classes={{
-          section: styles.beneficios,
-          overlay: styles.beneficiosOverlay,
-          wrap: styles.beneficiosWrap,
-          eyebrow: styles.eyebrowDark,
-          heading: styles.h2Dark,
-          description: styles.beneficiosDescription,
-          list: styles.beneficiosList,
-          item: styles.beneficioItem,
-          checkIcon: styles.checkIcon,
-          text: styles.beneficioText,
-        }}
-      />
-
-      {/* NOSSA ABORDAGEM — 5 etapas + manifesto */}
-      <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">
-        <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Começamos pelo problema, pelos dados e pela forma de medir a qualidade.</h2>
-            <p className={styles.sectionDesc}>Nem todo processo precisa de inteligência artificial. Primeiro avaliamos se regras, integração ou automação convencional já resolvem o problema. Quando a IA é adequada, definimos o escopo, os limites e os critérios de avaliação antes de conectá-la à operação.</p>
-          </div>
-          <div className={styles.etapasGrid}>
-            {ETAPAS.map((etapa) => (
-              <div className={styles.etapa} key={etapa.title}>
-                <span className={styles.etapaNumero}>{etapa.numero}</span>
-                <h3 className={styles.etapaTitle}>{etapa.title}</h3>
-                <p className={styles.etapaText}>{etapa.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className={styles.manifesto} data-audit="ai-manifesto">
-            <h3 className={styles.manifestoFrase}>IA integrada à operação, não um chatbot isolado.</h3>
-            <p className={styles.manifestoTexto}>O valor surge quando a solução participa de um processo definido, utiliza informações autorizadas e produz um resultado que pode ser avaliado.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* GOVERNANÇA, SEGURANÇA E CONTROLE */}
-      <section id="governanca" className={styles.governanca} data-audit="ai-governanca">
-        <div className={styles.governancaOverlay} aria-hidden="true" />
-        <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Governança e controle</span>
-            <h2 className={styles.h2Dark}>Qualidade, permissões e supervisão fazem parte da solução.</h2>
-            <p className={styles.sectionDescDark}>Soluções de IA podem produzir respostas incorretas, incompletas ou inadequadas ao contexto. Por isso, o projeto precisa definir como avaliar resultados, limitar acessos, registrar decisões e transferir situações de risco para pessoas responsáveis.</p>
+      {/* RESULTADOS ESPERADOS — Petrol, matriz numerada de 8 resultados */}
+      <section id="beneficios" className={styles.beneficios} data-audit="ai-beneficios">
+        <div className={styles.beneficiosOverlay} aria-hidden="true" />
+        <div className={styles.beneficiosWrap}>
+          <div>
+            <span className={styles.eyebrowDark}>Resultados esperados</span>
+            <h2 className={styles.h2Dark}>Mais acesso à informação, menos esforço em tarefas de interpretação.</h2>
+            <p className={styles.beneficiosDescription}>O ganho não está em &ldquo;usar IA&rdquo;, mas em retirar fricção de atividades que dependem de leitura, busca, classificação e contexto.</p>
           </div>
           <div className={styles.beneficiosList}>
-            {GOVERNANCA_ITEMS.map((item) => (
+            {BENEFICIOS.map((item, i) => (
               <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
+                <span className={styles.checkIcon} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <span className={styles.beneficioText}>{item}</span>
               </div>
             ))}
           </div>
-          <p className={styles.governancaClosing}>O nível de automação deve ser proporcional ao impacto de uma resposta ou ação incorreta.</p>
+        </div>
+      </section>
+
+      {/* NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões + manifesto */}
+      <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">
+        <div className={styles.wrap}>
+          <div className={styles.abordagemLayout}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Começamos pelo problema, pelos dados e pela forma de medir a qualidade.</h2>
+              <p className={styles.sectionDesc}>Nem todo processo precisa de inteligência artificial. Primeiro avaliamos se regras, integração ou automação convencional já resolvem o problema. Quando a IA é adequada, definimos o escopo, os limites e os critérios de avaliação antes de conectá-la à operação.</p>
+            </div>
+            <div className={styles.decisionPath}>
+              {ETAPAS.map((etapa) => (
+                <article className={styles.decisionStep} key={etapa.title}>
+                  <span className={styles.decisionStepIndex} aria-hidden="true">{etapa.numero}</span>
+                  <div>
+                    <span className={styles.decisionStepCategory}>{etapa.categoria}</span>
+                    <h3>{etapa.title}</h3>
+                    <p>{etapa.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+          <aside className={styles.manifesto} data-audit="ai-manifesto">
+            <span className={styles.manifestoKicker}>Princípio de projeto</span>
+            <h3 className={styles.manifestoTitle}>IA integrada à operação, não um chatbot isolado.</h3>
+            <p className={styles.manifestoText}>O valor surge quando a solução participa de um processo definido, utiliza informações autorizadas e produz um resultado que pode ser avaliado.</p>
+          </aside>
+        </div>
+      </section>
+
+      {/* GOVERNANÇA E CONTROLE — capítulo estrutural, 4 domínios + privacidade integrada */}
+      <section id="governanca" className={styles.governanca} data-audit="ai-governanca">
+        <div className={styles.governancaOverlay} aria-hidden="true" />
+        <div className={styles.wrap}>
+          <div className={styles.governancaLayout}>
+            <header>
+              <span className={styles.eyebrowDark}>Governança e controle</span>
+              <h2 className={styles.h2Dark}>Qualidade, permissões e supervisão fazem parte da solução.</h2>
+              <p className={styles.sectionDescDark}>Soluções de IA podem produzir respostas incorretas, incompletas ou inadequadas ao contexto. Por isso, o projeto precisa definir como avaliar resultados, limitar acessos, registrar decisões e transferir situações de risco para pessoas responsáveis.</p>
+              <p className={styles.governancaPrinciple}>O nível de automação deve ser proporcional ao impacto de uma resposta ou ação incorreta.</p>
+            </header>
+            <div className={styles.governancaDomains}>
+              {GOVERNANCA_DOMINIOS.map((dominio) => (
+                <article className={styles.governancaDomain} key={dominio.title}>
+                  <span className={styles.governancaDomainIndex} aria-hidden="true">{dominio.numero}</span>
+                  <div>
+                    <h3>{dominio.title}</h3>
+                    <ul className={styles.governancaDomainList}>
+                      {dominio.items.map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
           <div className={styles.privacidadeBlock}>
             <h3 className={styles.privacidadeTitle}>Privacidade e uso de dados</h3>
             <p className={styles.privacidadeText}>A arquitetura deve considerar a natureza das informações, os fornecedores envolvidos, as configurações de retenção, os controles de acesso e as obrigações aplicáveis ao tratamento dos dados.</p>

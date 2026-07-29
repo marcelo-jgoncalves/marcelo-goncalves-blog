@@ -19,38 +19,43 @@
 }
 
 .h2 {
-  letter-spacing: -.04em;
+  letter-spacing: -.045em;
   color: var(--ink);
   text-wrap: balance;
-  font-size: var(--type-h3);
+  font-size: var(--type-h1);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   margin: 0;
+  max-width: 26ch;
 }
 
 .h2Dark {
-  letter-spacing: -.04em;
+  letter-spacing: -.045em;
   color: var(--ivory);
   text-wrap: balance;
-  font-size: var(--type-h3);
+  font-size: var(--type-h1);
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.05;
   margin: 0;
+  max-width: 26ch;
 }
 
 .sectionDesc {
   color: var(--slate);
-  max-width: 580px;
+  max-width: 46ch;
   margin: var(--sp-6) 0 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
+  font-size: var(--type-body);
+  line-height: 1.7;
 }
 
+/* Cabeçalhos de seção alinhados à esquerda (não centralizados) — identidade
+   própria desta landing, diferente das outras 3 (automacao/plataforma/software). */
 .sectionHead {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 54ch;
   margin-bottom: var(--sp-10);
 }
 
@@ -174,91 +179,201 @@
   }
 }
 
-/* ===== O QUE FAZEMOS — 5 cards (3+2) ===== */
+/* ===== O QUE DESENVOLVEMOS — 3 territórios editoriais (Conhecimento /
+   Documentos e informação / Ações e processos), sem grade de cards. ===== */
 .oquefazemos {
   padding: var(--sp-10) 0;
+  background: var(--ivory);
 }
 
 @media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
-/* Cinco cards uniformes (sem variação de tamanho) — desktop em 3 colunas
-   (3+2, sem comprimir os 2 últimos), tablet em 2, mobile em 1. */
-.cardGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-grid);
+.territorios {
+  border-top: 1px solid rgba(15, 76, 92, .18);
 }
 
-@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
+.territorio {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--sp-3) var(--sp-5);
+  padding: var(--sp-8) 0;
+  border-bottom: 1px solid rgba(15, 76, 92, .14);
+}
 
-/* ===== CASOS DE APLICAÇÃO — nova, seção "grade mosaico" sem cards (§8) =====
-   Container: border-top+border-left; cada célula: border-right+border-bottom —
-   fecha em retângulo perfeito porque 6 é divisível por 1, 2 e 3 colunas. */
+@media (min-width: 680px) {
+  .territorio {
+    grid-template-columns: 50px minmax(220px, .72fr) minmax(0, 1.28fr);
+    gap: var(--sp-6);
+    padding: var(--sp-9) 0;
+  }
+}
+
+.territorioIndex {
+  padding-top: var(--sp-1);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.territorioHeading {
+  grid-column: 2;
+  min-width: 0;
+}
+
+@media (min-width: 680px) {
+  .territorioHeading { grid-column: auto; }
+}
+
+.territorioKicker {
+  display: block;
+  margin-bottom: var(--sp-3);
+  color: var(--petrol-soft);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.territorioHeading h3 {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--ink);
+  font-size: var(--type-h4);
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+}
+
+.territorioBody {
+  grid-column: 1 / -1;
+  display: grid;
+  align-content: start;
+  margin-top: var(--sp-4);
+}
+
+@media (min-width: 680px) {
+  .territorioBody { grid-column: auto; margin-top: 0; }
+}
+
+.territorioBodyTwo {
+  gap: var(--sp-7);
+}
+
+@media (min-width: 560px) {
+  .territorioBodyTwo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.territorioItem h4 {
+  margin: 0 0 var(--sp-3);
+  color: var(--petrol);
+  font-size: var(--type-lead);
+  line-height: 1.28;
+}
+
+.territorioItem p {
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.68;
+}
+
+.territorioTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+
+.territorioTags span {
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid rgba(15, 76, 92, .13);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .55);
+  color: var(--petrol);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ===== CASOS DE APLICAÇÃO — composição assimétrica: cabeçalho fixo (sticky)
+   + catálogo numerado em 2 colunas, sem cards. ===== */
 .casos {
   padding: var(--sp-10) 0;
-  background: var(--ivory);
+  background: var(--surface);
 }
 
 @media (min-width: 680px) { .casos { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .casos { padding: var(--sp-12) 0; } }
 
-.casosGrid {
+.aplicacoesLayout {
   display: grid;
   grid-template-columns: 1fr;
-  border-top: 1px solid #DDD4C4;
-  border-left: 1px solid #DDD4C4;
-  /* 16px = radius padrão de card do projeto (mesmo valor de .feature-card,
-     FeatureCard.css) — spec original pedia 2px, mas o padrão do site é 16px. */
-  border-radius: 16px;
-  overflow: hidden;
+  gap: var(--sp-9);
+  align-items: start;
 }
 
-@media (min-width: 680px) { .casosGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .casosGrid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1040px) {
+  .aplicacoesLayout { grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
 
-.casoItem {
-  background: rgba(255, 255, 255, .55);
-  border-right: 1px solid #DDD4C4;
-  border-bottom: 1px solid #DDD4C4;
-  padding: var(--sp-7) var(--sp-7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--sp-3);
+  .aplicacoesLayout .sectionHead {
+    position: sticky;
+    top: 112px;
+    margin-bottom: 0;
+  }
 }
 
-.casoNumeral {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(201, 96, 60, .14);
+.usecases {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 560px) {
+  .usecases { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--sp-8); }
+}
+
+.usecase {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-7) 0;
+  border-top: 1px solid rgba(15, 76, 92, .14);
+}
+
+@media (min-width: 560px) {
+  .usecase:nth-last-child(-n+2) { border-bottom: 1px solid rgba(15, 76, 92, .14); }
+}
+
+.usecaseIndex {
+  padding-top: var(--sp-1);
   color: var(--clay);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  flex: none;
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
 }
 
-.casoTitle {
-  font-size: var(--type-lead);
-  font-weight: 800;
-  letter-spacing: -.015em;
+.usecaseTitle {
+  margin: 0 0 var(--sp-2);
   color: var(--ink);
-  margin: 0;
+  font-size: var(--type-lead);
+  line-height: 1.28;
+  letter-spacing: -.02em;
 }
 
-.casoText {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
+.usecaseText {
+  margin: 0;
   color: var(--slate);
-  margin: 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
 }
 
-/* ===== BENEFÍCIOS ===== */
+/* ===== RESULTADOS ESPERADOS — seção Petrol, mensagem central + matriz
+   numerada de 8 resultados (sem checkmarks). ===== */
 .beneficios {
   padding: var(--sp-10) 0;
   background: var(--petrol);
@@ -273,13 +388,15 @@
 
 .beneficiosOverlay {
   position: absolute;
-  inset: 0;
+  inset: auto -9% auto auto;
+  top: -35%;
   z-index: 0;
-  opacity: .5;
+  width: 42vw;
+  height: 42vw;
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 50%;
+  box-shadow: 0 0 0 70px rgba(255, 255, 255, .025), 0 0 0 140px rgba(255, 255, 255, .018);
   pointer-events: none;
-  background:
-    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
-    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
 }
 
 .beneficiosWrap {
@@ -290,69 +407,64 @@
   padding: 0 var(--sp-5);
   display: grid;
   grid-template-columns: 1fr;
-  align-items: center;
-  gap: var(--sp-8);
+  align-items: start;
+  gap: var(--sp-9);
 }
 
 @media (min-width: 680px) {
-  .beneficiosWrap { padding: 0 var(--sp-7); gap: var(--sp-9); }
+  .beneficiosWrap { padding: 0 var(--sp-7); }
 }
 
 @media (min-width: 1040px) {
-  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: .8fr 1.2fr; gap: var(--sp-10); }
+  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr); gap: var(--sp-12); }
 }
 
 .beneficiosDescription {
-  color: rgba(250, 248, 243, .7);
-  max-width: 480px;
-  margin: var(--sp-5) 0 0;
+  color: rgba(250, 248, 243, .78);
+  max-width: 44ch;
+  margin: var(--sp-6) 0 0;
   font-size: var(--type-body-sm);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .beneficiosList {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0 var(--sp-7);
+  gap: 0 var(--sp-8);
+  border-top: 1px solid rgba(255, 255, 255, .14);
 }
 
-@media (min-width: 680px) {
-  /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
-     min-content do texto — necessário porque .beneficioText quebra em
-     2 linhas (overflow-wrap) em vez de nowrap. */
+@media (min-width: 560px) {
   .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
 .beneficioItem {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--eyebrow-gap);
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+  min-height: 82px;
   padding: var(--sp-4) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-  min-width: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 
 .checkIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(201, 96, 60, .2);
   color: #E8A582;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
 }
 
 .beneficioText {
   font-size: var(--type-body-sm);
-  line-height: 1.5;
+  line-height: 1.45;
   color: rgba(250, 248, 243, .92);
   overflow-wrap: break-word;
   min-width: 0;
 }
 
-/* ===== NOSSA ABORDAGEM — 5 etapas numeradas + manifesto ===== */
+/* ===== NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões,
+   fecha com o manifesto "IA integrada à operação". ===== */
 .abordagem {
   padding: var(--sp-10) 0;
   background: #fff;
@@ -363,73 +475,157 @@
 @media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
-.etapasGrid {
+.abordagemLayout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--gap-grid);
+  gap: var(--sp-9);
 }
 
-@media (min-width: 680px) { .etapasGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .etapasGrid { grid-template-columns: repeat(3, 1fr); } }
-
-.etapa {
-  text-align: center;
-  padding: 0 var(--sp-2);
+@media (min-width: 1040px) {
+  .abordagemLayout { grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
+  .abordagemLayout .sectionHead { margin-bottom: 0; }
 }
 
-.etapaNumero {
+.decisionPath {
+  position: relative;
+}
+
+.decisionPath::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: var(--sp-9);
+  bottom: var(--sp-9);
+  width: 1px;
+  background: linear-gradient(var(--clay), rgba(15, 76, 92, .15));
+}
+
+@media (min-width: 680px) {
+  .decisionPath::before { left: 25px; }
+}
+
+.decisionStep {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--sp-4);
+  padding: 0 0 var(--sp-9);
+}
+
+@media (min-width: 680px) {
+  .decisionStep { grid-template-columns: 52px 1fr; gap: var(--sp-5); }
+}
+
+.decisionStep:last-child {
+  padding-bottom: 0;
+}
+
+.decisionStepIndex {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(15, 76, 92, .16);
+  border-radius: 50%;
+  background: var(--ivory);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+@media (min-width: 680px) {
+  .decisionStepIndex { width: 52px; height: 52px; }
+}
+
+.decisionStepCategory {
   display: block;
+  margin: 0 0 var(--sp-2);
+  color: var(--petrol-soft);
   font-family: var(--mono);
   font-size: var(--type-caption);
   font-weight: 700;
-  letter-spacing: .18em;
-  color: var(--clay);
-  margin-bottom: var(--sp-3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
-.etapaTitle {
-  font-weight: 700;
-  font-size: var(--type-lead);
+.decisionStep h3 {
+  margin: 0 0 var(--sp-3);
   color: var(--ink);
-  margin: 0 0 var(--sp-2);
+  font-size: var(--type-h4);
+  line-height: 1.25;
+  letter-spacing: -.025em;
 }
 
-.etapaText {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
+.decisionStep p {
+  max-width: 60ch;
   margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.68;
 }
 
 .manifesto {
-  max-width: 720px;
-  margin: var(--sp-10) auto 0;
-  text-align: center;
-  background: var(--ivory);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: var(--sp-8);
-  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+  margin-top: var(--sp-12);
+  padding: var(--sp-7) var(--sp-6);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(8, 50, 61, .06);
 }
 
-.manifestoFrase {
-  font-weight: 800;
-  font-size: var(--type-h4);
-  color: var(--petrol);
-  margin: 0 0 var(--sp-4);
+@media (min-width: 680px) {
+  .manifesto {
+    grid-template-columns: minmax(140px, 190px) minmax(260px, .85fr) minmax(300px, 1.15fr);
+    gap: var(--sp-7);
+    align-items: start;
+    padding: var(--sp-8) var(--sp-9);
+  }
 }
 
-.manifestoTexto {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
+.manifestoKicker {
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.manifestoTitle {
   margin: 0;
+  color: var(--petrol);
+  font-size: var(--type-h4);
+  line-height: 1.2;
+  letter-spacing: -.025em;
 }
 
-/* ===== GOVERNANÇA, SEGURANÇA E CONTROLE ===== */
+@media (min-width: 680px) {
+  .manifestoTitle { grid-column: 2; }
+}
+
+.manifestoText {
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+@media (min-width: 680px) {
+  .manifestoText { grid-column: 3; }
+}
+
+/* ===== GOVERNANÇA E CONTROLE — capítulo estrutural em Petrol Deep: cabeçalho
+   com princípio de proporcionalidade + 4 domínios + privacidade integrada. ===== */
 .governanca {
   padding: var(--sp-10) 0;
-  background: var(--petrol);
+  background: var(--petrol-deep);
   color: var(--ivory);
   position: relative;
   overflow: hidden;
@@ -441,13 +637,13 @@
 
 .governancaOverlay {
   position: absolute;
-  inset: 0;
+  inset: auto -15% -52% auto;
   z-index: 0;
-  opacity: .5;
+  width: 52vw;
+  height: 52vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91, 139, 150, .18), transparent 68%);
   pointer-events: none;
-  background:
-    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
-    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
 }
 
 .governanca .wrap {
@@ -455,42 +651,115 @@
   z-index: 1;
 }
 
-.sectionDescDark {
-  color: rgba(250, 248, 243, .78);
-  max-width: 640px;
-  margin: var(--sp-6) 0 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
+.governancaLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
 }
 
-.governancaClosing {
-  max-width: 720px;
-  margin: var(--sp-8) auto 0;
-  text-align: center;
-  color: rgba(250, 248, 243, .6);
+@media (min-width: 1040px) {
+  .governancaLayout { grid-template-columns: minmax(330px, .72fr) minmax(0, 1.28fr); gap: var(--sp-11); }
+}
+
+.sectionDescDark {
+  color: rgba(250, 248, 243, .78);
+  max-width: 44ch;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.7;
+}
+
+.governancaPrinciple {
+  margin-top: var(--sp-7);
+  padding: var(--sp-5) 0 0 var(--sp-5);
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  border-left: 2px solid var(--clay);
+  color: rgba(250, 248, 243, .92);
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+}
+
+.governancaDomains {
+  border-top: 1px solid rgba(255, 255, 255, .14);
+}
+
+.governancaDomain {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--sp-5);
+  padding: var(--sp-7) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+.governancaDomainIndex {
+  color: #E8A582;
+  font-family: var(--font-numbers);
   font-size: var(--type-caption);
-  line-height: 1.6;
+  font-weight: 700;
+}
+
+.governancaDomain h3 {
+  margin: 0 0 var(--sp-4);
+  color: #fff;
+  font-size: var(--type-lead);
+}
+
+.governancaDomainList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 560px) {
+  .governancaDomainList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3) var(--sp-7); }
+}
+
+.governancaDomainList li {
+  position: relative;
+  padding-left: var(--sp-4);
+  color: rgba(250, 248, 243, .78);
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+}
+
+.governancaDomainList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
 }
 
 .privacidadeBlock {
-  max-width: 720px;
-  margin: var(--sp-8) auto 0;
-  padding-top: var(--sp-8);
-  border-top: 1px solid rgba(255, 255, 255, .12);
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-7);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+}
+
+@media (min-width: 1040px) {
+  .privacidadeBlock { grid-column: 1 / -1; grid-template-columns: minmax(180px, 220px) 1fr; gap: var(--sp-8); }
 }
 
 .privacidadeTitle {
   font-weight: 700;
-  font-size: var(--type-lead);
+  font-size: var(--type-body);
   color: #fff;
-  margin: 0 0 var(--sp-3);
+  margin: 0;
 }
 
 .privacidadeText {
   font-size: var(--type-body-sm);
-  line-height: 1.6;
+  line-height: 1.65;
   color: rgba(250, 248, 243, .78);
   margin: 0;
+  max-width: 60ch;
 }
-
