@@ -182,6 +182,15 @@ export function IconSustentacaoEvolucao() {
   );
 }
 
+export function IconPropriedadeAcesso() {
+  return (
+    <svg {...cardIcon}>
+      <circle cx="8" cy="15" r="4" />
+      <path d="m11 12 8-8M16 4l3 3M13 7l2 2" />
+    </svg>
+  );
+}
+
 /* Ícones dos cards "O que fazemos" — specs/ESPECIFICACAO-CLOUD-DEVOPS.md §7 */
 export function IconArquiteturaNuvem() {
   return (

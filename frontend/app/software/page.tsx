@@ -12,6 +12,15 @@ import Pill from '@/components/ui/Pill';
 import Kicker from '@/components/ui/Kicker';
 import IndexNumber from '@/components/ui/IndexNumber';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import {
+  IconSustentacaoEvolucao,
+  IconApisIntegracoes,
+  IconModernizacaoSistemas,
+  IconArquiteturaSoftware,
+  IconCycle,
+  IconPropriedadeAcesso,
+  IconDividaTecnica,
+} from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
 const TITLE = `Sistemas e Plataformas Digitais | ${SITE_NAME}`;
@@ -80,10 +89,10 @@ const SOLUCOES = [
 // Painel "antes de construir" — quando usar ferramenta pronta, conectar,
 // evoluir uma base existente ou justificar software próprio.
 const DECISOES = [
-  { opcao: 'Ferramenta pronta', condicao: 'Quando já atende ao processo.', acao: 'usar' },
-  { opcao: 'Integração', condicao: 'Quando é preciso conectar o que existe.', acao: 'conectar' },
-  { opcao: 'Adaptação', condicao: 'Quando uma base atual pode evoluir.', acao: 'evoluir' },
-  { opcao: 'Software próprio', condicao: 'Quando a regra específica justifica construir.', acao: 'construir', accent: true },
+  { Icon: IconSustentacaoEvolucao, opcao: 'Ferramenta pronta', condicao: 'Quando já atende ao processo.', acao: 'usar' },
+  { Icon: IconApisIntegracoes, opcao: 'Integração', condicao: 'Quando é preciso conectar o que existe.', acao: 'conectar' },
+  { Icon: IconModernizacaoSistemas, opcao: 'Adaptação', condicao: 'Quando uma base atual pode evoluir.', acao: 'evoluir' },
+  { Icon: IconArquiteturaSoftware, opcao: 'Software próprio', condicao: 'Quando a regra específica justifica construir.', acao: 'construir', accent: true },
 ];
 
 // §15.5: oito benefícios — item 8 usa a formulação neutra (§15.6), condicionada ao contrato.
@@ -100,11 +109,11 @@ const BENEFICIOS = [
 
 // §17-21: cinco etapas da abordagem (construir é decisão de negócio, não só técnica).
 const ETAPAS = [
-  { numero: '01', title: 'Entender o processo', text: 'Mapeamos usuários, regras, informações, exceções, sistemas envolvidos e o resultado que a solução precisa produzir.' },
-  { numero: '02', title: 'Avaliar construir, integrar ou adaptar', text: 'Comparamos ferramentas existentes, possibilidades de integração e desenvolvimento próprio para evitar a criação de um sistema desnecessário.' },
-  { numero: '03', title: 'Definir a primeira entrega útil', text: 'Priorizamos um conjunto de funcionalidades que resolva parte relevante do problema e possa ser validado antes de ampliar o escopo.' },
-  { numero: '04', title: 'Construir com critérios verificáveis', text: 'Implementamos regras, integrações, segurança, testes e observabilidade com critérios de aceite definidos para cada etapa.' },
-  { numero: '05', title: 'Operar, aprender e evoluir', text: 'Acompanhamos o uso real, corrigimos desvios e priorizamos novas funcionalidades conforme o impacto observado na operação.' },
+  { numero: '01', categoria: 'Descoberta', title: 'Entender o processo', text: 'Mapeamos usuários, regras, informações, exceções, sistemas envolvidos e o resultado que a solução precisa produzir.' },
+  { numero: '02', categoria: 'Decisão', title: 'Avaliar construir, integrar ou adaptar', text: 'Comparamos ferramentas existentes, possibilidades de integração e desenvolvimento próprio para evitar a criação de um sistema desnecessário.' },
+  { numero: '03', categoria: 'Escopo', title: 'Definir a primeira entrega útil', text: 'Priorizamos um conjunto de funcionalidades que resolva parte relevante do problema e possa ser validado antes de ampliar o escopo.' },
+  { numero: '04', categoria: 'Construção', title: 'Construir com critérios verificáveis', text: 'Implementamos regras, integrações, segurança, testes e observabilidade com critérios de aceite definidos para cada etapa.' },
+  { numero: '05', categoria: 'Operação', title: 'Operar, aprender e evoluir', text: 'Acompanhamos o uso real, corrigimos desvios e priorizamos novas funcionalidades conforme o impacto observado na operação.' },
 ];
 
 // §21.4-21.6: três princípios dentro da mesma seção da abordagem.
@@ -137,9 +146,9 @@ const QUALIDADE_ITEMS = [
 
 // §23.7-23.9: três subblocos da seção de qualidade (sem rótulo, só H3 + texto).
 const QUALIDADE_SUBBLOCOS = [
-  { title: 'Manutenção após a entrega', text: 'O modelo pode incluir acompanhamento inicial, correções, evolução contínua, observabilidade ou transferência estruturada para a equipe do cliente. Escopo, prazo de atendimento e responsabilidades devem ser definidos contratualmente.' },
-  { title: 'Propriedade e acesso', text: 'Repositórios, credenciais, ambientes e documentação devem ter responsáveis definidos. A forma de entrega e os direitos sobre o código precisam estar explícitos na proposta e no contrato.' },
-  { title: 'Dívida técnica', text: 'Atalhos, limitações e decisões temporárias devem ser registrados para que a empresa consiga avaliar riscos e priorizar correções futuras.' },
+  { Icon: IconCycle, title: 'Manutenção após a entrega', text: 'O modelo pode incluir acompanhamento inicial, correções, evolução contínua, observabilidade ou transferência estruturada para a equipe do cliente. Escopo, prazo de atendimento e responsabilidades devem ser definidos contratualmente.' },
+  { Icon: IconPropriedadeAcesso, title: 'Propriedade e acesso', text: 'Repositórios, credenciais, ambientes e documentação devem ter responsáveis definidos. A forma de entrega e os direitos sobre o código precisam estar explícitos na proposta e no contrato.' },
+  { Icon: IconDividaTecnica, title: 'Dívida técnica', text: 'Atalhos, limitações e decisões temporárias devem ser registrados para que a empresa consiga avaliar riscos e priorizar correções futuras.' },
 ];
 
 // §25-34: dez perguntas frequentes.
@@ -222,34 +231,38 @@ export default function SistemasPlataformasPage() {
       {/* NOSSA ABORDAGEM — painel "antes de construir" + percurso de 5 etapas + 3 princípios */}
       <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.approachIntro}>
-            <div className={styles.sectionHead}>
-              <span className={styles.eyebrowLight}>Nossa abordagem</span>
-              <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
-              <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando a especificidade da operação justifica construir.</p>
-            </div>
-            <div className={styles.decisionPanel}>
-              <span className={styles.decisionLabel}>Antes de construir</span>
+          <div className={`${styles.sectionHead} ${styles.abordagemHead}`}>
+            <span className={styles.eyebrowLight}>Nossa abordagem</span>
+            <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
+            <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando a especificidade da operação justifica construir.</p>
+          </div>
+          <div className={styles.decisionPanel}>
+            <Kicker className={styles.decisionKicker}>Antes de construir</Kicker>
+            <div className={styles.decisionTrack}>
               {DECISOES.map((d) => (
-                <div className={`${styles.decisionRow} ${d.accent ? styles.decisionRowAccent : ''}`} key={d.opcao}>
-                  <strong>{d.opcao}</strong>
+                <article className={`${styles.decisionCard} ${d.accent ? styles.decisionCardOwn : ''}`} key={d.opcao}>
+                  <span className={styles.decisionCardIcon} aria-hidden="true">
+                    <d.Icon />
+                  </span>
+                  <h3>{d.opcao}</h3>
                   <p>{d.condicao}</p>
-                  <span>{d.acao}</span>
-                </div>
+                  <Kicker className={styles.decisionCardAction}>{d.acao}</Kicker>
+                </article>
               ))}
             </div>
           </div>
 
           <div className={styles.processBlock}>
             <div className={styles.processTitle}>
-              <span>Como o projeto avança</span>
-              <p>Entregas úteis, critérios verificáveis e decisões proporcionais ao estágio da solução.</p>
+              <span>Como o projeto avança, etapa por etapa</span>
+              <p>Cada etapa entrega algo utilizável e verificável antes da próxima começar. As decisões de escopo, integração e controle são proporcionais ao risco e à maturidade da solução em cada momento.</p>
             </div>
             <ol className={styles.processList}>
               {ETAPAS.map((etapa) => (
                 <li key={etapa.title}>
                   <span aria-hidden="true">{etapa.numero}</span>
                   <div>
+                    <Kicker className={styles.processStepCategory}>{etapa.categoria}</Kicker>
                     <h3>{etapa.title}</h3>
                     <p>{etapa.text}</p>
                   </div>
@@ -278,7 +291,6 @@ export default function SistemasPlataformasPage() {
               <span className={styles.eyebrowLight}>Capacidades de engenharia</span>
               <h2 className={styles.h2}>Da regra de negócio à operação em produção.</h2>
               <p className={styles.sectionDesc}>As capacidades são combinadas conforme o tipo de sistema, o estágio do produto, as integrações e os requisitos de segurança e manutenção.</p>
-              <div className={styles.stackLegend}><span /> Uma arquitetura coerente conecta todas as camadas.</div>
             </div>
             <div className={styles.stack}>
               {CAMADAS.map((c, i) => (
@@ -309,18 +321,22 @@ export default function SistemasPlataformasPage() {
               <p className={styles.sectionDescDark}>Um sistema útil precisa continuar compreensível, observável e modificável. Por isso, qualidade não é uma etapa final: ela influencia arquitetura, testes, documentação, implantação e sustentação.</p>
             </div>
             <div className={styles.beneficiosList}>
-              {QUALIDADE_ITEMS.map((item, i) => (
+              {QUALIDADE_ITEMS.map((item) => (
                 <div className={styles.beneficioItem} key={item}>
-                  <span className={styles.qualidadeCheckIcon} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span className={styles.qualidadeCheckIcon} aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
                   <span className={styles.beneficioText}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
           <div className={styles.qualidadeSubblocos}>
-            {QUALIDADE_SUBBLOCOS.map((s, i) => (
+            {QUALIDADE_SUBBLOCOS.map((s) => (
               <div className={styles.qualidadeSubbloco} key={s.title}>
-                <span className={styles.qualidadeSubblocoIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span className={styles.qualidadeSubblocoIndex} aria-hidden="true"><s.Icon /></span>
                 <h3 className={styles.privacidadeTitle}>{s.title}</h3>
                 <p className={styles.privacidadeText}>{s.text}</p>
               </div>
