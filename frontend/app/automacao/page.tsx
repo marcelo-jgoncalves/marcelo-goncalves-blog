@@ -11,17 +11,11 @@ import CtaAssessoria from '@/components/ui/CtaAssessoria';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
-import IconLabelSection from '@/components/ui/IconLabelSection';
 import {
   IconIntegracaoSistemas,
   IconAutomacaoProcessos,
   IconOrquestracaoProcessos,
   IconApisServicos,
-  IconArquiteturasEscalaveis,
-  IconArquiteturaNuvem,
-  IconObservabilidade,
-  IconEventos,
-  IconAsync,
   IconProcessamentoDocumentos,
 } from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
@@ -87,6 +81,16 @@ const ENTREGAS = [
   { Icon: IconApisServicos, title: 'APIs e serviços de integração', text: 'Desenvolvemos interfaces documentadas e componentes de integração para conectar aplicações atuais e facilitar a incorporação de novos sistemas no futuro.', tags: ['APIs', 'Webhooks', 'Baixo acoplamento'] },
 ];
 
+// Painel "Fluxo operacional" ao lado das entregas — ilustra o caminho típico
+// de um evento dentro da automação, do disparo ao acompanhamento.
+const FLUXO_OPERACIONAL = [
+  'Evento ou solicitação',
+  'Validação e regras',
+  'Integração entre sistemas',
+  'Aprovação ou processamento',
+  'Registro e acompanhamento',
+];
+
 // §12.5: oito benefícios.
 const BENEFICIOS = [
   'Menos tarefas repetitivas',
@@ -99,23 +103,19 @@ const BENEFICIOS = [
   'Capacidade de crescer sem aumentar o retrabalho na mesma proporção',
 ];
 
-// §13.5-13.7: três subblocos da abordagem.
-const ABORDAGEM_SUBBLOCOS = [
+// §13.5-13.7: três princípios da abordagem.
+const PRINCIPIOS = [
   { label: 'Começar pelo processo', title: 'Automatizar uma etapa útil antes de ampliar o escopo.', text: 'Sempre que possível, iniciamos pelo processo com melhor relação entre impacto, risco e esforço. Isso permite validar a abordagem, corrigir premissas e ampliar a solução com mais segurança.' },
   { label: 'Preservar o que funciona', title: 'Integrar antes de substituir.', text: 'Não propomos trocar sistemas apenas para viabilizar uma automação. Quando a base atual é adequada, criamos integrações e camadas complementares para reduzir mudanças desnecessárias.' },
   { label: 'Manter controle', title: 'Automação não significa perder visibilidade.', text: 'Definimos logs, alertas, permissões, pontos de validação e formas de intervenção para que a empresa consiga acompanhar o fluxo e agir quando uma situação foge do esperado.' },
 ];
 
-// §14.7: oito capacidades técnicas.
-const CAPACIDADES = [
-  { label: 'Integração de sistemas corporativos', Icon: IconIntegracaoSistemas },
-  { label: 'APIs e webhooks', Icon: IconApisServicos },
-  { label: 'Arquiteturas orientadas a eventos', Icon: IconEventos },
-  { label: 'Processamento assíncrono', Icon: IconAsync },
-  { label: 'Filas, retentativas e filas de mensagens não processadas', Icon: IconOrquestracaoProcessos },
-  { label: 'Idempotência e prevenção de duplicidades', Icon: IconArquiteturasEscalaveis },
-  { label: 'Monitoramento, logs e alertas', Icon: IconObservabilidade },
-  { label: 'Integração com serviços em nuvem', Icon: IconArquiteturaNuvem },
+// §14.7: mapa técnico com as 8 capacidades, agrupadas em 4 estágios do fluxo.
+const ESTAGIOS = [
+  { kicker: 'Entrada', title: 'Interfaces e contratos', text: 'Definimos como os sistemas trocam informações e quais responsabilidades pertencem a cada integração.', items: ['Integração de sistemas corporativos', 'APIs e webhooks'] },
+  { kicker: 'Coordenação', title: 'Orquestração e processamento', text: 'Organizamos eventos e tarefas para que cada etapa seja executada na ordem e no momento adequados.', items: ['Arquiteturas orientadas a eventos', 'Processamento assíncrono'] },
+  { kicker: 'Estado', title: 'Resiliência do fluxo', text: 'Controlamos repetição, indisponibilidade e falhas parciais sem comprometer a consistência do processo.', items: ['Filas, retentativas e mensagens não processadas', 'Idempotência e prevenção de duplicidades'] },
+  { kicker: 'Operação', title: 'Observabilidade e nuvem', text: 'Permitimos acompanhar o comportamento da automação e agir rapidamente quando algo foge do esperado.', items: ['Monitoramento, logs e alertas', 'Integração com serviços em nuvem'] },
 ];
 
 // §15.5: seis itens do checklist de confiabilidade e controle.
@@ -170,18 +170,32 @@ export default function IntegracaoAutomacaoPage() {
             <h2 className={styles.h2}>Processos mais conectados, previsíveis e fáceis de acompanhar.</h2>
             <p className={styles.sectionDesc}>Começamos pelos fluxos que concentram mais esforço, erros ou dependências manuais. A solução pode integrar ferramentas existentes, automatizar etapas específicas ou criar uma camada operacional para coordenar todo o processo.</p>
           </div>
-          <div className={styles.cardGrid}>
-            {ENTREGAS.map(({ Icon, title, text, tags }, i) => (
-              <Reveal as="div" key={title} delay={i * 60}>
-                <FeatureCard
-                  icon={<Icon />}
-                  title={title}
-                  text={text}
-                  tags={tags}
-                  dataAudit={i === 0 ? 'ia2-card' : undefined}
-                />
-              </Reveal>
-            ))}
+          <div className={styles.automationLayout}>
+            <div className={styles.automationServices}>
+              {ENTREGAS.map(({ Icon, title, text, tags }, i) => (
+                <Reveal as="div" key={title} delay={i * 60}>
+                  <FeatureCard
+                    icon={<Icon />}
+                    title={title}
+                    text={text}
+                    tags={tags}
+                    dataAudit={i === 0 ? 'ia2-card' : undefined}
+                  />
+                </Reveal>
+              ))}
+            </div>
+            <aside className={styles.flowPanel}>
+              <span className={styles.flowKicker}>Fluxo operacional</span>
+              <h3>Do evento ao acompanhamento.</h3>
+              <div className={styles.flowList}>
+                {FLUXO_OPERACIONAL.map((step, i) => (
+                  <div className={styles.flowStep} key={step}>
+                    <span className={styles.flowNode} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                    <span className={styles.flowLabel}>{step}</span>
+                  </div>
+                ))}
+              </div>
+            </aside>
           </div>
         </div>
       </section>
@@ -207,43 +221,67 @@ export default function IntegracaoAutomacaoPage() {
         }}
       />
 
-      {/* NOSSA ABORDAGEM — 3 subblocos, antes das capacidades técnicas */}
+      {/* NOSSA ABORDAGEM — texto à esquerda, 3 princípios numerados à direita */}
       <section id="abordagem" className={styles.abordagem} data-audit="ia2-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Cada automação deve resolver um problema real da operação.</h2>
-            <p className={styles.sectionDesc}>Antes de automatizar, entendemos como o processo funciona, quem participa, quais sistemas estão envolvidos, onde ocorrem exceções e como o resultado será medido. Só então definimos o fluxo, as integrações e os controles necessários.</p>
-          </div>
-          <div className={styles.subblocosGrid}>
-            {ABORDAGEM_SUBBLOCOS.map((s) => (
-              <div className={styles.subbloco} key={s.label}>
-                <span className={styles.subblocoLabel}>{s.label}</span>
-                <h3 className={styles.subblocoTitle}>{s.title}</h3>
-                <p className={styles.subblocoText}>{s.text}</p>
-              </div>
-            ))}
+          <div className={styles.approachGrid}>
+            <div className={styles.approachIntro}>
+              <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Cada automação deve resolver um problema real da operação.</h2>
+              <p className={styles.sectionDesc}>Antes de automatizar, entendemos como o processo funciona, quem participa, quais sistemas estão envolvidos, onde ocorrem exceções e como o resultado será medido. Só então definimos o fluxo, as integrações e os controles necessários.</p>
+            </div>
+            <div className={styles.principles} aria-label="Princípios da abordagem">
+              {PRINCIPIOS.map((p, i) => (
+                <article className={styles.principle} key={p.label}>
+                  <div className={styles.principleIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
+                  <div className={styles.principleContent}>
+                    <span className={styles.principleLabel}>{p.label}</span>
+                    <h3>{p.title}</h3>
+                    <p>{p.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CAPACIDADES TÉCNICAS */}
-      <IconLabelSection
-        id="capacidades"
-        dataAudit="ia2-capacidades"
-        eyebrow="Capacidades técnicas"
-        title="A engenharia que sustenta cada integração."
-        description="Selecionamos padrões e componentes conforme o volume, a criticidade, os sistemas envolvidos e a capacidade de manutenção da empresa."
-        items={CAPACIDADES}
-        classes={{
-          section: styles.especialidades,
-          wrap: styles.especialidadesWrap,
-          head: `${styles.sectionHead} ${styles.especialidadesHead}`,
-          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
-          heading: styles.h2,
-          desc: styles.sectionDesc,
-        }}
-      />
+      {/* CAPACIDADES TÉCNICAS — mapa técnico único em 4 estágios */}
+      <section id="capacidades" className={styles.especialidades} data-audit="ia2-capacidades">
+        <div className={styles.wrap}>
+          <div className={styles.capabilitiesGrid}>
+            <div className={styles.capabilitiesIntro}>
+              <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Capacidades técnicas</span>
+              <h2 className={styles.h2}>A engenharia que sustenta cada integração.</h2>
+              <p className={styles.sectionDesc}>Selecionamos padrões e componentes conforme o volume, a criticidade, os sistemas envolvidos e a capacidade de manutenção da empresa.</p>
+              <div className={styles.capabilitiesNote}>
+                <span aria-hidden="true" />
+                <p>A arquitetura deve tornar o fluxo previsível, rastreável e recuperável — sem transferir complexidade para quem opera o processo.</p>
+              </div>
+            </div>
+            <div className={styles.systemMap} aria-label="Camadas técnicas da integração">
+              <div className={styles.systemMapHead}>
+                <span>Fluxo técnico</span>
+                <strong>Da entrada à operação</strong>
+              </div>
+              <div className={styles.systemStages}>
+                {ESTAGIOS.map((e, i) => (
+                  <article className={styles.systemStage} key={e.kicker}>
+                    <div className={styles.stageKicker}><span>{String(i + 1).padStart(2, '0')}</span> {e.kicker}</div>
+                    <h3>{e.title}</h3>
+                    <p>{e.text}</p>
+                    <ul>
+                      {e.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* CONFIABILIDADE E CONTROLE */}
       <section id="confiabilidade" className={styles.confiabilidade} data-audit="ia2-confiabilidade">

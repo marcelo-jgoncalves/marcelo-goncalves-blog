@@ -216,6 +216,98 @@
   text-decoration: underline;
 }
 
+/* Revisão visual: painel único com divisória vertical entre as duas frentes,
+   numeração 01/02 e links em linha com seta — sem linhas horizontais entre
+   os itens (removidas a pedido). */
+.frontsPanel {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  max-width: 1120px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.front {
+  position: relative;
+  min-width: 0;
+  padding: var(--sp-8) var(--sp-7) var(--sp-8) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.front + .front {
+  padding-right: 0;
+  padding-left: var(--sp-8);
+  border-left: 1px solid var(--line);
+}
+
+.front::before {
+  content: attr(data-front);
+  display: block;
+  margin-bottom: var(--sp-4);
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.front .frenteTitle {
+  max-width: 23ch;
+  margin-bottom: var(--sp-4);
+  color: var(--ink);
+  font-size: var(--type-h4);
+  line-height: 1.16;
+}
+
+.front .frenteText {
+  max-width: 57ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.front .frenteList {
+  margin-top: var(--sp-6);
+  padding-top: 0;
+  border-top: 0;
+  gap: 0;
+}
+
+.front .frenteList li {
+  padding: var(--sp-3) 0;
+  border-bottom: 0;
+}
+
+.front .frenteList a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  font-weight: 700;
+}
+
+.front .frenteList a::after {
+  content: "→";
+  flex: none;
+  color: var(--clay);
+}
+
+@media (max-width: 680px) {
+  .frontsPanel { grid-template-columns: 1fr; }
+  .front { padding: var(--sp-7) 0; }
+  .front + .front {
+    padding: var(--sp-7) 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
 /* ===== SERVIÇOS ESPECIALIZADOS ===== */
 .especialidades {
   padding: var(--sp-10) 0;
@@ -301,6 +393,94 @@
   margin: 0;
   padding-top: var(--sp-5);
   border-top: 1px solid var(--line);
+}
+
+/* Revisão visual: texto à esquerda, card "Exemplo" à direita — substitui o
+   cabeçalho centralizado acima do card. */
+.integratedLayout {
+  display: grid;
+  grid-template-columns: minmax(300px, .82fr) minmax(0, 1.18fr);
+  gap: var(--sp-10);
+  align-items: start;
+}
+
+.integratedHead {
+  margin-bottom: 0;
+}
+
+.integratedHead h2 {
+  max-width: 17ch;
+}
+
+@media (max-width: 900px) {
+  .integratedLayout { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+
+/* Card "Exemplo" no mesmo tratamento do card "Nosso método" da Home (borda
+   petrol sutil + barra --clay à esquerda), lista numerada em 2 colunas —
+   mantém as linhas horizontais entre os itens (não fazem parte do pedido de
+   remoção, que só se aplica a "frentes"). */
+.integratedExample {
+  margin: 0 auto;
+  padding: var(--sp-8);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 14px 14px 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.integratedExample .exemploIntro {
+  max-width: 68ch;
+  margin-bottom: var(--sp-6);
+  color: var(--slate);
+  line-height: 1.65;
+}
+
+.integratedExample .exemploList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--sp-7);
+  margin: 0;
+  padding: 0;
+}
+
+.integratedExample .exemploList li {
+  padding: var(--sp-5) 0 var(--sp-5) var(--sp-9);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.integratedExample .exemploList li::before {
+  content: attr(data-index);
+  position: absolute;
+  top: var(--sp-5);
+  left: 0;
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid rgba(201, 96, 60, .24);
+  border-radius: 8px;
+  background: var(--clay-soft);
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.integratedExample .exemploResultado {
+  margin-top: var(--sp-6);
+  color: var(--slate);
+}
+
+.integratedExample .exemploResultado strong {
+  color: var(--petrol);
+}
+
+@media (max-width: 720px) {
+  .integratedExample .exemploList { grid-template-columns: 1fr; }
 }
 
 /* ===== COMO O TRABALHO COMEÇA ===== */
@@ -495,4 +675,49 @@
   line-height: 1.55;
   color: var(--ink);
   min-width: 0;
+}
+
+/* Revisão visual: título à esquerda, lista de diferenciais à direita —
+   substitui o cabeçalho centralizado acima da grade. Mantém as linhas
+   horizontais entre os itens (não fazem parte do pedido de remoção). */
+.diferenciaisBlock {
+  display: grid;
+  grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr);
+  gap: var(--sp-10);
+  align-items: start;
+}
+
+.headLeft {
+  align-items: flex-start;
+  text-align: left;
+  margin: 0;
+  max-width: none;
+}
+
+.diffGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--sp-7);
+  max-width: none;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.diffGrid .diferencialItem {
+  min-width: 0;
+  padding: var(--sp-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.diffGrid .diferencialText {
+  color: var(--ink);
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .diferenciaisBlock { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+
+@media (max-width: 680px) {
+  .diffGrid { grid-template-columns: 1fr; }
 }

@@ -233,9 +233,9 @@ export default function ServicosPage() {
             <h2 className={styles.h2}>Melhoramos a operação e a base tecnológica que a sustenta.</h2>
             <p className={styles.sectionDesc}>Alguns desafios começam nos processos da empresa. Outros estão nos sistemas, nas aplicações ou na infraestrutura. Em muitos projetos, as duas dimensões precisam evoluir juntas.</p>
           </div>
-          <div className={styles.frentesGrid}>
-            {FRENTES.map((f) => (
-              <div className={styles.frenteCard} key={f.title}>
+          <div className={`${styles.frentesGrid} ${styles.frontsPanel}`}>
+            {FRENTES.map((f, i) => (
+              <div className={`${styles.frenteCard} ${styles.front}`} data-front={String(i + 1).padStart(2, '0')} key={f.title}>
                 <h3 className={styles.frenteTitle}>{f.title}</h3>
                 <p className={styles.frenteText}>{f.text}</p>
                 <ul className={styles.frenteList}>
@@ -276,20 +276,22 @@ export default function ServicosPage() {
       {/* SOLUÇÕES INTEGRADAS */}
       <section id="solucoes-integradas" className={styles.abordagem} data-audit="svc-integradas">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Um problema pode exigir várias competências</span>
-            <h2 className={styles.h2}>A solução é desenhada como um conjunto, não como uma soma de tecnologias.</h2>
-            <p className={styles.sectionDesc}>Em muitos projetos, automação, software, inteligência artificial e cloud participam da mesma solução. Definimos a combinação necessária a partir do processo, dos riscos e do resultado esperado.</p>
-          </div>
-          <div className={styles.exemploCard}>
-            <span className={styles.subblocoLabel}>Exemplo</span>
-            <p className={styles.exemploIntro}>Uma empresa recebe documentos por e-mail, copia informações para planilhas e depois realiza cadastros manuais no ERP. A solução pode combinar:</p>
-            <ul className={styles.exemploList}>
-              {SOLUCAO_COMBINADA.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className={styles.exemploResultado}><strong>Resultado:</strong> menos digitação, redução de erros, maior rastreabilidade e um processo capaz de crescer sem exigir aumento proporcional de trabalho manual.</p>
+          <div className={styles.integratedLayout}>
+            <div className={`${styles.sectionHead} ${styles.headLeft} ${styles.integratedHead}`}>
+              <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Um problema pode exigir várias competências</span>
+              <h2 className={styles.h2}>A solução é desenhada como um conjunto, não como uma soma de tecnologias.</h2>
+              <p className={styles.sectionDesc}>Em muitos projetos, automação, software, inteligência artificial e cloud participam da mesma solução. Definimos a combinação necessária a partir do processo, dos riscos e do resultado esperado.</p>
+            </div>
+            <div className={`${styles.exemploCard} ${styles.integratedExample}`}>
+              <span className={styles.subblocoLabel}>Exemplo</span>
+              <p className={styles.exemploIntro}>Uma empresa recebe documentos por e-mail, copia informações para planilhas e depois realiza cadastros manuais no ERP. A solução pode combinar:</p>
+              <ul className={styles.exemploList}>
+                {SOLUCAO_COMBINADA.map((item, i) => (
+                  <li key={item} data-index={String(i + 1).padStart(2, '0')}>{item}</li>
+                ))}
+              </ul>
+              <p className={styles.exemploResultado}><strong>Resultado:</strong> menos digitação, redução de erros, maior rastreabilidade e um processo capaz de crescer sem exigir aumento proporcional de trabalho manual.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -346,17 +348,19 @@ export default function ServicosPage() {
       {/* DIFERENCIAIS DA ENTREGA */}
       <section id="diferenciais" className={styles.diferenciaisSection} data-audit="svc-diferenciais">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Como conduzimos cada projeto</span>
-            <h2 className={styles.h2}>Proximidade na decisão, profundidade na engenharia e clareza na execução.</h2>
-          </div>
-          <div className={styles.diferenciaisGrid}>
-            {DIFERENCIAIS.map((item) => (
-              <div className={styles.diferencialItem} key={item}>
-                <span className={styles.diferencialCheck} aria-hidden="true">✓</span>
-                <span className={styles.diferencialText}>{item}</span>
-              </div>
-            ))}
+          <div className={styles.diferenciaisBlock}>
+            <div className={`${styles.sectionHead} ${styles.headLeft}`}>
+              <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Como conduzimos cada projeto</span>
+              <h2 className={styles.h2}>Proximidade na decisão, profundidade na engenharia e clareza na execução.</h2>
+            </div>
+            <div className={`${styles.diferenciaisGrid} ${styles.diffGrid}`}>
+              {DIFERENCIAIS.map((item) => (
+                <div className={styles.diferencialItem} key={item}>
+                  <span className={styles.diferencialCheck} aria-hidden="true">✓</span>
+                  <span className={styles.diferencialText}>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
