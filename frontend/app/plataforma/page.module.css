@@ -334,11 +334,10 @@
   padding: 0 var(--sp-2);
 }
 
-.subblocoLabel {
+.subblocoKicker {
   display: block;
   font-family: var(--mono);
   font-size: var(--type-caption);
-  font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--clay);

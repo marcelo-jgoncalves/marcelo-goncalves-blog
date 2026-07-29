@@ -195,7 +195,7 @@
 }
 
 .op-layer-num {
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-lead);
   font-weight: 700;
   color: var(--clay);

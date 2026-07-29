@@ -235,7 +235,7 @@ export default function IntegracaoAutomacaoPage() {
                 <article className={styles.principle} key={p.label}>
                   <div className={styles.principleIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</div>
                   <div className={styles.principleContent}>
-                    <span className={styles.principleLabel}>{p.label}</span>
+                    <span className={styles.principleKicker}>{p.label}</span>
                     <h3>{p.title}</h3>
                     <p>{p.text}</p>
                   </div>

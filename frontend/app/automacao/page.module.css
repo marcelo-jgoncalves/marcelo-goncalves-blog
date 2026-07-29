@@ -309,7 +309,7 @@
   border: 1px solid rgba(15, 76, 92, .22);
   background: var(--surface);
   color: var(--clay);
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-caption);
 }
 
@@ -486,8 +486,8 @@
 
 .principle {
   display: grid;
-  grid-template-columns: 74px minmax(0, 1fr);
-  gap: var(--sp-6);
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
   align-items: start;
 }
 
@@ -497,7 +497,7 @@
 
 .principleIndex {
   color: rgba(15, 76, 92, .16);
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-display-sm);
   font-weight: 600;
   line-height: .9;
@@ -528,13 +528,12 @@
   .principleContent::before { left: -18px; top: 4px; height: 34px; }
 }
 
-.principleLabel {
+.principleKicker {
   display: block;
   margin-bottom: var(--sp-3);
   color: var(--clay);
   font-family: var(--mono);
   font-size: var(--type-caption);
-  font-weight: 700;
   letter-spacing: .13em;
   text-transform: uppercase;
 }
@@ -671,13 +670,13 @@
   color: var(--steel);
   font-family: var(--mono);
   font-size: var(--type-caption);
-  font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
 }
 
 .stageKicker span {
   color: var(--clay);
+  font-family: var(--font-numbers);
 }
 
 .systemStage h3 {

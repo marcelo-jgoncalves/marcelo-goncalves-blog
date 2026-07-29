@@ -153,9 +153,12 @@ marcelo-goncalves-blog/
 |---|---|---|
 | `--font-display` | Inter | Headings, UI, botões, nav |
 | `--font-sans` | Inter | Body, parágrafos |
-| `--font-mono` | JetBrains Mono | Código |
+| `--font-mono` | JetBrains Mono | Código, eyebrows/labels/badges pequenos (uso textual, não numérico isolado) |
+| `--font-numbers` | Inter (`var(--font-display)`) | Todo número-índice decorativo (`01`/`02`/`03`, contadores de card/etapa/timeline) |
 
 **Nunca** usar `Space Grotesk` ou `DM Sans` — foram removidos do frontend e do admin.
+
+**`--font-numbers` (sessão 2026-07-28)** — JetBrains Mono renderiza o glifo `0` com um ponto no meio por padrão (característica de design da fonte, sem alternativa via `font-feature-settings` — testado e confirmado, não é toggle). Decisão de Marcelo: não gostou do visual em números grandes/decorativos. Todo elemento que renderiza um número-índice sozinho (via `padStart(2, '0')`, CSS `counter()` decorativo ou `content: attr(data-index)`) usa `var(--font-numbers)`, nunca `var(--mono)`/`var(--font-mono)` diretamente — mesmo em componentes compartilhados (`TableOfContents`, `StepsList`, `StepsTimeline`). Texto misto com letras (eyebrow, label, tag, badge de categoria) continua em `--font-mono` normalmente — a mudança é só para números isolados.
 
 ### Paleta de cores — Petrol / Clay / Ivory (redesign 2026, fonte de verdade corrente)
 
@@ -504,6 +507,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
     - `frontend/e2e/artigos.spec.ts` e `frontend/e2e/visual-audit/artigos.audit.spec.ts` testam contra `/artigos` mas já estavam desatualizados antes desta mudança (referenciam `.art-filterbar`/`.art-chip`, que não existem no código atual) — precisam ser reescritos do zero contra o conteúdo real de cada rota, não só re-apontados;
     - nenhum redirect de `/blog` foi criado (decisão explícita de Marcelo) — qualquer link externo/histórico apontando pra `/blog` cai em 404;
     - `AUTHOR_INSTAGRAM_URL`/outros textos "Blog" residuais em `lib/config.ts` (`BLOG_DESCRIPTION`) não foram renomeados, só reaproveitados — nome da constante ficou desalinhado do papel atual (usada por `/artigos`, não mais por `/blog`).
+45. **Revisão visual seção-a-seção (`/servicos`, `/automacao`) — em andamento, protótipos pendentes de implementação:** `automacao-v3.html`, `plataforma.html`/`plataforma.md`, `software.html`/`software.md` (raiz do repo) foram salvos por Marcelo mas ainda não processados — provável continuação da reformulação nas páginas de pilar restantes. Padrão de trabalho: cada protótipo aprova só a(s) seção(ões) citada(s) explicitamente, nunca a página inteira; valores de espaçamento/fonte sempre convertidos pros tokens do projeto (protótipos usam `clamp()`/px cru, que o `stylelint` rejeita); perguntar antes de tocar em componente compartilhado (ex.: `IconLabelSection`, usado em `/automacao`+`/plataforma`+`/software` — a solução em `/automacao` foi uma seção customizada só ali, sem alterar o componente). Pendência conhecida: `automacao-standalone-revisada-v2.html` também contém uma proposta de redesign pra seção "Confiabilidade e controle" (`#confiabilidade`, grid 3 colunas com boxes bordeados) que **não foi implementada** — só as 3 seções pedidas explicitamente (Nossa abordagem, Capacidades técnicas, O que fazemos) foram feitas.
 
 ---
 

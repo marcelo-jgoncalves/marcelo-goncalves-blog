@@ -256,7 +256,7 @@ export default function SistemasPlataformasPage() {
           <div className={styles.subblocosGrid}>
             {ABORDAGEM_SUBBLOCOS.map((s) => (
               <div className={styles.subbloco} key={s.label}>
-                <span className={styles.subblocoLabel}>{s.label}</span>
+                <span className={styles.subblocoKicker}>{s.label}</span>
                 <h3 className={styles.subblocoTitle}>{s.title}</h3>
                 <p className={styles.subblocoText}>{s.text}</p>
               </div>

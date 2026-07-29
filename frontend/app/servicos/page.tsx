@@ -283,7 +283,7 @@ export default function ServicosPage() {
               <p className={styles.sectionDesc}>Em muitos projetos, automação, software, inteligência artificial e cloud participam da mesma solução. Definimos a combinação necessária a partir do processo, dos riscos e do resultado esperado.</p>
             </div>
             <div className={`${styles.exemploCard} ${styles.integratedExample}`}>
-              <span className={styles.subblocoLabel}>Exemplo</span>
+              <span className={styles.subblocoKicker}>Exemplo</span>
               <p className={styles.exemploIntro}>Uma empresa recebe documentos por e-mail, copia informações para planilhas e depois realiza cadastros manuais no ERP. A solução pode combinar:</p>
               <ul className={styles.exemploList}>
                 {SOLUCAO_COMBINADA.map((item, i) => (

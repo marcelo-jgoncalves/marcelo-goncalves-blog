@@ -42,6 +42,7 @@
   --font-sans:         'Inter', sans-serif;             /* body, prosa, inputs */
   --font-body:         'Inter', sans-serif;             /* alias de --font-sans */
   --font-mono:         'JetBrains Mono', monospace;
+  --font-numbers:      var(--font-display); /* números-índice decorativos grandes (01/02/03) — Inter, não mono: JetBrains Mono tem zero pontilhado por padrão, sem alternativa via CSS */
 
   /* ─────────────────────────────────────
      ESCALA DE ESPAÇAMENTO — Redesign 2026, base 4px

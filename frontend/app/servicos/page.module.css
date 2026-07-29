@@ -251,7 +251,7 @@
   display: block;
   margin-bottom: var(--sp-4);
   color: var(--clay);
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-caption);
   font-weight: 700;
   letter-spacing: .16em;
@@ -344,11 +344,10 @@
   box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
 }
 
-.subblocoLabel {
+.subblocoKicker {
   display: block;
   font-family: var(--mono);
   font-size: var(--type-caption);
-  font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--clay);
@@ -465,7 +464,7 @@
   border-radius: 8px;
   background: var(--clay-soft);
   color: var(--clay);
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-caption);
   font-weight: 700;
 }

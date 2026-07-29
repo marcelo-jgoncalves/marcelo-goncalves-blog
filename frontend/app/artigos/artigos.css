@@ -410,7 +410,7 @@
 
 .home-ml-item-num {
   flex: none;
-  font-family: var(--mono);
+  font-family: var(--font-numbers);
   font-weight: 600;
   font-size: var(--type-caption);
   letter-spacing: .08em;

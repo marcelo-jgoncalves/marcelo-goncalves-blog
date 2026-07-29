@@ -245,7 +245,7 @@
 }
 
 .post-toc-ix {
-  font-family: var(--font-mono);
+  font-family: var(--font-numbers);
   font-size: var(--type-caption);
   letter-spacing: .06em;
   color: var(--steel);
