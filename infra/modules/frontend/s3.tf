@@ -1,4 +1,3 @@
-# infra/modules/frontend/s3.tf
 
 # 1. O Bucket de Assets
 resource "aws_s3_bucket" "frontend_assets" {

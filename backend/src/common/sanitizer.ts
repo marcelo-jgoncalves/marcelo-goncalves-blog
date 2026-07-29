@@ -1,4 +1,3 @@
-// backend/src/common/sanitizer.ts
 // Sanitizes HTML content from the Tiptap editor before persisting to DynamoDB.
 // Allows the full set of tags/attributes the editor produces while stripping
 // any script injection vectors.
@@ -28,10 +27,10 @@ const ALLOWED_ATTRIBUTES: sanitizeHtml.IOptions["allowedAttributes"] = {
 
 const ALLOWED_SCHEMES = ["http", "https", "mailto"];
 
-// iframe só é permitido para embeds de YouTube — sanitize-html remove
-// qualquer <iframe> cujo src não resolva para um desses hostnames,
-// mesmo com a tag/atributo allowlisted. Sem isso, "iframe" em
-// ALLOWED_TAGS permitiria <iframe src="qualquer-coisa.html"> (XSS).
+// iframe is only allowed for YouTube embeds — sanitize-html strips any
+// <iframe> whose src doesn't resolve to one of these hostnames, even with
+// the tag/attribute allowlisted. Without this, "iframe" in ALLOWED_TAGS
+// would allow <iframe src="anything.html"> (XSS).
 const ALLOWED_IFRAME_HOSTNAMES = ["www.youtube.com", "youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"];
 
 export function sanitizePostHtml(html: string): string {

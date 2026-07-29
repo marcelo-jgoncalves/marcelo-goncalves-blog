@@ -1,4 +1,3 @@
-# infra/modules/media/alarms.tf
 # Alarme CloudWatch para a Lambda imageProcessor — ausente da lista original
 # de monitored_functions do modulo lambda porque imageProcessor vive no
 # modulo media (achado #2, registro historico arquivado fora do repo em

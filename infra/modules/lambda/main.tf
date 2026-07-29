@@ -1,4 +1,3 @@
-# infra/modules/lambda/main.tf
 #
 # IAM roles/policies (uma por Lambda, least-privilege) vivem em lambda-iam.tf.
 
@@ -216,7 +215,7 @@ resource "aws_lambda_function" "admin_categorias" {
   depends_on = [aws_cloudwatch_log_group.admin_categorias]
 }
 
-# --- adminSession (BFF): troca o idToken do SRP client-side por sessão opaca ---
+# --- adminSession (BFF): exchanges the client-side SRP idToken for an opaque session ---
 resource "aws_lambda_function" "admin_session" {
   function_name = "${var.project_name}-${var.environment}-adminSession"
   role          = aws_iam_role.adminSession_role.arn
@@ -242,11 +241,10 @@ resource "aws_lambda_function" "admin_session" {
   depends_on = [aws_cloudwatch_log_group.admin_session]
 }
 
-# --- adminAuthorizer (REQUEST): substitui o COGNITO_USER_POOLS nativo nas
-# rotas /admin/* protegidas — valida só o cookie de sessão opaca. O
-# fallback Authorization Bearer (fluxo legado da transição) foi removido
-# em 2026-07-24 depois de confirmar o fluxo de cookie funcionando ponta a
-# ponta em produção. ---
+# --- adminAuthorizer (REQUEST): replaces the native COGNITO_USER_POOLS on
+# protected /admin/* routes — validates only the opaque session cookie. The
+# Authorization Bearer fallback (legacy transition flow) was removed after
+# confirming the cookie flow working end to end in production. ---
 resource "aws_lambda_function" "admin_authorizer" {
   function_name = "${var.project_name}-${var.environment}-adminAuthorizer"
   role          = aws_iam_role.adminAuthorizer_role.arn

@@ -1,4 +1,3 @@
-// backend/src/functions/imageProcessor/index.test.ts
 import { S3Event } from 'aws-lambda';
 
 const mockS3Send    = jest.fn();
@@ -159,10 +158,8 @@ describe('imageProcessor', () => {
     await expect(handler(makeS3Event('img.jpg'))).rejects.toThrow('S3 falhou');
   });
 
-  // --- Testes LQIP + DynamoDB ---
-
   it('não tenta salvar no DynamoDB quando POSTS_TABLE não está definida', async () => {
-    // POSTS_TABLE deletado no beforeEach
+    // POSTS_TABLE deleted in beforeEach
     const { handler } = await import('./index');
     await handler(makeS3Event('hero.jpg'));
 
@@ -222,7 +219,7 @@ describe('imageProcessor', () => {
       .mockRejectedValueOnce(new Error('DynamoDB indisponível'));
 
     const { handler } = await import('./index');
-    // Não deve lançar — o erro do DynamoDB é logado como warn e ignorado
+    // Should not throw — the DynamoDB error is logged as a warning and ignored
     await expect(handler(makeS3Event('hero.jpg'))).resolves.not.toThrow();
   });
 

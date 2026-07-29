@@ -1,15 +1,12 @@
-// backend/src/common/postCounters.ts
 //
-// Contador atômico de posts publicados — substitui a Query com
-// `Select: "COUNT"` que getAllPosts/getProjectPosts disparavam em paralelo
-// a cada requisição (achado real da auditoria de performance dedicada,
-// contexto/auditoria-performance/01-perf-load.md: essa segunda query dobrava o
-// custo de leitura e tornava /artigos a rota mais lenta no teste de carga).
+// Atomic counter of published posts — replaces the `Select: "COUNT"` query
+// that getAllPosts/getProjectPosts fired in parallel on every request,
+// doubling the read cost.
 //
-// Vive como um item próprio na tabela `posts` (slug = COUNTERS_SLUG), nunca
-// aparece em nenhuma GSI porque não tem os atributos `status`/
-// `e_projeto_marker` que as GSIs indexam (sparse index, mesmo princípio já
-// usado em e_popular_marker/e_projeto_marker).
+// Lives as its own item in the `posts` table (slug = COUNTERS_SLUG), never
+// shows up in any GSI because it lacks the `status`/`e_projeto_marker`
+// attributes the GSIs index on (sparse index, same principle already used
+// in e_popular_marker/e_projeto_marker).
 import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "./dynamodb";
 
@@ -32,9 +29,9 @@ export async function getPostCounters(): Promise<PostCounters> {
   };
 }
 
-// Estado mínimo de um post necessário para decidir se ele conta nos
-// agregados — aceita undefined para representar "não existe" (post novo
-// na criação, ou já deletado).
+// Minimal post state needed to decide if it counts toward the aggregates —
+// accepts undefined to represent "doesn't exist" (new post on create, or
+// already deleted).
 export interface CounterRelevantState {
   status?: string;
   e_projeto?: number;
@@ -53,9 +50,9 @@ export interface CounterDeltas {
   deltaProjeto: number;
 }
 
-// Compara o estado antes/depois de uma escrita e retorna o delta a aplicar
-// nos contadores. Cobre os 3 caminhos de escrita reais: criação (oldItem
-// undefined), atualização (ambos definidos) e exclusão (newItem undefined).
+// Compares before/after state of a write and returns the delta to apply to
+// the counters. Covers the 3 real write paths: create (oldItem undefined),
+// update (both defined), delete (newItem undefined).
 export function computeCounterDeltas(
   oldItem: CounterRelevantState | undefined,
   newItem: CounterRelevantState | undefined,
@@ -66,9 +63,9 @@ export function computeCounterDeltas(
   };
 }
 
-// ADD em DynamoDB cria o atributo (inicializado no valor do delta) se o
-// item/atributo ainda não existir — não é preciso inicializar os
-// contadores manualmente antes do primeiro uso.
+// DynamoDB's ADD creates the attribute (initialized to the delta value) if
+// the item/attribute doesn't exist yet — no need to manually initialize the
+// counters before first use.
 export async function applyCounterDeltas(deltas: CounterDeltas): Promise<void> {
   if (deltas.deltaTotal === 0 && deltas.deltaProjeto === 0) return;
 

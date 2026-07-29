@@ -1,4 +1,3 @@
-# infra/modules/observability/canary.tf
 # CloudWatch Synthetics heartbeat — monitoramento sintético contínuo,
 # independente de deploy/tráfego real. Gated por enable_synthetic_canary
 # (variável própria, separada de enable_cloudwatch_alarms — custo

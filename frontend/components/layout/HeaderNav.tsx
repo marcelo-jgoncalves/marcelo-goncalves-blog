@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
-// Ordem definitiva (ajuste-17a §3): Home, Serviços, Sobre, Artigos, O Projeto, Contato, CTA.
+// Order: Home, Serviços, Sobre, Artigos, O Projeto, Contato, CTA.
 const NAV_LINKS_AFTER = [
   { name: 'Sobre', href: '/sobre' },
   { name: 'Artigos', href: '/artigos' },
@@ -14,15 +14,14 @@ const NAV_LINKS_AFTER = [
   { name: 'Contato', href: '/contato' },
 ] as const;
 
-// Artigos ativo em /artigos, /todos-artigos, /post/[slug] e /categoria/[slug] (ajuste-17a §5).
+// Artigos is active on /artigos, /todos-artigos, /post/[slug] and /categoria/[slug].
 const isArticlesActive = (pathname: string) =>
   pathname === '/artigos' ||
   pathname === '/todos-artigos' ||
   pathname.startsWith('/post/') ||
   pathname.startsWith('/categoria/');
 
-// Landing pages de pilar (specs/ESPECIFICACAO-*.md) — as 4 já estão implementadas.
-// Ver project_engenharia_software_landing (memória).
+// Pillar landing pages — all 4 are already implemented.
 const SERVICE_LINKS = [
   { name: 'Engenharia de Software', href: '/software' },
   { name: 'Cloud & DevOps', href: '/plataforma' },
@@ -30,8 +29,7 @@ const SERVICE_LINKS = [
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
 ] as const;
 
-// /servicos (página central, ajuste-05) — primeiro item do dropdown, acima
-// dos 4 links individuais (ajuste-07 §5.3).
+// /servicos (central page) — first item in the dropdown, above the 4 individual links.
 const SERVICES_OVERVIEW_LINK = { name: 'Visão geral dos serviços', href: '/servicos' } as const;
 
 export default function HeaderNav() {
@@ -59,7 +57,7 @@ export default function HeaderNav() {
     menuBtnRef.current?.focus();
   };
 
-  // Fecha os dois menus ao cruzar o breakpoint desktop/mobile (ajuste-17a §27.3).
+  // Closes both menus when crossing the desktop/mobile breakpoint.
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1300) {
@@ -73,18 +71,18 @@ export default function HeaderNav() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Fecha o dropdown/drawer imediatamente em toda mudança de rota (ajuste-17a §17.6/§28.2).
+  // Closes the dropdown/drawer immediately on every route change.
   const previousPathnameRef = useRef(pathname);
   useEffect(() => {
     if (previousPathnameRef.current === pathname) return;
     previousPathnameRef.current = pathname;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza com mudança de rota (fonte externa ao React), não com props/state
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs with a route change (external to React), not with props/state
     setIsServicesOpen(false);
     setIsMenuOpen(false);
     setIsServicesMobileOpen(false);
   }, [pathname]);
 
-  // Bloqueio de scroll do body enquanto o drawer mobile estiver aberto (ajuste-17a §23).
+  // Locks body scroll while the mobile drawer is open.
   useEffect(() => {
     if (!isMenuOpen) return;
     const original = document.body.style.overflow;

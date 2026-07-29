@@ -1,4 +1,3 @@
-// frontend/lib/api.ts
 
 function getApiUrl(): string {
   const url = process.env.API_URL;

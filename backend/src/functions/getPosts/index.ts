@@ -67,9 +67,9 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined,
   });
 
-  // totalCount vem do contador agregado (postCounters.ts), não de uma 2ª
-  // Query — achado real da auditoria de performance dedicada (RCU duplicado
-  // a cada requisição só para exibir "Página X de Y").
+  // totalCount comes from the aggregated counter (postCounters.ts), not a
+  // 2nd Query — avoids doubling the read cost on every request just to
+  // show "Page X of Y".
   const [result, counters] = await Promise.all([
     dynamo.send(postsCommand),
     getPostCounters(),
@@ -179,10 +179,9 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
     ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
   });
 
-  // totalCount vem do contador agregado (postCounters.ts), não de uma 2ª
-  // Query — achado real da auditoria de performance dedicada (RCU duplicado
-  // a cada requisição só para exibir "Página X de Y"; /artigos era a rota
-  // mais lenta no teste de carga real por causa exatamente desta 2ª query).
+  // totalCount comes from the aggregated counter (postCounters.ts), not a
+  // 2nd Query — this second query used to make /artigos the slowest route
+  // under load, just to show "Page X of Y".
   const [result, counters] = await Promise.all([
     dynamo.send(postsCommand),
     getPostCounters()

@@ -138,7 +138,7 @@ describe('getPosts handler', () => {
 
       await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
 
-      // getAllPosts dispara 2 chamadas (Query de itens + GetCommand do contador); populares dispara apenas 1
+      // getAllPosts fires 2 calls (item Query + counter GetCommand); populares fires only 1
       expect(mockSend).toHaveBeenCalledTimes(1);
     });
   });
@@ -180,8 +180,9 @@ describe('getPosts handler', () => {
       );
 
       const cmd = mockSend.mock.calls[0][0];
-      // FilterExpression no QueryCommand faz Limit contar itens ANTES do filtro;
-      // sem ele, Limit conta apenas itens da categoria e filtramos status em memória.
+      // FilterExpression on QueryCommand makes Limit count items BEFORE the
+      // filter; without it, Limit counts only category items and we filter
+      // status in memory.
       expect(cmd.input.FilterExpression).toBeUndefined();
     });
 
@@ -251,8 +252,9 @@ describe('getPosts handler', () => {
       );
 
       const cmd = mockSend.mock.calls[0][0];
-      // Limit no ScanCommand com FilterExpression lê N itens ANTES de filtrar —
-      // com Limit:9, se os primeiros 9 itens não matcharem, retorna array vazio.
+      // Limit on a ScanCommand with FilterExpression reads N items BEFORE
+      // filtering — with Limit:9, if the first 9 items don't match, it
+      // returns an empty array.
       expect(cmd.input.Limit).toBeUndefined();
     });
 
@@ -304,7 +306,7 @@ describe('getPosts handler', () => {
 
       const body = JSON.parse(result?.body ?? '{}');
       expect(body.totalCount).toBe(13);
-      // GetCommand do contador, não outra QueryCommand
+      // Counter's GetCommand, not another QueryCommand
       const counterCmd = mockSend.mock.calls[1][0];
       expect(counterCmd.input.Select).toBeUndefined();
     });

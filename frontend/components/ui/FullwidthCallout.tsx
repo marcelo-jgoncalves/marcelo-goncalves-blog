@@ -1,4 +1,3 @@
-// frontend/components/ui/FullwidthCallout.tsx
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

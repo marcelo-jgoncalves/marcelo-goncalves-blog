@@ -1,8 +1,7 @@
-/* frontend/components/ui/BeneficiosSection.module.css
-   Receita lapidada em /software (sessão 2026-07-29): checkmark clay sem
-   fundo (não mais número nem ícone com box colorido), grade 2 colunas sem
-   bordas visíveis, headline grande (--type-h1). Único ponto de verdade —
-   ver BeneficiosSection.tsx. */
+/* Recipe refined in /software: clay checkmark with no background (no
+   longer a number or icon with a colored box), 2-column grid with no
+   visible borders, large headline (--type-h1). Single source of truth —
+   see BeneficiosSection.tsx. */
 
 .section {
   padding: var(--sp-10) 0;

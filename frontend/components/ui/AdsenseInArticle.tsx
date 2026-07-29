@@ -1,4 +1,3 @@
-// frontend/components/ui/AdsenseInArticle.tsx'
 
 'use client'; 
 

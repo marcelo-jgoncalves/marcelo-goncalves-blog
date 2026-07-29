@@ -1,8 +1,5 @@
-/* frontend/app/sobre/sobre.css
- * Fonte: specs/ESPECIFICACAO-SOBRE-V2.md
- * Tokens: redesign 2026 (petrol/clay/ivory) — ver globals.css :root.
- * Breakpoint único (860px), mesmo usado no resto do site para heroes de coluna única.
- */
+/* Single breakpoint (860px), same one used across the rest of the site
+   for single-column heroes. */
 
 .sobre-hero,
 .sobre-visao,
@@ -13,8 +10,8 @@
   margin-block: 0;
 }
 
-/* Ajuste 08 (§17): scroll-margin-top nas âncoras da página, mesmo padrão
-   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+/* scroll-margin-top on the page's anchors, same pattern already used
+   across the project (100px — see frontend/app/post/[slug]/post.css). */
 #visao,
 #origem,
 #principios,
@@ -26,8 +23,8 @@
 }
 
 /* ==========================================================================
-   HERO — coluna única (Ajuste 08 removeu o card "Nossa Visão" do hero;
-   a visão virou seção própria logo abaixo, ver .sobre-visao).
+   HERO — single column (the "Nossa Visão" card was removed from the hero;
+   the vision became its own section right below, see .sobre-visao).
    ========================================================================== */
 .page-hero.sobre-hero {
   --ph-pad: 88px 40px var(--sp-9);
@@ -50,7 +47,7 @@
 }
 
 /* ==========================================================================
-   NOSSA VISÃO
+   OUR VISION
    ========================================================================== */
 .sobre-visao { background: var(--surface); padding: var(--sp-9) 0; }
 
@@ -87,7 +84,7 @@
 }
 
 /* ==========================================================================
-   NOSSA ORIGEM
+   OUR ORIGIN
    ========================================================================== */
 .sobre-origem { background: var(--ivory); padding: var(--sp-9) 0; }
 
@@ -146,10 +143,10 @@
 }
 
 /* ==========================================================================
-   NOSSA FILOSOFIA
+   OUR PHILOSOPHY
    ========================================================================== */
-/* var(--surface) = #FFFFFF, mesmo token usado em #abordagem ("Como
-   trabalhamos") na Home — não um branco hardcoded à parte. */
+/* var(--surface) = #FFFFFF, same token used in #abordagem ("Como
+   trabalhamos") on the Home — not a separate hardcoded white. */
 .sobre-filosofia { background: var(--surface); padding: var(--sp-9) 0; }
 
 .sobre-center-head { text-align: center; max-width: 680px; margin: 0 auto var(--sechead-center-gap); }
@@ -183,9 +180,9 @@
   .sobre-pr-title { font-size: var(--type-lead); }
 }
 
-/* Manifesto — pertence visualmente à seção de princípios (§10.3), não é uma
-   seção nova. Faixa escura de encerramento, sem numeração nem CTA — mesmo
-   tratamento visual de fundo petrol com glow usado em .sobre-abordagem. */
+/* Manifesto — visually belongs to the principles section, not a new
+   section. Dark closing band, no numbering or CTA — same petrol
+   background + glow treatment used in .sobre-abordagem. */
 .sobre-manifesto {
   position: relative;
   overflow: hidden;
@@ -218,9 +215,9 @@
 }
 
 /* ==========================================================================
-   COMO PENSAMOS
+   HOW WE THINK
    ========================================================================== */
-/* Fundo petrol — mesma cor da seção Resultados na Home (var(--petrol)). */
+/* Petrol background — same color as the Results section on the Home (var(--petrol)). */
 .sobre-abordagem { background: var(--petrol); padding: var(--sp-9) 0; }
 
 .sobre-abordagem-head {
@@ -257,8 +254,8 @@
   gap: var(--gap-grid);
 }
 
-/* Cards translúcidos sobre o fundo petrol — mesmo tratamento usado nas
-   ilustrações da seção Resultados (.ih-case-visual em home.css). */
+/* Translucent cards over the petrol background — same treatment used in
+   the Results section's illustrations (.ih-case-visual in home.css). */
 .sobre-module {
   position: relative;
   overflow: hidden;
@@ -316,12 +313,13 @@
 }
 
 /* ==========================================================================
-   O QUE ESTÁ POR TRÁS
+   WHAT'S BEHIND IT
    ========================================================================== */
 .sobre-behind {
-  /* --bs/--bc apontam para os tokens globais (mesmo valor de --ivory/--surface,
-     já usados como fundo de seção na Home) em vez de hex fixo à parte. Texto
-     e bordas usam --ink/--slate/--clay direto (sem paleta local paralela). */
+  /* --bs/--bc point to the global tokens (same value as --ivory/--surface,
+     already used as section backgrounds on the Home) instead of a separate
+     fixed hex. Text and borders use --ink/--slate/--clay directly (no
+     parallel local palette). */
   --bs: var(--ivory);
   --bc: var(--surface);
   --bsoft: #f1ede4;
@@ -357,8 +355,8 @@
   padding: var(--sp-8);
 }
 
-/* Foto contida (não mais esticada à altura total da coluna de texto) e
-   centralizada verticalmente no card via align-items:center do grid acima. */
+/* Photo contained (no longer stretched to the text column's full height)
+   and vertically centered in the card via the grid's align-items:center above. */
 .sobre-behind-photo {
   position: relative;
   aspect-ratio: 3 / 4;
@@ -369,8 +367,9 @@
 
 .sobre-behind-photo picture img { object-position: center top; }
 
-/* ResponsiveImage com fill já se posiciona/cobre via style inline (ver componente);
-   esta regra cobre só o fallback <img> puro (sem foto de autor cadastrada). */
+/* ResponsiveImage with fill already positions/covers via inline style (see
+   component); this rule only covers the plain <img> fallback (no author
+   photo registered). */
 .sobre-behind-photo > img {
   position: absolute;
   inset: 0;
@@ -394,7 +393,7 @@
 
 .sobre-behind-h3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--ink); margin: 0 0 var(--sp-4); }
 
-/* §12.6: tags de função — mesmo tratamento visual de .ih-pillar-tags (Home). */
+/* Role tags — same visual treatment as .ih-pillar-tags (Home). */
 .sobre-behind-tags {
   display: flex;
   flex-wrap: wrap;
@@ -416,8 +415,8 @@
 
 .sobre-behind-content p { font-size: var(--type-body-sm); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
 
-/* §12.8: bloco "Uma estrutura adaptável ao projeto" — pertence ao mesmo
-   macrobloco de liderança, logo após a biografia. */
+/* "Uma estrutura adaptável ao projeto" block — belongs to the same
+   leadership macro-block, right after the bio. */
 .sobre-boutique {
   margin-top: var(--sp-5);
   padding-top: var(--sp-6);
@@ -451,9 +450,9 @@
   color: var(--clay);
 }
 
-/* Nomes de certificação por extenso — lista simples (não pill), porque
-   .feature-card-tags usa white-space:nowrap, o que quebrava/vazava com
-   textos longos como "AWS Certified Solutions Architect – Associate". */
+/* Certification names in full — simple list (not pill), because
+   .feature-card-tags uses white-space:nowrap, which broke/overflowed with
+   long text like "AWS Certified Solutions Architect – Associate". */
 .sobre-cert-list {
   list-style: none;
   margin: 0;
@@ -479,11 +478,11 @@
 }
 
 /* ==========================================================================
-   CTA FINAL (#contato, instância do AdvisoryCta)
+   FINAL CTA (#contato, an AdvisoryCta instance)
    ========================================================================== */
-/* Mesmo ajuste aplicado em #contato (Home) e nas demais páginas que usam
-   AdvisoryCta: align-items:center empurrava o eyebrow para baixo do centro
-   vertical do card à direita, além do padding-top sozinho. */
+/* Same fix applied to #contato (Home) and the other pages that use
+   AdvisoryCta: align-items:center pushed the eyebrow below the vertical
+   center of the card on the right, past the padding-top alone. */
 #contato.cta-adv .cta-adv-in {
   align-items: flex-start;
   padding-top: var(--sp-9);

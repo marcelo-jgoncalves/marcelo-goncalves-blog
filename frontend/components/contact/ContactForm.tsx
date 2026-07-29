@@ -14,11 +14,11 @@ interface FormState {
   companySize: string;
   area: string;
   message: string;
-  website: string; // honeypot — nunca enviado no e-mail, ver ajuste-14 §16.1
+  website: string; // honeypot — never sent in the email
 }
 
-// §14.6: opções e valores do campo "area" — usadas também como query string
-// (?area=...) vinda dos CTAs específicos das 4 landings de pilar.
+// Options and values for the "area" field — also used as a query string
+// (?area=...) coming from the specific CTAs on the 4 pillar landings.
 export const AREA_OPTIONS = [
   { value: 'automacao-integracao', label: 'Automação e Integração de Processos' },
   { value: 'inteligencia-artificial', label: 'Inteligência Artificial Aplicada' },
@@ -81,11 +81,11 @@ function validate(form: FormState): Partial<Record<RequiredField, string>> {
   return errors;
 }
 
-// TODO (ajuste-14 §20): substituir por POST real assim que a Lambda de
-// contato (SES + honeypot + rate limit) existir — hoje é só o mock local.
-// Contrato alvo: ContactRequest (§20.3) com { name, email, company, role?,
+// TODO: replace with a real POST once the contact Lambda (SES + honeypot +
+// rate limit) exists — today this is just the local mock.
+// Target contract: ContactRequest with { name, email, company, role?,
 // phone?, companySize?, area, message, website?, context } → 200 { success,
-// referenceId } | 400/429/500 conforme §20.5-20.7.
+// referenceId } | 400/429/500.
 function submitContact(_form: FormState): Promise<{ referenceId: string }> {
   return new Promise((resolve) => setTimeout(() => resolve({ referenceId: 'local-mock' }), 250));
 }
@@ -111,7 +111,7 @@ export default function ContactForm() {
   ) => {
     const value = e.target.value;
     setForm((f) => ({ ...f, [key]: value }));
-    // Validação progressiva (§19.4): só corrige o resumo após a 1ª tentativa de envio.
+    // Progressive validation: only corrects the summary after the 1st submit attempt.
     if (hasErrors && key in errors) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -124,7 +124,7 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Honeypot (§16.1): se preenchido, finge sucesso sem enviar nada.
+    // Honeypot: if filled, fakes success without sending anything.
     if (form.website) {
       setEnviado(true);
       setReferenceId('');
@@ -189,7 +189,7 @@ export default function ContactForm() {
         </div>
       )}
 
-      {/* Honeypot — invisível, fora da ordem de tabulação, nunca enviado no e-mail. */}
+      {/* Honeypot — invisible, out of tab order, never sent in the email. */}
       <label className="contact-honeypot" aria-hidden="true">
         Não preencha este campo
         <input

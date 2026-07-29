@@ -1,8 +1,6 @@
-/* frontend/app/inteligencia-artificial/page.module.css
-   specs/ESPECIFICACAO-INTELIGENCIA-ARTIFICIAL.md — breakpoints próprios da página (680/1040).
-   NOVO FLUXO CANÔNICO (§17): Hero → O que fazemos → Casos de Aplicação → Benefícios →
-   Como trabalhamos → FAQ → CTA. Sem Especialidades/Diferenciais/grid de 3 etapas —
-   esse fluxo será retroaplicado às outras 3 landings depois (não fazer agora). */
+/* Page's own breakpoints (680/1040).
+   Canonical flow: Hero → O que fazemos → Casos de Aplicação → Benefícios →
+   Como trabalhamos → FAQ → CTA. No Especialidades/Diferenciais/3-step grid. */
 
 .wrap {
   max-width: 1240px;
@@ -48,8 +46,8 @@
   line-height: 1.7;
 }
 
-/* Cabeçalhos de seção alinhados à esquerda (não centralizados) — identidade
-   própria desta landing, diferente das outras 3 (automacao/plataforma/software). */
+/* Left-aligned section headers (not centered) — this landing's own
+   identity, different from the other 3 (automacao/plataforma/software). */
 .sectionHead {
   display: flex;
   flex-direction: column;
@@ -59,8 +57,9 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Eyebrow — mesmo padrão corrigido das 3 landings anteriores: traço à esquerda por
-   padrão, margin-bottom:var(--eyebrow-gap); .eyebrowDual centraliza e adiciona o 2º traço (::after). */
+/* Eyebrow — same corrected pattern as the other 3 landings: rule on the
+   left by default, margin-bottom:var(--eyebrow-gap); .eyebrowDual centers
+   and adds the 2nd rule (::after). */
 .eyebrowLight,
 .eyebrowDark {
   font-family: 'JetBrains Mono', monospace;
@@ -97,8 +96,8 @@
   flex: none;
 }
 
-/* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
-   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
+/* All sections on this page are fullwidth with their own padding (required
+   exception to the global editorial rhythm "section { margin-block: var(--sp-10) }") */
 .whatWeDo,
 .useCasesSection,
 .approachSection,
@@ -106,17 +105,17 @@
   margin-block: 0;
 }
 
-/* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
+/* ===== HERO — override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
 .aiHero {
   --ph-pad: 88px 40px var(--sp-9);
 }
 
-/* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
-   var(--sp-9) de cada lado de toda transição sem linha divisória real —
-   antes cada seção usava o padding "cru" do próprio module.css (64/80/100px
-   por breakpoint), criando gaps grandes entre seções. Sobrescreve via
-   seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
-   especificidade que .class em qualquer largura. */
+/* Inter-section spacing standardized with the same treatment as the Home:
+   var(--sp-9) on each side of every transition without a real divider line
+   — previously each section used its module.css's raw padding (64/80/100px
+   per breakpoint), creating large gaps between sections. Overridden via an
+   #id selector (:global — Turbopack CSS Modules hashes even ids), higher
+   specificity than .class at any width. */
 :global(#solucoes),
 :global(#aplicacoes),
 :global(#beneficios),
@@ -127,8 +126,8 @@
   padding-bottom: var(--sp-9);
 }
 
-/* Ajuste 11 (§42): scroll-margin-top nas âncoras da página, mesmo padrão
-   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+/* scroll-margin-top on the page's anchors, same pattern already used
+   across the project (100px — see frontend/app/post/[slug]/post.css). */
 :global(#solucoes),
 :global(#aplicacoes),
 :global(#beneficios),
@@ -139,18 +138,19 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
-   align-items:center, centralizando a coluna de texto contra o card mais
-   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
-   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+/* Final CTA (AdvisoryCta, id="contato"): .cta-adv-in uses align-items:center,
+   centering the text column against the taller card next to it — that
+   pushes the eyebrow well past the padding-top alone (same problem solved
+   on the Home, see home.css #contato.cta-adv). */
 :global(#contato.cta-adv .cta-adv-in) {
   align-items: flex-start;
   padding-top: var(--sp-9);
 }
 
-/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
-   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
-   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
+/* Button duplicates the nav CTA on desktop (.nav-cta, always visible
+   there) — only shows on mobile, where the nav CTA becomes
+   .nav-cta-mobile and hides behind the hamburger (same breakpoint as
+   Header.css: 860px). */
 .heroCtaRow {
   display: none;
   gap: var(--eyebrow-gap);
@@ -178,8 +178,8 @@
   }
 }
 
-/* ===== O QUE DESENVOLVEMOS — 3 territórios editoriais (Conhecimento /
-   Documentos e informação / Ações e processos), sem grade de cards. ===== */
+/* ===== WHAT WE BUILD — 3 editorial territories (Knowledge / Documents and
+   information / Actions and processes), no card grid. ===== */
 .whatWeDo {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -300,8 +300,8 @@
   text-transform: uppercase;
 }
 
-/* ===== CASOS DE APLICAÇÃO — composição assimétrica: cabeçalho fixo (sticky)
-   + catálogo numerado em 2 colunas, sem cards. ===== */
+/* ===== USE CASES — asymmetric composition: sticky header + numbered
+   2-column catalog, no cards. ===== */
 .useCasesSection {
   padding: var(--sp-10) 0;
   background: var(--surface);
@@ -371,8 +371,8 @@
   line-height: 1.65;
 }
 
-/* ===== NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões,
-   fecha com o manifesto "IA integrada à operação". ===== */
+/* ===== OUR APPROACH — sticky header + vertical path of 5 decisions,
+   closes with the "AI integrated into the operation" manifesto. ===== */
 .approachSection {
   padding: var(--sp-10) 0;
   background: #fff;
@@ -529,8 +529,8 @@
   .manifestoText { grid-column: 3; }
 }
 
-/* ===== GOVERNANÇA E CONTROLE — capítulo estrutural em Petrol Deep: cabeçalho
-   com princípio de proporcionalidade + 4 domínios + privacidade integrada. ===== */
+/* ===== GOVERNANCE AND CONTROL — structural chapter in Petrol Deep: header
+   with proportionality principle + 4 domains + integrated privacy. ===== */
 .governance {
   padding: var(--sp-10) 0;
   background: var(--petrol-deep);

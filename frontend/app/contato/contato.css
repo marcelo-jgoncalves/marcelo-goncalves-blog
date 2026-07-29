@@ -1,5 +1,3 @@
-/* frontend/app/contato/contato.css — ajustes/ajuste-14-pagina-contato-conversao.md */
-
 .page-hero.ct-hero {
   --ph-pad: 88px 40px var(--sp-9);
 }
@@ -24,7 +22,7 @@
   .ct-hero-microcopy { text-align: center; }
 }
 
-/* Usa o padrão global .btn (globals.css); só ajusta a sombra própria. */
+/* Uses the global .btn pattern (globals.css); only adjusts its own shadow. */
 .ct-btn-primary {
   box-shadow: 0 10px 26px rgba(201, 96, 60, .34);
 }
@@ -52,7 +50,7 @@
   scroll-margin-top: 100px;
 }
 
-/* Bloco principal — formulário (maior) + próximos passos (menor), lado a lado */
+/* Main block — form (larger) + next steps (smaller), side by side */
 .ct-main-grid {
   display: grid;
   grid-template-columns: 1.65fr 1fr;
@@ -88,7 +86,7 @@
   font-size: var(--type-caption);
 }
 
-/* Próximos passos — painel lateral */
+/* Next steps — side panel */
 .ct-next-steps {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -158,7 +156,7 @@
   margin: 0;
 }
 
-/* Canais alternativos */
+/* Alternative channels */
 .ct-otherways-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
@@ -238,7 +236,7 @@
   margin-top: var(--sp-1);
 }
 
-/* Link discreto após a FAQ (§46) — não é um CTA de grande porte. */
+/* Discreet link after the FAQ — not a large-scale CTA. */
 .ct-faq-footer {
   display: flex;
   align-items: center;

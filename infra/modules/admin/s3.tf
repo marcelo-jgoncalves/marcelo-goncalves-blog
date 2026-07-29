@@ -1,4 +1,3 @@
-# infra/modules/admin/s3.tf
 
 resource "aws_s3_bucket" "admin_assets" {
   bucket        = "${var.project_name}-${var.environment}-admin-assets"

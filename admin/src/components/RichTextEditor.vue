@@ -1,4 +1,3 @@
-/* admin/scr/components/RichTextEditor.vue */
 <script setup lang="ts">
 import { watch, computed } from 'vue'
 import { useEditor, EditorContent, BubbleMenu, FloatingMenu, type Editor } from '@tiptap/vue-3'
@@ -22,28 +21,27 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { createLowlight, common } from 'lowlight'
 import hljs from 'highlight.js'
 
-// Customização para impedir parágrafos (<p>) dentro de células (TD)
+// Prevents paragraphs (<p>) inside table cells (TD)
 const CustomTableCell = TableCell.extend({
-  content: 'inline*', 
+  content: 'inline*',
 })
 
-// Customização para impedir parágrafos (<p>) dentro de cabeçalhos (TH)
+// Prevents paragraphs (<p>) inside table headers (TH)
 const CustomTableHeader = TableHeader.extend({
-  content: 'inline*', 
+  content: 'inline*',
 })
-// Importando definições específicas para o nicho Tech/DevOps/AI
+// Languages chosen for the Tech/DevOps/AI niche this blog covers
 const terraformDef = hljs.getLanguage('terraform')?.rawDefinition
 const javascriptDef = hljs.getLanguage('javascript')?.rawDefinition
 const typescriptDef = hljs.getLanguage('typescript')?.rawDefinition
 const bashDef = hljs.getLanguage('bash')?.rawDefinition
-const pythonDef = hljs.getLanguage('python')?.rawDefinition // IA/Data Science
+const pythonDef = hljs.getLanguage('python')?.rawDefinition // AI/Data Science
 const yamlDef = hljs.getLanguage('yaml')?.rawDefinition // K8s, CloudFormation, Actions
 const jsonDef = hljs.getLanguage('json')?.rawDefinition // IAM Policies, Configs
 const sqlDef = hljs.getLanguage('sql')?.rawDefinition // Data Engineering
 
 const lowlightInstance = createLowlight(common)
 
-// Registrando as linguagens
 if (terraformDef) lowlightInstance.register('terraform', terraformDef)
 if (javascriptDef) lowlightInstance.register('javascript', javascriptDef)
 if (typescriptDef) lowlightInstance.register('typescript', typescriptDef)
@@ -59,7 +57,6 @@ const props = defineProps<{ modelValue: string; hideToolbar?: boolean }>()
 const emit = defineEmits<{(e: 'update:modelValue', v: string): void,(e: 'request-upload'): void }>()
 
 /* BLOCK: Editor Initialization */
-// 1. Definimos as extensões
 const editorExtensions = [
   BubbleMenuExtension,
   FloatingMenuExtension,
@@ -86,8 +83,8 @@ const editorExtensions = [
   Youtube.configure({
     controls: true,
     nocookie: true,
-    // Deixar responsivo via CSS é melhor, mas definimos um default aqui
-    width: 640, 
+    // Responsive sizing via CSS is preferable, but a default is set here
+    width: 640,
     height: 360,
   }),
   Link.configure({
@@ -118,7 +115,6 @@ const editorExtensions = [
   }),
 ]
 
-// 2. Criamos o editor
 const editorRef = useEditor({
   content: props.modelValue,
   extensions: editorExtensions,
@@ -248,7 +244,7 @@ const addYoutubeVideo = () => {
   const url = window.prompt('Cole a URL do YouTube:')
   
   if (url) {
-    // Tiptap valida automaticamente se é link do Youtube
+    // Tiptap automatically validates whether it's a YouTube link
     editorInstance.value?.commands.setYoutubeVideo({ src: url })
   }
 }
@@ -696,7 +692,7 @@ defineExpose({
   margin: 0 4px;
 }
 
-/* ===== Floating & Bubble Menu Styles (UNIFICADOS E CORRIGIDOS) ===== */
+/* ===== Floating & Bubble Menu Styles (unified) ===== */
 .bubble-menu,
 .floating-menu-card {
   display: flex;
@@ -763,14 +759,14 @@ defineExpose({
   font-style: italic;
 }
 
-/* ===== Content Padding (Mantido conforme original) ===== */
+/* ===== Content Padding ===== */
 .tiptap-content :deep(.ProseMirror) {
   min-height: 500px;
-  padding: 25px; /* Isso garante que o texto não cola na borda */
+  padding: 25px;
   outline: none;
 }
 
-/* ===== Code Blocks (Mantido conforme original) ===== */
+/* ===== Code Blocks ===== */
 :deep(.ProseMirror pre) {
   background: var(--dark-900);
   color: #e2e8f0;
@@ -781,7 +777,7 @@ defineExpose({
   line-height: 1.6;
 }
 
-/* ===== Blockquote (Mantido) ===== */
+/* ===== Blockquote ===== */
 :deep(.ProseMirror blockquote) {
   border-left: 5px solid var(--accent);
   background-color: var(--slate-50);
@@ -794,7 +790,7 @@ defineExpose({
 
 /* ===== Horizontal Rule (Divider) ===== */
 :deep(.ProseMirror hr) {
-  /* Estilo visual vem do 'style' inline. Aqui apenas comportamento. */
+  /* Visual style comes from the inline 'style'. Only behavior here. */
   cursor: pointer;
 }
 
@@ -860,7 +856,7 @@ defineExpose({
   font-weight: bold;
 }
 
-/* ===== Callouts (redesign 2026 — specs/ESPECIFICACAO-POSTAGEM.md) ===== */
+/* ===== Callouts ===== */
 :deep(.ProseMirror .callout),
 :deep(.ProseMirror .tip) {
   display: flex !important;
@@ -1020,7 +1016,7 @@ defineExpose({
   margin: 1.5rem auto;
   max-width: 100%;
 }
-/* === LAYOUT DO MENU DE TABELA OTIMIZADO === */
+/* === OPTIMIZED TABLE MENU LAYOUT === */
 .bubble-menu-table {
   display: flex;
   align-items: center;
@@ -1029,17 +1025,17 @@ defineExpose({
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
   gap: 0.5rem;
-  z-index: 50; /* Garante que fique acima de tudo */
+  z-index: 50;
 }
 
-/* Agrupadores para manter os botões juntos visualmente */
+/* Groups buttons visually together */
 .bubble-menu-table .btn-group {
   display: flex;
   gap: 2px;
   align-items: center;
 }
 
-/* Botões Base */
+/* Base buttons */
 .bubble-menu-table button {
   position: relative;
   display: flex;
@@ -1061,12 +1057,12 @@ defineExpose({
   color: #fff;
 }
 
-/* Ícones */
+/* Icons */
 .bubble-menu-table i {
   font-size: 0.9rem;
 }
 
-/* Pequeno indicador (+ ou -) sobreposto ao ícone */
+/* Small (+/-) indicator overlaid on the icon */
 .mini-badge {
   position: absolute;
   top: 2px;
@@ -1076,15 +1072,12 @@ defineExpose({
   line-height: 1;
 }
 
-/* === ESTILOS DE AÇÃO === */
-
-/* Botões de Perigo (Delete) */
+/* Danger buttons (delete) */
 .bubble-menu-table .btn-danger:hover {
-  background-color: rgba(229, 62, 62, 0.3); /* Vermelho translúcido */
+  background-color: rgba(229, 62, 62, 0.3);
   color: #fc8181;
 }
 
-/* Divisor Vertical Elegante */
 .bubble-menu-table .menu-divider {
   width: 1px;
   height: 20px;
@@ -1092,21 +1085,22 @@ defineExpose({
   margin: 0 2px;
 }
 
-/* Ajuste específico para o botão de Mesclar */
+/* Merge button gets its own padding */
 .bubble-menu-table .btn-text {
   padding: 0 8px;
 }
 
 /* ===================================================================
-   CORREÇÃO DEFINITIVA DE TABELAS (TI-PTAP)
-   Estratégia: Schema inline* (Script) + CSS de Layout Fixo
+   TABLE LAYOUT FIX
+   Strategy: inline* schema (see CustomTableCell/CustomTableHeader above)
+   + fixed-layout CSS
    =================================================================== */
 
 :deep(.ProseMirror table) {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
-  margin: 1.5rem 0; /* Espaçamento vertical saudável */
+  margin: 1.5rem 0;
   overflow: hidden;
 }
 
@@ -1115,23 +1109,22 @@ defineExpose({
   position: relative;
   vertical-align: top;
   box-sizing: border-box;
-  
-  /* Com o schema inline*, height: auto funciona perfeitamente */
-  height: auto !important; 
+
+  /* With the inline* schema, height: auto works correctly */
+  height: auto !important;
   min-height: 0 !important;
   padding: 8px 10px !important;
-  
+
   border: 1px solid var(--border-color);
 }
 
-/* Header estilizado */
 :deep(.ProseMirror table th) {
   background-color: var(--slate-50);
   font-weight: 600;
   text-align: left;
 }
 
-/* UX: Feedback visual de seleção (Crucial para edição) */
+/* Visual feedback for cell selection */
 :deep(.ProseMirror .selectedCell:after) {
   z-index: 2;
   position: absolute;
@@ -1141,7 +1134,7 @@ defineExpose({
   pointer-events: none;
 }
 
-/* Handle de redimensionamento de coluna */
+/* Column resize handle */
 :deep(.ProseMirror .column-resize-handle) {
   position: absolute;
   right: -2px;

@@ -1,11 +1,10 @@
-// backend/src/common/cognitoJwt.ts
 //
-// Verificação de ID Token do Cognito contra o JWKS público do User Pool —
-// não requer nenhuma permissão IAM (é uma chamada HTTPS pública, com cache
-// interno de chaves feito pelo próprio aws-jwt-verify). Usado em 2 lugares:
-// adminSession (login: troca o idToken vindo do SRP client-side do Amplify
-// por uma sessão opaca) e adminAuthorizer (fallback legado: Authorization
-// Bearer, mantido durante a transição do admin pro fluxo de cookie).
+// Verifies Cognito ID Tokens against the User Pool's public JWKS — requires
+// no IAM permission (it's a public HTTPS call, with internal key caching
+// done by aws-jwt-verify itself). Used in 2 places: adminSession (login:
+// exchanges the idToken from Amplify's client-side SRP for an opaque
+// session) and adminAuthorizer (legacy fallback: Authorization Bearer,
+// kept during the admin's transition to the cookie flow).
 
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 

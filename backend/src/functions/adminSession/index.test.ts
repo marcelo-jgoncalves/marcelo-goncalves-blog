@@ -88,7 +88,7 @@ describe('adminSession handler', () => {
       expect(res?.statusCode).toBe(200);
       expect(JSON.parse(res?.body ?? '{}')).toEqual({ email: 'marcelo@example.com', username: 'marcelo-goncalves' });
       expect(res?.headers?.['Set-Cookie']).toMatch(/^admin_session=[0-9a-f-]{36}; HttpOnly; Secure; SameSite=Strict; Path=\/; Max-Age=3600$/);
-      expect(mockSend).toHaveBeenCalledTimes(1); // PutCommand da sessão
+      expect(mockSend).toHaveBeenCalledTimes(1); // session PutCommand
     });
   });
 

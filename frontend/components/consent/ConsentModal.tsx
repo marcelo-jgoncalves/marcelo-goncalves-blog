@@ -17,12 +17,11 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
   const [analytics, setAnalytics] = useState(current?.analytics ?? false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Foca o dialog ao abrir (não o botão fechar — melhor ergonomia)
+  // Focuses the dialog on open (not the close button — better ergonomics)
   useEffect(() => {
     dialogRef.current?.focus();
   }, []);
 
-  // ESC fecha o modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -31,7 +30,7 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  // Focus trap: mantém foco dentro do modal
+  // Focus trap: keeps focus inside the modal
   const trapFocus = useCallback((e: React.KeyboardEvent) => {
     if (e.key !== 'Tab' || !dialogRef.current) return;
     const focusable = dialogRef.current.querySelectorAll<HTMLElement>(

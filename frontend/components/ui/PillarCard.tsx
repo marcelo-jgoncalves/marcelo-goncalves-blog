@@ -1,7 +1,6 @@
-/* frontend/components/ui/PillarCard.tsx
-   Card de um dos 4 pilares comerciais (Automação, IA, Sistemas, Cloud) — mesmo
-   formato usado na Home e na página central de Serviços (/servicos). Ícone +
-   kicker + título + descrição + tags + link "Saiba mais". */
+// Card for one of the 4 commercial pillars (Automação, IA, Sistemas,
+// Cloud) — same format used on the Home and the central Serviços page
+// (/servicos). Icon + kicker + title + description + tags + "Saiba mais" link.
 
 import Link from 'next/link';
 import type { ReactNode } from 'react';

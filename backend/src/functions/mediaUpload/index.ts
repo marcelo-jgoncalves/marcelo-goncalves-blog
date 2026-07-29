@@ -18,12 +18,12 @@ const ALLOWED_CONTENT_TYPES = [
   "image/heif",
 ];
 
-// PutObjectCommand presigned via getSignedUrl não suporta nenhuma condição
-// (ex: tamanho máximo) — achado AppSec (Cat. 2): qualquer cliente com a URL
-// podia subir um arquivo arbitrariamente grande. createPresignedPost
-// (presigned POST) aceita `conditions`, incluindo content-length-range,
-// que o S3 valida e rejeita no próprio upload.
-const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB — mesmo limite já validado no admin (UploadModal.vue)
+// A PutObjectCommand presigned via getSignedUrl supports no conditions
+// (e.g. max size) — any client with the URL could upload an arbitrarily
+// large file. createPresignedPost (presigned POST) accepts `conditions`,
+// including content-length-range, which S3 validates and rejects at
+// upload time.
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB — same limit already validated in admin (UploadModal.vue)
 
 const headers = {
   "Content-Type": "application/json",

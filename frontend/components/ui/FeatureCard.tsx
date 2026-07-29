@@ -1,11 +1,11 @@
-/* frontend/components/ui/FeatureCard.tsx
-   Card de ícone + título + texto + rodapé — mesmo padrão hoje duplicado em
-   frontend/app/servicos/servicos.css (.svc-card) e frontend/app/home.css (.ih-pillar-card).
-   Único ponto de verdade para esse formato: só tamanho (size) e conteúdo mudam por uso.
-   Rodapé é flexível: `tags` renderiza a fileira padrão de pills; `footer` aceita
-   qualquer conteúdo (ex. bloco "Exemplo" com fluxo de texto — specs/ESPECIFICACAO-
-   INTEGRACAO-AUTOMACAO.md §7) para os casos em que o card não usa tags; se nenhum
-   dos dois for passado, o card termina no parágrafo (sem rodapé, sem borda). */
+// Icon + title + text + footer card — same pattern as
+// frontend/app/servicos/servicos.css (.svc-card) and
+// frontend/app/home.css (.ih-pillar-card). Single source of truth for this
+// format: only size and content vary per use. Footer is flexible: `tags`
+// renders the standard pill row; `footer` accepts any content (e.g. an
+// "Exemplo" block with flowing text) for cases where the card doesn't use
+// tags; if neither is passed, the card ends at the paragraph (no footer,
+// no border).
 
 import type { ReactNode } from 'react';
 import IconTile from './IconTile';

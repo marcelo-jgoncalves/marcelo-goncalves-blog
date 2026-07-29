@@ -19,7 +19,6 @@ export default function ShareRail({ currentPageUrl, linkedinUrl, twitterUrl }: S
     try {
       await navigator.clipboard.writeText(currentPageUrl);
     } catch {
-      // fallback silencioso
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);

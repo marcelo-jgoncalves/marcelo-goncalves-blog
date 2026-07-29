@@ -1,4 +1,3 @@
-/* admin/src/components/tiptap/PullQuote.ts */
 import { Node, mergeAttributes } from '@tiptap/core'
 
 export const PullQuote = Node.create({

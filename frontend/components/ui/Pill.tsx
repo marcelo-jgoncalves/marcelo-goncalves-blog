@@ -1,5 +1,4 @@
-/* frontend/components/ui/Pill.tsx
-   Tag/badge mono reutilizável — ver Pill.module.css para o racional. */
+// Reusable mono tag/badge — see Pill.module.css for the rationale.
 
 import type { ReactNode } from 'react';
 import styles from './Pill.module.css';

@@ -1,8 +1,6 @@
-/* frontend/components/ui/ResultCaseIllustrations.tsx
-   Ilustrações SVG dos 4 cases da seção Resultados (Home) —
-   specs/ESPECIFICACAO-RESULTADOS-ILUSTRACOES-V2.md
-   Tamanho controlado via classe (não inline style) para permitir
-   override responsivo em home.css — ver .ih-illustration. */
+// SVG illustrations for the 4 cases in the Home's Resultados section. Size
+// is controlled via class (not inline style) to allow a responsive
+// override in home.css — see .ih-illustration.
 
 export function ResultCase1() {
   return (

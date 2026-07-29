@@ -1,8 +1,7 @@
-/* frontend/components/ui/BeneficiosSection.tsx
-   Seção "Benefícios/Resultados" das landings de pilar — autocontido (visual
-   próprio, não depende mais de classes da página). Receita lapidada em
-   /software (sessão 2026-07-29): checkmark clay sem fundo, grade 2 colunas
-   sem bordas, headline grande. Ver BeneficiosSection.module.css. */
+// "Benefícios/Resultados" section for the pillar landings — self-contained
+// (own visual, no longer depends on page classes): clay checkmark with no
+// background, 2-column grid with no borders, large headline. See
+// BeneficiosSection.module.css.
 
 import type { ReactNode } from 'react';
 import styles from './BeneficiosSection.module.css';

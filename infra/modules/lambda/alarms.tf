@@ -1,4 +1,3 @@
-# infra/modules/lambda/alarms.tf
 # CloudWatch alarms for all Lambda functions — gated by enable_cloudwatch_alarms
 
 resource "aws_sns_topic" "lambda_alerts" {

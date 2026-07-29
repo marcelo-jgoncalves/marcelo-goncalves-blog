@@ -16,10 +16,9 @@ const CATEGORY_SLUGS = [
 
 const now = new Date();
 
-// As 4 landing pages de pilar (sessão 43) — substituem o hub /servicos, que saiu
-// do sitemap por estar órfão de navegação desde que o dropdown "Serviços" do nav
-// passou a linkar direto pra elas (achado 4, mesmo registro histórico
-// arquivado citado em ContactForm.tsx).
+// The 4 pillar landing pages — replace the /servicos hub, which left the
+// sitemap for being orphaned from navigation once the nav's "Serviços"
+// dropdown started linking directly to them.
 const PILLAR_SLUGS = [
   'software',
   'plataforma',

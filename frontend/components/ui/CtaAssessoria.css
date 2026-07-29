@@ -207,8 +207,8 @@
   transform: translateX(3px);
 }
 
-/* Botão — usa o padrão global .btn (globals.css); .cta-adv-btn só ajusta
-   largura (preenche o card) e a sombra própria deste componente. */
+/* Button — uses the global .btn pattern (globals.css); .cta-adv-btn only
+   adjusts width (fills the card) and this component's own shadow. */
 .cta-adv-btn {
   width: 100%;
   font-size: var(--type-label);
@@ -220,7 +220,7 @@
   font-family: var(--mono);
 }
 
-/* Meta rows — variante serviços */
+/* Meta rows — services variant */
 .cta-adv-meta {
   display: flex;
   flex-direction: column;

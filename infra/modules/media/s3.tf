@@ -1,4 +1,3 @@
-# infra/modules/media/s3.tf
 
 # 1. O Bucket de Uploads (Que estava faltando)
 resource "aws_s3_bucket" "uploads" {

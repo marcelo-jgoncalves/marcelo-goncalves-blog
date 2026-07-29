@@ -1,15 +1,12 @@
-/**admin/src/services/api.ts */
-
 import type { Post, Autor } from '../types'
 
-// Sempre caminho relativo — nunca VITE_API_BASE_URL (URL absoluta do API
-// Gateway) aqui. O CloudFront do admin faz proxy same-origin de /admin/*
-// para o API Gateway (infra/modules/admin/cloudfront.tf); chamar a URL
-// absoluta contornaria esse proxy, tornando a chamada cross-origin de
-// verdade — e uma requisição cross-origin com `credentials: 'include'`
-// nunca funciona com Access-Control-Allow-Origin: '*' (exigência do
-// próprio spec de CORS), então o cookie de sessão jamais seria enviado.
-// Achado ao validar o login em produção pela primeira vez (sessão 2026-07-24).
+// Always a relative path — never VITE_API_BASE_URL (the API Gateway's
+// absolute URL) here. The admin's CloudFront does a same-origin proxy of
+// /admin/* to the API Gateway (infra/modules/admin/cloudfront.tf); calling
+// the absolute URL would bypass that proxy, making the call genuinely
+// cross-origin — and a cross-origin request with `credentials: 'include'`
+// never works with Access-Control-Allow-Origin: '*' (a requirement of the
+// CORS spec itself), so the session cookie would never be sent.
 
 function redirectToLogin() {
   window.location.href = '/login'
@@ -23,9 +20,9 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
 
   const res = await fetch(endpoint, { ...options, headers, credentials: 'include' })
 
-  // 401 (sem sessão/Lambda authorizer lançou "Unauthorized") ou 403 (policy
-  // Deny do Lambda Authorizer — cookie ausente/sessão expirada/token Bearer
-  // inválido) significam a mesma coisa aqui: sessão inválida, refazer login.
+  // 401 (no session/Lambda authorizer threw "Unauthorized") or 403 (Deny
+  // policy from the Lambda Authorizer — missing cookie/expired session/
+  // invalid Bearer token) mean the same thing here: invalid session, redo login.
   if (res.status === 401 || res.status === 403) {
     redirectToLogin()
     throw new Error('Sessão expirada')
@@ -33,7 +30,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
 
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({}))
-    // Em produção, não expõe detalhes de infra
+    // Don't expose infra details in production
     const message = import.meta.env.PROD
       ? 'Erro ao processar a solicitação'
       : errorBody.message || 'Erro na API'
@@ -42,8 +39,6 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
 
   return res.json()
 }
-
-// --- MÉTODOS EXPORTADOS ---
 
 export const postsApi = {
   list: () => apiCall('/admin/posts'),
@@ -60,9 +55,9 @@ export const mediaApi = {
       body: JSON.stringify({ nome_arquivo: fileName, tipo_arquivo: fileType })
     }),
 
-  // Presigned POST (não PUT): o S3 valida `content-length-range` nos `fields`
-  // recebidos do backend, então o limite de tamanho é aplicado no servidor,
-  // não só no client (achado AppSec, Cat. 2).
+  // Presigned POST (not PUT): S3 validates `content-length-range` against
+  // the `fields` received from the backend, so the size limit is enforced
+  // server-side, not only on the client.
   uploadToS3: async (url: string, fields: Record<string, string>, file: File) => {
     const formData = new FormData()
     Object.entries(fields).forEach(([key, value]) => formData.append(key, value))

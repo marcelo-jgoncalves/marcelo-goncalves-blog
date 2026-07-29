@@ -1,12 +1,11 @@
-// backend/src/common/postSchema.ts
 //
-// `savePost()` fazia `{ ...data as Post }` — um type assertion não tem
-// efeito em runtime, então qualquer campo extra enviado pelo client (ex:
-// `e_popular_marker` setado manualmente, ou um campo inexistente) ia direto
-// pro DynamoDB sem validação (mass assignment / overposting, achado AppSec
-// Cat. 4). Este schema espelha backend/src/common/types.ts e é a única
-// fonte de verdade sobre quais campos um POST/PUT de admin pode setar —
-// `.strip()` descarta silenciosamente qualquer campo fora desta lista.
+// `savePost()` used to do `{ ...data as Post }` — a type assertion has no
+// runtime effect, so any extra field sent by the client (e.g. a manually
+// set `e_popular_marker`, or a nonexistent field) went straight to DynamoDB
+// without validation (mass assignment / overposting). This schema mirrors
+// backend/src/common/types.ts and is the single source of truth for which
+// fields an admin POST/PUT can set — `.strip()` silently discards any field
+// outside this list.
 import { z } from "zod";
 
 export const postInputSchema = z

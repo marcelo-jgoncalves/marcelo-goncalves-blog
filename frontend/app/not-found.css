@@ -1,13 +1,11 @@
-/* frontend/app/not-found.css
-   Redesign 2026 (petrol/clay/ivory) — mesmo padrão de hero/busca já usado
-   em /artigos e /busca. */
+/* Same hero/search pattern already used in /artigos and /busca. */
 
 .error-section {
   margin-block: 0;
   padding-block: var(--sp-9);
 }
 
-/* app/error.tsx (error boundary global) */
+/* Also used by app/error.tsx (global error boundary) */
 .error-actions {
   display: flex;
   flex-wrap: wrap;

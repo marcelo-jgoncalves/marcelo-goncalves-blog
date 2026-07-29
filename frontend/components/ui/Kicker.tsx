@@ -1,5 +1,4 @@
-/* frontend/components/ui/Kicker.tsx
-   Ver Kicker.module.css para o racional. */
+// See Kicker.module.css for the rationale.
 
 import type { ReactNode } from 'react';
 import styles from './Kicker.module.css';

@@ -1,5 +1,3 @@
-/*frontend/app/layout.tsx */
-
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
@@ -7,9 +5,9 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-// autoAddCss injeta <style> em runtime — causa mismatch de hidratação em SSR.
-// Import estático do styles.css (poucos KB) substitui o all.min.css (74KB,
-// definição de todos os ícones do pacote pra apenas 19 usados no projeto).
+// autoAddCss injects <style> at runtime — causes an SSR hydration
+// mismatch. The static styles.css import (a few KB) replaces all.min.css
+// (74KB, every icon in the package for only 19 used in the project).
 config.autoAddCss = false;
 
 import Header from "../components/layout/Header";
@@ -72,7 +70,7 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD: Organization + WebSite (SearchAction para busca interna)
+// JSON-LD: Organization + WebSite (SearchAction for internal search)
 const orgJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",

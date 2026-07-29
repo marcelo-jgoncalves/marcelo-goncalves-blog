@@ -1,17 +1,14 @@
-/* frontend/app/globals.css
-   Apenas estilos verdadeiramente globais: tokens, reset, utilitários e botões cross-page.
-   Estilos de componentes e páginas vivem em seus próprios arquivos CSS.
+/* Only truly global styles: tokens, reset, utilities and cross-page buttons.
+   Component and page styles live in their own CSS files.
    ========================================================================== */
 
 /* =========================================
-   0. VARIÁVEIS E TOKENS (:root)
-   Redesign 2026 — paleta Petrol / Clay / Ivory (specs/ESPECIFICACAO-*.md)
+   0. VARIABLES AND TOKENS (:root)
+   Petrol / Clay / Ivory palette
    ========================================= */
 :root {
   /* ─────────────────────────────────────
-     PALETA — Petrol / Clay / Ivory
-     Declarada de forma idêntica nas 7 especificações do redesign
-     (Home, Post, Artigos, Sobre, Serviços, O Projeto, 404)
+     PALETTE — Petrol / Clay / Ivory
      ───────────────────────────────────── */
   --petrol:        #0F4C5C;
   --petrol-deep:   #08323D;
@@ -31,95 +28,93 @@
   /* ─────────────────────────────────────
      LAYOUT
      ───────────────────────────────────── */
-  --read:              720px;       /* largura de leitura — post page */
+  --read:              720px;       /* reading width — post page */
 
   /* ─────────────────────────────────────
-     TYPOGRAPHY — Famílias
+     TYPOGRAPHY — Font families
      ───────────────────────────────────── */
   --font:              'Inter', system-ui, sans-serif;
   --mono:              'JetBrains Mono', ui-monospace, monospace;
-  --font-display:      'Inter', sans-serif;  /* headings, botões, nav, labels */
-  --font-sans:         'Inter', sans-serif;             /* body, prosa, inputs */
-  --font-body:         'Inter', sans-serif;             /* alias de --font-sans */
+  --font-display:      'Inter', sans-serif;  /* headings, buttons, nav, labels */
+  --font-sans:         'Inter', sans-serif;             /* body, prose, inputs */
+  --font-body:         'Inter', sans-serif;             /* alias for --font-sans */
   --font-mono:         'JetBrains Mono', monospace;
-  --font-numbers:      var(--font-display); /* números-índice decorativos grandes (01/02/03) — Inter, não mono: JetBrains Mono tem zero pontilhado por padrão, sem alternativa via CSS */
+  --font-numbers:      var(--font-display); /* large decorative index numbers (01/02/03) — Inter, not mono: JetBrains Mono has a dotted zero by default, no CSS workaround */
 
   /* ─────────────────────────────────────
-     ESCALA DE ESPAÇAMENTO — Redesign 2026, base 4px
-     Fonte: specs/Especificação de Espaçamento.html — "fonte única de verdade"
-     Nunca usar valores fora desta escala sem aprovação explícita.
+     SPACING SCALE — base 4px
+     Never use values outside this scale without explicit approval.
      ───────────────────────────────────── */
-  --sp-1:    4px;   /* micro — pontos, separadores finos */
-  --sp-2:    8px;   /* xs — gap de ícone/label, padding de badge */
-  --sp-3:   12px;   /* sm — gap de nav links, gap de lista no footer */
-  --sp-4:   16px;   /* base — margin-top de texto secundário, badge margin */
-  --sp-5:   20px;   /* md — gap de grid especialidade, margin de badge */
-  --sp-6:   24px;   /* lg — gap de botão, padding nav h */
-  --sp-7:   32px;   /* xl — inset compacto de card, hero-actions margin */
-  --sp-8:   40px;   /* 2xl — padding horizontal do wrap */
-  --sp-9:   48px;   /* 3xl — margin-bottom do sec-head, padding XL de card */
-  --sp-10:  64px;   /* 4xl — padding seção apertada / hero postagem */
-  --sp-11:  80px;   /* 5xl — padding seção accent/band escura */
-  --sp-12:  96px;   /* 6xl — padding canônico de seção */
-  --sp-13: 128px;   /* 7xl — padding-top do layout de postagem */
+  --sp-1:    4px;   /* micro — dots, thin separators */
+  --sp-2:    8px;   /* xs — icon/label gap, badge padding */
+  --sp-3:   12px;   /* sm — nav link gap, footer list gap */
+  --sp-4:   16px;   /* base — secondary text margin-top, badge margin */
+  --sp-5:   20px;   /* md — specialty grid gap, badge margin */
+  --sp-6:   24px;   /* lg — button gap, nav h padding */
+  --sp-7:   32px;   /* xl — compact card inset, hero-actions margin */
+  --sp-8:   40px;   /* 2xl — wrap horizontal padding */
+  --sp-9:   48px;   /* 3xl — sec-head margin-bottom, card XL padding */
+  --sp-10:  64px;   /* 4xl — tight section padding / post hero */
+  --sp-11:  80px;   /* 5xl — accent/dark band section padding */
+  --sp-12:  96px;   /* 6xl — canonical section padding */
+  --sp-13: 128px;   /* 7xl — post layout padding-top */
 
-  /* ── aliases semânticos (usados no código) ── */
-  --gap-grid:           22px;          /* gap entre cards em grade padrão */
-  --gap-loose:          18px;          /* entre --sp-4 (16) e --sp-5 (20) — não arredonda sem perder ritmo */
-  --eyebrow-gap:        14px;          /* eyebrow → título */
-  --title-gap:          10px;          /* título → descrição */
-  --sechead-gap:        var(--sp-9);   /* 48px — cabeçalho de seção → conteúdo (left-aligned) */
-  --sechead-center-gap: 56px;          /* cabeçalho de seção → conteúdo (centered) */
-  --nav-height:         68px;          /* altura do nav sticky */
-  --wrap-max:           1240px;        /* max-width padrão das páginas */
-  --wrap-max-narrow:    1180px;        /* max-width estreito (postagem, O Projeto) */
-  --wrap-pad-h:         var(--sp-8);   /* 40px — padding horizontal do wrap */
-  --wrap-pad-h-mobile:  20px;          /* padding horizontal no mobile (<680px) */
-  --section-pad:        var(--sp-12); /* 96px — padding vertical de seção padrão */
-  --section-accent:     var(--sp-11); /* 80px — padding seções accent/dark band */
-  --section-cta:        88px;          /* padding vertical de CTAs */
-  --hero-top:           88px;          /* padding-top canônico do hero */
-  --stats-top:          56px;          /* margin-top do stats strip dentro do hero */
+  /* ── semantic aliases (used across the codebase) ── */
+  --gap-grid:           22px;          /* gap between cards in a standard grid */
+  --gap-loose:          18px;          /* between --sp-4 (16) and --sp-5 (20) — doesn't round without losing rhythm */
+  --eyebrow-gap:        14px;          /* eyebrow → title */
+  --title-gap:          10px;          /* title → description */
+  --sechead-gap:        var(--sp-9);   /* 48px — section header → content (left-aligned) */
+  --sechead-center-gap: 56px;          /* section header → content (centered) */
+  --nav-height:         68px;          /* sticky nav height */
+  --wrap-max:           1240px;        /* default page max-width */
+  --wrap-max-narrow:    1180px;        /* narrow max-width (post, O Projeto) */
+  --wrap-pad-h:         var(--sp-8);   /* 40px — wrap horizontal padding */
+  --wrap-pad-h-mobile:  20px;          /* horizontal padding on mobile (<680px) */
+  --section-pad:        var(--sp-12); /* 96px — standard section vertical padding */
+  --section-accent:     var(--sp-11); /* 80px — accent/dark band section padding */
+  --section-cta:        88px;          /* CTA vertical padding */
+  --hero-top:           88px;          /* canonical hero padding-top */
+  --stats-top:          56px;          /* stats strip margin-top inside the hero */
 
   /* ─────────────────────────────────────
-     TYPE SCALE — fluida (clamp), 11 tokens nomeados por papel de conteúdo.
-     Método: interpolação linear entre 400px (mobile) e 1280px (desktop),
-     estilo Utopia (https://utopia.fyi) — cada token já é responsivo, nunca
-     precisa de override em media query. Sessão 2026-07-18 (substitui a
-     escala fixa de 9 tokens --text-*, ver memory/project_type_scale_fluid.md).
+     TYPE SCALE — fluid (clamp), 11 tokens named by content role.
+     Method: linear interpolation between 400px (mobile) and 1280px
+     (desktop), Utopia-style (https://utopia.fyi) — each token is already
+     responsive, never needs a media query override.
      ───────────────────────────────────── */
-  --type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px — timestamp, badge numérico, legenda micro */
-  --type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px — eyebrow, tag, meta, texto de botão */
-  --type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px — corpo secundário, excerpt de card */
-  --type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px — parágrafo padrão */
-  --type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px — subtítulo de hero, lead paragraph */
+  --type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px — timestamp, numeric badge, micro caption */
+  --type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px — eyebrow, tag, meta, button text */
+  --type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px — secondary body, card excerpt */
+  --type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px — standard paragraph */
+  --type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px — hero subtitle, lead paragraph */
   --type-h4:           clamp(1.424rem, 1.172rem + 1.01vw, 1.978rem);  /* 22.8 → 31.6px — card title, widget header, TOC */
-  --type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px — h3 editorial */
-  --type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px — h2 de seção */
-  --type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px — h1 padrão de página */
-  --type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px — h1 de hero grande */
-  --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px — display máximo (estilo "manifesto") */
+  --type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px — editorial h3 */
+  --type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px — section h2 */
+  --type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px — standard page h1 */
+  --type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px — large hero h1 */
+  --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px — maximum display size ("manifesto" style) */
 
   /* ─────────────────────────────────────
-     PROSE SPACING — escala em `em`, só para ritmo vertical dentro de
-     .post-content (conteúdo longo de artigo). Deliberadamente separada
-     de --sp-* (px, ritmo de layout): espaçamento editorial escala com
-     o tamanho da fonte do elemento, não é uma medida fixa de página.
+     PROSE SPACING — scale in `em`, only for vertical rhythm inside
+     .post-content (long-form article content). Deliberately separate from
+     --sp-* (px, layout rhythm): editorial spacing scales with the
+     element's font size, not a fixed page measurement.
      ───────────────────────────────────── */
-  --prose-sp-1: 0.5em;   /* micro — dentro de bloco (ex: legenda → citação) */
-  --prose-sp-2: 1em;     /* pequeno — parágrafo → lista */
-  --prose-sp-3: 1.5em;   /* médio — entre parágrafos, H3 → corpo */
-  --prose-sp-4: 2em;     /* grande — H2 → corpo, bloco → bloco */
-  --prose-sp-5: 2.5em;   /* macro — antes de H2/H3 de nova seção */
+  --prose-sp-1: 0.5em;   /* micro — within a block (e.g. caption → quote) */
+  --prose-sp-2: 1em;     /* small — paragraph → list */
+  --prose-sp-3: 1.5em;   /* medium — between paragraphs, H3 → body */
+  --prose-sp-4: 2em;     /* large — H2 → body, block → block */
+  --prose-sp-5: 2.5em;   /* macro — before an H2/H3 of a new section */
 
   /* ─────────────────────────────────────
-     BORDER RADIUS (design-reference.md §4)
+     BORDER RADIUS
      ───────────────────────────────────── */
   --radius-sm:         4px;         /* tags, badges, syntax code */
-  --radius-md:         6px;         /* inputs, botões */
-  --radius-lg:         10px;        /* cards post, code blocks */
-  --radius-xl:         12px;        /* cards categoria, author box, modais */
-  --radius-full:       9999px;      /* badges pill, avatares */
+  --radius-md:         6px;         /* inputs, buttons */
+  --radius-lg:         10px;        /* post cards, code blocks */
+  --radius-xl:         12px;        /* category cards, author box, modals */
+  --radius-full:       9999px;      /* pill badges, avatars */
 
   /* Aliases (legacy) */
   --border-radius-sm:  4px;
@@ -127,7 +122,7 @@
   --border-radius-lg:  12px;
 
   /* ─────────────────────────────────────
-     SHADOWS — genéricas (preto/ink)
+     SHADOWS — generic (black/ink)
      ───────────────────────────────────── */
   --shadow-sm:         0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md:         0 5px 15px rgba(0,0,0,0.05);
@@ -141,7 +136,7 @@
 }
 
 /* =========================================
-   1. RESET E BASE
+   1. RESET AND BASE
    ========================================= */
 * {
   box-sizing: border-box;
@@ -153,10 +148,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Foco visível global (a11y) — navegação por teclado precisa de indicação clara.
-   :focus-visible (não :focus) evita o anel aparecer em clique de mouse, só em
-   Tab/navegação por teclado. Alguns componentes (SearchBar, NewsletterCTA)
-   removiam outline sem substituto — cobertos pelo seletor genérico abaixo. */
+/* Global visible focus (a11y) — keyboard navigation needs a clear indicator.
+   :focus-visible (not :focus) keeps the ring from showing on a mouse click,
+   only on Tab/keyboard navigation. Some components (SearchBar, NewsletterCTA)
+   removed outline without a substitute — covered by the generic selector below. */
 :focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 2px;
@@ -172,7 +167,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings — Inter (--font-display), cor ink (#0C2027) */
+/* Headings — Inter (--font-display), ink color (#0C2027) */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--ink);
@@ -209,7 +204,7 @@ h5, h6 {
   font-weight: 600;
 }
 
-/* Links — Petrol (#0F4C5C) com hover Clay (#C9603C) */
+/* Links — Petrol (#0F4C5C) with Clay hover (#C9603C) */
 a {
   color: var(--petrol);
   text-decoration: none;
@@ -231,7 +226,7 @@ img {
 }
 
 /* =========================================
-   2. UTILITÁRIOS
+   2. UTILITIES
    ========================================= */
 .container {
   width: 100%;
@@ -240,10 +235,10 @@ img {
   padding: 0 var(--sp-4);
 }
 
-/* Grid de PostCard — compartilhado entre /artigos (.art-grid sobrescreve pra
-   3 colunas), /categoria e /busca. Antes vivia só em categoria.css, com as
-   outras páginas dependendo dele por acoplamento implícito — movido pra cá
-   como único ponto de verdade. */
+/* PostCard grid — shared between /artigos (.art-grid overrides to 3
+   columns), /categoria and /busca. Previously lived only in categoria.css,
+   with other pages depending on it via implicit coupling — moved here as
+   the single source of truth. */
 .posts-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -257,7 +252,7 @@ img {
   }
 }
 
-/* Visualmente oculto, mas acessível a leitores de tela (ex.: regiões aria-live de status) */
+/* Visually hidden, but accessible to screen readers (e.g. status aria-live regions) */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -270,7 +265,7 @@ img {
   border: 0;
 }
 
-/* Wrap — container do redesign 2026 (Petrol/Clay/Ivory) */
+/* Wrap — main page container */
 .wrap {
   max-width: var(--wrap-max);
   margin: 0 auto;
@@ -283,7 +278,7 @@ img {
   }
 }
 
-/* Section head row — padrão de cabeçalho de seção do redesign 2026 */
+/* Section head row — standard section header pattern */
 .sec-head-row {
   display: flex;
   align-items: flex-end;
@@ -331,16 +326,15 @@ img {
   line-height: 1.65;
   color: var(--slate);
   max-width: 520px;
-  /* --sp-4 (16px) — convergido com .ih-center-desc/.ih-results-desc
-     (home.css) pro mesmo papel "eyebrow/título → descrição" (decisão
-     2026-07-23, ver CLAUDE.md §5 "Papel → token mínimo"). Era --sp-6
-     (24px) antes; os 3 usos divergiam sem token semântico dedicado. */
+  /* --sp-4 (16px) — converged with .ih-center-desc/.ih-results-desc
+     (home.css) onto the same "eyebrow/title → description" role. Used to
+     be --sp-6 (24px); the 3 usages diverged with no dedicated semantic token. */
   margin-top: var(--sp-4);
 }
 
-/* Modificadores para título/descrição de seção sobre fundo escuro (ex.:
-   .ih-results na Home) — reaproveitam .sec-t/.sec-desc em vez de duplicar
-   font-size/weight/letter-spacing numa classe paralela. */
+/* Modifiers for section title/description over a dark background (e.g.
+   .ih-results on the Home) — reuse .sec-t/.sec-desc instead of duplicating
+   font-size/weight/letter-spacing in a parallel class. */
 .sec-t--onDark {
   color: #fff;
 }
@@ -354,9 +348,9 @@ img {
   color: rgba(250, 248, 243, .72);
 }
 
-/* Variante centralizada de sec-head-row/sec-ey — eyebrow com traço dos
-   dois lados, título e subtítulo centralizados. Reutilizável em
-   qualquer seção que use o padrão sec-head-row/sec-ey/sec-t/sec-desc. */
+/* Centered variant of sec-head-row/sec-ey — eyebrow with a rule on both
+   sides, title and subtitle centered. Reusable in any section that
+   follows the sec-head-row/sec-ey/sec-t/sec-desc pattern. */
 .sec-head-row--center {
   justify-content: center;
 }
@@ -382,7 +376,7 @@ img {
   color: var(--clay);
 }
 
-/* Visibilidade responsiva */
+/* Responsive visibility */
 .mobile-only  { display: block; }
 .desktop-only { display: none; }
 
@@ -407,15 +401,14 @@ img {
 }
 
 /* =========================================
-   3. BOTÕES (design-reference.md §6 Componentes)
+   3. BUTTONS
    ========================================= */
-/* Botão padrão do site — dois tipos únicos (laranja/clay e petróleo),
-   reutilizados em toda a plataforma. Variam apenas em texto e largura.
-   Cor/hover: mesmo padrão do "Solicitar Diagnóstico" da navbar
-   (HeaderNav .nav-cta) — a cor escurece para sua própria variante de
-   hover, não troca de família (clay→clay-hover, petrol→petrol-deep).
-   Forma (border-radius): mesmo padrão do "Voltar ao topo" do Footer
-   (pílula, 999px). Sessão 2026-07-19. */
+/* Site's standard button — two single types (orange/clay and petrol),
+   reused across the whole platform. Vary only in text and width.
+   Color/hover: same pattern as the navbar's "Solicitar Diagnóstico"
+   (HeaderNav .nav-cta) — the color darkens into its own hover variant,
+   never switches family (clay→clay-hover, petrol→petrol-deep). Shape
+   (border-radius): same pattern as the Footer's "Back to top" (pill, 999px). */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -441,8 +434,8 @@ img {
   transform: translateY(-2px);
 }
 
-/* Variante petróleo — mesma forma, cor secundária (mesmo mecanismo de
-   hover: escurece dentro da própria família petrol, não troca pra clay) */
+/* Petrol variant — same shape, secondary color (same hover mechanism:
+   darkens within the petrol family itself, never switches to clay) */
 .btn-petrol {
   background-color: var(--petrol);
   border-color: rgba(255, 255, 255, 0.3);
@@ -453,7 +446,7 @@ img {
   color: #ffffff;
 }
 
-/* Button sizes — variam largura/altura, nunca cor/forma-base */
+/* Button sizes — vary width/height, never base color/shape */
 .btn-sm {
   padding: var(--sp-2) var(--sp-4);
   font-size: var(--type-caption);
@@ -465,21 +458,21 @@ img {
 }
 
 /* =========================================
-   4. EYEBROW — Padrão único (ritmo-vertical §Widgets)
-   traço ::before (24px) + texto uppercase, font-mono ou display
+   4. EYEBROW — single pattern
+   ::before rule (24px) + uppercase text, font-mono or display
    ========================================= */
 /* Eyebrow styles moved to Eyebrow.css component */
 
 /* =========================================
-   4. RITMO EDITORIAL — §6 Seções
+   4. EDITORIAL RHYTHM
    ========================================= */
 section {
   margin-block: var(--sp-10);
 }
 
 /* =========================================
-   5. STACK SYSTEM (ritmo-vertical-contract §6)
-   Spacing automático entre irmãos sem margin manual.
+   5. STACK SYSTEM
+   Automatic spacing between siblings without manual margin.
    ========================================= */
 .stack > * + * {
   margin-top: var(--stack-space, var(--sp-7));
@@ -487,7 +480,7 @@ section {
 
 /* =========================================
    5. DEBUG — baseline grid overlay
-   Ativar: <body class="debug-rhythm">
+   Enable: <body class="debug-rhythm">
    ========================================= */
 body.debug-rhythm {
   background-image: linear-gradient(
@@ -499,8 +492,7 @@ body.debug-rhythm {
 }
 
 /* =========================================
-   6. REVEAL — animação de entrada (components/ui/Reveal.tsx)
-   specs/ESPECIFICACAO-CLOUD-DEVOPS.md §15
+   6. REVEAL — entrance animation (components/ui/Reveal.tsx)
    ========================================= */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {

@@ -1,6 +1,3 @@
-/* frontend/app/servicos/page.tsx
-   Página central de Serviços — ajustes/ajuste-05-pagina-central-servicos.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
@@ -63,8 +60,8 @@ const jsonLd = {
   serviceType: 'Consultoria em automação, inteligência artificial, sistemas e cloud',
 };
 
-// §2: seis situações que levam ao contato — não são um "bloco negativo", são
-// o reconhecimento do problema antes de qualquer menção a tecnologia.
+// Six situations that lead to contact — not a "negative block", but
+// acknowledging the problem before any mention of technology.
 const PROBLEMAS = [
   { Icon: IconAutomacaoProcessos, title: 'Processos manuais e repetitivos', text: 'A equipe gasta horas copiando dados, conferindo informações, atualizando planilhas ou executando tarefas que poderiam seguir regras automatizadas.' },
   { Icon: IconIntegracaoSistemas, title: 'Sistemas desconectados', text: 'Informações precisam ser transferidas manualmente entre ERP, CRM, plataformas financeiras, e-mails e ferramentas internas.' },
@@ -74,7 +71,6 @@ const PROBLEMAS = [
   { Icon: IconArquiteturasEscalaveis, title: 'Crescimento sustentado por improvisações', text: 'A empresa continua funcionando, mas cada novo cliente, processo ou unidade aumenta o esforço e a possibilidade de erro.' },
 ];
 
-// §3: duas frentes complementares.
 const FRENTES = [
   {
     title: 'Eficiência e automação da operação',
@@ -94,7 +90,7 @@ const FRENTES = [
   },
 ];
 
-// §4: os 4 serviços especializados — mesmos nomes/textos usados na Home (PILLARS).
+// Same names/copy as used on the Home (PILLARS).
 const SERVICOS = [
   {
     Icon: IconAutomacaoProcessos,
@@ -130,7 +126,6 @@ const SERVICOS = [
   },
 ];
 
-// §5: exemplo de solução combinando as 4 competências.
 const SOLUCAO_COMBINADA = [
   'Automação e Integração para conectar o recebimento, a validação e o cadastro',
   'Inteligência Artificial para extrair e classificar as informações',
@@ -138,7 +133,6 @@ const SOLUCAO_COMBINADA = [
   'Cloud e DevOps para hospedar, proteger e monitorar a solução',
 ];
 
-// §6: 5 passos de "como o trabalho começa".
 const ETAPAS = [
   { numero: '01', title: 'Conversa inicial', text: 'Você apresenta o contexto, os principais sintomas e o resultado que espera alcançar.' },
   { numero: '02', title: 'Diagnóstico', text: 'Quando o desafio exige análise aprofundada, mapeamos processos, sistemas, restrições, riscos e oportunidades.' },
@@ -147,7 +141,6 @@ const ETAPAS = [
   { numero: '05', title: 'Acompanhamento e evolução', text: 'Monitoramos resultados, tratamos ajustes e planejamos novas etapas quando elas geram valor para a operação.' },
 ];
 
-// §7: para quem a consultoria é indicada.
 const INDICADA = [
   'A empresa possui processos recorrentes que precisam ganhar eficiência',
   'Sistemas e ferramentas já não acompanham o crescimento',
@@ -165,7 +158,6 @@ const NAO_INDICADA = [
   'A decisão será baseada apenas no menor preço possível',
 ];
 
-// §8: diferenciais da entrega.
 const DIFERENCIAIS = [
   'Liderança técnica direta',
   'Problema antes da ferramenta',
@@ -175,7 +167,6 @@ const DIFERENCIAIS = [
   'Transparência sobre riscos, limites e custos',
 ];
 
-// §9: perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'Preciso saber qual serviço contratar?', answer: 'Não. O primeiro passo é compreender o problema, os sistemas envolvidos e o resultado esperado.' },
   { question: 'É possível começar por um projeto pequeno?', answer: 'Sim. Sempre que possível, priorizamos um fluxo, módulo ou problema com impacto relevante e escopo controlado.' },

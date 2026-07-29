@@ -6,7 +6,6 @@ import { MACRO_AREAS } from '../utils/taxonomy'
 import { useToast } from '../composables/useToast'
 import type { Categoria } from '../types'
 
-// --- Estado ---
 const categories = ref<Categoria[]>([])
 const isModalOpen = ref(false)
 const editingSlug = ref<string | null>(null)
@@ -14,7 +13,6 @@ const isLoading = ref(true)
 const isSaving = ref(false)
 const { toast, showToast } = useToast()
 
-// Estado do Formulário
 const defaultForm: Categoria = {
   nome: '',
   categoria_slug: '',
@@ -41,7 +39,6 @@ function removeSubcategoria(slug: string) {
   form.value.subcategorias = form.value.subcategorias.filter((s) => s.slug !== slug)
 }
 
-// --- Lógica de Inicialização (Fetch da API) ---
 const fetchCategories = async () => {
   isLoading.value = true
   try {
@@ -58,16 +55,13 @@ onMounted(() => {
   fetchCategories()
 })
 
-// --- Lógica de UX / Auxiliares ---
-
-// Watcher para preencher o slug automaticamente apenas na criação
+// Auto-fills the slug only while creating, never while editing.
 watch(() => form.value.nome, (newName) => {
   if (!editingSlug.value) {
     form.value.categoria_slug = slugify(newName)
   }
 })
 
-// Ações do Modal
 const openModal = (category?: Categoria) => {
   if (category) {
     editingSlug.value = category.categoria_slug
@@ -89,8 +83,6 @@ const closeModal = () => {
   }, 200)
 }
 
-// --- Operações CRUD Reais ---
-
 const handleSave = async () => {
   if (!form.value.nome || !form.value.categoria_slug) {
     return showToast('Preencha os campos obrigatórios (Nome e Slug)', 'warning')
@@ -99,14 +91,11 @@ const handleSave = async () => {
   isSaving.value = true
   try {
     if (editingSlug.value) {
-      // Editar
       await categoriesApi.update(editingSlug.value, form.value)
     } else {
-      // Criar
       await categoriesApi.create(form.value)
     }
-    
-    // Recarrega a lista após salvar com sucesso
+
     await fetchCategories()
     showToast(editingSlug.value ? 'Categoria atualizada!' : 'Categoria criada!')
     closeModal()
@@ -294,7 +283,7 @@ const handleDelete = async (slug: string) => {
 .ia-add-row { display: flex; gap: 10px; margin-top: 26px; }
 
 /* =========================================
-   BOTÕES & AÇÕES
+   BUTTONS & ACTIONS
    ========================================= */
 .ia-btn-primary, .btn-primary {
   background-color: var(--accent);
@@ -336,7 +325,7 @@ const handleDelete = async (slug: string) => {
 .btn-secondary:hover:not(:disabled) { background-color: var(--slate-100); }
 
 /* =========================================
-   LISTA (spec seção 9)
+   LIST
    ========================================= */
 .ia-list {
   margin-top: 22px; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden;

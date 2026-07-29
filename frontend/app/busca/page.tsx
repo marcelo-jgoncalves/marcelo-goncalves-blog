@@ -6,7 +6,7 @@ import PageHero from '@/components/ui/PageHero';
 import SearchBar from '@/components/ui/SearchBar';
 import { SITE_NAME } from '@/lib/config';
 
-// SEO: Não indexar resultados de busca interna
+// SEO: don't index internal search results
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const params = await searchParams;
   const term = params.q || 'Busca';
@@ -32,7 +32,6 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   let popularPosts: PostCardProps['post'][] = [];
   let nextPageToken = undefined;
 
-  // Busca em paralelo
   const [searchData, popularData] = await Promise.all([
     q ? searchPosts(q, nextToken) : Promise.resolve({ posts: [], nextToken: undefined }),
     getPopularPosts().catch(() => ({ posts: [] }))
@@ -49,7 +48,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   return (
     <>
       {hasResults ? (
-        // --- CENÁRIO A: Encontrou Resultados ---
+        // --- SCENARIO A: Found Results ---
         <>
           <PageHero
             singleColumn
@@ -78,7 +77,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           </section>
         </>
       ) : (
-        // --- CENÁRIO B: Nada Encontrado (Layout de Retenção) ---
+        // --- SCENARIO B: Nothing Found (Retention Layout) ---
         <>
           <PageHero
             singleColumn

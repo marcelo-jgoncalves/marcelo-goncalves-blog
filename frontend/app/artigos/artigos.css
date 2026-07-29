@@ -1,6 +1,4 @@
-/* frontend/app/blog/blog.css — Redesign 2026 (Petrol/Clay/Ivory) */
-
-/* Fullwidth sections — sobrescreve `section { margin-block: var(--sp-10) }` global */
+/* Fullwidth sections — overrides the global `section { margin-block: var(--sp-10) }` */
 .home-hero,
 .home-section,
 .home-ia-section {
@@ -8,17 +6,17 @@
 }
 
 /* ── Hero ──
-   Seletor .page-hero.home-hero (dupla classe, não só .home-hero): a versão
-   anterior com uma classe só perdia a cascata pra .page-hero (PageHero.css)
-   por ordem de origem, mesma especificidade — nenhuma dessas custom
-   properties (--ph-cols/--ph-gap/--ph-sub-max) estava de fato sendo
-   aplicada, a hero sempre caía no default 1fr 1fr em vez de 1.1fr/.9fr.
-   Mesmo padrão de especificidade já usado em home.css/contato.css.
-   padding-bottom 18px: o último elemento visível da coluna esquerda é o
-   subtitle, que já tem margin-bottom:30px (PageHero.css) — 18+30=48px
-   (var(--sp-9)) de fato até o limite da seção. Sem isso, herdava o
-   padding-bottom:0 padrão de PageHero.css e o texto ficava colado na borda
-   (bug real, não só de compilação em dev). */
+   Selector .page-hero.home-hero (double class, not just .home-hero): the
+   previous single-class version lost the cascade to .page-hero
+   (PageHero.css) by source order at the same specificity — none of these
+   custom properties (--ph-cols/--ph-gap/--ph-sub-max) were actually being
+   applied, the hero always fell back to the 1fr 1fr default instead of
+   1.1fr/.9fr. Same specificity pattern already used in home.css/contato.css.
+   padding-bottom 18px: the last visible element of the left column is the
+   subtitle, which already has margin-bottom:30px (PageHero.css) — 18+30=48px
+   (var(--sp-9)) actually reaches the section's edge. Without this, it
+   inherited PageHero.css's default padding-bottom:0 and the text ended up
+   flush against the border. */
 .page-hero.home-hero {
   --ph-cols:    1.1fr 0.9fr;
   --ph-gap:     var(--sp-10);
@@ -43,13 +41,13 @@
   mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
 }
 
-/* Botões — usam o padrão global .btn/.btn-petrol (globals.css); a
-   classe local só cuida de contexto (arrow font). */
+/* Buttons — use the global .btn/.btn-petrol pattern (globals.css); the
+   local class only handles context (arrow font). */
 .home-btn-clay-hero .arrow {
   font-family: var(--mono);
 }
 
-/* ── Hero — card em destaque ── */
+/* ── Hero — featured card ── */
 .home-hero .page-hero-right {
   display: flex;
   align-items: stretch;
@@ -186,12 +184,12 @@
   color: rgba(255, 255, 255, .48);
 }
 
-/* .home-pp-btn é um <span> (todo o card é o link) — usa o padrão global
-   .btn, só ajusta largura/altura no contexto do card. Como o botão fica
-   no rodapé do card (margin-top:auto), o cursor raramente está
-   literalmente sobre ele ao passar o mouse pelo card — por isso o hover
-   também é disparado explicitamente pelo hover do card pai, com a
-   mesma cor do .btn:hover global (nunca uma cor própria). */
+/* .home-pp-btn is a <span> (the whole card is the link) — uses the global
+   .btn pattern, only adjusts width/height in the card's context. Since the
+   button sits at the card's footer (margin-top:auto), the cursor rarely
+   sits literally over it while hovering the card — so the hover is also
+   triggered explicitly by the parent card's hover, with the same color as
+   the global .btn:hover (never its own color). */
 .home-pp-btn {
   margin-top: auto;
   width: 100%;
@@ -210,11 +208,11 @@
 }
 
 
-/* ── Layout de seção compartilhado ──
-   Espaçamento reduzido de --section-pad (96px) para var(--sp-9) (48px)
-   de cada lado, igualando ao padrão adotado na Home, nas 4 landing pages e
-   em Contato. #recentes (home-section--surface) mantém a linha divisória
-   real (border-top/bottom) que já tinha. */
+/* ── Shared section layout ──
+   Spacing reduced from --section-pad (96px) to var(--sp-9) (48px) on each
+   side, matching the pattern adopted on the Home, the 4 landing pages and
+   Contato. #recentes (home-section--surface) keeps the real divider line
+   (border-top/bottom) it already had. */
 .home-section {
   padding: var(--sp-9) 0;
 }
@@ -225,7 +223,7 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* ── Mais lidos ── */
+/* ── Most read ── */
 .home-ml-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -306,7 +304,7 @@
   right: 20px;
   top: -10px;
   font-weight: 900;
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral decorativo de fundo, fora da escala tipográfica de conteúdo */
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- decorative background numeral, outside the content type scale */
   font-size: 9rem;
   line-height: 1;
   letter-spacing: -.08em;
@@ -469,7 +467,7 @@
   align-self: center;
 }
 
-/* ── Postagens recentes ── */
+/* ── Recent posts ── */
 .home-posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -482,12 +480,12 @@
   margin-top: var(--sp-9);
 }
 
-/* Usa o padrão global .btn.btn-petrol (globals.css); mantém só o arrow. */
+/* Uses the global .btn.btn-petrol pattern (globals.css); only keeps the arrow. */
 .home-btn-outline-petrol .arrow {
   font-family: var(--mono);
 }
 
-/* ── Posts sobre IA (dark) ── */
+/* ── AI posts (dark) ── */
 .home-ia-section {
   background: var(--petrol);
   color: var(--ivory);
@@ -497,10 +495,10 @@
   padding: var(--sp-9) 0;
 }
 
-/* CTA final (AdvisoryCta, id default "assessoria"): .cta-adv-in usa
-   align-items:center, centralizando a coluna de texto contra o card mais
-   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
-   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+/* Final CTA (AdvisoryCta, default id "assessoria"): .cta-adv-in uses
+   align-items:center, centering the text column against the taller card
+   next to it — that pushes the eyebrow well past the padding-top alone
+   (same problem solved on the Home, see home.css #contato.cta-adv). */
 #assessoria.cta-adv .cta-adv-in {
   align-items: flex-start;
   padding-top: var(--sp-9);
@@ -578,10 +576,9 @@
   margin-top: var(--title-gap);
 }
 
-/* Variante centralizada — eyebrow com traço dos dois lados, título e
-   subtítulo centralizados (mesmo padrão de .sec-head-row--center em
-   globals.css, replicado aqui por essa seção usar classes próprias
-   de tema escuro). */
+/* Centered variant — eyebrow with a rule on both sides, title and subtitle
+   centered (same pattern as .sec-head-row--center in globals.css,
+   replicated here since this section uses its own dark-theme classes). */
 .home-ia-sec-head-row--center {
   justify-content: center;
 }
@@ -602,8 +599,8 @@
   background: var(--clay);
 }
 
-/* Wrapper genérico pra centralizar um botão único no fim de uma seção
-   (usado por IA e O Projeto). */
+/* Generic wrapper to center a single button at the end of a section
+   (used by IA and O Projeto). */
 .home-cta-end {
   display: flex;
   justify-content: center;
@@ -819,7 +816,7 @@
   margin-bottom: var(--sp-8);
 }
 
-/* ── Responsivo ── */
+/* ── Responsive ── */
 @media (max-width: 1040px) {
   .home-ml-grid {
     grid-template-columns: 1fr;
@@ -836,10 +833,10 @@
 }
 
 @media (max-width: 860px) {
-  /* Card (.home-proj-panel) empilha abaixo do texto no mobile — o
-     --ph-pad padrão (var(--gap-loose)=18px) foi pensado para o desktop,
-     onde a coluna de texto é o elemento mais baixo. Mesmo ajuste de
-     .page-hero.sobre-hero em sobre.css para o mesmo cenário. */
+  /* Card (.home-proj-panel) stacks below the text on mobile — the
+     default --ph-pad (var(--gap-loose)=18px) was designed for desktop,
+     where the text column is the shortest element. Same fix as
+     .page-hero.sobre-hero in sobre.css for the same scenario. */
   .page-hero.home-hero {
     --ph-pad: 88px 40px var(--sp-9);
   }

@@ -1,11 +1,9 @@
-/*frontend/app/post/[slug]/post.css*/
-
 /* ==========================================================================
-   POST PAGE — Redesign 2026 (specs/ESPECIFICACAO-POSTAGEM.md)
+   POST PAGE
    Tokens: petrol / clay / ivory / sand (frontend/app/globals.css)
    ========================================================================== */
 
-/* Fullwidth sections — sobrescreve `section { margin-block: var(--sp-10) }` global */
+/* Fullwidth sections — overrides the global `section { margin-block: var(--sp-10) }` */
 .post-hero {
   margin-block: 0;
 }
@@ -163,7 +161,7 @@
 
 @media (max-width: 720px) {
   .post-layout { grid-template-columns: 1fr; padding-top: var(--sp-12); }
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- geometria de sobreposição calculada pela altura real da capa, não ritmo de espaçamento */
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- overlap geometry calculated from the cover's real height, not spacing rhythm */
   .post-cover { margin-bottom: -60px; }
 }
 
@@ -286,8 +284,9 @@
 .post-toc-read-meta span { display: flex; align-items: center; gap: var(--sp-2); }
 .post-toc-read-meta b { color: var(--petrol); font-weight: 600; }
 
-/* TOC removido no mobile/tablet por enquanto — reafirma o display:none da
-   seção 4, que a regra base .post-toc{display:flex} acima sobrescrevia. */
+/* TOC removed on mobile/tablet for now — reaffirms the display:none from
+   the layout section above, which the base .post-toc{display:flex} rule
+   overrode. */
 @media (max-width: 1080px) {
   .post-toc { display: none; }
 }
@@ -310,7 +309,7 @@
   margin-bottom: 0;
 }
 
-/* Lead — primeiro parágrafo (post.resumo) */
+/* Lead — first paragraph (post.resumo) */
 .post-content > .post-lead {
   font-size: var(--type-lead);
   line-height: 1.55;
@@ -322,12 +321,12 @@
 
 .post-content > .post-lead em { font-style: italic; color: var(--petrol); }
 
-/* Drop cap — primeira letra do lead (ou do 1º parágrafo sem resumo) */
+/* Drop cap — first letter of the lead (or the 1st paragraph when there's no resumo) */
 .post-content > .post-lead:first-child::first-letter,
 .post-content > .post-content-part:first-child > p:first-of-type::first-letter {
   float: left;
   font-weight: 800;
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- letra capitular (drop cap), escala com o parágrafo, fora da escala tipográfica de conteúdo */
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- drop cap letter, scales with the paragraph, outside the content type scale */
   font-size: 3.6em;
   line-height: .82;
   padding: var(--sp-2) var(--sp-3) 0 0;
@@ -431,7 +430,7 @@
   margin: var(--prose-sp-4) 0 var(--prose-sp-1);
 }
 
-/* ── listas ── */
+/* ── lists ── */
 .post-content ul,
 .post-content ol {
   list-style: none;
@@ -482,7 +481,7 @@
   color: var(--petrol);
 }
 
-/* ── blockquote (legado) ── */
+/* ── blockquote (legacy) ── */
 .post-content blockquote {
   margin: var(--sp-9) 0;
   padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
@@ -500,7 +499,7 @@
   letter-spacing: -.01em;
 }
 
-/* ── compare blocks (prompt fraco / forte) ── */
+/* ── compare blocks (weak / strong prompt) ── */
 .post-content .compare {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -557,7 +556,7 @@
   .post-content .compare { grid-template-columns: 1fr; }
 }
 
-/* ── mídia: imagens, figuras, vídeos, embeds ── */
+/* ── media: images, figures, videos, embeds ── */
 .post-content img {
   max-width: 100%;
   height: auto;
@@ -617,7 +616,7 @@
 }
 
 /* ==========================================================================
-   7. BLOCOS DE CÓDIGO (Shiki)
+   7. CODE BLOCKS (Shiki)
    ========================================================================== */
 
 .post-content .inline-code {
@@ -678,8 +677,8 @@ pre.code-block,
 }
 
 /* ==========================================================================
-   8. CALLOUTS, TIP, PULL QUOTE & CLOSING FLOURISH (Redesign 2026)
-   Fonte: specs/ESPECIFICACAO-POSTAGEM.md — tokens petrol/clay/ivory
+   8. CALLOUTS, TIP, PULL QUOTE & CLOSING FLOURISH
+   Tokens: petrol/clay/ivory
    ========================================================================== */
 
 .post-content .callout,
@@ -887,7 +886,7 @@ pre.code-block,
 }
 
 /* ==========================================================================
-   10. TABELAS (Editor)
+   10. TABLES (Editor)
    ========================================================================== */
 
 article table,
@@ -955,7 +954,7 @@ article tbody tr:last-child td,
 }
 
 /* ==========================================================================
-   12. CTA CONTEXTUAL — editorial compacto (entre corpo e autor)
+   12. CONTEXTUAL CTA — compact editorial (between body and author)
    ========================================================================== */
 .post-cta-editorial {
   margin-block: 0;

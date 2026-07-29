@@ -6,7 +6,7 @@ import './Footer.css';
 import ConsentTrigger from '@/components/consent/ConsentTrigger';
 import { AUTHOR_EMAIL, AUTHOR_LOCATION } from '@/lib/config';
 
-// Ordem definitiva (ajuste-17b §8.2/§8.3): Visão geral primeiro, depois os 4 pilares.
+// Visão geral first, then the 4 pillars.
 const SERVICES_LINKS = [
   { name: 'Visão geral', href: '/servicos' },
   { name: 'Automação e Integração', href: '/automacao' },
@@ -15,7 +15,7 @@ const SERVICES_LINKS = [
   { name: 'Cloud, DevOps e Confiabilidade', href: '/plataforma' },
 ];
 
-// Ordem definitiva (ajuste-17b §9.2) — sem "Serviços" (já tem coluna própria) e sem "Blog".
+// No "Serviços" (already has its own column) and no "Blog".
 const NAVIGATION_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Sobre', href: '/sobre' },

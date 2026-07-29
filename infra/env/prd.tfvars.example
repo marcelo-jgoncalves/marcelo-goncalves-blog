@@ -1,4 +1,3 @@
-# infra/env/prd.tfvars.example
 # Copy to prd.tfvars (gitignored) and fill in real values.
 
 environment  = "prod"

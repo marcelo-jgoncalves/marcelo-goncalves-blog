@@ -1,10 +1,8 @@
-/*frontend/components/ui/AdsenseInArticle.css*/
-
 /* ==========================================================================
-   ADSENSE COMPONENT SYSTEM - WORLD CLASS ALIGNMENT
+   ADSENSE COMPONENT SYSTEM
    ========================================================================== */
 
-/* 1. Reset e Base Comum */
+/* Reset and shared base */
 .op-adsense-wrapper {
   width: 100%;
   display: flex;
@@ -15,7 +13,7 @@
   overflow: hidden;
 }
 
-/* 2. Mobile-first: quadrado via aspect-ratio (igual ao AdSenseBanner) */
+/* Mobile-first: square via aspect-ratio (same as AdSenseBanner) */
 .adsense-in-content-mock,
 .adsense-in-feed-mock,
 .adsense-summary-mock {
@@ -23,13 +21,13 @@
   width: 100%;
 }
 
-/* 3. Blindagem Crítica: Força a tag do Google a obedecer o layout */
+/* Critical guard: forces Google's tag to obey the layout */
 .op-adsense-wrapper .adsbygoogle {
   display: block !important;
   height: 100% !important;
 }
 
-/* 4. Gestão de Ritmo Vertical — espaço simétrico acima e abaixo */
+/* Vertical rhythm — symmetric spacing above and below */
 .adsense-summary-mock {
   margin-top: 0;
   margin-bottom: var(--sp-7);
@@ -39,7 +37,7 @@
   margin-block: var(--sp-7);
 }
 
-/* 5. Desktop: volta ao leaderboard 90px (igual ao AdSenseBanner) */
+/* Desktop: back to the 90px leaderboard (same as AdSenseBanner) */
 @media (min-width: 768px) {
   .adsense-in-content-mock,
   .adsense-summary-mock,
@@ -53,7 +51,7 @@
   }
 }
 
-/* 6. Estilo do Mock (Somente Ambiente de Desenvolvimento) */
+/* Mock styling (dev environment only) */
 .op-adsense-dev-mock {
   background-color: var(--sand);
   border: 1px dashed #cbd5e1;

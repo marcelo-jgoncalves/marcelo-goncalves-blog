@@ -1,4 +1,3 @@
-# infra/modules/observability/dashboard.tf
 # Dashboard único correlacionando os Four Golden Signals (Google SRE):
 # latência, tráfego, erros e saturação — hoje espalhados em alarmes
 # isolados por recurso (api-gateway/lambda/media). Gated pelo mesmo

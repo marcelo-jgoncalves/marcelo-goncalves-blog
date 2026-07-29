@@ -1,4 +1,3 @@
-# infra/modules/frontend/lambda.tf
 
 # infra/modules/frontend/lambda.tf
 

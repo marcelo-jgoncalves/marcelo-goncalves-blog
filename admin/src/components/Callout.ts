@@ -1,4 +1,3 @@
-/* Callout.ts */
 import { Node, mergeAttributes } from '@tiptap/core'
 
 export const CALLOUT_TYPES = ['info', 'warn', 'error', 'ok', 'tip'] as const
@@ -14,7 +13,7 @@ export const CALLOUT_DEFAULTS: Record<CalloutType, { icon: string; title: string
 
 function normalizeType(type: unknown): CalloutType {
   const value = String(type || 'info').toLowerCase()
-  if (value === 'warning') return 'warn' // alias legado (sessões < 37)
+  if (value === 'warning') return 'warn' // legacy alias
   return (CALLOUT_TYPES as readonly string[]).includes(value) ? (value as CalloutType) : 'info'
 }
 
@@ -35,7 +34,7 @@ export const Callout = Node.create({
   parseHTML() {
     return [
       {
-        // Formato atual (redesign 2026 — specs/ESPECIFICACAO-POSTAGEM.md)
+        // Current format
         tag: 'div.callout, div.tip',
         contentElement: (node) => (node as HTMLElement).querySelector('.c p') || node,
         getAttrs: (node) => {
@@ -50,7 +49,7 @@ export const Callout = Node.create({
         },
       },
       {
-        // Formato legado (sessões 16-36) — div.content-callout.callout-{type}
+        // Legacy format — div.content-callout.callout-{type}
         tag: 'div.content-callout',
         contentElement: (node) => (node as HTMLElement).querySelector('.callout-content-area') || node,
         getAttrs: (node) => {

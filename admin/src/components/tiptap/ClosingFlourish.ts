@@ -1,4 +1,3 @@
-/* admin/src/components/tiptap/ClosingFlourish.ts */
 import { Node, mergeAttributes } from '@tiptap/core'
 
 export const ClosingFlourish = Node.create({

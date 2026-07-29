@@ -1,4 +1,3 @@
-# infra/main.tf
 
 module "dynamodb" {
   source = "./modules/dynamodb"

@@ -1,7 +1,6 @@
-/* frontend/components/ui/SearchBar.css
-   Mesma receita visual antes duplicada em artigos.css (.art-search) e
-   busca.css (.busca-search) — pensada para viver dentro do hero escuro
-   (PageHero), como children. */
+/* Same visual recipe previously duplicated in artigos.css (.art-search) and
+   busca.css (.busca-search) — designed to live inside the dark hero
+   (PageHero), as children. */
 
 .search-bar {
   width: 100%;
@@ -34,9 +33,9 @@
   letter-spacing: -.005em;
 }
 
-/* :focus-within acima já indica foco no wrapper, mas navegação por teclado
-   também precisa de indicação visível no próprio input (a11y) — a regra global
-   de :focus-visible em globals.css não vence aqui por especificidade. */
+/* :focus-within above already indicates focus on the wrapper, but keyboard
+   navigation also needs a visible indicator on the input itself (a11y) —
+   the global :focus-visible rule in globals.css doesn't win here on specificity. */
 .search-bar input:focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 2px;
@@ -46,10 +45,10 @@
   color: rgba(255, 255, 255, .46);
 }
 
-/* Botão nativo de limpar (input[type="search"]) — some navegadores (Firefox)
-   não renderizam esse botão; nos baseados em WebKit/Blink (Chrome, Edge,
-   Safari), o ícone padrão vem cinza do SO. appearance:none + mask com a cor
-   --clay deixa consistente com o resto do sistema de cores do projeto. */
+/* Native clear button (input[type="search"]) — some browsers (Firefox)
+   don't render this button; on WebKit/Blink-based ones (Chrome, Edge,
+   Safari), the default icon comes gray from the OS. appearance:none + a
+   mask with --clay keeps it consistent with the rest of the project's color system. */
 .search-bar input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;

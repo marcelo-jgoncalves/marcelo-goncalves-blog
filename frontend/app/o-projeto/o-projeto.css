@@ -1,15 +1,11 @@
-/* frontend/app/o-projeto/o-projeto.css
-   Redesign 2026 (petrol/clay/ivory) — réplica de specs/ESPECIFICACAO-O-PROJETO.md
-   e e2e/visual-audit/fixtures/projeto.html, com dados reais do projeto. */
-
-/* Seções desta página têm padding próprio — remove o ritmo global de 64px */
+/* Sections on this page have their own padding — removes the global 64px rhythm */
 .op-hero,
 .op-section {
   margin-block: 0;
 }
 
 /* ==========================================================================
-   HERO (escuro)
+   HERO (dark)
    ========================================================================== */
 .op-hero {
   --ph-max: var(--wrap-max-narrow);
@@ -32,7 +28,7 @@
 }
 
 /* ==========================================================================
-   WRAP (conteúdo principal — narrow)
+   WRAP (main content — narrow)
    ========================================================================== */
 .op-wrap {
   max-width: var(--wrap-max-narrow);
@@ -41,19 +37,19 @@
 }
 
 /* ==========================================================================
-   SECTIONS — cabeçalho compartilhado
+   SECTIONS — shared header
    ========================================================================== */
-/* Padding reduzido à metade (var(--sp-12)→var(--sp-9)) e simétrico
-   (top=bottom), mesmo padrão de #servicos/#abordagem/#insights em home.css. */
+/* Padding reduced to half (var(--sp-12)→var(--sp-9)) and symmetric
+   (top=bottom), same pattern as #servicos/#abordagem/#insights in home.css. */
 .op-section {
   padding-top: var(--sp-9);
   padding-bottom: var(--sp-9);
 }
 
-/* Timeline termina em paginação (Anterior/Próxima) — mesmo padrão de
-   .art-section--paginated em artigos.css: sp-4(16px) aqui + padding-top/bottom
-   de 32px já embutido em .op-pagination = 48px total de cada lado (igual ao
-   respiro padrão --sp-9 das demais transições da página, não maior). */
+/* Timeline ends in pagination (Previous/Next) — same pattern as
+   .art-section--paginated in artigos.css: sp-4(16px) here + the 32px
+   padding-top/bottom already embedded in .op-pagination = 48px total on
+   each side (equal to the page's standard --sp-9 breathing room, not more). */
 #timeline.op-section {
   padding-bottom: var(--sp-4);
 }
@@ -65,7 +61,7 @@
 }
 
 /* ==========================================================================
-   POR QUE CONSTRUIR
+   WHY BUILD THIS
    ========================================================================== */
 .op-why-body {
   max-width: 780px;
@@ -80,7 +76,7 @@
 }
 
 /* ==========================================================================
-   CALLOUT (reutilizado em "Por que construir" e "Fluxo editorial")
+   CALLOUT (reused in "Por que construir" and "Fluxo editorial")
    ========================================================================== */
 .op-callout {
   margin-top: var(--sp-7);
@@ -108,7 +104,7 @@
 }
 
 /* ==========================================================================
-   ESTADO ATUAL — capacidades por status
+   CURRENT STATE — capabilities by status
    ========================================================================== */
 .op-cap-grid {
   margin-top: var(--sp-8);
@@ -175,7 +171,7 @@
 }
 
 /* ==========================================================================
-   ARQUITETURA
+   ARCHITECTURE
    ========================================================================== */
 .op-layers {
   margin-top: var(--sp-8);
@@ -265,7 +261,7 @@
 }
 
 /* ==========================================================================
-   PRINCÍPIOS DE ENGENHARIA
+   ENGINEERING PRINCIPLES
    ========================================================================== */
 .op-principles-grid {
   margin-top: var(--sp-8);
@@ -295,7 +291,7 @@
 }
 
 /* ==========================================================================
-   FLUXO EDITORIAL E IA
+   EDITORIAL AND AI WORKFLOW
    ========================================================================== */
 .op-flow-list {
   margin: var(--sp-8) 0 0;
@@ -347,7 +343,7 @@
 }
 
 /* ==========================================================================
-   EVOLUÇÃO — grupos sem datas
+   ROADMAP — groups without dates
    ========================================================================== */
 .op-roadmap-groups {
   margin-top: var(--sp-8);
@@ -388,7 +384,7 @@
 }
 
 /* ==========================================================================
-   CTA FINAL — editorial compacto
+   FINAL CTA — compact editorial
    ========================================================================== */
 .op-cta-editorial {
   margin-block: 0;
@@ -435,7 +431,7 @@
 }
 
 /* ==========================================================================
-   TIMELINE DE POSTS
+   POST TIMELINE
    ========================================================================== */
 .op-timeline {
   display: flex;
@@ -448,7 +444,7 @@
   top: -4px;
   right: 18px;
   font-weight: 900;
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- numeral decorativo de fundo, fora da escala tipográfica de conteúdo */
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- decorative background numeral, outside the content type scale */
   font-size: 7rem;
   letter-spacing: -.08em;
   line-height: 1;
@@ -604,15 +600,15 @@
   padding: var(--sp-9) 0;
 }
 
-/* ── paginação ── */
-/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
-   (mesmo valor de .art-load-wrap em artigos.css). */
+/* ── pagination ── */
+/* sp-4(16px) + the 32px padding-top already embedded in .op-pagination =
+   48px total (same value as .art-load-wrap in artigos.css). */
 .op-pag-wrap {
   margin-top: var(--sp-4);
 }
 
 /* ==========================================================================
-   RESPONSIVO
+   RESPONSIVE
    ========================================================================== */
 @media (max-width: 1000px) {
   .op-cap-grid,

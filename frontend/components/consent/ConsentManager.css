@@ -1,7 +1,5 @@
-/* frontend/components/consent/ConsentManager.css */
-
 /* ═══════════════════════════════════════════
-   BANNER — barra fixa no rodapé
+   BANNER — fixed bottom bar
 ═══════════════════════════════════════════ */
 .cmp-banner {
   position: fixed;
@@ -50,7 +48,7 @@
   flex-shrink: 0;
 }
 
-/* Botões do banner */
+/* Banner buttons */
 .cmp-btn {
   font-family: var(--font-display);
   font-weight: 700;
@@ -64,9 +62,9 @@
   line-height: 1;
 }
 
-/* Aceitar/Rejeitar têm o mesmo peso visual (outline, mesma borda e
-   padding) — só a cor muda. Evita que a escolha de aceitar pareça a
-   opção "padrão"/obrigatória (ver docs/cockie.md, "Conteúdo do banner"). */
+/* Accept/Reject have the same visual weight (outline, same border and
+   padding) — only the color changes. Prevents the accept choice from
+   looking like the "default"/mandatory option. */
 .cmp-btn--accept {
   background: transparent;
   color: var(--petrol);
@@ -99,7 +97,7 @@
 }
 
 /* ═══════════════════════════════════════════
-   MODAL — dialog de preferências
+   MODAL — preferences dialog
 ═══════════════════════════════════════════ */
 .cmp-overlay {
   position: fixed;
@@ -168,7 +166,7 @@
   margin: 0 0 var(--sp-6);
 }
 
-/* ─── Linhas de consent ──────────────────── */
+/* ─── Consent rows ──────────────────── */
 .cmp-row {
   display: flex;
   align-items: flex-start;
@@ -278,7 +276,7 @@
   opacity: 0.5;
 }
 
-/* ─── Rodapé do modal ────────────────────── */
+/* ─── Modal footer ────────────────────── */
 .cmp-modal__footer {
   padding: 0 var(--sp-6) var(--sp-6);
 }
@@ -327,7 +325,7 @@
 }
 
 /* ═══════════════════════════════════════════
-   TRIGGER NO FOOTER
+   FOOTER TRIGGER
 ═══════════════════════════════════════════ */
 .cmp-trigger {
   background: none;
@@ -347,7 +345,7 @@
 }
 
 /* ═══════════════════════════════════════════
-   RESPONSIVO
+   RESPONSIVE
 ═══════════════════════════════════════════ */
 @media (max-width: 639px) {
   .cmp-banner__inner {

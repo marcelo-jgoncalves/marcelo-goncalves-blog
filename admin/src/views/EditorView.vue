@@ -1,5 +1,3 @@
-/* admin/src/views/EditorView.vue */
-
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
@@ -13,11 +11,11 @@ import { CARD_VARIANTS } from '../utils/taxonomy'
 import { useToast } from '../composables/useToast'
 import type { Autor, Categoria, Post } from '../types'
 
-// div/span: wrapper dos nodes customizados do Tiptap (Callout, PullQuote,
-// ClosingFlourish, embed do YouTube) — sem eles o DOMPurify "desempacota"
-// esses nodes, descartando a div e deixando só o texto solto no HTML salvo.
-// Sincronizado com backend/src/common/sanitizer.ts — ALLOWED_TAGS e ALLOWED_ATTR
-// devem ser idênticos entre admin (DOMPurify) e backend (sanitize-html).
+// div/span: wrapper for Tiptap's custom nodes (Callout, PullQuote,
+// ClosingFlourish, YouTube embed) — without them DOMPurify "unwraps" those
+// nodes, discarding the div and leaving only loose text in the saved HTML.
+// Kept in sync with backend/src/common/sanitizer.ts — ALLOWED_TAGS and
+// ALLOWED_ATTR must be identical between admin (DOMPurify) and backend (sanitize-html).
 const ALLOWED_TAGS = [
   // Block
   'h1','h2','h3','h4','h5','h6',
@@ -50,8 +48,7 @@ const titleRef = ref<HTMLElement | null>(null)
 const subtitleRef = ref<HTMLElement | null>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
-// Blog tem apenas 1 autor por design (ver memória project_admin_single_user) —
-// mesmo AUTHOR_ID hardcoded usado em AuthorEditView.vue.
+// The blog has only 1 author by design — same hardcoded AUTHOR_ID used in AuthorEditView.vue.
 const AUTHOR_ID = 'marcelo-goncalves'
 const author = ref<Autor | null>(null)
 const authorName = computed(() => author.value?.nome_exibicao || 'Marcelo Gonçalves')
@@ -67,11 +64,11 @@ const authorAvatarUrl = computed(() => {
   return `${base}-480.webp`
 })
 
-// e_popular/e_projeto viram boolean só aqui (estado de UI do toggle) — o
-// tipo real de Post (contrato da API) é 0|1 (backend/src/common/types.ts,
-// DynamoDB não tem boolean em índice). A conversão pra 0|1 já acontecia no
-// save (handleSubmit, "? 1 : 0"); só o tipo do form estava errado, herdando
-// Post diretamente em vez de ter seu próprio tipo de estado local.
+// e_popular/e_projeto become boolean only here (toggle UI state) — Post's
+// real type (API contract) is 0|1 (backend/src/common/types.ts, DynamoDB
+// has no boolean type for an indexed attribute). The conversion to 0|1
+// already happened on save ("? 1 : 0"); only the form's type was wrong,
+// inheriting Post directly instead of having its own local state type.
 type PostFormState = Omit<Post, 'e_popular' | 'e_projeto'> & {
   e_popular: boolean
   e_projeto: boolean
@@ -108,14 +105,14 @@ const uploadContext = ref<'destaque' | 'editor'>('destaque')
 const loadingCategories = ref(true)
 const { toast, showToast } = useToast()
 
-// Painéis / modos da tela de escrita
+// Writing screen panels / modes
 const settingsOpen = ref(false)
 const focusMode = ref(false)
 const previewOpen = ref(false)
 const hintOpen = ref(true)
 const showOutline = computed(() => !focusMode.value && typeof window !== 'undefined' && window.innerWidth >= 1180)
 
-// Dirty state — detecta alterações não salvas
+// Dirty state — detects unsaved changes
 const initialFormJson = ref('')
 const isDirty = computed(() =>
   initialFormJson.value !== '' && JSON.stringify(form.value) !== initialFormJson.value
@@ -140,7 +137,7 @@ const handleBeforeUnload = (e: BeforeUnloadEvent) => {
   if (isDirty.value) { e.preventDefault(); e.returnValue = '' }
 }
 function onWindowResize() {
-  // força reavaliação de showOutline (computed já lê window.innerWidth)
+  // forces showOutline to reevaluate (the computed already reads window.innerWidth)
   windowTick.value++
 }
 const windowTick = ref(0)
@@ -159,7 +156,7 @@ onBeforeRouteLeave(() => {
   }
 })
 
-// Link de preview no blog
+// Blog preview link
 const BLOG_URL = ASSETS_URL.split('/').slice(0, 3).join('/')
 const previewUrl = computed(() =>
   isEditing.value && form.value.slug && form.value.status === 'Publicado'
@@ -167,14 +164,14 @@ const previewUrl = computed(() =>
     : ''
 )
 
-// basePath sem extensão → variante 480w para o preview do admin
+// basePath with no extension → 480w variant for the admin preview
 const featureImagePreviewUrl = computed(() => {
   const url = form.value.imagem_destaque_url
   if (!url) return ''
   const base = url.replace(/\.(avif|webp|jpg|jpeg|png)$/i, '')
   return `${base}-480.webp?t=${featureImageCacheBuster.value}`
 })
-// variante 1280w para a capa grande da folha e do preview de leitura
+// 1280w variant for the sheet's large cover and the reading preview
 const coverFullUrl = computed(() => {
   const url = form.value.imagem_destaque_url
   if (!url) return ''
@@ -211,7 +208,7 @@ watch(() => form.value.subcategoria_slug, (slug) => {
   form.value.subcategoria_nome = found?.nome || ''
 })
 
-// Contagem de palavras / tempo de leitura (200 palavras/min, mínimo 1)
+// Word count / reading time (200 words/min, minimum 1)
 const words = computed(() => {
   const text = (form.value.conteudo_html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
   return text ? text.split(/\s+/).length : 0
@@ -220,8 +217,8 @@ watch(words, (n) => {
   form.value.tempo_leitura_min = Math.max(1, Math.round(n / 200))
 }, { immediate: true })
 
-// Sumário lateral — reconstrói a partir dos H2/H3 renderizados de verdade no Tiptap,
-// atribuindo ids sequenciais (iah-0, iah-1…) para permitir o scroll-to-heading.
+// Side outline — rebuilt from the H2/H3 actually rendered in Tiptap,
+// assigning sequential ids (iah-0, iah-1…) to enable scroll-to-heading.
 type OutlineItem = { id: string; text: string; level: 2 | 3 }
 const outline = ref<OutlineItem[]>([])
 function refreshOutline() {
@@ -247,7 +244,7 @@ function scrollToHeading(id: string) {
   window.scrollTo({ top: y, behavior: 'smooth' })
 }
 
-// Preview SERP
+// SERP preview
 const serpTitle = computed(() =>
   (form.value.meta_titulo_seo || form.value.titulo || 'Título do Artigo').substring(0, 70)
 )
@@ -258,8 +255,8 @@ const serpUrl = computed(() =>
   `${BLOG_URL}/post/${form.value.slug || 'url-do-artigo'}`
 )
 
-// Título / Subtítulo — contenteditable, sincronizados via innerText apenas
-// quando o post aberto muda (nunca a cada tecla, para não resetar o cursor).
+// Title / Subtitle — contenteditable, synced via innerText only when the
+// open post changes (never on every keystroke, to avoid resetting the cursor).
 let syncedKey = ''
 function syncTitleSubtitleDom() {
   const key = (isEditing.value ? 'edit-' + route.params.slug : 'new') as string
@@ -289,7 +286,7 @@ function onSubtitleKeydown(e: KeyboardEvent) {
 }
 
 onMounted(async () => {
-  // autor_id vem do Cognito username (não mais hardcoded)
+  // autor_id comes from the Cognito username (no longer hardcoded)
   if (auth.username) {
     form.value.autor_id = auth.username
   }
@@ -310,10 +307,9 @@ onMounted(async () => {
     const data = await authorsApi.get(AUTHOR_ID)
     if (data.autor) author.value = data.autor
   } catch {
-    // Autor ainda não cadastrado — preview cai no fallback "Marcelo Gonçalves"
+    // Author not registered yet — preview falls back to the default author name
   }
 
-  // 2. Continua com a lógica normal de edição
   if (isEditing.value) {
     loading.value = true
     try {
@@ -345,7 +341,7 @@ onMounted(async () => {
 })
 
 async function save() {
-  // Validação: status Programado exige data futura
+  // Validation: Programado status requires a future date
   if (form.value.status === 'Programado') {
     if (!form.value.data_publicacao) {
       return showToast('Defina a data de publicação para agendar o post.', 'error')
@@ -371,19 +367,19 @@ async function save() {
       await postsApi.create(payload)
     }
 
-    // captureInitialState() ANTES do router.replace: onBeforeRouteLeave só
-    // deixa navegar sem confirmação se isDirty já estiver false — senão o
-    // replace abaixo dispararia o prompt "alterações não salvas" mesmo
-    // logo após um save bem-sucedido.
+    // captureInitialState() BEFORE router.replace: onBeforeRouteLeave only
+    // allows navigating without confirmation if isDirty is already false —
+    // otherwise the replace below would trigger the "unsaved changes"
+    // prompt even right after a successful save.
     captureInitialState()
     showToast('Alterações salvas')
 
     if (wasNew) {
-      // Sem isto, "Salvar" (sem publicar) duas vezes seguidas num post novo
-      // chamaria postsApi.create de novo com o mesmo slug — router.replace
-      // troca a rota para edit-post sem remontar o componente (só o parâmetro
-      // muda), então isEditing passa a refletir a realidade e o slug trava,
-      // exatamente como ao reabrir um post já salvo.
+      // Without this, "Salvar" (without publishing) twice in a row on a new
+      // post would call postsApi.create again with the same slug —
+      // router.replace switches the route to edit-post without remounting
+      // the component (only the param changes), so isEditing then reflects
+      // reality and the slug locks, exactly like reopening an already-saved post.
       await router.replace({ name: 'edit-post', params: { slug: form.value.slug } })
     }
   } catch (error) {
@@ -416,31 +412,28 @@ function toggleFocus() {
   focusMode.value = !focusMode.value
 }
 
-/* Lógica de Upload Unificada */
 function handleFeatureImageError() {
-  // Espera 2.5 segundos (tempo médio do Lambda) e tenta de novo
+  // Waits 2.5 seconds (the Lambda's average processing time) and retries
   setTimeout(() => {
     featureImageCacheBuster.value = Date.now()
   }, 2500)
 }
-// O callback único que resolve tudo
-// relativePath = "media/{uuid}-{nome}" (sem extensão — novo formato multi-variante)
+// relativePath = "media/{uuid}-{name}" (no extension — multi-variant format)
 function onImageUploaded(relativePath: string) {
   const baseUrl = `${ASSETS_URL}/${relativePath}`
 
   if (uploadContext.value === 'destaque') {
-    // Armazena o basePath sem extensão — ResponsiveImage no frontend
-    // monta automaticamente as variantes (-480.avif, -480.webp, -768.*, -1280.*)
+    // Stores the basePath with no extension — the frontend's
+    // ResponsiveImage automatically builds the variants (-480.avif, -480.webp, -768.*, -1280.*)
     form.value.imagem_destaque_url = baseUrl
     featureImageCacheBuster.value = Date.now()
   } else {
-    // Para imagens inline no editor: usa a variante desktop WebP (maior qualidade visual)
+    // For inline images in the editor: uses the desktop WebP variant (higher visual quality)
     const editorUrl = `${baseUrl}-1280.webp`
     editorRef.value?.insertImage(editorUrl, form.value.titulo || 'Imagem do artigo')
   }
 }
 
-// Chamado pela capa da folha (Adicionar/Trocar capa)
 function openFeatureImageUpload() {
   uploadContext.value = 'destaque'
   showUploadModal.value = true
@@ -449,7 +442,6 @@ function removeCover() {
   form.value.imagem_destaque_url = ''
 }
 
-// Chamado pelo evento do Editor (Imagem no Texto)
 function openEditorImageUpload() {
   uploadContext.value = 'editor'
   showUploadModal.value = true
@@ -591,7 +583,7 @@ function generateSlug() {
       </div>
     </Transition>
 
-    <!-- Painel de configurações (campos que não fazem parte da folha de escrita) -->
+    <!-- Settings panel (fields that aren't part of the writing sheet) -->
     <Transition name="ia-drawer">
       <div v-if="settingsOpen" class="ia-drawer-overlay" @click.self="settingsOpen = false">
         <aside class="ia-drawer ia-scroll">
@@ -724,7 +716,7 @@ function generateSlug() {
       </div>
     </Transition>
 
-    <!-- Pré-visualização — como o leitor verá -->
+    <!-- Preview — how the reader will see it -->
     <Transition name="ia-fade">
       <div v-if="previewOpen" class="ia-preview-overlay ia-scroll">
         <header class="ia-preview-top">
@@ -911,7 +903,7 @@ function generateSlug() {
 .ia-hint-enter-active, .ia-hint-leave-active { transition: opacity .2s; }
 .ia-hint-enter-from, .ia-hint-leave-to { opacity: 0; }
 
-/* ===== Drawer de configurações ===== */
+/* ===== Settings drawer ===== */
 .ia-drawer-overlay { position: fixed; inset: 0; z-index: 65; background: rgba(8,50,61,.32); display: flex; justify-content: flex-end; }
 .ia-drawer {
   width: 380px; max-width: 92vw; height: 100vh; background: #FCFAF6; border-left: 1px solid var(--border-color);
@@ -1037,7 +1029,7 @@ function generateSlug() {
 }
 .ia-read :deep(hr) { border: none; border-top: 1px solid #D8CEBD; margin: 2em auto; width: 70px; }
 
-/* Blocos ricos do Tiptap (mesmas classes de RichTextEditor.vue / frontend post.css) */
+/* Tiptap rich blocks (same classes as RichTextEditor.vue / frontend post.css) */
 .ia-read :deep(.callout), .ia-read :deep(.tip) {
   display: flex; gap: 18px; align-items: flex-start; background: #fff; border: 1px solid var(--border-color);
   border-left: 4px solid var(--petrol); border-radius: 12px; padding: 22px 26px; margin: 1.6em 0;

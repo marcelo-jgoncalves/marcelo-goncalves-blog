@@ -16,11 +16,11 @@ export interface Post {
   imagem_destaque_alt_text: string
   meta_titulo_seo: string
   meta_descricao_seo: string
-  // Number (0/1), nunca boolean — limitação de GSI esparso no DynamoDB, mesmo
-  // contrato de backend/src/common/types.ts. `boolean` era aceito aqui antes,
-  // mas a API nunca envia/recebe true/false de verdade; o `!!`/`? 1 : 0` em
-  // EditorView.vue já faz a conversão pra um estado local de UI (checkbox),
-  // que é boolean só ali, não no contrato de wire.
+  // Number (0/1), never boolean — sparse GSI limitation in DynamoDB, same
+  // contract as backend/src/common/types.ts. `boolean` used to be accepted
+  // here, but the API never really sends/receives true/false; the
+  // `!!`/`? 1 : 0` in EditorView.vue already converts it to a local UI
+  // state (checkbox), which is boolean only there, not in the wire contract.
   e_popular: 0 | 1
   e_projeto: 0 | 1
   tempo_leitura_min: number

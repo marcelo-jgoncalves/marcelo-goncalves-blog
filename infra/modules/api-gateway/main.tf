@@ -8,11 +8,11 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
-# Autorizador Cognito nativo — mantido só como referência histórica; nenhum
-# método usa mais este authorizer (todos migraram para admin_cookie_auth,
-# que suporta cookie de sessão + fallback Bearer no mesmo Lambda). Remover
-# depois que o rollout do BFF estiver validado em produção (ver
-# admin_authorizer/index.ts para a lógica do fallback).
+# Native Cognito authorizer — kept only as a historical reference; no
+# method uses this authorizer anymore (all migrated to admin_cookie_auth,
+# which supports session cookie + Bearer fallback in the same Lambda).
+# Remove once the BFF rollout is validated in production (see
+# admin_authorizer/index.ts for the fallback logic).
 resource "aws_api_gateway_authorizer" "cognito_auth" {
   name          = "CognitoAuthorizer"
   type          = "COGNITO_USER_POOLS"
@@ -20,27 +20,27 @@ resource "aws_api_gateway_authorizer" "cognito_auth" {
   provider_arns = [var.cognito_user_pool_arn]
 }
 
-# Lambda Authorizer (REQUEST) — substitui o COGNITO_USER_POOLS acima em
-# todas as rotas /admin/* protegidas. Suporta cookie de sessão opaca (BFF,
-# fluxo novo) e Authorization Bearer (Amplify client-side, fluxo legado
-# mantido durante a transição) — ver backend/src/functions/adminAuthorizer.
-# TTL de cache = 0: revogação de sessão (logout, exclusão manual) precisa
-# ter efeito imediato, nunca servir uma decisão Allow cacheada de uma
-# sessão já apagada.
+# Lambda Authorizer (REQUEST) — replaces the COGNITO_USER_POOLS above on
+# every protected /admin/* route. Supports the opaque session cookie (BFF,
+# new flow) and Authorization Bearer (Amplify client-side, legacy flow kept
+# during the transition) — see backend/src/functions/adminAuthorizer.
+# Cache TTL = 0: session revocation (logout, manual deletion) needs to take
+# effect immediately, never serve a cached Allow decision for a session
+# that's already been deleted.
 #
-# identity_source = "" (vazio): achado real em produção (sessão 2026-07-24)
-# — quando o identity_source lista um ou mais headers, o API Gateway trata
-# TODOS como obrigatórios e retorna 401 (UnauthorizedException) SEM nunca
-# invocar a Lambda se qualquer um estiver ausente (confirmado via
-# CloudWatch: zero log streams do adminAuthorizer). Tentativa 1 (Cookie +
-# Authorization juntos) falhou porque o fluxo normal manda só Cookie.
-# Tentativa 2 (só "Host", header sempre presente em qualquer request) TAMBÉM
-# falhou com o mesmo 401 sem invocação — Host é um header reservado/
-# pseudo-header que o API Gateway não aceita como identity source válido
-# (confirmado via curl direto contra o API Gateway, sem CloudFront no meio).
-# Identity source vazio é o padrão documentado da AWS para "invocar sempre,
-# sem exigir nenhum header específico" — a Lambda decide internamente com
-# base em qual header (Cookie ou Authorization) realmente veio.
+# identity_source = "" (empty): when identity_source lists one or more
+# headers, API Gateway treats ALL of them as required and returns 401
+# (UnauthorizedException) WITHOUT ever invoking the Lambda if any of them is
+# missing (confirmed via CloudWatch: zero log streams from adminAuthorizer).
+# Attempt 1 (Cookie + Authorization together) failed because the normal flow
+# only sends Cookie. Attempt 2 (just "Host", a header always present on any
+# request) ALSO failed with the same no-invocation 401 — Host is a
+# reserved/pseudo-header that API Gateway doesn't accept as a valid identity
+# source (confirmed via curl directly against API Gateway, with no
+# CloudFront in between). An empty identity source is AWS's documented
+# pattern for "always invoke, without requiring any specific header" — the
+# Lambda decides internally based on which header (Cookie or Authorization)
+# actually came in.
 resource "aws_api_gateway_authorizer" "admin_cookie_auth" {
   name                             = "AdminCookieAuthorizer"
   type                             = "REQUEST"
@@ -58,12 +58,13 @@ resource "aws_lambda_permission" "apigw_admin_authorizer" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/authorizers/${aws_api_gateway_authorizer.admin_cookie_auth.id}"
 }
 
-# Gateway Responses — quando o autorizador Cognito rejeita a requisição
-# (token expirado/inválido/ausente), o API Gateway gera a resposta de erro
-# ele mesmo, sem passar pela Lambda — e por isso sem os headers de CORS que
-# a Lambda normalmente devolve. Sem isso, o browser bloqueia a resposta e o
-# fetch() falha com "TypeError: Failed to fetch" em vez do 401/403 real,
-# escondendo o erro de sessão expirada do tratamento de retry/redirect do admin.
+# Gateway Responses — when the Cognito authorizer rejects the request
+# (expired/invalid/missing token), API Gateway generates the error response
+# itself, without going through the Lambda — and therefore without the CORS
+# headers the Lambda normally returns. Without this, the browser blocks the
+# response and fetch() fails with "TypeError: Failed to fetch" instead of
+# the real 401/403, hiding the expired-session error from the admin's
+# retry/redirect handling.
 resource "aws_api_gateway_gateway_response" "unauthorized_cors" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   response_type = "UNAUTHORIZED"
@@ -182,25 +183,24 @@ resource "aws_api_gateway_resource" "admin" {
   path_part   = "admin"
 }
 
-# /admin/session — login/me/logout do BFF. Sem authorizer em nenhum método:
-# POST (login) precisa ser alcançável sem sessão prévia (é o que a cria);
-# GET (me) e DELETE (logout) fazem sua própria checagem do cookie dentro do
-# handler (backend/src/functions/adminSession), então um authorizer em
-# frente seria checagem duplicada e impediria "sem sessão" de responder
-# 401 de forma limpa (um Lambda Authorizer com Deny devolve 403, não 401).
+# /admin/session — BFF login/me/logout. No authorizer on any method:
+# POST (login) needs to be reachable without a prior session (it's what
+# creates one); GET (me) and DELETE (logout) do their own cookie check
+# inside the handler (backend/src/functions/adminSession), so an authorizer
+# in front would be a duplicate check and would prevent "no session" from
+# cleanly returning 401 (a Lambda Authorizer with Deny returns 403, not 401).
 resource "aws_api_gateway_resource" "admin_session" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "session"
 }
 
-# 3 métodos separados (não um único ANY) — achado real ao configurar rate
-# limit dedicado (2026-07-24): o UpdateStage do API Gateway só aceita
-# method_path como "{resourcePath}/{httpMethod real}" ou "*/*" — não existe
-# combinação "recurso específico + todos os verbos" quando o método é
-# modelado como ANY. Separar em GET/POST/DELETE permite mirar só o POST
-# (login, o verbo sensível a força bruta) com o limite mais restritivo,
-# deixando GET (me)/DELETE (logout) só no throttle_all global.
+# 3 separate methods (not a single ANY): API Gateway's UpdateStage only
+# accepts method_path as "{resourcePath}/{real httpMethod}" or "*/*" — there
+# is no "specific resource + all verbs" combination when the method is
+# modeled as ANY. Splitting into GET/POST/DELETE lets us target only POST
+# (login, the verb sensitive to brute force) with the tighter limit, leaving
+# GET (me)/DELETE (logout) on the global throttle_all only.
 resource "aws_api_gateway_method" "admin_session_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_session.id
@@ -685,18 +685,19 @@ resource "aws_api_gateway_method_settings" "throttle_all" {
   }
 }
 
-# Limite mais rígido só no login (POST /admin/session) — faz verificação de
-# JWT e cria sessão, é o alvo natural de força bruta/replay; o throttle
-# global (var.throttle_rate_limit) é dimensionado pro tráfego de leitura
-# pública, generoso demais pra um endpoint de auth de admin único.
+# Tighter limit only on login (POST /admin/session) — it verifies a JWT and
+# creates a session, making it the natural target for brute force/replay;
+# the global throttle (var.throttle_rate_limit) is sized for public read
+# traffic, far too generous for a single admin auth endpoint.
 #
-# Achado real (2026-07-24): method_path não aceita um verbo curinga (nem
-# "*" nem "ANY") combinado com um resourcePath específico — só
-# "{resourcePath}/{httpMethod real}" ou "*/*" (confirmado via erro real da
-# API: "'admin/session/*' is not a valid method path"). Por isso o recurso
-# /admin/session foi dividido em 3 métodos reais (POST/GET/DELETE, ver
-# acima) em vez de um único ANY — só assim dá pra mirar exclusivamente o
-# POST aqui. GET (me)/DELETE (logout) ficam só no throttle_all global.
+# method_path doesn't accept a wildcard verb (neither "*" nor "ANY")
+# combined with a specific resourcePath — only "{resourcePath}/{real
+# httpMethod}" or "*/*" (confirmed via the API's actual error:
+# "'admin/session/*' is not a valid method path"). That's why the
+# /admin/session resource was split into 3 real methods (POST/GET/DELETE,
+# see above) instead of a single ANY — only that way can we target
+# exclusively the POST here. GET (me)/DELETE (logout) stay on the global
+# throttle_all only.
 resource "aws_api_gateway_method_settings" "throttle_admin_session" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = aws_api_gateway_stage.main.stage_name
@@ -1008,15 +1009,14 @@ resource "aws_lambda_permission" "apigw_admin_categorias" {
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.main.id
 
-  # O trigger calcula um hash de todos os recursos. Se qualquer um mudar, ele faz redeploy.
+  # The trigger hashes all resources. If any changes, it forces a redeploy.
   triggers = {
     redeployment = sha1(jsonencode([
-      # --- BFF de sessão do admin (/admin/session) + novo authorizer ---
-      # Objeto inteiro, não só .id: o id não muda num update in-place (ex:
-      # mudança de identity_source), então usar só .id nunca forçava um
-      # redeploy — achado real em produção (sessão 2026-07-24): 2 fixes
-      # seguidos de identity_source não tiveram efeito nenhum no runtime
-      # porque o stage continuava servindo o deployment antigo.
+      # --- Admin session BFF (/admin/session) + new authorizer ---
+      # Whole object, not just .id: the id doesn't change on an in-place
+      # update (e.g. an identity_source change), so using only .id never
+      # forced a redeploy — two consecutive identity_source fixes had no
+      # runtime effect because the stage kept serving the old deployment.
       aws_api_gateway_authorizer.admin_cookie_auth,
       aws_api_gateway_resource.admin_session,
       aws_api_gateway_method.admin_session_post,
@@ -1025,7 +1025,7 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_integration.admin_session_post_integration,
       aws_api_gateway_integration.admin_session_get_integration,
       aws_api_gateway_integration.admin_session_delete_integration,
-      # --- Recursos Públicos (Antigos) ---
+      # --- Public Resources (Old) ---
       aws_api_gateway_resource.post_slug,
       aws_api_gateway_method.get_post,
       aws_api_gateway_integration.get_post_integration,

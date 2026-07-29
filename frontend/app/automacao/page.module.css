@@ -1,5 +1,4 @@
-/* frontend/app/automacao/page.module.css
-   specs/ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md — breakpoints próprios da página (680/1040) */
+/* Page's own breakpoints (680/1040) */
 
 .wrap {
   max-width: 1240px;
@@ -51,10 +50,10 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Eyebrow — mesmo padrão de frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual),
-   já corrigido nas outras 2 landings (margin-bottom:var(--eyebrow-gap); .eyebrowDual centraliza e
-   adiciona o 2º traço). NUNCA aplicar dual numa seção que a spec pede à esquerda —
-   checar "traço nos dois lados" (dual) vs "só ::before" (single) por seção. */
+/* Eyebrow — same pattern as frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
+   margin-bottom:var(--eyebrow-gap); .eyebrowDual centers and adds the 2nd
+   rule. Never apply dual to a section meant to be left-aligned — check
+   "rule on both sides" (dual) vs "::before only" (single) per section. */
 .eyebrowLight,
 .eyebrowDark {
   font-family: 'JetBrains Mono', monospace;
@@ -91,8 +90,8 @@
   flex: none;
 }
 
-/* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
-   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
+/* All sections on this page are fullwidth with their own padding (required
+   exception to the global editorial rhythm "section { margin-block: var(--sp-10) }") */
 .whatWeDo,
 .capabilitiesSection,
 .approach,
@@ -100,17 +99,17 @@
   margin-block: 0;
 }
 
-/* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
+/* ===== HERO — override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
 .iaHero {
   --ph-pad: 88px 40px var(--sp-9);
 }
 
-/* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
-   var(--sp-9) de cada lado de toda transição sem linha divisória real —
-   antes cada seção usava o padding "cru" do próprio module.css (64/80/100px
-   por breakpoint), criando gaps grandes entre seções. Sobrescreve via
-   seletor de #id (:global — Turbopack CSS Modules hasheia até ids), maior
-   especificidade que .class em qualquer largura. */
+/* Inter-section spacing standardized with the same treatment as the Home:
+   var(--sp-9) on each side of every transition without a real divider line
+   — previously each section used its module.css's raw padding (64/80/100px
+   per breakpoint), creating large gaps between sections. Overridden via an
+   #id selector (:global — Turbopack CSS Modules hashes even ids), higher
+   specificity than .class at any width. */
 :global(#entregas),
 :global(#beneficios),
 :global(#abordagem),
@@ -121,8 +120,8 @@
   padding-bottom: var(--sp-9);
 }
 
-/* Ajuste 09 (§20): scroll-margin-top nas âncoras da página, mesmo padrão
-   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+/* scroll-margin-top on the page's anchors, same pattern already used
+   across the project (100px — see frontend/app/post/[slug]/post.css). */
 :global(#entregas),
 :global(#beneficios),
 :global(#abordagem),
@@ -133,18 +132,19 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
-   align-items:center, centralizando a coluna de texto contra o card mais
-   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
-   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+/* Final CTA (AdvisoryCta, id="contato"): .cta-adv-in uses align-items:center,
+   centering the text column against the taller card next to it — that
+   pushes the eyebrow well past the padding-top alone (same problem solved
+   on the Home, see home.css #contato.cta-adv). */
 :global(#contato.cta-adv .cta-adv-in) {
   align-items: flex-start;
   padding-top: var(--sp-9);
 }
 
-/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
-   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
-   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
+/* Button duplicates the nav CTA on desktop (.nav-cta, always visible
+   there) — only shows on mobile, where the nav CTA becomes
+   .nav-cta-mobile and hides behind the hamburger (same breakpoint as
+   Header.css: 860px). */
 .heroCtaRow {
   display: none;
   gap: var(--eyebrow-gap);
@@ -172,7 +172,7 @@
   }
 }
 
-/* ===== O QUE FAZEMOS — 5 cards (3+2), não 6 ===== */
+/* ===== WHAT WE DO — 5 cards (3+2) ===== */
 .whatWeDo {
   padding: var(--sp-10) 0;
 }
@@ -180,10 +180,10 @@
 @media (min-width: 680px) { .whatWeDo { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .whatWeDo { padding: var(--sp-12) 0; } }
 
-/* Revisão visual: lista de entregas à esquerda (ícone + título + texto + tags,
-   sem card/borda — usa o hairline que .feature-card-footer já tem), painel
-   "Fluxo operacional" fixo (sticky) à direita, ilustrando o caminho de um
-   evento dentro da automação. */
+/* Deliverables list on the left (icon + title + text + tags, no
+   card/border — uses the hairline that .feature-card-footer already has),
+   sticky "Fluxo operacional" panel on the right, illustrating an event's
+   path through the automation. */
 .automationLayout {
   display: grid;
   grid-template-columns: 1fr;
@@ -324,9 +324,9 @@
   color: var(--ink);
 }
 
-/* ===== CONFIABILIDADE E CONTROLE — .benefitsList/.benefitItem
-   reaproveitados por essa seção. "Benefícios" em si usa o componente
-   compartilhado BeneficiosSection (ver components/ui/). ===== */
+/* ===== RELIABILITY AND CONTROL — .benefitsList/.benefitItem reused by
+   this section. "Benefícios" itself uses the shared BeneficiosSection
+   component (see components/ui/). ===== */
 .benefitsList {
   display: grid;
   grid-template-columns: 1fr;
@@ -334,9 +334,9 @@
 }
 
 @media (min-width: 680px) {
-  /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
-     min-content do texto — necessário porque .benefitText quebra em
-     2 linhas (overflow-wrap) em vez de nowrap. */
+  /* minmax(0,1fr), not plain 1fr: lets the column shrink below the
+     text's min-content — needed because .benefitText wraps to 2 lines
+     (overflow-wrap) instead of nowrap. */
   .benefitsList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
@@ -369,7 +369,7 @@
   min-width: 0;
 }
 
-/* ===== ESPECIALIDADES — 8 itens (não 10) ===== */
+/* ===== SPECIALTIES — 8 items ===== */
 .capabilitiesSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -378,7 +378,7 @@
 @media (min-width: 680px) { .capabilitiesSection { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .capabilitiesSection { padding: var(--sp-12) 0; } }
 
-/* ===== NOSSA ABORDAGEM — texto à esquerda, 3 princípios numerados à direita ===== */
+/* ===== OUR APPROACH — text on the left, 3 numbered principles on the right ===== */
 .approach {
   padding: var(--sp-10) 0;
   background: var(--surface);
@@ -401,9 +401,9 @@
   .approachGrid { grid-template-columns: minmax(260px, .78fr) minmax(0, 1.22fr); gap: var(--sp-11); }
   .capabilitiesGrid { grid-template-columns: minmax(260px, .72fr) minmax(0, 1.38fr); gap: var(--sp-10); }
 
-  /* Coluna de texto acompanha o scroll enquanto os 3 princípios (coluna mais
-     alta) passam por ela — mesmo comportamento do protótipo. Só no desktop,
-     onde as colunas existem lado a lado; no mobile tudo empilha em sequência. */
+  /* Text column follows the scroll while the 3 principles (taller column)
+     pass by it. Desktop only, where the columns sit side by side; on
+     mobile everything stacks in sequence. */
   .approachIntro {
     position: sticky;
     top: calc(var(--nav-height) + var(--sp-6));
@@ -507,7 +507,7 @@
   line-height: 1.7;
 }
 
-/* ===== CAPACIDADES TÉCNICAS — mapa técnico único em 4 estágios ===== */
+/* ===== TECHNICAL CAPABILITIES — single technical map in 4 stages ===== */
 .capabilitiesNote {
   display: grid;
   grid-template-columns: 5px minmax(0, 1fr);
@@ -675,7 +675,7 @@
   background: var(--clay);
 }
 
-/* ===== CONFIABILIDADE E CONTROLE ===== */
+/* ===== RELIABILITY AND CONTROL ===== */
 .reliability {
   padding: var(--sp-10) 0;
   background: var(--petrol);

@@ -1,6 +1,5 @@
-/* frontend/components/ui/Kicker.module.css
-   Rótulo pequeno acima de título de item/card (não confundir com Eyebrow,
-   que rotula a seção inteira) — ver CLAUDE.md §5 "Kicker e IndexNumber". */
+/* Small label above an item/card title (don't confuse with Eyebrow, which
+   labels the whole section). */
 
 .kicker {
   display: block;

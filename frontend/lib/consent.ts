@@ -1,4 +1,3 @@
-// frontend/lib/consent.ts
 
 declare global {
   interface Window {

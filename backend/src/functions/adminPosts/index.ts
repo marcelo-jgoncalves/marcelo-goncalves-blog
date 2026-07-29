@@ -1,4 +1,3 @@
-// backend/src/functions/adminPosts/index.ts
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";

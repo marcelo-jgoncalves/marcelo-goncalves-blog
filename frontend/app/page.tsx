@@ -1,5 +1,3 @@
-/**frontend/app/page.tsx — Home institucional (specs/SPEC-Home.md — Home v6) */
-
 import './home.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -103,9 +101,9 @@ const STEPS = [
   { title: 'Acompanhamento e evolução', description: 'Acompanhamos o comportamento da solução, corrigimos desvios e planejamos novas etapas quando elas geram valor real para a operação.' },
 ];
 
-// Ajuste 07 (§19.2): cases hardcoded — validar contra registros/medições reais
-// antes de publicar em produção. Enquanto não validado, não descrever como
-// "projetos reais" em nenhum texto desta seção.
+// Hardcoded cases — validate against real records/measurements before
+// publishing to production. Until validated, don't describe these as
+// "real projects" anywhere in this section's copy.
 const CASES = [
   {
     metrics: [{ value: '-70%', label: 'tempo do ciclo de aprovação' }],
@@ -150,10 +148,10 @@ interface HomePost {
 }
 
 export default async function InstitutionalHome() {
-  // Ajuste 07 (§20.4/§20.6): busca mais que 3 porque a filtragem de posts de
-  // teste acontece aqui, antes da renderização — nunca só por CSS. O backend
-  // já restringe a consulta a status="Publicado" (getPosts/index.ts), então
-  // rascunhos já não chegam aqui.
+  // Fetches more than 3 because test-post filtering happens here, before
+  // rendering — never only via CSS. The backend already restricts the
+  // query to status="Publicado" (getPosts/index.ts), so drafts never
+  // reach this point.
   const recentData = await getRecentPosts(9).catch(() => ({ posts: [] }));
   const recent: HomePost[] = (recentData?.posts || [])
     .filter((post: HomePost) =>

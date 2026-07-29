@@ -1,8 +1,7 @@
-/* frontend/components/ui/IconTile.tsx
-   Selo de ícone reutilizável — referência visual: cards de pilar da Home
-   (frontend/app/home.css .ih-pillar-icon, hoje duplicado em .feature-card-icon
-   e .svc-icon). Único ponto de verdade para forma/tamanho; só ícone, variante
-   de cor de fundo e tamanho mudam por uso. */
+// Reusable icon badge — visual reference: the Home's pillar cards
+// (frontend/app/home.css .ih-pillar-icon, previously duplicated in
+// .feature-card-icon and .svc-icon). Single source of truth for
+// shape/size; only icon, background color variant and size vary per use.
 
 import type { ReactNode } from 'react';
 import './IconTile.css';

@@ -1,4 +1,3 @@
-# infra/modules/api-gateway/alarms.tf
 # CloudWatch alarms for API Gateway — gated by enable_cloudwatch_alarms
 
 resource "aws_sns_topic" "api_alerts" {

@@ -1,17 +1,14 @@
-// backend/src/functions/adminAuthorizer/index.ts
 //
-// Lambda Authorizer (REQUEST) que substitui o autorizador nativo
-// COGNITO_USER_POOLS nas rotas /admin/* protegidas. Só o cookie de sessão
-// opaca (admin_session) é aceito — o fallback Authorization Bearer (fluxo
-// legado do Amplify client-side, usado durante o rollout do BFF) foi
-// removido em 2026-07-24 depois de confirmar em produção que o fluxo novo
-// funciona ponta a ponta (dashboard carregando com dados reais, sem
-// erro). Reduz superfície de ataque: só um mecanismo de autenticação
-// aceito, não dois.
+// Lambda Authorizer (REQUEST) that replaces the native COGNITO_USER_POOLS
+// authorizer on protected /admin/* routes. Only the opaque session cookie
+// (admin_session) is accepted — the Authorization Bearer fallback (legacy
+// Amplify client-side flow, used during the BFF rollout) was removed after
+// confirming in production that the new flow works end to end. Reduces
+// attack surface: only one authentication mechanism accepted, not two.
 //
-// Retorna uma policy Deny (não lança exceção) para credencial ausente/
-// inválida — API Gateway responde 403 nesse caso (não 401); o client trata
-// os dois como "sessão inválida" (ver admin/src/services/api.ts).
+// Returns a Deny policy (doesn't throw) for a missing/invalid credential —
+// API Gateway responds 403 in that case (not 401); the client treats both
+// as "invalid session" (see admin/src/services/api.ts).
 import { APIGatewayRequestAuthorizerHandler, APIGatewayAuthorizerResult } from "aws-lambda";
 import { logger } from "../../common/logger";
 import { getSession, SESSION_COOKIE_NAME } from "../../common/adminSessionStore";

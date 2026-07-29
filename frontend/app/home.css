@@ -1,13 +1,10 @@
-/* frontend/app/home.css — Home institucional (specs/SPEC-Home.md — Home v6) */
-
 .page-hero.ih-hero {
   --ph-pad: 88px 40px var(--gap-loose);
 }
 
-/* Ajuste 07: hero passa a ter 2 CTAs sempre visíveis (principal + secundário),
-   lado a lado no desktop, empilhados no mobile — não duplica mais o CTA do
-   nav (agora os dois convivem: nav leva a /contato, hero também oferece
-   #servicos). */
+/* The hero has 2 always-visible CTAs (primary + secondary), side by side
+   on desktop, stacked on mobile — doesn't duplicate the nav CTA (the two
+   coexist: nav leads to /contato, the hero also offers #servicos). */
 .ih-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -32,7 +29,7 @@
   }
 }
 
-/* Botão — usa o padrão global .btn/.btn-petrol (globals.css). */
+/* Button — uses the global .btn/.btn-petrol pattern (globals.css). */
 
 .ih-section {
   margin-block: 0;
@@ -40,13 +37,12 @@
   scroll-margin-top: 100px;
 }
 
-/* Espaçamento entre todas as transições internas da Home reduzido à metade
-   (100px→var(--sp-9)), a pedido de Marcelo: hero→"Serviços",
-   divisória→"Como trabalhamos", "Conte-nos seu desafio"→"Conteúdo técnico"
-   (também reduz a borda inferior, até "Conheça o blog"→"Vamos conversar",
-   ver #contato abaixo, para manter o mesmo total dos demais casos) e
-   "Conduzido por Marcelo Gonçalves..."→"Resultados" (ver #resultados.ih-results
-   mais abaixo, mesmo valor). */
+/* Spacing between all internal Home transitions reduced to half
+   (100px→var(--sp-9)): hero→"Serviços", divider→"Como trabalhamos",
+   "Conte-nos seu desafio"→"Conteúdo técnico" (also reduces the bottom
+   border, down to "Conheça o blog"→"Vamos conversar", see #contato below,
+   to keep the same total as the other cases) and "Conduzido por..."→
+   "Resultados" (see #resultados.ih-results further below, same value). */
 #servicos.ih-section,
 #abordagem.ih-section,
 #insights.ih-section,
@@ -55,14 +51,14 @@
   padding-bottom: var(--sp-9);
 }
 
-/* Espaçamento entre "Conheça o blog" (#insights) e o eyebrow "Vamos
-   conversar" reduzido para o mesmo total dos demais casos.
-   .cta-adv-in usa align-items:center (centraliza a coluna de texto
-   contra o card, mais alto, à direita) — isso empurrava o eyebrow bem
-   além do padding-top sozinho. Troca para align-items:flex-start só
-   nesta instância (id="contato", exclusiva da Home) para o eyebrow
-   ficar de fato a var(--sp-9) do topo da seção; as outras páginas que
-   usam AdvisoryCta não são afetadas. */
+/* Spacing between "Conheça o blog" (#insights) and the "Vamos conversar"
+   eyebrow reduced to the same total as the other cases.
+   .cta-adv-in uses align-items:center (centers the text column against
+   the taller card on the right) — that pushed the eyebrow well past the
+   padding-top alone. Switched to align-items:flex-start only for this
+   instance (id="contato", Home-only) so the eyebrow actually sits
+   var(--sp-9) from the section's top; other pages using AdvisoryCta are
+   unaffected. */
 #contato.cta-adv .cta-adv-in {
   align-items: flex-start;
   padding-top: var(--sp-9);
@@ -78,7 +74,7 @@
   background: var(--sand);
 }
 
-/* Eyebrow — variante local (suporta traço duplo centralizado) */
+/* Eyebrow — local variant (supports a centered double rule) */
 .ih-eyebrow {
   font-family: var(--mono);
   font-size: var(--type-caption);
@@ -126,14 +122,13 @@
 
 .ih-center-desc {
   max-width: 580px;
-  /* --sp-4 (16px) — convergido com .sec-desc/.ih-results-desc pro mesmo
-     papel "eyebrow/título → descrição" (decisão 2026-07-23, ver CLAUDE.md
-     §5). Era --eyebrow-gap (14px, token de papel diferente reaproveitado
-     por coincidência de valor) antes. */
+  /* --sp-4 (16px) — converged with .sec-desc/.ih-results-desc onto the
+     same "eyebrow/title → description" role. Used to be --eyebrow-gap
+     (14px, a token for a different role reused by value coincidence). */
   margin: var(--sp-4) auto 0;
 }
 
-/* Pilares (Serviços) */
+/* Pillars (Services) */
 .ih-pillars-grid {
   display: flex;
   flex-wrap: wrap;
@@ -141,8 +136,8 @@
   gap: var(--gap-grid);
 }
 
-/* Cards dos 4 pilares migrados para components/ui/PillarCard.tsx (.pillar-*),
-   reaproveitado também em /servicos — ver PillarCard.css. */
+/* The 4 pillar cards were migrated to components/ui/PillarCard.tsx (.pillar-*),
+   also reused in /servicos — see PillarCard.css. */
 
 .ih-case-tags span {
   font-family: var(--mono);
@@ -157,8 +152,8 @@
   border-color: rgba(15, 76, 92, .14);
 }
 
-/* Botão de fechamento de seção — sempre no fim da seção, sempre
-   centralizado, mesmo padrão em Serviços/Metodologia/Resultados/Blog. */
+/* Section-closing button — always at the end of the section, always
+   centered, same pattern across Serviços/Metodologia/Resultados/Blog. */
 .ih-section-footer-center {
   display: flex;
   flex-direction: column;
@@ -168,7 +163,7 @@
   margin-top: var(--sp-9);
 }
 
-/* Metodologia */
+/* Methodology */
 .ih-method-grid {
   display: grid;
   grid-template-columns: 1.2fr .8fr;
@@ -200,9 +195,9 @@
   color: var(--clay);
 }
 
-/* margin: topo = "eyebrow → título" (--eyebrow-gap), fundo = "título →
-   corpo" (--title-gap) — antes usava --sp-4/--eyebrow-gap, os tokens do
-   papel um do outro (decisão 2026-07-23, ver CLAUDE.md §5). */
+/* margin: top = "eyebrow → title" (--eyebrow-gap), bottom = "title →
+   body" (--title-gap) — used to use --sp-4/--eyebrow-gap, each other's
+   role tokens. */
 .ih-mc-title { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--eyebrow-gap) 0 var(--title-gap); }
 .ih-mc-text { font-size: var(--type-body-sm); line-height: 1.6; color: var(--slate); margin: 0; }
 
@@ -213,7 +208,7 @@
 }
 
 
-/* Resultados */
+/* Results */
 .ih-results {
   margin-block: 0;
   padding: var(--sp-12) 0;
@@ -231,8 +226,8 @@
 
 .ih-results-desc {
   max-width: 560px;
-  /* --sp-4 (16px) — já era este valor; .sec-desc/.ih-center-desc foram
-     convergidos pra ele (decisão 2026-07-23, ver CLAUDE.md §5). */
+  /* --sp-4 (16px) — this was already the value; .sec-desc/.ih-center-desc
+     were converged onto it. */
   margin: var(--sp-4) auto 0;
   line-height: 1.6;
 }
@@ -251,13 +246,13 @@
   text-align: center;
 }
 
-/* align-items:flex-start (não center): com align-items:center, sempre que a
-   coluna de texto ficasse mais alta que os 340px fixos da ilustração (casos
-   2 e 4, que têm métrica dupla e por isso texto mais alto), a ilustração
-   era centralizada no espaço sobrando e ficava visualmente distante das
-   pills/texto acima dela. Com flex-start os dois topos sempre alinham,
-   igual já acontecia nos casos 1 e 3 (onde a ilustração já era o elemento
-   mais alto da linha). */
+/* align-items:flex-start (not center): with align-items:center, whenever
+   the text column got taller than the illustration's fixed 340px (cases
+   2 and 4, which have a double metric and so taller text), the
+   illustration was centered in the leftover space and ended up visually
+   distant from the pills/text above it. With flex-start both tops always
+   align, same as already happened in cases 1 and 3 (where the
+   illustration was already the tallest element in the row). */
 .ih-case {
   display: flex;
   align-items: flex-start;
@@ -356,11 +351,12 @@
 }
 
 @media (max-width: 640px) {
-  /* Gap entre cases e gap imagem→texto dentro do mesmo case (var(--sp-10)=64px
-     nos dois, herdado do layout lado a lado do desktop) empilhados no mobile
-     viravam dois vãos DIFERENTES ao redor da imagem (64px de um lado, outro
-     valor do outro) — padronizados no mesmo token (--sp-7=32px) pra todo
-     espaçamento ao redor de imagem nesta seção ficar igual. */
+  /* The gap between cases and the image→text gap within the same case
+     (var(--sp-10)=64px for both, inherited from the desktop side-by-side
+     layout) turned into two DIFFERENT gaps around the image once stacked
+     on mobile (64px on one side, a different value on the other) —
+     standardized on the same token (--sp-7=32px) so all spacing around
+     the image in this section is equal. */
   .ih-results .ih-cases {
     gap: var(--sp-7);
   }
@@ -382,12 +378,13 @@
     height: 95%;
   }
   .ih-results .ih-case-text {
-    /* flex: 1 1 440px (base) usa esse 440px como largura preferida no layout
-       lado a lado do desktop — no mobile (coluna), o mesmo valor vira altura
-       MÍNIMA do bloco de texto, sobrando espaço vazio embaixo das tags quando
-       o conteúdo é mais curto que 440px (variava por case, já que cada um
-       tem uma quantidade de texto/tags diferente). flex-basis:auto deixa a
-       altura seguir o conteúdo real em vez desse valor herdado do desktop. */
+    /* flex: 1 1 440px (base) uses that 440px as the preferred width in the
+       desktop side-by-side layout — on mobile (column), the same value
+       becomes a MINIMUM height for the text block, leaving empty space
+       below the tags when content is shorter than 440px (varied per case,
+       since each has a different amount of text/tags). flex-basis:auto
+       lets height follow the actual content instead of that value
+       inherited from desktop. */
     flex: 1 1 auto;
     order: 2;
     width: 100%;
@@ -420,7 +417,7 @@
   }
 }
 
-/* Blog */
+/* Blog teaser */
 .ih-blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

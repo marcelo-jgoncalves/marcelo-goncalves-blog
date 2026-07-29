@@ -1,4 +1,3 @@
-# infra/modules/security-monitoring/main.tf
 #
 # CloudTrail (log de auditoria de toda chamada de API na conta) + GuardDuty
 # (detecção automatizada de ameaça). Achado da auditoria AppSec (Categoria 6,

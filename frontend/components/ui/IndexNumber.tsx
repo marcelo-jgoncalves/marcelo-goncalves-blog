@@ -1,5 +1,4 @@
-/* frontend/components/ui/IndexNumber.tsx
-   Ver IndexNumber.module.css para o racional. */
+// See IndexNumber.module.css for the rationale.
 
 import type { ReactNode } from 'react';
 import styles from './IndexNumber.module.css';

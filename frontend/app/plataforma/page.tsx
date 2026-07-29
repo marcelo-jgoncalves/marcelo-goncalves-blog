@@ -1,6 +1,3 @@
-/* frontend/app/plataforma/page.tsx
-   Landing page de pilar — ajustes/ajuste-10-pagina-cloud-devops-confiabilidade.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
@@ -73,7 +70,6 @@ const jsonLd = {
   },
 };
 
-// §7-13: seis áreas de atuação comercialmente distintas.
 const ATUACAO = [
   { Icon: IconArquiteturaNuvem, title: 'Arquitetura e modernização AWS', text: 'Projetamos novas arquiteturas e evoluímos ambientes existentes considerando requisitos de segurança, disponibilidade, desempenho, custo e capacidade de manutenção.', tags: ['Arquitetura AWS', 'Modernização', 'Well-Architected'] },
   { Icon: IconInfraestruturaCodigo, title: 'Infraestrutura como código', text: 'Transformamos configurações manuais em definições versionadas, revisáveis e reproduzíveis para reduzir divergências entre ambientes e aumentar a segurança das mudanças.', tags: ['Terraform', 'OpenTofu', 'CloudFormation'] },
@@ -83,7 +79,6 @@ const ATUACAO = [
   { Icon: IconSegurancaCloud, title: 'Segurança, continuidade e custos', text: 'Revisamos identidades, permissões, backups, recuperação de desastres e consumo de recursos para reduzir riscos e tornar decisões de continuidade e custo mais explícitas.', tags: ['IAM', 'Recuperação', 'FinOps'] },
 ];
 
-// §14.5: oito benefícios.
 const BENEFICIOS = [
   'Ambientes reproduzíveis e versionados',
   'Deploys mais seguros e rastreáveis',
@@ -95,7 +90,7 @@ const BENEFICIOS = [
   'Menor dependência de procedimentos manuais',
 ];
 
-// §15.5-15.7: três princípios da abordagem (não são etapas sequenciais).
+// These are 3 principles of the approach, not sequential steps.
 const ABORDAGEM_PRINCIPIOS = [
   { label: 'AWS como especialização principal', title: 'Profundidade onde ela gera decisões melhores.', text: 'A principal especialização em nuvem da consultoria é AWS. Integrações com ambientes existentes, serviços externos e componentes híbridos são consideradas quando o cenário exige.' },
   { label: 'Modernização incremental', title: 'Evoluir sem reescrever tudo.', text: 'Sempre que possível, priorizamos mudanças graduais: automatizar um ambiente, melhorar um pipeline, adicionar observabilidade ou modernizar um componente antes de comprometer toda a plataforma.' },
@@ -111,7 +106,6 @@ const DECISAO_CRITERIOS = [
   'Custo e impacto da mudança',
 ];
 
-// §16.6: dez capacidades técnicas, agrupadas em 5 estágios do ciclo de plataforma.
 const ESTAGIOS = [
   { title: 'Governar', items: ['Arquitetura AWS e Well-Architected Framework', 'AWS Organizations, governança e ambientes multi-conta'] },
   { title: 'Provisionar', items: ['IAM, identidade e princípio do menor privilégio', 'Terraform, OpenTofu e CloudFormation'] },
@@ -120,7 +114,6 @@ const ESTAGIOS = [
   { title: 'Recuperar e otimizar', items: ['Alta disponibilidade, backup e recuperação de desastres', 'FinOps, dimensionamento e otimização de custos'] },
 ];
 
-// §17.5: oito itens do checklist de segurança, confiabilidade e continuidade.
 const CONFIABILIDADE_ITEMS = [
   'Infraestrutura versionada e revisada',
   'Segregação de ambientes e responsabilidades',
@@ -132,7 +125,6 @@ const CONFIABILIDADE_ITEMS = [
   'Documentação e transferência de conhecimento',
 ];
 
-// §18: dez perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'A consultoria trabalha apenas com AWS?', answer: 'AWS é a principal especialização em nuvem da consultoria. Também avaliamos integrações com ambientes existentes, serviços externos e componentes híbridos quando eles fazem parte do contexto da empresa.' },
   { question: 'Precisamos migrar toda a aplicação para a nuvem?', answer: 'Não. A modernização pode começar por um ambiente, pipeline, serviço ou problema específico. A migração completa só deve ser considerada quando houver justificativa técnica, operacional e econômica.' },

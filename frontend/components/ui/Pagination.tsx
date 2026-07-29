@@ -1,4 +1,3 @@
-/* frontend/components/ui/Pagination.tsx */
 import Link from 'next/link';
 import './Pagination.css';
 

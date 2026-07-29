@@ -1,11 +1,11 @@
-/* frontend/components/ui/IconLabelSection.module.css
-   Grade "mosaico" com hairlines (container: border-top+border-left; cada célula:
-   border-right+border-bottom — fecha em retângulo perfeito). Antes vivia duplicada
-   em 3 page.module.css (automacao/plataforma/software) com uma divergência real:
-   automacao/software adicionavam um breakpoint 1040px→4 colunas que /plataforma não
-   tinha (ficava em 2 colunas sempre). Padronizado no padrão de /plataforma (2
-   colunas) — decisão de Marcelo (2026-07-24) para que a "tabela" de especialidades/
-   princípios seja visualmente idêntica em toda página que a usa. */
+/* "Mosaic" grid with hairlines (container: border-top+border-left; each
+   cell: border-right+border-bottom — closes into a perfect rectangle).
+   Previously lived duplicated across 3 page.module.css files
+   (automacao/plataforma/software) with a real divergence: automacao/software
+   added a 1040px→4-column breakpoint that /plataforma didn't have (always
+   stayed at 2 columns). Standardized on /plataforma's pattern (2 columns)
+   so the specialties/principles "table" is visually identical on every
+   page that uses it. */
 
 .list {
   display: grid;

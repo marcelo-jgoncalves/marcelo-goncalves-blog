@@ -1,14 +1,13 @@
-// backend/src/common/logger.ts
 type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
 const LEVEL_ORDER: Record<LogLevel, number> = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 };
 
 const configuredLevel = (process.env.LOG_LEVEL?.toUpperCase() ?? 'INFO') as LogLevel;
 
-// O runtime do Lambda injeta _X_AMZN_TRACE_ID em toda invocação, com ou sem
-// X-Ray "Active" — formato "Root=1-xxxx-xxxx;Parent=xxxx;Sampled=0|1".
-// Extraído aqui (não passado manualmente por handler) para que toda linha
-// de log já saia correlacionável com o trace no X-Ray, automaticamente.
+// The Lambda runtime injects _X_AMZN_TRACE_ID on every invocation, with or
+// without X-Ray "Active" — format "Root=1-xxxx-xxxx;Parent=xxxx;Sampled=0|1".
+// Extracted here (not passed manually per handler) so every log line comes
+// out automatically correlatable with the X-Ray trace.
 function getTraceId(): string | undefined {
   const raw = process.env._X_AMZN_TRACE_ID;
   if (!raw) return undefined;

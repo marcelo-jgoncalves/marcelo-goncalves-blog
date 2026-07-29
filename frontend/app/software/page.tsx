@@ -1,6 +1,3 @@
-/* frontend/app/software/page.tsx
-   Landing page de pilar — ajustes/ajuste-12-pagina-sistemas-plataformas-digitais.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
@@ -107,7 +104,7 @@ const BENEFICIOS = [
   'Clareza sobre código, documentação e responsabilidades de manutenção',
 ];
 
-// §17-21: cinco etapas da abordagem (construir é decisão de negócio, não só técnica).
+// Five steps of the approach — building is a business decision, not just a technical one.
 const ETAPAS = [
   { numero: '01', categoria: 'Descoberta', title: 'Entender o processo', text: 'Mapeamos usuários, regras, informações, exceções, sistemas envolvidos e o resultado que a solução precisa produzir.' },
   { numero: '02', categoria: 'Decisão', title: 'Avaliar construir, integrar ou adaptar', text: 'Comparamos ferramentas existentes, possibilidades de integração e desenvolvimento próprio para evitar a criação de um sistema desnecessário.' },

@@ -1,7 +1,7 @@
-/* frontend/components/ui/Pill.module.css
-   Receita única de "pill" mono (tag, badge de categoria) — extraída da
-   duplicação em FeatureCard.css/PillarCard.css/PostCard.css e vários
-   page.module.css. Só a cor de texto/fundo/borda varia por variante. */
+/* Single recipe for a mono "pill" (tag, category badge) — extracted from
+   the duplication across FeatureCard.css/PillarCard.css/PostCard.css and
+   several page.module.css files. Only text/background/border color varies
+   per variant. */
 
 .pill {
   display: inline-block;

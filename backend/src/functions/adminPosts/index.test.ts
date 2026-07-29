@@ -117,9 +117,9 @@ describe('adminPosts handler', () => {
       const result = await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
       const body = JSON.parse(result?.body ?? '{}');
 
-      // Promise.all garante que todas as 3 queries foram disparadas
+      // Promise.all guarantees all 3 queries were fired
       expect(mockSend).toHaveBeenCalledTimes(3);
-      // e o resultado combina itens das 3, mesmo com Rascunho vazio
+      // and the result combines items from all 3, even with an empty Rascunho
       expect(body.count).toBe(2);
       expect(body.items.map((i: { slug: string }) => i.slug)).toEqual(expect.arrayContaining(['a', 'c']));
     });
@@ -300,7 +300,7 @@ describe('adminPosts handler', () => {
 
       const sentCmd = mockSend.mock.calls[0][0];
       expect(sentCmd.input.Item.isAdmin).toBeUndefined();
-      // e_popular_marker é derivado de e_popular no servidor, não aceito do client
+      // e_popular_marker is derived from e_popular server-side, never accepted from the client
       expect(sentCmd.input.Item.e_popular_marker).toBeUndefined();
     });
 
@@ -332,7 +332,7 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(200);
-      // mesmo status (Publicado → Publicado) e mesmo e_projeto: delta zero, sem 3ª chamada
+      // same status (Publicado → Publicado) and same e_projeto: zero delta, no 3rd call
       expect(mockSend).toHaveBeenCalledTimes(2);
     });
 
@@ -458,7 +458,7 @@ describe('adminPosts handler', () => {
 
       expect(result?.statusCode).toBe(200);
       expect(JSON.parse(result?.body ?? '{}').message).toBe('Post deleted');
-      // Rascunho não contava no agregado: delta zero, sem 3ª chamada
+      // Rascunho didn't count toward the aggregate: zero delta, no 3rd call
       expect(mockSend).toHaveBeenCalledTimes(2);
     });
 

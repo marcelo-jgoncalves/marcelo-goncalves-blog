@@ -1,4 +1,3 @@
-// frontend/components/ui/RelatedPostsSection.tsx
 import Link from 'next/link';
 import PostCard from '@/components/ui/PostCard';
 import { getPopularPosts } from '@/lib/api';

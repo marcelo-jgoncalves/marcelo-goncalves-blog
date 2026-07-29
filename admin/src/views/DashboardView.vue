@@ -1,5 +1,3 @@
-/* admin/src/views/DashboardView.vue */
-
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -68,7 +66,7 @@ async function fetchCategorias() {
     const data = await categoriesApi.list()
     categoriaNomes.value = Object.fromEntries((data.items || []).map((c) => [c.categoria_slug, c.nome]))
   } catch {
-    // Sem lista de categorias, a tabela cai no fallback (mostra o slug cru)
+    // Without the category list, the table falls back to showing the raw slug
   }
 }
 

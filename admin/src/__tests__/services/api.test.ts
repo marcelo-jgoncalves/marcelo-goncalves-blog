@@ -1,7 +1,5 @@
-// admin/src/__tests__/services/api.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-// Sobrescreve import.meta.env antes de importar o módulo
 vi.stubGlobal('import', { meta: { env: { VITE_API_BASE_URL: 'https://test-api.example.com/v1' } } })
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -15,11 +13,11 @@ function mockFetch(status: number, body: unknown) {
 }
 
 // ─── apiCall ──────────────────────────────────────────────────────────────────
-// A sessão do BFF viaja num cookie httpOnly enviado automaticamente pelo
-// browser (credentials: 'include') — sem token/Authorization header montado
-// no client. 401/403 significam "sessão inválida" e redirecionam pro login
-// (ver services/api.ts e o Lambda Authorizer, que devolve 403 numa policy
-// Deny explícita e 401 só quando não identifica a requisição de jeito nenhum).
+// The BFF session travels in an httpOnly cookie sent automatically by the
+// browser (credentials: 'include') — no token/Authorization header built on
+// the client. 401/403 mean "invalid session" and redirect to login (see
+// services/api.ts and the Lambda Authorizer, which returns 403 on an
+// explicit Deny policy and 401 only when it can't identify the request at all).
 
 describe('apiCall', () => {
   let apiCall: (endpoint: string, options?: RequestInit) => Promise<unknown>

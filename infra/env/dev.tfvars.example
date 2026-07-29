@@ -1,4 +1,3 @@
-# infra/env/dev.tfvars.example
 # Copy to dev.tfvars (gitignored) and fill in real values.
 
 environment  = "dev"

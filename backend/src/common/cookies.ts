@@ -1,4 +1,3 @@
-// backend/src/common/cookies.ts
 
 export function parseCookies(header?: string): Record<string, string> {
   if (!header) return {};

@@ -1,4 +1,3 @@
-// backend/src/common/logger.test.ts
 
 const consoleSpy = {
   log: jest.spyOn(console, 'log').mockImplementation(() => {}),
@@ -21,9 +20,9 @@ describe('logger', () => {
 
   function importLogger(level?: string) {
     if (level) process.env.LOG_LEVEL = level;
-    // require() (não import) é necessário aqui: precisa re-executar o
-    // módulo a cada chamada após jest.resetModules(), para que o logger
-    // releia LOG_LEVEL do zero a cada teste.
+    // require() (not import) is needed here: the module must be re-executed
+    // on every call after jest.resetModules(), so the logger re-reads
+    // LOG_LEVEL from scratch on every test.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require('./logger').logger;
   }

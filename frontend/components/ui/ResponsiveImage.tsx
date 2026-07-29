@@ -1,4 +1,3 @@
-// frontend/components/ui/ResponsiveImage.tsx
 //
 // Serve imagens responsivas de forma transparente:
 // - Base path sem extensão (novo formato): renderiza <picture> com AVIF + WebP em 3 tamanhos

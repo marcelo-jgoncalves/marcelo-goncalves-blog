@@ -1,4 +1,3 @@
-/* frontend/lib/postUtils */
 
 import { createHighlighter } from 'shiki';
 import * as cheerio from 'cheerio';

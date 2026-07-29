@@ -1,4 +1,3 @@
-// frontend/components/ui/FeaturedCallout.tsx
 import FullwidthCallout from './FullwidthCallout';
 
 interface FeaturedCalloutProps {

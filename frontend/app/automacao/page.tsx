@@ -1,6 +1,3 @@
-/* frontend/app/automacao/page.tsx
-   Landing page de pilar — ajustes/ajuste-09-pagina-automacao-integracao.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
@@ -72,7 +69,6 @@ const jsonLd = {
   },
 };
 
-// §7-11: cinco entregas comerciais distintas.
 const ENTREGAS = [
   { Icon: IconAutomacaoProcessos, title: 'Automação de processos', text: 'Transformamos tarefas repetitivas e baseadas em regras em fluxos automatizados, com execução consistente, registros de cada etapa e tratamento explícito das exceções.', tags: ['Tarefas recorrentes', 'Regras de negócio', 'Rastreabilidade'] },
   { Icon: IconIntegracaoSistemas, title: 'Integração entre sistemas', text: 'Conectamos aplicações para que dados circulem automaticamente entre ERP, CRM, plataformas financeiras, serviços externos e sistemas internos.', tags: ['ERP e CRM', 'Sistemas internos', 'Serviços externos'] },
@@ -81,8 +77,8 @@ const ENTREGAS = [
   { Icon: IconApisServicos, title: 'APIs e serviços de integração', text: 'Desenvolvemos interfaces documentadas e componentes de integração para conectar aplicações atuais e facilitar a incorporação de novos sistemas no futuro.', tags: ['APIs', 'Webhooks', 'Baixo acoplamento'] },
 ];
 
-// Painel "Fluxo operacional" ao lado das entregas — ilustra o caminho típico
-// de um evento dentro da automação, do disparo ao acompanhamento.
+// "Fluxo operacional" panel next to the deliverables — illustrates the
+// typical path of an event through the automation, from trigger to follow-up.
 const FLUXO_OPERACIONAL = [
   'Evento ou solicitação',
   'Validação e regras',
@@ -91,7 +87,6 @@ const FLUXO_OPERACIONAL = [
   'Registro e acompanhamento',
 ];
 
-// §12.5: oito benefícios.
 const BENEFICIOS = [
   'Menos tarefas repetitivas',
   'Redução de erros de transferência e digitação',
@@ -103,14 +98,12 @@ const BENEFICIOS = [
   'Capacidade de crescer sem aumentar o retrabalho na mesma proporção',
 ];
 
-// §13.5-13.7: três princípios da abordagem.
 const PRINCIPIOS = [
   { label: 'Começar pelo processo', title: 'Automatizar uma etapa útil antes de ampliar o escopo.', text: 'Sempre que possível, iniciamos pelo processo com melhor relação entre impacto, risco e esforço. Isso permite validar a abordagem, corrigir premissas e ampliar a solução com mais segurança.' },
   { label: 'Preservar o que funciona', title: 'Integrar antes de substituir.', text: 'Não propomos trocar sistemas apenas para viabilizar uma automação. Quando a base atual é adequada, criamos integrações e camadas complementares para reduzir mudanças desnecessárias.' },
   { label: 'Manter controle', title: 'Automação não significa perder visibilidade.', text: 'Definimos logs, alertas, permissões, pontos de validação e formas de intervenção para que a empresa consiga acompanhar o fluxo e agir quando uma situação foge do esperado.' },
 ];
 
-// §14.7: mapa técnico com as 8 capacidades, agrupadas em 4 estágios do fluxo.
 const ESTAGIOS = [
   { kicker: 'Entrada', title: 'Interfaces e contratos', text: 'Definimos como os sistemas trocam informações e quais responsabilidades pertencem a cada integração.', items: ['Integração de sistemas corporativos', 'APIs e webhooks'] },
   { kicker: 'Coordenação', title: 'Orquestração e processamento', text: 'Organizamos eventos e tarefas para que cada etapa seja executada na ordem e no momento adequados.', items: ['Arquiteturas orientadas a eventos', 'Processamento assíncrono'] },
@@ -118,7 +111,6 @@ const ESTAGIOS = [
   { kicker: 'Operação', title: 'Observabilidade e nuvem', text: 'Permitimos acompanhar o comportamento da automação e agir rapidamente quando algo foge do esperado.', items: ['Monitoramento, logs e alertas', 'Integração com serviços em nuvem'] },
 ];
 
-// §15.5: seis itens do checklist de confiabilidade e controle.
 const CONFIABILIDADE_ITEMS = [
   'Regras e responsabilidades claramente definidas',
   'Validação de dados antes do processamento',
@@ -128,7 +120,6 @@ const CONFIABILIDADE_ITEMS = [
   'Intervenção humana quando a exceção exige análise',
 ];
 
-// §16: oito perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'É necessário substituir os sistemas que já utilizamos?', answer: 'Não necessariamente. Em muitos projetos, o melhor caminho é conectar, complementar ou reorganizar o fluxo existente. A substituição só deve ser considerada quando a limitação do sistema impede uma solução confiável ou economicamente viável.' },
   { question: 'É possível começar por um único processo?', answer: 'Sim. Sempre que possível, começamos por um fluxo com impacto relevante e escopo controlado. Isso permite validar a abordagem antes de ampliar a automação para outras áreas.' },

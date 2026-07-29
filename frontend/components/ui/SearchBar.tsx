@@ -1,8 +1,7 @@
-/* frontend/components/ui/SearchBar.tsx
-   Barra de busca reutilizável (dentro de hero escuro) — único ponto de
-   verdade, usada tanto em /artigos quanto em /busca. Sempre envia para
-   /busca?q=... Ícone de lupa fica só do lado direito, como botão de
-   submit (sem ícone do lado esquerdo). */
+// Reusable search bar (inside a dark hero) — single source of truth, used
+// in both /artigos and /busca. Always submits to /busca?q=... Magnifying
+// glass icon sits only on the right, as the submit button (no icon on the
+// left).
 
 import './SearchBar.css';
 

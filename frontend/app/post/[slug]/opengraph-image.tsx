@@ -26,7 +26,6 @@ export default async function PostOgImage({ params }: Props) {
       nomeAutor = autorData?.autor?.nome_exibicao || AUTHOR_NAME;
     }
   } catch {
-    // fallback: usa valores padrão
   }
 
   const tituloTruncado = titulo.length > 72 ? titulo.substring(0, 72) + '…' : titulo;

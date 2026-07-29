@@ -1,5 +1,3 @@
-/* admin/src/main;ts */
-
 import './assets/main.css'
 
 import { createApp } from 'vue'
@@ -11,7 +9,6 @@ import { sharedInMemoryStorage } from 'aws-amplify/utils'
 import App from './App.vue'
 import router from './router'
 
-// Configuração do Cognito
 Amplify.configure({
   Auth: {
     Cognito: {
@@ -21,14 +18,12 @@ Amplify.configure({
   }
 })
 
-// Amplify só é usado para o handshake SRP (login) — a sessão de verdade
-// depois disso é o cookie httpOnly do BFF (ver stores/auth.ts, POST
-// /admin/session). Por isso o Amplify guarda tokens só em memória
-// (sharedInMemoryStorage), nunca em localStorage/sessionStorage: eles vivem
-// só durante o instante do login e são descartados (signOut()) assim que a
-// sessão de servidor é criada. Histórico desta linha: localStorage (padrão
-// do Amplify) -> sessionStorage (mitigação rápida) -> in-memory + BFF
-// (sessão 2026-07-24, auditoria world-class).
+// Amplify is only used for the SRP handshake (login) — after that, the
+// real session is the BFF's httpOnly cookie (see stores/auth.ts, POST
+// /admin/session). That's why Amplify keeps tokens only in memory
+// (sharedInMemoryStorage), never in localStorage/sessionStorage: they live
+// only for the instant of login and are discarded (signOut()) as soon as
+// the server session is created.
 cognitoUserPoolsTokenProvider.setKeyValueStorage(sharedInMemoryStorage)
 
 const app = createApp(App)

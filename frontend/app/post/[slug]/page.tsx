@@ -19,11 +19,11 @@ import TableOfContents from '@/components/post/TableOfContents';
 
 export const revalidate = 60;
 
-// Sem isso, a rota [slug] nunca entra no sistema de ISR do Next.js — o
-// `revalidate` acima fica sendo um no-op silencioso e toda página de post
-// é renderizada via SSR puro a cada request (CloudFront nunca cacheia,
-// Cache-Control vira no-store). Confirmado em produção: dynamicRoutes
-// vazio no prerender-manifest.json antes deste fix.
+// Without this, the [slug] route never enters Next.js's ISR system — the
+// `revalidate` above becomes a silent no-op and every post page renders
+// via pure SSR on every request (CloudFront never caches, Cache-Control
+// becomes no-store). Confirmed in production: dynamicRoutes was empty in
+// prerender-manifest.json before this fix.
 export async function generateStaticParams() {
   const slugs: { slug: string }[] = [];
   let nextToken: string | undefined;
@@ -98,7 +98,6 @@ export default async function PostPage({ params }: Props) {
   const { post, category } = data;
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
-  // Busca o autor dinamicamente para garantir consistência em toda a página
   const authorData = await getAuthor(post.autor_id || 'marcelo-goncalves');
   const autor = authorData?.autor;
   const autorNome = autor?.nome_exibicao || 'Marcelo Gonçalves';

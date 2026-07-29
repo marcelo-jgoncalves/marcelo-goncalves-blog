@@ -15,19 +15,17 @@ const router = createRouter({
       component: LoginView
     },
     {
-      // Rota Pai (Layout)
       path: '/',
       component: AdminLayout,
       meta: { requiresAuth: true },
-      // Rotas Filhas (Conteúdo)
       children: [
         {
-          path: '', // Caminho vazio = "/"
+          path: '',
           name: 'dashboard',
           component: DashboardView
         },
         {
-          path: 'profile', // Rota será /profile
+          path: 'profile',
           name: 'profile',
           component: AuthorEditView
         },
@@ -36,14 +34,14 @@ const router = createRouter({
           name: 'categories',
           component: () => import('../views/CategoriesView.vue'),
           meta: {
-            layout: 'AdminLayout', // Garante que use o layout correto
+            layout: 'AdminLayout',
             requiresAuth: true
           }
         }
       ]
     },
-    // A tela de escrita é full-bleed (sem sidebar do Admin) — tem sua própria
-    // barra superior com "‹ Posts", igual ao protótipo "Editor de Escrita".
+    // The writing screen is full-bleed (no Admin sidebar) — it has its own
+    // top bar with "‹ Posts".
     {
       path: '/posts/new',
       name: 'new-post',
@@ -59,7 +57,6 @@ const router = createRouter({
   ]
 })
 
-// Navigation Guard (MANTIDO IGUAL)
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
   if (!auth.email) await auth.checkSession()

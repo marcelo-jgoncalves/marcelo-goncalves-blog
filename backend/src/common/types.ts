@@ -1,4 +1,3 @@
-// backend/src/common/types.ts
 
 export interface Post {
   slug: string;
@@ -18,16 +17,13 @@ export interface Post {
   data_atualizacao: string; // ISO 8601
   data_publicacao_programada?: string;
   tempo_leitura_min: number;
-  e_popular: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
-  e_projeto: number; // DynamoDB não tem boolean em índice, usamos 0 ou 1
-  // Sparse index markers — só existem no item quando o respectivo flag é 1.
-  // hash_key de PopularesPorData_v2/ProjetoPorData_v2 (substituem GSIs com
-  // hash_key = e_popular/e_projeto, baixa cardinalidade — ver registro
-  // histórico arquivado fora do repo em
-  // marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
-  // Nunca lidos/escritos fora de
-  // savePost() e getPosts() — e_popular/e_projeto continuam a fonte de
-  // verdade para toda lógica de negócio e UI.
+  e_popular: number; // DynamoDB has no boolean type for an indexed attribute, so we use 0 or 1
+  e_projeto: number; // DynamoDB has no boolean type for an indexed attribute, so we use 0 or 1
+  // Sparse index markers — only exist on the item when the corresponding
+  // flag is 1. Hash key of PopularesPorData_v2/ProjetoPorData_v2 (replace
+  // GSIs with hash_key = e_popular/e_projeto, which have low cardinality).
+  // Never read/written outside of savePost() and getPosts() — e_popular/
+  // e_projeto remain the source of truth for all business logic and UI.
   e_popular_marker?: "POP";
   e_projeto_marker?: "PROJ";
   meta_titulo_seo?: string; // SEO (Blueprint v1.7)

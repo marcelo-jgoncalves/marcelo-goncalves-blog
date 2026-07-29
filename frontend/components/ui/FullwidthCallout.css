@@ -1,5 +1,3 @@
-/* frontend/components/ui/FullwidthCallout.css */
-
 .fwc-section {
   margin-block: 0;
   padding: var(--sp-10) var(--sp-4);
@@ -11,7 +9,7 @@
   padding-bottom: var(--sp-12);
 }
 
-/* ── Variantes — tokens de cor em cascata ─────────────────── */
+/* ── Variants — cascading color tokens ─────────────────── */
 .fwc-section[data-variant="light"] {
   background: rgba(15, 76, 92, 0.08);
   --fwc-title: var(--ink);
@@ -50,19 +48,19 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* ── Radius — para uso dentro de container (não edge-to-edge) */
+/* ── Radius — for use inside a container (not edge-to-edge) */
 .fwc-section[data-rounded="true"] {
   border-radius: 16px;
   overflow: hidden;
 }
 
-/* ── Borda accent ─────────────────────────────────────────── */
+/* ── Accent border ─────────────────────────────────────────── */
 .fwc-section[data-border="true"] {
   border-top:    1px solid rgba(15, 76, 92, 0.2);
   border-bottom: 1px solid rgba(15, 76, 92, 0.2);
 }
 
-/* ── Container interno ────────────────────────────────────── */
+/* ── Inner container ────────────────────────────────────── */
 .fwc-inner {
   margin: 0 auto;
   display: flex;
@@ -72,7 +70,7 @@
   padding: 0;
 }
 
-/* ── Ícone ────────────────────────────────────────────────── */
+/* ── Icon ────────────────────────────────────────────────── */
 .fwc-icon {
   width: 56px;
   height: 56px;
@@ -94,7 +92,7 @@
   color: white;
 }
 
-/* ── Tipografia ───────────────────────────────────────────── */
+/* ── Typography ───────────────────────────────────────────── */
 .fwc-title {
   font-family: var(--font-display);
   font-size: var(--type-h3);
@@ -115,13 +113,13 @@
   margin: 0;
 }
 
-/* ── Botão CTA — usa o padrão global .btn/.btn-petrol (globals.css);
-   .fwc-btn só ajusta o tamanho de fonte no contexto deste componente. */
+/* ── CTA button — uses the global .btn/.btn-petrol pattern (globals.css);
+   .fwc-btn only adjusts the font size in this component's context. */
 .fwc-btn {
   font-size: var(--type-body);
 }
 
-/* ── Responsivo ───────────────────────────────────────────── */
+/* ── Responsive ───────────────────────────────────────────── */
 @media (min-width: 768px) {
   .fwc-title { font-size: var(--type-h1); }
 }

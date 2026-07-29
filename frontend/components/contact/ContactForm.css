@@ -1,5 +1,3 @@
-/* frontend/components/contact/ContactForm.css */
-
 .contact-form-card {
   position: relative;
   background: var(--surface);
@@ -132,9 +130,9 @@
   text-align: right;
 }
 
-/* Honeypot — invisível visualmente, mas presente no DOM/tabulação evitada
-   via tabindex=-1 (não usar display:none, que alguns bloqueadores de spam
-   simples ignoram na detecção). */
+/* Honeypot — visually invisible, but present in the DOM/tab order avoided
+   via tabindex=-1 (don't use display:none, which some simple spam
+   filters ignore during detection). */
 .contact-honeypot {
   position: absolute;
   width: 1px;

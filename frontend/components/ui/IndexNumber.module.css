@@ -1,8 +1,7 @@
-/* frontend/components/ui/IndexNumber.module.css
-   Número-índice pequeno (01/02/03) ao lado de um Kicker — mesmo peso e cor
-   dele, nunca bold. Não confundir com números-índice grandes e decorativos
-   (ex.: .principleIndex de /automacao), que têm tratamento próprio maior
-   e continuam locais a cada página. Ver CLAUDE.md §5 "Kicker e IndexNumber". */
+/* Small index number (01/02/03) next to a Kicker — same weight and color as
+   it, never bold. Don't confuse with large decorative index numbers (e.g.
+   .principleIndex in /automacao), which get their own larger treatment and
+   stay local to each page. */
 
 .number {
   display: inline-block;

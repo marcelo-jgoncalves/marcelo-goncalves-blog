@@ -1,4 +1,3 @@
-// backend/src/functions/mediaUpload/index.test.ts
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 
@@ -55,7 +54,7 @@ describe('mediaUpload', () => {
   it('basePath inclui prefixo de data YYYY/MM/DD', async () => {
     const res = await handler(makeEvent({ nome_arquivo: 'foto.jpg', tipo_arquivo: 'image/jpeg' }), ctx, jest.fn());
     const { basePath } = JSON.parse(res!.body);
-    // Formato: media/YYYY/MM/DD/timestamp-random-nome
+    // Format: media/YYYY/MM/DD/timestamp-random-name
     expect(basePath).toMatch(/^media\/\d{4}\/\d{2}\/\d{2}\//);
   });
 

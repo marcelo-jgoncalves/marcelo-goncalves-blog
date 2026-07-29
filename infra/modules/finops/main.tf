@@ -1,4 +1,3 @@
-# infra/modules/finops/main.tf
 #
 # FinOps: SNS topic para notificações de orçamento (AWS Budgets pode ser
 # criado manualmente via AWS Console quando necessário — sintaxe do Terraform

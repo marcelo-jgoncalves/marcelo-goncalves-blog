@@ -1,4 +1,3 @@
-# infra/modules/observability/slo-burn-rate.tf
 #
 # Alerta baseado em error budget (Google SRE Workbook: "Multiwindow,
 # Multi-Burn-Rate Alerts"), não em threshold arbitrário sobre métrica

@@ -1,4 +1,3 @@
-/* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
 import './PostCard.css';
 import ReadArticle from '@/components/ui/ReadArticle';

@@ -1,6 +1,3 @@
-/* frontend/app/inteligencia-artificial/page.tsx
-   Landing page de pilar — ajustes/ajuste-11-pagina-inteligencia-artificial-aplicada.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
@@ -63,8 +60,6 @@ const jsonLd = {
   },
 };
 
-// §8-12: cinco soluções organizadas em 3 territórios editoriais (conhecimento,
-// documentos e informação, ações e processos) — sem grade de cards equivalentes.
 interface TerritorioItem {
   title: string;
   text: string;
@@ -97,7 +92,6 @@ const TERRITORIOS: { kicker: string; title: string; items: TerritorioItem[] }[] 
   },
 ];
 
-// §14-19: seis casos de aplicação — pontos de partida, não promessas de resultado.
 const CASOS_DE_APLICACAO = [
   { title: 'Consulta ao conhecimento interno', text: 'Assistente para localizar políticas, procedimentos, manuais e respostas em bases internas, respeitando as permissões de cada usuário.' },
   { title: 'Atendimento com transferência para pessoas', text: 'Atendimento inicial para responder dúvidas conhecidas, registrar solicitações e encaminhar a conversa para uma pessoa quando houver incerteza, exceção ou necessidade de decisão.' },
@@ -107,7 +101,6 @@ const CASOS_DE_APLICACAO = [
   { title: 'Apoio a decisões operacionais', text: 'Organização de informações, identificação de padrões e sugestão de próximos passos para que a decisão final seja tomada com mais contexto.' },
 ];
 
-// §20.5: oito benefícios, sem promessa genérica de redução de custo.
 const BENEFICIOS = [
   'Menos tempo para localizar informações',
   'Redução de etapas repetitivas de leitura e classificação',
@@ -119,8 +112,6 @@ const BENEFICIOS = [
   'Novas capacidades incorporadas aos sistemas existentes',
 ];
 
-// §22-26: cinco decisões de projeto, apresentadas como percurso vertical
-// (problema → dados → qualidade → integração → operação).
 const ETAPAS = [
   { numero: '01', categoria: 'Problema', title: 'Identificar uma tarefa adequada', text: 'Selecionamos um problema com entradas, usuários, resultado esperado e impacto identificáveis. A IA não deve ser adotada apenas porque a tecnologia está disponível.' },
   { numero: '02', categoria: 'Dados', title: 'Avaliar informações e acessos', text: 'Verificamos quais informações são necessárias, quem pode acessá-las, como serão protegidas e quais restrições impedem o uso de determinados dados.' },
@@ -129,7 +120,6 @@ const ETAPAS = [
   { numero: '05', categoria: 'Operação', title: 'Monitorar, aprender e evoluir', text: 'Acompanhamos qualidade, falhas, custo, tempo de resposta e comportamento de uso para ajustar prompts, dados, regras, modelos ou etapas do processo.' },
 ];
 
-// §27.6: oito itens de governança agrupados em 4 domínios.
 const GOVERNANCA_DOMINIOS = [
   { numero: '01', title: 'Dados e acesso', items: ['Dados e fontes autorizados para cada caso de uso', 'Permissões limitadas ao necessário'] },
   { numero: '02', title: 'Qualidade e evidência', items: ['Critérios de qualidade e conjuntos de avaliação', 'Respostas fundamentadas e referências quando aplicável'] },
@@ -137,7 +127,6 @@ const GOVERNANCA_DOMINIOS = [
   { numero: '04', title: 'Operação e evolução', items: ['Logs e trilhas de auditoria', 'Monitoramento de qualidade, uso e custos'] },
 ];
 
-// §29-38: dez perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'Minha empresa precisa desenvolver um sistema novo para usar IA?', answer: 'Não necessariamente. A IA pode ser integrada a aplicações, documentos e fluxos existentes. Um sistema novo só deve ser considerado quando a interface ou o processo atual não oferece uma forma adequada de incorporar a solução.' },
   { question: 'Como saber se um processo realmente precisa de IA?', answer: 'Avaliamos se a tarefa exige interpretação de linguagem, classificação, extração, síntese ou geração. Quando regras determinísticas ou automação convencional resolvem o problema com menor custo e risco, elas devem ser preferidas.' },

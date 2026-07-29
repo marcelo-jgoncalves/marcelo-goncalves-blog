@@ -1,4 +1,3 @@
-/* frontend/app/sobre/page.tsx — ajustes/ajuste-08-especificacao-completa-pagina-sobre.md */
 
 import type { Metadata } from 'next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,10 +44,8 @@ const DECISIONS = [
   { num: '05', icon: faArrowTrendUp, title: 'Validamos e evoluímos', text: 'Observamos o uso real, verificamos os resultados e ajustamos a solução conforme a operação aprende e o negócio avança.', span: 5 },
 ];
 
-// §12.6: tags de função de Marcelo (sem tag genérica "Engenharia").
 const LEADER_TAGS = ['Arquitetura', 'Cloud e DevOps', 'Automação'];
 
-// §13.2-13.5: quatro blocos de experiência, certificações e competências.
 const AUTHORITY_CARDS = [
   { kicker: 'Experiência', destaque: '10+ anos', title: 'Tecnologia aplicada a ambientes reais', text: 'Experiência projetando, modernizando e operando soluções com diferentes níveis de escala, maturidade e criticidade.' },
   { kicker: 'Atuação internacional', title: 'Projetos no Brasil e na Alemanha', text: 'Vivência em equipes distribuídas e ambientes corporativos que exigem comunicação clara, segurança, confiabilidade e disciplina de engenharia.', tags: ['Brasil', 'Alemanha', 'Equipes distribuídas'] },

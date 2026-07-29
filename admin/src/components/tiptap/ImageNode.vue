@@ -1,5 +1,3 @@
-*/admin/src/components/tiptap/ImageNode.vue*/
-
 <script setup lang="ts">
 import { NodeViewWrapper, nodeViewProps } from '@tiptap/vue-3'
 import { ref, computed } from 'vue'
@@ -12,14 +10,13 @@ const isLoading = ref(true)
 const hasError = ref(false)
 const isDefinitiveError = ref(false)
 const retryCount = ref(0)
-const maxRetries = 5 // Tenta por ~10 segundos (5 * 2s)
+const maxRetries = 5 // Retries for ~10 seconds (5 * 2s)
 
-// Cache Buster para forçar o navegador a tentar baixar de novo se der erro
+// Cache buster to force the browser to try downloading again on error
 const cacheBuster = ref('')
 
 const currentSrc = computed(() => {
   if (!cacheBuster.value) return src.value
-  // Adiciona timestamp apenas se estiver tentando de novo
   return `${src.value}?retry=${cacheBuster.value}`
 })
 

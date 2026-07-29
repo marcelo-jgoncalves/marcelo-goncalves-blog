@@ -1,4 +1,3 @@
-// backend/src/functions/getAuthor/index.ts
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { dynamo } from "../../common/dynamodb";

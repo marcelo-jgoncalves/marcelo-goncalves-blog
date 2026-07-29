@@ -1,6 +1,4 @@
-/* frontend/components/ui/InstitutionalIcons.tsx
-   Ícones inline reutilizados nas páginas institucionais (Home, Contato) —
-   specs/ESPECIFICACAO-HOME.md §8.2, ESPECIFICACAO-CONTATO.md §9.3/§10.2 */
+// Inline icons reused across institutional pages (Home, Contato)
 
 const common = {
   width: 22,

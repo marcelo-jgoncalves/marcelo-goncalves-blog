@@ -1,5 +1,3 @@
-/* frontend/components/ui/PostCard.css */
-
 .post-card {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -21,7 +19,7 @@
   }
 }
 
-/* ── imagem (gradiente) ── */
+/* ── image (gradient) ── */
 .post-card .pc-img {
   aspect-ratio: 16 / 10;
   position: relative;
@@ -57,7 +55,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
 }
 
-/* ── corpo ── */
+/* ── body ── */
 .post-card .pc-body {
   padding: var(--sp-5) var(--gap-grid) var(--eyebrow-gap);
   display: flex;
@@ -97,7 +95,7 @@
   overflow: hidden;
 }
 
-/* ── rodapé ── */
+/* ── footer ── */
 .post-card .pc-foot {
   margin-top: auto;
   padding: var(--sp-3) var(--gap-grid) var(--sp-4);

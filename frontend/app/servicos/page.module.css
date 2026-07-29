@@ -1,5 +1,4 @@
-/* frontend/app/servicos/page.module.css
-   ajustes/ajuste-05-pagina-central-servicos.md — breakpoints próprios da página (680/1040) */
+/* Page's own breakpoints (680/1040) */
 
 .wrap {
   max-width: 1240px;
@@ -116,8 +115,8 @@
   .heroMicrocopy { text-align: center; }
 }
 
-/* Ajuste 05: scroll-margin-top nas âncoras da página (100px — mesmo padrão
-   já usado no projeto, ver frontend/app/post/[slug]/post.css). */
+/* scroll-margin-top on the page's anchors (100px — same pattern already
+   used across the project, see frontend/app/post/[slug]/post.css). */
 :global(#problemas),
 :global(#frentes),
 :global(#servicos-especializados),
@@ -130,7 +129,7 @@
   scroll-margin-top: 100px;
 }
 
-/* ===== PROBLEMAS QUE RESOLVEMOS ===== */
+/* ===== PROBLEMS WE SOLVE ===== */
 .oquefazemos {
   padding: var(--sp-10) 0;
 }
@@ -156,7 +155,7 @@
   line-height: 1.6;
 }
 
-/* ===== DUAS FRENTES ===== */
+/* ===== TWO FRONTS ===== */
 .frentes {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -216,9 +215,9 @@
   text-decoration: underline;
 }
 
-/* Revisão visual: painel único com divisória vertical entre as duas frentes,
-   numeração 01/02 e links em linha com seta — sem linhas horizontais entre
-   os itens (removidas a pedido). */
+/* Single panel with a vertical divider between the two fronts, 01/02
+   numbering and inline links with an arrow — no horizontal lines between
+   items. */
 .frontsPanel {
   position: relative;
   display: grid;
@@ -308,7 +307,7 @@
   }
 }
 
-/* ===== SERVIÇOS ESPECIALIZADOS ===== */
+/* ===== SPECIALIZED SERVICES ===== */
 .especialidades {
   padding: var(--sp-10) 0;
 }
@@ -316,8 +315,8 @@
 @media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
 
-/* Grid flex-wrap (não CSS grid) — PillarCard.css define flex:1 1 340px por
-   card, mesmo padrão de .ih-pillars-grid na Home. */
+/* flex-wrap grid (not CSS grid) — PillarCard.css sets flex:1 1 340px per
+   card, same pattern as .ih-pillars-grid on the Home. */
 .pillarsGrid {
   display: flex;
   flex-wrap: wrap;
@@ -325,7 +324,7 @@
   gap: var(--gap-grid);
 }
 
-/* ===== SOLUÇÕES INTEGRADAS ===== */
+/* ===== INTEGRATED SOLUTIONS ===== */
 .abordagem {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -394,8 +393,8 @@
   border-top: 1px solid var(--line);
 }
 
-/* Revisão visual: texto à esquerda, card "Exemplo" à direita — substitui o
-   cabeçalho centralizado acima do card. */
+/* Text on the left, "Exemplo" card on the right — replaces the centered
+   header above the card. */
 .integratedLayout {
   display: grid;
   grid-template-columns: minmax(300px, .82fr) minmax(0, 1.18fr);
@@ -415,10 +414,10 @@
   .integratedLayout { grid-template-columns: 1fr; gap: var(--sp-8); }
 }
 
-/* Card "Exemplo" no mesmo tratamento do card "Nosso método" da Home (borda
-   petrol sutil + barra --clay à esquerda), lista numerada em 2 colunas —
-   mantém as linhas horizontais entre os itens (não fazem parte do pedido de
-   remoção, que só se aplica a "frentes"). */
+/* "Exemplo" card gets the same treatment as the Home's "Nosso método" card
+   (subtle petrol border + --clay bar on the left), numbered list in 2
+   columns — keeps the horizontal lines between items (those weren't part
+   of the removal that only applies to "frentes"). */
 .integratedExample {
   margin: 0 auto;
   padding: var(--sp-8);
@@ -482,7 +481,7 @@
   .integratedExample .exemploList { grid-template-columns: 1fr; }
 }
 
-/* ===== COMO O TRABALHO COMEÇA ===== */
+/* ===== HOW THE WORK BEGINS ===== */
 .comoComeca {
   padding: var(--sp-10) 0;
   background: var(--petrol);
@@ -564,7 +563,7 @@
   line-height: 1.6;
 }
 
-/* ===== PARA QUEM É INDICADA ===== */
+/* ===== WHO IT'S FOR ===== */
 .paraQuem {
   padding: var(--sp-10) 0;
 }
@@ -633,7 +632,7 @@
   font-weight: 700;
 }
 
-/* ===== DIFERENCIAIS DA ENTREGA ===== */
+/* ===== DELIVERY DIFFERENTIATORS ===== */
 .diferenciaisSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -676,9 +675,9 @@
   min-width: 0;
 }
 
-/* Revisão visual: título à esquerda, lista de diferenciais à direita —
-   substitui o cabeçalho centralizado acima da grade. Mantém as linhas
-   horizontais entre os itens (não fazem parte do pedido de remoção). */
+/* Title on the left, differentiators list on the right — replaces the
+   centered header above the grid. Keeps the horizontal lines between
+   items (those weren't part of the removal). */
 .diferenciaisBlock {
   display: grid;
   grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr);

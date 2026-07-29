@@ -1,4 +1,3 @@
-// frontend/open-next.config.ts
 
 const config = {
   default: {},

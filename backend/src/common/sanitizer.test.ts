@@ -1,4 +1,3 @@
-// backend/src/common/sanitizer.test.ts
 import { sanitizePostHtml } from './sanitizer';
 
 describe('sanitizePostHtml', () => {

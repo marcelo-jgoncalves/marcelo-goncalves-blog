@@ -1,4 +1,3 @@
-# infra/modules/dynamodb/main.tf
 
 variable "environment" {
   type = string

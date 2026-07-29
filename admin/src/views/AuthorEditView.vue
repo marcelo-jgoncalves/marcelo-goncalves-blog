@@ -38,7 +38,7 @@ onMounted(async () => {
       form.value = { ...form.value, ...data.autor }
     }
   } catch {
-    // Autor ainda não existe — será criado ao salvar
+    // Author doesn't exist yet — will be created on save
   } finally {
     loading.value = false
   }
@@ -61,7 +61,7 @@ function onImageUploaded(relativePath: string) {
   form.value.foto_avatar_url = `${ASSETS_URL}/${relativePath}`
 }
 
-// basePath sem extensão → variante 480w para o preview do admin
+// basePath with no extension → 480w variant for the admin preview
 const avatarPreviewUrl = computed(() => {
   const url = form.value.foto_avatar_url
   if (!url) return ''

@@ -2,13 +2,13 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { signIn, signOut, fetchAuthSession } from 'aws-amplify/auth'
 
-// A senha continua indo só até o Cognito via SRP (Amplify client-side,
-// nunca chega ao nosso backend) — depois do login, trocamos o idToken (só
-// em memória, nunca persistido) por uma sessão de servidor opaca e
-// descartamos o Amplify (signOut()) imediatamente. Daí em diante, o cookie
-// httpOnly que o navegador recebe é a única fonte de verdade da sessão —
-// ver backend/src/functions/adminSession e services/api.ts (credentials:
-// 'include' em toda chamada, sem Authorization header).
+// The password still only goes as far as Cognito via SRP (Amplify
+// client-side, never reaches our backend) — after login, we exchange the
+// idToken (kept only in memory, never persisted) for an opaque server
+// session and discard Amplify (signOut()) immediately. From then on, the
+// httpOnly cookie the browser receives is the only source of truth for the
+// session — see backend/src/functions/adminSession and services/api.ts
+// (credentials: 'include' on every call, no Authorization header).
 export const useAuthStore = defineStore('auth', () => {
   const email = ref<string | null>(null)
   const username = ref<string | null>(null)
@@ -51,8 +51,8 @@ export const useAuthStore = defineStore('auth', () => {
         body: JSON.stringify({ idToken }),
       })
 
-      // Amplify não precisa manter nada depois daqui — a sessão de servidor
-      // (cookie httpOnly) é a única credencial usada a partir de agora.
+      // Amplify doesn't need to hold onto anything past this point — the
+      // server session (httpOnly cookie) is the only credential used from now on.
       await signOut().catch(() => {})
 
       if (!res.ok) {

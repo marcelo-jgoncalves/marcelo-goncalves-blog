@@ -1,4 +1,3 @@
-// backend/src/functions/postScheduler/index.ts
 // Triggered by EventBridge Scheduler every 15 minutes.
 // Publishes posts where status = "Programado" and data_publicacao_programada <= NOW.
 import { QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";

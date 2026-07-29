@@ -1,5 +1,3 @@
-/**frontend/app/contato/page.tsx — ajustes/ajuste-14-pagina-contato-conversao.md */
-
 import './contato.css';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
@@ -32,7 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-// §30: quatro etapas de "o que acontece depois do envio" (não são as 5 etapas antigas).
 const NEXT_STEPS = [
   { title: 'Você apresenta o contexto', text: 'O formulário reúne as informações necessárias para uma primeira compreensão do desafio.' },
   { title: 'Avaliamos a aderência', text: 'Analisamos se a necessidade está relacionada às competências da consultoria e se precisamos esclarecer algum ponto.' },
@@ -40,7 +37,6 @@ const NEXT_STEPS = [
   { title: 'Definimos o próximo passo', text: 'O próximo passo pode ser uma proposta, um diagnóstico comercial, uma etapa de descoberta ou a indicação de que outro caminho é mais adequado.' },
 ];
 
-// §38-45: oito perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'Preciso saber qual serviço contratar?', answer: 'Não. Descreva o problema, o processo ou o sistema que precisa evoluir. A primeira análise serve justamente para identificar se existe aderência e qual competência pode participar da solução.' },
   { question: 'A primeira conversa possui custo?', answer: 'Não. A conversa inicial serve para conhecer o contexto, avaliar aderência e esclarecer os primeiros caminhos. Quando o desafio exige levantamento, acesso a ambientes ou recomendações detalhadas, o diagnóstico pode ser estruturado como uma etapa comercial própria.' },

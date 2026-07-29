@@ -9,10 +9,8 @@ import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 
-// 1. Configuração de Cache (ISR) — listagens: 300s (contrato ISR)
 export const revalidate = 300;
 
-// 2. Mapa de Metadados (Fallback visual)
 const CATEGORY_META: Record<string, { title: string; description: string }> = {
   'tutoriais-aws': {
     title: 'Tutoriais AWS',
@@ -44,13 +42,11 @@ const CATEGORY_META: Record<string, { title: string; description: string }> = {
   }
 };
 
-// 3. Tipagem das Props
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// 4. Metadados SEO
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params;
   const meta = CATEGORY_META[slug];
@@ -90,7 +86,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   let posts: PostCardProps['post'][] = [];
   let nextPageToken = undefined;
   
-  // Busca na API
   try {
     const data = await getPostsByCategory(slug, nextToken);
     if (data) {
@@ -98,10 +93,9 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       nextPageToken = data.nextToken;
     }
   } catch {
-    // Não faz notFound() — deixa renderizar vazio para não expor erros de infra
+    // Doesn't call notFound() — renders empty instead, so infra errors aren't exposed
   }
 
-  // Se não tem no mapa, usa fallback genérico formatado
   const meta = CATEGORY_META[slug] || {
     title: slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
     description: `Artigos e tutoriais sobre ${slug.replace(/-/g, ' ')}.`

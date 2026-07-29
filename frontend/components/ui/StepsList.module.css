@@ -1,6 +1,5 @@
-/* frontend/components/ui/StepsList.module.css
-   Lista vertical de etapas — substitui StepsTimeline (círculos em linha) na Home
-   (revisão visual 2026-07-27). StepsTimeline continua em uso em /contato. */
+/* Vertical steps list — replaces StepsTimeline (circles in a row) on the
+   Home. StepsTimeline is still used in /contato. */
 
 .list {
   max-width: 1080px;

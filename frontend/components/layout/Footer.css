@@ -1,4 +1,3 @@
-/* frontend/components/layout/Footer.css */
 
 .site-footer {
   position: relative;
@@ -123,13 +122,13 @@
   transform: translateX(2px);
 }
 
-/* ── coluna Contato ── */
+/* ── Contact column ── */
 .site-footer .foot-contact {
   display: block;
   align-self: start;
-  /* .foot-contact é <section> — reseta a regra global `section { margin-block:
-     var(--sp-10) }` (globals.css), que senão desalinha esta coluna 64px pra
-     baixo em relação às demais (<nav>, não afetadas pela regra). */
+  /* .foot-contact is a <section> — resets the global `section { margin-block:
+     var(--sp-10) }` rule (globals.css), which would otherwise misalign this
+     column 64px down relative to the others (<nav>, unaffected by the rule). */
   margin-block: 0;
 }
 
@@ -166,8 +165,8 @@
   transform: translateX(2px);
 }
 
-/* ── faixa legal ──
-   Três blocos: copyright, links legais + preferências, voltar ao topo. */
+/* ── legal strip ──
+   Three blocks: copyright, legal links + preferences, back to top. */
 .site-footer .foot-bottom {
   display: grid;
   grid-template-columns: minmax(220px, .8fr) minmax(0, 1.6fr) auto;
@@ -313,8 +312,8 @@
   }
 }
 
-/* Rodapé global oculto na impressão (ajuste-17b §24) — o documento impresso
-   não depende deste menu/CTA. */
+/* Global footer hidden when printing — the printed document doesn't
+   depend on this menu/CTA. */
 @media print {
   .site-footer {
     display: none;

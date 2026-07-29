@@ -1,4 +1,3 @@
-# infra/backend.hcl.example
 # Copy to backend.hcl (gitignored) and fill in values for local dev.
 # CI/CD passes these via -backend-config flags directly.
 #

@@ -1,4 +1,3 @@
-// frontend/__tests__/lib/api.test.ts
 import {
   getPost,
   getAuthor,

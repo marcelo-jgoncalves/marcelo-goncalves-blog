@@ -1,4 +1,3 @@
-# infra/modules/lambda/lambda-iam.tf
 #
 # IAM roles + policies — one per Lambda function (least-privilege scoping).
 # Each role grants ONLY the permissions that specific Lambda needs.

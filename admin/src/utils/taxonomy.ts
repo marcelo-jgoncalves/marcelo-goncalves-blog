@@ -1,4 +1,4 @@
-/** Áreas macro usadas no filtro de Artigos (redesign 2026). Atribuídas por Categoria. */
+/** Macro areas used in the Artigos filter. Assigned per Category. */
 export const MACRO_AREAS = [
   { value: 'ia', label: 'Inteligência Artificial' },
   { value: 'devops', label: 'DevOps' },
@@ -7,7 +7,7 @@ export const MACRO_AREAS = [
   { value: 'bastidores', label: 'Bastidores' },
 ] as const
 
-/** Variantes visuais (gradiente) do PostCard redesenhado — classes t-* aplicadas via variante_card. */
+/** Visual (gradient) variants of the redesigned PostCard — t-* classes applied via variante_card. */
 export const CARD_VARIANTS = [
   { value: 't-petrol', label: 'Petróleo' },
   { value: 't-deep', label: 'Petróleo Profundo' },

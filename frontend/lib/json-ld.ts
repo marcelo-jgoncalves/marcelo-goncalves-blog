@@ -1,4 +1,3 @@
-// frontend/lib/json-ld.ts
 
 // JSON.stringify não escapa `<`/`>`/`/` por padrão — um post com
 // titulo/resumo contendo `</script><script>...` quebraria para fora da tag

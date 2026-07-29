@@ -1,4 +1,3 @@
-/* frontend/app/artigos/page.tsx */
 
 import './artigos.css';
 import type { Metadata } from 'next';

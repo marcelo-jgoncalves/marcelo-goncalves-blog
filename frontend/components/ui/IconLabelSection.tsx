@@ -1,13 +1,12 @@
-// frontend/components/ui/IconLabelSection.tsx
-// Extraído de 3 landings de pilar (automacao/plataforma "Especialidades", software
-// "Princípios") — mesmo papel semântico ("grade de competências com ícone e rótulo"),
-// só o nome de cada campo do domínio muda. `section`/`wrap`/`head`/`eyebrow`/
-// `heading`/`desc` continuam vindo do CSS Module de cada página (variam pouco e não
-// eram o problema); a grade em si (`list`/`item`/`numeral`/`itemTitle`) é fixa,
-// definida em IconLabelSection.module.css no padrão de /plataforma (2 colunas) —
-// antes cada página tinha sua própria cópia, com /automacao e /software divergindo
-// de /plataforma (4 colunas em telas largas) sem motivo real (decisão de Marcelo,
-// 2026-07-24: unificar no padrão de /plataforma).
+// Extracted from 3 pillar landing pages (automacao/plataforma "Especialidades",
+// software "Princípios") — same semantic role ("grid of competencies with icon
+// and label"), only the domain field names differ. `section`/`wrap`/`head`/
+// `eyebrow`/`heading`/`desc` still come from each page's CSS Module (they vary
+// little and weren't the problem); the grid itself (`list`/`item`/`numeral`/
+// `itemTitle`) is fixed, defined in IconLabelSection.module.css matching
+// /plataforma's pattern (2 columns) — previously each page had its own copy,
+// with /automacao and /software diverging into 4 columns on wide screens for
+// no real reason.
 
 import type { ComponentType, ReactNode } from 'react';
 import styles from './IconLabelSection.module.css';

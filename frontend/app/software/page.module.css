@@ -336,8 +336,8 @@
   min-width: 0;
 }
 
-/* ===== NOSSA ABORDAGEM — painel de decisão (usar/conectar/evoluir/construir)
-   + percurso de 5 etapas + 3 princípios em colunas divididas. ===== */
+/* ===== OUR APPROACH — decision panel (use/connect/evolve/build)
+   + 5-step journey + 3 principles in split columns. ===== */
 .approachSection {
   padding: var(--sp-10) 0;
   background: var(--surface);

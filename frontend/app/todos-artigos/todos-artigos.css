@@ -1,8 +1,4 @@
-/* frontend/app/artigos/artigos.css
-   Redesign 2026 (petrol/clay/ivory) — réplica de specs/ESPECIFICACAO-ARTIGOS.md
-   e e2e/visual-audit/fixtures/artigos.html, com dados reais do projeto. */
-
-/* Seções desta página têm padding próprio — remove o ritmo global de 64px */
+/* Sections on this page have their own padding — removes the global 64px rhythm */
 .art-hero,
 .art-masthead,
 .art-search-section,
@@ -12,12 +8,12 @@
 }
 
 /* ==========================================================================
-   HERO (escuro)
+   HERO (dark)
    ========================================================================== */
 .art-hero {
-  /* padding-bottom 76px é valor customizado (não cai em nenhum --sp-*)
-     — mantido como está para não alterar a proporção visual do hero;
-     documentado aqui para não parecer um leak não auditado. */
+  /* padding-bottom 76px is a custom value (doesn't fall on any --sp-*) —
+     kept as-is to not alter the hero's visual proportion; documented here
+     so it doesn't look like an unaudited leak. */
   --ph-pad: 88px 40px 76px;
 }
 
@@ -40,27 +36,28 @@
   mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
 }
 
-/* Barra de busca — componente compartilhado (frontend/components/ui/SearchBar) */
+/* Search bar — shared component (frontend/components/ui/SearchBar) */
 
 /* ==========================================================================
-   SHELL — seções com padding próprio
-   Padding reduzido à metade (var(--sp-11)→var(--sp-9)) e simétrico,
-   mesmo padrão de #servicos/#abordagem/#insights em home.css.
+   SHELL — sections with their own padding
+   Padding reduced to half (var(--sp-11)→var(--sp-9)) and symmetric,
+   same pattern as #servicos/#abordagem/#insights in home.css.
    ========================================================================== */
 .art-section {
   padding-block: var(--sp-9);
 }
 
-/* .op-pagination (Pagination.tsx, componente compartilhado) já tem
-   padding: var(--sp-7) 0 (32px) embutido — sem este desconto, o total
-   card→paginação e paginação→próxima seção somava 48+32=80px em vez dos
-   48px padrão. sp-4(16px) aqui + 32px do componente = 48px. */
+/* .op-pagination (Pagination.tsx, shared component) already has
+   padding: var(--sp-7) 0 (32px) built in — without this discount, the
+   card→pagination and pagination→next-section total added up to
+   48+32=80px instead of the standard 48px. sp-4(16px) here + the
+   component's 32px = 48px. */
 .art-section--paginated {
   padding-bottom: var(--sp-4);
 }
 
 /* ==========================================================================
-   MASTHEAD (revista)
+   MASTHEAD (magazine)
    ========================================================================== */
 .art-masthead {
   padding-top: var(--sp-10);
@@ -230,7 +227,7 @@
 }
 
 /* ==========================================================================
-   GRADE PRINCIPAL (.pc-* herdado de PostCard.css)
+   MAIN GRID (.pc-* inherited from PostCard.css)
    ========================================================================== */
 .art-grid {
   display: grid;
@@ -243,7 +240,7 @@
 }
 
 /* ==========================================================================
-   ESTADO VAZIO + CARREGAR MAIS
+   EMPTY STATE + LOAD MORE
    ========================================================================== */
 .art-empty {
   display: none;
@@ -269,8 +266,8 @@
   letter-spacing: .04em;
 }
 
-/* sp-4(16px) + padding-top de 32px já embutido em .op-pagination = 48px total
-   (mesmo desconto de .art-section--paginated acima). */
+/* sp-4(16px) + the 32px padding-top already embedded in .op-pagination =
+   48px total (same discount as .art-section--paginated above). */
 .art-load-wrap {
   display: flex;
   justify-content: center;
@@ -278,7 +275,7 @@
 }
 
 /* ==========================================================================
-   RESPONSIVO
+   RESPONSIVE
    ========================================================================== */
 @media (max-width: 900px) {
   .art-hero .page-hero-in {
@@ -315,7 +312,7 @@
 }
 
 /* ==========================================================================
-   BUSCA (seção escura, entre destaque e listagem)
+   SEARCH (dark section, between featured and listing)
    ========================================================================== */
 .art-search-section {
   background: var(--petrol);
@@ -364,7 +361,7 @@
 }
 
 /* ==========================================================================
-   CABEÇALHO DA LISTAGEM
+   LISTING HEADER
    ========================================================================== */
 .art-count {
   font-family: var(--mono);
@@ -375,7 +372,7 @@
 }
 
 /* ==========================================================================
-   CTA EDITORIAL COMPACTO
+   COMPACT EDITORIAL CTA
    ========================================================================== */
 .art-cta-editorial {
   padding-block: var(--sp-9);

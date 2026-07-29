@@ -20,10 +20,10 @@ export default function ConsentManager() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Hidratação única a partir do localStorage (indisponível no render do
-    // servidor) — não é um anti-padrão de "estado derivado", é leitura de
-    // um sistema externo síncrono que só existe no client, por isso roda
-    // dentro do efeito e não no corpo do componente.
+    // One-time hydration from localStorage (unavailable during server
+    // render) — this isn't a "derived state" anti-pattern, it's reading a
+    // synchronous external system that only exists on the client, which is
+    // why it runs inside the effect instead of the component body.
     const stored = readConsent();
     if (!stored || !isConsentValid(stored)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -45,8 +45,8 @@ export default function ConsentManager() {
   }, []);
 
   const acceptAll = () => {
-    // Só existe uma categoria opcional hoje (analítico) — ads fica reservado
-    // para quando o AdSense for configurado (ver CLAUDE.md §10, item #5).
+    // Only one optional category exists today (analytics) — ads is
+    // reserved for when AdSense gets configured.
     const state = saveConsent({ analytics: true, ads: false });
     setConsent(state);
     applyConsent(state);

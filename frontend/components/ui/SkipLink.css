@@ -1,28 +1,26 @@
-/* frontend/components/ui/SkipLink.css */
-
 .skip-link-btn {
   position: absolute;
   top: 0;
-  left: 24px; /* Ritmo 3x 8px (corrigido de 20px) */
-  transform: translateY(-150%); /* Tira da tela pela GPU em vez de usar top: -80px */
-  
+  left: 24px;
+  transform: translateY(-150%); /* Moves off-screen via GPU instead of using top: -80px */
+
   background-color: var(--petrol);
   color: var(--ink);
-  
-  padding: var(--sp-4) var(--sp-6); /* Ritmo 8px (corrigido de 12px 20px) */
-  border-radius: 8px; /* Ritmo 8px (corrigido de 6px) */
+
+  padding: var(--sp-4) var(--sp-6);
+  border-radius: 8px;
   font-family: var(--font-display);
   font-weight: 700;
   text-decoration: none;
   z-index: 9999;
-  
-  /* Pilar #3: Performance - Animamos apenas 'transform' para evitar reflows no navegador */
-  transition: transform 0.3s ease-out; 
+
+  /* Animates only 'transform' to avoid triggering browser reflows */
+  transition: transform 0.3s ease-out;
   box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.08));
 }
 
 .skip-link-btn:focus {
-  transform: translateY(24px); /* Desce para a tela mantendo o Ritmo de 24px (corrigido de 20px) */
-  outline: 4px solid #cc7a00; /* Mantém a acessibilidade visual de alto contraste */
-  outline-offset: 4px; /* Afasta o outline do botão para dar respiro */
+  transform: translateY(24px);
+  outline: 4px solid #cc7a00; /* Keeps high-contrast visual accessibility */
+  outline-offset: 4px;
 }

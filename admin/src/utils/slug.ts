@@ -1,4 +1,4 @@
-/** Gera slug URL-safe a partir de texto livre. Usado em EditorView e CategoriesView. */
+/** Generates a URL-safe slug from free text. Used in EditorView and CategoriesView. */
 export function slugify(text: string): string {
   return text
     .toString()

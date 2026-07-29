@@ -52,7 +52,7 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      // 1 Query + (1 UpdateItem de status + 1 ADD no contador) por post publicado
+      // 1 Query + (1 status UpdateItem + 1 counter ADD) per published post
       expect(mockSend).toHaveBeenCalledTimes(5);
     });
 

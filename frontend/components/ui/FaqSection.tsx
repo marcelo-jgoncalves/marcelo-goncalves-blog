@@ -1,8 +1,7 @@
-/* frontend/components/ui/FaqSection.tsx
-   Seção "Perguntas frequentes" completa (eyebrow + título + acordeão) —
-   até aqui duplicada, byte a byte, no page.module.css das 4 landings de pilar
-   (Cloud & DevOps, Engenharia de Software, Integração & Automação, IA).
-   Único ponto de verdade: só `items` (e opcionalmente eyebrow/título) mudam por uso. */
+// Complete "Perguntas frequentes" section (eyebrow + title + accordion) —
+// previously duplicated byte for byte across the 4 pillar landings' page
+// files. Single source of truth: only `items` (and optionally
+// eyebrow/title) vary per use.
 
 import Faq, { type FaqItem } from './Faq';
 import './FaqSection.css';

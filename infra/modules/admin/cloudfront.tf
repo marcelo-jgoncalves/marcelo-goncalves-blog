@@ -1,4 +1,3 @@
-# infra/modules/admin/cloudfront.tf
 
 # --- Bucket S3 para logs de acesso do CloudFront (criado apenas se enable_cloudfront_logging=true) ---
 

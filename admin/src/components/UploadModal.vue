@@ -1,5 +1,3 @@
-/*admin/src/components/UploadModal.vue */
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { mediaApi } from '../services/api'
@@ -38,14 +36,12 @@ async function handleUpload(file: File) {
   error.value = ''
 
   try {
-    // 1. Obter URL e campos do presigned POST
     const { url, fields, basePath } = await mediaApi.getUploadUrl(file.name, file.type)
 
-    // 2. Enviar para o S3
     await mediaApi.uploadToS3(url, fields, file)
 
-    // basePath = "media/{uuid}-{nome}" (sem extensão)
-    // O imageProcessor gera as variantes: -480.avif, -480.webp, -768.*, -1280.*
+    // basePath = "media/{uuid}-{name}" (no extension) — imageProcessor
+    // generates the variants: -480.avif, -480.webp, -768.*, -1280.*
     emit('uploaded', basePath)
     emit('close')
   } catch (err) {

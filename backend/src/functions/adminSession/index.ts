@@ -1,14 +1,14 @@
-// backend/src/functions/adminSession/index.ts
 //
-// Backend For Frontend (BFF) de sessão do admin. O SRP (login) continua
-// acontecendo 100% no browser via Amplify — a senha nunca chega a esta
-// Lambda (decisão de manter ALLOW_USER_SRP_AUTH, ver infra/modules/cognito).
-// O que este handler faz é trocar o idToken já obtido pelo Amplify (mantido
-// só em memória no client, nunca persistido) por uma sessão opaca revogável:
-//   POST   /admin/session -> body {idToken} -> valida contra o Cognito,
-//          cria sessão em admin_sessions, devolve Set-Cookie httpOnly
-//   GET    /admin/session -> lê o cookie, confere a sessão, devolve {email}
-//   DELETE /admin/session -> apaga a sessão (logout), limpa o cookie
+// Backend For Frontend (BFF) for the admin session. SRP (login) still
+// happens 100% in the browser via Amplify — the password never reaches
+// this Lambda (ALLOW_USER_SRP_AUTH is kept, see infra/modules/cognito).
+// What this handler does is exchange the idToken already obtained by
+// Amplify (kept only in client memory, never persisted) for a revocable
+// opaque session:
+//   POST   /admin/session -> body {idToken} -> validates against Cognito,
+//          creates a session in admin_sessions, returns Set-Cookie httpOnly
+//   GET    /admin/session -> reads the cookie, checks the session, returns {email}
+//   DELETE /admin/session -> deletes the session (logout), clears the cookie
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { logger } from "../../common/logger";
 import { verifyIdToken } from "../../common/cognitoJwt";

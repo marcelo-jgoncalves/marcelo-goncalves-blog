@@ -4,11 +4,7 @@ import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import PageHero from '@/components/ui/PageHero';
 import SearchBar from '@/components/ui/SearchBar';
 
-// Metadados são automáticos no not-found, mas podemos definir o título via layout se necessário,
-// ou confiar no padrão. Como é um Server Component, fazemos o fetch aqui.
-
 export default async function NotFound() {
-  // Busca populares para retenção (fallback seguro para array vazio)
   const popularData = await getPopularPosts().catch(() => ({ posts: [] }));
   const popularPosts: PostCardProps['post'][] = popularData.posts || [];
 

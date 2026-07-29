@@ -1,4 +1,3 @@
-// frontend/components/ui/ApproachHead.tsx
 // Extraído das 4 landings de pilar — bloco "Nossa abordagem" (texto à esquerda) +
 // card de resultado/objetivo/compromisso (aside à direita), mesmo papel semântico
 // nas 4 páginas. Recebe as classes de CSS Module de cada página via prop `classes`

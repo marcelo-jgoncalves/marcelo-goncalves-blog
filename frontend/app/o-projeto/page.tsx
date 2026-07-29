@@ -1,6 +1,3 @@
-/* frontend/app/o-projeto/page.tsx
-   Redesign 2026 (petrol/clay/ivory) — réplica de ajustes/ajuste-15d-pagina-o-projeto.md */
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getProjectPosts } from '@/lib/api';
@@ -68,8 +65,6 @@ interface Capability {
   status: CapabilityStatus;
 }
 
-// Inventário validado com Marcelo em 2026-07-27 (ajustado a partir da spec —
-// ver memory/project_ajuste15_backlog.md para o histórico da revisão).
 const CAPABILITIES: Capability[] = [
   { title: 'Site público em português', description: 'Experiência editorial pública com Home, artigos, páginas institucionais e páginas de serviço.', status: 'delivered' },
   { title: 'Publicação de artigos', description: 'Listagem, categorias e páginas individuais para conteúdo técnico.', status: 'delivered' },

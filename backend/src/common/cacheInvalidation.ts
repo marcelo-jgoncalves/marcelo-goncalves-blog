@@ -1,25 +1,24 @@
-// backend/src/common/cacheInvalidation.ts
 //
-// Invalidação sob demanda do cache de borda (CloudFront) para /post/{slug}
-// (e opcionalmente "/", que exibe posts recentes) — chamada pelos 3 pontos
-// de escrita que mudam o conteúdo público de um post (adminPosts.savePost/
-// deletePost, postScheduler.publishPost). Sem isso, o `revalidate=60` do
-// Next.js só expira naturalmente; com isso, uma edição/publicação aparece
-// no site público sem esperar a janela de cache (plano completo arquivado fora do
-// repo: marcelo-goncalves-blog-arquivo/docs-historico/plano-cache-invalidation-cloudfront.md).
+// On-demand edge cache (CloudFront) invalidation for /post/{slug} (and
+// optionally "/", which shows recent posts) — called from the 3 write
+// paths that change a post's public content (adminPosts.savePost/
+// deletePost, postScheduler.publishPost). Without this, Next.js's
+// `revalidate=60` only expires naturally; with it, an edit/publish shows up
+// on the public site without waiting out the cache window.
 //
-// Fase 1 apenas: não cobre o cache interno do OpenNext (efêmero, por
-// instância Lambda) — deliberadamente deferido (CLAUDE.md, backlog #28)
-// até haver tráfego real que justifique essa complexidade.
+// Phase 1 only: does not cover OpenNext's internal cache (ephemeral, per
+// Lambda instance) — deliberately deferred until there's real traffic to
+// justify that complexity.
 import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
 import { logger } from "./logger";
 
 const cloudfront = new CloudFrontClient({});
 const DISTRIBUTION_ID = process.env.FRONTEND_DISTRIBUTION_ID;
 
-// Best-effort: nunca lança — uma falha aqui não deve bloquear a resposta de
-// save/publish/delete. Pior caso sem invalidação: o post fica stale até o
-// revalidate natural (60s em /post/[slug], 300s em "/").
+// Best-effort: never throws — a failure here must not block the
+// save/publish/delete response. Worst case without invalidation: the post
+// stays stale until the natural revalidate (60s on /post/[slug], 300s on
+// "/").
 export async function invalidatePostCache(paths: string[]): Promise<void> {
   if (!DISTRIBUTION_ID || paths.length === 0) return;
 

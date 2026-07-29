@@ -1,4 +1,3 @@
-# infra/modules/media/lambda.tf
 
 locals {
   xray_mode = var.enable_xray_tracing ? "Active" : "PassThrough"

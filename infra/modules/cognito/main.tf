@@ -1,4 +1,3 @@
-# infra/modules/cognito/main.tf
 # 1. User Pool (O diretório de usuários)
 resource "aws_cognito_user_pool" "admin_pool" {
   name = "${var.project_name}-${var.environment}-admin-pool"
