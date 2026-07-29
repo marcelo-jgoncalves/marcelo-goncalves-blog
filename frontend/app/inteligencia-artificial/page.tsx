@@ -8,6 +8,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import BeneficiosSection from '@/components/ui/BeneficiosSection';
 import styles from './page.module.css';
 
 const TITLE = `Inteligência Artificial Aplicada | ${SITE_NAME}`;
@@ -231,25 +232,14 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* RESULTADOS ESPERADOS — Petrol, matriz numerada de 8 resultados */}
-      <section id="beneficios" className={styles.beneficios} data-audit="ai-beneficios">
-        <div className={styles.beneficiosOverlay} aria-hidden="true" />
-        <div className={styles.beneficiosWrap}>
-          <div>
-            <span className={styles.eyebrowDark}>Resultados esperados</span>
-            <h2 className={styles.h2Dark}>Mais acesso à informação, menos esforço em tarefas de interpretação.</h2>
-            <p className={styles.beneficiosDescription}>O ganho não está em &ldquo;usar IA&rdquo;, mas em retirar fricção de atividades que dependem de leitura, busca, classificação e contexto.</p>
-          </div>
-          <div className={styles.beneficiosList}>
-            {BENEFICIOS.map((item, i) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* BENEFÍCIOS */}
+      <BeneficiosSection
+        id="beneficios"
+        dataAudit="ai-beneficios"
+        eyebrow="Benefícios"
+        title="Mais acesso à informação, menos esforço em tarefas de interpretação."
+        items={BENEFICIOS}
+      />
 
       {/* NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões + manifesto */}
       <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">

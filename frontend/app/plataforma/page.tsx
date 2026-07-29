@@ -197,17 +197,6 @@ export default function CloudDevOpsPage() {
         dataAudit="cd-beneficios"
         title="Menos improviso na infraestrutura. Mais previsibilidade para entregar e operar."
         items={BENEFICIOS}
-        classes={{
-          section: styles.beneficios,
-          overlay: styles.beneficiosOverlay,
-          wrap: styles.beneficiosWrap,
-          eyebrow: styles.eyebrowDark,
-          heading: styles.h2Dark,
-          list: styles.beneficiosList,
-          item: styles.beneficioItem,
-          checkIcon: styles.checkIcon,
-          text: styles.beneficioText,
-        }}
       />
 
       {/* NOSSA ABORDAGEM */}

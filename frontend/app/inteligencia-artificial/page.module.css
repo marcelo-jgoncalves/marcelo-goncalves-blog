@@ -101,7 +101,6 @@
    exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
 .oquefazemos,
 .casos,
-.beneficios,
 .abordagem,
 .governanca {
   margin-block: 0;
@@ -370,97 +369,6 @@
   color: var(--slate);
   font-size: var(--type-body-sm);
   line-height: 1.65;
-}
-
-/* ===== RESULTADOS ESPERADOS — seção Petrol, mensagem central + matriz
-   numerada de 8 resultados (sem checkmarks). ===== */
-.beneficios {
-  padding: var(--sp-10) 0;
-  background: var(--petrol);
-  color: var(--ivory);
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-@media (min-width: 680px) { .beneficios { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .beneficios { padding: var(--sp-12) 0; } }
-
-.beneficiosOverlay {
-  position: absolute;
-  inset: auto -9% auto auto;
-  top: -35%;
-  z-index: 0;
-  width: 42vw;
-  height: 42vw;
-  border: 1px solid rgba(255, 255, 255, .07);
-  border-radius: 50%;
-  box-shadow: 0 0 0 70px rgba(255, 255, 255, .025), 0 0 0 140px rgba(255, 255, 255, .018);
-  pointer-events: none;
-}
-
-.beneficiosWrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 var(--sp-5);
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
-  gap: var(--sp-9);
-}
-
-@media (min-width: 680px) {
-  .beneficiosWrap { padding: 0 var(--sp-7); }
-}
-
-@media (min-width: 1040px) {
-  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr); gap: var(--sp-12); }
-}
-
-.beneficiosDescription {
-  color: rgba(250, 248, 243, .78);
-  max-width: 44ch;
-  margin: var(--sp-6) 0 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.7;
-}
-
-.beneficiosList {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0 var(--sp-8);
-  border-top: 1px solid rgba(255, 255, 255, .14);
-}
-
-@media (min-width: 560px) {
-  .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-}
-
-.beneficioItem {
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  gap: var(--sp-3);
-  align-items: center;
-  min-height: 82px;
-  padding: var(--sp-4) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .12);
-}
-
-.checkIcon {
-  color: #E8A582;
-  font-family: var(--font-numbers);
-  font-size: var(--type-caption);
-  font-weight: 700;
-}
-
-.beneficioText {
-  font-size: var(--type-body-sm);
-  line-height: 1.45;
-  color: rgba(250, 248, 243, .92);
-  overflow-wrap: break-word;
-  min-width: 0;
 }
 
 /* ===== NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões,

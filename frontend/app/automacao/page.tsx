@@ -207,18 +207,6 @@ export default function IntegracaoAutomacaoPage() {
         title="Menos esforço para operar. Mais controle para evoluir."
         description="Os ganhos dependem do processo e do contexto, mas uma automação bem projetada deve reduzir atividades repetitivas sem retirar visibilidade, controle ou capacidade de intervenção."
         items={BENEFICIOS}
-        classes={{
-          section: styles.beneficios,
-          overlay: styles.beneficiosOverlay,
-          wrap: styles.beneficiosWrap,
-          eyebrow: styles.eyebrowDark,
-          heading: styles.h2Dark,
-          description: styles.beneficiosDescription,
-          list: styles.beneficiosList,
-          item: styles.beneficioItem,
-          checkIcon: styles.checkIcon,
-          text: styles.beneficioText,
-        }}
       />
 
       {/* NOSSA ABORDAGEM — texto à esquerda, 3 princípios numerados à direita */}
