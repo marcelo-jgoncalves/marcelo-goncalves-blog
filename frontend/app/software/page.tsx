@@ -8,24 +8,10 @@ import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import CtaAssessoria from '@/components/ui/CtaAssessoria';
-import FeatureCard from '@/components/ui/FeatureCard';
-import Reveal from '@/components/ui/Reveal';
+import Pill from '@/components/ui/Pill';
+import Kicker from '@/components/ui/Kicker';
+import IndexNumber from '@/components/ui/IndexNumber';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
-import IconLabelSection from '@/components/ui/IconLabelSection';
-import {
-  IconSistemasSobMedida,
-  IconApisIntegracoes,
-  IconArquiteturaSoftware,
-  IconModernizacaoSistemas,
-  IconSustentacaoEvolucao,
-  IconArquiteturasEscalaveis,
-  IconCodigoLimpo,
-  IconTestes,
-  IconSegurancaCloud,
-  IconCICD,
-  IconObservabilidade,
-  IconDocumentacao,
-} from '@/components/ui/InstitutionalIcons';
 import styles from './page.module.css';
 
 const TITLE = `Sistemas e Plataformas Digitais | ${SITE_NAME}`;
@@ -83,12 +69,21 @@ const jsonLd = {
 
 // §9-14: seis soluções, sem qualidades técnicas (arquitetura/qualidade/sustentação) como entregas comerciais separadas.
 const SOLUCOES = [
-  { Icon: IconSistemasSobMedida, title: 'Sistemas internos', text: 'Ferramentas para organizar processos, regras, cadastros, aprovações, tarefas e informações que hoje dependem de planilhas ou aplicações fragmentadas.', tags: ['Processos', 'Cadastros', 'Operação'] },
-  { Icon: IconArquiteturaSoftware, title: 'Portais operacionais', text: 'Interfaces para clientes, parceiros ou equipes acompanharem solicitações, documentos, etapas e responsabilidades em um fluxo centralizado.', tags: ['Acompanhamento', 'Workflows', 'Perfis de acesso'] },
-  { Icon: IconApisIntegracoes, title: 'APIs e backends', text: 'Serviços para concentrar regras de negócio, integrar dados e disponibilizar capacidades de forma documentada para aplicações e parceiros autorizados.', tags: ['APIs', 'Regras de negócio', 'Integrações'] },
-  { Icon: IconDocumentacao, title: 'Plataformas documentais e de conteúdo', text: 'Soluções para criar, organizar, revisar, publicar, distribuir ou consultar documentos e conteúdos com controle de acesso e histórico.', tags: ['Documentos', 'Conteúdo', 'Versionamento'] },
-  { Icon: IconSustentacaoEvolucao, title: 'Módulos e integrações', text: 'Componentes que complementam sistemas existentes, automatizam etapas e conectam aplicações sem exigir a substituição imediata da base atual.', tags: ['Módulos', 'Extensões', 'Integrações'] },
-  { Icon: IconModernizacaoSistemas, title: 'Modernização de aplicações', text: 'Evolução gradual de sistemas com arquitetura difícil de manter, baixa cobertura de testes, limitações de integração ou risco elevado a cada mudança.', tags: ['Arquitetura', 'Testes', 'Evolução gradual'] },
+  { kicker: 'Operação interna', title: 'Sistemas internos', text: 'Ferramentas para organizar processos, regras, cadastros, aprovações, tarefas e informações que hoje dependem de planilhas ou aplicações fragmentadas.', tags: ['Processos', 'Cadastros', 'Operação'] },
+  { kicker: 'Experiência e acompanhamento', title: 'Portais operacionais', text: 'Interfaces para clientes, parceiros ou equipes acompanharem solicitações, documentos, etapas e responsabilidades em um fluxo centralizado.', tags: ['Acompanhamento', 'Workflows', 'Perfis de acesso'] },
+  { kicker: 'Capacidades compartilhadas', title: 'APIs e backends', text: 'Serviços para concentrar regras de negócio, integrar dados e disponibilizar capacidades de forma documentada para aplicações e parceiros autorizados.', tags: ['APIs', 'Regras de negócio', 'Integrações'] },
+  { kicker: 'Informação e governança', title: 'Plataformas documentais e de conteúdo', text: 'Soluções para criar, organizar, revisar, publicar, distribuir ou consultar documentos e conteúdos com controle de acesso e histórico.', tags: ['Documentos', 'Conteúdo', 'Versionamento'] },
+  { kicker: 'Evolução sem ruptura', title: 'Módulos e integrações', text: 'Componentes que complementam sistemas existentes, automatizam etapas e conectam aplicações sem exigir a substituição imediata da base atual.', tags: ['Módulos', 'Extensões', 'Integrações'] },
+  { kicker: 'Redução de risco técnico', title: 'Modernização de aplicações', text: 'Evolução gradual de sistemas com arquitetura difícil de manter, baixa cobertura de testes, limitações de integração ou risco elevado a cada mudança.', tags: ['Arquitetura', 'Testes', 'Evolução gradual'] },
+];
+
+// Painel "antes de construir" — quando usar ferramenta pronta, conectar,
+// evoluir uma base existente ou justificar software próprio.
+const DECISOES = [
+  { opcao: 'Ferramenta pronta', condicao: 'Quando já atende ao processo.', acao: 'usar' },
+  { opcao: 'Integração', condicao: 'Quando é preciso conectar o que existe.', acao: 'conectar' },
+  { opcao: 'Adaptação', condicao: 'Quando uma base atual pode evoluir.', acao: 'evoluir' },
+  { opcao: 'Software próprio', condicao: 'Quando a regra específica justifica construir.', acao: 'construir', accent: true },
 ];
 
 // §15.5: oito benefícios — item 8 usa a formulação neutra (§15.6), condicionada ao contrato.
@@ -112,25 +107,20 @@ const ETAPAS = [
   { numero: '05', title: 'Operar, aprender e evoluir', text: 'Acompanhamos o uso real, corrigimos desvios e priorizamos novas funcionalidades conforme o impacto observado na operação.' },
 ];
 
-// §21.4-21.6: três subblocos dentro da mesma seção da abordagem.
-const ABORDAGEM_SUBBLOCOS = [
+// §21.4-21.6: três princípios dentro da mesma seção da abordagem.
+const ABORDAGEM_PRINCIPIOS = [
   { label: 'Escopo', title: 'Decisões visíveis antes de compromissos maiores.', text: 'Funcionalidades, integrações, restrições e critérios de aceite são registrados para reduzir interpretações diferentes durante o projeto.' },
-  { label: 'Participação do cliente', title: 'O processo precisa ser validado por quem o conhece.', text: 'Responsáveis pelo negócio participam da priorização, esclarecem regras e validam as entregas. A tecnologia não substitui o conhecimento operacional.' },
+  { label: 'Participação', title: 'O processo precisa ser validado por quem o conhece.', text: 'Responsáveis pelo negócio participam da priorização, esclarecem regras e validam as entregas. A tecnologia não substitui o conhecimento operacional.' },
   { label: 'Evolução', title: 'Arquitetura proporcional ao estágio da solução.', text: 'A base técnica deve suportar o próximo ciclo de crescimento sem antecipar complexidade e custos que ainda não são necessários.' },
 ];
 
-// §22.6: dez capacidades de engenharia.
-const CAPACIDADES = [
-  { label: 'Arquitetura de software e definição de componentes', Icon: IconArquiteturasEscalaveis },
-  { label: 'APIs REST e integração entre serviços', Icon: IconApisIntegracoes },
-  { label: 'Backends e processamento assíncrono', Icon: IconArquiteturaSoftware },
-  { label: 'Aplicações web e interfaces operacionais', Icon: IconSistemasSobMedida },
-  { label: 'Autenticação, autorização e perfis de acesso', Icon: IconSegurancaCloud },
-  { label: 'Modelagem e persistência de dados', Icon: IconDocumentacao },
-  { label: 'Integração com serviços AWS', Icon: IconObservabilidade },
-  { label: 'Testes automatizados e quality gates', Icon: IconTestes },
-  { label: 'Observabilidade, logs e rastreabilidade', Icon: IconCodigoLimpo },
-  { label: 'CI/CD e infraestrutura como código', Icon: IconCICD },
+// §22.6: dez capacidades de engenharia, agrupadas em 5 camadas da pilha técnica.
+const CAMADAS = [
+  { kicker: 'Fundação', title: 'Domínio e arquitetura', items: ['Arquitetura de software e definição de componentes', 'APIs REST e integração entre serviços'] },
+  { kicker: 'Aplicação', title: 'Execução e interfaces', items: ['Backends e processamento assíncrono', 'Aplicações web e interfaces operacionais'] },
+  { kicker: 'Controle', title: 'Identidade e dados', items: ['Autenticação, autorização e perfis de acesso', 'Modelagem e persistência de dados'] },
+  { kicker: 'Confiança', title: 'Integração e qualidade', items: ['Integração com serviços AWS', 'Testes automatizados e quality gates'] },
+  { kicker: 'Continuidade', title: 'Entrega e operação', items: ['Observabilidade, logs e rastreabilidade', 'CI/CD e infraestrutura como código'] },
 ];
 
 // §23.6: oito itens do checklist de qualidade, manutenção e evolução.
@@ -188,26 +178,35 @@ export default function SistemasPlataformasPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE CONSTRUÍMOS E MODERNIZAMOS */}
+      {/* O QUE DESENVOLVEMOS — cabeçalho fixo + nota de núcleo + linhas editoriais numeradas */}
       <section id="solucoes" className={styles.oquefazemos} data-audit="esw-solucoes">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que desenvolvemos</span>
-            <h2 className={styles.h2}>Soluções digitais ligadas ao funcionamento real da empresa.</h2>
-            <p className={styles.sectionDesc}>Atuamos quando ferramentas prontas não atendem adequadamente ao processo, quando sistemas existentes precisam evoluir ou quando uma nova camada digital pode reduzir fragmentação e dependência de controles manuais.</p>
-          </div>
-          <div className={styles.cardGrid}>
-            {SOLUCOES.map(({ Icon, title, text, tags }, i) => (
-              <Reveal as="div" key={title} delay={i * 60}>
-                <FeatureCard
-                  icon={<Icon />}
-                  title={title}
-                  text={text}
-                  tags={tags}
-                  dataAudit={i === 0 ? 'esw-card' : undefined}
-                />
-              </Reveal>
-            ))}
+          <div className={styles.editorialLayout}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowLight}>O que desenvolvemos</span>
+              <h2 className={styles.h2}>Soluções digitais ligadas ao funcionamento real da empresa.</h2>
+              <p className={styles.sectionDesc}>Atuamos quando ferramentas prontas não atendem adequadamente ao processo, quando sistemas existentes precisam evoluir ou quando uma nova camada digital pode reduzir fragmentação e dependência de controles manuais.</p>
+              <div className={styles.coreNote}>
+                <span className={styles.coreNoteKicker}>Núcleo</span>
+                <strong>Processos e regras de negócio</strong>
+                <p>O sistema nasce da operação que precisa organizar, não de uma lista genérica de funcionalidades.</p>
+              </div>
+            </div>
+            <div className={styles.solutionList}>
+              {SOLUCOES.map(({ kicker, title, text, tags }, i) => (
+                <article className={styles.solutionRow} key={title} data-audit={i === 0 ? 'esw-card' : undefined}>
+                  <IndexNumber className={styles.solutionIndex}>{String(i + 1).padStart(2, '0')}</IndexNumber>
+                  <div>
+                    <Kicker className={styles.solutionKicker}>{kicker}</Kicker>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                  <ul className={styles.solutionTags}>
+                    {tags.map((tag) => <li key={tag}><Pill>{tag}</Pill></li>)}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -217,94 +216,111 @@ export default function SistemasPlataformasPage() {
         id="beneficios"
         dataAudit="esw-beneficios"
         title="Menos fragmentação. Mais clareza sobre processos, dados e responsabilidades."
-        description="Um sistema próprio só faz sentido quando reduz limitações relevantes ou cria uma capacidade que as ferramentas existentes não oferecem de forma adequada."
         items={BENEFICIOS}
-        classes={{
-          section: styles.beneficios,
-          overlay: styles.beneficiosOverlay,
-          wrap: styles.beneficiosWrap,
-          eyebrow: styles.eyebrowDark,
-          heading: styles.h2Dark,
-          description: styles.beneficiosDescription,
-          list: styles.beneficiosList,
-          item: styles.beneficioItem,
-          checkIcon: styles.checkIcon,
-          text: styles.beneficioText,
-        }}
       />
 
-      {/* NOSSA ABORDAGEM — 5 etapas + 3 subblocos */}
+      {/* NOSSA ABORDAGEM — painel "antes de construir" + percurso de 5 etapas + 3 princípios */}
       <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
-            <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
-            <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando existe uma justificativa clara para construir e manter.</p>
+          <div className={styles.approachIntro}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowLight}>Nossa abordagem</span>
+              <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
+              <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando a especificidade da operação justifica construir.</p>
+            </div>
+            <div className={styles.decisionPanel}>
+              <span className={styles.decisionLabel}>Antes de construir</span>
+              {DECISOES.map((d) => (
+                <div className={`${styles.decisionRow} ${d.accent ? styles.decisionRowAccent : ''}`} key={d.opcao}>
+                  <strong>{d.opcao}</strong>
+                  <p>{d.condicao}</p>
+                  <span>{d.acao}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className={styles.etapasGrid}>
-            <div className={styles.etapasLine} aria-hidden="true" />
-            {ETAPAS.map((etapa) => (
-              <div className={styles.etapa} key={etapa.title}>
-                <div className={styles.etapaCirculo}>{etapa.numero}</div>
-                <h3 className={styles.etapaTitle}>{etapa.title}</h3>
-                <p className={styles.etapaText}>{etapa.text}</p>
-              </div>
-            ))}
+          <div className={styles.processBlock}>
+            <div className={styles.processTitle}>
+              <span>Como o projeto avança</span>
+              <p>Entregas úteis, critérios verificáveis e decisões proporcionais ao estágio da solução.</p>
+            </div>
+            <ol className={styles.processList}>
+              {ETAPAS.map((etapa) => (
+                <li key={etapa.title}>
+                  <span aria-hidden="true">{etapa.numero}</span>
+                  <div>
+                    <h3>{etapa.title}</h3>
+                    <p>{etapa.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className={styles.subblocosGrid}>
-            {ABORDAGEM_SUBBLOCOS.map((s) => (
-              <div className={styles.subbloco} key={s.label}>
-                <span className={styles.subblocoKicker}>{s.label}</span>
-                <h3 className={styles.subblocoTitle}>{s.title}</h3>
-                <p className={styles.subblocoText}>{s.text}</p>
-              </div>
+          <div className={styles.principlesRow}>
+            {ABORDAGEM_PRINCIPIOS.map((p) => (
+              <article key={p.label}>
+                <span>{p.label}</span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CAPACIDADES DE ENGENHARIA */}
-      <IconLabelSection
-        id="capacidades"
-        dataAudit="esw-capacidades"
-        eyebrow="Capacidades de engenharia"
-        title="Da regra de negócio à operação em produção."
-        description="As capacidades são combinadas conforme o tipo de sistema, o estágio do produto, as integrações e os requisitos de segurança e manutenção."
-        items={CAPACIDADES}
-        classes={{
-          section: styles.principios,
-          wrap: styles.principiosWrap,
-          head: styles.principiosHead,
-          eyebrow: `${styles.eyebrowLight} ${styles.eyebrowDual}`,
-          heading: styles.h2,
-          desc: styles.principiosDesc,
-        }}
-      />
+      {/* CAPACIDADES DE ENGENHARIA — pilha de 5 camadas técnicas */}
+      <section id="capacidades" className={styles.capacidades} data-audit="esw-capacidades">
+        <div className={styles.wrap}>
+          <div className={styles.capacidadesLayout}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowLight}>Capacidades de engenharia</span>
+              <h2 className={styles.h2}>Da regra de negócio à operação em produção.</h2>
+              <p className={styles.sectionDesc}>As capacidades são combinadas conforme o tipo de sistema, o estágio do produto, as integrações e os requisitos de segurança e manutenção.</p>
+              <div className={styles.stackLegend}><span /> Uma arquitetura coerente conecta todas as camadas.</div>
+            </div>
+            <div className={styles.stack}>
+              {CAMADAS.map((c, i) => (
+                <article className={styles.stackLayer} key={c.title}>
+                  <span className={styles.stackNumber} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <div className={styles.stackTitle}>
+                    <small>{c.kicker}</small>
+                    <h3>{c.title}</h3>
+                  </div>
+                  <ul className={styles.stackItems}>
+                    {c.items.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* QUALIDADE, MANUTENÇÃO E EVOLUÇÃO */}
+      {/* QUALIDADE E CONTINUIDADE — matriz numerada + 3 contratos */}
       <section id="qualidade" className={styles.qualidade} data-audit="esw-qualidade">
         <div className={styles.qualidadeOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
-          <div className={styles.sectionHead}>
-            <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Qualidade e continuidade</span>
-            <h2 className={styles.h2Dark}>A entrega não termina quando a primeira versão entra em produção.</h2>
-            <p className={styles.sectionDescDark}>Um sistema útil precisa continuar compreensível, observável e modificável. Por isso, qualidade não é uma etapa final: ela influencia arquitetura, testes, documentação, implantação e sustentação.</p>
-          </div>
-          <div className={styles.beneficiosList}>
-            {QUALIDADE_ITEMS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
-                </span>
-                <span className={styles.beneficioText}>{item}</span>
-              </div>
-            ))}
+          <div className={styles.qualidadeTop}>
+            <div className={styles.sectionHead}>
+              <span className={styles.eyebrowDark}>Qualidade e continuidade</span>
+              <h2 className={styles.h2Dark}>A entrega não termina quando a primeira versão entra em produção.</h2>
+              <p className={styles.sectionDescDark}>Um sistema útil precisa continuar compreensível, observável e modificável. Por isso, qualidade não é uma etapa final: ela influencia arquitetura, testes, documentação, implantação e sustentação.</p>
+            </div>
+            <div className={styles.beneficiosList}>
+              {QUALIDADE_ITEMS.map((item, i) => (
+                <div className={styles.beneficioItem} key={item}>
+                  <span className={styles.qualidadeCheckIcon} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span className={styles.beneficioText}>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
           <div className={styles.qualidadeSubblocos}>
-            {QUALIDADE_SUBBLOCOS.map((s) => (
+            {QUALIDADE_SUBBLOCOS.map((s, i) => (
               <div className={styles.qualidadeSubbloco} key={s.title}>
+                <span className={styles.qualidadeSubblocoIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className={styles.privacidadeTitle}>{s.title}</h3>
                 <p className={styles.privacidadeText}>{s.text}</p>
               </div>

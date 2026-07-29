@@ -16,38 +16,43 @@
 }
 
 .h2 {
-  letter-spacing: -.04em;
+  letter-spacing: -.045em;
   color: var(--ink);
   text-wrap: balance;
-  font-size: var(--type-h3);
+  font-size: var(--type-h1);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   margin: 0;
+  max-width: 26ch;
 }
 
 .h2Dark {
-  letter-spacing: -.04em;
+  letter-spacing: -.045em;
   color: var(--ivory);
   text-wrap: balance;
-  font-size: var(--type-h3);
+  font-size: var(--type-h1);
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.05;
   margin: 0;
+  max-width: 26ch;
 }
 
 .sectionDesc {
   color: var(--slate);
-  max-width: 580px;
+  max-width: 46ch;
   margin: var(--sp-6) 0 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
+  font-size: var(--type-body);
+  line-height: 1.7;
 }
 
+/* Cabeçalhos de seção alinhados à esquerda — identidade própria desta
+   landing, igual à de /inteligencia-artificial. */
 .sectionHead {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 54ch;
   margin-bottom: var(--sp-10);
 }
 
@@ -93,9 +98,8 @@
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
    exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
 .oquefazemos,
-.beneficios,
 .abordagem,
-.principios,
+.capacidades,
 .qualidade {
   margin-block: 0;
 }
@@ -173,107 +177,148 @@
   }
 }
 
-/* ===== O QUE FAZEMOS ===== */
+/* ===== O QUE DESENVOLVEMOS — cabeçalho fixo + nota de núcleo + 6 linhas
+   editoriais numeradas (sem grade de cards). ===== */
 .oquefazemos {
   padding: var(--sp-10) 0;
+  background: var(--ivory);
 }
 
 @media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
 
-.cardGrid {
+.editorialLayout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--gap-grid);
-}
-
-@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
-
-/* ===== BENEFÍCIOS ===== */
-.beneficios {
-  padding: var(--sp-10) 0;
-  background: var(--petrol);
-  color: var(--ivory);
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-@media (min-width: 680px) { .beneficios { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .beneficios { padding: var(--sp-12) 0; } }
-
-.beneficiosOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: .5;
-  pointer-events: none;
-  background:
-    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
-    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
-}
-
-.beneficiosWrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 var(--sp-5);
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: center;
-  gap: var(--sp-8);
-}
-
-@media (min-width: 680px) {
-  .beneficiosWrap { padding: 0 var(--sp-7); gap: var(--sp-9); }
+  gap: var(--sp-9);
+  align-items: start;
 }
 
 @media (min-width: 1040px) {
-  .beneficiosWrap { padding: 0 var(--sp-8); grid-template-columns: .8fr 1.2fr; gap: var(--sp-10); }
+  .editorialLayout { grid-template-columns: minmax(300px, .75fr) minmax(0, 1.35fr); gap: var(--sp-12); }
+  .editorialLayout .sectionHead {
+    position: sticky;
+    top: 112px;
+    margin-bottom: 0;
+  }
 }
 
-.beneficiosDescription {
-  color: rgba(250, 248, 243, .7);
-  max-width: 480px;
-  margin: var(--sp-5) 0 0;
+.coreNote {
+  margin-top: var(--sp-7);
+  padding: var(--sp-6) 0 0 var(--sp-5);
+  border-left: 2px solid var(--clay);
+}
+
+.coreNoteKicker {
+  display: block;
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.coreNote strong {
+  display: block;
+  margin: var(--sp-2) 0 var(--sp-2);
+  color: var(--ink);
+  font-size: var(--type-body);
+}
+
+.coreNote p {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--slate);
   font-size: var(--type-body-sm);
   line-height: 1.6;
 }
 
-.beneficiosList {
+.solutionRow {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0 var(--sp-7);
+  grid-template-columns: 34px 1fr;
+  gap: var(--sp-3) var(--sp-5);
+  padding: var(--sp-7) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.solutionRow:last-child {
+  border-bottom: 0;
 }
 
 @media (min-width: 680px) {
-  /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
-     min-content do texto — necessário porque .beneficioText quebra em
-     2 linhas (overflow-wrap) em vez de nowrap. */
-  .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .solutionRow { grid-template-columns: 42px minmax(0, 1fr) minmax(160px, .55fr); gap: var(--sp-6); }
+}
+
+.solutionIndex {
+  padding-top: var(--sp-1);
+}
+
+.solutionKicker {
+  margin-bottom: var(--sp-2);
+}
+
+.solutionRow h3 {
+  margin: 0 0 var(--sp-3);
+  color: var(--ink);
+  font-size: var(--type-h4);
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+
+.solutionRow p {
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.solutionTags {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 680px) {
+  .solutionTags { grid-column: auto; margin-top: 0; }
+}
+
+/* ===== QUALIDADE — .beneficiosList/.beneficioItem reaproveitados pela seção
+   "Qualidade e continuidade" (matriz 2x4). A seção "Benefícios" em si usa o
+   componente compartilhado BeneficiosSection (ver components/ui/). ===== */
+.beneficiosList {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid transparent;
+}
+
+@media (min-width: 560px) {
+  .beneficiosList { grid-template-columns: 1fr 1fr; }
 }
 
 .beneficioItem {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--eyebrow-gap);
-  padding: var(--sp-4) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-  min-width: 0;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: var(--sp-3);
+  min-height: 82px;
+  align-items: center;
+  padding: var(--sp-5) 0;
+  border-bottom: 1px solid transparent;
 }
 
-.checkIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(201, 96, 60, .2);
-  color: #E8A582;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
+@media (min-width: 560px) {
+  .beneficiosList > .beneficioItem:nth-child(odd) { border-right: 1px solid transparent; padding-right: var(--sp-6); }
+  .beneficiosList > .beneficioItem:nth-child(even) { padding-left: var(--sp-6); }
+}
+
+.qualidadeCheckIcon {
+  color: #F1A98E;
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
 }
 
 .beneficioText {
@@ -284,126 +329,364 @@
   min-width: 0;
 }
 
-/* ===== ABORDAGEM + DIFERENCIAIS ===== */
+/* ===== NOSSA ABORDAGEM — painel de decisão (usar/conectar/evoluir/construir)
+   + percurso de 5 etapas + 3 princípios em colunas divididas. ===== */
 .abordagem {
   padding: var(--sp-10) 0;
-  background: #fff;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  background: var(--surface);
 }
 
 @media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
 
-.etapasGrid {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-grid);
-  margin-top: var(--sp-9);
-}
-
-@media (min-width: 1040px) {
-  .etapasGrid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.etapasLine {
-  position: absolute;
-  top: 24px;
-  left: 14%;
-  right: 14%;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--line);
-  display: none;
-}
-
-@media (min-width: 1040px) {
-  .etapasLine { display: block; }
-}
-
-.etapa {
-  text-align: center;
-  padding: 0 var(--sp-2);
-  position: relative;
-}
-
-.etapaCirculo {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  margin: 0 auto var(--sp-5);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: var(--type-label);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
-  box-shadow: 0 8px 18px -8px rgba(8, 50, 61, .6);
-}
-
-.etapaTitle {
-  font-weight: 700;
-  font-size: var(--type-lead);
-  color: var(--ink);
-  margin: 0 0 var(--sp-2);
-}
-
-.etapaText {
-  font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
-  margin: 0;
-}
-
-/* Três subblocos lado a lado (não são etapas sequenciais — sem numeração,
-   sem linha de conexão) — §21.4-21.6 da especificação. */
-.subblocosGrid {
+.approachIntro {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-9);
-  margin-top: var(--sp-11);
+  align-items: start;
 }
 
 @media (min-width: 1040px) {
-  .subblocosGrid { grid-template-columns: repeat(3, 1fr); }
+  .approachIntro { grid-template-columns: minmax(0, .9fr) minmax(430px, 1.1fr); gap: var(--sp-12); }
 }
 
-.subbloco {
-  text-align: center;
-  padding: 0 var(--sp-2);
+.decisionPanel {
+  border-top: 2px solid var(--ink);
 }
 
-.subblocoKicker {
+.decisionLabel {
   display: block;
+  padding: var(--sp-5) 0 var(--sp-3);
+  color: var(--clay);
   font-family: var(--mono);
   font-size: var(--type-caption);
-  letter-spacing: .18em;
+  letter-spacing: .13em;
   text-transform: uppercase;
-  color: var(--clay);
-  margin-bottom: var(--sp-3);
 }
 
-.subblocoTitle {
-  font-weight: 700;
-  font-size: var(--type-lead);
+.decisionRow {
+  display: grid;
+  grid-template-columns: minmax(110px, 150px) 1fr auto;
+  gap: var(--sp-2) var(--sp-5);
+  align-items: center;
+  padding: var(--sp-5) 0;
+  border-top: 1px solid var(--line);
+}
+
+.decisionRow strong {
   color: var(--ink);
-  margin: 0 0 var(--sp-2);
-}
-
-.subblocoText {
   font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: var(--slate);
-  margin: 0;
 }
 
-/* ===== QUALIDADE, MANUTENÇÃO E EVOLUÇÃO ===== */
+.decisionRow p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-caption);
+}
+
+@media (min-width: 480px) {
+  .decisionRow p { grid-column: auto; }
+}
+
+.decisionRow > span {
+  justify-self: start;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 999px;
+  background: var(--ivory);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+@media (min-width: 480px) {
+  .decisionRow > span { justify-self: auto; }
+}
+
+.decisionRowAccent {
+  margin-top: var(--sp-2);
+  padding-inline: var(--sp-5);
+  border: 1px solid rgba(201, 96, 60, .28);
+  border-left: 3px solid var(--clay);
+  background: var(--clay-soft);
+}
+
+.decisionRowAccent > span {
+  color: var(--clay);
+  background: rgba(201, 96, 60, .1);
+}
+
+.processBlock {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-8);
+  margin-top: var(--sp-12);
+  padding-top: var(--sp-8);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 680px) {
+  .processBlock { grid-template-columns: minmax(240px, .58fr) minmax(0, 1.42fr); gap: var(--sp-9); }
+}
+
+.processTitle span {
+  color: var(--ink);
+  font-size: var(--type-h4);
+  font-weight: 760;
+  letter-spacing: -.03em;
+}
+
+.processTitle p {
+  margin: var(--sp-3) 0 0;
+  max-width: 34ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.processList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.processList li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-6) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 680px) {
+  .processList li { grid-template-columns: 48px 1fr; gap: var(--sp-5); }
+}
+
+.processList li > span {
+  padding-top: var(--sp-1);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.processList h3 {
+  margin: 0 0 var(--sp-2);
+  color: var(--ink);
+  font-size: var(--type-lead);
+  letter-spacing: -.02em;
+}
+
+.processList p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.principlesRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: var(--sp-9);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 680px) {
+  .principlesRow { grid-template-columns: repeat(3, 1fr); }
+}
+
+.principlesRow article {
+  padding: var(--sp-6) 0;
+}
+
+@media (min-width: 680px) {
+  .principlesRow article { padding: var(--sp-6) var(--sp-6) var(--sp-7) 0; }
+  .principlesRow article + article { padding-left: var(--sp-6); border-left: 1px solid var(--line); }
+}
+
+.principlesRow article + article {
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 680px) {
+  .principlesRow article + article { border-top: 0; }
+}
+
+.principlesRow span {
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.principlesRow h3 {
+  margin: var(--sp-3) 0 var(--sp-2);
+  color: var(--ink);
+  font-size: var(--type-body);
+  line-height: 1.3;
+}
+
+.principlesRow p {
+  margin: 0;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+/* ===== CAPACIDADES DE ENGENHARIA — pilha de 5 camadas técnicas (2
+   capacidades cada), substitui o IconLabelSection compartilhado (também
+   usado em /plataforma) — decisão de divergir só esta página. ===== */
+.capacidades {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .capacidades { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .capacidades { padding: var(--sp-12) 0; } }
+
+.capacidadesLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
+  align-items: start;
+}
+
+@media (min-width: 1040px) {
+  .capacidadesLayout { grid-template-columns: minmax(300px, .74fr) minmax(0, 1.26fr); gap: var(--sp-12); }
+  .capacidadesLayout .sectionHead {
+    position: sticky;
+    top: 112px;
+    margin-bottom: 0;
+  }
+}
+
+.stackLegend {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-7);
+  color: var(--petrol-soft);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 600;
+}
+
+.stackLegend span {
+  width: 24px;
+  height: 2px;
+  background: var(--clay);
+}
+
+.stack {
+  position: relative;
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.stackLayer {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: var(--sp-3) var(--sp-4);
+  padding: var(--sp-6) var(--sp-5);
+  border: 1px solid rgba(15, 76, 92, .11);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  box-shadow: 0 7px 24px rgba(8, 50, 61, .035);
+}
+
+@media (min-width: 680px) {
+  .stackLayer { grid-template-columns: 52px minmax(170px, .58fr) minmax(0, 1.42fr); gap: var(--sp-6); align-items: center; }
+}
+
+.stackNumber {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--ivory);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+}
+
+@media (min-width: 680px) {
+  .stackNumber { width: 52px; height: 52px; }
+}
+
+.stackTitle {
+  grid-column: 2;
+}
+
+@media (min-width: 680px) {
+  .stackTitle { grid-column: auto; }
+}
+
+.stackTitle small {
+  display: block;
+  color: var(--petrol-soft);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.stackTitle h3 {
+  margin: var(--sp-2) 0 0;
+  color: var(--ink);
+  font-size: var(--type-body);
+  letter-spacing: -.02em;
+}
+
+.stackItems {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 560px) {
+  .stackItems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 680px) {
+  .stackItems { grid-column: auto; }
+}
+
+.stackItems li {
+  position: relative;
+  padding-left: var(--sp-4);
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+}
+
+.stackItems li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .58em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+/* ===== QUALIDADE E CONTINUIDADE — matriz 2x4 numerada + 3 contratos
+   (manutenção/propriedade/dívida técnica). ===== */
 .qualidade {
   padding: var(--sp-10) 0;
-  background: var(--petrol);
+  background: var(--petrol-deep);
   color: var(--ivory);
   position: relative;
   overflow: hidden;
@@ -415,13 +698,13 @@
 
 .qualidadeOverlay {
   position: absolute;
-  inset: 0;
+  inset: -30% -20% auto auto;
   z-index: 0;
-  opacity: .5;
+  width: 46vw;
+  height: 46vw;
+  border: 1px solid rgba(255, 255, 255, .05);
+  border-radius: 50%;
   pointer-events: none;
-  background:
-    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
-    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
 }
 
 .qualidade .wrap {
@@ -431,20 +714,28 @@
 
 .sectionDescDark {
   color: rgba(250, 248, 243, .78);
-  max-width: 640px;
+  max-width: 44ch;
   margin: var(--sp-6) 0 0;
   font-size: var(--type-body-sm);
-  line-height: 1.65;
+  line-height: 1.7;
+}
+
+.qualidadeTop {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
+}
+
+@media (min-width: 1040px) {
+  .qualidadeTop { grid-template-columns: minmax(320px, .85fr) minmax(0, 1.15fr); gap: var(--sp-12); }
 }
 
 .qualidadeSubblocos {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--sp-7);
-  max-width: 900px;
-  margin: var(--sp-8) auto 0;
-  padding-top: var(--sp-8);
-  border-top: 1px solid rgba(255, 255, 255, .12);
+  gap: 0;
+  margin-top: var(--sp-11);
+  border-top: 1px solid rgba(255, 255, 255, .16);
 }
 
 @media (min-width: 680px) {
@@ -452,62 +743,39 @@
 }
 
 .qualidadeSubbloco {
-  text-align: center;
+  padding: var(--sp-6) 0;
+}
+
+@media (min-width: 680px) {
+  .qualidadeSubbloco { padding: var(--sp-6) var(--sp-7) 0 0; }
+  .qualidadeSubbloco + .qualidadeSubbloco { padding-left: var(--sp-7); border-left: 1px solid rgba(255, 255, 255, .13); }
+}
+
+.qualidadeSubbloco + .qualidadeSubbloco {
+  border-top: 1px solid rgba(255, 255, 255, .13);
+}
+
+@media (min-width: 680px) {
+  .qualidadeSubbloco + .qualidadeSubbloco { border-top: 0; }
+}
+
+.qualidadeSubblocoIndex {
+  color: #F0A98E;
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
 }
 
 .privacidadeTitle {
   font-weight: 700;
-  font-size: var(--type-lead);
+  font-size: var(--type-body);
   color: #fff;
-  margin: 0 0 var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-2);
 }
 
 .privacidadeText {
   font-size: var(--type-body-sm);
-  line-height: 1.6;
-  color: rgba(250, 248, 243, .78);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .7);
   margin: 0;
 }
-
-/* ===== PRINCÍPIOS DE ENGENHARIA =====
-   Cores alinhadas ao padrão de app/cloud-devops/page.module.css .especialidades
-   (fundo sand, bordas #DDD4C4, hover rgba(255,255,255,.5), texto ink) — a pedido
-   de Marcelo (2026-07-11), sobrescrevendo a variação de fundo escuro da spec original. */
-.principios {
-  padding: var(--sp-10) 0;
-  background: var(--ivory);
-}
-
-@media (min-width: 680px) { .principios { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .principios { padding: var(--sp-12) 0; } }
-
-.principiosWrap {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 var(--sp-5);
-}
-
-@media (min-width: 680px) { .principiosWrap { padding: 0 var(--sp-7); } }
-@media (min-width: 1040px) { .principiosWrap { padding: 0 var(--sp-8); } }
-
-.principiosHead {
-  text-align: center;
-  margin-bottom: var(--sp-10);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.principiosDesc {
-  color: var(--slate);
-  max-width: 520px;
-  margin: var(--eyebrow-gap) 0 0;
-  font-size: var(--type-body-sm);
-  line-height: 1.65;
-}
-
-/* Grade "mosaico" com hairlines — movida para IconLabelSection.module.css
-   (componente compartilhado), decisão de Marcelo (2026-07-24) para unificar
-   o visual entre as 3 páginas que usam essa grade (esta página tinha um
-   breakpoint extra em 1040px que /plataforma não tinha — removido). */
-

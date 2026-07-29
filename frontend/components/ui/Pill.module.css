@@ -1,0 +1,18 @@
+/* frontend/components/ui/Pill.module.css
+   Receita única de "pill" mono (tag, badge de categoria) — extraída da
+   duplicação em FeatureCard.css/PillarCard.css/PostCard.css e vários
+   page.module.css. Só a cor de texto/fundo/borda varia por variante. */
+
+.pill {
+  display: inline-block;
+  padding: var(--sp-1) var(--title-gap);
+  border: 1px solid rgba(15, 76, 92, .14);
+  border-radius: 999px;
+  background: rgba(15, 76, 92, .07);
+  color: var(--petrol);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

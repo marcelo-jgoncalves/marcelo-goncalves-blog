@@ -1,0 +1,16 @@
+/* frontend/components/ui/Kicker.module.css
+   Rótulo pequeno acima de título de item/card (não confundir com Eyebrow,
+   que rotula a seção inteira) — ver CLAUDE.md §5 "Kicker e IndexNumber". */
+
+.kicker {
+  display: block;
+  color: var(--clay);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.kickerDark {
+  color: #F0B29A;
+}
