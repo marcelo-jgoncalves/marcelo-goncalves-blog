@@ -7,7 +7,7 @@ import { getAuthor } from '@/lib/api';
 import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import PageHero from '@/components/ui/PageHero';
 import IconTile from '@/components/ui/IconTile';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -264,7 +264,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <CtaAssessoria
+      <AdvisoryCta
         id="contato"
         eyebrow="Vamos conversar"
         title="Conte o que sua empresa precisa melhorar."

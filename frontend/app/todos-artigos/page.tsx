@@ -9,7 +9,7 @@ import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import LerArtigo from '@/components/ui/LerArtigo';
+import ReadArticle from '@/components/ui/ReadArticle';
 import PageHero from '@/components/ui/PageHero';
 import SearchBar from '@/components/ui/SearchBar';
 import './todos-artigos.css';
@@ -132,7 +132,7 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
                 <span className="art-f-meta">
                   {formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min de leitura
                 </span>
-                <LerArtigo color="var(--petrol)" />
+                <ReadArticle color="var(--petrol)" />
               </div>
             </div>
           </Link>

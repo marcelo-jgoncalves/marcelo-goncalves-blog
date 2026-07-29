@@ -14,7 +14,7 @@ LAMBDAS=(
   getAuthor
   adminPosts
   adminAuthors
-  adminCategorias
+  adminCategories
   mediaUpload
   postScheduler
   imageProcessor

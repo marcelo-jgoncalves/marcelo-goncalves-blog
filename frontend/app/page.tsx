@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import PageHero from '@/components/ui/PageHero';
 import StepsList from '@/components/ui/StepsList';
 import { IconCloud } from '@/components/ui/InstitutionalIcons';
@@ -299,7 +299,7 @@ export default async function InstitutionalHome() {
         </div>
       </section>
 
-      <CtaAssessoria
+      <AdvisoryCta
         id="vamos-conversar"
         eyebrow="Vamos conversar"
         title="Conte o que está limitando sua operação."

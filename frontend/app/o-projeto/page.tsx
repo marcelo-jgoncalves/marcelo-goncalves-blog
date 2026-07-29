@@ -8,7 +8,7 @@ import Pagination from '@/components/ui/Pagination';
 import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
-import LerArtigo from '@/components/ui/LerArtigo';
+import ReadArticle from '@/components/ui/ReadArticle';
 import PageHero from '@/components/ui/PageHero';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import IconTile from '@/components/ui/IconTile';
@@ -408,7 +408,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
                             <span>{formatDateShort(post.data_publicacao)}</span>
                             <span>{post.tempo_leitura_min || 5} min</span>
                           </div>
-                          <span className="op-read"><LerArtigo /></span>
+                          <span className="op-read"><ReadArticle /></span>
                         </div>
                       </div>
                     </Link>

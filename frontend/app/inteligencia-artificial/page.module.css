@@ -99,10 +99,10 @@
 
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
    exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
-.oquefazemos,
-.casos,
-.abordagem,
-.governanca {
+.whatWeDo,
+.useCasesSection,
+.approachSection,
+.governance {
   margin-block: 0;
 }
 
@@ -139,7 +139,7 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (CtaAssessoria, id="contato"): .cta-adv-in usa
+/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
@@ -180,19 +180,19 @@
 
 /* ===== O QUE DESENVOLVEMOS — 3 territórios editoriais (Conhecimento /
    Documentos e informação / Ações e processos), sem grade de cards. ===== */
-.oquefazemos {
+.whatWeDo {
   padding: var(--sp-10) 0;
   background: var(--ivory);
 }
 
-@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .whatWeDo { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .whatWeDo { padding: var(--sp-12) 0; } }
 
-.territorios {
+.territories {
   border-top: 1px solid rgba(15, 76, 92, .18);
 }
 
-.territorio {
+.territory {
   display: grid;
   grid-template-columns: 40px 1fr;
   gap: var(--sp-3) var(--sp-5);
@@ -201,14 +201,14 @@
 }
 
 @media (min-width: 680px) {
-  .territorio {
+  .territory {
     grid-template-columns: 50px minmax(220px, .72fr) minmax(0, 1.28fr);
     gap: var(--sp-6);
     padding: var(--sp-9) 0;
   }
 }
 
-.territorioIndex {
+.territoryIndex {
   padding-top: var(--sp-1);
   color: var(--clay);
   font-family: var(--font-numbers);
@@ -217,16 +217,16 @@
   letter-spacing: .12em;
 }
 
-.territorioHeading {
+.territoryHeading {
   grid-column: 2;
   min-width: 0;
 }
 
 @media (min-width: 680px) {
-  .territorioHeading { grid-column: auto; }
+  .territoryHeading { grid-column: auto; }
 }
 
-.territorioKicker {
+.territoryKicker {
   display: block;
   margin-bottom: var(--sp-3);
   color: var(--petrol-soft);
@@ -237,7 +237,7 @@
   text-transform: uppercase;
 }
 
-.territorioHeading h3 {
+.territoryHeading h3 {
   margin: 0;
   max-width: 34ch;
   color: var(--ink);
@@ -247,7 +247,7 @@
   text-wrap: balance;
 }
 
-.territorioBody {
+.territoryBody {
   grid-column: 1 / -1;
   display: grid;
   align-content: start;
@@ -255,39 +255,39 @@
 }
 
 @media (min-width: 680px) {
-  .territorioBody { grid-column: auto; margin-top: 0; }
+  .territoryBody { grid-column: auto; margin-top: 0; }
 }
 
-.territorioBodyTwo {
+.territoryBodyTwo {
   gap: var(--sp-7);
 }
 
 @media (min-width: 560px) {
-  .territorioBodyTwo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .territoryBodyTwo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.territorioItem h4 {
+.territoryItem h4 {
   margin: 0 0 var(--sp-3);
   color: var(--petrol);
   font-size: var(--type-lead);
   line-height: 1.28;
 }
 
-.territorioItem p {
+.territoryItem p {
   margin: 0;
   color: var(--slate);
   font-size: var(--type-body-sm);
   line-height: 1.68;
 }
 
-.territorioTags {
+.territoryTags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
   margin-top: var(--sp-5);
 }
 
-.territorioTags span {
+.territoryTags span {
   padding: var(--sp-2) var(--sp-3);
   border: 1px solid rgba(15, 76, 92, .13);
   border-radius: 999px;
@@ -302,15 +302,15 @@
 
 /* ===== CASOS DE APLICAÇÃO — composição assimétrica: cabeçalho fixo (sticky)
    + catálogo numerado em 2 colunas, sem cards. ===== */
-.casos {
+.useCasesSection {
   padding: var(--sp-10) 0;
   background: var(--surface);
 }
 
-@media (min-width: 680px) { .casos { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .casos { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .useCasesSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .useCasesSection { padding: var(--sp-12) 0; } }
 
-.aplicacoesLayout {
+.applicationsLayout {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-9);
@@ -318,9 +318,9 @@
 }
 
 @media (min-width: 1040px) {
-  .aplicacoesLayout { grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
+  .applicationsLayout { grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
 
-  .aplicacoesLayout .sectionHead {
+  .applicationsLayout .sectionHead {
     position: sticky;
     top: 112px;
     margin-bottom: 0;
@@ -373,25 +373,25 @@
 
 /* ===== NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões,
    fecha com o manifesto "IA integrada à operação". ===== */
-.abordagem {
+.approachSection {
   padding: var(--sp-10) 0;
   background: #fff;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .approachSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .approachSection { padding: var(--sp-12) 0; } }
 
-.abordagemLayout {
+.approachLayout {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-9);
 }
 
 @media (min-width: 1040px) {
-  .abordagemLayout { grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
-  .abordagemLayout .sectionHead { margin-bottom: 0; }
+  .approachLayout { grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr); gap: var(--sp-12); }
+  .approachLayout .sectionHead { margin-bottom: 0; }
 }
 
 .decisionPath {
@@ -531,7 +531,7 @@
 
 /* ===== GOVERNANÇA E CONTROLE — capítulo estrutural em Petrol Deep: cabeçalho
    com princípio de proporcionalidade + 4 domínios + privacidade integrada. ===== */
-.governanca {
+.governance {
   padding: var(--sp-10) 0;
   background: var(--petrol-deep);
   color: var(--ivory);
@@ -540,10 +540,10 @@
   isolation: isolate;
 }
 
-@media (min-width: 680px) { .governanca { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .governanca { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .governance { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .governance { padding: var(--sp-12) 0; } }
 
-.governancaOverlay {
+.governanceOverlay {
   position: absolute;
   inset: auto -15% -52% auto;
   z-index: 0;
@@ -554,19 +554,19 @@
   pointer-events: none;
 }
 
-.governanca .wrap {
+.governance .wrap {
   position: relative;
   z-index: 1;
 }
 
-.governancaLayout {
+.governanceLayout {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-9);
 }
 
 @media (min-width: 1040px) {
-  .governancaLayout { grid-template-columns: minmax(330px, .72fr) minmax(0, 1.28fr); gap: var(--sp-11); }
+  .governanceLayout { grid-template-columns: minmax(330px, .72fr) minmax(0, 1.28fr); gap: var(--sp-11); }
 }
 
 .sectionDescDark {
@@ -577,7 +577,7 @@
   line-height: 1.7;
 }
 
-.governancaPrinciple {
+.governancePrinciple {
   margin-top: var(--sp-7);
   padding: var(--sp-5) 0 0 var(--sp-5);
   border-top: 1px solid rgba(255, 255, 255, .12);
@@ -587,11 +587,11 @@
   line-height: 1.55;
 }
 
-.governancaDomains {
+.governanceDomains {
   border-top: 1px solid rgba(255, 255, 255, .14);
 }
 
-.governancaDomain {
+.governanceDomain {
   display: grid;
   grid-template-columns: 40px 1fr;
   gap: var(--sp-5);
@@ -599,20 +599,20 @@
   border-bottom: 1px solid rgba(255, 255, 255, .12);
 }
 
-.governancaDomainIndex {
+.governanceDomainIndex {
   color: #E8A582;
   font-family: var(--font-numbers);
   font-size: var(--type-caption);
   font-weight: 700;
 }
 
-.governancaDomain h3 {
+.governanceDomain h3 {
   margin: 0 0 var(--sp-4);
   color: #fff;
   font-size: var(--type-lead);
 }
 
-.governancaDomainList {
+.governanceDomainList {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-3);
@@ -622,10 +622,10 @@
 }
 
 @media (min-width: 560px) {
-  .governancaDomainList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3) var(--sp-7); }
+  .governanceDomainList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3) var(--sp-7); }
 }
 
-.governancaDomainList li {
+.governanceDomainList li {
   position: relative;
   padding-left: var(--sp-4);
   color: rgba(250, 248, 243, .78);
@@ -633,7 +633,7 @@
   line-height: 1.55;
 }
 
-.governancaDomainList li::before {
+.governanceDomainList li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -644,7 +644,7 @@
   background: var(--clay);
 }
 
-.privacidadeBlock {
+.privacyBlock {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-3);
@@ -654,17 +654,17 @@
 }
 
 @media (min-width: 1040px) {
-  .privacidadeBlock { grid-column: 1 / -1; grid-template-columns: minmax(180px, 220px) 1fr; gap: var(--sp-8); }
+  .privacyBlock { grid-column: 1 / -1; grid-template-columns: minmax(180px, 220px) 1fr; gap: var(--sp-8); }
 }
 
-.privacidadeTitle {
+.privacyTitle {
   font-weight: 700;
   font-size: var(--type-body);
   color: #fff;
   margin: 0;
 }
 
-.privacidadeText {
+.privacyText {
   font-size: var(--type-body-sm);
   line-height: 1.65;
   color: rgba(250, 248, 243, .78);

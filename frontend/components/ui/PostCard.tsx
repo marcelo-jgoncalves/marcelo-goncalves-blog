@@ -1,7 +1,7 @@
 /* frontend/components/ui/PostCard.tsx */
 import Link from 'next/link';
 import './PostCard.css';
-import LerArtigo from '@/components/ui/LerArtigo';
+import ReadArticle from '@/components/ui/ReadArticle';
 import { formatDateShort } from '@/lib/format';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
@@ -70,7 +70,7 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
           {formatDateShort(post.data_publicacao)}
           {post.tempo_leitura_min ? ` · ${post.tempo_leitura_min} min de leitura` : ''}
         </span>
-        <LerArtigo color="var(--petrol)" />
+        <ReadArticle color="var(--petrol)" />
       </div>
     </Link>
   );

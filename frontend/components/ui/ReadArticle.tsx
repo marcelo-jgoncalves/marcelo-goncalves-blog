@@ -1,6 +1,6 @@
 import './LerArtigo.css';
 
-export default function LerArtigo({ color }: { color?: string }) {
+export default function ReadArticle({ color }: { color?: string }) {
   return (
     <span
       className="ler-artigo"

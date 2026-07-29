@@ -13,7 +13,7 @@ import { compareAudits } from './compare';
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/inteligencia-artificial.html').replace(/\\/g, '/')}`;
 
 // ai-hero e ai-cta-final ficam fora do diff literal: usam os componentes padrão do
-// projeto (PageHero/CtaAssessoria) em vez do padding/grid inline do protótipo — mesma
+// projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
 // decisão documentada nas 3 landings anteriores.
 const TARGETS = [
   'ai-oquefazemos',

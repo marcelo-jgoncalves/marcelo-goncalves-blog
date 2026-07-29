@@ -9,7 +9,7 @@ import PageHero from '@/components/ui/PageHero';
 import FeatureCard from '@/components/ui/FeatureCard';
 import PillarCard from '@/components/ui/PillarCard';
 import FaqSection from '@/components/ui/FaqSection';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import Reveal from '@/components/ui/Reveal';
 import {
   IconAutomacaoProcessos,
@@ -376,7 +376,7 @@ export default function ServicosPage() {
 
       {/* CTA FINAL */}
       <div data-audit="svc-cta-final">
-        <CtaAssessoria
+        <AdvisoryCta
           id="contato"
           eyebrow="Comece pelo problema"
           title="Conte o que está limitando sua operação."

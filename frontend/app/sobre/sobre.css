@@ -479,10 +479,10 @@
 }
 
 /* ==========================================================================
-   CTA FINAL (#contato, instância do CtaAssessoria)
+   CTA FINAL (#contato, instância do AdvisoryCta)
    ========================================================================== */
 /* Mesmo ajuste aplicado em #contato (Home) e nas demais páginas que usam
-   CtaAssessoria: align-items:center empurrava o eyebrow para baixo do centro
+   AdvisoryCta: align-items:center empurrava o eyebrow para baixo do centro
    vertical do card à direita, além do padding-top sozinho. */
 #contato.cta-adv .cta-adv-in {
   align-items: flex-start;

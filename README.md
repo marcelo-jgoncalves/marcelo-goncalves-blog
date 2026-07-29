@@ -48,7 +48,7 @@ marcelo-goncalves-blog/
 └── .github/     Pipelines de CI/CD
 ```
 
-**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategorias`, `mediaUpload`, `imageProcessor`, `postScheduler`.
+**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `mediaUpload`, `imageProcessor`, `postScheduler`.
 
 `CLAUDE.md`, na raiz, descreve as regras de engenharia não-negociáveis do projeto (arquitetura, design system, padrões críticos).
 

@@ -7,7 +7,7 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECT
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import IconTile from '@/components/ui/IconTile';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
 import {
@@ -169,7 +169,7 @@ export default function CloudDevOpsPage() {
       </PageHero>
 
       {/* O QUE ESTRUTURAMOS E MODERNIZAMOS */}
-      <section id="atuacao" className={styles.oquefazemos} data-audit="cd-atuacao">
+      <section id="atuacao" className={styles.whatWeDo} data-audit="cd-atuacao">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>O que fazemos</span>
@@ -200,7 +200,7 @@ export default function CloudDevOpsPage() {
       />
 
       {/* NOSSA ABORDAGEM */}
-      <section id="abordagem" className={styles.abordagem} data-audit="cd-abordagem">
+      <section id="abordagem" className={styles.approachSection} data-audit="cd-abordagem">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Nossa abordagem</span>
@@ -237,9 +237,9 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* CAPACIDADES TÉCNICAS */}
-      <section id="capacidades" className={styles.especialidades} data-audit="cd-capacidades">
-        <div className={styles.especialidadesWrap}>
-          <div className={`${styles.sectionHead} ${styles.especialidadesHead}`}>
+      <section id="capacidades" className={styles.capabilitiesSection} data-audit="cd-capacidades">
+        <div className={styles.capabilitiesWrap}>
+          <div className={`${styles.sectionHead} ${styles.capabilitiesHead}`}>
             <span className={`${styles.eyebrowLight} ${styles.eyebrowDual}`}>Capacidades técnicas</span>
             <h2 className={styles.h2}>Da fundação da conta à operação das aplicações.</h2>
             <p className={styles.sectionDesc}>As capacidades são combinadas conforme o estágio da plataforma e o problema que precisa ser resolvido. Nenhum projeto precisa utilizar todas elas.</p>
@@ -259,25 +259,25 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* SEGURANÇA, CONFIABILIDADE E CONTINUIDADE */}
-      <section id="confiabilidade" className={styles.confiabilidade} data-audit="cd-confiabilidade">
-        <div className={styles.confiabilidadeOverlay} aria-hidden="true" />
+      <section id="confiabilidade" className={styles.reliability} data-audit="cd-confiabilidade">
+        <div className={styles.reliabilityOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={`${styles.eyebrowDark} ${styles.eyebrowDual}`}>Segurança e confiabilidade</span>
             <h2 className={styles.h2Dark}>Falhas, mudanças e recuperação precisam ser tratadas antes de se tornarem incidentes.</h2>
             <p className={styles.sectionDescDark}>A confiabilidade não depende de um único serviço. Ela resulta da combinação entre arquitetura, automação, visibilidade, segurança e procedimentos testados para responder quando algo não funciona como esperado.</p>
           </div>
-          <div className={styles.beneficiosList}>
+          <div className={styles.benefitsList}>
             {CONFIABILIDADE_ITEMS.map((item) => (
-              <div className={styles.beneficioItem} key={item}>
+              <div className={styles.benefitItem} key={item}>
                 <span className={styles.checkIcon} aria-hidden="true">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
                 </span>
-                <span className={styles.beneficioText}>{item}</span>
+                <span className={styles.benefitText}>{item}</span>
               </div>
             ))}
           </div>
-          <p className={styles.confiabilidadeClosing}>O nível de redundância, disponibilidade e recuperação deve ser proporcional ao impacto da indisponibilidade e ao investimento que a operação consegue sustentar.</p>
+          <p className={styles.reliabilityClosing}>O nível de redundância, disponibilidade e recuperação deve ser proporcional ao impacto da indisponibilidade e ao investimento que a operação consegue sustentar.</p>
         </div>
       </section>
 
@@ -290,9 +290,9 @@ export default function CloudDevOpsPage() {
         title="Dúvidas antes de modernizar uma plataforma"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
+      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
       <div data-audit="cd-cta-final">
-        <CtaAssessoria
+        <AdvisoryCta
           id="contato"
           eyebrow="Vamos começar"
           title="Qual parte da sua plataforma está limitando a operação?"

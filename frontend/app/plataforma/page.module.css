@@ -95,10 +95,10 @@
 
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
    exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
-.oquefazemos,
-.especialidades,
-.abordagem,
-.confiabilidade {
+.whatWeDo,
+.capabilitiesSection,
+.approachSection,
+.reliability {
   margin-block: 0;
 }
 
@@ -136,7 +136,7 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (CtaAssessoria, id="contato"): .cta-adv-in usa
+/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
@@ -177,12 +177,12 @@
 }
 
 /* ===== O QUE FAZEMOS ===== */
-.oquefazemos {
+.whatWeDo {
   padding: var(--sp-10) 0;
 }
 
-@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .whatWeDo { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .whatWeDo { padding: var(--sp-12) 0; } }
 
 /* Camadas empilhadas (não cards em grade) — cada linha é uma frente de
    atuação, sempre alinhada no mesmo eixo esquerdo. */
@@ -256,10 +256,10 @@
   .layerTags { justify-content: flex-end; }
 }
 
-/* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE — .beneficiosList/
-   .beneficioItem reaproveitados por essa seção. "Benefícios" em si usa o
+/* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE — .benefitsList/
+   .benefitItem reaproveitados por essa seção. "Benefícios" em si usa o
    componente compartilhado BeneficiosSection (ver components/ui/). ===== */
-.beneficiosList {
+.benefitsList {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0 var(--sp-7);
@@ -267,12 +267,12 @@
 
 @media (min-width: 680px) {
   /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
-     min-content do texto — necessário porque .beneficioText quebra em
+     min-content do texto — necessário porque .benefitText quebra em
      2 linhas (overflow-wrap) em vez de nowrap. */
-  .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .benefitsList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-.beneficioItem {
+.benefitItem {
   display: flex;
   align-items: flex-start;
   gap: var(--eyebrow-gap);
@@ -293,7 +293,7 @@
   flex: none;
 }
 
-.beneficioText {
+.benefitText {
   font-size: var(--type-body-sm);
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
@@ -302,24 +302,24 @@
 }
 
 /* ===== ESPECIALIDADES ===== */
-.especialidades {
+.capabilitiesSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
 }
 
-@media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .capabilitiesSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .capabilitiesSection { padding: var(--sp-12) 0; } }
 
-.especialidadesWrap {
+.capabilitiesWrap {
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 var(--sp-5);
 }
 
-@media (min-width: 680px) { .especialidadesWrap { padding: 0 var(--sp-7); } }
-@media (min-width: 1040px) { .especialidadesWrap { padding: 0 var(--sp-8); } }
+@media (min-width: 680px) { .capabilitiesWrap { padding: 0 var(--sp-7); } }
+@media (min-width: 1040px) { .capabilitiesWrap { padding: 0 var(--sp-8); } }
 
-.especialidadesHead {
+.capabilitiesHead {
   margin-bottom: var(--sp-10);
 }
 
@@ -387,15 +387,15 @@
 }
 
 /* ===== NOSSA ABORDAGEM ===== */
-.abordagem {
+.approachSection {
   padding: var(--sp-10) 0;
   background: #fff;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .approachSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .approachSection { padding: var(--sp-12) 0; } }
 
 /* Layout de 2 partes: princípios numerados (esquerda) + card "Como
    decidimos" com os critérios usados pra calibrar a profundidade da
@@ -548,7 +548,7 @@
 }
 
 /* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE ===== */
-.confiabilidade {
+.reliability {
   padding: var(--sp-10) 0;
   background: var(--petrol);
   color: var(--ivory);
@@ -557,10 +557,10 @@
   isolation: isolate;
 }
 
-@media (min-width: 680px) { .confiabilidade { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .confiabilidade { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .reliability { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .reliability { padding: var(--sp-12) 0; } }
 
-.confiabilidadeOverlay {
+.reliabilityOverlay {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -571,7 +571,7 @@
     radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
 }
 
-.confiabilidade .wrap {
+.reliability .wrap {
   position: relative;
   z-index: 1;
 }
@@ -584,7 +584,7 @@
   line-height: 1.65;
 }
 
-.confiabilidadeClosing {
+.reliabilityClosing {
   max-width: 720px;
   margin: var(--sp-8) auto 0;
   text-align: center;

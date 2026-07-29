@@ -1,7 +1,7 @@
-// frontend/components/ui/SuperDestaque.tsx
+// frontend/components/ui/FeaturedCallout.tsx
 import FullwidthCallout from './FullwidthCallout';
 
-interface SuperDestaqueProps {
+interface FeaturedCalloutProps {
   title?:       React.ReactNode;
   description?: string;
 }
@@ -15,7 +15,7 @@ const DEFAULT_TITLE = (
 
 const DEFAULT_DESC = 'Acompanhe a jornada, os desafios e os custos reais de construir este site do zero na AWS.';
 
-export default function SuperDestaque({ title, description }: SuperDestaqueProps) {
+export default function FeaturedCallout({ title, description }: FeaturedCalloutProps) {
   return (
     <FullwidthCallout
       variant="navy"

@@ -497,7 +497,7 @@
   padding: var(--sp-9) 0;
 }
 
-/* CTA final (CtaAssessoria, id default "assessoria"): .cta-adv-in usa
+/* CTA final (AdvisoryCta, id default "assessoria"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */

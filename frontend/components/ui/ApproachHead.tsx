@@ -1,4 +1,4 @@
-// frontend/components/ui/AbordagemHead.tsx
+// frontend/components/ui/ApproachHead.tsx
 // Extraído das 4 landings de pilar — bloco "Nossa abordagem" (texto à esquerda) +
 // card de resultado/objetivo/compromisso (aside à direita), mesmo papel semântico
 // nas 4 páginas. Recebe as classes de CSS Module de cada página via prop `classes`
@@ -6,7 +6,7 @@
 
 import type { ReactNode } from 'react';
 
-export interface AbordagemHeadClasses {
+export interface ApproachHeadClasses {
   grid: string;
   head: string;
   eyebrow: string;
@@ -18,7 +18,7 @@ export interface AbordagemHeadClasses {
   resultText: string;
 }
 
-interface AbordagemHeadProps {
+interface ApproachHeadProps {
   dataAudit?: string;
   resultDataAudit?: string;
   eyebrow?: string;
@@ -27,10 +27,10 @@ interface AbordagemHeadProps {
   resultLabel: string;
   resultTitle: string;
   resultText: string;
-  classes: AbordagemHeadClasses;
+  classes: ApproachHeadClasses;
 }
 
-export default function AbordagemHead({
+export default function ApproachHead({
   dataAudit,
   resultDataAudit,
   eyebrow = 'Nossa abordagem',
@@ -40,7 +40,7 @@ export default function AbordagemHead({
   resultTitle,
   resultText,
   classes,
-}: AbordagemHeadProps) {
+}: ApproachHeadProps) {
   return (
     <div className={classes.grid} data-audit={dataAudit}>
       <div className={classes.head}>

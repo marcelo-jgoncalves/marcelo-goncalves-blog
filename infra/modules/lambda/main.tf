@@ -200,8 +200,8 @@ resource "aws_lambda_function" "admin_categorias" {
   runtime       = "nodejs20.x"
   memory_size   = 512
 
-  filename         = "${path.root}/builds/adminCategorias.zip"
-  source_code_hash = filebase64sha256("${path.root}/builds/adminCategorias.zip")
+  filename         = "${path.root}/builds/adminCategories.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/adminCategories.zip")
 
   environment {
     variables = {

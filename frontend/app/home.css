@@ -62,7 +62,7 @@
    além do padding-top sozinho. Troca para align-items:flex-start só
    nesta instância (id="contato", exclusiva da Home) para o eyebrow
    ficar de fato a var(--sp-9) do topo da seção; as outras páginas que
-   usam CtaAssessoria não são afetadas. */
+   usam AdvisoryCta não são afetadas. */
 #contato.cta-adv .cta-adv-in {
   align-items: flex-start;
   padding-top: var(--sp-9);

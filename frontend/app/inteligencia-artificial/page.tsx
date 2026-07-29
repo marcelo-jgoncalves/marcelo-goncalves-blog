@@ -7,7 +7,7 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECT
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import BeneficiosSection from '@/components/ui/BeneficiosSection';
 import styles from './page.module.css';
 
@@ -174,28 +174,28 @@ export default function InteligenciaArtificialPage() {
       </PageHero>
 
       {/* O QUE DESENVOLVEMOS — 3 territórios editoriais, sem grade de cards */}
-      <section id="solucoes" className={styles.oquefazemos} data-audit="ai-solucoes">
+      <section id="solucoes" className={styles.whatWeDo} data-audit="ai-solucoes">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
             <span className={styles.eyebrowLight}>O que desenvolvemos</span>
             <h2 className={styles.h2}>Soluções de IA conectadas ao contexto real da operação.</h2>
             <p className={styles.sectionDesc}>A solução pode consultar conhecimento, interpretar documentos, apoiar decisões ou executar ações limitadas. O desenho depende do problema, dos dados disponíveis e do nível de controle exigido.</p>
           </div>
-          <div className={styles.territorios}>
+          <div className={styles.territories}>
             {TERRITORIOS.map((t, i) => (
-              <article className={styles.territorio} key={t.kicker} data-audit={i === 0 ? 'ai-card' : undefined}>
-                <span className={styles.territorioIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <div className={styles.territorioHeading}>
-                  <span className={styles.territorioKicker}>{t.kicker}</span>
+              <article className={styles.territory} key={t.kicker} data-audit={i === 0 ? 'ai-card' : undefined}>
+                <span className={styles.territoryIndex} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div className={styles.territoryHeading}>
+                  <span className={styles.territoryKicker}>{t.kicker}</span>
                   <h3>{t.title}</h3>
                 </div>
-                <div className={`${styles.territorioBody} ${t.items.length > 1 ? styles.territorioBodyTwo : ''}`}>
+                <div className={`${styles.territoryBody} ${t.items.length > 1 ? styles.territoryBodyTwo : ''}`}>
                   {t.items.map((item) => (
-                    <div className={styles.territorioItem} key={item.title}>
+                    <div className={styles.territoryItem} key={item.title}>
                       <h4>{item.title}</h4>
                       <p>{item.text}</p>
                       {item.tags && (
-                        <div className={styles.territorioTags}>
+                        <div className={styles.territoryTags}>
                           {item.tags.map((tag) => <span key={tag}>{tag}</span>)}
                         </div>
                       )}
@@ -209,9 +209,9 @@ export default function InteligenciaArtificialPage() {
       </section>
 
       {/* CASOS DE APLICAÇÃO — composição assimétrica, cabeçalho fixo + catálogo numerado */}
-      <section id="aplicacoes" className={styles.casos} data-audit="ai-aplicacoes">
+      <section id="aplicacoes" className={styles.useCasesSection} data-audit="ai-aplicacoes">
         <div className={styles.wrap}>
-          <div className={styles.aplicacoesLayout}>
+          <div className={styles.applicationsLayout}>
             <div className={styles.sectionHead}>
               <span className={styles.eyebrowLight}>Casos de aplicação</span>
               <h2 className={styles.h2}>Onde a IA pode apoiar a operação.</h2>
@@ -242,9 +242,9 @@ export default function InteligenciaArtificialPage() {
       />
 
       {/* NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões + manifesto */}
-      <section id="abordagem" className={styles.abordagem} data-audit="ai-abordagem">
+      <section id="abordagem" className={styles.approachSection} data-audit="ai-abordagem">
         <div className={styles.wrap}>
-          <div className={styles.abordagemLayout}>
+          <div className={styles.approachLayout}>
             <div className={styles.sectionHead}>
               <span className={styles.eyebrowLight}>Nossa abordagem</span>
               <h2 className={styles.h2}>Começamos pelo problema, pelos dados e pela forma de medir a qualidade.</h2>
@@ -272,23 +272,23 @@ export default function InteligenciaArtificialPage() {
       </section>
 
       {/* GOVERNANÇA E CONTROLE — capítulo estrutural, 4 domínios + privacidade integrada */}
-      <section id="governanca" className={styles.governanca} data-audit="ai-governanca">
-        <div className={styles.governancaOverlay} aria-hidden="true" />
+      <section id="governanca" className={styles.governance} data-audit="ai-governanca">
+        <div className={styles.governanceOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
-          <div className={styles.governancaLayout}>
+          <div className={styles.governanceLayout}>
             <header>
               <span className={styles.eyebrowDark}>Governança e controle</span>
               <h2 className={styles.h2Dark}>Qualidade, permissões e supervisão fazem parte da solução.</h2>
               <p className={styles.sectionDescDark}>Soluções de IA podem produzir respostas incorretas, incompletas ou inadequadas ao contexto. Por isso, o projeto precisa definir como avaliar resultados, limitar acessos, registrar decisões e transferir situações de risco para pessoas responsáveis.</p>
-              <p className={styles.governancaPrinciple}>O nível de automação deve ser proporcional ao impacto de uma resposta ou ação incorreta.</p>
+              <p className={styles.governancePrinciple}>O nível de automação deve ser proporcional ao impacto de uma resposta ou ação incorreta.</p>
             </header>
-            <div className={styles.governancaDomains}>
+            <div className={styles.governanceDomains}>
               {GOVERNANCA_DOMINIOS.map((dominio) => (
-                <article className={styles.governancaDomain} key={dominio.title}>
-                  <span className={styles.governancaDomainIndex} aria-hidden="true">{dominio.numero}</span>
+                <article className={styles.governanceDomain} key={dominio.title}>
+                  <span className={styles.governanceDomainIndex} aria-hidden="true">{dominio.numero}</span>
                   <div>
                     <h3>{dominio.title}</h3>
-                    <ul className={styles.governancaDomainList}>
+                    <ul className={styles.governanceDomainList}>
                       {dominio.items.map((item) => <li key={item}>{item}</li>)}
                     </ul>
                   </div>
@@ -296,9 +296,9 @@ export default function InteligenciaArtificialPage() {
               ))}
             </div>
           </div>
-          <div className={styles.privacidadeBlock}>
-            <h3 className={styles.privacidadeTitle}>Privacidade e uso de dados</h3>
-            <p className={styles.privacidadeText}>A arquitetura deve considerar a natureza das informações, os fornecedores envolvidos, as configurações de retenção, os controles de acesso e as obrigações aplicáveis ao tratamento dos dados.</p>
+          <div className={styles.privacyBlock}>
+            <h3 className={styles.privacyTitle}>Privacidade e uso de dados</h3>
+            <p className={styles.privacyText}>A arquitetura deve considerar a natureza das informações, os fornecedores envolvidos, as configurações de retenção, os controles de acesso e as obrigações aplicáveis ao tratamento dos dados.</p>
           </div>
         </div>
       </section>
@@ -312,9 +312,9 @@ export default function InteligenciaArtificialPage() {
         title="Dúvidas antes de aplicar IA à operação"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
+      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
       <div data-audit="ai-cta-final">
-        <CtaAssessoria
+        <AdvisoryCta
           id="contato"
           eyebrow="Vamos começar"
           title="Qual tarefa poderia ganhar velocidade com melhor acesso à informação?"

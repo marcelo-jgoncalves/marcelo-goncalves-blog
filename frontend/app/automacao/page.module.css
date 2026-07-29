@@ -93,10 +93,10 @@
 
 /* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
    exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
-.oquefazemos,
-.especialidades,
-.abordagem,
-.confiabilidade {
+.whatWeDo,
+.capabilitiesSection,
+.approach,
+.reliability {
   margin-block: 0;
 }
 
@@ -133,7 +133,7 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (CtaAssessoria, id="contato"): .cta-adv-in usa
+/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
    align-items:center, centralizando a coluna de texto contra o card mais
    alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
    (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
@@ -173,12 +173,12 @@
 }
 
 /* ===== O QUE FAZEMOS — 5 cards (3+2), não 6 ===== */
-.oquefazemos {
+.whatWeDo {
   padding: var(--sp-10) 0;
 }
 
-@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .whatWeDo { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .whatWeDo { padding: var(--sp-12) 0; } }
 
 /* Revisão visual: lista de entregas à esquerda (ícone + título + texto + tags,
    sem card/borda — usa o hairline que .feature-card-footer já tem), painel
@@ -324,10 +324,10 @@
   color: var(--ink);
 }
 
-/* ===== CONFIABILIDADE E CONTROLE — .beneficiosList/.beneficioItem
+/* ===== CONFIABILIDADE E CONTROLE — .benefitsList/.benefitItem
    reaproveitados por essa seção. "Benefícios" em si usa o componente
    compartilhado BeneficiosSection (ver components/ui/). ===== */
-.beneficiosList {
+.benefitsList {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0 var(--sp-7);
@@ -335,12 +335,12 @@
 
 @media (min-width: 680px) {
   /* minmax(0,1fr), não 1fr puro: permite a coluna encolher abaixo do
-     min-content do texto — necessário porque .beneficioText quebra em
+     min-content do texto — necessário porque .benefitText quebra em
      2 linhas (overflow-wrap) em vez de nowrap. */
-  .beneficiosList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .benefitsList { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-.beneficioItem {
+.benefitItem {
   display: flex;
   align-items: flex-start;
   gap: var(--eyebrow-gap);
@@ -361,7 +361,7 @@
   flex: none;
 }
 
-.beneficioText {
+.benefitText {
   font-size: var(--type-body-sm);
   line-height: 1.5;
   color: rgba(250, 248, 243, .92);
@@ -370,24 +370,24 @@
 }
 
 /* ===== ESPECIALIDADES — 8 itens (não 10) ===== */
-.especialidades {
+.capabilitiesSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
 }
 
-@media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .capabilitiesSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .capabilitiesSection { padding: var(--sp-12) 0; } }
 
 /* ===== NOSSA ABORDAGEM — texto à esquerda, 3 princípios numerados à direita ===== */
-.abordagem {
+.approach {
   padding: var(--sp-10) 0;
   background: var(--surface);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .approach { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .approach { padding: var(--sp-12) 0; } }
 
 .approachGrid,
 .capabilitiesGrid {
@@ -676,7 +676,7 @@
 }
 
 /* ===== CONFIABILIDADE E CONTROLE ===== */
-.confiabilidade {
+.reliability {
   padding: var(--sp-10) 0;
   background: var(--petrol);
   color: var(--ivory);
@@ -685,10 +685,10 @@
   isolation: isolate;
 }
 
-@media (min-width: 680px) { .confiabilidade { padding: var(--sp-11) 0; } }
-@media (min-width: 1040px) { .confiabilidade { padding: var(--sp-12) 0; } }
+@media (min-width: 680px) { .reliability { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .reliability { padding: var(--sp-12) 0; } }
 
-.confiabilidadeOverlay {
+.reliabilityOverlay {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -699,7 +699,7 @@
     radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
 }
 
-.confiabilidade .wrap {
+.reliability .wrap {
   position: relative;
   z-index: 1;
 }
@@ -712,7 +712,7 @@
   line-height: 1.65;
 }
 
-.confiabilidadeClosing {
+.reliabilityClosing {
   max-width: 720px;
   margin: var(--sp-8) auto 0;
   text-align: center;

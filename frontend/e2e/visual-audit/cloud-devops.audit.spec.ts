@@ -13,7 +13,7 @@ import { compareAudits } from './compare';
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/cloud-devops.html').replace(/\\/g, '/')}`;
 
 // cd-hero e cd-cta-final ficam fora do diff literal contra o protótipo: essas duas
-// seções usam os componentes padrão do projeto (PageHero/CtaAssessoria, já usados em
+// seções usam os componentes padrão do projeto (PageHero/AdvisoryCta, já usados em
 // /servicos, /contato, /engenharia-de-software) em vez de replicar o padding/grid
 // inline do protótipo standalone — mesma decisão e mesmo motivo documentados em
 // engenharia-de-software.audit.spec.ts.

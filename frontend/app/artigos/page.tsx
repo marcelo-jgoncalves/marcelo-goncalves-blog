@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } from '@/lib/api';
 import PostCard from '@/components/ui/PostCard';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
-import LerArtigo from '@/components/ui/LerArtigo';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
+import ReadArticle from '@/components/ui/ReadArticle';
 import PageHero from '@/components/ui/PageHero';
 import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, BLOG_DESCRIPTION } from '@/lib/config';
@@ -117,7 +117,7 @@ export default async function ArtigosPage() {
                           <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
                           <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <span className="home-ml-card-read"><LerArtigo /></span>
+                        <span className="home-ml-card-read"><ReadArticle /></span>
                       </div>
                     </div>
                   </Link>
@@ -137,7 +137,7 @@ export default async function ArtigosPage() {
                           <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
                           <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <span className="home-ml-card-read"><LerArtigo /></span>
+                        <span className="home-ml-card-read"><ReadArticle /></span>
                       </div>
                     </div>
                   </Link>
@@ -221,7 +221,7 @@ export default async function ArtigosPage() {
                         <span>{formatDateShort(iaBig.data_publicacao)}</span>
                         <span>{iaBig.tempo_leitura_min || 5} min</span>
                       </div>
-                      <span className="home-ia-read"><LerArtigo /></span>
+                      <span className="home-ia-read"><ReadArticle /></span>
                     </div>
                   </div>
                 </Link>
@@ -238,7 +238,7 @@ export default async function ArtigosPage() {
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <span className="home-ia-read"><LerArtigo /></span>
+                        <span className="home-ia-read"><ReadArticle /></span>
                       </div>
                     </Link>
                   ))}
@@ -275,7 +275,7 @@ export default async function ArtigosPage() {
         </section>
       )}
 
-      <CtaAssessoria
+      <AdvisoryCta
         eyebrow="Do blog para o seu projeto"
         title="Gosta do que lê aqui? Aplico o mesmo na sua empresa."
         description="Tudo que você vê neste blog nasce de projetos reais. Se sua empresa enfrenta um desafio parecido com os que aparecem por aqui, ajudamos a resolver."

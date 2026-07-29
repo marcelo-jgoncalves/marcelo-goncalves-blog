@@ -14,10 +14,10 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/engenharia-de-so
 
 // esw-hero e esw-cta-final ficaram fora do diff literal contra o protótipo: por
 // pedido explícito (2026-07-11), essas duas seções passaram a usar os componentes
-// padrão do projeto (PageHero/CtaAssessoria, já usados em /servicos, /contato etc.)
+// padrão do projeto (PageHero/AdvisoryCta, já usados em /servicos, /contato etc.)
 // em vez de replicar o padding/grid inline do protótipo standalone — a régua de
 // correção aqui é "bate com o componente reutilizável", não "bate pixel a pixel
-// com o protótipo". Ver frontend/components/ui/PageHero.tsx e CtaAssessoria.tsx.
+// com o protótipo". Ver frontend/components/ui/PageHero.tsx e AdvisoryCta.tsx.
 //
 // esw-principios também ficou fora: a pedido de Marcelo (2026-07-11), a seção
 // "Maturidade Técnica" passou a usar as cores de app/cloud-devops/page.module.css

@@ -82,6 +82,17 @@ Nunca usar `&&`, `||`, `;`, `$()`, `&` final ou `>` em um único comando Bash �
 | `npm run dev > file.log &` | Chamada com `run_in_background: true`, sem `&` e sem `>` |
 | `cmd1 && cmd2 && cmd3` | 3 chamadas separadas |
 
+### Convenção de nomenclatura — idioma (sessão 2026-07-29, obrigatória a partir de agora)
+
+Regra fixa, sem exceção em código novo: **código = inglês, dado/conteúdo/URL = português.**
+
+| Categoria | Idioma |
+|---|---|
+| Tokens de design, classes CSS (Modules e global), nomes de componente React/Vue, variáveis/funções/tipos internos, nomes de arquivo/pasta de código, comentários de código | **Inglês** |
+| Campos persistidos no DynamoDB, rotas (`app/`), IDs de âncora de seção, atributos `data-audit`, copy visível ao usuário | **Português** (mantidos como estão — nunca migrar; renomear rota/campo de dado é risco alto sem ganho real) |
+
+Motivo: auditoria de nomenclatura (sessão 2026-07-29) achou substantivo em português dentro de casca estrutural em inglês repetido em 3 categorias independentes e sem critério (`qualidadeSubblocoIndex`, `AbordagemHead`, `adminCategorias`) — não era decisão, era hábito. Ajustes de baixo/médio risco corrigidos na mesma sessão (CSS Modules, nomes de componente React, diretórios de Lambda); as classes CSS globais com prefixo por página (`sobre-*`/`op-*`/`post-*`/`svc-*`, seção 5) **não foram traduzidas** — são referenciadas por seletor descendente/`:nth-child` entre arquivos (risco médio, exige sessão de validação visual dedicada, mesmo padrão de decisão do item #45 do backlog) — ficam em português como estão até uma rodada própria.
+
 Ver `memory/feedback_bash_commands.md` para todos os padrões com exemplos.
 
 ---

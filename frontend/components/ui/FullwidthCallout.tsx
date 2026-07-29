@@ -6,7 +6,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faRocket, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import './FullwidthCallout.css';
 
-// Mapa fechado dos ícones realmente usados pelos 4 callers (SuperDestaque*) —
+// Mapa fechado dos ícones realmente usados pelos 4 callers (FeaturedCallout*) —
 // a prop `icon` continua recebendo a mesma string ("fa-envelope") por
 // compatibilidade, só resolvida aqui pro ícone SVG correspondente.
 const ICON_MAP: Record<string, IconDefinition> = {

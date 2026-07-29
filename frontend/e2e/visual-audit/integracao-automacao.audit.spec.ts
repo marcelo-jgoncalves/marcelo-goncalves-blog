@@ -13,7 +13,7 @@ import { compareAudits } from './compare';
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/integracao-automacao.html').replace(/\\/g, '/')}`;
 
 // ia2-hero e ia2-cta-final ficam fora do diff literal: usam os componentes padrão do
-// projeto (PageHero/CtaAssessoria) em vez do padding/grid inline do protótipo — mesma
+// projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
 // decisão documentada em engenharia-de-software.audit.spec.ts e cloud-devops.audit.spec.ts.
 const TARGETS = [
   'ia2-oquefazemos',

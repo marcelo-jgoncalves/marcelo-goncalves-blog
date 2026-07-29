@@ -7,7 +7,7 @@ import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECT
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
-import CtaAssessoria from '@/components/ui/CtaAssessoria';
+import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import Pill from '@/components/ui/Pill';
 import Kicker from '@/components/ui/Kicker';
 import IndexNumber from '@/components/ui/IndexNumber';
@@ -188,7 +188,7 @@ export default function SistemasPlataformasPage() {
       </PageHero>
 
       {/* O QUE DESENVOLVEMOS — cabeçalho fixo + nota de núcleo + linhas editoriais numeradas */}
-      <section id="solucoes" className={styles.oquefazemos} data-audit="esw-solucoes">
+      <section id="solucoes" className={styles.whatWeDo} data-audit="esw-solucoes">
         <div className={styles.wrap}>
           <div className={styles.editorialLayout}>
             <div className={styles.sectionHead}>
@@ -229,9 +229,9 @@ export default function SistemasPlataformasPage() {
       />
 
       {/* NOSSA ABORDAGEM — painel "antes de construir" + percurso de 5 etapas + 3 princípios */}
-      <section id="abordagem" className={styles.abordagem} data-audit="esw-abordagem">
+      <section id="abordagem" className={styles.approachSection} data-audit="esw-abordagem">
         <div className={styles.wrap}>
-          <div className={`${styles.sectionHead} ${styles.abordagemHead}`}>
+          <div className={`${styles.sectionHead} ${styles.approachHead}`}>
             <span className={styles.eyebrowLight}>Nossa abordagem</span>
             <h2 className={styles.h2}>Construir software é uma decisão de negócio, não apenas técnica.</h2>
             <p className={styles.sectionDesc}>Antes de iniciar o desenvolvimento, avaliamos se uma solução pronta, uma integração ou uma mudança de processo resolve a necessidade com menor custo e risco. Software próprio é indicado quando a especificidade da operação justifica construir.</p>
@@ -284,9 +284,9 @@ export default function SistemasPlataformasPage() {
       </section>
 
       {/* CAPACIDADES DE ENGENHARIA — pilha de 5 camadas técnicas */}
-      <section id="capacidades" className={styles.capacidades} data-audit="esw-capacidades">
+      <section id="capacidades" className={styles.capabilitiesSection} data-audit="esw-capacidades">
         <div className={styles.wrap}>
-          <div className={styles.capacidadesLayout}>
+          <div className={styles.capabilitiesLayout}>
             <div className={styles.sectionHead}>
               <span className={styles.eyebrowLight}>Capacidades de engenharia</span>
               <h2 className={styles.h2}>Da regra de negócio à operação em produção.</h2>
@@ -311,34 +311,34 @@ export default function SistemasPlataformasPage() {
       </section>
 
       {/* QUALIDADE E CONTINUIDADE — matriz numerada + 3 contratos */}
-      <section id="qualidade" className={styles.qualidade} data-audit="esw-qualidade">
-        <div className={styles.qualidadeOverlay} aria-hidden="true" />
+      <section id="qualidade" className={styles.quality} data-audit="esw-qualidade">
+        <div className={styles.qualityOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
-          <div className={styles.qualidadeTop}>
+          <div className={styles.qualityTop}>
             <div className={styles.sectionHead}>
               <span className={styles.eyebrowDark}>Qualidade e continuidade</span>
               <h2 className={styles.h2Dark}>A entrega não termina quando a primeira versão entra em produção.</h2>
               <p className={styles.sectionDescDark}>Um sistema útil precisa continuar compreensível, observável e modificável. Por isso, qualidade não é uma etapa final: ela influencia arquitetura, testes, documentação, implantação e sustentação.</p>
             </div>
-            <div className={styles.beneficiosList}>
+            <div className={styles.benefitsList}>
               {QUALIDADE_ITEMS.map((item) => (
-                <div className={styles.beneficioItem} key={item}>
-                  <span className={styles.qualidadeCheckIcon} aria-hidden="true">
+                <div className={styles.benefitItem} key={item}>
+                  <span className={styles.qualityCheckIcon} aria-hidden="true">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
                   </span>
-                  <span className={styles.beneficioText}>{item}</span>
+                  <span className={styles.benefitText}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className={styles.qualidadeSubblocos}>
+          <div className={styles.qualitySubblocks}>
             {QUALIDADE_SUBBLOCOS.map((s) => (
-              <div className={styles.qualidadeSubbloco} key={s.title}>
-                <span className={styles.qualidadeSubblocoIndex} aria-hidden="true"><s.Icon /></span>
-                <h3 className={styles.privacidadeTitle}>{s.title}</h3>
-                <p className={styles.privacidadeText}>{s.text}</p>
+              <div className={styles.qualitySubblock} key={s.title}>
+                <span className={styles.qualitySubblockIndex} aria-hidden="true"><s.Icon /></span>
+                <h3 className={styles.privacyTitle}>{s.title}</h3>
+                <p className={styles.privacyText}>{s.text}</p>
               </div>
             ))}
           </div>
@@ -354,9 +354,9 @@ export default function SistemasPlataformasPage() {
         title="Dúvidas antes de desenvolver ou modernizar um sistema"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/CtaAssessoria.tsx), só conteúdo muda */}
+      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
       <div data-audit="esw-cta-final">
-        <CtaAssessoria
+        <AdvisoryCta
           id="contato"
           eyebrow="Vamos começar"
           title="Qual processo ou sistema precisa evoluir?"

@@ -42,7 +42,7 @@ export const CTA_DIAGNOSIS_META = (
   </div>
 );
 
-interface CtaAssessoriaProps {
+interface AdvisoryCtaProps {
   id?: string;
   eyebrow?: string;
   title?: ReactNode;
@@ -58,7 +58,7 @@ interface CtaAssessoriaProps {
   reassure?: string;
 }
 
-export default function CtaAssessoria({
+export default function AdvisoryCta({
   id = 'assessoria',
   eyebrow = 'Serviços · Assessoria',
   title = 'Precisa de ajuda com seu projeto?',
@@ -72,7 +72,7 @@ export default function CtaAssessoria({
   ctaLabel = 'Explorar os serviços',
   ctaExternal = false,
   reassure = 'Projetos sob medida · Primeira conversa sem compromisso',
-}: CtaAssessoriaProps) {
+}: AdvisoryCtaProps) {
   return (
     <section className="cta-adv" id={id}>
       <div className="cta-adv-in" data-audit="cta-adv-in">
