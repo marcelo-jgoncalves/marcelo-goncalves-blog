@@ -28,13 +28,19 @@ const TARGETS = [
   'art-adv-card',
 ];
 
-test('artigos: audit protótipo vs app', async ({ page }) => {
+// Fixture congela o design ANTIGO de /artigos (antes da troca de papéis com
+// /todos-artigos, ver CLAUDE.md §10 item 44). Classes do TARGETS acima
+// (art-filterbar, art-twoup, art-mini, art-readband, art-cta-adv etc.) não
+// existem mais em nenhuma das duas rotas reais — a estrutura mudou, não só a
+// URL. Recapturar o fixture a partir do protótipo aprovado atual antes de
+// reativar.
+test.skip('artigos: audit protótipo vs app', async ({ page }) => {
   await page.setViewportSize(VIEWPORT);
 
   await page.goto(FIXTURE_URL);
   const proto = await captureAudit(page);
 
-  await page.goto('/artigos');
+  await page.goto('/todos-artigos');
   const app = await captureAudit(page);
 
   const { diffs, report } = compareAudits(proto, app, TARGETS);
