@@ -1,4 +1,14 @@
 
+# Identificador alinhado ao nome do diretório (modules/security-monitoring,
+# hífen) e ao padrão já usado por module.api-gateway -- era
+# module.security_monitoring (underscore), único módulo divergente. O moved
+# de módulo cobre os 7 recursos internos de uma vez, sem precisar de um
+# moved por recurso.
+moved {
+  from = module.security_monitoring
+  to   = module.security-monitoring
+}
+
 module "dynamodb" {
   source = "./modules/dynamodb"
 
@@ -153,7 +163,7 @@ module "finops" {
   enable_budget_alerts     = var.enable_budget_alerts
 }
 
-module "security_monitoring" {
+module "security-monitoring" {
   source = "./modules/security-monitoring"
 
   environment        = var.environment

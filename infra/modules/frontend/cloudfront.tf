@@ -5,10 +5,8 @@ resource "aws_s3_bucket" "cf_logs" {
   count  = var.enable_cloudfront_logging ? 1 : 0
   bucket = "${var.project_name}-${var.environment}-cf-frontend-logs"
 
-  tags = {
-    Environment = var.environment
-    Project     = var.project_name
-  }
+  # Sem tags{} próprio: Environment/Project aqui eram subconjunto redundante
+  # do default_tags do provider (providers.tf).
 }
 
 # CloudFront exige ACL habilitado no bucket de logs

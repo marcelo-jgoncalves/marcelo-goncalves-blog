@@ -10,11 +10,8 @@ resource "aws_sns_topic" "budget_alerts" {
   count = var.enable_budget_alerts ? 1 : 0
   name  = "${var.project_name}-${var.environment}-budget-alerts"
 
-  tags = {
-    Environment = var.environment
-    ManagedBy   = "Terraform"
-    Project     = var.project_name
-  }
+  # Sem tags{} próprio: os 3 valores aqui eram idênticos ao default_tags do
+  # provider (providers.tf) -- redundância pura, o AWS provider já aplica.
 }
 
 resource "aws_sns_topic_subscription" "budget_alerts_email" {
