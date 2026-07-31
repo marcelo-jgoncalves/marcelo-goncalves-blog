@@ -46,6 +46,8 @@ const editorRef = ref<InstanceType<typeof RichTextEditor> | null>(null)
 const editorWrapperRef = ref<HTMLElement | null>(null)
 const titleRef = ref<HTMLElement | null>(null)
 const subtitleRef = ref<HTMLElement | null>(null)
+const drawerRef = ref<HTMLElement | null>(null)
+const drawerPreviousFocusRef = ref<HTMLElement | null>(null)
 
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 // The blog has only 1 author by design — same hardcoded AUTHOR_ID used in AuthorEditView.vue.
@@ -149,6 +151,38 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', handleBeforeUnload)
   window.removeEventListener('resize', onWindowResize)
 })
+
+// Settings drawer — dialog semantics (focus trap, Escape, focus restore).
+// Same pattern as frontend/components/consent/ConsentModal.tsx.
+watch(settingsOpen, (open) => {
+  if (open) {
+    drawerPreviousFocusRef.value = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    nextTick(() => drawerRef.value?.focus())
+  } else {
+    drawerPreviousFocusRef.value?.focus()
+    drawerPreviousFocusRef.value = null
+  }
+})
+function onDrawerKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    settingsOpen.value = false
+    return
+  }
+  if (e.key !== 'Tab' || !drawerRef.value) return
+  const focusable = drawerRef.value.querySelectorAll<HTMLElement>(
+    'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])'
+  )
+  if (!focusable.length) return
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault()
+    last?.focus()
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault()
+    first?.focus()
+  }
+}
 
 onBeforeRouteLeave(() => {
   if (isDirty.value) {
@@ -545,6 +579,9 @@ function generateSlug() {
           ref="titleRef"
           class="ia-title"
           contenteditable="true"
+          role="textbox"
+          aria-multiline="false"
+          aria-label="Título do post"
           data-ph="Título do post"
           @input="onTitleInput"
           @keydown="onTitleKeydown"
@@ -553,6 +590,9 @@ function generateSlug() {
           ref="subtitleRef"
           class="ia-sub"
           contenteditable="true"
+          role="textbox"
+          aria-multiline="false"
+          aria-label="Subtítulo do post"
           data-ph="Um subtítulo que convida à leitura…"
           @input="onSubtitleInput"
           @keydown="onSubtitleKeydown"
@@ -585,19 +625,27 @@ function generateSlug() {
 
     <!-- Settings panel (fields that aren't part of the writing sheet) -->
     <Transition name="ia-drawer">
-      <div v-if="settingsOpen" class="ia-drawer-overlay" @click.self="settingsOpen = false">
-        <aside class="ia-drawer ia-scroll">
+      <div v-if="settingsOpen" class="ia-drawer-overlay" role="presentation" @click.self="settingsOpen = false">
+        <aside
+          ref="drawerRef"
+          class="ia-drawer ia-scroll"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ia-drawer-title"
+          tabindex="-1"
+          @keydown="onDrawerKeydown"
+        >
           <div class="ia-drawer-header">
-            <span>Configurações do post</span>
-            <button class="ia-drawer-close" @click="settingsOpen = false">✕</button>
+            <span id="ia-drawer-title">Configurações do post</span>
+            <button class="ia-drawer-close" aria-label="Fechar configurações" @click="settingsOpen = false">✕</button>
           </div>
 
           <div class="ia-rail-card">
             <div class="ia-rail-header">Status</div>
-            <div class="ia-segmented">
-              <button :class="['ia-seg', { active: form.status === 'Rascunho' }]" @click="form.status = 'Rascunho'">Rascunho</button>
-              <button :class="['ia-seg', { active: form.status === 'Publicado' }]" @click="form.status = 'Publicado'">Publicado</button>
-              <button :class="['ia-seg', { active: form.status === 'Programado' }]" @click="form.status = 'Programado'">Programado</button>
+            <div class="ia-segmented" role="radiogroup" aria-label="Status do post">
+              <button role="radio" :aria-checked="form.status === 'Rascunho'" :class="['ia-seg', { active: form.status === 'Rascunho' }]" @click="form.status = 'Rascunho'">Rascunho</button>
+              <button role="radio" :aria-checked="form.status === 'Publicado'" :class="['ia-seg', { active: form.status === 'Publicado' }]" @click="form.status = 'Publicado'">Publicado</button>
+              <button role="radio" :aria-checked="form.status === 'Programado'" :class="['ia-seg', { active: form.status === 'Programado' }]" @click="form.status = 'Programado'">Programado</button>
             </div>
             <div v-if="form.status === 'Programado'" class="ia-sched">
               <label class="ia-field-label">Publicar em</label>
@@ -650,7 +698,13 @@ function generateSlug() {
                 <div class="ia-toggle-title">Post popular</div>
                 <div class="ia-toggle-sub">Aparece na seção "Em alta"</div>
               </div>
-              <button class="ia-toggle-track" @click="form.e_popular = !form.e_popular">
+              <button
+                class="ia-toggle-track"
+                role="switch"
+                :aria-checked="form.e_popular"
+                aria-label="Post popular"
+                @click="form.e_popular = !form.e_popular"
+              >
                 <span class="ia-toggle-track-bg" :style="{ background: form.e_popular ? 'var(--accent)' : '#D8CEBD' }"></span>
                 <span class="ia-toggle-knob" :style="{ left: form.e_popular ? '19px' : '2.5px' }"></span>
               </button>
@@ -660,7 +714,13 @@ function generateSlug() {
                 <div class="ia-toggle-title">Página do projeto</div>
                 <div class="ia-toggle-sub">Lista em "O Projeto"</div>
               </div>
-              <button class="ia-toggle-track" @click="form.e_projeto = !form.e_projeto">
+              <button
+                class="ia-toggle-track"
+                role="switch"
+                :aria-checked="form.e_projeto"
+                aria-label="Página do projeto"
+                @click="form.e_projeto = !form.e_projeto"
+              >
                 <span class="ia-toggle-track-bg" :style="{ background: form.e_projeto ? 'var(--petrol)' : '#D8CEBD' }"></span>
                 <span class="ia-toggle-knob" :style="{ left: form.e_projeto ? '19px' : '2.5px' }"></span>
               </button>
