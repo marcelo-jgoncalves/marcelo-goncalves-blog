@@ -106,7 +106,7 @@ export default async function ArtigosPage() {
                 <div className="home-ml-feature">
                   <div className="home-ml-rank-label">Mais lido · #1</div>
                   <Link className="home-ml-card" href={`/post/${mlFeature1.slug}`} data-audit="home-ml-card">
-                    <div className="home-ml-num-bg">01</div>
+                    <div className="home-ml-num-bg" aria-hidden="true">01</div>
                     <div className="home-ml-card-inner">
                       <span className="home-ml-card-cat">{categoryName(mlFeature1)}</span>
                       <h3 className="home-ml-card-title">{mlFeature1.titulo}</h3>
@@ -126,7 +126,7 @@ export default async function ArtigosPage() {
                 <div className="home-ml-feature">
                   <div className="home-ml-rank-label">Mais lido · #2</div>
                   <Link className="home-ml-card" href={`/post/${mlFeature2.slug}`}>
-                    <div className="home-ml-num-bg">02</div>
+                    <div className="home-ml-num-bg" aria-hidden="true">02</div>
                     <div className="home-ml-card-inner">
                       <span className="home-ml-card-cat">{categoryName(mlFeature2)}</span>
                       <h3 className="home-ml-card-title">{mlFeature2.titulo}</h3>
@@ -146,7 +146,7 @@ export default async function ArtigosPage() {
                 <div className="home-ml-list" data-audit="home-ml-list">
                   {mlList.map((post: HomePost, i: number) => (
                     <Link key={post.slug} className="home-ml-item" href={`/post/${post.slug}`}>
-                      <span className="home-ml-item-num">{String(i + 3).padStart(2, '0')}</span>
+                      <span className="home-ml-item-num" aria-hidden="true">{String(i + 3).padStart(2, '0')}</span>
                       <div className="home-ml-item-body">
                         <span className="home-ml-item-cat">{categoryName(post)}</span>
                         <span className="home-ml-item-title">{post.titulo}</span>

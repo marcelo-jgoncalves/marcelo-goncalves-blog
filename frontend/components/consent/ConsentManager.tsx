@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   readConsent,
   saveConsent,
@@ -18,6 +18,17 @@ export default function ConsentManager() {
   const [showBanner, setShowBanner] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [ready, setReady] = useState(false);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  const openModal = () => {
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setShowModal(true);
+  };
+
+  const restoreFocus = () => {
+    previousFocusRef.current?.focus();
+    previousFocusRef.current = null;
+  };
 
   useEffect(() => {
     // One-time hydration from localStorage (unavailable during server
@@ -39,7 +50,6 @@ export default function ConsentManager() {
 
     setReady(true);
 
-    const openModal = () => setShowModal(true);
     window.addEventListener('openConsentModal', openModal);
     return () => window.removeEventListener('openConsentModal', openModal);
   }, []);
@@ -52,6 +62,7 @@ export default function ConsentManager() {
     applyConsent(state);
     setShowBanner(false);
     setShowModal(false);
+    restoreFocus();
   };
 
   const rejectAll = () => {
@@ -60,6 +71,7 @@ export default function ConsentManager() {
     applyConsent(state);
     setShowBanner(false);
     setShowModal(false);
+    restoreFocus();
   };
 
   const saveCustom = (settings: ConsentSettings) => {
@@ -68,6 +80,7 @@ export default function ConsentManager() {
     applyConsent(state);
     setShowBanner(false);
     setShowModal(false);
+    restoreFocus();
   };
 
   if (!ready) return null;
@@ -78,7 +91,7 @@ export default function ConsentManager() {
         <ConsentBanner
           onAcceptAll={acceptAll}
           onRejectAll={rejectAll}
-          onCustomize={() => { setShowBanner(false); setShowModal(true); }}
+          onCustomize={() => { setShowBanner(false); openModal(); }}
         />
       )}
       {showModal && (
@@ -90,6 +103,7 @@ export default function ConsentManager() {
           onClose={() => {
             setShowModal(false);
             if (!consent) setShowBanner(true);
+            restoreFocus();
           }}
         />
       )}
