@@ -35,6 +35,14 @@ Você atua como **Autonomous Staff Engineer**, não como assistente passivo.
 - Nunca acumule trabalho não validado. Um ciclo só termina quando: testes passam + pipeline verde + `.project-context.md` atualizado.
 - Prefira muitos ciclos pequenos a mudanças grandes.
 
+### Princípios de design (formalizado 2026-07-31)
+
+Projeto é majoritariamente funcional (Lambdas, componentes React/Vue funcionais) — SOLID não se aplica bem aqui e não deve ser forçado. Três princípios já guiam decisões reais do projeto e devem continuar guiando, sempre com julgamento de custo/risco, nunca como regra cega:
+
+- **DRY** — motivação por trás dos componentes reutilizáveis do design system (`Pill`, `Kicker`/`IndexNumber`, `IconTile`, `FaqSection`, `BeneficiosSection`, `FullwidthCallout`, ver §10). Contrapeso deliberado: CSS legado duplicado (177 arquivos `.css` globais, ex-sistemas de botão) **não é migrado retroativamente** só por causa de duplicação — risco de regressão visual maior que o ganho.
+- **KISS** — motivação por trás de escolher a solução mais simples que resolve o problema atual: Algolia em vez de OpenSearch (#16), cron+Lambda em vez de DynamoDB Streams para reconciliação de contador (#23), CloudFront invalidation (Fase 1) em vez da infra completa de on-demand revalidation (Fase 2, #28).
+- **YAGNI** — não construir capacidade antes de um gatilho real de necessidade: mesmos itens #16/#23/#28 acima têm gatilho explícito documentado para revisitar; `icone_fa`/assets de `/sobre` (#40/#41) implementados na origem mas com a *seção* de consumo deliberadamente não construída até decisão de Marcelo.
+
 ### Protocolo de início de sessão
 1. Ler seção "⚡ PRÓXIMA SESSÃO" do `.project-context.md`
 2. Se houver dúvida sobre estado real da infra, validar via AWS CLI (profile `claude-dev`)
@@ -385,6 +393,15 @@ Auditoria que motivou esta regra: sessão 44 encontrou `.project-context.md` com
 ---
 
 ## 8. Commits e Pipeline
+
+### Estratégia de branch (formalizado 2026-07-31)
+
+GitFlow completo (`release/*`, `hotfix/*`, `support/*`) não foi adotado — ele resolve um problema de cadência de release versionada que este projeto não tem (CD dispara em todo push em `develop`, sem ambiente de produção ainda). Variante simplificada, coerente com o fluxo já existente:
+
+- **`main`** — snapshot estável. Não recebe commit direto.
+- **`develop`** — branch de integração. Todo trabalho converge pra cá; push em `develop` dispara o pipeline CD (build → terraform apply → deploy). Continua sendo onde o trabalho do dia a dia acontece, como já era antes desta formalização.
+- **`feature/*` / `fix/*`** — de vida curta, nascem de `develop`, voltam via PR. Nome do branch reflete o tipo do Conventional Commit predominante (`feature/nome-curto`, `fix/nome-curto`). Usar para mudanças que fazem sentido revisar como unidade antes de entrar em `develop` (ex.: a próxima rodada de a11y) — não é obrigatório para ajustes pontuais de uma linha, que podem seguir direto em `develop` como já acontecia.
+- **Sem `release/*`/`hotfix/*` por enquanto** — não há ambiente de produção nem versionamento formal que justifique isolar uma correção urgente do que está em desenvolvimento. **Gatilho pra revisitar**: produção existir de fato, criando um cenário real de "corrigir prod sem levar junto o que ainda está em `develop`".
 
 **Conventional Commits** obrigatório:
 ```
