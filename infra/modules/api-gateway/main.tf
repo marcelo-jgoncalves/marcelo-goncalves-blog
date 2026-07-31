@@ -296,16 +296,10 @@ resource "aws_api_gateway_integration" "admin_post_slug_integration" {
   uri                     = var.admin_posts_invoke_arn # Reutilizamos a mesma Lambda!
 }
 
-# --- CORS para /admin/post/{slug} (OPTIONS) ---
-resource "aws_api_gateway_method" "admin_post_slug_options" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_post_slug.id
-  http_method   = "OPTIONS"
-  authorization = "NONE"
-}
-
-
-# --- Adicionar em infra/modules/api_gateway/main.tf ---
+# --- CORS (OPTIONS) para /admin/post/{slug}, /admin/autor/{id},
+# /admin/posts, /admin/media/upload-url, /admin/categorias e
+# /admin/categorias/{slug} -- ver local.cors_preflight_endpoints e os 4
+# resources for_each "cors_preflight" logo antes de aws_api_gateway_deployment.main.
 
 # --- Recursos de Autores (Admin) ---
 
@@ -329,50 +323,7 @@ resource "aws_api_gateway_integration" "admin_autor_id_integration" {
   uri                     = var.admin_authors_invoke_arn
 }
 
-# 2. OPTIONS /admin/autor/{id} (CORS)
-resource "aws_api_gateway_method" "admin_autor_id_options" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_autor_id.id
-  http_method   = "OPTIONS"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "admin_autor_id_options_integration" {
-  rest_api_id       = aws_api_gateway_rest_api.main.id
-  resource_id       = aws_api_gateway_resource.admin_autor_id.id
-  http_method       = aws_api_gateway_method.admin_autor_id_options.http_method
-  type              = "MOCK"
-  request_templates = { "application/json" = "{\"statusCode\": 200}" }
-}
-
-resource "aws_api_gateway_method_response" "admin_autor_id_options_200" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_autor_id.id
-  http_method = aws_api_gateway_method.admin_autor_id_options.http_method
-  status_code = "200"
-
-  response_models = { "application/json" = "Empty" }
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "admin_autor_id_options_response" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_autor_id.id
-  http_method = aws_api_gateway_method.admin_autor_id_options.http_method
-  status_code = aws_api_gateway_method_response.admin_autor_id_options_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-  depends_on = [aws_api_gateway_method_response.admin_autor_id_options_200]
-}
+# OPTIONS /admin/autor/{id} (CORS) -- ver local.cors_preflight_endpoints
 
 # Permissão para o Gateway invocar a Lambda
 resource "aws_lambda_permission" "apigw_admin_authors" {
@@ -408,44 +359,6 @@ resource "aws_api_gateway_method" "get_populares" {
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "admin_post_slug_options_integration" {
-  rest_api_id       = aws_api_gateway_rest_api.main.id
-  resource_id       = aws_api_gateway_resource.admin_post_slug.id
-  http_method       = aws_api_gateway_method.admin_post_slug_options.http_method
-  type              = "MOCK"
-  request_templates = { "application/json" = "{\"statusCode\": 200}" }
-}
-
-resource "aws_api_gateway_method_response" "admin_post_slug_options_200" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_post_slug.id
-  http_method = aws_api_gateway_method.admin_post_slug_options.http_method
-  status_code = "200"
-
-  response_models = { "application/json" = "Empty" }
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "admin_post_slug_options_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_post_slug.id
-  http_method = aws_api_gateway_method.admin_post_slug_options.http_method
-  status_code = aws_api_gateway_method_response.admin_post_slug_options_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  depends_on = [aws_api_gateway_method_response.admin_post_slug_options_200]
-}
-
 # Método ANY em /admin/posts (Protegido pelo Cognito)
 resource "aws_api_gateway_method" "admin_posts_any" {
   rest_api_id = aws_api_gateway_rest_api.main.id
@@ -467,58 +380,7 @@ resource "aws_api_gateway_integration" "admin_posts_integration" {
   uri                     = var.admin_posts_invoke_arn
 }
 
-# Método OPTIONS em /admin/posts (Público para CORS Preflight)
-resource "aws_api_gateway_method" "admin_posts_options" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_posts.id
-  http_method   = "OPTIONS"
-  authorization = "NONE" # 🔓 Aberto para o navegador testar
-}
-
-# Integração Mock (Responde 200 OK direto do Gateway, sem acordar a Lambda)
-resource "aws_api_gateway_integration" "admin_posts_options_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_posts.id
-  http_method = aws_api_gateway_method.admin_posts_options.http_method
-  type        = "MOCK"
-
-  request_templates = {
-    "application/json" = "{\"statusCode\": 200}"
-  }
-}
-
-# Resposta do Mock (Cabeçalhos CORS)
-resource "aws_api_gateway_method_response" "admin_posts_options_200" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_posts.id
-  http_method = aws_api_gateway_method.admin_posts_options.http_method
-  status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "admin_posts_options_integration_response" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_posts.id
-  http_method = aws_api_gateway_method.admin_posts_options.http_method
-  status_code = aws_api_gateway_method_response.admin_posts_options_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  depends_on = [aws_api_gateway_method_response.admin_posts_options_200]
-}
+# OPTIONS /admin/posts (CORS Preflight) -- ver local.cors_preflight_endpoints
 
 resource "aws_lambda_permission" "apigw_admin_posts" {
   statement_id  = "AllowAPIGatewayInvokeAdminPosts"
@@ -572,51 +434,9 @@ resource "aws_api_gateway_integration" "media_upload_integration" {
   uri                     = var.media_upload_invoke_arn
 }
 
-# Método OPTIONS (CORS Público)
-resource "aws_api_gateway_method" "media_upload_options" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_media_upload.id
-  http_method   = "OPTIONS"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "media_upload_options_integration" {
-  rest_api_id       = aws_api_gateway_rest_api.main.id
-  resource_id       = aws_api_gateway_resource.admin_media_upload.id
-  http_method       = aws_api_gateway_method.media_upload_options.http_method
-  type              = "MOCK"
-  request_templates = { "application/json" = "{\"statusCode\": 200}" }
-}
-
-resource "aws_api_gateway_method_response" "media_upload_options_200" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_media_upload.id
-  http_method = aws_api_gateway_method.media_upload_options.http_method
-  status_code = "200"
-
-  response_models = { "application/json" = "Empty" }
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "media_upload_options_response" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_media_upload.id
-  http_method = aws_api_gateway_method.media_upload_options.http_method
-  status_code = aws_api_gateway_method_response.media_upload_options_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  depends_on = [aws_api_gateway_method_response.media_upload_options_200]
-}
+# OPTIONS /admin/media/upload-url (CORS) -- ver local.cors_preflight_endpoints
+# Único endpoint com Allow-Methods diferente (POST,OPTIONS -- não aceita
+# GET/PUT/DELETE, é upload-only), parametrizado no map em vez de ser exceção.
 
 resource "aws_lambda_permission" "apigw_media_upload" {
   statement_id  = "AllowAPIGatewayInvokeMediaUpload"
@@ -889,50 +709,7 @@ resource "aws_api_gateway_integration" "admin_categorias_integration" {
   uri                     = var.admin_categorias_invoke_arn
 }
 
-resource "aws_api_gateway_method" "admin_categorias_options" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_categorias.id
-  http_method   = "OPTIONS"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "admin_categorias_options_integration" {
-  rest_api_id       = aws_api_gateway_rest_api.main.id
-  resource_id       = aws_api_gateway_resource.admin_categorias.id
-  http_method       = aws_api_gateway_method.admin_categorias_options.http_method
-  type              = "MOCK"
-  request_templates = { "application/json" = "{\"statusCode\": 200}" }
-}
-
-resource "aws_api_gateway_method_response" "admin_categorias_options_200" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_categorias.id
-  http_method = aws_api_gateway_method.admin_categorias_options.http_method
-  status_code = "200"
-
-  response_models = { "application/json" = "Empty" }
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "admin_categorias_options_response" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_categorias.id
-  http_method = aws_api_gateway_method.admin_categorias_options.http_method
-  status_code = aws_api_gateway_method_response.admin_categorias_options_200.status_code
-
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  depends_on = [aws_api_gateway_method_response.admin_categorias_options_200]
-}
+# OPTIONS /admin/categorias (CORS) -- ver local.cors_preflight_endpoints
 
 resource "aws_api_gateway_method" "admin_categorias_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
@@ -951,25 +728,180 @@ resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
   uri                     = var.admin_categorias_invoke_arn
 }
 
-resource "aws_api_gateway_method" "admin_categorias_slug_options" {
+# OPTIONS /admin/categorias/{slug} (CORS) -- ver local.cors_preflight_endpoints
+
+resource "aws_lambda_permission" "apigw_admin_categorias" {
+  statement_id  = "AllowAPIGatewayInvokeAdminCategorias"
+  action        = "lambda:InvokeFunction"
+  function_name = var.admin_categorias_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+}
+
+# --- CORS Preflight (OPTIONS) compartilhado ---
+# Os 6 endpoints abaixo tinham o mesmo padrão de 4 recursos (method OPTIONS +
+# integration MOCK + method_response 200 + integration_response) copiado à
+# mão. Unificado em for_each -- só media_upload diverge de verdade
+# (Allow-Methods "POST,OPTIONS" em vez de "GET,OPTIONS,POST,PUT,DELETE"),
+# por isso vira parâmetro do map em vez de virar exceção fora do padrão.
+#
+# Os 24 `moved` abaixo (6 endpoints x 4 tipos de recurso) preservam o
+# mapeamento no state -- sem eles, essa mudança de endereço seria
+# destroy+create de cada um desses recursos no próximo apply, derrubando
+# o preflight CORS daquela rota durante a janela do apply.
+moved {
+  from = aws_api_gateway_method.admin_post_slug_options
+  to   = aws_api_gateway_method.cors_preflight["admin_post_slug"]
+}
+moved {
+  from = aws_api_gateway_integration.admin_post_slug_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["admin_post_slug"]
+}
+moved {
+  from = aws_api_gateway_method_response.admin_post_slug_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["admin_post_slug"]
+}
+moved {
+  from = aws_api_gateway_integration_response.admin_post_slug_options_integration_response
+  to   = aws_api_gateway_integration_response.cors_preflight["admin_post_slug"]
+}
+
+moved {
+  from = aws_api_gateway_method.admin_autor_id_options
+  to   = aws_api_gateway_method.cors_preflight["admin_autor_id"]
+}
+moved {
+  from = aws_api_gateway_integration.admin_autor_id_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["admin_autor_id"]
+}
+moved {
+  from = aws_api_gateway_method_response.admin_autor_id_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["admin_autor_id"]
+}
+moved {
+  from = aws_api_gateway_integration_response.admin_autor_id_options_response
+  to   = aws_api_gateway_integration_response.cors_preflight["admin_autor_id"]
+}
+
+moved {
+  from = aws_api_gateway_method.admin_posts_options
+  to   = aws_api_gateway_method.cors_preflight["admin_posts"]
+}
+moved {
+  from = aws_api_gateway_integration.admin_posts_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["admin_posts"]
+}
+moved {
+  from = aws_api_gateway_method_response.admin_posts_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["admin_posts"]
+}
+moved {
+  from = aws_api_gateway_integration_response.admin_posts_options_integration_response
+  to   = aws_api_gateway_integration_response.cors_preflight["admin_posts"]
+}
+
+moved {
+  from = aws_api_gateway_method.media_upload_options
+  to   = aws_api_gateway_method.cors_preflight["media_upload"]
+}
+moved {
+  from = aws_api_gateway_integration.media_upload_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["media_upload"]
+}
+moved {
+  from = aws_api_gateway_method_response.media_upload_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["media_upload"]
+}
+moved {
+  from = aws_api_gateway_integration_response.media_upload_options_response
+  to   = aws_api_gateway_integration_response.cors_preflight["media_upload"]
+}
+
+moved {
+  from = aws_api_gateway_method.admin_categorias_options
+  to   = aws_api_gateway_method.cors_preflight["admin_categorias"]
+}
+moved {
+  from = aws_api_gateway_integration.admin_categorias_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["admin_categorias"]
+}
+moved {
+  from = aws_api_gateway_method_response.admin_categorias_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["admin_categorias"]
+}
+moved {
+  from = aws_api_gateway_integration_response.admin_categorias_options_response
+  to   = aws_api_gateway_integration_response.cors_preflight["admin_categorias"]
+}
+
+moved {
+  from = aws_api_gateway_method.admin_categorias_slug_options
+  to   = aws_api_gateway_method.cors_preflight["admin_categorias_slug"]
+}
+moved {
+  from = aws_api_gateway_integration.admin_categorias_slug_options_integration
+  to   = aws_api_gateway_integration.cors_preflight["admin_categorias_slug"]
+}
+moved {
+  from = aws_api_gateway_method_response.admin_categorias_slug_options_200
+  to   = aws_api_gateway_method_response.cors_preflight_200["admin_categorias_slug"]
+}
+moved {
+  from = aws_api_gateway_integration_response.admin_categorias_slug_options_response
+  to   = aws_api_gateway_integration_response.cors_preflight["admin_categorias_slug"]
+}
+
+locals {
+  cors_preflight_endpoints = {
+    admin_post_slug = {
+      resource_id   = aws_api_gateway_resource.admin_post_slug.id
+      allow_methods = "GET,OPTIONS,POST,PUT,DELETE"
+    }
+    admin_autor_id = {
+      resource_id   = aws_api_gateway_resource.admin_autor_id.id
+      allow_methods = "GET,OPTIONS,POST,PUT,DELETE"
+    }
+    admin_posts = {
+      resource_id   = aws_api_gateway_resource.admin_posts.id
+      allow_methods = "GET,OPTIONS,POST,PUT,DELETE"
+    }
+    media_upload = {
+      resource_id   = aws_api_gateway_resource.admin_media_upload.id
+      allow_methods = "POST,OPTIONS"
+    }
+    admin_categorias = {
+      resource_id   = aws_api_gateway_resource.admin_categorias.id
+      allow_methods = "GET,OPTIONS,POST,PUT,DELETE"
+    }
+    admin_categorias_slug = {
+      resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+      allow_methods = "GET,OPTIONS,POST,PUT,DELETE"
+    }
+  }
+}
+
+resource "aws_api_gateway_method" "cors_preflight" {
+  for_each      = local.cors_preflight_endpoints
   rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.admin_categorias_slug.id
+  resource_id   = each.value.resource_id
   http_method   = "OPTIONS"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "admin_categorias_slug_options_integration" {
+resource "aws_api_gateway_integration" "cors_preflight" {
+  for_each          = local.cors_preflight_endpoints
   rest_api_id       = aws_api_gateway_rest_api.main.id
-  resource_id       = aws_api_gateway_resource.admin_categorias_slug.id
-  http_method       = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  resource_id       = each.value.resource_id
+  http_method       = aws_api_gateway_method.cors_preflight[each.key].http_method
   type              = "MOCK"
   request_templates = { "application/json" = "{\"statusCode\": 200}" }
 }
 
-resource "aws_api_gateway_method_response" "admin_categorias_slug_options_200" {
+resource "aws_api_gateway_method_response" "cors_preflight_200" {
+  for_each    = local.cors_preflight_endpoints
   rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_categorias_slug.id
-  http_method = aws_api_gateway_method.admin_categorias_slug_options.http_method
+  resource_id = each.value.resource_id
+  http_method = aws_api_gateway_method.cors_preflight[each.key].http_method
   status_code = "200"
 
   response_models = { "application/json" = "Empty" }
@@ -981,27 +913,20 @@ resource "aws_api_gateway_method_response" "admin_categorias_slug_options_200" {
   }
 }
 
-resource "aws_api_gateway_integration_response" "admin_categorias_slug_options_response" {
+resource "aws_api_gateway_integration_response" "cors_preflight" {
+  for_each    = local.cors_preflight_endpoints
   rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.admin_categorias_slug.id
-  http_method = aws_api_gateway_method.admin_categorias_slug_options.http_method
-  status_code = aws_api_gateway_method_response.admin_categorias_slug_options_200.status_code
+  resource_id = each.value.resource_id
+  http_method = aws_api_gateway_method.cors_preflight[each.key].http_method
+  status_code = aws_api_gateway_method_response.cors_preflight_200[each.key].status_code
 
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Methods" = "'${each.value.allow_methods}'",
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 
-  depends_on = [aws_api_gateway_method_response.admin_categorias_slug_options_200]
-}
-
-resource "aws_lambda_permission" "apigw_admin_categorias" {
-  statement_id  = "AllowAPIGatewayInvokeAdminCategorias"
-  action        = "lambda:InvokeFunction"
-  function_name = var.admin_categorias_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
+  depends_on = [aws_api_gateway_method_response.cors_preflight_200]
 }
 
 # Triggers
@@ -1036,24 +961,17 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_resource.admin_posts,
       aws_api_gateway_method.admin_posts_any,
       aws_api_gateway_integration.admin_posts_integration,
-      aws_api_gateway_method.admin_posts_options,
-      aws_api_gateway_integration.admin_posts_options_integration,
       # --- Recursos Admin Singular (NOVOS - /admin/post/{slug}) ---
       aws_api_gateway_resource.admin_post_singular,
       aws_api_gateway_resource.admin_post_slug,
       # Método ANY (Protegido)
       aws_api_gateway_method.admin_post_slug_any,
       aws_api_gateway_integration.admin_post_slug_integration,
-      # Método OPTIONS (CORS)
-      aws_api_gateway_method.admin_post_slug_options,
-      aws_api_gateway_integration.admin_post_slug_options_integration,
       # Método p/ MEDIA (CORS)
       aws_api_gateway_resource.admin_media,
       aws_api_gateway_resource.admin_media_upload,
       aws_api_gateway_method.media_upload_post,
       aws_api_gateway_integration.media_upload_integration,
-      aws_api_gateway_method.media_upload_options,
-      aws_api_gateway_integration_response.media_upload_options_response,
       aws_api_gateway_resource.posts_recentes,
       aws_api_gateway_method.get_recentes,
       aws_api_gateway_integration.get_recentes_integration,
@@ -1077,18 +995,21 @@ resource "aws_api_gateway_deployment" "main" {
       aws_api_gateway_resource.admin_autor_id,
       aws_api_gateway_method.admin_autor_id_any,
       aws_api_gateway_integration.admin_autor_id_integration,
-      aws_api_gateway_method.admin_autor_id_options,
-      aws_api_gateway_integration.admin_autor_id_options_integration,
       aws_api_gateway_resource.admin_categorias,
       aws_api_gateway_method.admin_categorias_any,
       aws_api_gateway_integration.admin_categorias_integration,
-      aws_api_gateway_method.admin_categorias_options,
-      aws_api_gateway_integration.admin_categorias_options_integration,
       aws_api_gateway_resource.admin_categorias_slug,
       aws_api_gateway_method.admin_categorias_slug_any,
       aws_api_gateway_integration.admin_categorias_slug_integration,
-      aws_api_gateway_method.admin_categorias_slug_options,
-      aws_api_gateway_integration.admin_categorias_slug_options_integration,
+      # --- CORS Preflight (OPTIONS), unificado em for_each ---
+      # Mapa inteiro em vez de 1 linha por recurso -- também fecha uma lacuna
+      # pré-existente: o trigger antigo só rastreava method+integration_response
+      # do media_upload_options (faltavam a integration MOCK e o
+      # method_response), então uma mudança neles não forçava redeploy.
+      aws_api_gateway_method.cors_preflight,
+      aws_api_gateway_integration.cors_preflight,
+      aws_api_gateway_method_response.cors_preflight_200,
+      aws_api_gateway_integration_response.cors_preflight,
       # Gateway Responses (CORS em erros do autorizador Cognito)
       # Referencia só o .id (nao o objeto inteiro) — o provider AWS recalcula
       # response_parameters durante o apply, e usar o objeto completo aqui
