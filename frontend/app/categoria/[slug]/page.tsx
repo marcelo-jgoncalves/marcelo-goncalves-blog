@@ -50,7 +50,7 @@ interface CategoryPageProps {
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params;
   const meta = CATEGORY_META[slug];
-  if (!meta) return { title: `Categoria Não Encontrada | ${SITE_NAME}` };
+  if (!meta) return { title: { absolute: `Categoria Não Encontrada | ${SITE_NAME}` } };
 
   const canonicalUrl = `${SITE_URL}/categoria/${slug}`;
   const title = `Artigos sobre ${meta.title} | ${SITE_NAME}`;

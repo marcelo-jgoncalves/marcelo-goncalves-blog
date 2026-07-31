@@ -429,6 +429,9 @@ async function publish() {
   await save()
   if (!toast.value || toast.value.type !== 'error') {
     showToast(form.value.status === 'Programado' ? 'Post agendado' : 'Post publicado')
+    // Toast vive nesta view (useToast não é singleton, ver composable) — sem
+    // esse delay, router.push desmonta o componente antes do toast ser visto.
+    await new Promise((resolve) => setTimeout(resolve, 1400))
     router.push('/')
   }
 }
