@@ -1,9 +1,11 @@
 variable "project_name" {
-  type = string
+  description = "Project name, used as prefix for all resource names"
+  type        = string
 }
 
 variable "environment" {
-  type = string
+  description = "Deployment environment (dev/prd)"
+  type        = string
 }
 
 variable "budget_monthly_limit_usd" {

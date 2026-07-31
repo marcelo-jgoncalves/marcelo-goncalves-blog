@@ -1,10 +1,12 @@
 
 variable "environment" {
-  type = string
+  description = "Deployment environment (dev/prd)"
+  type        = string
 }
 
 variable "project_name" {
-  type = string
+  description = "Project name, used as prefix for all table names"
+  type        = string
 }
 
 # Point-in-Time Recovery — desabilitado em dev por padrão (custo real, ~$0.20/GB-mês

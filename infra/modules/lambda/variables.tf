@@ -1,9 +1,32 @@
-variable "project_name" {}
-variable "environment" {}
-variable "posts_table_arn" {}
-variable "autores_table_arn" {}
-variable "uploads_bucket_name" {}
-variable "uploads_bucket_arn" {}
+variable "project_name" {
+  description = "Project name, used as prefix for all resource names"
+  type        = string
+}
+
+variable "environment" {
+  description = "Deployment environment (dev/prd)"
+  type        = string
+}
+
+variable "posts_table_arn" {
+  description = "ARN of the Posts DynamoDB table"
+  type        = string
+}
+
+variable "autores_table_arn" {
+  description = "ARN of the Autores DynamoDB table"
+  type        = string
+}
+
+variable "uploads_bucket_name" {
+  description = "Name of the S3 bucket for raw media uploads"
+  type        = string
+}
+
+variable "uploads_bucket_arn" {
+  description = "ARN of the S3 bucket for raw media uploads"
+  type        = string
+}
 
 variable "log_level" {
   description = "Log level for Lambda functions (DEBUG in dev, INFO in prod)"

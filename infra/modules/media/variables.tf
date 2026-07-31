@@ -1,8 +1,27 @@
-variable "project_name" {}
-variable "environment" {}
-variable "assets_bucket_name" {}
-variable "posts_table_arn" {}
-variable "posts_table_name" {}
+variable "project_name" {
+  description = "Project name, used as prefix for all resource names"
+  type        = string
+}
+
+variable "environment" {
+  description = "Deployment environment (dev/prd)"
+  type        = string
+}
+
+variable "assets_bucket_name" {
+  description = "Name of the S3 bucket where imageProcessor writes optimized media variants"
+  type        = string
+}
+
+variable "posts_table_arn" {
+  description = "ARN of the Posts DynamoDB table"
+  type        = string
+}
+
+variable "posts_table_name" {
+  description = "Name of the Posts DynamoDB table"
+  type        = string
+}
 
 variable "log_level" {
   description = "Log level for Lambda functions"

@@ -1,6 +1,17 @@
-variable "project_name" {}
-variable "environment" {}
-variable "api_url" {}
+variable "project_name" {
+  description = "Project name, used as prefix for all resource names"
+  type        = string
+}
+
+variable "environment" {
+  description = "Deployment environment (dev/prd)"
+  type        = string
+}
+
+variable "api_url" {
+  description = "Base URL of the API Gateway, injected as API_URL runtime env var into the nextjs-server Lambda"
+  type        = string
+}
 
 variable "log_retention_days" {
   description = "CloudWatch log retention in days"

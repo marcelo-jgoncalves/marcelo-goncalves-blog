@@ -1,15 +1,19 @@
 output "user_pool_id" {
-  value = aws_cognito_user_pool.admin_pool.id
+  description = "ID of the Cognito User Pool used for admin authentication"
+  value       = aws_cognito_user_pool.admin_pool.id
 }
 
 output "user_pool_client_id" {
-  value = aws_cognito_user_pool_client.admin_client.id
+  description = "ID of the Cognito User Pool App Client (SPA, no client secret)"
+  value       = aws_cognito_user_pool_client.admin_client.id
 }
 
 output "user_pool_arn" {
-  value = aws_cognito_user_pool.admin_pool.arn
+  description = "ARN of the Cognito User Pool, used by API Gateway's Cognito authorizer"
+  value       = aws_cognito_user_pool.admin_pool.arn
 }
 
 output "cognito_domain" {
-  value = aws_cognito_user_pool_domain.main.domain
+  description = "Cognito Hosted UI domain prefix"
+  value       = aws_cognito_user_pool_domain.main.domain
 }
