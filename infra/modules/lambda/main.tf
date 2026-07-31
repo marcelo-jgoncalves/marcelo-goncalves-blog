@@ -57,7 +57,7 @@ resource "aws_cloudwatch_log_group" "admin_authorizer" {
 
 resource "aws_lambda_function" "media_upload" {
   function_name = "${var.project_name}-${var.environment}-mediaUpload"
-  role          = aws_iam_role.mediaUpload_role.arn
+  role          = aws_iam_role.function_role["mediaUpload"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -80,7 +80,7 @@ resource "aws_lambda_function" "media_upload" {
 
 resource "aws_lambda_function" "get_post" {
   function_name = "${var.project_name}-${var.environment}-getPost"
-  role          = aws_iam_role.getPost_role.arn
+  role          = aws_iam_role.function_role["getPost"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -103,7 +103,7 @@ resource "aws_lambda_function" "get_post" {
 
 resource "aws_lambda_function" "get_author" {
   function_name = "${var.project_name}-${var.environment}-getAuthor"
-  role          = aws_iam_role.getAuthor_role.arn
+  role          = aws_iam_role.function_role["getAuthor"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -125,7 +125,7 @@ resource "aws_lambda_function" "get_author" {
 
 resource "aws_lambda_function" "get_posts" {
   function_name = "${var.project_name}-${var.environment}-getPosts"
-  role          = aws_iam_role.getPosts_role.arn
+  role          = aws_iam_role.function_role["getPosts"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -147,7 +147,7 @@ resource "aws_lambda_function" "get_posts" {
 
 resource "aws_lambda_function" "admin_posts" {
   function_name = "${var.project_name}-${var.environment}-adminPosts"
-  role          = aws_iam_role.adminPosts_role.arn
+  role          = aws_iam_role.function_role["adminPosts"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -171,7 +171,7 @@ resource "aws_lambda_function" "admin_posts" {
 
 resource "aws_lambda_function" "admin_authors" {
   function_name = "${var.project_name}-${var.environment}-adminAuthors"
-  role          = aws_iam_role.adminAuthors_role.arn
+  role          = aws_iam_role.function_role["adminAuthors"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -194,7 +194,7 @@ resource "aws_lambda_function" "admin_authors" {
 
 resource "aws_lambda_function" "admin_categorias" {
   function_name = "${var.project_name}-${var.environment}-adminCategorias"
-  role          = aws_iam_role.adminCategorias_role.arn
+  role          = aws_iam_role.function_role["adminCategorias"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 512
@@ -218,7 +218,7 @@ resource "aws_lambda_function" "admin_categorias" {
 # --- adminSession (BFF): exchanges the client-side SRP idToken for an opaque session ---
 resource "aws_lambda_function" "admin_session" {
   function_name = "${var.project_name}-${var.environment}-adminSession"
-  role          = aws_iam_role.adminSession_role.arn
+  role          = aws_iam_role.function_role["adminSession"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 256
@@ -247,7 +247,7 @@ resource "aws_lambda_function" "admin_session" {
 # confirming the cookie flow working end to end in production. ---
 resource "aws_lambda_function" "admin_authorizer" {
   function_name = "${var.project_name}-${var.environment}-adminAuthorizer"
-  role          = aws_iam_role.adminAuthorizer_role.arn
+  role          = aws_iam_role.function_role["adminAuthorizer"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   memory_size   = 256
@@ -270,11 +270,11 @@ resource "aws_lambda_function" "admin_authorizer" {
 }
 
 # --- PostSchedulerLambda ---
-# IAM role/policy individual em lambda-iam.tf (aws_iam_role.postScheduler_role).
+# IAM role/policy individual em lambda-iam.tf (aws_iam_role.function_role["postScheduler"]).
 
 resource "aws_lambda_function" "post_scheduler" {
   function_name = "${var.project_name}-${var.environment}-postScheduler"
-  role          = aws_iam_role.postScheduler_role.arn
+  role          = aws_iam_role.function_role["postScheduler"].arn
   handler       = "index.handler"
   runtime       = "nodejs20.x"
   timeout       = 30

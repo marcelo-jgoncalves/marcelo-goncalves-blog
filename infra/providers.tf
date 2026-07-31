@@ -1,5 +1,12 @@
 
 terraform {
+  # Trava alinhada à versão real usada pelo CD (.github/workflows/cd.yml e
+  # deploy.yml, TERRAFORM_VERSION/terraform_version: 1.8.0) -- terraform
+  # apply só roda via pipeline (nunca local), então essa é a versão que
+  # realmente escreve o state; um terraform local mais novo é bloqueado
+  # aqui em vez de arriscar gravar um state em formato incompatível.
+  required_version = "~> 1.8"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
