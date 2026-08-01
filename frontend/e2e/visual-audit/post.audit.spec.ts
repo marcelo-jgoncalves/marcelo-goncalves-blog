@@ -12,12 +12,10 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/post.html').repl
 
 const POST_SLUG = 'como-construir-prompts-poderosos-para-ias-como-gpt-ou-gemini';
 
-// post-cta-adv-in/post-adv-card ficaram de fora: a página deixou de reusar
-// AdvisoryCta nessa posição e passou a ter sua própria seção compacta
-// "CTA CONTEXTUAL" (post-cta-editorial, ver app/post/[slug]/page.tsx) —
-// mesma mudança de design já feita em /o-projeto. Não há correspondência
-// visual válida entre o card do AdvisoryCta (protótipo) e a seção atual,
-// então a comparação pixel a pixel deixou de fazer sentido para essa seção.
+// post-cta-adv-in/post-adv-card are excluded: the page no longer reuses
+// AdvisoryCta there — it has its own compact "CTA CONTEXTUAL" section
+// instead (post-cta-editorial, see app/post/[slug]/page.tsx), so there's no
+// valid visual correspondence to compare pixel-by-pixel against.
 const TARGETS = [
   'post-hero',
   'post-hero-in',
@@ -46,14 +44,15 @@ test('post: audit protótipo vs app', async ({ page }) => {
     console.log(report);
   }
 
-  // Divergências esperadas (não são bugs de CSS):
-  // - post-layout/margin: getComputedStyle reporta "0px" para margin auto-centering
-  //   em grid containers aninhados (article > main > body), embora o boundingClientRect
-  //   seja idêntico ao protótipo (left/right/width iguais — centralização correta).
-  // - post-authorbox/gridTemplateColumns: autor sem linkedin/github/instagram_url
-  //   cadastrados (backlog #1, aguarda Marcelo) — PostFooter omite .abSocial e a
-  //   3ª track "auto" colapsa para 0px. Volta a bater com o protótipo quando as
-  //   redes sociais reais forem cadastradas.
+  // Expected divergences (not CSS bugs):
+  // - post-layout/margin: getComputedStyle reports "0px" for auto-centering
+  //   margin in nested grid containers (article > main > body), even though
+  //   the boundingClientRect matches the prototype (same left/right/width —
+  //   centering is correct).
+  // - post-authorbox/gridTemplateColumns: without linkedin/github/
+  //   instagram_url set on the author, PostFooter omits .abSocial and the
+  //   3rd "auto" track collapses to 0px. Matches the prototype once real
+  //   social links are set.
   const KNOWN_DIVERGENCES = new Set([
     'post-layout::margin',
     'post-authorbox::gridTemplateColumns',

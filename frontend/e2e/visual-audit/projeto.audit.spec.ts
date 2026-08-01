@@ -10,14 +10,14 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/projeto.html').replace(/\\/g, '/')}`;
 
-// A página foi reescrita por completo depois deste protótipo (novas
-// seções "Por que construir"/"Estado atual"/"Arquitetura"/"Princípios de
-// engenharia"/"Fluxo editorial", roadmap agrupado por período em vez de
-// cards com status, CTA final própria em vez de reusar AdvisoryCta) — a
-// maioria das seções do fixture não tem mais correspondente estrutural
-// direto no app, e comparar conteúdos com formas diferentes não faz
-// sentido. op-hero e op-tl-card são os únicos dois pontos onde protótipo
-// e app ainda representam exatamente a mesma coisa.
+// The page has a different structure than this prototype (new "Por que
+// construir"/"Estado atual"/"Arquitetura"/"Princípios de engenharia"/"Fluxo
+// editorial" sections, roadmap grouped by period instead of status cards,
+// its own final CTA instead of reusing AdvisoryCta) — most fixture sections
+// have no direct structural counterpart left in the app, so comparing
+// differently-shaped content wouldn't be meaningful. op-hero and op-tl-card
+// are the only two points where prototype and app still represent exactly
+// the same thing.
 const TARGETS = [
   'op-hero',
   'op-tl-card',

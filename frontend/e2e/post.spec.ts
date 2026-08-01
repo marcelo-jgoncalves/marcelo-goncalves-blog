@@ -1,8 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// Navega até o primeiro post disponível a partir de /artigos
-// e valida a estrutura da página de post individual (Redesign 2026).
-
 test.describe('post individual', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/artigos', { waitUntil: 'networkidle' });
@@ -39,9 +36,8 @@ test.describe('post individual', () => {
     await expect(page.locator('[data-audit="post-share"]')).toBeVisible();
   });
 
-  // ReadingProgressBar mora no Header (global, ver components/layout/Header.tsx)
-  // desde a sessão 47 — deixou de ser exclusiva da página de post. O teste
-  // valida apenas que o indicador existe, sem exclusividade por rota.
+  // ReadingProgressBar lives in Header (components/layout/Header.tsx), not
+  // scoped to the post route, so this only checks the indicator is present.
   test('reading progress bar presente', async ({ page }) => {
     await expect(page.locator('[role="progressbar"]')).toBeAttached();
   });

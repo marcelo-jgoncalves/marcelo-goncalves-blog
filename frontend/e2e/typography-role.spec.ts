@@ -1,16 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Camada 4 da estratégia de tokens (CLAUDE.md §5, "Papel → token mínimo").
- * O Stylelint (camada 2) só garante que ALGUM token válido da escala foi
- * usado — nunca que seja o token certo pro papel do elemento (texto de
- * leitura, link/CTA, título de card). Este teste verifica o resultado
- * final (computed font-size em mobile), não qual token CSS foi usado pra
- * chegar lá — assim ele continua válido mesmo se um seletor trocar de
- * token no futuro, desde que o valor renderizado respeite o piso do papel.
- *
- * Se um teste aqui falhar: não é bug de token errado, é uma regressão de
- * hierarquia — ver CLAUDE.md §5 antes de simplesmente subir o número.
+ * Stylelint only enforces that SOME valid token from the scale is used,
+ * never that it's the right token for the element's role (reading text,
+ * link/CTA, card title — see CLAUDE.md §5 "Papel -> token mínimo"). This
+ * checks the rendered outcome (computed font-size on mobile) instead of
+ * which CSS token produced it, so it stays valid even if a selector's
+ * token changes later, as long as the rendered value still meets the
+ * role's floor.
  */
 
 const MOBILE_VIEWPORT = { width: 375, height: 812 };
@@ -21,9 +18,9 @@ interface RoleCheck {
   minPx: number;
 }
 
-// Piso por papel, espelhando a tabela de CLAUDE.md §5:
-// leitura >= 16px (--type-body-sm), link/CTA >= 14px (--type-label),
-// título de card >= 20px (--type-lead).
+// Mirrors the role table in CLAUDE.md §5: reading text >= 16px
+// (--type-body-sm), link/CTA >= 14px (--type-label), card title >= 20px
+// (--type-lead).
 const HOME_CHECKS: RoleCheck[] = [
   { role: 'texto de leitura', selector: '.pillar-card > p', minPx: 16 },
   { role: 'texto de leitura', selector: '.ih-case-text p', minPx: 16 },
@@ -35,15 +32,15 @@ const HOME_CHECKS: RoleCheck[] = [
   { role: 'título de card', selector: '.ih-case-text h3', minPx: 20 },
 ];
 
-// Depende de posts recentes existirem (seção condicional em page.tsx) —
-// só roda se a API/backend estiver disponível, como os demais testes de
-// PostCard nesta suíte (ver home-layout.spec.ts).
+// Depends on recent posts existing (conditional section in page.tsx) — only
+// runs when the API/backend is reachable, same as the other PostCard checks
+// in this suite (see home-layout.spec.ts).
 const HOME_BLOG_CHECKS: RoleCheck[] = [
   { role: 'texto de leitura', selector: '.post-card .pc-excerpt', minPx: 16 },
   { role: 'link/CTA interativo', selector: '.post-card .pc-foot .read-article', minPx: 14 },
 ];
 
-test.describe('Tokens de tipografia por papel (mobile, 375px) — CLAUDE.md §5', () => {
+test.describe('Tokens de tipografia por papel (mobile, 375px)', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize(MOBILE_VIEWPORT);
     await page.goto('/');

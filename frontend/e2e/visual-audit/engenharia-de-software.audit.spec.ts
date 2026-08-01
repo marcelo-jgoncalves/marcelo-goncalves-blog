@@ -12,17 +12,15 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/engenharia-de-software.html').replace(/\\/g, '/')}`;
 
-// esw-hero e esw-cta-final ficaram fora do diff literal contra o protótipo: por
-// pedido explícito (2026-07-11), essas duas seções passaram a usar os componentes
-// padrão do projeto (PageHero/AdvisoryCta, já usados em /servicos, /contato etc.)
-// em vez de replicar o padding/grid inline do protótipo standalone — a régua de
-// correção aqui é "bate com o componente reutilizável", não "bate pixel a pixel
-// com o protótipo". Ver frontend/components/ui/PageHero.tsx e AdvisoryCta.tsx.
+// esw-hero and esw-cta-final are excluded from the literal diff: both
+// sections use the project's shared components (PageHero/AdvisoryCta)
+// instead of replicating the standalone prototype's inline padding/grid —
+// the bar here is "matches the reusable component", not pixel parity with
+// the prototype. See frontend/components/ui/PageHero.tsx and AdvisoryCta.tsx.
 //
-// esw-principios também ficou fora: a pedido de Marcelo (2026-07-11), a seção
-// "Maturidade Técnica" passou a usar as cores de app/cloud-devops/page.module.css
-// .especialidades (fundo sand, não mais petrol-deep) — desvio intencional do
-// protótipo, mesmo raciocínio do hero/cta-final acima.
+// esw-principios is also excluded: "Maturidade Técnica" intentionally uses
+// the .especialidades color scheme from app/cloud-devops/page.module.css
+// (sand background, not petrol-deep) instead of the prototype's colors.
 const TARGETS = [
   'esw-solucoes',
   'esw-card',
@@ -47,12 +45,12 @@ test('engenharia-de-software (/software): audit protótipo vs app', async ({ pag
     console.log(report);
   }
 
-  // Todos os 9 alvos são wrappers de <section> sem texto direto — o app herda o
-  // font-size base do projeto (18px, CLAUDE.md §7 escala tipográfica) enquanto o
-  // fixture (renderizado via file://) herda o default do browser (16px). Não afeta
-  // nenhum texto real: todo conteúdo visível está em elementos filhos com font-size
-  // explícito próprio (ver page.module.css). lineHeight "normal" vs "28.8px" é
-  // consequência direta do mesmo font-size base, mesma causa.
+  // All targets are <section> wrappers with no direct text: the app inherits
+  // the project's base font-size (18px) while the fixture (file://, no font
+  // CDN) inherits the browser default (16px). Doesn't affect real text —
+  // every visible element has its own explicit font-size (see
+  // page.module.css). The lineHeight diff ("normal" vs "28.8px") is a direct
+  // consequence of the same base font-size gap.
   const knownIntentionalDiffs = diffs.filter(
     (d) => d.property === 'fontFamily' || d.property === 'fontSize' || d.property === 'lineHeight',
   );

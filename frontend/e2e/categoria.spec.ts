@@ -29,10 +29,9 @@ test.describe('página /categoria/:slug', () => {
     await expect(page.locator('[data-audit="newsletter-cta"]')).toBeVisible();
   });
 
-  // Breakpoint real do menu desktop é 1300px (Header.module.css) — abaixo
-  // disso o link some do nav e vira hambúrguer. O viewport padrão do
-  // Playwright (1280px) cai nesse breakpoint, então fixamos um viewport
-  // largo aqui para exercitar o link do jeito que é usado na prática.
+  // The desktop nav breakpoint is 1300px (Header.module.css); below it the
+  // link collapses into the hamburger menu. Playwright's default viewport
+  // (1280px) falls under that threshold, so a wider viewport is set here.
   test('link de navegação para /artigos acessível (desktop)', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const link = page.locator('a[href="/artigos"]').first();

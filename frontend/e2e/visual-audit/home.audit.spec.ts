@@ -3,17 +3,15 @@
  * Audit visual da curadoria de artigos: compara computed styles do
  * protótipo (fixtures/home.html) com o app renderizado em "/artigos".
  *
- * O fixture "home.html" corresponde ao design da antiga Home (blog
- * curado) — desde o pivô institucional da sessão 42 (ver CLAUDE.md §10
- * item #44), esse papel passou para a rota /artigos, e a raiz "/" virou
- * a Home institucional. O nome do arquivo ficou como estava por não
- * termos renomeado o fixture na mudança de rota.
+ * The "home.html" fixture matches the curated-blog design that now lives
+ * at /artigos (the root "/" route is the institutional Home instead) —
+ * the fixture file wasn't renamed when the route changed.
  *
- * TARGETS restrito às chaves que o fixture e a implementação real de
- * /artigos (frontend/app/artigos/page.tsx) têm em comum — algumas
- * seções do protótipo original (stats strip no hero, faixa de CTA
- * própria do bloco "O Projeto") foram simplificadas na implementação e
- * não têm data-audit correspondente hoje.
+ * TARGETS is restricted to the keys that both the fixture and the real
+ * /artigos implementation (frontend/app/artigos/page.tsx) share — some
+ * prototype sections (hero stats strip, "O Projeto" block's own CTA
+ * strip) were simplified in the implementation and have no matching
+ * data-audit today.
  *
  * Referência: specs/VALIDATION-STRATEGY.md
  */

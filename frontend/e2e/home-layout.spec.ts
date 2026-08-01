@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// A Home institucional (pivô da sessão 42, ver CLAUDE.md) substituiu o
-// antigo layout "sidebar + widgets" do blog. Estes testes validam a
-// estrutura real de hoje: hero + 4 pilares de serviço, metodologia,
-// resultados/cases, teaser de blog e CTA final.
+// Home is the institutional landing page (hero + 4 service pillars,
+// methodology, results/cases, blog teaser, final CTA), not a blog layout.
 
 const BASE = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
 

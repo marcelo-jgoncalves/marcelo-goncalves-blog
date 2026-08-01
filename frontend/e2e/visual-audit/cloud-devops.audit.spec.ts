@@ -12,11 +12,9 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/cloud-devops.html').replace(/\\/g, '/')}`;
 
-// cd-hero e cd-cta-final ficam fora do diff literal contra o protótipo: essas duas
-// seções usam os componentes padrão do projeto (PageHero/AdvisoryCta, já usados em
-// /servicos, /contato, /engenharia-de-software) em vez de replicar o padding/grid
-// inline do protótipo standalone — mesma decisão e mesmo motivo documentados em
-// engenharia-de-software.audit.spec.ts.
+// cd-hero and cd-cta-final are excluded from the literal diff: both sections
+// use the project's shared components (PageHero/AdvisoryCta) instead of
+// replicating the standalone prototype's inline padding/grid.
 const TARGETS = [
   'cd-atuacao',
   'cd-card',
@@ -41,11 +39,11 @@ test('cloud-devops (/plataforma): audit protótipo vs app', async ({ page }) => 
     console.log(report);
   }
 
-  // Todos os alvos são wrappers de <section> sem texto direto — o app herda o
-  // font-size base do projeto (18px, CLAUDE.md §7 escala tipográfica) enquanto o
-  // fixture (renderizado via file://) herda o default do browser (16px), e o
-  // protótipo cai em fallback de fonte por não ter acesso à CDN via file://.
-  // Nenhum dos dois afeta texto real (todo conteúdo visível tem font-size próprio).
+  // All targets are <section> wrappers with no direct text: the app inherits
+  // the project's base font-size (18px) while the fixture (file://, no font
+  // CDN) inherits the browser default (16px) and falls back to a system
+  // font. Neither affects real text — every visible element has its own
+  // explicit font-size.
   const knownIntentionalDiffs = diffs.filter(
     (d) => d.property === 'fontFamily' || d.property === 'fontSize' || d.property === 'lineHeight',
   );

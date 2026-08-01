@@ -12,9 +12,9 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/inteligencia-artificial.html').replace(/\\/g, '/')}`;
 
-// ai-hero e ai-cta-final ficam fora do diff literal: usam os componentes padrão do
-// projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
-// decisão documentada nas 3 landings anteriores.
+// ai-hero and ai-cta-final are excluded from the literal diff: both use the
+// project's shared components (PageHero/AdvisoryCta) instead of the
+// prototype's inline padding/grid, same as the other 3 pillar landings.
 const TARGETS = [
   'ai-solucoes',
   'ai-card',
@@ -40,9 +40,10 @@ test('inteligencia-artificial: audit protótipo vs app', async ({ page }) => {
     console.log(report);
   }
 
-  // Todos os alvos são wrappers de <section>/<div> sem texto direto — o app herda o
-  // font-size base do projeto (18px, CLAUDE.md §7) enquanto o fixture (file://, sem
-  // CDN de fontes) herda o default do browser (16px) e cai em fallback de fonte.
+  // All targets are <section>/<div> wrappers with no direct text: the app
+  // inherits the project's base font-size (18px) while the fixture (file://,
+  // no font CDN) inherits the browser default (16px) and falls back to a
+  // system font.
   const knownIntentionalDiffs = diffs.filter(
     (d) => d.property === 'fontFamily' || d.property === 'fontSize' || d.property === 'lineHeight',
   );

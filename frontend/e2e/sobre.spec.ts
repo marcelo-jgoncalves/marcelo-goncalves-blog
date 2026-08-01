@@ -1,13 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-// /sobre foi reescrita (redesign 2026) — o hero, a estrutura de seções e
-// o conteúdo mudaram por completo em relação à versão testada antes.
-// Seções descritas em versões anteriores (indicadores no hero, quote de
-// trajetória, logos de empresas, cards de área, diferencial de idiomas,
-// cards de certificação, logos de instituição acadêmica) nunca chegaram a
-// ser implementadas nesta versão — ver CLAUDE.md §10 item #40 (assets já
-// otimizados, seção deliberadamente adiada por decisão de Marcelo).
-// Este spec valida a estrutura real de hoje.
+// Some sections referenced by earlier prototypes (hero stat indicators,
+// career quote, company logos, area cards, certification/academic logos)
+// were never implemented on this page — see CLAUDE.md §10 item #40 for the
+// deferred section. This spec covers only the structure that exists today.
 
 test.describe('página /sobre', () => {
   test.beforeEach(async ({ page }) => {

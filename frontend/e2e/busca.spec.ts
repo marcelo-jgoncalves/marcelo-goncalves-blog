@@ -8,16 +8,16 @@ test.describe('página /busca', () => {
   });
 
   test('exibe resultados ou mensagem de estado vazio (sem sugestões)', async ({ page }) => {
-    // Termo sem correspondência real: Cenário B (retenção) só mostra
-    // sugestões de populares quando existem posts populares no dev — aqui
-    // validamos apenas que hero + busca continuam funcionando.
+    // No-match term: the retention layout only renders popular-post
+    // suggestions when popular posts exist in dev, so this only asserts
+    // that hero + search still render, not a specific result count.
     await page.goto('/busca?q=zzzzznaoexistetermoinventado', { waitUntil: 'networkidle' });
     await expect(page.locator('.page-hero')).toBeVisible();
   });
 
-  // Busca com q vazio cai no Cenário B (retenção): sem resultados, a
-  // página sugere até 3 posts populares em vez de não mostrar nada — ver
-  // "SCENARIO B: Nothing Found (Retention Layout)" em app/busca/page.tsx.
+  // Empty q falls into the "Nothing Found" retention layout in
+  // app/busca/page.tsx: instead of an empty state, it suggests up to 3
+  // popular posts.
   test('busca com q vazio mostra sugestões de populares (cenário de retenção)', async ({ page }) => {
     await page.goto('/busca?q=', { waitUntil: 'networkidle' });
     await expect(page.locator('.page-hero')).toBeVisible();

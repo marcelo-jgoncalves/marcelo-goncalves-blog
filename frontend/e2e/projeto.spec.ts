@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-// /o-projeto foi reescrita (redesign 2026): o hero perdeu a stats strip,
-// o roadmap deixou de ser 6 cards com status individual e virou 3 grupos
-// por período (Agora/Depois/Exploração), e a página passou a ter sua
-// própria seção de CTA final em vez de reusar o componente AdvisoryCta
-// (.cta-adv não existe mais aqui). Este spec valida a estrutura real de
-// hoje.
+// The roadmap is grouped by period (Agora/Depois/Exploração) rather than
+// individual status cards, and this page has its own final CTA section
+// instead of reusing AdvisoryCta (no .cta-adv here).
 
 test.describe('página /o-projeto', () => {
   test.beforeEach(async ({ page }) => {

@@ -12,9 +12,9 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/integracao-automacao.html').replace(/\\/g, '/')}`;
 
-// ia2-hero e ia2-cta-final ficam fora do diff literal: usam os componentes padrão do
-// projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
-// decisão documentada em engenharia-de-software.audit.spec.ts e cloud-devops.audit.spec.ts.
+// ia2-hero and ia2-cta-final are excluded from the literal diff: both use
+// the project's shared components (PageHero/AdvisoryCta) instead of the
+// prototype's inline padding/grid.
 const TARGETS = [
   'ia2-entregas',
   'ia2-card',
@@ -39,10 +39,11 @@ test('integracao-automacao (/automacao): audit protótipo vs app', async ({ page
     console.log(report);
   }
 
-  // Todos os alvos são wrappers de <section> sem texto direto — o app herda o
-  // font-size base do projeto (18px, CLAUDE.md §7) enquanto o fixture (file://,
-  // sem CDN de fontes) herda o default do browser (16px) e cai em fallback de fonte.
-  // Nenhum dos dois afeta texto real (todo conteúdo visível tem font-size próprio).
+  // All targets are <section> wrappers with no direct text: the app inherits
+  // the project's base font-size (18px) while the fixture (file://, no font
+  // CDN) inherits the browser default (16px) and falls back to a system
+  // font. Neither affects real text — every visible element has its own
+  // explicit font-size.
   const knownIntentionalDiffs = diffs.filter(
     (d) => d.property === 'fontFamily' || d.property === 'fontSize' || d.property === 'lineHeight',
   );
