@@ -1,11 +1,11 @@
 
 /* frontend/components/ui/SkipLink.tsx */
 
-import './SkipLink.css';
+import styles from './SkipLink.module.css';
 
 export default function SkipLink() {
   return (
-    <a href="#main-content" className="skip-link-btn">
+    <a href="#main-content" className={styles.skipLinkBtn}>
       Pular para o Conteúdo Principal
     </a>
   );

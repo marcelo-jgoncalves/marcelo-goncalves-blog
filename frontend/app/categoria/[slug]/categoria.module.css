@@ -1,0 +1,22 @@
+.categoriaEmpty {
+  text-align: center;
+  padding: var(--sp-10) 0;
+}
+
+.categoriaEmptyMsg {
+  color: var(--steel);
+  font-size: var(--type-body-sm);
+  margin-bottom: var(--sp-6);
+}
+
+.categoriaEmptyLink {
+  color: var(--petrol);
+  font-weight: 600;
+  font-size: var(--type-label);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.categoriaEmptyLink:hover {
+  color: var(--petrol-deep);
+}

@@ -1,7 +1,7 @@
-import '../legal.css';
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME } from '@/lib/config';
+import styles from '../legal.module.css';
 
 export const revalidate = 3600;
 
@@ -21,14 +21,14 @@ export default function TermosDeUsoPage() {
     <>
       <PageHero
         singleColumn
-        className="page-hero--legal"
+        className={styles.pageHeroLegal}
         title={<>Termos de <span className="highlight">Uso</span></>}
         subtitle="Condições que regem o acesso e uso deste site."
       />
 
-      <div className="legal-container container">
-        <div className="legal-content">
-          <p className="legal-updated">Última atualização: 18 de julho de 2026</p>
+      <div className={`${styles.legalContainer} container`}>
+        <div className={styles.legalContent}>
+          <p className={styles.legalUpdated}>Última atualização: 18 de julho de 2026</p>
 
           <p>
             Estes Termos de Uso estabelecem as condições para acesso e utilização do site{' '}

@@ -1,5 +1,4 @@
 
-import './artigos.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts, getPopularPosts, getPostsByCategory, getProjectPosts } from '@/lib/api';
@@ -10,6 +9,7 @@ import ReadArticle from '@/components/ui/ReadArticle';
 import PageHero from '@/components/ui/PageHero';
 import { formatDateShort, categoryName } from '@/lib/format';
 import { SITE_URL, SITE_NAME, BLOG_DESCRIPTION } from '@/lib/config';
+import styles from './artigos.module.css';
 
 export const revalidate = 300;
 
@@ -69,30 +69,30 @@ export default async function ArtigosPage() {
     <>
       {/* Hero */}
       <PageHero
-        className="home-hero"
+        className={`home-hero ${styles.homeHero}`}
         dataAudit="home-hero"
         eyebrow="Blog · Build in Public"
         title={<>Engenharia, Cloud, Automação e IA aplicadas a <em>necessidades reais</em></>}
         subtitle="Conteúdo técnico construído a partir da prática: custos, performance, observabilidade, automação e transformação operacional."
         right={
-          <Link className="home-proj-panel" href="/o-projeto" data-audit="home-proj-panel">
-            <div className="home-pp-label"><span className="home-pp-dot"></span>Construído em público</div>
+          <Link className={`home-proj-panel ${styles.homeProjPanel}`} href="/o-projeto" data-audit="home-proj-panel">
+            <div className={styles.homePpLabel}><span className={styles.homePpDot}></span>Construído em público</div>
             <h2>Acompanhe a construção desta plataforma</h2>
-            <p className="home-pc-sub">Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
-            <div className="home-pp-stats">
-              <div className="home-pp-stat"><span className="home-pp-v">100%</span><span className="home-pp-l">Serverless</span></div>
-              <div className="home-pp-stat"><span className="home-pp-v">Infra</span><span className="home-pp-l">como código</span></div>
-              <div className="home-pp-stat"><span className="home-pp-v">AWS</span><span className="home-pp-l">10+ Serviços</span></div>
-              <div className="home-pp-stat"><span className="home-pp-v">IA</span><span className="home-pp-l">como copiloto</span></div>
+            <p className={styles.homePcSub}>Cada decisão de arquitetura documentada. Custos reais, código real, processo aberto desde o dia zero.</p>
+            <div className={styles.homePpStats}>
+              <div className={styles.homePpStat}><span className={styles.homePpV}>100%</span><span className={styles.homePpL}>Serverless</span></div>
+              <div className={styles.homePpStat}><span className={styles.homePpV}>Infra</span><span className={styles.homePpL}>como código</span></div>
+              <div className={styles.homePpStat}><span className={styles.homePpV}>AWS</span><span className={styles.homePpL}>10+ Serviços</span></div>
+              <div className={styles.homePpStat}><span className={styles.homePpV}>IA</span><span className={styles.homePpL}>como copiloto</span></div>
             </div>
-            <span className="btn home-pp-btn">Ver o projeto</span>
+            <span className={`btn ${styles.homePpBtn}`}>Ver o projeto</span>
           </Link>
         }
       />
 
       {/* Mais Lidos */}
       {popular.length > 0 && (
-        <section className="home-section" id="mais-lidos">
+        <section className={styles.homeSection} id="mais-lidos">
           <div className="wrap">
             <div className="sec-head-row sec-head-row--center">
               <div className="left">
@@ -101,61 +101,61 @@ export default async function ArtigosPage() {
                 <p className="sec-desc">Os que mais geraram leitura, debate e compartilhamentos. Comece por aqui.</p>
               </div>
             </div>
-            <div className="home-ml-grid" data-audit="home-ml-grid">
+            <div className={styles.homeMlGrid} data-audit="home-ml-grid">
               {mlFeature1 && (
-                <div className="home-ml-feature">
-                  <div className="home-ml-rank-label">Mais lido · #1</div>
-                  <Link className="home-ml-card" href={`/post/${mlFeature1.slug}`} data-audit="home-ml-card">
-                    <div className="home-ml-num-bg" aria-hidden="true">01</div>
-                    <div className="home-ml-card-inner">
-                      <span className="home-ml-card-cat">{categoryName(mlFeature1)}</span>
-                      <h3 className="home-ml-card-title">{mlFeature1.titulo}</h3>
-                      {mlFeature1.resumo && <p className="home-ml-card-excerpt">{mlFeature1.resumo}</p>}
-                      <div className="home-ml-card-foot">
-                        <div className="home-ml-card-meta">
+                <div className={styles.homeMlFeature}>
+                  <div className={styles.homeMlRankLabel}>Mais lido · #1</div>
+                  <Link className={`home-ml-card ${styles.homeMlCard}`} href={`/post/${mlFeature1.slug}`} data-audit="home-ml-card">
+                    <div className={styles.homeMlNumBg} aria-hidden="true">01</div>
+                    <div className={styles.homeMlCardInner}>
+                      <span className={styles.homeMlCardCat}>{categoryName(mlFeature1)}</span>
+                      <h3 className={styles.homeMlCardTitle}>{mlFeature1.titulo}</h3>
+                      {mlFeature1.resumo && <p className={styles.homeMlCardExcerpt}>{mlFeature1.resumo}</p>}
+                      <div className={styles.homeMlCardFoot}>
+                        <div className={styles.homeMlCardMeta}>
                           <span>{formatDateShort(mlFeature1.data_publicacao)}</span>
                           <span>{mlFeature1.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <span className="home-ml-card-read"><ReadArticle /></span>
+                        <span className={styles.homeMlCardRead}><ReadArticle /></span>
                       </div>
                     </div>
                   </Link>
                 </div>
               )}
               {mlFeature2 && (
-                <div className="home-ml-feature">
-                  <div className="home-ml-rank-label">Mais lido · #2</div>
-                  <Link className="home-ml-card" href={`/post/${mlFeature2.slug}`}>
-                    <div className="home-ml-num-bg" aria-hidden="true">02</div>
-                    <div className="home-ml-card-inner">
-                      <span className="home-ml-card-cat">{categoryName(mlFeature2)}</span>
-                      <h3 className="home-ml-card-title">{mlFeature2.titulo}</h3>
-                      {mlFeature2.resumo && <p className="home-ml-card-excerpt">{mlFeature2.resumo}</p>}
-                      <div className="home-ml-card-foot">
-                        <div className="home-ml-card-meta">
+                <div className={styles.homeMlFeature}>
+                  <div className={styles.homeMlRankLabel}>Mais lido · #2</div>
+                  <Link className={`home-ml-card ${styles.homeMlCard}`} href={`/post/${mlFeature2.slug}`}>
+                    <div className={styles.homeMlNumBg} aria-hidden="true">02</div>
+                    <div className={styles.homeMlCardInner}>
+                      <span className={styles.homeMlCardCat}>{categoryName(mlFeature2)}</span>
+                      <h3 className={styles.homeMlCardTitle}>{mlFeature2.titulo}</h3>
+                      {mlFeature2.resumo && <p className={styles.homeMlCardExcerpt}>{mlFeature2.resumo}</p>}
+                      <div className={styles.homeMlCardFoot}>
+                        <div className={styles.homeMlCardMeta}>
                           <span>{formatDateShort(mlFeature2.data_publicacao)}</span>
                           <span>{mlFeature2.tempo_leitura_min || 5} min de leitura</span>
                         </div>
-                        <span className="home-ml-card-read"><ReadArticle /></span>
+                        <span className={styles.homeMlCardRead}><ReadArticle /></span>
                       </div>
                     </div>
                   </Link>
                 </div>
               )}
               {mlList.length > 0 && (
-                <div className="home-ml-list" data-audit="home-ml-list">
+                <div className={styles.homeMlList} data-audit="home-ml-list">
                   {mlList.map((post: HomePost, i: number) => (
-                    <Link key={post.slug} className="home-ml-item" href={`/post/${post.slug}`}>
-                      <span className="home-ml-item-num" aria-hidden="true">{String(i + 3).padStart(2, '0')}</span>
-                      <div className="home-ml-item-body">
-                        <span className="home-ml-item-cat">{categoryName(post)}</span>
-                        <span className="home-ml-item-title">{post.titulo}</span>
-                        <div className="home-ml-item-meta">
+                    <Link key={post.slug} className={`home-ml-item ${styles.homeMlItem}`} href={`/post/${post.slug}`}>
+                      <span className={styles.homeMlItemNum} aria-hidden="true">{String(i + 3).padStart(2, '0')}</span>
+                      <div className={styles.homeMlItemBody}>
+                        <span className={styles.homeMlItemCat}>{categoryName(post)}</span>
+                        <span className={styles.homeMlItemTitle}>{post.titulo}</span>
+                        <div className={styles.homeMlItemMeta}>
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
                       </div>
-                      <span className="home-ml-item-arrow" aria-hidden="true">→</span>
+                      <span className={styles.homeMlItemArrow} aria-hidden="true">→</span>
                     </Link>
                   ))}
                 </div>
@@ -166,7 +166,7 @@ export default async function ArtigosPage() {
       )}
 
       {/* Postagens Recentes */}
-      <section className="home-section home-section--surface" id="recentes">
+      <section className={`${styles.homeSection} ${styles.homeSectionSurface}`} id="recentes">
         <div className="wrap">
           <div className="sec-head-row sec-head-row--center">
             <div className="left">
@@ -175,32 +175,32 @@ export default async function ArtigosPage() {
               <p className="sec-desc">Últimos artigos publicados.<br />Problemas reais. Soluções aplicadas. Aprendizados compartilhados.</p>
             </div>
           </div>
-          <div className="home-posts-grid" data-audit="home-posts-grid">
+          <div className={styles.homePostsGrid} data-audit="home-posts-grid">
             {recent.map((post: HomePost, i: number) => (
               <PostCard key={post.slug} post={post} dataAudit={i === 0 ? 'home-post-card' : undefined} />
             ))}
           </div>
-          <div className="home-posts-cta">
-            <Link className="btn home-btn-outline-petrol" href="/todos-artigos">Todos os artigos</Link>
+          <div className={styles.homePostsCta}>
+            <Link className={`btn ${styles.homeBtnOutlinePetrol}`} href="/todos-artigos">Todos os artigos</Link>
           </div>
         </div>
       </section>
 
       {/* Posts sobre IA */}
       {ia.length > 0 && (
-        <section className="home-ia-section" id="ia">
+        <section className={styles.homeIaSection} id="ia">
           <div className="wrap">
-            <div className="home-ia-sec-head-row home-ia-sec-head-row--center">
+            <div className={`${styles.homeIaSecHeadRow} ${styles.homeIaSecHeadRowCenter}`}>
               <div className="left">
-                <div className="home-ia-ey home-ia-ey--dual">Inteligência Artificial</div>
-                <h2 className="home-ia-title">IA aplicada, sem hype</h2>
-                <p className="home-ia-desc">Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
+                <div className={`${styles.homeIaEy} ${styles.homeIaEyDual}`}>Inteligência Artificial</div>
+                <h2 className={styles.homeIaTitle}>IA aplicada, sem hype</h2>
+                <p className={styles.homeIaDesc}>Onde a IA realmente acelera, onde atrapalha, e o que ninguém te conta sobre usar modelos em produção.</p>
               </div>
             </div>
-            <div className="home-ia-grid" data-audit="home-ia-grid">
+            <div className={styles.homeIaGrid} data-audit="home-ia-grid">
               {iaBig && (
-                <Link className="home-ia-big" href={`/post/${iaBig.slug}`} data-audit="home-ia-big">
-                  <div className="home-ia-big-cover">
+                <Link className={`home-ia-big ${styles.homeIaBig}`} href={`/post/${iaBig.slug}`} data-audit="home-ia-big">
+                  <div className={styles.homeIaBigCover}>
                     {iaBig.imagem_destaque_url && (
                       <ResponsiveImage
                         src={iaBig.imagem_destaque_url}
@@ -209,42 +209,42 @@ export default async function ArtigosPage() {
                         lqip={iaBig.imagem_lqip_base64}
                       />
                     )}
-                    <span className="home-ia-big-cover-tag">{categoryName(iaBig)}</span>
+                    <span className={styles.homeIaBigCoverTag}>{categoryName(iaBig)}</span>
                   </div>
-                  <div className="home-ia-big-body">
-                    <span className="home-ia-big-cat">{categoryName(iaBig)}</span>
-                    <h3 className="home-ia-big-title">{iaBig.titulo}</h3>
-                    {iaBig.resumo && <p className="home-ia-big-excerpt">{iaBig.resumo}</p>}
-                    <div className="home-ia-big-foot">
-                      <div className="home-ia-big-meta">
+                  <div className={styles.homeIaBigBody}>
+                    <span className={styles.homeIaBigCat}>{categoryName(iaBig)}</span>
+                    <h3 className={styles.homeIaBigTitle}>{iaBig.titulo}</h3>
+                    {iaBig.resumo && <p className={styles.homeIaBigExcerpt}>{iaBig.resumo}</p>}
+                    <div className={styles.homeIaBigFoot}>
+                      <div className={styles.homeIaBigMeta}>
                         <span>{formatDateShort(iaBig.data_publicacao)}</span>
                         <span>{iaBig.tempo_leitura_min || 5} min</span>
                       </div>
-                      <span className="home-ia-read"><ReadArticle /></span>
+                      <span className={styles.homeIaRead}><ReadArticle /></span>
                     </div>
                   </div>
                 </Link>
               )}
               {iaStack.length > 0 && (
-                <div className="home-ia-stack">
+                <div className={styles.homeIaStack}>
                   {iaStack.map((post: HomePost, i: number) => (
-                    <Link key={post.slug} className="home-ia-small" href={`/post/${post.slug}`} data-audit={i === 0 ? 'home-ia-small' : undefined}>
-                      <span className="home-ia-small-cat">{categoryName(post)}</span>
-                      <h3 className="home-ia-small-title">{post.titulo}</h3>
-                      {post.resumo && <p className="home-ia-small-excerpt">{post.resumo}</p>}
-                      <div className="home-ia-small-foot">
-                        <div className="home-ia-small-meta">
+                    <Link key={post.slug} className={styles.homeIaSmall} href={`/post/${post.slug}`} data-audit={i === 0 ? 'home-ia-small' : undefined}>
+                      <span className={styles.homeIaSmallCat}>{categoryName(post)}</span>
+                      <h3 className={styles.homeIaSmallTitle}>{post.titulo}</h3>
+                      {post.resumo && <p className={styles.homeIaSmallExcerpt}>{post.resumo}</p>}
+                      <div className={styles.homeIaSmallFoot}>
+                        <div className={styles.homeIaSmallMeta}>
                           <span>{formatDateShort(post.data_publicacao)}</span>
                           <span>{post.tempo_leitura_min || 5} min</span>
                         </div>
-                        <span className="home-ia-read"><ReadArticle /></span>
+                        <span className={styles.homeIaRead}><ReadArticle /></span>
                       </div>
                     </Link>
                   ))}
                 </div>
               )}
             </div>
-            <div className="home-cta-end">
+            <div className={styles.homeCtaEnd}>
               <Link className="btn" href="/categoria/inteligencia-artificial">Tudo sobre IA</Link>
             </div>
           </div>
@@ -253,7 +253,7 @@ export default async function ArtigosPage() {
 
       {/* O Projeto */}
       {projeto.length > 0 && (
-        <section className="home-section home-projeto-section" id="projeto">
+        <section className={`${styles.homeSection} ${styles.homeProjetoSection}`} id="projeto">
           <div className="wrap">
             <div className="sec-head-row sec-head-row--center">
               <div className="left">
@@ -262,13 +262,13 @@ export default async function ArtigosPage() {
                 <p className="sec-desc">Decisões, erros e custos documentados em tempo real. Um registro honesto de como se constrói uma plataforma editorial moderna.</p>
               </div>
             </div>
-            <div className="home-projeto-grid" data-audit="home-projeto-grid">
+            <div className={styles.homeProjetoGrid} data-audit="home-projeto-grid">
               {projeto.map((post: HomePost) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <div className="home-cta-end">
-              <Link className="btn home-btn-clay-hero" href="/o-projeto">Acompanhe a jornada</Link>
+            <div className={styles.homeCtaEnd}>
+              <Link className={`btn ${styles.homeBtnClayHero}`} href="/o-projeto">Acompanhe a jornada</Link>
             </div>
           </div>
         </section>

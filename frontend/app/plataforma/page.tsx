@@ -6,7 +6,7 @@ import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import IconTile from '@/components/ui/IconTile';
-import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import BenefitsSection from '@/components/ui/BenefitsSection';
 import {
   IconArquiteturaNuvem,
   IconInfraestruturaCodigo,
@@ -184,7 +184,7 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <BeneficiosSection
+      <BenefitsSection
         id="beneficios"
         dataAudit="cd-beneficios"
         title="Menos improviso na infraestrutura. Mais previsibilidade para entregar e operar."

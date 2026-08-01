@@ -289,7 +289,7 @@
 
 /* ===== QUALIDADE — .benefitsList/.benefitItem reaproveitados pela seção
    "Qualidade e continuidade" (matriz 2x4). A seção "Benefícios" em si usa o
-   componente compartilhado BeneficiosSection (ver components/ui/). ===== */
+   componente compartilhado BenefitsSection (ver components/ui/). ===== */
 .benefitsList {
   display: grid;
   grid-template-columns: 1fr;

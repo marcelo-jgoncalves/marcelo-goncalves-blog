@@ -8,7 +8,7 @@ import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import Pill from '@/components/ui/Pill';
 import Kicker from '@/components/ui/Kicker';
 import IndexNumber from '@/components/ui/IndexNumber';
-import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import BenefitsSection from '@/components/ui/BenefitsSection';
 import {
   IconSustentacaoEvolucao,
   IconApisIntegracoes,
@@ -218,7 +218,7 @@ export default function SistemasPlataformasPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <BeneficiosSection
+      <BenefitsSection
         id="beneficios"
         dataAudit="esw-beneficios"
         title="Menos fragmentação. Mais clareza sobre processos, dados e responsabilidades."

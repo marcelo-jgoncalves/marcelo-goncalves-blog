@@ -1,0 +1,289 @@
+.ctaAdv {
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-block: 0;
+  scroll-margin-top: 100px;
+}
+
+.ctaAdv::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .55;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 70% 30%, #000 30%, transparent 80%);
+}
+
+.ctaAdvIn {
+  position: relative;
+  z-index: 1;
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: var(--section-cta) var(--wrap-pad-h);
+  display: grid;
+  grid-template-columns: 1.06fr .94fr;
+  gap: var(--sp-10);
+  align-items: center;
+}
+
+.ctaAdvEy {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .72);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.ctaAdvEy::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.ctaAdvContent h2 {
+  font-weight: 800;
+  font-size: var(--type-h2);
+  line-height: 1.06;
+  letter-spacing: -.04em;
+  color: #fff;
+  max-width: 500px;
+}
+
+.ctaAdvContent h2 em {
+  font-style: italic;
+  color: var(--petrol-soft);
+}
+
+.ctaAdvDesc {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .66);
+  max-width: 440px;
+  margin-top: var(--gap-loose);
+}
+
+.ctaAdvPoints {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+
+.ctaAdvPoints li {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--type-label);
+  line-height: 1.5;
+  color: rgba(250, 248, 243, .9);
+}
+
+.ctaAdvPoints li .ck {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  margin-top: 1px;
+  background: rgba(201, 96, 60, .2);
+  color: #E8A582;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaAdvPoints li .ck svg {
+  width: 13px;
+  height: 13px;
+}
+
+.ctaAdvPoints li b {
+  color: #fff;
+  font-weight: 600;
+}
+
+.ctaAdvCard {
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 18px;
+  padding: var(--sp-8) var(--sp-8) var(--sp-7);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 24px 60px -28px rgba(0, 0, 0, .55);
+}
+
+.ctaAdvTagline {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--gap-loose);
+}
+
+.ctaAdvTagline .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--moss);
+  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
+}
+
+.ctaAdvLabel {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+  margin-bottom: var(--sp-2);
+}
+
+.ctaAdvCard h3 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -.025em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* Also applied as a plain global class by consumer pages that pass raw
+   JSX into the `cardBody` prop (e.g. sobre/page.tsx, the 4 pillar
+   landings) — those elements never render through this component, so
+   the selector must reach the un-hashed class name too. */
+.ctaAdvBodyText,
+:global(.cta-adv-body-text) {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .78);
+  margin: var(--sp-5) 0 var(--sp-6);
+}
+
+.ctaAdvSvc {
+  display: flex;
+  flex-direction: column;
+  margin: var(--sp-7) 0 var(--sp-7);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.ctaAdvSvc a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--type-label);
+  font-weight: 600;
+  color: rgba(250, 248, 243, .9);
+  text-decoration: none;
+  padding: var(--sp-4) 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  transition: color .2s, padding-left .2s;
+}
+
+.ctaAdvSvc a :global(.arrow) {
+  font-family: var(--mono);
+  font-size: var(--type-body-sm);
+  color: rgba(255, 255, 255, .4);
+  transition: color .2s, transform .2s;
+}
+
+.ctaAdvSvc a:hover {
+  color: #fff;
+  padding-left: var(--sp-2);
+}
+
+.ctaAdvSvc a:hover :global(.arrow) {
+  color: var(--clay);
+  transform: translateX(3px);
+}
+
+/* Button — uses the global .btn pattern (globals.css); .cta-adv-btn only
+   adjusts width (fills the card) and this component's own shadow. */
+.ctaAdvBtn {
+  width: 100%;
+  font-size: var(--type-label);
+  margin-top: var(--sp-1);
+  box-shadow: 0 12px 26px -8px rgba(201, 96, 60, .55);
+}
+
+.ctaAdvBtn :global(.arrow) {
+  font-family: var(--mono);
+}
+
+/* Meta rows — services variant */
+.ctaAdvMeta {
+  display: flex;
+  flex-direction: column;
+  margin: var(--sp-5) 0 var(--sp-6);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.ctaAdvMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.ctaAdvMetaRow:last-child {
+  border-bottom: none;
+}
+
+.ctaAdvMl {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+
+.ctaAdvMv {
+  font-weight: 700;
+  font-size: var(--type-caption);
+  color: #fff;
+  letter-spacing: -.01em;
+}
+
+.ctaAdvMv.clay {
+  color: #E8A582;
+}
+
+.ctaAdvReassure {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+  margin-top: var(--sp-5);
+}
+
+@media (max-width: 840px) {
+  .ctaAdvIn {
+    grid-template-columns: 1fr;
+    gap: var(--sp-9);
+  }
+}
+
+@media (max-width: 680px) {
+  .ctaAdvIn {
+    padding: var(--section-cta) var(--wrap-pad-h-mobile);
+  }
+}

@@ -13,24 +13,24 @@ interface Props {
 export default async function PostOgImage({ params }: Props) {
   const { slug } = await params;
 
-  let titulo = SITE_NAME;
-  let resumo = '';
-  let nomeAutor = AUTHOR_NAME;
+  let title = SITE_NAME;
+  let summary = '';
+  let authorName = AUTHOR_NAME;
 
   try {
     const data = await getPost(slug);
     if (data?.post) {
-      titulo = data.post.titulo || SITE_NAME;
-      resumo = data.post.resumo || '';
-      const autorData = await getAuthor(data.post.autor_id || 'marcelo-goncalves');
-      nomeAutor = autorData?.autor?.nome_exibicao || AUTHOR_NAME;
+      title = data.post.titulo || SITE_NAME;
+      summary = data.post.resumo || '';
+      const authorData = await getAuthor(data.post.autor_id || 'marcelo-goncalves');
+      authorName = authorData?.autor?.nome_exibicao || AUTHOR_NAME;
     }
   } catch {
   }
 
-  const tituloTruncado = titulo.length > 72 ? titulo.substring(0, 72) + '…' : titulo;
-  const resumoTruncado = resumo.length > 120 ? resumo.substring(0, 120) + '…' : resumo;
-  const fonteSize = titulo.length > 50 ? '52px' : '64px';
+  const truncatedTitle = title.length > 72 ? title.substring(0, 72) + '…' : title;
+  const truncatedSummary = summary.length > 120 ? summary.substring(0, 120) + '…' : summary;
+  const fontSize = title.length > 50 ? '52px' : '64px';
 
   return new ImageResponse(
     (
@@ -64,15 +64,15 @@ export default async function PostOgImage({ params }: Props) {
           <h1
             style={{
               color: 'var(--sand)',
-              fontSize: fonteSize,
+              fontSize,
               fontWeight: 800,
               lineHeight: 1.15,
               margin: 0,
             }}
           >
-            {tituloTruncado}
+            {truncatedTitle}
           </h1>
-          {resumoTruncado && (
+          {truncatedSummary && (
             <p
               style={{
                 color: '#94a3b8',
@@ -81,7 +81,7 @@ export default async function PostOgImage({ params }: Props) {
                 margin: 0,
               }}
             >
-              {resumoTruncado}
+              {truncatedSummary}
             </p>
           )}
         </div>
@@ -95,7 +95,7 @@ export default async function PostOgImage({ params }: Props) {
             paddingTop: '28px',
           }}
         >
-          <span style={{ color: '#64748b', fontSize: '20px' }}>por {nomeAutor}</span>
+          <span style={{ color: '#64748b', fontSize: '20px' }}>por {authorName}</span>
           <span
             style={{
               backgroundColor: 'var(--petrol)',

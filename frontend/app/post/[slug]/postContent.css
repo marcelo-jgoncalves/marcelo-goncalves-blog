@@ -1,0 +1,802 @@
+/* ==========================================================================
+   POST PAGE — TOC + prose content
+   Stays global on purpose: .post-content and everything nested in it
+   styles HTML persisted in the database (Tiptap output, sanitized by
+   backend/src/common/sanitizer.ts) — those class names are baked into
+   already-published posts and can never be hashed by CSS Modules.
+   .post-toc-* is also global because TableOfContents.tsx queries
+   `.post-toc-mk` directly via the DOM (querySelector), not through a
+   React ref, so the literal class name has to exist in the markup.
+   ========================================================================== */
+
+/* ==========================================================================
+   5. TOC
+   ========================================================================== */
+.post-toc {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  grid-column: 1;
+}
+
+.post-toc-lbl {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--steel);
+  display: flex;
+  align-items: center;
+  gap: var(--title-gap);
+}
+
+.post-toc-lbl::before { content: ''; width: 18px; height: 1px; background: var(--clay); }
+
+.post-toc-items {
+  position: relative;
+  margin-top: var(--gap-loose);
+  padding-left: 0;
+}
+
+.post-toc-items::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.post-toc-prog {
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--petrol), var(--clay));
+  transition: height .35s ease;
+}
+
+.post-toc-item {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-6);
+  color: var(--steel);
+  transition: color .2s;
+  text-decoration: none;
+}
+
+.post-toc-mk {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  z-index: 2;
+  background: var(--ivory);
+  border: 2px solid var(--line);
+  transition: background .25s, border-color .25s, box-shadow .25s, transform .25s;
+}
+
+.post-toc-ix {
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  letter-spacing: .06em;
+  color: var(--steel);
+  flex: none;
+  transition: color .2s;
+}
+
+.post-toc-tx { font-size: var(--type-label); line-height: 1.4; letter-spacing: -.005em; }
+
+.post-toc-item:hover { color: var(--slate); }
+.post-toc-item:hover .post-toc-mk { border-color: var(--petrol-soft); transform: scale(1.08); }
+
+.post-toc-item.read { color: var(--slate); }
+.post-toc-item.read .post-toc-ix { color: var(--petrol-soft); }
+.post-toc-item.read .post-toc-mk { background: var(--petrol-soft); border-color: var(--petrol-soft); }
+
+.post-toc-item.active { color: var(--petrol); }
+.post-toc-item.active .post-toc-tx { font-weight: 700; }
+.post-toc-item.active .post-toc-ix { color: var(--clay); }
+.post-toc-item.active .post-toc-mk {
+  background: var(--clay);
+  border-color: var(--clay);
+  box-shadow: 0 0 0 4px rgba(201, 96, 60, .16);
+}
+
+.post-toc-read-meta {
+  margin-top: var(--sp-6);
+  padding-top: var(--gap-loose);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  letter-spacing: .04em;
+  display: flex;
+  gap: var(--gap-loose);
+}
+
+.post-toc-read-meta span { display: flex; align-items: center; gap: var(--sp-2); }
+.post-toc-read-meta b { color: var(--petrol); font-weight: 600; }
+
+/* TOC removed on mobile/tablet for now — reaffirms the display:none from
+   the layout section above, which the base .post-toc{display:flex} rule
+   overrode. */
+@media (max-width: 1080px) {
+  .post-toc { display: none; }
+}
+
+/* ==========================================================================
+   6. PROSE — .post-content
+   ========================================================================== */
+.post-content {
+  font-size: var(--type-body);
+  line-height: 1.85;
+  color: var(--slate);
+  counter-reset: post-section;
+}
+
+.post-content .post-content-part > p {
+  margin-bottom: var(--prose-sp-3);
+}
+
+.post-content .post-content-part:last-child > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Lead — first paragraph (post.resumo) */
+.post-content > .post-lead {
+  font-size: var(--type-lead);
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  letter-spacing: -.01em;
+  margin: 0 0 var(--prose-sp-3);
+}
+
+.post-content > .post-lead em { font-style: italic; color: var(--petrol); }
+
+/* Drop cap — first letter of the lead (or the 1st paragraph when there's no resumo) */
+.post-content > .post-lead:first-child::first-letter,
+.post-content > .post-content-part:first-child > p:first-of-type::first-letter {
+  float: left;
+  font-weight: 800;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- drop cap letter, scales with the paragraph, outside the content type scale */
+  font-size: 3.6em;
+  line-height: .82;
+  padding: var(--sp-2) var(--sp-3) 0 0;
+  color: var(--petrol);
+  letter-spacing: -.04em;
+}
+
+.post-content strong,
+.post-content b {
+  color: var(--clay-hover);
+  font-weight: 600;
+}
+
+.post-content em,
+.post-content i { font-style: italic; }
+
+.post-content a,
+.post-content .content-link {
+  color: var(--petrol);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(15, 76, 92, .32);
+  text-decoration: none;
+  transition: border-color .2s;
+}
+
+.post-content a:hover,
+.post-content .content-link:hover {
+  border-bottom-color: var(--petrol);
+}
+
+.post-content hr {
+  height: 1px;
+  background: var(--line);
+  margin: var(--prose-sp-5) 0;
+  border: 0;
+}
+
+/* ── headings ── */
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5 {
+  font-family: var(--font-display);
+  scroll-margin-top: 100px;
+}
+
+.post-content h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin: var(--prose-sp-5) 0 var(--prose-sp-2);
+  font-weight: 800;
+  font-size: var(--type-h3);
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  counter-increment: post-section;
+}
+
+.post-content h2::before {
+  content: counter(post-section, decimal-leading-zero);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--petrol);
+  color: var(--ivory);
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: .04em;
+  box-shadow: 0 6px 16px -6px rgba(8, 50, 61, .55);
+}
+
+.post-content h3 {
+  font-weight: 700;
+  font-size: var(--type-body);
+  letter-spacing: -.02em;
+  color: var(--petrol);
+  margin: var(--prose-sp-3) 0 var(--prose-sp-1);
+}
+
+.post-content h4 {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin: var(--prose-sp-4) 0 var(--prose-sp-1);
+}
+
+.post-content h5 {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink);
+  margin: var(--prose-sp-4) 0 var(--prose-sp-1);
+}
+
+/* ── lists ── */
+.post-content ul,
+.post-content ol {
+  list-style: none;
+  margin: var(--prose-sp-2) 0 var(--prose-sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-left: 0;
+}
+
+.post-content li {
+  position: relative;
+  padding-left: var(--sp-7);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: var(--slate);
+}
+
+.post-content li p { display: inline; margin: 0; }
+
+.post-content ul li::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: .62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--clay);
+  transform: rotate(45deg);
+}
+
+.post-content ul li b,
+.post-content ul li strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.post-content ol { counter-reset: post-counter; }
+.post-content ol li { counter-increment: post-counter; padding-left: var(--sp-7); }
+.post-content ol li::before {
+  content: counter(post-counter) '.';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--petrol);
+}
+
+/* ── blockquote (legacy) ── */
+.post-content blockquote {
+  margin: var(--sp-9) 0;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
+  border-left: 4px solid var(--petrol);
+}
+
+.post-content blockquote p {
+  font-family: var(--font-display);
+  font-size: var(--type-h4);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -.01em;
+}
+
+/* ── compare blocks (weak / strong prompt) ── */
+.post-content .compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin: var(--prose-sp-3) 0;
+}
+
+.post-content .cmp {
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-6);
+  border: 1px solid var(--line);
+}
+
+.post-content .cmp .tag {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+
+.post-content .cmp .tag .ic {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.post-content .cmp p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
+  margin: 0;
+}
+
+.post-content .cmp.weak { background: var(--sand); }
+.post-content .cmp.weak .tag { color: var(--steel); }
+.post-content .cmp.weak .ic { background: #E4DDD0; color: var(--slate); }
+
+.post-content .cmp.strong { background: var(--clay-soft); border-color: rgba(201, 96, 60, .3); }
+.post-content .cmp.strong .tag { color: var(--clay-hover); }
+.post-content .cmp.strong .ic { background: var(--clay); color: #fff; }
+
+@media (max-width: 620px) {
+  .post-content .compare { grid-template-columns: 1fr; }
+}
+
+/* ── media: images, figures, videos, embeds ── */
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--sp-7) auto;
+  border-radius: 8px;
+}
+
+.post-content iframe,
+.post-content-part iframe,
+.post-content video,
+.post-content-part video {
+  display: block;
+  margin: var(--sp-7) auto;
+  max-width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.post-content [data-youtube-video],
+.post-content-part [data-youtube-video] {
+  margin: var(--sp-7) 0;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.post-content [data-youtube-video] iframe,
+.post-content-part [data-youtube-video] iframe {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.post-content figure,
+.post-content-part figure,
+.post-content .media {
+  display: flex;
+  justify-content: center;
+  margin: var(--sp-7) 0;
+  width: 100%;
+}
+
+/* ── AdSense in-article ── */
+.post-adslot {
+  margin: var(--prose-sp-5) 0;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: var(--sand);
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   7. CODE BLOCKS (Shiki)
+   ========================================================================== */
+
+.post-content .inline-code {
+  background-color: var(--sand);
+  color: var(--clay-hover);
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+pre.code-block,
+.post-content pre {
+  padding: var(--sp-4);
+  font-size: var(--type-label);
+  border-radius: 8px;
+  margin-bottom: var(--sp-7);
+  overflow-x: auto;
+  color: var(--line);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  background-color: var(--ink);
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  pre.code-block,
+  .post-content pre {
+    padding: var(--sp-7);
+    font-size: var(--type-label);
+  }
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #fff;
+  padding: var(--sp-1) var(--sp-3);
+  cursor: pointer;
+  font-size: var(--type-caption);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background: var(--petrol);
+  border-color: var(--petrol);
+}
+
+.post-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+/* ==========================================================================
+   8. CALLOUTS, TIP, PULL QUOTE & CLOSING FLOURISH
+   Tokens: petrol/clay/ivory
+   ========================================================================== */
+
+.post-content .callout,
+.post-content .tip {
+  display: flex;
+  gap: var(--gap-loose);
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin: var(--prose-sp-4) 0;
+}
+
+.post-content .callout {
+  padding: var(--gap-grid) var(--sp-6);
+}
+
+.post-content .tip {
+  padding: var(--sp-6) var(--sp-6);
+  border-left: 4px solid var(--clay);
+}
+
+.post-content .callout .ic,
+.post-content .tip .ic {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+}
+
+.post-content .callout .c,
+.post-content .tip .c {
+  min-width: 0;
+}
+
+.post-content .callout .c .t,
+.post-content .tip .c .t {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: var(--sp-2);
+}
+
+.post-content .callout .c p,
+.post-content .tip .c p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+}
+
+.post-content .callout .c strong,
+.post-content .tip .c strong {
+  color: inherit;
+}
+
+/* Tip — accent clay */
+.post-content .tip .ic {
+  background: var(--clay-soft);
+  color: var(--clay-hover);
+}
+
+.post-content .tip .c .t {
+  color: var(--clay);
+}
+
+/* Info */
+.post-content .callout.info {
+  border-left: 4px solid var(--petrol);
+}
+.post-content .callout.info .ic {
+  background: rgba(15, 76, 92, 0.1);
+  color: var(--petrol);
+}
+.post-content .callout.info .c .t {
+  color: var(--petrol);
+}
+
+/* Warning */
+.post-content .callout.warn {
+  border-left: 4px solid var(--clay);
+  background: #FCF6F1;
+}
+.post-content .callout.warn .ic {
+  background: var(--clay-soft);
+  color: var(--clay-hover);
+}
+.post-content .callout.warn .c .t {
+  color: var(--clay-hover);
+}
+
+/* Error */
+.post-content .callout.error {
+  border-left: 4px solid #A33A2B;
+  background: #FBF0EE;
+}
+.post-content .callout.error .ic {
+  background: #F4D9D4;
+  color: #A33A2B;
+}
+.post-content .callout.error .c .t {
+  color: #A33A2B;
+}
+
+/* Success */
+.post-content .callout.ok {
+  border-left: 4px solid var(--moss);
+  background: #F1F5F0;
+}
+.post-content .callout.ok .ic {
+  background: #DCE8DD;
+  color: var(--moss);
+}
+.post-content .callout.ok .c .t {
+  color: var(--moss);
+}
+
+@media (max-width: 768px) {
+  .post-content .callout,
+  .post-content .tip {
+    padding: var(--sp-4) var(--gap-loose);
+  }
+}
+
+/* Pull Quote (.pull) */
+.post-content .pull {
+  margin: var(--prose-sp-5) 0;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-7);
+  border-left: 3px solid var(--clay);
+}
+
+.post-content .pull p {
+  font-size: var(--type-lead);
+  line-height: 1.4;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--petrol);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.post-content .pull .cite {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  letter-spacing: 0.08em;
+  color: var(--steel);
+  margin-top: var(--eyebrow-gap);
+  font-style: normal;
+}
+
+/* Closing Flourish (.closing) */
+.post-content .closing {
+  margin-top: var(--prose-sp-5);
+  padding: var(--sp-7) var(--sp-7);
+  background: var(--petrol);
+  border-radius: 16px;
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-content .closing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background: radial-gradient(60% 90% at 90% 10%, rgba(201, 96, 60, 0.35), transparent 60%);
+  pointer-events: none;
+}
+
+.post-content .closing h3,
+.post-content .closing p,
+.post-content .closing * {
+  position: relative;
+}
+
+.post-content .closing h3 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 var(--sp-2);
+}
+
+.post-content .closing p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, 0.72);
+  max-width: 520px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .post-content .closing {
+    padding: var(--gap-grid) var(--sp-6);
+  }
+}
+
+/* ==========================================================================
+   10. TABLES (Editor)
+   ========================================================================== */
+
+article table,
+.post-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: var(--sp-7) 0;
+  display: block;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface);
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+article th, article td,
+.post-content th, .post-content td {
+  text-align: left;
+}
+
+article th,
+.post-content th {
+  padding: var(--sp-5) var(--sp-7);
+  background: var(--sand);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: var(--type-label);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--petrol);
+  white-space: nowrap;
+}
+
+article td,
+.post-content td {
+  padding: var(--sp-6) var(--sp-7);
+  color: var(--slate);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--type-body);
+  line-height: 1.6;
+}
+
+article td:first-child,
+.post-content td:first-child {
+  font-size: var(--type-lead);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+article tbody tr:last-child td,
+.post-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   11. WIDE WRAPPER (authorbox / related)
+   Global on purpose: applied both from page.tsx (PostFooter wrapper) and
+   from components/ui/RelatedPostsSection.tsx, two files that don't share
+   a CSS Module — a scoped class in post.module.css would only reach one
+   of the two usages.
+   ========================================================================== */
+.post-wide {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 var(--sp-7);
+}

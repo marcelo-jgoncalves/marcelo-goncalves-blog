@@ -1,0 +1,64 @@
+/* ==========================================================================
+   ADSENSE COMPONENT SYSTEM
+   ========================================================================== */
+
+/* Reset and shared base */
+.opAdsenseWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+/* Mobile-first: square via aspect-ratio (same as AdSenseBanner) */
+.adsenseInContentMock,
+.adsenseInFeedMock,
+.adsenseSummaryMock {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+/* Critical guard: forces Google's tag to obey the layout */
+.opAdsenseWrapper :global(.adsbygoogle) {
+  display: block !important;
+  height: 100% !important;
+}
+
+/* Vertical rhythm — symmetric spacing above and below */
+.adsenseSummaryMock {
+  margin-top: 0;
+  margin-bottom: var(--sp-7);
+}
+
+:global(.post-content) .opAdsenseWrapper {
+  margin-block: var(--sp-7);
+}
+
+/* Desktop: back to the 90px leaderboard (same as AdSenseBanner) */
+@media (min-width: 768px) {
+  .adsenseInContentMock,
+  .adsenseSummaryMock,
+  .adsenseInFeedMock {
+    aspect-ratio: auto;
+    min-height: 90px;
+  }
+
+  .opAdsenseWrapper :global(.adsbygoogle) {
+    height: 90px !important;
+  }
+}
+
+/* Mock styling (dev environment only) */
+.opAdsenseDevMock {
+  background-color: var(--sand);
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

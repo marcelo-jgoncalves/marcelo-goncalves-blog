@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import './PostCard.css';
+import styles from './PostCard.module.css';
 import ReadArticle from '@/components/ui/ReadArticle';
-import { formatDateShort } from '@/lib/format';
+import { formatDateShort, categoryName } from '@/lib/format';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
 const GRADIENT_VARIANTS = ['t-soft', 't-petrol', 't-clay', 't-teal', 't-deep', 't-moss'] as const;
@@ -26,11 +26,6 @@ export interface PostCardProps {
   dataCat?: string;
 }
 
-function slugToName(slug?: string): string {
-  if (!slug) return '';
-  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
-
 function gradientVariant(slug: string): string {
   let hash = 0;
   for (let i = 0; i < slug.length; i++) {
@@ -40,11 +35,11 @@ function gradientVariant(slug: string): string {
 }
 
 export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
-  const categoriaNome = post.categoria?.nome_exibicao || slugToName(post.categoria_slug);
+  const categoryLabel = categoryName(post);
 
   return (
-    <Link href={`/post/${post.slug}`} className="post-card" data-audit={dataAudit} data-cat={dataCat}>
-      <div className={`pc-img ${gradientVariant(post.slug)}`}>
+    <Link href={`/post/${post.slug}`} className={`post-card ${styles.postCard}`} data-audit={dataAudit} data-cat={dataCat}>
+      <div className={`${styles.pcImg} ${gradientVariant(post.slug)}`}>
         {post.imagem_destaque_url && (
           <ResponsiveImage
             src={post.imagem_destaque_url}
@@ -53,18 +48,18 @@ export default function PostCard({ post, dataAudit, dataCat }: PostCardProps) {
             lqip={post.imagem_lqip_base64}
           />
         )}
-        {categoriaNome && <span className="tag">{categoriaNome}</span>}
+        {categoryLabel && <span className={styles.tag}>{categoryLabel}</span>}
       </div>
 
-      <div className="pc-body">
-        {(post.subcategoria_nome || categoriaNome) && (
-          <span className="pc-cat">{post.subcategoria_nome || categoriaNome}</span>
+      <div className={styles.pcBody}>
+        {(post.subcategoria_nome || categoryLabel) && (
+          <span className={styles.pcCat}>{post.subcategoria_nome || categoryLabel}</span>
         )}
-        <span className="pc-title" title={post.titulo}>{post.titulo}</span>
-        {post.resumo && <span className="pc-excerpt">{post.resumo}</span>}
+        <span className={styles.pcTitle} title={post.titulo}>{post.titulo}</span>
+        {post.resumo && <span className={`pc-excerpt ${styles.pcExcerpt}`}>{post.resumo}</span>}
       </div>
 
-      <div className="pc-foot">
+      <div className={`pc-foot ${styles.pcFoot}`}>
         <span>
           {formatDateShort(post.data_publicacao)}
           {post.tempo_leitura_min ? ` · ${post.tempo_leitura_min} min de leitura` : ''}

@@ -1,0 +1,364 @@
+/* ═══════════════════════════════════════════
+   BANNER — fixed bottom bar
+═══════════════════════════════════════════ */
+.cmpBanner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9000;
+  background: #ffffff;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+  padding: var(--sp-6) var(--sp-5);
+}
+
+.cmpBannerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.cmpBannerCopy {
+  flex: 1 1 280px;
+}
+
+.cmpBannerTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--ink);
+  margin: 0 0 var(--title-gap);
+}
+
+.cmpBannerText {
+  font-size: var(--type-caption);
+  color: var(--slate);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cmpBannerActions {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+/* Banner buttons */
+.cmpBtn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-caption);
+  padding: var(--sp-2) var(--gap-loose);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  line-height: 1;
+}
+
+/* Accept/Reject have the same visual weight (outline, same border and
+   padding) — only the color changes. Prevents the accept choice from
+   looking like the "default"/mandatory option. */
+.cmpBtnAccept {
+  background: transparent;
+  color: var(--petrol);
+  border: 1px solid var(--petrol);
+}
+
+.cmpBtnAccept:hover {
+  background: rgba(15, 76, 92, 0.08);
+}
+
+.cmpBtnReject {
+  background: transparent;
+  color: var(--slate);
+  border: 1px solid var(--line);
+}
+
+.cmpBtnReject:hover {
+  background: var(--sand);
+  border-color: var(--slate);
+}
+
+.cmpBtnCustomize {
+  background: transparent;
+  color: var(--petrol);
+  border: 1px solid var(--petrol);
+}
+
+.cmpBtnCustomize:hover {
+  background: rgba(15, 76, 92, 0.08);
+}
+
+/* ═══════════════════════════════════════════
+   MODAL — preferences dialog
+═══════════════════════════════════════════ */
+.cmpOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9001;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-5);
+}
+
+.cmpModal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+}
+
+.cmpModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-6) var(--sp-6) 0;
+}
+
+.cmpModalTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-body);
+  color: var(--ink);
+  margin: 0;
+}
+
+.cmpModalClose {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--sand);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cmpModalClose:hover {
+  background: var(--line);
+}
+
+.cmpModalBody {
+  padding: var(--sp-6);
+}
+
+.cmpModalDesc {
+  font-size: var(--type-label);
+  color: var(--slate);
+  line-height: 1.6;
+  margin: 0 0 var(--sp-6);
+}
+
+/* ─── Consent rows ──────────────────── */
+.cmpRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cmpRow:last-of-type {
+  border-bottom: none;
+}
+
+.cmpRowInfo {
+  flex: 1;
+}
+
+.cmpRowLabel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.cmpRowBadge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  padding: 2px var(--sp-2);
+  border-radius: 4px;
+  background: rgba(15, 76, 92, 0.08);
+  color: var(--petrol);
+}
+
+.cmpRowBadgeOptional {
+  background: var(--sand);
+  color: var(--steel);
+}
+
+.cmpRowDesc {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  margin: var(--sp-1) 0 0;
+  line-height: 1.5;
+}
+
+/* ─── Toggle switch ──────────────────────── */
+.cmpToggle {
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cmpToggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cmpToggleTrack {
+  display: block;
+  width: 44px;
+  height: 24px;
+  background: var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.cmpToggleTrack::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.cmpToggle input:checked + .cmpToggleTrack {
+  background: var(--petrol);
+}
+
+.cmpToggle input:checked + .cmpToggleTrack::after {
+  transform: translateX(20px);
+}
+
+.cmpToggle input:focus-visible + .cmpToggleTrack {
+  outline: 2px solid var(--petrol);
+  outline-offset: 2px;
+}
+
+.cmpToggleDisabled .cmpToggleTrack {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ─── Modal footer ────────────────────── */
+.cmpModalFooter {
+  padding: 0 var(--sp-6) var(--sp-6);
+}
+
+.cmpBtnSave {
+  width: 100%;
+  background: var(--petrol);
+  color: white;
+  padding: var(--sp-3);
+  font-size: var(--type-label);
+  border-radius: 8px;
+  margin-top: var(--sp-4);
+}
+
+.cmpBtnSave:hover {
+  background: var(--petrol-deep);
+}
+
+.cmpModalQuickActions {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.cmpModalQuickActions .cmpBtn {
+  flex: 1;
+  text-align: center;
+}
+
+.cmpModalLinks {
+  display: flex;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+
+.cmpModalLinks a {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  text-decoration: underline;
+}
+
+.cmpModalLinks a:hover {
+  color: var(--petrol);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER TRIGGER
+═══════════════════════════════════════════ */
+.cmpTrigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  color: #fff;
+  transition: color 0.2s ease;
+  text-align: left;
+}
+
+.cmpTrigger:hover {
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 639px) {
+  .cmpBannerInner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cmpBannerActions {
+    flex-direction: column;
+  }
+
+  .cmpBtn {
+    text-align: center;
+    padding: var(--sp-3);
+  }
+}

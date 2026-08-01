@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import './PageHero.css';
+import styles from './PageHero.module.css';
 
 interface PageHeroProps {
   className?: string;
@@ -26,17 +26,17 @@ export default function PageHero({
 }: PageHeroProps) {
   return (
     <section
-      className={`page-hero${singleColumn ? ' page-hero--single' : ''}${className ? ` ${className}` : ''}`}
+      className={`page-hero ${styles.pageHero}${singleColumn ? ` page-hero--single ${styles.pageHeroSingle}` : ''}${className ? ` ${className}` : ''}`}
       data-audit={dataAudit}
     >
-      <div className="page-hero-in">
-        <div className="page-hero-left">
-          {eyebrow && <div className="page-hero-ey">{eyebrow}</div>}
+      <div className={`page-hero-in ${styles.pageHeroIn}`}>
+        <div className={`page-hero-left ${styles.pageHeroLeft}`}>
+          {eyebrow && <div className={`page-hero-ey ${styles.pageHeroEy}`}>{eyebrow}</div>}
           {title && <h1>{title}</h1>}
-          {subtitle && <p className="page-hero-sub">{subtitle}</p>}
+          {subtitle && <p className={`page-hero-sub ${styles.pageHeroSub}`}>{subtitle}</p>}
           {children}
         </div>
-        {right && <div className="page-hero-right">{right}</div>}
+        {right && <div className={`page-hero-right ${styles.pageHeroRight}`}>{right}</div>}
       </div>
       {statsStrip}
     </section>

@@ -9,7 +9,7 @@
 
 import type { ReactNode } from 'react';
 import IconTile from './IconTile';
-import './FeatureCard.css';
+import styles from './FeatureCard.module.css';
 
 interface FeatureCardProps {
   icon?: ReactNode;
@@ -22,16 +22,21 @@ interface FeatureCardProps {
   dataAudit?: string;
 }
 
+const SIZE_CLASS = {
+  md: 'feature-card--md',
+  lg: `feature-card--lg ${styles.featureCardLg}`,
+};
+
 export default function FeatureCard({ icon, kicker, title, text, tags, footer, size = 'md', dataAudit }: FeatureCardProps) {
   return (
-    <div className={`feature-card feature-card--${size}`} data-audit={dataAudit}>
-      {icon && <IconTile icon={icon} className="feature-card-icon" />}
-      {kicker && <span className="feature-card-kicker">{kicker}</span>}
-      <h3 className="feature-card-title">{title}</h3>
-      <p className="feature-card-text">{text}</p>
+    <div className={`feature-card ${styles.featureCard} ${SIZE_CLASS[size]}`} data-audit={dataAudit}>
+      {icon && <IconTile icon={icon} className={`feature-card-icon ${styles.featureCardIcon}`} />}
+      {kicker && <span className={`feature-card-kicker ${styles.featureCardKicker}`}>{kicker}</span>}
+      <h3 className={`feature-card-title ${styles.featureCardTitle}`}>{title}</h3>
+      <p className={`feature-card-text ${styles.featureCardText}`}>{text}</p>
       {footer ?? (tags && tags.length > 0 ? (
-        <div className="feature-card-footer">
-          <div className="feature-card-tags">
+        <div className={`feature-card-footer ${styles.featureCardFooter}`}>
+          <div className={`feature-card-tags ${styles.featureCardTags}`}>
             {tags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}

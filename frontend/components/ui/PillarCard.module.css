@@ -1,0 +1,140 @@
+/* Extracted from frontend/app/home.css (.ih-pillar-*) — same card reused
+   on the Home and in /servicos (see PillarCard.tsx). */
+
+.pillarCard {
+  flex: 1 1 340px;
+  max-width: 392px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: var(--sp-7);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+
+.pillarCardWide {
+  flex: 1 1 480px;
+  max-width: 600px;
+}
+
+.pillarCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -18px rgba(12, 32, 39, .18);
+  border-color: rgba(15, 76, 92, .22);
+}
+
+.pillarTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-5);
+}
+
+.pillarKicker {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--petrol);
+  margin-bottom: var(--sp-2);
+}
+
+.pillarCard h3 {
+  font-size: var(--type-lead);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0 0 var(--title-gap);
+}
+
+.pillarCard > p {
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  margin: 0 0 var(--gap-loose);
+}
+
+.pillarBullets {
+  list-style: none;
+  margin: 0 0 var(--gap-grid);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.pillarBullets li {
+  position: relative;
+  padding-left: var(--sp-6);
+  font-size: var(--type-label);
+  line-height: 1.5;
+  color: var(--slate);
+}
+
+.pillarBullets li strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.pillarBullets li::before {
+  content: "✓";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: var(--clay);
+  font-size: var(--type-label);
+  font-weight: 700;
+}
+
+.pillarFooter {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  border-top: 1px solid var(--line);
+  padding-top: var(--gap-loose);
+}
+
+.pillarTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.pillarTags span {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: 999px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid transparent;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .07);
+  border-color: rgba(15, 76, 92, .14);
+}
+
+.pillarMore {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-left: auto;
+  font-size: var(--type-label);
+  font-weight: 600;
+  color: var(--clay);
+}
+
+.pillarMore :global(.arrow) {
+  transition: transform .2s;
+}
+
+.pillarCard:hover .pillarMore :global(.arrow) {
+  transform: translateX(3px);
+}

@@ -7,7 +7,7 @@ import PageHero from '@/components/ui/PageHero';
 import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import FeatureCard from '@/components/ui/FeatureCard';
 import Reveal from '@/components/ui/Reveal';
-import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import BenefitsSection from '@/components/ui/BenefitsSection';
 import {
   IconIntegracaoSistemas,
   IconAutomacaoProcessos,
@@ -192,7 +192,7 @@ export default function IntegracaoAutomacaoPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <BeneficiosSection
+      <BenefitsSection
         id="beneficios"
         dataAudit="ia2-beneficios"
         title="Menos esforço para operar. Mais controle para evoluir."

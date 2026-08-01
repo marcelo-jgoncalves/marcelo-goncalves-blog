@@ -1,0 +1,221 @@
+/* ==========================================================================
+   POST PAGE — chrome (hero, cover, layout shell)
+   Tokens: petrol / clay / ivory / sand (frontend/app/globals.css)
+
+   The prose/content section (.post-content and everything nested in it,
+   plus .post-toc — DOM-queried directly by TableOfContents.tsx via
+   `.post-toc-mk`, not through React refs) stays in the plain global
+   postContent.css: that markup is either persisted HTML from the CMS
+   (Tiptap output stored in DynamoDB) or targeted by literal
+   querySelector calls, so it can never be hashed by CSS Modules.
+   ========================================================================== */
+
+/* Fullwidth sections — overrides the global `section { margin-block: var(--sp-10) }` */
+.postHero {
+  margin-block: 0;
+}
+
+/* ==========================================================================
+   2. HERO
+   ========================================================================== */
+.postHero {
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--sand) 100%);
+  border-bottom: 1px solid var(--line);
+  padding: var(--sp-10) var(--sp-7) 0;
+}
+
+.postHeroIn {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.postCatPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--petrol);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 999px;
+  margin-bottom: var(--sp-6);
+}
+
+.postHeroTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--type-h1);
+  line-height: 1.04;
+  letter-spacing: -.04em;
+  color: var(--ink);
+  max-width: 880px;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.postHeroSub {
+  font-size: var(--type-body);
+  line-height: 1.6;
+  color: var(--slate);
+  max-width: 600px;
+  margin-top: var(--gap-grid);
+}
+
+.postByline {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-loose);
+  margin-top: var(--sp-7);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.postAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--petrol-soft), var(--petrol));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--type-label);
+  letter-spacing: -.01em;
+  box-shadow: 0 0 0 4px var(--surface), 0 0 0 5px var(--line);
+  flex: none;
+}
+
+.postBylineWho { text-align: left; }
+
+.postBylineName {
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.postBylineDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--line);
+  flex: none;
+}
+
+.postBylineMeta {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  letter-spacing: .04em;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.postBylineMeta svg { color: var(--clay); font-size: var(--type-caption); }
+
+/* ==========================================================================
+   3. COVER
+   ========================================================================== */
+.postCover {
+  max-width: 1080px;
+  margin: var(--sp-10) auto calc(-1 * var(--sp-11));
+  padding: 0 var(--sp-7);
+}
+
+.postCoverFrame {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(12, 32, 39, .3);
+  box-shadow: 0 30px 60px -24px rgba(8, 50, 61, .5);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-6);
+}
+
+/* ==========================================================================
+   4. LAYOUT (toc | article | share)
+   ========================================================================== */
+.postLayout {
+  max-width: var(--wrap-max-narrow);
+  margin: 0 auto;
+  padding: var(--sp-13) var(--sp-7) var(--sp-8);
+  display: grid;
+  grid-template-columns: 212px minmax(0, var(--read)) 52px;
+  gap: var(--sp-10);
+  justify-content: center;
+  align-items: start;
+}
+
+.postArticle { min-width: 0; grid-column: 2; }
+
+@media (max-width: 1080px) {
+  .postLayout { grid-template-columns: minmax(0, var(--read)) 52px; gap: var(--sp-8); }
+  .postLayout :global(.post-toc) { display: none; }
+  .postArticle { grid-column: 1; }
+}
+
+@media (max-width: 720px) {
+  .postLayout { grid-template-columns: 1fr; padding-top: var(--sp-12); }
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- overlap geometry calculated from the cover's real height, not spacing rhythm */
+  .postCover { margin-bottom: -60px; }
+}
+
+/* ==========================================================================
+   12. CONTEXTUAL CTA — compact editorial (between body and author)
+   ========================================================================== */
+.postCtaEditorial {
+  margin-block: 0;
+  padding-top: var(--sp-9);
+  border-top: 1px solid var(--line);
+}
+
+.postCtaIn {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.postCtaIn h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.postCtaIn p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.postCtaActions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .postCtaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}

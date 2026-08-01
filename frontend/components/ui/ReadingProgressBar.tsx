@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import './ReadingProgressBar.css';
+import styles from './ReadingProgressBar.module.css';
 
 export default function ReadingProgressBar() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,14 +39,14 @@ export default function ReadingProgressBar() {
   return (
     <div
       ref={containerRef}
-      className="reading-progress"
+      className={styles.readingProgress}
       role="progressbar"
       aria-label="Progresso de leitura"
       aria-valuenow={0}
       aria-valuemin={0}
       aria-valuemax={100}
     >
-      <div ref={barRef} className="reading-progress__bar" />
+      <div ref={barRef} className={styles.bar} />
     </div>
   );
 }

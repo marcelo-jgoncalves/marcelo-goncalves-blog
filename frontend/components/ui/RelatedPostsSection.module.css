@@ -1,0 +1,98 @@
+.postRelated {
+  margin: var(--sp-12) auto;
+}
+
+.postRHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-7);
+}
+
+.postREyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--eyebrow-gap);
+  white-space: nowrap;
+}
+
+.postREyebrow::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.postRHead h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.postRAll {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--type-label);
+  color: var(--petrol);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: none;
+}
+
+.postRGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+}
+
+.postRAllMobileWrap {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .postRGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .postRAllDesktop {
+    display: none;
+  }
+
+  .postRAllMobileWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--sp-7);
+  }
+
+  .postRAllMobile {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--title-gap);
+    background: var(--clay);
+    color: #fff;
+    font-weight: 600;
+    font-size: var(--type-label);
+    padding: var(--eyebrow-gap) var(--sp-6);
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(201, 96, 60, .35);
+    transition: background .2s, transform .2s;
+  }
+
+  .postRAllMobile:hover {
+    background: var(--clay-hover);
+  }
+
+  .postRAllMobile :global(.arrow) {
+    font-family: var(--font-mono);
+  }
+}

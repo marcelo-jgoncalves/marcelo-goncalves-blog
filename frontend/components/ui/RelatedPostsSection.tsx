@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PostCard from '@/components/ui/PostCard';
 import { getPopularPosts } from '@/lib/api';
-import './RelatedPostsSection.css';
+import styles from './RelatedPostsSection.module.css';
 
 type RelatedPost = NonNullable<Parameters<typeof PostCard>[0]['post']>;
 
@@ -16,14 +16,14 @@ export default async function RelatedPostsSection({ excludeSlug }: RelatedPostsS
   if (related.length === 0) return null;
 
   return (
-    <div className="post-wide post-related" data-audit="post-related">
-      <div className="post-r-head" data-audit="post-r-head">
+    <div className={`post-wide post-related ${styles.postRelated}`} data-audit="post-related">
+      <div className={`post-r-head ${styles.postRHead}`} data-audit="post-r-head">
         <div>
           <h2>Continue explorando</h2>
         </div>
-        <Link className="post-r-all post-r-all-desktop" href="/todos-artigos">Todos os artigos →</Link>
+        <Link className={`post-r-all post-r-all-desktop ${styles.postRAll} ${styles.postRAllDesktop}`} href="/todos-artigos">Todos os artigos →</Link>
       </div>
-      <div className="post-r-grid" data-audit="post-r-grid">
+      <div className={`post-r-grid ${styles.postRGrid}`} data-audit="post-r-grid">
         {related.map((post) => (
           <PostCard
             key={post.slug}
@@ -32,8 +32,8 @@ export default async function RelatedPostsSection({ excludeSlug }: RelatedPostsS
           />
         ))}
       </div>
-      <div className="post-r-all-mobile-wrap">
-        <Link className="post-r-all-mobile" href="/todos-artigos">Todos os artigos <span className="arrow">→</span></Link>
+      <div className={`post-r-all-mobile-wrap ${styles.postRAllMobileWrap}`}>
+        <Link className={`post-r-all-mobile ${styles.postRAllMobile}`} href="/todos-artigos">Todos os artigos <span className="arrow">→</span></Link>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import AdvisoryCta from '@/components/ui/AdvisoryCta';
 import PageHero from '@/components/ui/PageHero';
 import IconTile from '@/components/ui/IconTile';
 import FeatureCard from '@/components/ui/FeatureCard';
-import './sobre.css';
+import styles from './sobre.module.css';
 
 export const revalidate = 3600;
 
@@ -99,99 +99,99 @@ export default async function SobrePage() {
       {/* ── HERO ── */}
       <PageHero
         singleColumn
-        className="sobre-hero"
+        className={`sobre-hero ${styles.sobreHero}`}
         dataAudit="sobre-hero"
         eyebrow="Sobre a consultoria"
         title="Engenharia próxima da operação, com responsabilidade direta sobre as decisões que sustentam a solução."
         subtitle="Somos uma consultoria boutique liderada por Marcelo Gonçalves. Combinamos automação, inteligência artificial, software e arquitetura em nuvem para ajudar empresas a operar com mais eficiência, integração e confiabilidade."
       >
-        <div className="sobre-hero-actions">
+        <div className={styles.sobreHeroActions}>
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique (mesmo padrão de HeaderNav.tsx) */}
-          <a className="btn sobre-btn-clay" href="/#servicos">Conhecer os serviços</a>
+          <a className={`btn sobre-btn-clay ${styles.sobreBtnClay}`} href="/#servicos">Conhecer os serviços</a>
         </div>
       </PageHero>
 
       {/* ── NOSSA VISÃO ── */}
-      <section className="sobre-visao" id="visao">
-        <div className="wrap sobre-center-head">
-          <div className="sec-ey sobre-ey-center">Nossa visão</div>
-          <h2 className="sobre-visao-quote">Tecnologia deve ampliar a capacidade de uma empresa, não aumentar o esforço necessário para operá-la.</h2>
+      <section className={styles.sobreVisao} id="visao">
+        <div className={`wrap ${styles.sobreCenterHead}`}>
+          <div className={`sec-ey ${styles.sobreEyCenter}`}>Nossa visão</div>
+          <h2 className={styles.sobreVisaoQuote}>Tecnologia deve ampliar a capacidade de uma empresa, não aumentar o esforço necessário para operá-la.</h2>
         </div>
-        <div className="wrap sobre-visao-list" data-audit="sobre-visao-list">
+        <div className={`wrap ${styles.sobreVisaoList}`} data-audit="sobre-visao-list">
           {VISION_RESULTS.map((item) => (
-            <span className="sobre-visao-item" key={item}>{item}</span>
+            <span className={styles.sobreVisaoItem} key={item}>{item}</span>
           ))}
         </div>
       </section>
 
       {/* ── ORIGEM E PROPÓSITO ── */}
-      <section className="sobre-origem" id="origem">
-        <div className="wrap sobre-origem-grid" data-audit="sobre-origem-grid">
-          <div className="sobre-origem-text">
+      <section className={styles.sobreOrigem} id="origem">
+        <div className={`wrap ${styles.sobreOrigemGrid}`} data-audit="sobre-origem-grid">
+          <div className={styles.sobreOrigemText}>
             <div className="sec-ey">Por que a consultoria existe</div>
-            <h2 className="sobre-origem-title">Tecnologia só gera valor quando melhora a forma como a empresa opera.</h2>
+            <h2 className={styles.sobreOrigemTitle}>Tecnologia só gera valor quando melhora a forma como a empresa opera.</h2>
             <p>Depois de mais de dez anos atuando em tecnologia no Brasil e na Alemanha, Marcelo Gonçalves acompanhou projetos com diferentes níveis de escala, maturidade e complexidade.</p>
             <p>Em muitos contextos, o desafio não era a ausência de ferramentas, mas o excesso de etapas, integrações frágeis, processos manuais e decisões técnicas que aumentavam o esforço necessário para manter a operação.</p>
             <p>A consultoria nasceu dessa experiência: aproximar engenharia e operação para construir soluções mais simples, integradas e capazes de evoluir sem transformar tecnologia em uma nova fonte de complexidade.</p>
           </div>
-          <aside className="sobre-origem-mission" data-audit="sobre-origem-mission">
-            <span className="sobre-om-label">Nosso propósito</span>
-            <h3 className="sobre-om-title">Transformar tecnologia em eficiência operacional.</h3>
-            <p className="sobre-om-text">Fazemos isso conectando processos, sistemas e plataformas com decisões técnicas proporcionais ao problema, ao risco e à realidade de cada empresa.</p>
+          <aside className={styles.sobreOrigemMission} data-audit="sobre-origem-mission">
+            <span className={styles.sobreOmLabel}>Nosso propósito</span>
+            <h3 className={styles.sobreOmTitle}>Transformar tecnologia em eficiência operacional.</h3>
+            <p className={styles.sobreOmText}>Fazemos isso conectando processos, sistemas e plataformas com decisões técnicas proporcionais ao problema, ao risco e à realidade de cada empresa.</p>
           </aside>
         </div>
       </section>
 
       {/* ── PRINCÍPIOS DE ENGENHARIA ── */}
-      <section className="sobre-filosofia" id="principios">
+      <section className={styles.sobreFilosofia} id="principios">
         <div className="wrap">
-          <div className="sobre-center-head">
-            <div className="sec-ey sobre-ey-center">Princípios de engenharia</div>
+          <div className={styles.sobreCenterHead}>
+            <div className={`sec-ey ${styles.sobreEyCenter}`}>Princípios de engenharia</div>
             <h2 className="sec-t">Eficiência nasce de decisões bem projetadas.</h2>
-            <p className="sec-desc sobre-desc-center">Cada solução precisa funcionar no presente, continuar compreensível no futuro e evoluir sem comprometer o que já está em operação.</p>
+            <p className={`sec-desc ${styles.sobreDescCenter}`}>Cada solução precisa funcionar no presente, continuar compreensível no futuro e evoluir sem comprometer o que já está em operação.</p>
           </div>
-          <div className="sobre-principles-list" data-audit="sobre-principles-list">
+          <div className={styles.sobrePrinciplesList} data-audit="sobre-principles-list">
             {PRINCIPLES.map((p) => (
-              <div className="sobre-principle-row" key={p.num}>
-                <span className="sobre-pr-num">{p.num}</span>
-                <h3 className="sobre-pr-title">{p.title}</h3>
-                <p className="sobre-pr-text">{p.text}</p>
+              <div className={styles.sobrePrincipleRow} key={p.num}>
+                <span className={styles.sobrePrNum}>{p.num}</span>
+                <h3 className={styles.sobrePrTitle}>{p.title}</h3>
+                <p className={styles.sobrePrText}>{p.text}</p>
               </div>
             ))}
           </div>
-          <div className="sobre-manifesto" data-audit="sobre-manifesto">
-            <h3 className="sobre-manifesto-frase">Tecnologia não existe para impressionar. Existe para tornar empresas mais eficientes.</h3>
-            <p className="sobre-manifesto-texto">Ferramentas, sistemas e automações só fazem sentido quando reduzem esforço, eliminam desperdícios e ampliam a capacidade das pessoas de realizar um trabalho melhor.</p>
+          <div className={styles.sobreManifesto} data-audit="sobre-manifesto">
+            <h3 className={styles.sobreManifestoFrase}>Tecnologia não existe para impressionar. Existe para tornar empresas mais eficientes.</h3>
+            <p className={styles.sobreManifestoTexto}>Ferramentas, sistemas e automações só fazem sentido quando reduzem esforço, eliminam desperdícios e ampliam a capacidade das pessoas de realizar um trabalho melhor.</p>
           </div>
         </div>
       </section>
 
       {/* ── COMO TOMAMOS DECISÕES ── */}
-      <section className="sobre-abordagem" id="decisoes">
+      <section className={styles.sobreAbordagem} id="decisoes">
         <div className="wrap">
-          <div className="sobre-abordagem-head" data-audit="sobre-abordagem-head">
-            <div className="sec-ey sobre-ey-center">Como tomamos decisões</div>
-            <h2 className="sobre-abordagem-title">Boa engenharia começa antes da implementação.</h2>
-            <p className="sobre-abordagem-desc">Não começamos escolhendo ferramentas. Primeiro entendemos o contexto, testamos premissas, priorizamos o impacto e somente então definimos a solução.</p>
+          <div className={styles.sobreAbordagemHead} data-audit="sobre-abordagem-head">
+            <div className={`sec-ey ${styles.sobreEyCenter}`}>Como tomamos decisões</div>
+            <h2 className={styles.sobreAbordagemTitle}>Boa engenharia começa antes da implementação.</h2>
+            <p className={styles.sobreAbordagemDesc}>Não começamos escolhendo ferramentas. Primeiro entendemos o contexto, testamos premissas, priorizamos o impacto e somente então definimos a solução.</p>
           </div>
-          <div className="sobre-modules-grid" data-audit="sobre-modules-grid">
+          <div className={styles.sobreModulesGrid} data-audit="sobre-modules-grid">
             {DECISIONS.map((m) => (
               <div
-                className="sobre-module"
+                className={styles.sobreModule}
                 style={{ gridColumn: `span ${m.span}` }}
                 key={m.num}
               >
-                <div className="sobre-module-top">
-                  <span className="sobre-module-num">{m.num}</span>
+                <div className={styles.sobreModuleTop}>
+                  <span className={styles.sobreModuleNum}>{m.num}</span>
                   <IconTile
                     icon={<FontAwesomeIcon icon={m.icon} />}
                     variant="clay"
-                    className="sobre-module-mark"
+                    className={styles.sobreModuleMark}
                   />
                 </div>
-                <h3 className="sobre-module-title">{m.title}</h3>
-                <p className="sobre-module-text">{m.text}</p>
-                <span className="sobre-module-corner" aria-hidden="true" />
+                <h3 className={styles.sobreModuleTitle}>{m.title}</h3>
+                <p className={styles.sobreModuleText}>{m.text}</p>
+                <span className={styles.sobreModuleCorner} aria-hidden="true" />
               </div>
             ))}
           </div>
@@ -199,25 +199,25 @@ export default async function SobrePage() {
       </section>
 
       {/* ── QUEM LIDERA A CONSULTORIA ── */}
-      <section className="sobre-behind" id="lideranca" aria-labelledby="behind-title">
-        <div className="sobre-behind-container">
-          <header className="sobre-behind-head">
+      <section className={styles.sobreBehind} id="lideranca" aria-labelledby="behind-title">
+        <div className={styles.sobreBehindContainer}>
+          <header className={styles.sobreBehindHead}>
             <div className="sec-ey sec-ey--dual">Quem lidera a consultoria</div>
-            <h2 id="behind-title" className="sobre-behind-h2">Liderança técnica presente do diagnóstico à evolução.</h2>
+            <h2 id="behind-title" className={styles.sobreBehindH2}>Liderança técnica presente do diagnóstico à evolução.</h2>
           </header>
 
-          <article className="sobre-behind-card" data-audit="sobre-behind-card">
-            <div className="sobre-behind-photo">
+          <article className={styles.sobreBehindCard} data-audit="sobre-behind-card">
+            <div className={styles.sobreBehindPhoto}>
               {author.foto_avatar_url ? (
                 <ResponsiveImage src={author.foto_avatar_url} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" fill priority />
               ) : (
                 <img src={FALLBACK_PHOTO} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" width={720} height={960} loading="lazy" decoding="async" />
               )}
             </div>
-            <div className="sobre-behind-content">
-              <span className="sobre-behind-label-sm">Liderança técnica</span>
-              <h3 className="sobre-behind-h3">Marcelo Gonçalves</h3>
-              <div className="sobre-behind-tags" data-audit="sobre-behind-tags">
+            <div className={styles.sobreBehindContent}>
+              <span className={styles.sobreBehindLabelSm}>Liderança técnica</span>
+              <h3 className={styles.sobreBehindH3}>Marcelo Gonçalves</h3>
+              <div className={styles.sobreBehindTags} data-audit="sobre-behind-tags">
                 {LEADER_TAGS.map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
@@ -225,23 +225,23 @@ export default async function SobrePage() {
               <p>Marcelo Gonçalves é engenheiro de Cloud e DevOps com mais de dez anos de experiência em tecnologia e atuação em projetos no Brasil e na Alemanha.</p>
               <p>Sua experiência reúne arquitetura AWS, infraestrutura como código, containers, integração de sistemas, automação e engenharia de software em ambientes que exigem segurança, confiabilidade e capacidade de evolução.</p>
               <p>Na consultoria, participa diretamente do entendimento do problema, da definição da solução e das principais decisões técnicas. O objetivo não é apenas implementar tecnologia, mas ajudar a empresa a construir algo que continue fazendo sentido depois da entrega.</p>
-              <div className="sobre-boutique" data-audit="sobre-boutique">
-                <h3 className="sobre-boutique-title">Uma estrutura adaptável ao projeto</h3>
-                <p className="sobre-boutique-text">A liderança e a responsabilidade técnica permanecem centralizadas em Marcelo. Quando o escopo exige competências complementares, especialistas podem ser incorporados à entrega de acordo com a necessidade, sem que o cliente perca proximidade, clareza ou continuidade nas decisões.</p>
+              <div className={styles.sobreBoutique} data-audit="sobre-boutique">
+                <h3 className={styles.sobreBoutiqueTitle}>Uma estrutura adaptável ao projeto</h3>
+                <p className={styles.sobreBoutiqueText}>A liderança e a responsabilidade técnica permanecem centralizadas em Marcelo. Quando o escopo exige competências complementares, especialistas podem ser incorporados à entrega de acordo com a necessidade, sem que o cliente perca proximidade, clareza ou continuidade nas decisões.</p>
               </div>
             </div>
           </article>
 
           {/* Experiência, certificações e competências — mesmo macrobloco de
               autoridade da liderança (§3.3 item 9 da spec), não uma seção à parte. */}
-          <div className="sobre-evidence-grid" id="experiencia" data-audit="sobre-evidence-grid">
+          <div className={styles.sobreEvidenceGrid} id="experiencia" data-audit="sobre-evidence-grid">
             {AUTHORITY_CARDS.map((c) => {
               let footer;
               if (c.destaque) {
-                footer = <span className="sobre-exp-destaque">{c.destaque}</span>;
+                footer = <span className={styles.sobreExpDestaque}>{c.destaque}</span>;
               } else if (c.certList) {
                 footer = (
-                  <ul className="sobre-cert-list">
+                  <ul className={styles.sobreCertList}>
                     {c.certList.map((cert) => <li key={cert}>{cert}</li>)}
                   </ul>
                 );

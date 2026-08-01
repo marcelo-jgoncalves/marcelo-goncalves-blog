@@ -1,4 +1,3 @@
-import './home.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getRecentPosts } from '@/lib/api';
@@ -12,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
 import { SITE_URL, SITE_NAME, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import styles from './home.module.css';
 
 export const revalidate = 300;
 
@@ -167,28 +167,28 @@ export default async function InstitutionalHome() {
     <>
       <PageHero
         singleColumn
-        className="ih-hero"
+        className={styles.ihHero}
         dataAudit="ih-hero"
         eyebrow="Consultoria boutique de tecnologia"
         title="Engenharia para uma operação mais eficiente, integrada e preparada para crescer."
         subtitle="Ajudamos pequenas e médias empresas em crescimento a eliminar gargalos, automatizar processos, conectar sistemas e modernizar as plataformas que sustentam o negócio."
       >
-        <div className="ih-hero-actions">
+        <div className={styles.ihHeroActions}>
           <Link href="/contato" className="btn">Apresentar um desafio</Link>
           <a href="#servicos" className="btn btn-petrol">Conhecer os serviços</a>
         </div>
-        <p className="ih-hero-microcopy">Conversa inicial sem compromisso · Retorno em até um dia útil</p>
+        <p className={styles.ihHeroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
       {/* Serviços */}
-      <section className="ih-section" id="servicos">
+      <section className={styles.ihSection} id="servicos">
         <div className="wrap">
-          <div className="ih-center-head">
-            <div className="ih-eyebrow ih-eyebrow--dual">Serviços</div>
+          <div className={styles.ihCenterHead}>
+            <div className={`${styles.ihEyebrow} ${styles.ihEyebrowDual}`}>Serviços</div>
             <h2 className="sec-t">Quatro competências que trabalham juntas para melhorar sua operação.</h2>
-            <p className="sec-desc ih-center-desc">Partimos do problema, não da ferramenta. Combinamos automação, inteligência artificial, software e cloud conforme o contexto, sem exigir que você escolha previamente uma tecnologia.</p>
+            <p className={`sec-desc ih-center-desc ${styles.ihCenterDesc}`}>Partimos do problema, não da ferramenta. Combinamos automação, inteligência artificial, software e cloud conforme o contexto, sem exigir que você escolha previamente uma tecnologia.</p>
           </div>
-          <div className="ih-pillars-grid">
+          <div className={styles.ihPillarsGrid}>
             {PILLARS.map((pillar) => (
               <PillarCard
                 key={pillar.title}
@@ -207,91 +207,91 @@ export default async function InstitutionalHome() {
       </section>
 
       {/* Metodologia */}
-      <section className="ih-section ih-section--surface" id="como-trabalhamos">
+      <section className={`${styles.ihSection} ${styles.ihSectionSurface}`} id="como-trabalhamos">
         <div className="wrap">
-          <div className="ih-method-grid" data-audit="ih-method-grid">
-            <div className="ih-method-text">
-              <div className="ih-eyebrow">Como trabalhamos</div>
+          <div className={styles.ihMethodGrid} data-audit="ih-method-grid">
+            <div className={styles.ihMethodText}>
+              <div className={styles.ihEyebrow}>Como trabalhamos</div>
               <h2 className="sec-t">Um processo claro para reduzir incerteza e construir o que realmente precisa evoluir.</h2>
               <p className="sec-desc" style={{ maxWidth: 720 }}>
                 Cada projeto começa pela compreensão do contexto, dos processos e dos resultados esperados. A tecnologia é definida somente depois que o problema, as restrições e as prioridades estão claros.
               </p>
             </div>
-            <aside className="ih-method-card" data-audit="ih-method-card">
-              <span className="ih-mc-label">Nosso método</span>
-              <h3 className="ih-mc-title">Entregas incrementais, decisões transparentes.</h3>
-              <p className="ih-mc-text">
+            <aside className={styles.ihMethodCard} data-audit="ih-method-card">
+              <span className={styles.ihMcLabel}>Nosso método</span>
+              <h3 className={styles.ihMcTitle}>Entregas incrementais, decisões transparentes.</h3>
+              <p className={`ih-mc-text ${styles.ihMcText}`}>
                 Estruturamos o trabalho em etapas úteis e testáveis, com escopo visível, comunicação direta e validação contínua. Isso reduz riscos, evita compromissos prematuros e permite que a solução evolua com base no que aprendemos durante o projeto.
               </p>
             </aside>
           </div>
           <StepsList steps={STEPS} dataAudit="ih-steps" />
-          <div className="ih-section-footer-center">
+          <div className={styles.ihSectionFooterCenter}>
             <Link href="/contato" className="btn">Apresentar um desafio</Link>
           </div>
         </div>
       </section>
 
       {/* Resultados */}
-      <section className="ih-results" id="resultados">
+      <section className={styles.ihResults} id="resultados">
         <div className="wrap">
-          <div className="ih-center-head">
-            <div className="ih-eyebrow ih-eyebrow--dual ih-eyebrow--onDark">Resultados</div>
-            <h2 className="sec-t sec-t--onDark ih-results-t">Impacto mensurável em processos e plataformas.</h2>
-            <p className="sec-desc sec-desc--onDark ih-results-desc">Exemplos de melhorias alcançadas por meio de automação, software, arquitetura e otimização de ambientes em nuvem.</p>
+          <div className={styles.ihCenterHead}>
+            <div className={`${styles.ihEyebrow} ${styles.ihEyebrowDual} ${styles.ihEyebrowOnDark}`}>Resultados</div>
+            <h2 className={`sec-t sec-t--onDark ${styles.ihResultsT}`}>Impacto mensurável em processos e plataformas.</h2>
+            <p className={`sec-desc sec-desc--onDark ih-results-desc ${styles.ihResultsDesc}`}>Exemplos de melhorias alcançadas por meio de automação, software, arquitetura e otimização de ambientes em nuvem.</p>
           </div>
-          <div className="ih-cases">
+          <div className={styles.ihCases}>
             {CASES.map((c, i) => {
               const Illustration = RESULT_CASE_ILLUSTRATIONS[i];
               return (
-                <div className={`ih-case${i % 2 === 1 ? ' ih-case--reverse' : ''}`} key={c.title}>
-                  <div className="ih-case-text">
-                    <div className="ih-case-metrics">
+                <div className={`${styles.ihCase}${i % 2 === 1 ? ` ${styles.ihCaseReverse}` : ''}`} key={c.title}>
+                  <div className={`ih-case-text ${styles.ihCaseText}`}>
+                    <div className={styles.ihCaseMetrics}>
                       {c.metrics.map((m) => (
-                        <div className="ih-case-metric" key={m.label}>
-                          <span className="ih-case-metric-v">{m.value}</span>
-                          <span className="ih-case-metric-l">{m.label}</span>
+                        <div className={styles.ihCaseMetric} key={m.label}>
+                          <span className={styles.ihCaseMetricV}>{m.value}</span>
+                          <span className={styles.ihCaseMetricL}>{m.label}</span>
                         </div>
                       ))}
                     </div>
                     <h3>{c.title}</h3>
                     <p>{c.text}</p>
-                    <div className="ih-case-tags">
+                    <div className={styles.ihCaseTags}>
                       {c.tags.map((tag) => (
                         <span key={tag}>{tag}</span>
                       ))}
                     </div>
                   </div>
-                  <div className={`ih-case-visual${i % 2 === 1 ? ' ih-case-visual--alt' : ''}`}>
+                  <div className={`${styles.ihCaseVisual}${i % 2 === 1 ? ` ${styles.ihCaseVisualAlt}` : ''}`}>
                     <Illustration />
                   </div>
                 </div>
               );
             })}
           </div>
-          <p className="ih-results-note">Os resultados variam conforme o contexto, o escopo e as condições de cada projeto.</p>
-          <div className="ih-section-footer-center">
+          <p className={styles.ihResultsNote}>Os resultados variam conforme o contexto, o escopo e as condições de cada projeto.</p>
+          <div className={styles.ihSectionFooterCenter}>
             <Link href="/contato" className="btn">Apresentar um desafio</Link>
           </div>
         </div>
       </section>
 
       {/* Blog */}
-      <section className="ih-section ih-section--sand" id="conteudo">
+      <section className={`${styles.ihSection} ${styles.ihSectionSand}`} id="conteudo">
         <div className="wrap">
-          <div className="ih-center-head">
-            <div className="ih-eyebrow ih-eyebrow--dual">Conteúdo técnico</div>
+          <div className={styles.ihCenterHead}>
+            <div className={`${styles.ihEyebrow} ${styles.ihEyebrowDual}`}>Conteúdo técnico</div>
             <h2 className="sec-t">Engenharia aplicada, decisões explicadas e aprendizados de produção.</h2>
-            <p className="sec-desc ih-center-desc">Artigos sobre cloud, automação, inteligência artificial e desenvolvimento, com contexto, escolhas técnicas, erros e resultados observados na prática.</p>
+            <p className={`sec-desc ih-center-desc ${styles.ihCenterDesc}`}>Artigos sobre cloud, automação, inteligência artificial e desenvolvimento, com contexto, escolhas técnicas, erros e resultados observados na prática.</p>
           </div>
           {recent.length > 0 && (
-            <div className="ih-blog-grid">
+            <div className={styles.ihBlogGrid}>
               {recent.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
           )}
-          <div className="ih-section-footer-center">
+          <div className={styles.ihSectionFooterCenter}>
             <Link className="btn btn-petrol" href="/artigos">Explorar o blog</Link>
           </div>
         </div>

@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import IconTile from './IconTile';
-import './PillarCard.css';
+import styles from './PillarCard.module.css';
 
 interface PillarCardProps {
   icon: ReactNode;
@@ -33,29 +33,29 @@ export default function PillarCard({
   return (
     <Link
       href={href}
-      className={`pillar-card${wide ? ' pillar-card--wide' : ''}`}
+      className={`pillar-card ${styles.pillarCard}${wide ? ` ${styles.pillarCardWide}` : ''}`}
       data-audit={dataAudit}
     >
-      <div className="pillar-top">
+      <div className={styles.pillarTop}>
         <IconTile icon={icon} />
       </div>
-      <div className="pillar-kicker">{kicker}</div>
+      <div className={styles.pillarKicker}>{kicker}</div>
       <h3>{title}</h3>
       <p>{description}</p>
       {bullets && (
-        <ul className="pillar-bullets">
+        <ul className={styles.pillarBullets}>
           {bullets.map((bullet, i) => (
             <li key={i}>{bullet}</li>
           ))}
         </ul>
       )}
-      <div className="pillar-footer">
-        <div className="pillar-tags">
+      <div className={styles.pillarFooter}>
+        <div className={styles.pillarTags}>
           {tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
         </div>
-        <span className="pillar-more">Saiba mais <span className="arrow" aria-hidden="true">→</span></span>
+        <span className={`pillar-more ${styles.pillarMore}`}>Saiba mais <span className="arrow" aria-hidden="true">→</span></span>
       </div>
     </Link>
   );

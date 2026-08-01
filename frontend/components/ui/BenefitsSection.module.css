@@ -1,0 +1,132 @@
+/* Recipe refined in /software: clay checkmark with no background (no
+   longer a number or icon with a colored box), 2-column grid with no
+   visible borders, large headline (--type-h1). Single source of truth —
+   see BenefitsSection.tsx. */
+
+.section {
+  padding: var(--sp-10) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  clip-path: inset(0);
+  isolation: isolate;
+  margin-block: 0;
+}
+
+@media (min-width: 680px) { .section { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .section { padding: var(--sp-12) 0; } }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .16;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(90deg, transparent, black 45%, black);
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--sp-5);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: var(--sp-9);
+}
+
+@media (min-width: 680px) {
+  .wrap { padding: 0 var(--sp-7); }
+}
+
+@media (min-width: 1040px) {
+  .wrap { padding: 0 var(--sp-8); grid-template-columns: minmax(320px, .85fr) minmax(0, 1.15fr); gap: var(--sp-12); }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+  color: var(--clay);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: currentColor;
+  flex: none;
+}
+
+.heading {
+  margin: 0;
+  max-width: 26ch;
+  color: var(--ivory);
+  font-size: var(--type-h1);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.description {
+  color: rgba(250, 248, 243, .78);
+  max-width: 44ch;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.7;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid transparent;
+}
+
+@media (min-width: 560px) {
+  .list { grid-template-columns: 1fr 1fr; }
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: var(--sp-3);
+  min-height: 82px;
+  align-items: center;
+  padding: var(--sp-5) 0;
+  border-bottom: 1px solid transparent;
+}
+
+@media (min-width: 560px) {
+  .list > .item:nth-child(odd) { border-right: 1px solid transparent; padding-right: var(--sp-6); }
+  .list > .item:nth-child(even) { padding-left: var(--sp-6); }
+}
+
+.checkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--clay);
+  flex: none;
+}
+
+.text {
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: rgba(250, 248, 243, .92);
+  overflow-wrap: break-word;
+  min-width: 0;
+}

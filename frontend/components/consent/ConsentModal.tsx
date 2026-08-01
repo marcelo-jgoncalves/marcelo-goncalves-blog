@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import type { ConsentState, ConsentSettings } from '@/lib/consent';
+import styles from './ConsentManager.module.css';
 
 interface ConsentModalProps {
   current: ConsentState | null;
@@ -49,7 +50,7 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
 
   return (
     <div
-      className="cmp-overlay"
+      className={styles.cmpOverlay}
       role="presentation"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
@@ -58,16 +59,16 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
         role="dialog"
         aria-modal="true"
         aria-labelledby="cmp-modal-title"
-        className="cmp-modal"
+        className={styles.cmpModal}
         tabIndex={-1}
         onKeyDown={trapFocus}
       >
-        <div className="cmp-modal__header">
-          <h2 id="cmp-modal-title" className="cmp-modal__title">
+        <div className={styles.cmpModalHeader}>
+          <h2 id="cmp-modal-title" className={styles.cmpModalTitle}>
             Preferências de cookies
           </h2>
           <button
-            className="cmp-modal__close"
+            className={styles.cmpModalClose}
             onClick={onClose}
             aria-label="Fechar preferências"
           >
@@ -75,74 +76,74 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
           </button>
         </div>
 
-        <div className="cmp-modal__body">
-          <p className="cmp-modal__desc">
+        <div className={styles.cmpModalBody}>
+          <p className={styles.cmpModalDesc}>
             Você pode controlar o uso de cookies analíticos neste site. Os recursos necessários
             permanecem ativos para registrar sua escolha e manter o funcionamento básico da
             plataforma.
           </p>
 
           {/* Necessários — sempre ativo */}
-          <div className="cmp-row">
-            <div className="cmp-row__info">
-              <span className="cmp-row__label">
+          <div className={styles.cmpRow}>
+            <div className={styles.cmpRowInfo}>
+              <span className={styles.cmpRowLabel}>
                 Cookies necessários
-                <span className="cmp-row__badge">Sempre ativo</span>
+                <span className={styles.cmpRowBadge}>Sempre ativo</span>
               </span>
-              <p className="cmp-row__desc">
+              <p className={styles.cmpRowDesc}>
                 Utilizados para registrar suas preferências de privacidade e permitir
                 funcionalidades essenciais. Eles não são usados para publicidade.
               </p>
             </div>
-            <label className="cmp-toggle cmp-toggle--disabled" aria-label="Cookies necessários (sempre ativo)">
+            <label className={`${styles.cmpToggle} ${styles.cmpToggleDisabled}`} aria-label="Cookies necessários (sempre ativo)">
               <input type="checkbox" checked readOnly disabled aria-checked="true" />
-              <span className="cmp-toggle__track" />
+              <span className={styles.cmpToggleTrack} />
             </label>
           </div>
 
           {/* Analíticos — opcional */}
-          <div className="cmp-row">
-            <div className="cmp-row__info">
-              <span className="cmp-row__label">
+          <div className={styles.cmpRow}>
+            <div className={styles.cmpRowInfo}>
+              <span className={styles.cmpRowLabel}>
                 Cookies analíticos
-                <span className="cmp-row__badge cmp-row__badge--optional">Opcionais</span>
+                <span className={`${styles.cmpRowBadge} ${styles.cmpRowBadgeOptional}`}>Opcionais</span>
               </span>
-              <p className="cmp-row__desc">
+              <p className={styles.cmpRowDesc}>
                 Com sua autorização, utilizamos o Google Analytics para produzir estatísticas
                 sobre visitas, páginas acessadas, dispositivos e interações. Esses dados nos
                 ajudam a melhorar o site e seus conteúdos.
               </p>
             </div>
-            <label className="cmp-toggle" aria-label="Cookies analíticos (ativado ou desativado)">
+            <label className={styles.cmpToggle} aria-label="Cookies analíticos (ativado ou desativado)">
               <input
                 type="checkbox"
                 checked={analytics}
                 onChange={(e) => setAnalytics(e.target.checked)}
               />
-              <span className="cmp-toggle__track" />
+              <span className={styles.cmpToggleTrack} />
             </label>
           </div>
         </div>
 
-        <div className="cmp-modal__footer">
+        <div className={styles.cmpModalFooter}>
           <button
-            className="cmp-btn cmp-btn--save"
+            className={`${styles.cmpBtn} ${styles.cmpBtnSave}`}
             onClick={() => onSave({ analytics, ads: false })}
             aria-label="Salvar preferências de cookies"
           >
             Salvar preferências
           </button>
 
-          <div className="cmp-modal__quick-actions">
+          <div className={styles.cmpModalQuickActions}>
             <button
-              className="cmp-btn cmp-btn--reject"
+              className={`${styles.cmpBtn} ${styles.cmpBtnReject}`}
               onClick={onRejectAll}
               aria-label="Rejeitar cookies analíticos"
             >
               Rejeitar análise
             </button>
             <button
-              className="cmp-btn cmp-btn--accept"
+              className={`${styles.cmpBtn} ${styles.cmpBtnAccept}`}
               onClick={onAcceptAll}
               aria-label="Aceitar cookies analíticos"
             >
@@ -150,7 +151,7 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
             </button>
           </div>
 
-          <div className="cmp-modal__links">
+          <div className={styles.cmpModalLinks}>
             <a href="/politica-de-privacidade">Aviso de Privacidade</a>
             <a href="/politica-de-cookies">Política de Cookies</a>
           </div>

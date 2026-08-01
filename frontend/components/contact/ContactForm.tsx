@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import './ContactForm.css';
+import styles from './ContactForm.module.css';
 
 interface FormState {
   name: string;
@@ -155,18 +155,18 @@ export default function ContactForm() {
 
   if (enviado) {
     return (
-      <div className="contact-form-card contact-success" role="status">
-        <div className="contact-success-icon" aria-hidden="true">
+      <div className={`contact-form-card ${styles.contactFormCard} ${styles.contactSuccess}`} role="status">
+        <div className={styles.contactSuccessIcon} aria-hidden="true">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
             <path d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <h3>Mensagem recebida.</h3>
         <p>Obrigado pelo contato. Vamos analisar as informações e retornar em até um dia útil.</p>
-        {referenceId && <p className="contact-reference">Referência: {referenceId}</p>}
-        <div className="contact-success-actions">
+        {referenceId && <p className={styles.contactReference}>Referência: {referenceId}</p>}
+        <div className={styles.contactSuccessActions}>
           <Link className="btn" href="/">Voltar à página inicial</Link>
-          <button type="button" className="contact-success-again" onClick={novoEnvio}>
+          <button type="button" className={styles.contactSuccessAgain} onClick={novoEnvio}>
             Enviar outra mensagem
           </button>
         </div>
@@ -175,12 +175,12 @@ export default function ContactForm() {
   }
 
   return (
-    <form className="contact-form-card" onSubmit={handleSubmit} noValidate>
-      <p className="contact-required-hint">Campos marcados com <span className="contact-required">*</span> são obrigatórios.</p>
+    <form className={`contact-form-card ${styles.contactFormCard}`} onSubmit={handleSubmit} noValidate>
+      <p className={styles.contactRequiredHint}>Campos marcados com <span className={styles.contactRequired}>*</span> são obrigatórios.</p>
 
       {hasErrors && (
-        <div ref={summaryRef} className="contact-error-summary" role="alert" tabIndex={-1}>
-          <p className="contact-error-summary-title">Revise os campos indicados.</p>
+        <div ref={summaryRef} className={styles.contactErrorSummary} role="alert" tabIndex={-1}>
+          <p className={styles.contactErrorSummaryTitle}>Revise os campos indicados.</p>
           <ul>
             {errorKeys.map((key) => (
               <li key={key}><a href={`#field-${key}`}>{FIELD_ERROR_LABELS[key]}</a></li>
@@ -190,7 +190,7 @@ export default function ContactForm() {
       )}
 
       {/* Honeypot — invisible, out of tab order, never sent in the email. */}
-      <label className="contact-honeypot" aria-hidden="true">
+      <label className={styles.contactHoneypot} aria-hidden="true">
         Não preencha este campo
         <input
           type="text"
@@ -202,9 +202,9 @@ export default function ContactForm() {
         />
       </label>
 
-      <div className="contact-form-grid">
-        <label className="contact-field" htmlFor="field-name">
-          <span>Seu nome <span className="contact-required">*</span></span>
+      <div className={styles.contactFormGrid}>
+        <label className={styles.contactField} htmlFor="field-name">
+          <span>Seu nome <span className={styles.contactRequired}>*</span></span>
           <input
             id="field-name"
             ref={firstFieldRef}
@@ -218,11 +218,11 @@ export default function ContactForm() {
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? 'error-name' : undefined}
           />
-          {errors.name && <span id="error-name" className="contact-field-error">{errors.name}</span>}
+          {errors.name && <span id="error-name" className={styles.contactFieldError}>{errors.name}</span>}
         </label>
 
-        <label className="contact-field" htmlFor="field-email">
-          <span>Seu e-mail <span className="contact-required">*</span></span>
+        <label className={styles.contactField} htmlFor="field-email">
+          <span>Seu e-mail <span className={styles.contactRequired}>*</span></span>
           <input
             id="field-email"
             type="email"
@@ -236,11 +236,11 @@ export default function ContactForm() {
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? 'error-email' : undefined}
           />
-          {errors.email && <span id="error-email" className="contact-field-error">{errors.email}</span>}
+          {errors.email && <span id="error-email" className={styles.contactFieldError}>{errors.email}</span>}
         </label>
 
-        <label className="contact-field" htmlFor="field-company">
-          <span>Empresa ou projeto <span className="contact-required">*</span></span>
+        <label className={styles.contactField} htmlFor="field-company">
+          <span>Empresa ou projeto <span className={styles.contactRequired}>*</span></span>
           <input
             id="field-company"
             name="company"
@@ -253,11 +253,11 @@ export default function ContactForm() {
             aria-invalid={!!errors.company}
             aria-describedby={errors.company ? 'error-company' : undefined}
           />
-          {errors.company && <span id="error-company" className="contact-field-error">{errors.company}</span>}
+          {errors.company && <span id="error-company" className={styles.contactFieldError}>{errors.company}</span>}
         </label>
 
-        <label className="contact-field" htmlFor="field-role">
-          <span>Sua função <span className="contact-optional">opcional</span></span>
+        <label className={styles.contactField} htmlFor="field-role">
+          <span>Sua função <span className={styles.contactOptional}>opcional</span></span>
           <input
             id="field-role"
             name="role"
@@ -269,8 +269,8 @@ export default function ContactForm() {
           />
         </label>
 
-        <label className="contact-field" htmlFor="field-phone">
-          <span>Telefone ou WhatsApp <span className="contact-optional">opcional</span></span>
+        <label className={styles.contactField} htmlFor="field-phone">
+          <span>Telefone ou WhatsApp <span className={styles.contactOptional}>opcional</span></span>
           <input
             id="field-phone"
             type="tel"
@@ -283,8 +283,8 @@ export default function ContactForm() {
           />
         </label>
 
-        <label className="contact-field" htmlFor="field-companySize">
-          <span>Tamanho da empresa <span className="contact-optional">opcional</span></span>
+        <label className={styles.contactField} htmlFor="field-companySize">
+          <span>Tamanho da empresa <span className={styles.contactOptional}>opcional</span></span>
           <select id="field-companySize" name="companySize" value={form.companySize} onChange={set('companySize')}>
             <option value="">Selecione, se quiser</option>
             {COMPANY_SIZE_OPTIONS.map((opt) => (
@@ -294,8 +294,8 @@ export default function ContactForm() {
         </label>
       </div>
 
-      <label className="contact-field contact-field-wide" htmlFor="field-area">
-        <span>Qual área está mais relacionada ao desafio? <span className="contact-required">*</span></span>
+      <label className={`${styles.contactField} ${styles.contactFieldWide}`} htmlFor="field-area">
+        <span>Qual área está mais relacionada ao desafio? <span className={styles.contactRequired}>*</span></span>
         <select
           id="field-area"
           name="area"
@@ -310,11 +310,11 @@ export default function ContactForm() {
             <option key={opt.value} value={opt.value}>{opt.label}</option>
           ))}
         </select>
-        {errors.area && <span id="error-area" className="contact-field-error">{errors.area}</span>}
+        {errors.area && <span id="error-area" className={styles.contactFieldError}>{errors.area}</span>}
       </label>
 
-      <label className="contact-field contact-field-wide" htmlFor="field-message">
-        <span>Conte o que está acontecendo hoje <span className="contact-required">*</span></span>
+      <label className={`${styles.contactField} ${styles.contactFieldWide}`} htmlFor="field-message">
+        <span>Conte o que está acontecendo hoje <span className={styles.contactRequired}>*</span></span>
         <textarea
           id="field-message"
           name="message"
@@ -327,19 +327,19 @@ export default function ContactForm() {
           aria-invalid={!!errors.message}
           aria-describedby={[errors.message ? 'error-message' : null, 'message-helper', form.message.length >= MESSAGE_COUNTER_THRESHOLD ? 'message-counter' : null].filter(Boolean).join(' ') || undefined}
         />
-        <span id="message-helper" className="contact-helper">Não inclua senhas, chaves de acesso, dados bancários, informações médicas ou documentos confidenciais.</span>
+        <span id="message-helper" className={styles.contactHelper}>Não inclua senhas, chaves de acesso, dados bancários, informações médicas ou documentos confidenciais.</span>
         {form.message.length >= MESSAGE_COUNTER_THRESHOLD && (
-          <span id="message-counter" className="contact-counter">{form.message.length}/{MESSAGE_MAX}</span>
+          <span id="message-counter" className={styles.contactCounter}>{form.message.length}/{MESSAGE_MAX}</span>
         )}
-        {errors.message && <span id="error-message" className="contact-field-error">{errors.message}</span>}
+        {errors.message && <span id="error-message" className={styles.contactFieldError}>{errors.message}</span>}
       </label>
 
-      <p className="contact-privacy-note">
+      <p className={styles.contactPrivacyNote}>
         Ao enviar, você declara ciência de que os dados informados serão usados para responder à solicitação e conduzir os próximos passos, conforme o{' '}
         <a href="/politica-de-privacidade">Aviso de Privacidade</a>.
       </p>
 
-      <div className="contact-form-footer">
+      <div className={styles.contactFormFooter}>
         <button type="submit" className="btn" disabled={enviando}>
           {enviando ? 'Enviando...' : 'Enviar mensagem'}
         </button>

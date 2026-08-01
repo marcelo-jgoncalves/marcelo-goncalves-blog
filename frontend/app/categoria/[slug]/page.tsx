@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getPostsByCategory } from '@/lib/api';
-import './categoria.css';
+import styles from './categoria.module.css';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import AdSenseBanner from '@/components/ui/AdSenseBanner';
@@ -132,11 +132,11 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 <PostCard key={post.slug} post={post} />
               ))
             ) : (
-              <div className="categoria-empty">
-                <p className="categoria-empty__msg">
+              <div className={`categoria-empty ${styles.categoriaEmpty}`}>
+                <p className={styles.categoriaEmptyMsg}>
                   Ainda não publicamos artigos nesta categoria.
                 </p>
-                <Link href="/todos-artigos" className="categoria-empty__link">
+                <Link href="/todos-artigos" className={styles.categoriaEmptyLink}>
                   Ver todos os artigos &rarr;
                 </Link>
               </div>

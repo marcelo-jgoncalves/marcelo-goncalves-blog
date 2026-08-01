@@ -325,7 +325,7 @@
 }
 
 /* ===== RELIABILITY AND CONTROL — .benefitsList/.benefitItem reused by
-   this section. "Benefícios" itself uses the shared BeneficiosSection
+   this section. "Benefícios" itself uses the shared BenefitsSection
    component (see components/ui/). ===== */
 .benefitsList {
   display: grid;

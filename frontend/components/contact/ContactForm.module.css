@@ -1,0 +1,247 @@
+.contactFormCard {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-7);
+  box-shadow: var(--shadow-md);
+}
+
+.contactFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+.contactField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--slate);
+}
+
+.contactFieldWide {
+  margin-top: var(--sp-4);
+}
+
+.contactRequired {
+  color: var(--clay);
+}
+
+.contactOptional {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--steel);
+  text-transform: uppercase;
+}
+
+.contactField input,
+.contactField textarea,
+.contactField select {
+  width: 100%;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: var(--sp-3) var(--eyebrow-gap);
+  font-size: var(--type-body-sm);
+  font-weight: 400;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  transition: border-color .15s, background .15s;
+}
+
+.contactField textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.contactField select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: var(--sp-8);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237E969E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.contactField input:focus,
+.contactField textarea:focus,
+.contactField select:focus {
+  outline: none;
+  border-color: var(--clay);
+  background: var(--surface);
+}
+
+.contactRequiredHint {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  margin: 0 0 var(--sp-5);
+}
+
+.contactErrorSummary {
+  margin-bottom: var(--sp-5);
+  color: var(--clay-hover);
+  background: var(--clay-soft);
+  border: 1px solid var(--clay);
+  padding: var(--sp-4) var(--eyebrow-gap);
+  border-radius: 11px;
+}
+
+.contactErrorSummaryTitle {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  margin: 0 0 var(--sp-2);
+}
+
+.contactErrorSummary ul {
+  margin: 0;
+  padding-left: var(--sp-5);
+}
+
+.contactErrorSummary a {
+  color: var(--clay-hover);
+  font-size: var(--type-caption);
+  text-decoration: underline;
+}
+
+.contactFieldError {
+  font-size: var(--type-caption);
+  font-weight: 500;
+  color: var(--clay-hover);
+}
+
+.contactHelper {
+  font-size: var(--type-caption);
+  font-weight: 400;
+  color: var(--steel);
+}
+
+.contactCounter {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  text-align: right;
+}
+
+/* Honeypot — visually invisible, but present in the DOM/tab order avoided
+   via tabindex=-1 (don't use display:none, which some simple spam
+   filters ignore during detection). */
+.contactHoneypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.contactPrivacyNote {
+  font-size: var(--type-body-sm);
+  color: var(--steel);
+  line-height: 1.6;
+  margin-top: var(--sp-4);
+}
+
+.contactPrivacyNote a {
+  color: var(--petrol);
+  text-decoration: underline;
+}
+
+.contactPrivacyNote a:hover {
+  color: var(--petrol-deep);
+}
+
+.contactFormFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.contactRequiredNote {
+  font-size: var(--type-caption);
+  color: var(--steel);
+  font-family: var(--mono);
+}
+
+.contactSuccess {
+  text-align: center;
+  padding: var(--sp-8) var(--sp-3);
+}
+
+.contactSuccessIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto var(--gap-grid);
+  background: rgba(63, 107, 71, .12);
+  border: 1px solid var(--moss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--moss);
+}
+
+.contactSuccess h3 {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin: 0 0 var(--title-gap);
+}
+
+.contactSuccess p {
+  font-size: var(--type-body-sm);
+  line-height: 1.66;
+  color: var(--slate);
+  margin: 0 auto var(--sp-4);
+  max-width: 38ch;
+}
+
+.contactReference {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: var(--steel);
+  margin: 0 auto var(--sp-6) !important;
+}
+
+.contactSuccessActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.contactSuccessAgain {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--type-caption);
+  color: var(--petrol);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.contactSuccessAgain:hover {
+  color: var(--petrol-deep);
+}
+
+@media (max-width: 620px) {
+  .contactFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contactFormFooter {
+    justify-content: center;
+    text-align: center;
+  }
+}

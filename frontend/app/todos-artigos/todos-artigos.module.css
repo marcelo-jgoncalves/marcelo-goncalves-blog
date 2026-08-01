@@ -1,0 +1,418 @@
+/* Sections on this page have their own padding — removes the global 64px rhythm */
+.artHero,
+.artMasthead,
+.artSearchSection,
+.artCtaEditorial,
+.artSection {
+  margin-block: 0;
+}
+
+/* ==========================================================================
+   HERO (dark)
+   ========================================================================== */
+.artHero {
+  /* padding-bottom 76px is a custom value (doesn't fall on any --sp-*) —
+     kept as-is to not alter the hero's visual proportion; documented here
+     so it doesn't look like an unaudited leak. */
+  --ph-pad: 88px 40px 76px;
+}
+
+.artHero :global(.page-hero-in) {
+  padding-bottom: var(--sp-11);
+}
+
+:global(.page-hero).artHero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(42% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
+}
+
+/* Search bar — shared component (frontend/components/ui/SearchBar) */
+
+/* ==========================================================================
+   SHELL — sections with their own padding
+   Padding reduced to half (var(--sp-11)→var(--sp-9)) and symmetric,
+   same pattern as #servicos/#abordagem/#insights in home.css.
+   ========================================================================== */
+.artSection {
+  padding-block: var(--sp-9);
+}
+
+/* .op-pagination (Pagination.tsx, shared component) already has
+   padding: var(--sp-7) 0 (32px) built in — without this discount, the
+   card→pagination and pagination→next-section total added up to
+   48+32=80px instead of the standard 48px. sp-4(16px) here + the
+   component's 32px = 48px. */
+.artSectionPaginated {
+  padding-bottom: var(--sp-4);
+}
+
+/* ==========================================================================
+   MASTHEAD (magazine)
+   ========================================================================== */
+.artMasthead {
+  padding-top: var(--sp-10);
+}
+
+.artFeature {
+  display: grid;
+  grid-template-columns: 1.18fr 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(12, 32, 39, .05);
+  transition: transform .22s, box-shadow .22s;
+}
+
+@media (hover: hover) {
+  .artFeature:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 46px -22px rgba(12, 32, 39, .22);
+  }
+}
+
+.artFCover {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #0F4C5C 0%, #08323D 60%, #0C2027 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-6);
+}
+
+.artFCover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .55;
+  background:
+    radial-gradient(70% 80% at 78% 16%, rgba(201, 96, 60, .4), transparent 55%),
+    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/100% 52px,
+    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px) 0 0/52px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 70% 35%, #000 30%, transparent 82%);
+}
+
+.artFCoverTag {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--clay);
+  padding: var(--sp-2) var(--eyebrow-gap);
+  border-radius: 999px;
+}
+
+.artFBadge {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: var(--sp-2) var(--eyebrow-gap);
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(201, 96, 60, .4);
+}
+
+.artFBody {
+  padding: var(--sp-8) var(--sp-9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.artFCat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-4);
+}
+
+.artFBody h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  line-height: 1.14;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  text-wrap: balance;
+  margin-bottom: var(--sp-4);
+}
+
+.artFBody p {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: var(--slate);
+  margin-bottom: var(--sp-7);
+  max-width: 440px;
+}
+
+.artFFoot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.artFAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  flex: none;
+  background: linear-gradient(150deg, var(--petrol-soft), var(--petrol));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--type-caption);
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--line);
+}
+
+.artFWho {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.artFName {
+  font-weight: 700;
+  font-size: var(--type-caption);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.artFMeta {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: var(--steel);
+}
+
+.artFFoot :global(.read-article) {
+  margin-left: auto;
+  font-size: var(--type-label);
+}
+
+@media (hover: hover) {
+  .artFeature:hover .artFFoot :global(.read-article) {
+    gap: var(--sp-3);
+    --read-article-color: var(--clay);
+  }
+}
+
+/* ==========================================================================
+   MAIN GRID (.pc-* inherited from PostCard.css)
+   ========================================================================== */
+.artGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+}
+
+.artGrid :global(.post-card).isHidden {
+  display: none;
+}
+
+/* ==========================================================================
+   EMPTY STATE + LOAD MORE
+   ========================================================================== */
+.artEmpty {
+  display: none;
+  text-align: center;
+  padding: var(--sp-10) 0;
+  color: var(--steel);
+}
+
+.artEmpty.show {
+  display: block;
+}
+
+.artET {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--slate);
+  margin-bottom: var(--sp-2);
+}
+
+.artES {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+}
+
+/* sp-4(16px) + the 32px padding-top already embedded in .op-pagination =
+   48px total (same discount as .art-section--paginated above). */
+.artLoadWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-4);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .artHero :global(.page-hero-in) {
+    grid-template-columns: 1fr;
+    gap: var(--sp-8);
+    padding-top: var(--sp-9);
+    padding-bottom: var(--sp-10);
+  }
+
+  .artFeature {
+    grid-template-columns: 1fr;
+  }
+
+  .artFCover {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 860px) {
+  .artGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .artGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .artHero :global(.page-hero-in) {
+    padding-left: var(--sp-5);
+    padding-right: var(--sp-5);
+  }
+}
+
+/* ==========================================================================
+   SEARCH (dark section, between featured and listing)
+   ========================================================================== */
+.artSearchSection {
+  background: var(--petrol);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-block: 0;
+}
+
+.artSearchSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .55;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+}
+
+.artSearchIn {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--sp-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.artSearchLabel {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .72);
+}
+
+.artSearchIn :global(.search-bar) {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ==========================================================================
+   LISTING HEADER
+   ========================================================================== */
+.artCount {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: var(--steel);
+  margin-top: var(--sp-2);
+}
+
+/* ==========================================================================
+   COMPACT EDITORIAL CTA
+   ========================================================================== */
+.artCtaEditorial {
+  padding-block: var(--sp-9);
+}
+
+.artCtaIn {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artCtaIn h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.artCtaIn p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.artCtaActions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .artCtaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}

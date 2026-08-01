@@ -1,0 +1,70 @@
+.stepsTimeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gap-loose);
+}
+
+.stepsTimelineLine {
+  position: absolute;
+  top: 24px;
+  left: 9%;
+  right: 9%;
+  height: 2px;
+  background: var(--line);
+}
+
+.stepsTimelineItem {
+  position: relative;
+  text-align: center;
+  padding: 0 var(--sp-1);
+}
+
+.stepsTimelineCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  margin: 0 auto var(--sp-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-numbers);
+  font-weight: 700;
+  font-size: var(--type-label);
+  background: linear-gradient(150deg, var(--petrol), var(--petrol-deep));
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.stepsTimelineCircleDone {
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
+}
+
+.stepsTimelineTitle {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-2);
+}
+
+.stepsTimelineDesc {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .stepsTimeline {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--sp-7);
+  }
+  .stepsTimelineLine { display: none; }
+}
+
+@media (max-width: 560px) {
+  .stepsTimeline {
+    grid-template-columns: 1fr;
+  }
+}

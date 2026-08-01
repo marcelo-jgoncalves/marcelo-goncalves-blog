@@ -1,4 +1,4 @@
-import './post.css';
+import './postContent.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -16,6 +16,7 @@ import CopyCodeLogic from '@/components/ui/CopyCodeLogic';
 import PostFooter from '@/components/post/PostFooter';
 import ShareRail from '@/components/post/ShareRail';
 import TableOfContents from '@/components/post/TableOfContents';
+import styles from './post.module.css';
 
 export const revalidate = 60;
 
@@ -47,15 +48,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getPost(slug);
   if (!data || !data.post) return { title: 'Post não encontrado' };
   const authorData = await getAuthor(data.post.autor_id || 'marcelo-goncalves');
-  const autorNome = authorData?.autor?.nome_exibicao || 'Marcelo Gonçalves';
-  const autorUrl = authorData?.autor?.linkedin_url || '';
+  const authorName = authorData?.autor?.nome_exibicao || 'Marcelo Gonçalves';
+  const authorUrl = authorData?.autor?.linkedin_url || '';
 
   const canonicalUrl = `${SITE_URL}/post/${data.post.slug}`;
 
   return {
-    title: { absolute: `${data.post.titulo} | ${autorNome}` },
+    title: { absolute: `${data.post.titulo} | ${authorName}` },
     description: data.post.resumo,
-    authors: [{ name: autorNome, url: autorUrl }],
+    authors: [{ name: authorName, url: authorUrl }],
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: data.post.titulo,
@@ -64,7 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       publishedTime: data.post.data_publicacao,
       modifiedTime: data.post.data_atualizacao || data.post.data_publicacao,
-      authors: [autorNome],
+      authors: [authorName],
       siteName: SITE_NAME,
       locale: 'pt_BR',
       ...(data.post.imagem_destaque_url && {
@@ -99,8 +100,8 @@ export default async function PostPage({ params }: Props) {
   const { contentHtml, headings } = await processFullPostContent(post.conteudo_html);
 
   const authorData = await getAuthor(post.autor_id || 'marcelo-goncalves');
-  const autor = authorData?.autor;
-  const autorNome = autor?.nome_exibicao || 'Marcelo Gonçalves';
+  const author = authorData?.autor;
+  const authorName = author?.nome_exibicao || 'Marcelo Gonçalves';
 
   const canonicalUrl = `${SITE_URL}/post/${post.slug}`;
   const categoryLabel = category?.nome_exibicao || post.categoria_slug || 'Artigo';
@@ -123,8 +124,8 @@ export default async function PostPage({ params }: Props) {
     },
     "author": [{
       "@type": "Person",
-      "name": autorNome,
-      "url": autor?.linkedin_url || autor?.github_url || "",
+      "name": authorName,
+      "url": author?.linkedin_url || author?.github_url || "",
     }],
   };
 
@@ -194,8 +195,8 @@ export default async function PostPage({ params }: Props) {
 
       <CopyCodeLogic />
 
-      <section className="post-hero" data-audit="post-hero">
-        <div className="post-hero-in" data-audit="post-hero-in">
+      <section className={styles.postHero} data-audit="post-hero">
+        <div className={`post-hero-in ${styles.postHeroIn}`} data-audit="post-hero-in">
           <Breadcrumb
             items={[
               { label: 'Home', href: '/' },
@@ -205,31 +206,31 @@ export default async function PostPage({ params }: Props) {
           />
 
           {categorySlug ? (
-            <Link href={`/categoria/${categorySlug}`} className="post-cat-pill">
+            <Link href={`/categoria/${categorySlug}`} className={styles.postCatPill}>
               {categoryLabel}
             </Link>
           ) : (
-            <span className="post-cat-pill">{categoryLabel}</span>
+            <span className={styles.postCatPill}>{categoryLabel}</span>
           )}
 
-          <h1 className="post-hero-title">{post.titulo}</h1>
+          <h1 className={`post-hero-title ${styles.postHeroTitle}`}>{post.titulo}</h1>
 
-          {(post.subtitulo || post.resumo) && <p className="post-hero-sub">{post.subtitulo || post.resumo}</p>}
+          {(post.subtitulo || post.resumo) && <p className={styles.postHeroSub}>{post.subtitulo || post.resumo}</p>}
 
-          <div className="post-byline">
-            <div className="post-avatar" aria-hidden="true">MG</div>
-            <div className="post-byline-who">
-              <div className="post-byline-name">{autorNome}</div>
+          <div className={`post-byline ${styles.postByline}`}>
+            <div className={styles.postAvatar} aria-hidden="true">MG</div>
+            <div className={styles.postBylineWho}>
+              <div className={styles.postBylineName}>{authorName}</div>
             </div>
-            <span className="post-byline-dot" aria-hidden="true" />
-            <span className="post-byline-meta">
+            <span className={styles.postBylineDot} aria-hidden="true" />
+            <span className={styles.postBylineMeta}>
               <FontAwesomeIcon icon={faCalendar} aria-hidden="true" />
               <time dateTime={post.data_publicacao}>
                 {new Date(post.data_publicacao).toLocaleDateString('pt-BR')}
               </time>
             </span>
-            <span className="post-byline-dot" aria-hidden="true" />
-            <span className="post-byline-meta">
+            <span className={styles.postBylineDot} aria-hidden="true" />
+            <span className={styles.postBylineMeta}>
               <FontAwesomeIcon icon={faClock} aria-hidden="true" />
               {post.tempo_leitura_min || 5} min de leitura
             </span>
@@ -237,8 +238,8 @@ export default async function PostPage({ params }: Props) {
         </div>
 
         {post.imagem_destaque_url && (
-          <div className="post-cover">
-            <div className="post-cover-frame" data-audit="post-cover-frame">
+          <div className={styles.postCover}>
+            <div className={styles.postCoverFrame} data-audit="post-cover-frame">
               <ResponsiveImage
                 src={post.imagem_destaque_url}
                 alt={post.imagem_destaque_alt_text || post.titulo}
@@ -252,10 +253,10 @@ export default async function PostPage({ params }: Props) {
         )}
       </section>
 
-      <div className="post-layout" data-audit="post-layout">
+      <div className={styles.postLayout} data-audit="post-layout">
         <TableOfContents headings={headings} readingTimeMin={post.tempo_leitura_min || 5} />
 
-        <div className="post-article">
+        <div className={styles.postArticle}>
           <div className="post-content">
             {post.resumo && <p className="post-lead">{post.resumo}</p>}
             {renderFinalContent()}
@@ -270,12 +271,12 @@ export default async function PostPage({ params }: Props) {
       </div>
 
       {/* CTA CONTEXTUAL — editorial compacto */}
-      <section className="wrap post-cta-editorial" data-audit="post-cta-editorial">
-        <div className="post-cta-in">
+      <section className={`wrap ${styles.postCtaEditorial}`} data-audit="post-cta-editorial">
+        <div className={styles.postCtaIn}>
           <div className="sec-ey sec-ey--dual">Aplicação prática</div>
           <h2>Precisa aplicar esse tipo de engenharia na sua operação?</h2>
           <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que sua empresa precisa resolver.</p>
-          <div className="post-cta-actions">
+          <div className={styles.postCtaActions}>
             <Link className="btn" href="/servicos">Conhecer os serviços</Link>
             <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
           </div>
@@ -285,15 +286,15 @@ export default async function PostPage({ params }: Props) {
       <div className="post-wide">
         <PostFooter
           author={{
-            name: autorNome,
+            name: authorName,
             role: 'Fundador e líder técnico',
-            bio: autor?.bio || 'Engenheiro de Cloud e DevOps com mais de dez anos de experiência em tecnologia, atuando com AWS, automação, sistemas e confiabilidade.',
+            bio: author?.bio || 'Engenheiro de Cloud e DevOps com mais de dez anos de experiência em tecnologia, atuando com AWS, automação, sistemas e confiabilidade.',
             avatarInitials: 'MG',
           }}
           social={{
-            linkedin_url: autor?.linkedin_url || AUTHOR_LINKEDIN_URL,
-            github_url: autor?.github_url || AUTHOR_GITHUB_URL,
-            instagram_url: autor?.instagram_url,
+            linkedin_url: author?.linkedin_url || AUTHOR_LINKEDIN_URL,
+            github_url: author?.github_url || AUTHOR_GITHUB_URL,
+            instagram_url: author?.instagram_url,
           }}
         />
       </div>

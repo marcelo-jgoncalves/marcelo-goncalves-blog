@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import './Faq.css';
+import styles from './Faq.module.css';
 
 export interface FaqItem {
   question: string;
@@ -21,13 +21,13 @@ export default function Faq({ items, dataAudit }: FaqProps) {
   };
 
   return (
-    <div className="faq-accordion" data-audit={dataAudit}>
+    <div className={styles.faqAccordion} data-audit={dataAudit}>
       {items.map((item, i) => {
         const open = openIndex === i;
         return (
           <div
             key={item.question}
-            className={`faq-item${open ? ' faq-item--open' : ''}`}
+            className={`${styles.faqItem}${open ? ` ${styles.faqItemOpen}` : ''}`}
             onClick={() => toggle(i)}
             role="button"
             tabIndex={0}
@@ -39,15 +39,15 @@ export default function Faq({ items, dataAudit }: FaqProps) {
               }
             }}
           >
-            <div className="faq-item-row">
-              <h3 className="faq-item-q">{item.question}</h3>
-              <span className="faq-item-chevron" aria-hidden="true">
+            <div className={styles.faqItemRow}>
+              <h3 className={styles.faqItemQ}>{item.question}</h3>
+              <span className={styles.faqItemChevron} aria-hidden="true">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </span>
             </div>
-            {open && <p className="faq-item-a">{item.answer}</p>}
+            {open && <p className={styles.faqItemA}>{item.answer}</p>}
           </div>
         );
       })}

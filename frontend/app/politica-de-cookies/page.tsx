@@ -1,7 +1,7 @@
-import '../legal.css';
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import { SITE_URL, SITE_NAME } from '@/lib/config';
+import styles from '../legal.module.css';
 
 export const revalidate = 3600;
 
@@ -21,14 +21,14 @@ export default function PoliticaDeCookiesPage() {
     <>
       <PageHero
         singleColumn
-        className="page-hero--legal"
+        className={styles.pageHeroLegal}
         title={<>Política de <span className="highlight">Cookies</span></>}
         subtitle="O que são cookies, quais usamos e como você pode gerenciá-los."
       />
 
-      <div className="legal-container container">
-        <div className="legal-content">
-          <p className="legal-updated">Última atualização: 18 de julho de 2026</p>
+      <div className={`${styles.legalContainer} container`}>
+        <div className={styles.legalContent}>
+          <p className={styles.legalUpdated}>Última atualização: 18 de julho de 2026</p>
 
           <p>
             Esta Política de Cookies explica como o site {SITE_URL} utiliza cookies e tecnologias
@@ -99,7 +99,7 @@ export default function PoliticaDeCookiesPage() {
 
           <h2>5. Cookies utilizados</h2>
           <p>A relação abaixo apresenta os cookies previstos na configuração atual.</p>
-          <div className="legal-table-wrap">
+          <div className={styles.legalTableWrap}>
             <table>
               <thead>
                 <tr>

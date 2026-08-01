@@ -1,10 +1,10 @@
-import './busca.css';
 import { searchPosts, getPopularPosts } from '@/lib/api';
 import PostCard, { type PostCardProps } from '@/components/ui/PostCard';
 import Pagination from '@/components/ui/Pagination';
 import PageHero from '@/components/ui/PageHero';
 import SearchBar from '@/components/ui/SearchBar';
 import { SITE_NAME } from '@/lib/config';
+import styles from './busca.module.css';
 
 // SEO: don't index internal search results
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -63,13 +63,13 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           >
             {searchForm}
           </PageHero>
-          <section className="wrap busca-section" id="busca-resultados">
+          <section className={`wrap ${styles.buscaSection}`} id="busca-resultados">
             <div className="posts-grid">
               {posts.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-            <div className="busca-pag-wrap">
+            <div className={styles.buscaPagWrap}>
               <Pagination
                 nextToken={nextPageToken}
                 basePath="/busca"
@@ -93,7 +93,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
             {searchForm}
           </PageHero>
           {popularPosts.length > 0 && (
-            <section className="wrap busca-section">
+            <section className={`wrap ${styles.buscaSection}`}>
               <div className="sec-head-row sec-head-row--center">
                 <div className="left">
                   <div className="sec-ey sec-ey--dual">Sugestões</div>

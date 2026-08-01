@@ -1,0 +1,132 @@
+/* ============================================================
+   PageHero — component shared by all pages
+   Variations via CSS custom properties on each page's class
+   ============================================================ */
+
+/* Defaults (overridden per page) */
+.pageHero {
+  --ph-cols:     1fr 1fr;
+  --ph-gap:      var(--sp-10);
+  --ph-pad:      var(--hero-top, 88px) var(--wrap-pad-h, 40px) var(--sp-9);
+  --ph-max:      var(--wrap-max);
+  --ph-h1-size:  var(--type-display-sm);
+  --ph-h1-max:   600px;
+  --ph-sub-max:  510px;
+  --ph-ey-color: rgba(255, 255, 255, .65);
+
+  background: var(--petrol-deep);
+  color: var(--ivory);
+  position: relative;
+  isolation: isolate;
+  margin-block: 0;
+}
+
+.pageHero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+}
+
+.pageHeroIn {
+  position: relative;
+  z-index: 1;
+  max-width: var(--ph-max);
+  margin: 0 auto;
+  padding: var(--ph-pad);
+  display: grid;
+  grid-template-columns: var(--ph-cols);
+  gap: var(--ph-gap);
+  align-items: start;
+}
+
+/* Top→eyebrow on mobile: each page fixed this value at ~88px inside its
+   own --ph-pad (designed for desktop), leaving too large a gap between the
+   header (68px) and the eyebrow on a narrow screen. padding-top here
+   (longhand, after the `padding` shorthand above, same specificity)
+   overrides only the top on any page that doesn't define its own more
+   specific `padding-top`/`.page-hero-in` — see --hero-top-mobile for pages
+   that need a different value (e.g. legal.css). */
+@media (max-width: 680px) {
+  .pageHeroIn {
+    padding-top: var(--hero-top-mobile, var(--sp-9));
+  }
+}
+
+.pageHeroSingle {
+  --ph-cols:    1fr;
+  --ph-h1-max:  32ch;
+  --ph-sub-max: 56ch;
+}
+
+.pageHeroRight {
+  align-self: center;
+}
+
+.pageHeroLeft {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pageHeroEy {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ph-ey-color);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-8);
+}
+
+.pageHeroEy::before {
+  content: "";
+  flex: none;
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.pageHero h1 {
+  font-weight: 800;
+  font-size: clamp(1.85rem, 5.5vw + 1rem, var(--ph-h1-size));
+  line-height: 1.04;
+  letter-spacing: -.04em;
+  color: #fff;
+  max-width: var(--ph-h1-max);
+  overflow-wrap: break-word;
+  margin-bottom: var(--sp-8);
+}
+
+.pageHero h1 em {
+  font-style: italic;
+  color: var(--petrol-soft);
+}
+
+.pageHeroSub {
+  font-size: var(--type-body-sm);
+  line-height: 1.68;
+  color: rgba(250, 248, 243, .63);
+  max-width: var(--ph-sub-max);
+  overflow-wrap: break-word;
+  margin-bottom: var(--sp-7);
+}
+
+/* Mobile: eyebrow→title had the same breathing room as desktop (40px),
+   proportionally too large on a narrow screen — reduced to the same step
+   used in other mobile transitions across the site (--sp-6=24px). */
+@media (max-width: 680px) {
+  .pageHeroEy {
+    margin-bottom: var(--sp-6);
+  }
+}

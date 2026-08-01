@@ -1,0 +1,434 @@
+:global(.page-hero).ihHero {
+  --ph-pad: 88px 40px var(--gap-loose);
+}
+
+/* The hero has 2 always-visible CTAs (primary + secondary), side by side
+   on desktop, stacked on mobile — doesn't duplicate the nav CTA (the two
+   coexist: nav leads to /contato, the hero also offers #servicos). */
+.ihHeroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--eyebrow-gap);
+  margin-top: var(--sp-7);
+}
+
+.ihHeroMicrocopy {
+  margin-top: var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--type-caption);
+}
+
+@media (max-width: 860px) {
+  .ihHeroActions {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ihHeroMicrocopy {
+    text-align: center;
+  }
+}
+
+/* Button — uses the global .btn/.btn-petrol pattern (globals.css). */
+
+.ihSection {
+  margin-block: 0;
+  padding: var(--sp-12) 0;
+  scroll-margin-top: 100px;
+}
+
+/* Spacing between all internal Home transitions reduced to half
+   (100px→var(--sp-9)): hero→"Serviços", divider→"Como trabalhamos",
+   "Conte-nos seu desafio"→"Conteúdo técnico" (also reduces the bottom
+   border, down to "Conheça o blog"→"Vamos conversar", see #contato below,
+   to keep the same total as the other cases) and "Conduzido por..."→
+   "Resultados" (see #resultados.ih-results further below, same value). */
+#servicos.ihSection,
+#abordagem.ihSection,
+#insights.ihSection,
+#resultados.ihResults {
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
+}
+
+/* Spacing between "Conheça o blog" (#insights) and the "Vamos conversar"
+   eyebrow reduced to the same total as the other cases.
+   .cta-adv-in uses align-items:center (centers the text column against
+   the taller card on the right) — that pushed the eyebrow well past the
+   padding-top alone. Switched to align-items:flex-start only for this
+   instance (id="contato", Home-only) so the eyebrow actually sits
+   var(--sp-9) from the section's top; other pages using AdvisoryCta are
+   unaffected. */
+:global(#contato.cta-adv .cta-adv-in) {
+  align-items: flex-start;
+  padding-top: var(--sp-9);
+}
+
+.ihSectionSurface {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.ihSectionSand {
+  background: var(--sand);
+}
+
+/* Eyebrow — local variant (supports a centered double rule) */
+.ihEyebrow {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.ihEyebrow::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.ihEyebrowDual {
+  justify-content: center;
+}
+
+.ihEyebrowDual::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.ihEyebrowOnDark {
+  color: rgba(255, 255, 255, .72);
+}
+
+.ihEyebrowOnDark::before,
+.ihEyebrowOnDark::after {
+  background: var(--clay);
+}
+
+.ihCenterHead {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-10);
+}
+
+.ihCenterDesc {
+  max-width: 580px;
+  /* --sp-4 (16px) — converged with .sec-desc/.ih-results-desc onto the
+     same "eyebrow/title → description" role. Used to be --eyebrow-gap
+     (14px, a token for a different role reused by value coincidence). */
+  margin: var(--sp-4) auto 0;
+}
+
+/* Pillars (Services) */
+.ihPillarsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap-grid);
+}
+
+/* The 4 pillar cards were migrated to components/ui/PillarCard.tsx (.pillar-*),
+   also reused in /servicos — see PillarCard.css. */
+
+.ihCaseTags span {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border-radius: 999px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid transparent;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .07);
+  border-color: rgba(15, 76, 92, .14);
+}
+
+/* Section-closing button — always at the end of the section, always
+   centered, same pattern across Serviços/Metodologia/Resultados/Blog. */
+.ihSectionFooterCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--eyebrow-gap);
+  text-align: center;
+  margin-top: var(--sp-9);
+}
+
+/* Methodology */
+.ihMethodGrid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: start;
+  gap: var(--sp-10);
+  margin-bottom: var(--sp-10);
+}
+
+.ihMethodText {
+  max-width: 640px;
+}
+
+.ihMethodCard {
+  background: var(--surface);
+  border: 1px solid rgba(15, 76, 92, .13);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 14px 14px 0;
+  padding: var(--sp-8) var(--sp-8);
+  box-shadow: var(--shadow-sm);
+}
+
+.ihMcLabel {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+/* margin: top = "eyebrow → title" (--eyebrow-gap), bottom = "title →
+   body" (--title-gap) — used to use --sp-4/--eyebrow-gap, each other's
+   role tokens. */
+.ihMcTitle { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--eyebrow-gap) 0 var(--title-gap); }
+.ihMcText { font-size: var(--type-body-sm); line-height: 1.6; color: var(--slate); margin: 0; }
+
+@media (max-width: 860px) {
+  .ihMethodGrid { grid-template-columns: 1fr; gap: var(--sp-7); }
+  .ihMethodCard { padding: var(--sp-7) var(--sp-6); }
+  .ihMcTitle { font-size: var(--type-lead); }
+}
+
+
+/* Results */
+.ihResults {
+  margin-block: 0;
+  padding: var(--sp-12) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  scroll-margin-top: 100px;
+}
+
+.ihResultsT {
+  margin: 0;
+}
+
+.ihResultsDesc {
+  max-width: 560px;
+  /* --sp-4 (16px) — this was already the value; .sec-desc/.ih-center-desc
+     were converged onto it. */
+  margin: var(--sp-4) auto 0;
+  line-height: 1.6;
+}
+
+
+.ihCases {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+}
+
+.ihResultsNote {
+  margin: var(--sp-7) 0 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--type-caption);
+  text-align: center;
+}
+
+/* align-items:flex-start (not center): with align-items:center, whenever
+   the text column got taller than the illustration's fixed 340px (cases
+   2 and 4, which have a double metric and so taller text), the
+   illustration was centered in the leftover space and ended up visually
+   distant from the pills/text above it. With flex-start both tops always
+   align, same as already happened in cases 1 and 3 (where the
+   illustration was already the tallest element in the row). */
+.ihCase {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-10);
+  flex-wrap: wrap;
+}
+
+.ihCaseReverse {
+  flex-direction: row-reverse;
+}
+
+.ihCaseText {
+  flex: 1 1 440px;
+  min-width: 280px;
+}
+
+.ihCaseMetrics {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-5);
+  margin-bottom: var(--sp-3);
+}
+
+.ihCaseMetric {
+  display: flex;
+  align-items: baseline;
+  gap: var(--title-gap);
+}
+
+.ihCaseMetricV {
+  font-weight: 800;
+  font-size: var(--type-h2);
+  letter-spacing: -.03em;
+  color: var(--clay);
+}
+
+.ihCaseMetricL {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(250, 248, 243, .6);
+}
+
+.ihCaseText h3 {
+  font-size: var(--type-lead);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 var(--title-gap);
+}
+
+.ihCaseText p {
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+  color: rgba(250, 248, 243, .66);
+  margin: 0 0 var(--gap-loose);
+}
+
+.ihCaseTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.ihCaseTags span {
+  color: #fff;
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .16);
+}
+
+.ihCaseVisual {
+  flex: 1 1 380px;
+  min-width: 260px;
+  height: 340px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 28px 150px 150px 28px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .02));
+  box-shadow: 0 20px 44px -24px rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ihIllustration {
+  position: relative;
+  z-index: 1;
+  width: 72%;
+  height: 72%;
+}
+
+.ihCaseVisualAlt {
+  border-radius: 150px 28px 28px 150px;
+}
+
+@media (max-width: 640px) {
+  /* The gap between cases and the image→text gap within the same case
+     (var(--sp-10)=64px for both, inherited from the desktop side-by-side
+     layout) turned into two DIFFERENT gaps around the image once stacked
+     on mobile (64px on one side, a different value on the other) —
+     standardized on the same token (--sp-7=32px) so all spacing around
+     the image in this section is equal. */
+  .ihResults .ihCases {
+    gap: var(--sp-7);
+  }
+
+  .ihResults .ihCase,
+  .ihResults .ihCaseReverse {
+    flex-direction: column;
+    gap: var(--sp-7);
+  }
+  .ihResults .ihCaseVisual,
+  .ihResults .ihCaseVisualAlt {
+    order: 1;
+    width: 100%;
+    height: 170px;
+    border-radius: 90px;
+  }
+  .ihResults .ihIllustration {
+    width: 95%;
+    height: 95%;
+  }
+  .ihResults .ihCaseText {
+    /* flex: 1 1 440px (base) uses that 440px as the preferred width in the
+       desktop side-by-side layout — on mobile (column), the same value
+       becomes a MINIMUM height for the text block, leaving empty space
+       below the tags when content is shorter than 440px (varied per case,
+       since each has a different amount of text/tags). flex-basis:auto
+       lets height follow the actual content instead of that value
+       inherited from desktop. */
+    flex: 1 1 auto;
+    order: 2;
+    width: 100%;
+  }
+  .ihResults .ihCaseMetrics {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: var(--sp-8);
+  }
+  .ihResults .ihCaseMetric {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--sp-2);
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 10px;
+    padding: var(--title-gap) var(--sp-3);
+  }
+  .ihResults .ihCaseMetricL {
+    max-width: none;
+  }
+  .ihResults .ihCaseText h3 {
+    margin-bottom: var(--sp-7);
+  }
+  .ihResults .ihCaseTags span {
+    border-radius: 14px;
+  }
+}
+
+/* Blog teaser */
+.ihBlogGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+  margin-top: var(--sp-9);
+}
+
+@media (max-width: 900px) {
+  .ihCase,
+  .ihCaseReverse {
+    flex-direction: column;
+  }
+  .ihBlogGrid { grid-template-columns: 1fr; }
+}

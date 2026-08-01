@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import './NewsletterCTA.css';
+import styles from './NewsletterCTA.module.css';
 
 export default function NewsletterCTA() {
   const [email, setEmail]     = useState('');
@@ -19,38 +19,38 @@ export default function NewsletterCTA() {
   };
 
   return (
-    <section className="nl-cta">
+    <section className={styles.nlCta} data-audit="newsletter-cta">
       <div className="container">
-        <div className="nl-cta__inner">
+        <div className={styles.nlCtaInner}>
 
           {/* ── Coluna esquerda ── */}
-          <div className="nl-cta__left">
-            <div className="nl-cta__eyebrow">Newsletter semanal</div>
-            <h2 className="nl-cta__title">
+          <div className={styles.nlCtaLeft}>
+            <div className={styles.nlCtaEyebrow}>Newsletter semanal</div>
+            <h2 className={styles.nlCtaTitle}>
               Quer se aprofundar em IA,<br />Automação, Cloud Computing e <em>muito mais?</em>
             </h2>
-            <p className="nl-cta__desc">
+            <p className={styles.nlCtaDesc}>
               Toda terça, uma análise sem hype sobre o que aconteceu na semana — e o que isso significa pra quem constrói com IA.
             </p>
-            <div className="nl-cta__stats">
-              <div className="nl-cta__stat"><b>2.4k</b> inscritos</div>
-              <div className="nl-cta__stat"><b>42</b> edições</div>
-              <div className="nl-cta__stat"><b>0</b> spam</div>
+            <div className={styles.nlCtaStats}>
+              <div className={styles.nlCtaStat}><b>2.4k</b> inscritos</div>
+              <div className={styles.nlCtaStat}><b>42</b> edições</div>
+              <div className={styles.nlCtaStat}><b>0</b> spam</div>
             </div>
           </div>
 
           {/* ── Coluna direita ── */}
-          <div className="nl-cta__right">
+          <div className={styles.nlCtaRight}>
             {status === 'success' ? (
-              <div className="nl-cta__success" role="status" aria-live="polite">
+              <div className={styles.nlCtaSuccess} role="status" aria-live="polite">
                 ✓ Obrigado! Você receberá a próxima edição na terça-feira.
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div className="nl-cta__input-row">
+                <div className={styles.nlCtaInputRow}>
                   <input
                     type="email"
-                    className="nl-cta__input"
+                    className={styles.nlCtaInput}
                     placeholder="seu@email.com"
                     aria-label="Endereço de e-mail"
                     value={email}
@@ -59,31 +59,31 @@ export default function NewsletterCTA() {
                   />
                   <button
                     type="submit"
-                    className="nl-cta__btn"
+                    className={styles.nlCtaBtn}
                     disabled={!consent || status === 'loading'}
                   >
-                    {status === 'loading' ? 'Enviando…' : <>Inscrever-se <span className="nl-cta__arrow">→</span></>}
+                    {status === 'loading' ? 'Enviando…' : <>Inscrever-se <span className={styles.nlCtaArrow}>→</span></>}
                   </button>
                 </div>
 
-                <label className="nl-cta__consent">
+                <label className={styles.nlCtaConsent}>
                   <input
                     type="checkbox"
-                    className="nl-cta__checkbox"
+                    className={styles.nlCtaCheckbox}
                     checked={consent}
                     onChange={(e) => setConsent(e.target.checked)}
                   />
-                  <span className="nl-cta__consent-label">
+                  <span className={styles.nlCtaConsentLabel}>
                     Quero receber a newsletter por e-mail e concordo com o tratamento dos meus dados, conforme a{' '}
                     <Link href="/politica-de-privacidade">Política de Privacidade</Link>.
                   </span>
                 </label>
 
-                <div className="nl-cta__trust">
-                  <span><span className="nl-cta__check">✓</span> Sem spam</span>
-                  <span className="nl-cta__sep" />
-                  <span><span className="nl-cta__check">✓</span> Cancele com 1 clique</span>
-                  <span className="nl-cta__sep" />
+                <div className={styles.nlCtaTrust}>
+                  <span><span className={styles.nlCtaCheck}>✓</span> Sem spam</span>
+                  <span className={styles.nlCtaSep} />
+                  <span><span className={styles.nlCtaCheck}>✓</span> Cancele com 1 clique</span>
+                  <span className={styles.nlCtaSep} />
                   <span>Toda terça, 9h</span>
                 </div>
               </form>

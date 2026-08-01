@@ -1,0 +1,654 @@
+/* Sections on this page have their own padding — removes the global 64px rhythm */
+.opHero,
+.opSection {
+  margin-block: 0;
+}
+
+/* ==========================================================================
+   HERO (dark)
+   ========================================================================== */
+.opHero {
+  --ph-max: var(--wrap-max-narrow);
+  --ph-pad: 88px 40px var(--sp-9);
+}
+
+.opHeroActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.opHeroMicro {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .1em;
+  color: rgba(255, 255, 255, .6);
+  margin-top: var(--sp-5);
+}
+
+/* ==========================================================================
+   WRAP (main content — narrow)
+   ========================================================================== */
+.opWrap {
+  max-width: var(--wrap-max-narrow);
+  margin: 0 auto;
+  padding: 0 var(--sp-8);
+}
+
+/* ==========================================================================
+   SECTIONS — shared header
+   ========================================================================== */
+/* Padding reduced to half (var(--sp-12)→var(--sp-9)) and symmetric
+   (top=bottom), same pattern as #servicos/#abordagem/#insights in home.css. */
+.opSection {
+  padding-top: var(--sp-9);
+  padding-bottom: var(--sp-9);
+}
+
+/* Timeline ends in pagination (Previous/Next) — same pattern as
+   .art-section--paginated in artigos.css: sp-4(16px) here + the 32px
+   padding-top/bottom already embedded in .op-pagination = 48px total on
+   each side (equal to the page's standard --sp-9 breathing room, not more). */
+#timeline.opSection {
+  padding-bottom: var(--sp-4);
+}
+
+.opSectionSurface {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ==========================================================================
+   WHY BUILD THIS
+   ========================================================================== */
+.opWhyBody {
+  max-width: 780px;
+  margin: var(--sp-7) auto 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.7;
+  color: var(--slate);
+}
+
+.opWhyBody p + p {
+  margin-top: var(--sp-3);
+}
+
+/* ==========================================================================
+   CALLOUT (reused in "Por que construir" and "Fluxo editorial")
+   ========================================================================== */
+.opCallout {
+  margin-top: var(--sp-7);
+  background: var(--sand);
+  border-left: 4px solid var(--clay);
+  border-radius: 12px;
+  padding: var(--gap-grid) var(--sp-6);
+}
+
+.opCalloutLabel {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay-hover);
+  margin-bottom: var(--sp-2);
+}
+
+.opCallout p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ==========================================================================
+   CURRENT STATE — capabilities by status
+   ========================================================================== */
+.opCapGrid {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.opCapStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: var(--title-gap) var(--sp-4);
+  border-radius: 999px;
+  font-weight: 500;
+  margin-bottom: var(--sp-5);
+}
+
+.opCapStatusDelivered {
+  background: rgba(63, 107, 71, .12);
+  color: var(--moss);
+  border: 1px solid rgba(63, 107, 71, .25);
+}
+
+.opCapStatusInDevelopment {
+  background: var(--clay-soft);
+  color: var(--clay-hover);
+  border: 1px solid rgba(201, 96, 60, .25);
+}
+
+.opCapStatusPlanned {
+  background: rgba(15, 76, 92, .08);
+  color: var(--petrol);
+  border: 1px solid rgba(15, 76, 92, .18);
+}
+
+.opCapList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding: 0;
+  list-style: none;
+}
+
+.opCapTitle {
+  display: block;
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.opCapDesc {
+  display: block;
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  color: var(--steel);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ARCHITECTURE
+   ========================================================================== */
+.opLayers {
+  margin-top: var(--sp-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.opLayer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.opLayerNum {
+  font-family: var(--font-numbers);
+  font-size: var(--type-lead);
+  font-weight: 700;
+  color: var(--clay);
+  flex: none;
+}
+
+.opLayerBody h3 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin-bottom: var(--sp-2);
+}
+
+.opLayerBody p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-3);
+}
+
+.opLayerTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.opLayerTags span {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .06em;
+  color: var(--petrol);
+  background: rgba(15, 76, 92, .08);
+  border: 1px solid rgba(15, 76, 92, .18);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 999px;
+}
+
+.opDiagram {
+  margin-top: var(--sp-7);
+  background: var(--petrol);
+  color: var(--ivory);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.opDiagramRow {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .04em;
+  color: rgba(255, 255, 255, .88);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.opDiagramRow + .opDiagramRow {
+  margin-top: var(--sp-3);
+}
+
+.opDiagramFoot {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  color: rgba(255, 255, 255, .6);
+}
+
+/* ==========================================================================
+   ENGINEERING PRINCIPLES
+   ========================================================================== */
+.opPrinciplesGrid {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-7) var(--sp-8);
+}
+
+.opPrincipleCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-5);
+}
+
+.opPrincipleCard .opTxt .opT {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.opPrincipleCard .opTxt .opD {
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+  color: var(--slate);
+  margin-top: 3px;
+}
+
+/* ==========================================================================
+   EDITORIAL AND AI WORKFLOW
+   ========================================================================== */
+.opFlowList {
+  margin: var(--sp-8) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.opFlowList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--gap-grid) var(--sp-7);
+}
+
+.opFlowNum {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--petrol);
+  color: var(--ivory);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+}
+
+.opFlowList h3 {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  letter-spacing: -.01em;
+  margin-bottom: var(--sp-2);
+}
+
+.opFlowList p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0;
+}
+
+/* ==========================================================================
+   ROADMAP — groups without dates
+   ========================================================================== */
+.opRoadmapGroups {
+  margin-top: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.opRoadmapGroupLabel {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-5);
+}
+
+.opRoadmapGroupItems {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.opRoadmapItem h4 {
+  font-weight: 700;
+  font-size: var(--type-body-sm);
+  color: var(--ink);
+  letter-spacing: -.01em;
+  margin-bottom: 2px;
+}
+
+.opRoadmapItem p {
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  color: var(--steel);
+  margin: 0;
+}
+
+/* ==========================================================================
+   FINAL CTA — compact editorial
+   ========================================================================== */
+.opCtaEditorial {
+  margin-block: 0;
+  padding-block: var(--sp-9);
+}
+
+.opCtaIn {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.opCtaIn h2 {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.03em;
+  color: var(--ink);
+  line-height: 1.16;
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.opCtaIn p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: var(--sp-6);
+}
+
+.opCtaActions {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 560px) {
+  .opCtaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   POST TIMELINE
+   ========================================================================== */
+.opTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.opTlNumBg {
+  position: absolute;
+  top: -4px;
+  right: 18px;
+  font-weight: 900;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- decorative background numeral, outside the content type scale */
+  font-size: 7rem;
+  letter-spacing: -.08em;
+  line-height: 1;
+  color: var(--petrol);
+  opacity: .08;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.opTlEntry.opLatest .opTlNumBg {
+  color: var(--clay);
+  opacity: .11;
+}
+
+.opTlCard {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-6);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+
+.opTlCard > *:not(.opTlNumBg) {
+  position: relative;
+  z-index: 1;
+}
+
+.opTlCover {
+  position: relative;
+  flex: none;
+  width: 320px;
+  min-height: 140px;
+  background: var(--sand);
+}
+
+.opTlBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--title-gap);
+  min-width: 0;
+  flex: 1;
+  padding: var(--sp-5) var(--sp-7) var(--sp-5) 0;
+}
+
+@media (hover: hover) {
+  .opTlCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -12px rgba(12, 32, 39, .12);
+    border-color: rgba(15, 76, 92, .2);
+  }
+}
+
+.opTlEntry.opLatest .opTlCard {
+  border-color: rgba(201, 96, 60, .3);
+}
+
+.opTlCardTop {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.opTlCat {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  font-weight: 500;
+}
+
+.opTlBadge {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: var(--sp-1) var(--title-gap);
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.opTlBadge.opLatestTag {
+  background: var(--clay-soft);
+  color: var(--clay-hover);
+  border: 1px solid rgba(201, 96, 60, .25);
+}
+
+.opTlCard h3 {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  letter-spacing: -.025em;
+  color: var(--petrol);
+  line-height: 1.25;
+}
+
+.opTlCard p {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  max-width: 680px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.opTlCardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--line);
+  margin-top: 2px;
+}
+
+.opMeta {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .06em;
+  color: var(--steel);
+  display: flex;
+  align-items: center;
+  gap: var(--eyebrow-gap);
+}
+
+.opRead {
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--petrol);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: gap .2s, color .2s;
+}
+
+@media (hover: hover) {
+  .opTlCard:hover .opRead {
+    gap: var(--title-gap);
+    color: var(--clay);
+  }
+}
+
+.opEmptyState {
+  text-align: center;
+  color: var(--steel);
+  padding: var(--sp-9) 0;
+}
+
+/* ── pagination ── */
+/* sp-4(16px) + the 32px padding-top already embedded in .op-pagination =
+   48px total (same value as .art-load-wrap in artigos.css). */
+.opPagWrap {
+  margin-top: var(--sp-4);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1000px) {
+  .opCapGrid,
+  .opPrinciplesGrid,
+  .opRoadmapGroups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .opHero :global(.page-hero-in) {
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+  }
+
+  .opLayer {
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .opTlCard {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .opTlCover {
+    width: 100%;
+    min-height: 180px;
+  }
+
+  .opTlBody {
+    padding: var(--sp-5);
+  }
+
+  .opWrap {
+    padding: 0 var(--sp-5);
+  }
+
+  .opHero :global(.page-hero-in) {
+    padding-left: var(--sp-5);
+    padding-right: var(--sp-5);
+  }
+}

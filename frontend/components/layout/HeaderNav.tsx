@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import styles from './Header.module.css';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
@@ -117,25 +118,25 @@ export default function HeaderNav() {
 
   return (
     <>
-      <nav className="menu" aria-label="Navegação Principal" data-audit="header-menu">
+      <nav className={styles.menu} aria-label="Navegação Principal" data-audit="header-menu">
         {NAV_LINKS_BEFORE.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             prefetch={false}
-            className={isActive(link.href) ? 'active' : ''}
+            className={isActive(link.href) ? styles.activeLink : ''}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.name}
           </Link>
         ))}
 
-        <div className="nav-dropdown" ref={servicesRef}>
-          <span className={`nav-dropdown-trigger${isServicesActive ? ' active' : ''}`}>
+        <div className={styles.navDropdown} ref={servicesRef}>
+          <span className={`${styles.navDropdownTrigger}${isServicesActive ? ` ${styles.activeLink}` : ''}`}>
             <Link
               href="/servicos"
               prefetch={false}
-              className={isActive('/servicos') ? 'active' : ''}
+              className={isActive('/servicos') ? styles.activeLink : ''}
               aria-current={isActive('/servicos') ? 'page' : undefined}
             >
               Serviços
@@ -143,21 +144,21 @@ export default function HeaderNav() {
             <button
               ref={servicesTriggerRef}
               type="button"
-              className="nav-dropdown-toggle"
+              className={styles.navDropdownToggle}
               aria-expanded={isServicesOpen}
               aria-controls="services-dropdown"
               aria-label={isServicesOpen ? 'Ocultar páginas de serviços' : 'Mostrar páginas de serviços'}
               onClick={() => setIsServicesOpen((v) => !v)}
             >
-              <svg className="nav-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+              <svg className={styles.navDropdownChevron} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
             </button>
           </span>
-          <div id="services-dropdown" className={`nav-dropdown-panel${isServicesOpen ? ' is-active' : ''}`}>
+          <div id="services-dropdown" className={`${styles.navDropdownPanel}${isServicesOpen ? ` ${styles.dropdownOpen}` : ''}`}>
             <Link
               href={SERVICES_OVERVIEW_LINK.href}
               prefetch={false}
               onClick={() => setIsServicesOpen(false)}
-              className={`nav-dropdown-overview${pathname === SERVICES_OVERVIEW_LINK.href ? ' active' : ''}`}
+              className={`${styles.navDropdownOverview}${pathname === SERVICES_OVERVIEW_LINK.href ? ` ${styles.activeLink}` : ''}`}
               aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
             >
               {SERVICES_OVERVIEW_LINK.name}
@@ -168,7 +169,7 @@ export default function HeaderNav() {
                 href={link.href}
                 prefetch={false}
                 onClick={() => setIsServicesOpen(false)}
-                className={isActive(link.href) ? 'active' : ''}
+                className={isActive(link.href) ? styles.activeLink : ''}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {link.name}
@@ -182,7 +183,7 @@ export default function HeaderNav() {
             key={link.href}
             href={link.href}
             prefetch={false}
-            className={isActive(link.href) ? 'active' : ''}
+            className={isActive(link.href) ? styles.activeLink : ''}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.name}
@@ -190,13 +191,13 @@ export default function HeaderNav() {
         ))}
       </nav>
 
-      <Link href="/contato" className="btn nav-cta" prefetch={false} data-audit="header-cta">
+      <Link href="/contato" className={`btn ${styles.navCta}`} prefetch={false} data-audit="header-cta">
         Apresentar um desafio
       </Link>
 
       <button
         ref={menuBtnRef}
-        className="nav-mobile-btn"
+        className={styles.navMobileBtn}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
         aria-expanded={isMenuOpen}
@@ -211,7 +212,7 @@ export default function HeaderNav() {
 
       <div
         id="mobile-menu-dropdown"
-        className={`nav-mobile-menu ${isMenuOpen ? 'is-active' : ''}`}
+        className={`${styles.navMobileMenu} ${isMenuOpen ? styles.menuOpen : ''}`}
         aria-hidden={!isMenuOpen}
       >
         {NAV_LINKS_BEFORE.map((link) => (
@@ -221,20 +222,20 @@ export default function HeaderNav() {
             prefetch={false}
             onClick={closeMenu}
             tabIndex={isMenuOpen ? 0 : -1}
-            className={isActive(link.href) ? 'active' : ''}
+            className={isActive(link.href) ? styles.activeLink : ''}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.name}
           </Link>
         ))}
 
-        <div className={`nav-mobile-services-toggle${isServicesActive ? ' active' : ''}`}>
+        <div className={`${styles.navMobileServicesToggle}${isServicesActive ? ` ${styles.activeLink}` : ''}`}>
           <Link
             href="/servicos"
             prefetch={false}
             onClick={closeMenu}
             tabIndex={isMenuOpen ? 0 : -1}
-            className={isActive('/servicos') ? 'active' : ''}
+            className={isActive('/servicos') ? styles.activeLink : ''}
             aria-current={isActive('/servicos') ? 'page' : undefined}
           >
             Serviços
@@ -247,17 +248,17 @@ export default function HeaderNav() {
             onClick={() => setIsServicesMobileOpen((v) => !v)}
             tabIndex={isMenuOpen ? 0 : -1}
           >
-            <svg className={`nav-dropdown-chevron${isServicesMobileOpen ? ' is-open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+            <svg className={`${styles.navDropdownChevron}${isServicesMobileOpen ? ' is-open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
           </button>
         </div>
         {isServicesMobileOpen && (
-          <div id="mobile-services-list" className="nav-mobile-services-list">
+          <div id="mobile-services-list" className={styles.navMobileServicesList}>
             <Link
               href={SERVICES_OVERVIEW_LINK.href}
               prefetch={false}
               onClick={closeMenu}
               tabIndex={isMenuOpen ? 0 : -1}
-              className={`nav-dropdown-overview${pathname === SERVICES_OVERVIEW_LINK.href ? ' active' : ''}`}
+              className={`${styles.navDropdownOverview}${pathname === SERVICES_OVERVIEW_LINK.href ? ` ${styles.activeLink}` : ''}`}
               aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
             >
               {SERVICES_OVERVIEW_LINK.name}
@@ -269,7 +270,7 @@ export default function HeaderNav() {
                 prefetch={false}
                 onClick={closeMenu}
                 tabIndex={isMenuOpen ? 0 : -1}
-                className={isActive(link.href) ? 'active' : ''}
+                className={isActive(link.href) ? styles.activeLink : ''}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {link.name}
@@ -285,13 +286,13 @@ export default function HeaderNav() {
             prefetch={false}
             onClick={closeMenu}
             tabIndex={isMenuOpen ? 0 : -1}
-            className={isActive(link.href) ? 'active' : ''}
+            className={isActive(link.href) ? styles.activeLink : ''}
             aria-current={isActive(link.href) ? 'page' : undefined}
           >
             {link.name}
           </Link>
         ))}
-        <Link href="/contato" className="btn nav-cta-mobile" onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
+        <Link href="/contato" className={`btn ${styles.navCtaMobile}`} onClick={closeMenu} prefetch={false} tabIndex={isMenuOpen ? 0 : -1}>
           Apresentar um desafio
         </Link>
       </div>

@@ -1,10 +1,10 @@
-import './LerArtigo.css';
+import styles from './ReadArticle.module.css';
 
 export default function ReadArticle({ color }: { color?: string }) {
   return (
     <span
-      className="ler-artigo"
-      style={color ? { '--ler-artigo-color': color } as React.CSSProperties : undefined}
+      className={`${styles.readArticle} read-article`}
+      style={color ? { '--read-article-color': color } as React.CSSProperties : undefined}
     >
       Ler artigo
     </span>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
 import { SITE_URL } from '@/lib/config';
-import './newsletter.css';
+import styles from './newsletter.module.css';
 
 export const metadata: Metadata = {
   title: 'Newsletter | Em Breve',
@@ -19,7 +19,7 @@ export default function NewsletterPage() {
         title="Newsletter — Em breve"
         subtitle="Estamos preparando algo especial. Em breve você poderá se inscrever para receber análises exclusivas sobre IA, AWS e DevOps."
       />
-      <div className="container newsletter-cta-wrap">
+      <div className={`container ${styles.newsletterCtaWrap}`}>
         <Link href="/artigos" className="btn">
           Explorar artigos enquanto isso →
         </Link>

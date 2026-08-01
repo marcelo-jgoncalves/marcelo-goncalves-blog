@@ -11,7 +11,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import ReadArticle from '@/components/ui/ReadArticle';
 import PageHero from '@/components/ui/PageHero';
 import SearchBar from '@/components/ui/SearchBar';
-import './todos-artigos.css';
+import styles from './todos-artigos.module.css';
 
 const TITLE = 'Todos os artigos sobre Cloud, Automação, IA e Engenharia | Marcelo Gonçalves';
 const DESCRIPTION = 'Artigos técnicos e aprendizados de produção sobre AWS, DevOps, confiabilidade, automação, inteligência artificial e engenharia de software.';
@@ -99,7 +99,7 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       {/* HERO */}
       <PageHero
         singleColumn
-        className="art-hero"
+        className={`art-hero ${styles.artHero}`}
         dataAudit="art-hero"
         eyebrow="Artigos"
         title="Engenharia aplicada, decisões técnicas e aprendizados de produção."
@@ -108,9 +108,9 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
 
       {/* DESTAQUE */}
       {feature && (
-        <section className="wrap art-masthead" data-audit="art-masthead">
-          <Link className="art-feature" href={`/post/${feature.slug}`} data-audit="art-feature">
-            <div className="art-f-cover">
+        <section className={`wrap art-masthead ${styles.artMasthead}`} data-audit="art-masthead">
+          <Link className={`art-feature ${styles.artFeature}`} href={`/post/${feature.slug}`} data-audit="art-feature">
+            <div className={styles.artFCover}>
               {feature.imagem_destaque_url && (
                 <ResponsiveImage
                   src={feature.imagem_destaque_url}
@@ -120,15 +120,15 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
                   lqip={feature.imagem_lqip_base64}
                 />
               )}
-              <span className="art-f-badge">Em destaque</span>
-              <span className="art-f-cover-tag">{categoryName(feature)}</span>
+              <span className={styles.artFBadge}>Em destaque</span>
+              <span className={styles.artFCoverTag}>{categoryName(feature)}</span>
             </div>
-            <div className="art-f-body">
-              <div className="art-f-cat">{categoryName(feature)}</div>
+            <div className={styles.artFBody}>
+              <div className={styles.artFCat}>{categoryName(feature)}</div>
               <h2>{feature.titulo}</h2>
               {feature.resumo && <p>{feature.resumo}</p>}
-              <div className="art-f-foot">
-                <span className="art-f-meta">
+              <div className={styles.artFFoot}>
+                <span className={styles.artFMeta}>
                   {formatDateShort(feature.data_publicacao)} · {feature.tempo_leitura_min || 5} min de leitura
                 </span>
                 <ReadArticle color="var(--petrol)" />
@@ -139,9 +139,9 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       )}
 
       {/* BUSCA */}
-      <section className="art-search-section" data-audit="art-search">
-        <div className="wrap art-search-in">
-          <label className="art-search-label" htmlFor="art-search-input">Pesquisar artigos</label>
+      <section className={styles.artSearchSection} data-audit="art-search">
+        <div className={`wrap ${styles.artSearchIn}`}>
+          <label className={styles.artSearchLabel} htmlFor="art-search-input">Pesquisar artigos</label>
           <SearchBar
             name="q"
             ariaLabel="Pesquisar artigos"
@@ -152,12 +152,12 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       </section>
 
       {/* GRADE PRINCIPAL */}
-      <section className="wrap art-section art-section--paginated">
+      <section className={`wrap art-section ${styles.artSection} ${styles.artSectionPaginated}`}>
         <div className="sec-head-row sec-head-row--center">
           <div className="left">
             <h2 className="sec-t" id="art-grid-title">Todos os artigos</h2>
             {totalCount > 0 && (
-              <p className="art-count">
+              <p className={styles.artCount}>
                 {totalCount === 1 ? '1 artigo encontrado' : `${totalCount} artigos encontrados`}
               </p>
             )}
@@ -165,19 +165,19 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         </div>
 
         {gridPosts.length > 0 ? (
-          <div className="posts-grid art-grid" id="art-grid" data-audit="art-grid">
+          <div className={`posts-grid art-grid ${styles.artGrid}`} id="art-grid" data-audit="art-grid">
             {gridPosts.map((post) => (
               <PostCard key={post.slug} post={post} dataCat={post.categoria_slug} />
             ))}
           </div>
         ) : (
-          <div className="art-empty show" id="art-empty">
-            <div className="art-e-t">Novos artigos estão em preparação.</div>
-            <div className="art-e-s">O conteúdo será publicado quando estiver revisado e pronto para leitura.</div>
+          <div className={`${styles.artEmpty} ${styles.show}`} id="art-empty">
+            <div className={styles.artET}>Novos artigos estão em preparação.</div>
+            <div className={styles.artES}>O conteúdo será publicado quando estiver revisado e pronto para leitura.</div>
           </div>
         )}
 
-        <div className="art-load-wrap">
+        <div className={styles.artLoadWrap}>
           <Pagination
             basePath="/todos-artigos"
             page={page}
@@ -191,12 +191,12 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       </section>
 
       {/* CTA EDITORIAL COMPACTO */}
-      <section className="wrap art-cta-editorial" data-audit="art-cta-editorial">
-        <div className="art-cta-in">
+      <section className={`wrap art-cta-editorial ${styles.artCtaEditorial}`} data-audit="art-cta-editorial">
+        <div className={styles.artCtaIn}>
           <div className="sec-ey sec-ey--dual">Aplicação prática</div>
           <h2>Precisa transformar um desafio técnico em uma solução para a operação?</h2>
           <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que sua empresa precisa resolver.</p>
-          <div className="art-cta-actions">
+          <div className={styles.artCtaActions}>
             <Link className="btn" href="/servicos">Conhecer os serviços</Link>
             <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
           </div>

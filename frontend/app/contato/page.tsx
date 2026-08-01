@@ -1,4 +1,3 @@
-import './contato.css';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
@@ -8,6 +7,7 @@ import {
   IconEnvelope, IconLinkedin, IconPin,
 } from '@/components/ui/InstitutionalIcons';
 import { SITE_URL, SITE_NAME, AUTHOR_LINKEDIN_URL, contactChannels } from '@/lib/config';
+import styles from './contato.module.css';
 
 export const revalidate = 3600;
 
@@ -53,44 +53,44 @@ export default function ContatoPage() {
     <>
       <PageHero
         singleColumn
-        className="ct-hero"
+        className={styles.ctHero}
         dataAudit="ct-hero"
         eyebrow="Contato"
         title="Conte o que está limitando sua operação."
         subtitle="Você não precisa saber qual serviço contratar. Descreva o processo, sistema ou desafio que precisa evoluir e vamos avaliar a aderência e o próximo passo."
       >
-        <div className="ct-hero-actions">
-          <a href="#formulario-contato" className="btn ct-btn-primary">Ir para o formulário</a>
+        <div className={styles.ctHeroActions}>
+          <a href="#formulario-contato" className={`btn ${styles.ctBtnPrimary}`}>Ir para o formulário</a>
         </div>
-        <p className="ct-hero-microcopy">Retorno em até um dia útil · Primeira conversa sem compromisso</p>
+        <p className={styles.ctHeroMicrocopy}>Retorno em até um dia útil · Primeira conversa sem compromisso</p>
       </PageHero>
 
       {/* Bloco principal: formulário + próximos passos, lado a lado */}
-      <section className="ct-section ct-section--surface" id="formulario-contato">
-        <div className="wrap ct-main-grid">
+      <section className={`${styles.ctSection} ${styles.ctSectionSurface}`} id="formulario-contato">
+        <div className={`wrap ${styles.ctMainGrid}`}>
           <div className="ct-form-col">
             <div className="sec-ey">Apresente o contexto</div>
             <h2 className="sec-t">O que sua empresa precisa melhorar?</h2>
             <p className="sec-desc" style={{ maxWidth: 460 }}>
               Informe apenas o necessário para entendermos a situação inicial. Não envie senhas, credenciais, documentos confidenciais ou dados pessoais sensíveis pelo formulário.
             </p>
-            <div className="ct-guarantees">
-              <div className="ct-guarantee"><span className="ck">✓</span>Retorno em até um dia útil</div>
-              <div className="ct-guarantee"><span className="ck">✓</span>Primeira conversa sem compromisso</div>
-              <div className="ct-guarantee"><span className="ck">✓</span>Seus dados serão usados apenas para responder à solicitação e conduzir os próximos passos</div>
+            <div className={styles.ctGuarantees}>
+              <div className={styles.ctGuarantee}><span className="ck">✓</span>Retorno em até um dia útil</div>
+              <div className={styles.ctGuarantee}><span className="ck">✓</span>Primeira conversa sem compromisso</div>
+              <div className={styles.ctGuarantee}><span className="ck">✓</span>Seus dados serão usados apenas para responder à solicitação e conduzir os próximos passos</div>
             </div>
             <Suspense fallback={<div className="contact-form-card" />}>
               <ContactForm />
             </Suspense>
           </div>
 
-          <aside className="ct-next-steps" data-audit="ct-next-steps">
+          <aside className={styles.ctNextSteps} data-audit="ct-next-steps">
             <div className="sec-ey">Próximos passos</div>
-            <h2 className="ct-next-steps-title">O que acontece depois do envio</h2>
-            <ol className="ct-next-steps-list">
+            <h2 className={styles.ctNextStepsTitle}>O que acontece depois do envio</h2>
+            <ol className={styles.ctNextStepsList}>
               {NEXT_STEPS.map((step, i) => (
                 <li key={step.title}>
-                  <span className="ct-next-steps-num">{i + 1}</span>
+                  <span className={styles.ctNextStepsNum}>{i + 1}</span>
                   <div>
                     <h3>{step.title}</h3>
                     <p>{step.text}</p>
@@ -98,53 +98,53 @@ export default function ContatoPage() {
                 </li>
               ))}
             </ol>
-            <p className="ct-next-steps-note">O envio do formulário não cria obrigação de contratação ou de apresentação de proposta.</p>
+            <p className={styles.ctNextStepsNote}>O envio do formulário não cria obrigação de contratação ou de apresentação de proposta.</p>
           </aside>
         </div>
       </section>
 
       {/* Canais alternativos */}
-      <section id="canais" className="ct-section">
-        <div className="wrap ct-otherways-grid">
+      <section id="canais" className={styles.ctSection}>
+        <div className={`wrap ${styles.ctOtherwaysGrid}`}>
           <div>
             <div className="sec-ey">Outros canais</div>
-            <h2 className="sec-t ct-otherways-title">Prefere entrar em contato de outra forma?</h2>
+            <h2 className={`sec-t ${styles.ctOtherwaysTitle}`}>Prefere entrar em contato de outra forma?</h2>
             <p className="sec-desc" style={{ maxWidth: 420 }}>Use o canal mais conveniente. Para projetos, o formulário costuma ajudar a reunir o contexto inicial.</p>
           </div>
-          <div className="ct-contact-cards">
-            <a className="ct-contact-card" href="mailto:contato@marcelogoncalves.com">
-              <div className="ct-icon-box ct-icon-box--sm"><IconEnvelope /></div>
-              <span className="ct-contact-card-text">
-                <span className="ct-contact-k">E-mail</span>
-                <span className="ct-contact-v">contato@marcelogoncalves.com</span>
-                <span className="ct-contact-aux">Para mensagens mais detalhadas ou quando preferir usar seu próprio cliente de e-mail.</span>
+          <div className={styles.ctContactCards}>
+            <a className={styles.ctContactCard} href="mailto:contato@marcelogoncalves.com">
+              <div className={`ct-icon-box ${styles.ctIconBoxSm}`}><IconEnvelope /></div>
+              <span className={styles.ctContactCardText}>
+                <span className={styles.ctContactK}>E-mail</span>
+                <span className={styles.ctContactV}>contato@marcelogoncalves.com</span>
+                <span className={styles.ctContactAux}>Para mensagens mais detalhadas ou quando preferir usar seu próprio cliente de e-mail.</span>
               </span>
             </a>
             {contactChannels.whatsappUrl && (
-              <a className="ct-contact-card" href={contactChannels.whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <div className="ct-icon-box ct-icon-box--sm">
+              <a className={styles.ctContactCard} href={contactChannels.whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <div className={`ct-icon-box ${styles.ctIconBoxSm}`}>
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5.1a6.6 6.6 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.6c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.5.5 0 0 0 0-.5c-.1-.1-.5-1.2-.7-1.7s-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2 4.7 4.7 0 0 0 1 2.5 10.8 10.8 0 0 0 4.1 3.6c.6.2 1 .4 1.4.5a3.3 3.3 0 0 0 1.5.1 2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c-.1-.1-.2-.1-.4-.2z" /></svg>
                 </div>
-                <span className="ct-contact-card-text">
-                  <span className="ct-contact-k">WhatsApp</span>
-                  <span className="ct-contact-v">Conversar pelo WhatsApp</span>
-                  <span className="ct-contact-aux">Para iniciar uma conversa breve. Informações detalhadas podem ser enviadas depois pelos canais adequados.</span>
+                <span className={styles.ctContactCardText}>
+                  <span className={styles.ctContactK}>WhatsApp</span>
+                  <span className={styles.ctContactV}>Conversar pelo WhatsApp</span>
+                  <span className={styles.ctContactAux}>Para iniciar uma conversa breve. Informações detalhadas podem ser enviadas depois pelos canais adequados.</span>
                 </span>
               </a>
             )}
-            <a className="ct-contact-card" href={AUTHOR_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
-              <div className="ct-icon-box ct-icon-box--sm"><IconLinkedin /></div>
-              <span className="ct-contact-card-text">
-                <span className="ct-contact-k">LinkedIn</span>
-                <span className="ct-contact-v">Acessar perfil no LinkedIn</span>
-                <span className="ct-contact-aux">Para conhecer a trajetória profissional e acompanhar publicações técnicas.</span>
+            <a className={styles.ctContactCard} href={AUTHOR_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
+              <div className={`ct-icon-box ${styles.ctIconBoxSm}`}><IconLinkedin /></div>
+              <span className={styles.ctContactCardText}>
+                <span className={styles.ctContactK}>LinkedIn</span>
+                <span className={styles.ctContactV}>Acessar perfil no LinkedIn</span>
+                <span className={styles.ctContactAux}>Para conhecer a trajetória profissional e acompanhar publicações técnicas.</span>
               </span>
             </a>
-            <div className="ct-contact-card ct-contact-card--static">
-              <div className="ct-icon-box ct-icon-box--sm"><IconPin /></div>
-              <span className="ct-contact-card-text">
-                <span className="ct-contact-k">Localização</span>
-                <span className="ct-contact-v">Belo Horizonte, MG · Atendimento remoto</span>
+            <div className={`${styles.ctContactCard} ${styles.ctContactCardStatic}`}>
+              <div className={`ct-icon-box ${styles.ctIconBoxSm}`}><IconPin /></div>
+              <span className={styles.ctContactCardText}>
+                <span className={styles.ctContactK}>Localização</span>
+                <span className={styles.ctContactV}>Belo Horizonte, MG · Atendimento remoto</span>
               </span>
             </div>
           </div>
@@ -158,9 +158,9 @@ export default function ContatoPage() {
         title="Dúvidas antes do primeiro contato"
         dataAudit="ct-faq"
       />
-      <div className="wrap ct-faq-footer">
+      <div className={`wrap ${styles.ctFaqFooter}`}>
         <span>Pronto para apresentar o contexto?</span>
-        <a href="#formulario-contato" className="ct-faq-footer-link">Ir para o formulário →</a>
+        <a href="#formulario-contato" className={styles.ctFaqFooterLink}>Ir para o formulário →</a>
       </div>
     </>
   );

@@ -1,0 +1,139 @@
+/* Larger spacing between the navbar and the title, only on the 3 legal
+   pages (privacidade/cookies/termos) — local override, doesn't touch the
+   global --hero-top used by the site's other heroes (desktop). Reduced to
+   --sp-10=64px on mobile — 140px was disproportionate on a phone screen. */
+:global(.page-hero).pageHeroLegal {
+  --hero-top: 140px;
+  --hero-top-mobile: var(--sp-10);
+}
+
+/* Centered title and subtitle — only on these 3 pages. PageHero is used
+   by several others (Home, Contato, landings etc) with the same
+   singleColumn, so the alignment can't change in the base component. */
+:global(.page-hero).pageHeroLegal :global(.page-hero-left) {
+  align-items: center;
+  text-align: center;
+}
+
+:global(.page-hero).pageHeroLegal :global(h1),
+:global(.page-hero).pageHeroLegal :global(.page-hero-sub) {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legalContainer {
+  padding: var(--sp-10) var(--sp-5);
+}
+
+.legalContent {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.legalUpdated {
+  font-size: var(--type-label);
+  color: var(--steel);
+  margin-bottom: var(--sp-7);
+  padding-bottom: var(--sp-6);
+  border-bottom: 1px solid var(--line);
+}
+
+.legalContent h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: var(--petrol);
+  margin-top: var(--sp-7);
+  margin-bottom: var(--sp-4);
+}
+
+.legalContent h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-body);
+  color: var(--ink);
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-2);
+}
+
+.legalContent p strong {
+  color: var(--ink);
+}
+
+.legalContent p {
+  font-size: var(--type-body);
+  color: var(--slate);
+  line-height: 1.75;
+  margin-bottom: var(--sp-4);
+}
+
+.legalContent ul {
+  margin: 0 0 var(--sp-4) var(--sp-6);
+  padding: 0;
+}
+
+.legalContent ul li {
+  font-size: var(--type-body);
+  color: var(--slate);
+  line-height: 1.75;
+  margin-bottom: var(--sp-2);
+}
+
+.legalContent a {
+  color: var(--petrol);
+  text-decoration: underline;
+}
+
+.legalContent a:hover {
+  color: var(--petrol-deep);
+}
+
+.legalContent code {
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  background: var(--sand);
+  color: var(--petrol-deep);
+  padding: 2px var(--title-gap);
+  border-radius: 4px;
+}
+
+.legalTableWrap {
+  overflow-x: auto;
+  margin: 0 0 var(--sp-4);
+}
+
+.legalContent table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.legalContent th,
+.legalContent td {
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--type-caption);
+  border-bottom: 1px solid var(--line);
+}
+
+.legalContent th {
+  background: var(--sand);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--petrol);
+  white-space: nowrap;
+}
+
+.legalContent td {
+  color: var(--slate);
+}
+
+.legalContent tbody tr:last-child td {
+  border-bottom: none;
+}

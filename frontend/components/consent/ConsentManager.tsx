@@ -11,7 +11,6 @@ import {
 } from '@/lib/consent';
 import ConsentBanner from './ConsentBanner';
 import ConsentModal from './ConsentModal';
-import './ConsentManager.css';
 
 export default function ConsentManager() {
   const [consent, setConsent] = useState<ConsentState | null>(null);

@@ -258,7 +258,7 @@
 
 /* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE — .benefitsList/
    .benefitItem reaproveitados por essa seção. "Benefícios" em si usa o
-   componente compartilhado BeneficiosSection (ver components/ui/). ===== */
+   componente compartilhado BenefitsSection (ver components/ui/). ===== */
 .benefitsList {
   display: grid;
   grid-template-columns: 1fr;

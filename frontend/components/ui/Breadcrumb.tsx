@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import './Breadcrumb.css';
+import styles from './Breadcrumb.module.css';
 
 export interface BreadcrumbItem {
   label: string;
@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav className="breadcrumb" aria-label="Breadcrumb">
+    <nav className={styles.breadcrumb} aria-label="Breadcrumb">
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (

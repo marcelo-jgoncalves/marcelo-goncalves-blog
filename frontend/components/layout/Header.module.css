@@ -1,0 +1,353 @@
+.siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--petrol-deep);
+  isolation: isolate;
+}
+
+.siteHeader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(52% 70% at 100% 0%, rgba(201, 96, 60, .3), transparent 55%),
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 139, 150, .2), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/100% 80px,
+    linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/80px 100%;
+  -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 60% 30%, #000 25%, transparent 75%);
+}
+
+.siteHeader .navIn {
+  position: relative;
+  z-index: 1;
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-7);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-7);
+}
+
+/* ── brand ── */
+.siteHeader .brand {
+  font-weight: 800;
+  font-size: var(--type-h3);
+  letter-spacing: -.02em;
+  color: var(--ivory);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.siteHeader .brand .b2 {
+  color: var(--clay);
+}
+
+/* ── menu desktop ── */
+.siteHeader .menu {
+  display: flex;
+  gap: var(--sp-7);
+}
+
+.siteHeader .menu a {
+  font-size: var(--type-body);
+  color: rgba(255, 255, 255, .75);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color .2s;
+}
+
+.siteHeader .menu a:hover {
+  color: #fff;
+}
+
+.siteHeader .menu a.activeLink {
+  color: var(--clay);
+  font-weight: 600;
+}
+
+/* Breakpoint at 1300px, not 860px: the desktop menu (brand + links +
+   dropdown + nav-cta, no wrap/shrink) only fits without horizontal overflow
+   from ~1290px of viewport width onward — measured via real
+   scrollWidth/clientWidth (1280px still overflowed by ~7px). The whole
+   tablet range now falls into the mobile menu (hamburger) instead. */
+@media (max-width: 1300px) {
+  .siteHeader .menu {
+    display: none;
+  }
+}
+
+/* ── dropdown "Serviços" (desktop) ── */
+.siteHeader .navDropdown {
+  position: relative;
+}
+
+.siteHeader .navDropdownTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--type-body);
+  line-height: inherit;
+  color: rgba(255, 255, 255, .75);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.siteHeader .navDropdownTrigger a {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.siteHeader .navDropdownTrigger a:hover {
+  color: #fff;
+}
+
+.siteHeader .navDropdownTrigger a.activeLink,
+.siteHeader .navDropdownTrigger.activeLink a {
+  color: var(--clay);
+  font-weight: 600;
+}
+
+.siteHeader .navDropdownToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: var(--sp-1);
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  transition: color .2s;
+}
+
+.siteHeader .navDropdownToggle:hover {
+  color: #fff;
+}
+
+.siteHeader .navDropdownChevron {
+  flex: none;
+  transition: transform .2s ease;
+}
+
+.siteHeader .navDropdownToggle[aria-expanded="true"] .navDropdownChevron {
+  transform: rotate(180deg);
+}
+
+.siteHeader .navDropdownPanel {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 50%;
+  transform: translate(-50%, 8px);
+  min-width: 240px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px -12px rgba(12, 32, 39, .22);
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+
+.siteHeader .navDropdownPanel.dropdownOpen {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.siteHeader .navDropdownPanel a {
+  font-size: var(--type-label);
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  padding: var(--title-gap) var(--sp-3);
+  border-radius: 8px;
+  transition: background-color .15s, color .15s;
+}
+
+.siteHeader .navDropdownPanel a:hover {
+  background: var(--sand);
+  color: var(--petrol);
+}
+
+.siteHeader .navDropdownPanel a.activeLink {
+  color: var(--petrol);
+  font-weight: 600;
+}
+
+/* "Visão geral dos serviços" (ajuste-07 §5.3) — primeiro item do dropdown,
+   separado dos 4 links individuais por uma borda. */
+.siteHeader .navDropdownPanel a.navDropdownOverview {
+  font-weight: 700;
+  margin-bottom: var(--sp-1);
+  padding-bottom: var(--title-gap);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── CTA ── Usa o padrão global .btn (globals.css); classe local só
+   ajusta tamanho (nunca cor/forma) pra caber na altura fixa do nav
+   (--nav-height: 68px) sem ficar colado nas bordas, e não quebrar
+   linha no nav apertado. */
+.siteHeader .navCta {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: var(--sp-2) var(--sp-5);
+  font-size: var(--type-caption);
+}
+
+.siteHeader .navCta .arrow {
+  font-family: var(--mono);
+}
+
+@media (max-width: 1300px) {
+  .siteHeader .navCta {
+    display: none;
+  }
+}
+
+/* ── mobile button ── */
+.siteHeader .navMobileBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  padding: var(--sp-2);
+}
+
+@media (max-width: 1300px) {
+  .siteHeader .navMobileBtn {
+    display: flex;
+  }
+}
+
+/* ── mobile menu ── */
+.siteHeader .navMobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--ivory);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+
+  padding: var(--sp-6);
+  gap: var(--sp-4);
+  box-shadow: 0 8px 24px rgba(12, 32, 39, .10);
+  border-bottom: 1px solid var(--line);
+}
+
+.siteHeader .navMobileMenu.menuOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.siteHeader .navMobileMenu a {
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  padding: var(--eyebrow-gap) 0;
+  font-size: var(--type-lead);
+  border-bottom: 1px solid var(--line);
+  transition: color 0.2s ease;
+}
+
+.siteHeader .navMobileMenu a:hover,
+.siteHeader .navMobileMenu a.activeLink {
+  color: var(--petrol);
+}
+
+/* Usa o padrão global .btn (globals.css); classe local só cuida do
+   que é específico deste contexto (altura fixa no menu, separação do
+   item anterior, sem borda inferior herdada dos outros links do menu). */
+.siteHeader .navMobileMenu a.navCtaMobile {
+  height: 44px;
+  font-size: var(--type-body);
+  margin-top: var(--sp-1);
+  border-bottom: none;
+}
+
+.siteHeader .navCtaMobile .arrow {
+  font-family: var(--mono);
+}
+
+/* ── "Serviços" (mobile) ── */
+.siteHeader .navMobileServicesToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: 500;
+  color: var(--ink);
+  padding: var(--eyebrow-gap) 0;
+  font-size: var(--type-lead);
+  border-bottom: 1px solid var(--line);
+}
+
+.siteHeader .navMobileServicesToggle a {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  flex: 1;
+  transition: color 0.2s ease;
+}
+
+.siteHeader .navMobileServicesToggle a.activeLink,
+.siteHeader .navMobileServicesToggle.activeLink a {
+  color: var(--petrol);
+}
+
+.siteHeader .navMobileServicesToggle button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: var(--sp-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.siteHeader .navMobileServicesList {
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(-1 * var(--sp-2));
+}
+
+.siteHeader .navMobileServicesList a {
+  padding: var(--sp-3) 0 var(--sp-3) var(--sp-4);
+  font-size: var(--type-body);
+  border-bottom: 1px solid var(--line);
+}
+
+.siteHeader .navMobileServicesList a.navDropdownOverview {
+  font-weight: 700;
+}

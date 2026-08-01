@@ -5,7 +5,7 @@ import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
 import AdvisoryCta from '@/components/ui/AdvisoryCta';
-import BeneficiosSection from '@/components/ui/BeneficiosSection';
+import BenefitsSection from '@/components/ui/BenefitsSection';
 import styles from './page.module.css';
 
 const TITLE = `Inteligência Artificial Aplicada | ${SITE_NAME}`;
@@ -222,7 +222,7 @@ export default function InteligenciaArtificialPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <BeneficiosSection
+      <BenefitsSection
         id="beneficios"
         dataAudit="ai-beneficios"
         eyebrow="Benefícios"

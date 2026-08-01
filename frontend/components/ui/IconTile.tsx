@@ -4,7 +4,7 @@
 // shape/size; only icon, background color variant and size vary per use.
 
 import type { ReactNode } from 'react';
-import './IconTile.css';
+import styles from './IconTile.module.css';
 
 interface IconTileProps {
   icon: ReactNode;
@@ -15,10 +15,16 @@ interface IconTileProps {
   dataAudit?: string;
 }
 
+const VARIANT_CLASS = {
+  petrol: styles.petrol,
+  clay: styles.clay,
+  glass: styles.glass,
+} as const;
+
 export default function IconTile({ icon, variant = 'petrol', size = 54, radius = 14, className, dataAudit }: IconTileProps) {
   return (
     <div
-      className={`icon-tile icon-tile--${variant}${className ? ` ${className}` : ''}`}
+      className={`${styles.iconTile} icon-tile ${VARIANT_CLASS[variant]}${className ? ` ${className}` : ''}`}
       style={{ width: size, height: size, borderRadius: radius }}
       data-audit={dataAudit}
     >

@@ -1,20 +1,20 @@
 
-'use client'; 
+'use client';
 
 import React, { useEffect } from 'react';
-import './AdsenseInArticle.css'; // 🚀 Importando o novo arquivo de estilo
+import styles from './AdsenseInArticle.module.css';
 
 interface AdsenseInArticleProps {
-  blockId: string; 
-  variant: 'summary-divider' | 'in-content' | 'in-feed'; 
+  blockId: string;
+  variant: 'summary-divider' | 'in-content' | 'in-feed';
 }
 
 const ADSENSE_CONFIGURED = false; // Trocar para true quando o publisher ID estiver ativo
 
-const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: string }> = ({ 
-  blockId, 
-  className, 
-  format = 'auto' 
+const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: string }> = ({
+  blockId,
+  className,
+  format = 'auto'
 }) => {
     useEffect(() => {
       if (ADSENSE_CONFIGURED) {
@@ -28,11 +28,11 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
     }, []);
 
     return (
-        <div className={`op-adsense-wrapper ${className}`} aria-hidden="true">
-            <ins 
+        <div className={`${styles.opAdsenseWrapper} ${className}`} aria-hidden="true">
+            <ins
               className="adsbygoogle"
               style={{ display: 'block' }}
-              data-ad-client="ca-pub-SEU_ID_AQUI" 
+              data-ad-client="ca-pub-SEU_ID_AQUI"
               data-ad-slot={blockId}
               data-ad-format={format}
               data-full-width-responsive="true"
@@ -43,30 +43,30 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
 
 export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleProps) {
   let placeholderClass = '';
-  let placeholderText = ''; 
-  let adFormat = 'auto'; 
-  
+  let placeholderText = '';
+  let adFormat = 'auto';
+
   if (variant === 'summary-divider') {
-    placeholderClass = 'adsense-summary-mock';
+    placeholderClass = styles.adsenseSummaryMock;
     placeholderText = `[ADSENSE TOPO: ${blockId}]`;
-    adFormat = 'auto'; 
+    adFormat = 'auto';
   } else if (variant === 'in-content') {
-    placeholderClass = 'adsense-in-content-mock'; 
+    placeholderClass = styles.adsenseInContentMock;
     placeholderText = `[ADSENSE IN-ARTICLE: ${blockId}]`;
-    adFormat = 'auto'; 
+    adFormat = 'auto';
   } else if (variant === 'in-feed') {
-    placeholderClass = 'adsense-in-feed-mock'; 
+    placeholderClass = styles.adsenseInFeedMock;
     placeholderText = `[ADSENSE IN-FEED: ${blockId}]`;
-    adFormat = 'fluid'; 
+    adFormat = 'fluid';
   }
 
   if (ADSENSE_CONFIGURED) {
     return <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
   }
-  
+
   // Retorno simplificado para desenvolvimento: apenas uma DIV com a classe correta
   return (
-    <div className={`op-adsense-wrapper op-adsense-dev-mock ${placeholderClass}`}>
+    <div className={`${styles.opAdsenseWrapper} ${styles.opAdsenseDevMock} ${placeholderClass}`}>
       <span aria-hidden="true">
         {placeholderText}
       </span>

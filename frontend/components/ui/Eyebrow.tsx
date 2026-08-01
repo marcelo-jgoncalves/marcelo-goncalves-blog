@@ -1,4 +1,4 @@
-import './Eyebrow.css';
+import styles from './Eyebrow.module.css';
 
 interface EyebrowProps {
   text: string;
@@ -7,7 +7,7 @@ interface EyebrowProps {
 
 export default function Eyebrow({ text, color = 'var(--petrol)' }: EyebrowProps) {
   return (
-    <span className="eyebrow" style={{ color }}>
+    <span className={styles.eyebrow} style={{ color }}>
       {text}
     </span>
   );
