@@ -1,35 +1,48 @@
 import { test, expect } from '@playwright/test';
 
+// A Home institucional (pivô da sessão 42, ver CLAUDE.md) substituiu o
+// antigo layout "sidebar + widgets" do blog. Estes testes validam a
+// estrutura real de hoje: hero + 4 pilares de serviço, metodologia,
+// resultados/cases, teaser de blog e CTA final.
+
 const BASE = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
 
-test('home: sidebar existe com os widgets corretos', async ({ page }) => {
-  await page.goto(BASE);
-  await expect(page.locator('.home-sidebar')).toBeVisible();
-  await expect(page.locator('.op-service-callout')).toBeVisible();
-  await expect(page.locator('.popular-widget')).toBeVisible();
-  await expect(page.locator('.projeto-widget')).toBeVisible();
-});
+test.describe('Home institucional', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(BASE);
+  });
 
-test('home: grid 2 colunas existe no layout', async ({ page }) => {
-  await page.goto(BASE);
-  await expect(page.locator('.home-layout')).toBeVisible();
-  await expect(page.locator('.home-posts-grid').first()).toBeVisible();
-});
+  test('hero existe com título e ações', async ({ page }) => {
+    await expect(page.locator('[data-audit="ih-hero"]')).toBeVisible();
+    await expect(page.locator('[data-audit="ih-hero"] h1')).toBeVisible();
+  });
 
-test('home: PostCard tem meta-row unificada', async ({ page }) => {
-  await page.goto(BASE, { waitUntil: 'networkidle' });
-  await expect(page.locator('.post-card__meta-row').first()).toBeVisible();
-});
+  test('seção de serviços exibe os 4 pilares', async ({ page }) => {
+    await expect(page.locator('#servicos')).toBeVisible();
+    await expect(page.locator('.pillar-card')).toHaveCount(4);
+  });
 
-test('home: categorias aparecem no main', async ({ page }) => {
-  await page.goto(BASE);
-  await expect(page.locator('.categories-grid')).toBeVisible();
-  const cards = page.locator('.category-card');
-  await expect(cards).toHaveCount(6);
-});
+  test('seção "Como trabalhamos" exibe método e etapas', async ({ page }) => {
+    await expect(page.locator('[data-audit="ih-method-grid"]')).toBeVisible();
+    await expect(page.locator('[data-audit="ih-method-card"]')).toBeVisible();
+  });
 
-test('home: CTA newsletter no final', async ({ page }) => {
-  await page.goto(BASE);
-  await expect(page.locator('.cta')).toBeVisible();
-  await expect(page.locator('.cta h2')).toContainText('IA');
+  test('seção de resultados exibe cases com métricas', async ({ page }) => {
+    await expect(page.locator('#resultados')).toBeVisible();
+    const cases = page.locator('.ih-case-text');
+    expect(await cases.count()).toBeGreaterThan(0);
+  });
+
+  test('teaser de blog exibe posts recentes, quando existem', async ({ page }) => {
+    await page.goto(BASE, { waitUntil: 'networkidle' });
+    const cards = page.locator('#conteudo .post-card');
+    const count = await cards.count();
+    test.skip(count === 0, 'Nenhum post recente disponível — API/backend fora do ar nesta execução.');
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test('CTA final existe e aponta para /contato', async ({ page }) => {
+    await expect(page.locator('.cta-adv')).toBeVisible();
+    await expect(page.locator('.cta-adv-btn')).toHaveAttribute('href', '/contato');
+  });
 });

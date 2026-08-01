@@ -16,21 +16,21 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/integracao-autom
 // projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
 // decisão documentada em engenharia-de-software.audit.spec.ts e cloud-devops.audit.spec.ts.
 const TARGETS = [
-  'ia2-oquefazemos',
+  'ia2-entregas',
   'ia2-card',
   'ia2-beneficios',
-  'ia2-especialidades',
+  'ia2-capacidades',
   'ia2-abordagem',
   'ia2-faq',
 ];
 
-test('integracao-automacao: audit protótipo vs app', async ({ page }) => {
+test('integracao-automacao (/automacao): audit protótipo vs app', async ({ page }) => {
   await page.setViewportSize(VIEWPORT);
 
   await page.goto(FIXTURE_URL);
   const proto = await captureAudit(page);
 
-  await page.goto('/integracao-automacao');
+  await page.goto('/automacao');
   const app = await captureAudit(page);
 
   const { diffs, report } = compareAudits(proto, app, TARGETS);

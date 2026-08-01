@@ -10,20 +10,17 @@ import { compareAudits } from './compare';
 
 const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/projeto.html').replace(/\\/g, '/')}`;
 
+// A página foi reescrita por completo depois deste protótipo (novas
+// seções "Por que construir"/"Estado atual"/"Arquitetura"/"Princípios de
+// engenharia"/"Fluxo editorial", roadmap agrupado por período em vez de
+// cards com status, CTA final própria em vez de reusar AdvisoryCta) — a
+// maioria das seções do fixture não tem mais correspondente estrutural
+// direto no app, e comparar conteúdos com formas diferentes não faz
+// sentido. op-hero e op-tl-card são os únicos dois pontos onde protótipo
+// e app ainda representam exatamente a mesma coisa.
 const TARGETS = [
   'op-hero',
-  'op-hero-in',
-  'op-hero-stat',
-  'op-stats-strip',
-  'op-about-strip',
-  'op-principle',
-  'op-sec-header',
   'op-tl-card',
-  'op-roadmap-grid',
-  'op-rm-card',
-  'op-cta-adv',
-  'op-cta-adv-in',
-  'op-adv-card',
 ];
 
 test('o-projeto: audit protótipo vs app', async ({ page }) => {
@@ -41,17 +38,5 @@ test('o-projeto: audit protótipo vs app', async ({ page }) => {
     console.log(report);
   }
 
-  // op-hero-stat (width) e op-hero-in (gridTemplateColumns): a coluna "auto"
-  // do grid é dimensionada pelo conteúdo de .op-cap/.op-clay-cap (mono,
-  // uppercase, letter-spacing .22em). O glyph metrics do JetBrains Mono
-  // self-hosted via next/font difere ligeiramente do @font-face do protótipo
-  // (CDN), redistribuindo ~2.5px entre as duas colunas — mesma causa raiz.
-  const knownFontMetricDiffs = diffs.filter(
-    (d) =>
-      (d.key === 'op-hero-stat' && d.property === 'width') ||
-      (d.key === 'op-hero-in' && d.property === 'gridTemplateColumns'),
-  );
-  const realDiffs = diffs.filter((d) => !knownFontMetricDiffs.includes(d));
-
-  expect(realDiffs, report).toEqual([]);
+  expect(diffs, report).toEqual([]);
 });

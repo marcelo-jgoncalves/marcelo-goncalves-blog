@@ -18,21 +18,21 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/cloud-devops.htm
 // inline do protótipo standalone — mesma decisão e mesmo motivo documentados em
 // engenharia-de-software.audit.spec.ts.
 const TARGETS = [
-  'cd-oquefazemos',
+  'cd-atuacao',
   'cd-card',
   'cd-beneficios',
-  'cd-especialidades',
+  'cd-capacidades',
   'cd-abordagem',
   'cd-faq',
 ];
 
-test('cloud-devops: audit protótipo vs app', async ({ page }) => {
+test('cloud-devops (/plataforma): audit protótipo vs app', async ({ page }) => {
   await page.setViewportSize(VIEWPORT);
 
   await page.goto(FIXTURE_URL);
   const proto = await captureAudit(page);
 
-  await page.goto('/cloud-devops');
+  await page.goto('/plataforma');
   const app = await captureAudit(page);
 
   const { diffs, report } = compareAudits(proto, app, TARGETS);

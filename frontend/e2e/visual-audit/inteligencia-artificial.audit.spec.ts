@@ -16,9 +16,9 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/inteligencia-art
 // projeto (PageHero/AdvisoryCta) em vez do padding/grid inline do protótipo — mesma
 // decisão documentada nas 3 landings anteriores.
 const TARGETS = [
-  'ai-oquefazemos',
+  'ai-solucoes',
   'ai-card',
-  'ai-casos',
+  'ai-aplicacoes',
   'ai-caso-item',
   'ai-beneficios',
   'ai-abordagem',

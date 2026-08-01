@@ -25,13 +25,13 @@ interface RoleCheck {
 // leitura >= 16px (--type-body-sm), link/CTA >= 14px (--type-label),
 // título de card >= 20px (--type-lead).
 const HOME_CHECKS: RoleCheck[] = [
-  { role: 'texto de leitura', selector: '.ih-pillar-card > p', minPx: 16 },
+  { role: 'texto de leitura', selector: '.pillar-card > p', minPx: 16 },
   { role: 'texto de leitura', selector: '.ih-case-text p', minPx: 16 },
   { role: 'texto de leitura', selector: '.ih-mc-text', minPx: 16 },
-  { role: 'link/CTA interativo', selector: '.ih-pillar-more', minPx: 14 },
+  { role: 'link/CTA interativo', selector: '.pillar-more', minPx: 14 },
   { role: 'link/CTA interativo', selector: '.foot-col ul li a', minPx: 14 },
   { role: 'link/CTA interativo', selector: '.foot-col-lead', minPx: 14 },
-  { role: 'título de card', selector: '.ih-pillar-card h3', minPx: 20 },
+  { role: 'título de card', selector: '.pillar-card h3', minPx: 20 },
   { role: 'título de card', selector: '.ih-case-text h3', minPx: 20 },
 ];
 
@@ -40,7 +40,7 @@ const HOME_CHECKS: RoleCheck[] = [
 // PostCard nesta suíte (ver home-layout.spec.ts).
 const HOME_BLOG_CHECKS: RoleCheck[] = [
   { role: 'texto de leitura', selector: '.post-card .pc-excerpt', minPx: 16 },
-  { role: 'link/CTA interativo', selector: '.post-card .pc-foot .ler-artigo', minPx: 14 },
+  { role: 'link/CTA interativo', selector: '.post-card .pc-foot .read-article', minPx: 14 },
 ];
 
 test.describe('Tokens de tipografia por papel (mobile, 375px) — CLAUDE.md §5', () => {

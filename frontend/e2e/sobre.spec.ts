@@ -1,62 +1,75 @@
 import { test, expect } from '@playwright/test';
 
+// /sobre foi reescrita (redesign 2026) — o hero, a estrutura de seções e
+// o conteúdo mudaram por completo em relação à versão testada antes.
+// Seções descritas em versões anteriores (indicadores no hero, quote de
+// trajetória, logos de empresas, cards de área, diferencial de idiomas,
+// cards de certificação, logos de instituição acadêmica) nunca chegaram a
+// ser implementadas nesta versão — ver CLAUDE.md §10 item #40 (assets já
+// otimizados, seção deliberadamente adiada por decisão de Marcelo).
+// Este spec valida a estrutura real de hoje.
+
 test.describe('página /sobre', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/sobre', { waitUntil: 'networkidle' });
   });
 
   test('hero existe com título e ação principal', async ({ page }) => {
-    await expect(page.locator('.sobre-hero h1')).toBeVisible();
-    await expect(page.locator('.sobre-hero h1')).toContainText('Transformo complexidade técnica');
+    await expect(page.locator('[data-audit="sobre-hero"] h1')).toBeVisible();
+    await expect(page.locator('[data-audit="sobre-hero"] h1')).toContainText('Engenharia próxima da operação');
 
-    const ctaAssessoria = page.locator('.sobre-btn-clay');
-    await expect(ctaAssessoria).toHaveAttribute('href', '#assessoria');
+    const ctaServicos = page.locator('.sobre-btn-clay');
+    await expect(ctaServicos).toHaveAttribute('href', '/#servicos');
   });
 
-  test('hero exibe 4 indicadores', async ({ page }) => {
-    await expect(page.locator('.sobre-hstat')).toHaveCount(4);
+  test('seção "Nossa visão" exibe os 3 resultados', async ({ page }) => {
+    const list = page.locator('[data-audit="sobre-visao-list"]');
+    await expect(list).toBeVisible();
+    await expect(list.locator('> span')).toHaveCount(3);
   });
 
-  test('trajetória exibe quote com autor', async ({ page }) => {
-    const quote = page.locator('.sobre-traj-quote');
-    await expect(quote).toBeVisible();
-    await expect(quote.locator('.sobre-tq-author .n')).toContainText('Marcelo Gonçalves');
+  test('seção "Origem e propósito" exibe texto e missão', async ({ page }) => {
+    await expect(page.locator('[data-audit="sobre-origem-grid"]')).toBeVisible();
+    await expect(page.locator('[data-audit="sobre-origem-mission"]')).toBeVisible();
   });
 
-  test('seção empresas exibe 4 logos', async ({ page }) => {
-    await expect(page.locator('.sobre-tc-item')).toHaveCount(4);
+  test('seção "Princípios de engenharia" exibe as 5 linhas + manifesto', async ({ page }) => {
+    const list = page.locator('[data-audit="sobre-principles-list"]');
+    await expect(list).toBeVisible();
+    await expect(list.locator('> div')).toHaveCount(5);
+    await expect(page.locator('[data-audit="sobre-manifesto"]')).toBeVisible();
   });
 
-  test('áreas em que atuo exibe 6 cards, primeiro é destaque', async ({ page }) => {
-    const cards = page.locator('.sobre-area-card');
-    await expect(cards).toHaveCount(6);
-    await expect(cards.first()).toHaveClass(/sobre-feat/);
-    await expect(cards.first()).toContainText('Transformação Digital');
+  test('seção "Como tomamos decisões" exibe os 5 módulos com ícone', async ({ page }) => {
+    await expect(page.locator('[data-audit="sobre-abordagem-head"]')).toBeVisible();
+    const modules = page.locator('[data-audit="sobre-modules-grid"] > div');
+    await expect(modules).toHaveCount(5);
   });
 
-  test('diferencial exibe 3 idiomas', async ({ page }) => {
-    await expect(page.locator('.sobre-dif-lang')).toHaveCount(3);
+  test('bloco de liderança exibe bio e 3 tags de atuação', async ({ page }) => {
+    await expect(page.locator('[data-audit="sobre-behind-card"]')).toBeVisible();
+    await expect(page.locator('[data-audit="sobre-behind-card"]')).toContainText('Marcelo Gonçalves');
+    const tags = page.locator('[data-audit="sobre-behind-tags"] > span');
+    await expect(tags).toHaveCount(3);
+    await expect(page.locator('[data-audit="sobre-boutique"]')).toBeVisible();
   });
 
-  test('certificações exibe 5 credenciais + card "sempre estudando"', async ({ page }) => {
-    await expect(page.locator('.sobre-cert-card')).toHaveCount(6);
-    await expect(page.locator('.sobre-cert-card--soon')).toContainText('Sempre estudando');
+  test('bloco de experiência/certificações exibe os 4 cards de autoridade', async ({ page }) => {
+    const grid = page.locator('[data-audit="sobre-evidence-grid"]');
+    await expect(grid).toBeVisible();
+    // FeatureCard não expõe data-audit próprio aqui — conta pelo componente pai.
+    const cards = grid.locator('> *');
+    await expect(cards).toHaveCount(4);
   });
 
-  test('base acadêmica exibe 4 itens com logos de instituição', async ({ page }) => {
-    await expect(page.locator('.sobre-acad-item')).toHaveCount(4);
-    await expect(page.locator('.sobre-acad-item').first().locator('.sobre-acad-tile img')).toHaveAttribute('alt', 'Estácio');
-  });
-
-  test('CTA assessoria linka para /contato', async ({ page }) => {
+  test('CTA final ("Vamos conversar") existe e linka para /contato', async ({ page }) => {
     const btn = page.locator('.cta-adv-btn');
     await expect(btn).toBeVisible();
     await expect(btn).toHaveAttribute('href', '/contato');
   });
 
-  test('navegar para #assessoria via "Trabalhe comigo"', async ({ page }) => {
+  test('navegar para #servicos via "Conhecer os serviços"', async ({ page }) => {
     await page.locator('.sobre-btn-clay').click();
-    await expect(page).toHaveURL(/#assessoria$/);
-    await expect(page.locator('#assessoria')).toBeInViewport();
+    await expect(page).toHaveURL(/\/#servicos$/);
   });
 });

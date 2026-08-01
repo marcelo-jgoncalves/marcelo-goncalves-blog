@@ -39,16 +39,11 @@ test.describe('post individual', () => {
     await expect(page.locator('[data-audit="post-share"]')).toBeVisible();
   });
 
-  test('reading progress bar presente apenas em post', async ({ page }) => {
-    await expect(page.locator('.post-progress')).toBeAttached();
-  });
-
-  test('reading progress bar ausente na home', async ({ page }) => {
-    // Firefox: aguarda prefetches em background (ex.: Link "Home" no header)
-    // assentarem antes do goto, evitando NS_BINDING_ABORTED.
-    await page.waitForTimeout(500);
-    await page.goto('/');
-    await expect(page.locator('.post-progress')).not.toBeAttached();
+  // ReadingProgressBar mora no Header (global, ver components/layout/Header.tsx)
+  // desde a sessão 47 — deixou de ser exclusiva da página de post. O teste
+  // valida apenas que o indicador existe, sem exclusividade por rota.
+  test('reading progress bar presente', async ({ page }) => {
+    await expect(page.locator('[role="progressbar"]')).toBeAttached();
   });
 
   test('seção de posts relacionados existe no rodapé do post', async ({ page }) => {

@@ -24,21 +24,21 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/engenharia-de-so
 // .especialidades (fundo sand, não mais petrol-deep) — desvio intencional do
 // protótipo, mesmo raciocínio do hero/cta-final acima.
 const TARGETS = [
-  'esw-oquefazemos',
+  'esw-solucoes',
   'esw-card',
   'esw-beneficios',
   'esw-abordagem',
-  'esw-diferenciais',
+  'esw-qualidade',
   'esw-faq',
 ];
 
-test('engenharia-de-software: audit protótipo vs app', async ({ page }) => {
+test('engenharia-de-software (/software): audit protótipo vs app', async ({ page }) => {
   await page.setViewportSize(VIEWPORT);
 
   await page.goto(FIXTURE_URL);
   const proto = await captureAudit(page);
 
-  await page.goto('/engenharia-de-software');
+  await page.goto('/software');
   const app = await captureAudit(page);
 
   const { diffs, report } = compareAudits(proto, app, TARGETS);

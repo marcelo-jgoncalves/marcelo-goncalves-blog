@@ -12,6 +12,12 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/post.html').repl
 
 const POST_SLUG = 'como-construir-prompts-poderosos-para-ias-como-gpt-ou-gemini';
 
+// post-cta-adv-in/post-adv-card ficaram de fora: a página deixou de reusar
+// AdvisoryCta nessa posição e passou a ter sua própria seção compacta
+// "CTA CONTEXTUAL" (post-cta-editorial, ver app/post/[slug]/page.tsx) —
+// mesma mudança de design já feita em /o-projeto. Não há correspondência
+// visual válida entre o card do AdvisoryCta (protótipo) e a seção atual,
+// então a comparação pixel a pixel deixou de fazer sentido para essa seção.
 const TARGETS = [
   'post-hero',
   'post-hero-in',
@@ -23,8 +29,6 @@ const TARGETS = [
   'post-related',
   'post-r-head',
   'post-r-grid',
-  'post-cta-adv-in',
-  'post-adv-card',
 ];
 
 test('post: audit protótipo vs app', async ({ page }) => {
