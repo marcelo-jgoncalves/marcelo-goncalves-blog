@@ -121,7 +121,7 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
 # managed one.
 resource "aws_cloudfront_cache_policy" "origin_cache_control_qs_no_host" {
   name    = "${var.project_name}-${var.environment}-origin-cache-control-qs-no-host"
-  comment = "Like the managed UseOriginCacheControlHeaders-QueryStrings, minus the Host header whitelist that breaks Lambda Function URL SigV4"
+  comment = "Like the managed UseOriginCacheControlHeaders-QueryStrings, minus the Host header"
 
   min_ttl     = 0
   default_ttl = 0
