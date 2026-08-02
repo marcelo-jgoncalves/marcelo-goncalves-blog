@@ -12,7 +12,7 @@ A complete editorial platform about AI, AWS, and DevOps: an end-to-end content e
 |---|---|
 | **Public site** | Next.js 16, SSR/ISR, full SEO, "Good" Core Web Vitals |
 | **CMS (admin)** | Vue 3 + Tiptap, in-house rich-text editor, not a third-party SaaS |
-| **Backend** | 9 Node.js/TypeScript Lambdas, DynamoDB, S3, CloudFront |
+| **Backend** | 11 Node.js/TypeScript Lambdas, DynamoDB, S3, CloudFront |
 | **Infrastructure** | Terraform, 100% IaC, no manual clicks in the AWS console |
 | **Active environment** | `dev` only, production doesn't exist yet |
 
@@ -24,7 +24,7 @@ A complete editorial platform about AI, AWS, and DevOps: an end-to-end content e
 |---|---|---|
 | Public frontend | Next.js 16 + React 19 + OpenNext v3 | Site rendered via Lambda + CloudFront, ISR |
 | CMS / Admin | Vue 3 + Vite + Pinia + Tiptap 2 | Rich-text post editor, author/category management |
-| Backend | Node.js 20 + TypeScript + esbuild | 9 Lambdas, one per responsibility |
+| Backend | Node.js 22 + TypeScript + esbuild | 11 Lambdas, one per responsibility |
 | Database | DynamoDB | Single-table-ish per entity, 5 optimized GSIs (`INCLUDE` projection) |
 | Images | Sharp.js (Lambda) | Automatic pipeline: 6 variants (AVIF/WebP x 3 breakpoints) + LQIP blur |
 | Auth | AWS Cognito (SRP) + BFF session | Single admin; opaque session in an httpOnly cookie (`SameSite=Strict`), stored in DynamoDB (`admin_sessions`), behind a same-origin CloudFront proxy |
@@ -77,7 +77,7 @@ Cross-cutting monitoring: CloudWatch dashboards, Synthetics Canary, SLO burn-rat
 ```
 mgoncalves-editorial-platform/
 ├── frontend/    Next.js 16 + OpenNext v3 (public site)
-├── backend/     Node.js 20 + TypeScript (9 Lambdas)
+├── backend/     Node.js 22 + TypeScript (11 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
 ├── infra/       Terraform, AWS modules (lambda, dynamodb, frontend, admin,
 │                api-gateway, cognito, media, observability, security-monitoring, finops)

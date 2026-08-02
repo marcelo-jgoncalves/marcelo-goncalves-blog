@@ -1,6 +1,6 @@
 # backend — Lambdas do Blog Marcelo Gonçalves
 
-Node.js 20 + TypeScript. 9 Lambdas (`src/functions/*`), build via esbuild + Sharp (image processing).
+Node.js 22 + TypeScript. 11 Lambdas (`src/functions/*`), build via esbuild + Sharp (image processing).
 
 ## Não há servidor de desenvolvimento local
 

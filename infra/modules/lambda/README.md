@@ -1,6 +1,6 @@
 # lambda
 
-As 9 Lambdas do backend (Node.js 20), roles IAM, alarmes de erro/throttle. Convenção de nomenclatura de recurso é `snake_case`; chaves de `for_each` de IAM ainda em `camelCase` (CLAUDE.md §10 #47, correção deferida).
+10 das 11 Lambdas do backend (Node.js 22) — `imageProcessor`, a 11ª, vive no módulo `media`. Roles IAM, alarmes de erro/throttle. Convenção de nomenclatura de recurso é `snake_case`; chaves de `for_each` de IAM ainda em `camelCase` (CLAUDE.md §10 #47, correção deferida).
 
 <!-- BEGIN_TF_DOCS -->
 ## Resources
