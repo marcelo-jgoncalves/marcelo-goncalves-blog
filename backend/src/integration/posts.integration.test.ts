@@ -166,6 +166,59 @@ describe("postScheduler.handler against real DynamoDB (happy path, real Transact
   });
 });
 
+describe("adminPosts write conflicts against real DynamoDB (ConditionExpression, not app-level checks)", () => {
+  it("rejects creating a post whose slug already exists with 409, without overwriting the original", async () => {
+    const post = samplePost({ titulo: "Original" });
+    await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
+
+    const conflictResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "POST", body: JSON.stringify({ ...post, titulo: "Overwrite attempt" }) }),
+      ctx,
+    );
+    expect(conflictResult.statusCode).toBe(409);
+
+    const getResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(JSON.parse(getResult.body).titulo).toBe("Original");
+  });
+
+  it("rejects updating a post that does not exist with 404", async () => {
+    const slug = `post-${Math.random().toString(36).slice(2)}`;
+    const result: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({
+        httpMethod: "PUT",
+        pathParameters: { slug },
+        body: JSON.stringify(samplePost({ slug })),
+      }),
+      ctx,
+    );
+    expect(result.statusCode).toBe(404);
+  });
+
+  it("rejects an update whose echoed version is stale, even though the slug exists (real ConditionExpression, not just the app's pre-check)", async () => {
+    const post = samplePost();
+    await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
+
+    const staleResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({
+        httpMethod: "PUT",
+        pathParameters: { slug: post.slug },
+        body: JSON.stringify({ ...post, titulo: "Edited with stale version", version: 999 }),
+      }),
+      ctx,
+    );
+    expect(staleResult.statusCode).toBe(409);
+
+    const getResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(JSON.parse(getResult.body).titulo).not.toBe("Edited with stale version");
+  });
+});
+
 describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a mock assumption", () => {
   it("rejects the whole transaction and applies NEITHER item when one Update's ConditionExpression fails", async () => {
     const slug = `post-${Math.random().toString(36).slice(2)}`;

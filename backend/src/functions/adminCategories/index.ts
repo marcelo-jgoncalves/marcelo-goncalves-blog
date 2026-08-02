@@ -3,6 +3,7 @@ import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib
 import { z } from "zod";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { isConditionalCheckFailure } from "../../common/dynamoErrors";
 
 const TABLE_NAME = process.env.CATEGORIAS_TABLE;
 
@@ -56,7 +57,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
       }
-      return await saveCategoria(parseJsonBody(body), requestId);
+      return await saveCategoria(parseJsonBody(body), true, requestId);
     }
 
     if (httpMethod === "PUT" && slug) {
@@ -67,7 +68,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if ((data as { categoria_slug?: string } | undefined)?.categoria_slug !== slug) {
         return { statusCode: 400, body: JSON.stringify({ message: "Slug mismatch" }), headers };
       }
-      return await saveCategoria(data, requestId);
+      return await saveCategoria(data, false, requestId);
     }
 
     if (httpMethod === "DELETE" && slug) {
@@ -109,7 +110,7 @@ async function getCategoria(slug: string, requestId: string) {
   return { statusCode: 200, body: JSON.stringify(result.Item), headers };
 }
 
-async function saveCategoria(rawData: unknown, requestId: string) {
+async function saveCategoria(rawData: unknown, isNew: boolean, requestId: string) {
   const parsed = categoriaInputSchema.safeParse(rawData);
   if (!parsed.success) {
     const issues = parsed.error.issues.map((issue) => ({ path: issue.path.join("."), message: issue.message }));
@@ -118,7 +119,23 @@ async function saveCategoria(rawData: unknown, requestId: string) {
   }
   const data = parsed.data;
 
-  await dynamo.send(new PutCommand({ TableName: TABLE_NAME, Item: data }));
+  // A plain Put has no protection against overwriting: a create silently
+  // replacing an existing categoria_slug, or an update silently recreating
+  // one that was deleted between the admin loading the form and saving it.
+  try {
+    await dynamo.send(new PutCommand({
+      TableName: TABLE_NAME,
+      Item: data,
+      ConditionExpression: isNew ? "attribute_not_exists(categoria_slug)" : "attribute_exists(categoria_slug)",
+    }));
+  } catch (error) {
+    if (isConditionalCheckFailure(error)) {
+      return isNew
+        ? { statusCode: 409, body: JSON.stringify({ message: "A categoria with this slug already exists" }), headers }
+        : { statusCode: 404, body: JSON.stringify({ message: "Categoria not found" }), headers };
+    }
+    throw error;
+  }
   logger.info("categoria_saved", { requestId, slug: data.categoria_slug });
   return { statusCode: 200, body: JSON.stringify({ message: "Categoria saved", categoria_slug: data.categoria_slug }), headers };
 }

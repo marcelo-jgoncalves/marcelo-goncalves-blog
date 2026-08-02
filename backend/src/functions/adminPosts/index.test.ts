@@ -328,6 +328,44 @@ describe('adminPosts handler', () => {
       expect(result?.statusCode).toBe(400);
       expect(mockSend).not.toHaveBeenCalled();
     });
+
+    it('returns 409 when the slug already exists (ConditionExpression rejects the Put)', async () => {
+      const conditionalError = Object.assign(new Error('The conditional request failed'), {
+        name: 'ConditionalCheckFailedException',
+      });
+      mockSend.mockRejectedValueOnce(conditionalError);
+
+      const result = await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(409);
+    });
+
+    it('sends attribute_not_exists(slug) as the ConditionExpression', async () => {
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (SAMPLE_POST is Publicado)
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[0][0];
+      expect(sentCmd.input.TransactItems[0].Put.ConditionExpression).toBe('attribute_not_exists(slug)');
+    });
+
+    it('sets version to 1 on a brand-new post', async () => {
+      mockSend.mockResolvedValueOnce({});
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(writtenItem(mockSend.mock.calls[0][0]).version).toBe(1);
+    });
   });
 
   describe('PUT /admin/posts/:slug (update)', () => {
@@ -454,6 +492,96 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(400);
+    });
+
+    it('returns 404 when updating a post that does not exist, without attempting a write', async () => {
+      mockSend.mockResolvedValueOnce({ Item: undefined }); // Get finds nothing
+
+      const result = await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(404);
+      expect(mockSend).toHaveBeenCalledTimes(1); // only the Get, no Put attempted
+    });
+
+    it('sends attribute_exists(slug) as the ConditionExpression', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get
+      mockSend.mockResolvedValueOnce({}); // Put
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(mockSend.mock.calls[1][0].input.ConditionExpression).toBe('attribute_exists(slug)');
+    });
+
+    it('increments version on update', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 4 } }); // Get
+      mockSend.mockResolvedValueOnce({}); // Put
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(writtenItem(mockSend.mock.calls[1][0]).version).toBe(5);
+    });
+
+    it('adds an extra version-match clause when the client echoes back the version it read', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 4 } }); // Get
+      mockSend.mockResolvedValueOnce({}); // Put
+
+      await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[1][0].input;
+      expect(cmd.ConditionExpression).toBe('attribute_exists(slug) AND #version = :expectedVersion');
+      expect(cmd.ExpressionAttributeValues).toEqual({ ':expectedVersion': 4 });
+    });
+
+    it('returns 409 when the version sent by the client is stale (concurrent edit)', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 5 } }); // Get
+      const conditionalError = Object.assign(new Error('The conditional request failed'), {
+        name: 'ConditionalCheckFailedException',
+      });
+      mockSend.mockRejectedValueOnce(conditionalError);
+
+      const result = await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }), // stale — real version is 5
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(409);
     });
   });
 

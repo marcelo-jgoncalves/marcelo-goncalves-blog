@@ -30,6 +30,7 @@ export interface Post {
   meta_descricao_seo?: string; // SEO (Blueprint v1.7)
   topico?: string; // eyebrow exibido no card (pc-cat) — pode diferir da categoria
   variante_card?: string; // variante visual do card (gradiente): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
+  version?: number; // optimistic concurrency counter, incremented on every save
 }
 
 export interface Autor {

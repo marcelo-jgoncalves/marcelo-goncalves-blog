@@ -7,6 +7,7 @@ import { sanitizePostHtml } from "../../common/sanitizer";
 import { postInputSchema } from "../../common/postSchema";
 import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
+import { isConditionalCheckFailure } from "../../common/dynamoErrors";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
@@ -171,6 +172,15 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
     ? undefined
     : (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug: data.slug } }))).Item as Post | undefined;
 
+  // Cheap early exit for the common (non-racing) case: the Get above already
+  // tells us the post is gone, so there's no reason to sanitize HTML and
+  // build the full item just to have the ConditionExpression reject it below.
+  // The ConditionExpression remains the actual guarantee against a
+  // create-vs-create or update-vs-delete race between this Get and the Put.
+  if (!isNew && !existing) {
+    return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
+  }
+
   const now = new Date().toISOString();
   const ePopular = Number(data.e_popular || 0);
   const eProjeto = Number(data.e_projeto || 0);
@@ -193,26 +203,66 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
     // simplesmente não existe no item quando o flag é 0.
     e_popular_marker: ePopular === 1 ? "POP" : undefined,
     e_projeto_marker: eProjeto === 1 ? "PROJ" : undefined,
-    tempo_leitura_min: Number(data.tempo_leitura_min || 5)
+    tempo_leitura_min: Number(data.tempo_leitura_min || 5),
+    version: (existing?.version ?? 0) + 1,
   };
 
   // Put + counter ADD in one transaction: a crash between two sequential
   // writes would leave the aggregated counters drifted with no detection
   // (there is no reconciliation job yet). Falls back to a plain Put when the
   // write doesn't change the aggregates — cheaper than a transaction.
+  //
+  // The base ConditionExpression is the actual protection against a slug
+  // already existing on create (a plain Put with no condition silently
+  // overwrites), or against updating a post deleted between the Get above
+  // and this write (the race the pre-check above can't close). When the
+  // caller echoes back the `version` it read, an extra clause also rejects a
+  // write based on stale data from a second concurrent editor — nobody sends
+  // this yet (the admin UI doesn't round-trip `version` through its forms),
+  // so today this clause never triggers; it exists so a future client can
+  // opt in without a backend change.
+  let conditionExpression = isNew ? "attribute_not_exists(slug)" : "attribute_exists(slug)";
+  let expressionAttributeNames: Record<string, string> | undefined;
+  let expressionAttributeValues: Record<string, unknown> | undefined;
+  if (!isNew && typeof data.version === "number") {
+    conditionExpression += " AND #version = :expectedVersion";
+    expressionAttributeNames = { "#version": "version" };
+    expressionAttributeValues = { ":expectedVersion": data.version };
+  }
+
   const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, item));
-  if (counterUpdate) {
-    await dynamo.send(new TransactWriteCommand({
-      TransactItems: [
-        { Put: { TableName: TABLE_NAME!, Item: item } },
-        counterUpdate,
-      ],
-    }));
-  } else {
-    await dynamo.send(new PutCommand({
-      TableName: TABLE_NAME,
-      Item: item
-    }));
+  try {
+    if (counterUpdate) {
+      await dynamo.send(new TransactWriteCommand({
+        TransactItems: [
+          {
+            Put: {
+              TableName: TABLE_NAME!,
+              Item: item,
+              ConditionExpression: conditionExpression,
+              ExpressionAttributeNames: expressionAttributeNames,
+              ExpressionAttributeValues: expressionAttributeValues,
+            },
+          },
+          counterUpdate,
+        ],
+      }));
+    } else {
+      await dynamo.send(new PutCommand({
+        TableName: TABLE_NAME,
+        Item: item,
+        ConditionExpression: conditionExpression,
+        ExpressionAttributeNames: expressionAttributeNames,
+        ExpressionAttributeValues: expressionAttributeValues,
+      }));
+    }
+  } catch (error) {
+    if (isConditionalCheckFailure(error)) {
+      return isNew
+        ? { statusCode: 409, body: JSON.stringify({ message: "A post with this slug already exists" }), headers }
+        : { statusCode: 409, body: JSON.stringify({ message: "Post was modified by someone else since it was loaded" }), headers };
+    }
+    throw error;
   }
 
   // Post passou a contar como publicado agora (criação já publicada, ou
