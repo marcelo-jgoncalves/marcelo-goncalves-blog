@@ -106,7 +106,6 @@ export default async function ArtigosPage() {
                 <div className={styles.homeMlFeature}>
                   <div className={styles.homeMlRankLabel}>Mais lido · #1</div>
                   <Link className={`home-ml-card ${styles.homeMlCard}`} href={`/post/${mlFeature1.slug}`} data-audit="home-ml-card">
-                    <div className={styles.homeMlNumBg} aria-hidden="true">01</div>
                     <div className={styles.homeMlCardInner}>
                       <span className={styles.homeMlCardCat}>{categoryName(mlFeature1)}</span>
                       <h3 className={styles.homeMlCardTitle}>{mlFeature1.titulo}</h3>
@@ -119,6 +118,7 @@ export default async function ArtigosPage() {
                         <span className={styles.homeMlCardRead}><ReadArticle /></span>
                       </div>
                     </div>
+                    <div className={styles.homeMlNumBg} aria-hidden="true">01</div>
                   </Link>
                 </div>
               )}
@@ -126,7 +126,6 @@ export default async function ArtigosPage() {
                 <div className={styles.homeMlFeature}>
                   <div className={styles.homeMlRankLabel}>Mais lido · #2</div>
                   <Link className={`home-ml-card ${styles.homeMlCard}`} href={`/post/${mlFeature2.slug}`}>
-                    <div className={styles.homeMlNumBg} aria-hidden="true">02</div>
                     <div className={styles.homeMlCardInner}>
                       <span className={styles.homeMlCardCat}>{categoryName(mlFeature2)}</span>
                       <h3 className={styles.homeMlCardTitle}>{mlFeature2.titulo}</h3>
@@ -139,6 +138,7 @@ export default async function ArtigosPage() {
                         <span className={styles.homeMlCardRead}><ReadArticle /></span>
                       </div>
                     </div>
+                    <div className={styles.homeMlNumBg} aria-hidden="true">02</div>
                   </Link>
                 </div>
               )}

@@ -1,7 +1,7 @@
 .siteHeader {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--z-sticky);
   background: var(--petrol-deep);
   isolation: isolate;
 }
@@ -243,13 +243,28 @@
 }
 
 /* ── mobile menu ── */
+.siteHeader .navMobileOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 32, 39, .45);
+  z-index: var(--z-sticky);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.siteHeader .navMobileOverlay.overlayOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
 .siteHeader .navMobileMenu {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   background: var(--ivory);
-  z-index: 50;
+  z-index: var(--z-drawer);
   display: flex;
   flex-direction: column;
 

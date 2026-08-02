@@ -122,6 +122,18 @@
   --border-radius-lg:  12px;
 
   /* ─────────────────────────────────────
+     Z-INDEX SCALE.
+     `.siteHeader` has `isolation: isolate`, so its own children (nav content,
+     mobile drawer, decorative ::before) only stack against each other, never
+     against page body content — those keep their small local values (0/1)
+     unscaled. These tokens cover the layers that DO compete page-wide.
+     ───────────────────────────────────── */
+  --z-sticky:          50;    /* sticky header itself, and the mobile nav drawer (contained inside it) */
+  --z-drawer:          55;    /* mobile nav drawer panel, above its own dim backdrop (which sits at --z-sticky) */
+  --z-modal:           9000;  /* consent banner */
+  --z-modal-top:       9001;  /* consent modal, above the banner it can be opened from */
+
+  /* ─────────────────────────────────────
      SHADOWS — generic (black/ink)
      ───────────────────────────────────── */
   --shadow-sm:         0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);

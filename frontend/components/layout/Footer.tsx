@@ -31,7 +31,10 @@ export default function Footer() {
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
-  const scrollToTop = () => {
+  // href="#top" is the real fallback (works without JS/if the handler throws);
+  // preventDefault + smooth scroll is progressive enhancement on top of it.
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -124,10 +127,10 @@ export default function Footer() {
             </Link>
             <ConsentTrigger />
           </div>
-          <button type="button" className="foot-to-top" onClick={scrollToTop}>
+          <a href="#top" className="foot-to-top" onClick={scrollToTop}>
             Voltar ao topo
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>
-          </button>
+          </a>
         </div>
       </div>
     </footer>

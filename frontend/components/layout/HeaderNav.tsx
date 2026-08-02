@@ -40,6 +40,7 @@ export default function HeaderNav() {
   const pathname = usePathname();
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   const servicesTriggerRef = useRef<HTMLButtonElement>(null);
 
@@ -92,6 +93,40 @@ export default function HeaderNav() {
       document.body.style.overflow = original;
     };
   }, [isMenuOpen]);
+
+  // Moves focus into the drawer on open, same pattern as ConsentModal.
+  useEffect(() => {
+    if (isMenuOpen) drawerRef.current?.focus();
+  }, [isMenuOpen]);
+
+  // Escape closes the drawer (mirrors ConsentModal's Escape handling).
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMenu();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isMenuOpen]);
+
+  // Real focus trap: keeps Tab cycling inside the drawer while it's open,
+  // same pattern as ConsentModal.tsx's trapFocus.
+  const trapDrawerFocus = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab' || !drawerRef.current) return;
+    const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
 
   useEffect(() => {
     if (!isServicesOpen) return;
@@ -202,6 +237,7 @@ export default function HeaderNav() {
         aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
         aria-expanded={isMenuOpen}
         aria-controls="mobile-menu-dropdown"
+        aria-haspopup="dialog"
       >
         {isMenuOpen ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -211,9 +247,21 @@ export default function HeaderNav() {
       </button>
 
       <div
+        className={`${styles.navMobileOverlay} ${isMenuOpen ? styles.overlayOpen : ''}`}
+        aria-hidden="true"
+        onClick={closeMenu}
+      />
+
+      <div
         id="mobile-menu-dropdown"
+        ref={drawerRef}
         className={`${styles.navMobileMenu} ${isMenuOpen ? styles.menuOpen : ''}`}
         aria-hidden={!isMenuOpen}
+        role="dialog"
+        aria-modal={isMenuOpen}
+        aria-label="Menu de navegação"
+        tabIndex={-1}
+        onKeyDown={trapDrawerFocus}
       >
         {NAV_LINKS_BEFORE.map((link) => (
           <Link

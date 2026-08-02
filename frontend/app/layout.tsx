@@ -140,6 +140,7 @@ export default function RootLayout({
         />
       </head>
       <body
+        id="top"
         className={`${inter.variable} ${jetbrainsMono.variable}`}
         suppressHydrationWarning={true}
       >
