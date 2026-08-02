@@ -1,131 +1,167 @@
-# Blog Marcelo Gonçalves
+# Marcelo Gonçalves Editorial Platform
 
-Plataforma editorial completa sobre IA, AWS e DevOps. Não só um blog, mas o motor de conteúdo de ponta a ponta: CMS próprio, pipeline de imagens, SEO/observabilidade de produção, e (em construção) uma camada de geração e distribuição de conteúdo assistida por IA: resumos automáticos, repasse para LinkedIn, geração de imagens, versão em inglês e newsletter.
+A complete editorial platform about AI, AWS, and DevOps. Not just a blog, but an end-to-end content engine: a proprietary CMS, an image pipeline, production-grade SEO/observability, and (in progress) an AI-assisted content generation and distribution layer: automatic summaries, LinkedIn repurposing, image generation, an English version, and a newsletter.
 
-Monorepo serverless 100% AWS, infraestrutura como código.
+100% AWS serverless monorepo, infrastructure as code.
 
 ---
 
-## Visão geral
+## Overview
 
 | | |
 |---|---|
-| **Blog público** | Next.js 16, SSR/ISR, SEO completo, Core Web Vitals "Good" |
-| **CMS (admin)** | Vue 3 + Tiptap, editor rich-text próprio, não é um SaaS de terceiros |
-| **Backend** | 9 Lambdas Node.js/TypeScript, DynamoDB, S3, CloudFront |
-| **Infraestrutura** | Terraform, 100% IaC, sem cliques manuais no console AWS |
-| **Ambiente ativo** | `dev` apenas, produção ainda não existe |
+| **Public site** | Next.js 16, SSR/ISR, full SEO, "Good" Core Web Vitals |
+| **CMS (admin)** | Vue 3 + Tiptap, in-house rich-text editor, not a third-party SaaS |
+| **Backend** | 9 Node.js/TypeScript Lambdas, DynamoDB, S3, CloudFront |
+| **Infrastructure** | Terraform, 100% IaC, no manual clicks in the AWS console |
+| **Active environment** | `dev` only, production doesn't exist yet |
 
 ---
 
 ## Stack
 
-| Camada | Tecnologia | Função |
+| Layer | Technology | Role |
 |---|---|---|
-| Frontend público | Next.js 16 + React 19 + OpenNext v3 | Blog renderizado via Lambda + CloudFront, ISR |
-| CMS / Admin | Vue 3 + Vite + Pinia + Tiptap 2 | Editor de posts rich-text, gestão de autores/categorias |
-| Backend | Node.js 20 + TypeScript + esbuild | 9 Lambdas, uma por responsabilidade |
-| Banco de dados | DynamoDB | Single-table-ish por entidade, 5 GSIs otimizadas (projection `INCLUDE`) |
-| Imagens | Sharp.js (Lambda) | Pipeline automática: 6 variantes (AVIF/WebP x 3 breakpoints) + LQIP blur |
-| Auth | AWS Cognito (SRP) + sessão BFF | Admin único; sessão opaca em cookie httpOnly (`SameSite=Strict`), armazenada em DynamoDB (`admin_sessions`), atrás de proxy same-origin no CloudFront |
-| CDN / Edge | CloudFront + S3 + OAC | Cache/origin-request policies gerenciadas, invalidação sob demanda em save/publish/delete |
-| IaC | Terraform (~> 1.8) | 10 módulos AWS, state em S3, lint via `tflint` + README por módulo via `terraform-docs` |
-| CI/CD | GitHub Actions | Build, lint, testes (unitários + integração + E2E smoke) e `terraform apply` gateando o deploy, 100% automático em `develop` |
-| Observabilidade | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, tracing distribuído, DLQ + alarme para as 2 Lambdas assíncronas |
-| Testes | Jest (backend/frontend), Vitest (admin), Playwright (E2E + smoke pós-deploy) | ~175 testes unitários backend + 5 de integração (DynamoDB Local), 81 frontend, 25 admin, 80 E2E |
+| Public frontend | Next.js 16 + React 19 + OpenNext v3 | Site rendered via Lambda + CloudFront, ISR |
+| CMS / Admin | Vue 3 + Vite + Pinia + Tiptap 2 | Rich-text post editor, author/category management |
+| Backend | Node.js 20 + TypeScript + esbuild | 9 Lambdas, one per responsibility |
+| Database | DynamoDB | Single-table-ish per entity, 5 optimized GSIs (`INCLUDE` projection) |
+| Images | Sharp.js (Lambda) | Automatic pipeline: 6 variants (AVIF/WebP x 3 breakpoints) + LQIP blur |
+| Auth | AWS Cognito (SRP) + BFF session | Single admin; opaque session in an httpOnly cookie (`SameSite=Strict`), stored in DynamoDB (`admin_sessions`), behind a same-origin CloudFront proxy |
+| CDN / Edge | CloudFront + S3 + OAC | Managed cache/origin-request policies, on-demand invalidation on save/publish/delete |
+| IaC | Terraform (~> 1.8) | 10 AWS modules, state in S3, linted with `tflint` + per-module README via `terraform-docs` |
+| CI/CD | GitHub Actions | Build, lint, tests (unit + integration + E2E smoke), and `terraform apply` gating the deploy, 100% automatic on `develop` |
+| Observability | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, distributed tracing, DLQ + alarm for the 2 async Lambdas |
+| Tests | Jest (backend/frontend), Vitest (admin), Playwright (E2E + post-deploy smoke) | ~175 backend unit tests + 5 integration (DynamoDB Local), 81 frontend, 25 admin, 80 E2E |
 
 ---
 
-## Arquitetura do monorepo
+## Architecture
+
+Source of truth: `infra/` (Terraform modules). Diagrams are generated with the Python [`diagrams`](https://diagrams.mingrammer.com/) library — see `scripts/generate-architecture-diagrams-v3.py`. Re-run the script whenever the infrastructure topology changes materially.
+
+### Overview
+
+![Architecture overview](prints/architecture-v3-01-overview.png)
+
+Layered view: edge/CDN, applications, auth, the 10 Lambdas grouped by concern, data & media, and the reliability/observability layer.
+
+### Public read path
+
+![Public read path](prints/architecture-v3-02-public-read.png)
+
+A visitor's request: CloudFront → Next.js SSR/ISR → API Gateway → the 3 public read Lambdas (`getPost`, `getPosts`, `getAuthor`) → DynamoDB.
+
+### Admin session (BFF) and editorial CRUD
+
+![Admin session and editorial CRUD](prints/architecture-v3-03-admin-bff.png)
+
+Editor login via Cognito (SRP), the BFF session (`adminSession`/`adminAuthorizer`, httpOnly cookie, no token in Web Storage), and the CRUD Lambdas behind the CUSTOM authorizer.
+
+### Media pipeline and scheduled publishing
+
+![Media pipeline and scheduled publishing](prints/architecture-v3-04-media-async.png)
+
+The two Lambdas with no API Gateway route: `imageProcessor` (triggered by an S3 event) and `postScheduler` (triggered by EventBridge), both with a DLQ + SNS failure path.
+
+### Observability and security
+
+![Observability and security](prints/architecture-v3-05-observability.png)
+
+Cross-cutting monitoring: CloudWatch dashboards, Synthetics Canary, SLO burn-rate alarms, CloudTrail, GuardDuty, and the SNS topics behind each alert.
+
+---
+
+## Monorepo layout
 
 ```
 marcelo-goncalves-blog/
-├── frontend/    Next.js 16 + OpenNext v3 (blog público)
+├── frontend/    Next.js 16 + OpenNext v3 (public site)
 ├── backend/     Node.js 20 + TypeScript (9 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
-├── infra/       Terraform, módulos AWS (lambda, dynamodb, frontend, admin,
+├── infra/       Terraform, AWS modules (lambda, dynamodb, frontend, admin,
 │                api-gateway, cognito, media, observability, security-monitoring, finops)
-└── .github/     Pipelines de CI/CD
+└── .github/     CI/CD pipelines
 ```
 
 **Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `mediaUpload`, `imageProcessor`, `postScheduler`.
 
-`CLAUDE.md`, na raiz, descreve as regras de engenharia não-negociáveis do projeto (arquitetura, design system, padrões críticos).
+`CLAUDE.md`, at the repo root, documents the project's non-negotiable engineering rules (architecture, design system, critical patterns).
 
 ---
 
-## O que já está construído
+## What's already built
 
-### Conteúdo e CMS
-- Editor rich-text próprio (Tiptap): headings, listas, tabelas, citações em destaque, blocos de código com syntax highlight, callouts semânticos (info/aviso/erro/dica), embeds de YouTube, blocos de encerramento.
-- Pipeline de imagens completa: upload, Lambda `imageProcessor` (Sharp.js), 6 variantes responsivas (AVIF/WebP, 3 breakpoints) + blur placeholder (LQIP) inline, zero requisição extra.
-- Agendamento de publicação (`postScheduler`, EventBridge + Lambda).
-- Sanitização de HTML server-side em toda escrita: nenhum HTML bruto do editor é persistido sem allowlist.
+### Content and CMS
+- In-house rich-text editor (Tiptap): headings, lists, tables, pull quotes, syntax-highlighted code blocks, semantic callouts (info/warning/error/tip), YouTube embeds, closing blocks.
+- Full image pipeline: upload, `imageProcessor` Lambda (Sharp.js), 6 responsive variants (AVIF/WebP, 3 breakpoints) + inline blur placeholder (LQIP), zero extra request.
+- Scheduled publishing (`postScheduler`, EventBridge + Lambda).
+- Server-side HTML sanitization on every write: no raw editor HTML is ever persisted without an allowlist.
 
 ### Performance & SEO
-- ISR real em `/post/[slug]` (`generateStaticParams` + `revalidate: 60`); LCP médio dentro do threshold "Good" do Core Web Vitals.
-- Cache/origin-request policies do CloudFront modernas nas rotas SSR, com TTL forçado na borda para listagens paginadas; invalidação sob demanda (`/post/{slug}` + `/`) disparada em save/publish/delete.
-- 18/20 itens da auditoria de SEO concluídos: JSON-LD (`BlogPosting`, `BreadcrumbList`, `Organization`, `Person`, `ProfessionalService`), Open Graph, canonical, sitemap, favicon/manifest.
-- GSIs do DynamoDB com projection `INCLUDE`, contador atômico de posts publicados (evita scan duplicado em paginação).
-- Ícones renderizados como SVG tree-shaken por rota (sem webfont/CSS de ícone completo carregado globalmente).
+- Real ISR on `/post/[slug]` (`generateStaticParams` + `revalidate: 60`); average LCP within the Core Web Vitals "Good" threshold.
+- Modern CloudFront cache/origin-request policies on SSR routes, with edge-forced TTL for paginated listings; on-demand invalidation (`/post/{slug}` + `/`) triggered on save/publish/delete.
+- 18/20 items of the SEO audit completed: JSON-LD (`BlogPosting`, `BreadcrumbList`, `Organization`, `Person`, `ProfessionalService`), Open Graph, canonical, sitemap, favicon/manifest.
+- DynamoDB GSIs with `INCLUDE` projection, atomic counter of published posts (avoids a duplicate scan on pagination).
+- Icons rendered as tree-shaken SVG per route (no webfont/full icon CSS loaded globally).
 
-### Segurança
-- CSP e security headers reais via `aws_cloudfront_response_headers_policy` (não meta tag, que não funciona para `X-Frame-Options`).
-- Lambda URLs com `AWS_IAM` + OAC SigV4: só CloudFront pode invocar.
-- Sessão do admin via BFF: cookie httpOnly, sem token Cognito em Web Storage.
-- Cognito com fluxo SRP (`ALLOW_USER_SRP_AUTH`), sem senha em texto plano na rede.
-- DLQ (SQS) + alarme de profundidade nas Lambdas assíncronas (`imageProcessor`, `postScheduler`), com notificação SNS.
-- Pipeline de CI trava o deploy se lint/testes (unitários, integração ou E2E smoke) falharem.
-- GuardDuty + CloudTrail ativos, Semgrep no CI a cada push, `npm audit --audit-level=high` obrigatório (zero high/critical tolerado).
-- `tflint` + Trivy (config scan) no CI de infraestrutura.
-- Toggle de PITR (Point-in-Time Recovery) implementado via Terraform, pronto para produção.
+### Security
+- Real CSP and security headers via `aws_cloudfront_response_headers_policy` (not a meta tag, which doesn't work for `X-Frame-Options`).
+- Lambda URLs with `AWS_IAM` + OAC SigV4: only CloudFront can invoke them.
+- Admin session via BFF: httpOnly cookie, no Cognito token in Web Storage.
+- Cognito with SRP flow (`ALLOW_USER_SRP_AUTH`), no plaintext password over the network.
+- DLQ (SQS) + depth alarm on the async Lambdas (`imageProcessor`, `postScheduler`), with SNS notification.
+- CI pipeline blocks the deploy if lint/tests (unit, integration, or E2E smoke) fail.
+- GuardDuty + CloudTrail always on, Semgrep on every CI push, `npm audit --audit-level=high` required (zero high/critical tolerated).
+- `tflint` + Trivy (config scan) in the infrastructure CI.
+- PITR (Point-in-Time Recovery) toggle implemented via Terraform, ready for production.
 
-### Observabilidade
-- Dashboards CloudWatch, X-Ray tracing em todas as Lambdas, Synthetics Canary, SLO burn-rate alarms.
-- Logging estruturado (JSON, `level`/`message`/`timestamp`/`requestId`): `console.log` proibido no backend.
+### Observability
+- CloudWatch dashboards, X-Ray tracing on every Lambda, Synthetics Canary, SLO burn-rate alarms.
+- Structured logging (JSON, `level`/`message`/`timestamp`/`requestId`): `console.log` is banned in the backend.
 
-### Qualidade & automação de testes
-- ~175 testes backend (Jest) + 5 de integração contra DynamoDB Local + 81 frontend (Jest) + 25 admin (Vitest) + 80 E2E (Playwright, 19 specs), cobrindo smoke, layout, post, artigos, todos-artigos, busca, categoria, projeto e auditoria visual.
-- Ferramenta própria de QA: script Playwright que simula um usuário real publicando um post completo (login, digitação via input rules, upload de imagem, todos os node types do editor) e valida o resultado em duas camadas: round-trip no admin e DOM renderizado real da página pública (visibilidade, imagem decodificada, JSON-LD parseado, comparação de contagem de nós admin-vs-público, mobile + desktop).
-- Compliance/legal: Consent Mode v2 (Google), CMP próprio (LGPD), páginas de política de privacidade/cookies/termos.
+### Quality & test automation
+- ~175 backend tests (Jest) + 5 integration tests against DynamoDB Local + 81 frontend (Jest) + 25 admin (Vitest) + 80 E2E (Playwright, 19 specs), covering smoke, layout, post, articles, all-articles, search, category, project, and visual audit.
+- A homegrown QA tool: a Playwright script that simulates a real user publishing a complete post (login, typing via input rules, image upload, every editor node type) and validates the result on two layers: an admin round-trip and the real rendered DOM of the public page (visibility, decoded image, parsed JSON-LD, admin-vs-public node count comparison, mobile + desktop).
+- Compliance/legal: Google Consent Mode v2, an in-house CMP (LGPD), privacy/cookies/terms pages.
 
 ---
 
 ## Roadmap
 
-- **Resumos automáticos via IA** — síntese gerada para cada artigo, facilitando leitura rápida e navegação.
-- **Versão em inglês** — publicação multilíngue com rotas, metadata, canonical e hreflang próprios.
-- **Tradução assistida por IA** — rascunho de tradução gerado após decisão editorial, sempre com revisão humana.
-- **Publicação social com aprovação** — rascunhos e mídias para redes sociais, com etapa explícita de aprovação.
-- **Newsletter** — canal editorial opcional, condicionado a consentimento e infraestrutura própria.
-- **Atendimento via WhatsApp com IA** — triagem inicial automatizada, com escalonamento para atendimento humano quando necessário.
-- **Nutrição automatizada de leads** — sequência guiada por comportamento de leitura, conduzindo o contato até o diagnóstico de consultoria.
-- **Ebook proprietário** — material estruturado com os aprendizados e frameworks do projeto.
+- **Automatic AI summaries** — generated synthesis for each article, making quick reading and navigation easier.
+- **English version** — multilingual publishing with its own routes, metadata, canonical, and hreflang.
+- **AI-assisted translation** — translation draft generated after an editorial decision, always with human review.
+- **Approved social publishing** — drafts and media for social networks, with an explicit approval step.
+- **Newsletter** — optional editorial channel, gated on consent and dedicated infrastructure.
+- **AI-assisted WhatsApp support** — automated initial triage, escalating to a human when needed.
+- **Automated lead nurturing** — a sequence driven by reading behavior, guiding the contact toward a consulting diagnosis.
+- **Proprietary ebook** — structured material built from the project's learnings and frameworks.
 
-Nenhum desses itens tem implementação iniciada nesta data.
+None of these items has implementation started as of this date.
 
 ---
 
-## Setup local
+## Local setup
 
 ```bash
-npm run install:all     # instala os 3 workspaces
+npm run install:all     # installs all 3 workspaces
 
 cd frontend && cp .env.example .env.local && npm run dev   # http://localhost:3000
 cd admin && cp .env.example .env.local && npm run dev      # http://localhost:5173
-# backend não tem servidor local, roda só na AWS (ver backend/README.md)
+# backend has no local server, it only runs on AWS (see backend/README.md)
 ```
 
-## Testes
+## Tests
 
 ```bash
-cd backend && npm test               # Jest, ~175 testes
-cd backend && npm run test:integration   # Jest + DynamoDB Local, 5 testes
-cd frontend && npm test              # Jest, 81 testes
-cd admin && npm test                 # Vitest, 25 testes
-cd frontend && npm run test:e2e      # Playwright, 80 testes E2E (19 specs)
+cd backend && npm test                  # Jest, ~175 tests
+cd backend && npm run test:integration  # Jest + DynamoDB Local, 5 tests
+cd frontend && npm test                 # Jest, 81 tests
+cd admin && npm test                    # Vitest, 25 tests
+cd frontend && npm run test:e2e         # Playwright, 80 E2E tests (19 specs)
 ```
 
-## Ambiente e deploy
+## Environment and deploy
 
-Só `dev` existe hoje: produção ainda não foi provisionada. Branch de trabalho: `develop` (`main` é o snapshot estável). Push em `develop` dispara o pipeline completo via GitHub Actions: build, testes, `terraform apply`, deploy do frontend, admin e Lambdas.
+Only `dev` exists today: production hasn't been provisioned yet. Working branch: `develop` (`main` is the stable snapshot). A push to `develop` triggers the full pipeline via GitHub Actions: build, tests, `terraform apply`, and deploy of the frontend, admin, and Lambdas.
