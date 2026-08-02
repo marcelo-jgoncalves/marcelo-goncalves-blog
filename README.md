@@ -29,7 +29,7 @@ A complete editorial platform about AI, AWS, and DevOps: an end-to-end content e
 | Images | Sharp.js (Lambda) | Automatic pipeline: 6 variants (AVIF/WebP x 3 breakpoints) + LQIP blur |
 | Auth | AWS Cognito (SRP) + BFF session | Single admin; opaque session in an httpOnly cookie (`SameSite=Strict`), stored in DynamoDB (`admin_sessions`), behind a same-origin CloudFront proxy |
 | CDN / Edge | CloudFront + S3 + OAC | Managed cache/origin-request policies, on-demand invalidation on save/publish/delete |
-| IaC | Terraform (~> 1.8) | 10 AWS modules, state in S3, linted with `tflint` + per-module README via `terraform-docs` |
+| IaC | Terraform (~> 1.15) | 10 AWS modules, state in S3, linted with `tflint` + per-module README via `terraform-docs` |
 | CI/CD | GitHub Actions | Build, lint, tests (unit + integration + E2E smoke), and `terraform apply` gating the deploy, 100% automatic on `develop` |
 | Observability | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, distributed tracing, DLQ + alarm for the 2 async Lambdas |
 | Tests | Jest (backend/frontend), Vitest (admin), Playwright (E2E + post-deploy smoke) | ~175 backend unit tests + 5 integration (DynamoDB Local), 81 frontend, 25 admin, 80 E2E |
@@ -42,31 +42,31 @@ Source of truth: `infra/` (Terraform modules). Diagrams are generated with the P
 
 ### Overview
 
-![Architecture overview](prints/architecture-v3-01-overview.png)
+![Architecture overview](docs/architecture/architecture-v3-01-overview.png)
 
-Layered view: edge/CDN, applications, auth, the 10 Lambdas grouped by concern, data & media, and the reliability/observability layer.
+Layered view: edge/CDN, applications, auth, the 11 Lambdas grouped by concern, data & media, and the reliability/observability layer.
 
 ### Public read path
 
-![Public read path](prints/architecture-v3-02-public-read.png)
+![Public read path](docs/architecture/architecture-v3-02-public-read.png)
 
 A visitor's request: CloudFront → Next.js SSR/ISR → API Gateway → the 3 public read Lambdas (`getPost`, `getPosts`, `getAuthor`) → DynamoDB.
 
 ### Admin session (BFF) and editorial CRUD
 
-![Admin session and editorial CRUD](prints/architecture-v3-03-admin-bff.png)
+![Admin session and editorial CRUD](docs/architecture/architecture-v3-03-admin-bff.png)
 
 Editor login via Cognito (SRP), the BFF session (`adminSession`/`adminAuthorizer`, httpOnly cookie, no token in Web Storage), and the CRUD Lambdas behind the CUSTOM authorizer.
 
 ### Media pipeline and scheduled publishing
 
-![Media pipeline and scheduled publishing](prints/architecture-v3-04-media-async.png)
+![Media pipeline and scheduled publishing](docs/architecture/architecture-v3-04-media-async.png)
 
 The two Lambdas with no API Gateway route: `imageProcessor` (triggered by an S3 event) and `postScheduler` (triggered by EventBridge), both with a DLQ + SNS failure path.
 
 ### Observability and security
 
-![Observability and security](prints/architecture-v3-05-observability.png)
+![Observability and security](docs/architecture/architecture-v3-05-observability.png)
 
 Cross-cutting monitoring: CloudWatch dashboards, Synthetics Canary, SLO burn-rate alarms, CloudTrail, GuardDuty, and the SNS topics behind each alert.
 
@@ -84,7 +84,7 @@ mgoncalves-editorial-platform/
 └── .github/     CI/CD pipelines
 ```
 
-**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `mediaUpload`, `imageProcessor`, `postScheduler`.
+**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `adminSession`, `adminAuthorizer`, `mediaUpload`, `imageProcessor`, `postScheduler`.
 
 `CLAUDE.md`, at the repo root, documents the project's non-negotiable engineering rules (architecture, design system, critical patterns).
 

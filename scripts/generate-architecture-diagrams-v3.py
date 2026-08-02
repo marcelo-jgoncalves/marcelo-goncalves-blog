@@ -1,4 +1,4 @@
-"""Generates a set of focused AWS architecture diagrams (prints/architecture-v3-*).
+"""Generates a set of focused AWS architecture diagrams (docs/architecture/architecture-v3-*).
 
 Source of truth: infra/ (Terraform modules). A single all-in-one diagram
 (see generate-architecture-diagram.py, v2) becomes unreadable once every
@@ -44,7 +44,7 @@ NODE_ATTR = {"fontsize": "12"}
 def new_diagram(name: str, title: str) -> Diagram:
     return Diagram(
         title,
-        filename=f"prints/architecture-v3-{name}",
+        filename=f"docs/architecture/architecture-v3-{name}",
         outformat=["png", "svg"],
         graph_attr=GRAPH_ATTR,
         node_attr=NODE_ATTR,
@@ -285,7 +285,7 @@ with new_diagram("05-observability", "Observability and security (cross-cutting)
 # depending on how many nodes they show, but displayed side by side (or in
 # sequence in the README) they read better lined up on the same width.
 # ---------------------------------------------------------------------------
-pngs = sorted(glob.glob("prints/architecture-v3-*.png"))
+pngs = sorted(glob.glob("docs/architecture/architecture-v3-*.png"))
 max_width = max(Image.open(p).width for p in pngs)
 
 for path in pngs:
