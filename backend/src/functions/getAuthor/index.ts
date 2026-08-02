@@ -3,8 +3,9 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { dynamo } from "../../common/dynamodb";
 import { Autor } from "../../common/types";
 import { logger } from "../../common/logger";
+import { requireEnv } from "../../common/env";
 
-const TABLE_NAME = process.env.AUTORES_TABLE;
+const TABLE_NAME = requireEnv("AUTORES_TABLE");
 
 const headers = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" };
 

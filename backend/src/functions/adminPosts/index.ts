@@ -8,9 +8,11 @@ import { postInputSchema } from "../../common/postSchema";
 import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
 import { isConditionalCheckFailure } from "../../common/dynamoErrors";
+import { requireEnv } from "../../common/env";
+import { parseJsonBody } from "../../common/httpBody";
 
-const TABLE_NAME = process.env.POSTS_TABLE;
-const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
+const TABLE_NAME = requireEnv("POSTS_TABLE");
+const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 
 const headers = {
   "Content-Type": "application/json",
@@ -90,16 +92,6 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     };
   }
 };
-
-// A malformed body is a client error — without this, JSON.parse would throw
-// into the catch-all and surface as a 500, polluting the availability SLI.
-function parseJsonBody(body: string): unknown | undefined {
-  try {
-    return JSON.parse(body);
-  } catch {
-    return undefined;
-  }
-}
 
 // --- Funções Auxiliares (AGORA COM HEADERS) ---
 

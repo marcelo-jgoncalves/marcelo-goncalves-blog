@@ -3,10 +3,11 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { logger } from "../../common/logger";
 import { parseJsonBody } from "../../common/httpBody";
+import { requireEnv } from "../../common/env";
 
 const s3 = new S3Client({});
-const UPLOADS_BUCKET = process.env.UPLOADS_BUCKET;
-const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
+const UPLOADS_BUCKET = requireEnv("UPLOADS_BUCKET");
+const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 
 // Formatos aceitos pelo pipeline de imagem (CLAUDE.md seção 6) — o client
 // escolhe o Content-Type livremente, então sem este allowlist qualquer

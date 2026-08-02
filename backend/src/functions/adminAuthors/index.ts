@@ -4,8 +4,10 @@ import { z } from "zod";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
+import { requireEnv } from "../../common/env";
+import { parseJsonBody } from "../../common/httpBody";
 
-const TABLE_NAME = process.env.AUTHORS_TABLE || '';
+const TABLE_NAME = requireEnv("AUTHORS_TABLE");
 
 // Same anti-mass-assignment contract as postInputSchema (common/postSchema.ts):
 // .strip() discards any field outside this allowlist. The explicit item
@@ -24,7 +26,7 @@ const autorInputSchema = z
     instagram_url: z.string().optional(),
   })
   .strip();
-const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
+const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 
 const headers = {
   "Access-Control-Allow-Origin": ADMIN_ORIGIN,
@@ -73,10 +75,8 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
       // O Blueprint define que o ID vem da URL no PUT, ou do corpo.
       // Vamos garantir que usamos o ID da URL se disponível
-      let rawData: unknown;
-      try {
-        rawData = JSON.parse(body);
-      } catch {
+      const rawData = parseJsonBody(body);
+      if (rawData === undefined) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) };
       }
 

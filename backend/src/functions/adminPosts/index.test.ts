@@ -1,3 +1,8 @@
+// requireEnv() throws at module load if POSTS_TABLE/ADMIN_ORIGIN are unset —
+// this must run before the `./index` import below, not in beforeAll (too late).
+process.env.POSTS_TABLE = 'test-posts-table';
+process.env.ADMIN_ORIGIN = 'https://test-admin.example.com';
+
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
@@ -669,7 +674,7 @@ describe('adminPosts handler', () => {
     it('all responses include Access-Control-Allow-Origin', async () => {
       mockSend.mockResolvedValue({ Items: [] });
       const result = await handler(event({ httpMethod: 'GET' }), ctx, jest.fn());
-      expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('*');
+      expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('https://test-admin.example.com');
     });
   });
 });

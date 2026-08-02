@@ -5,8 +5,9 @@ import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
+import { requireEnv } from "../../common/env";
 
-const TABLE_NAME = process.env.POSTS_TABLE;
+const TABLE_NAME = requireEnv("POSTS_TABLE");
 
 export const handler = async (_event: unknown): Promise<void> => {
   const now = new Date().toISOString();

@@ -3,8 +3,9 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { getCategoriaNomeMap } from "../../common/categorias";
+import { requireEnv } from "../../common/env";
 
-const TABLE_NAME = process.env.POSTS_TABLE;
+const TABLE_NAME = requireEnv("POSTS_TABLE");
 
 // Headers CORS (Essenciais!)
 const headers = {

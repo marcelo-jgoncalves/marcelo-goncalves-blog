@@ -4,8 +4,9 @@ import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { getPostCounters } from "../../common/postCounters";
 import { getCategoriaNomeMap, attachCategoriaNome } from "../../common/categorias";
+import { requireEnv } from "../../common/env";
 
-const TABLE_NAME = process.env.POSTS_TABLE;
+const TABLE_NAME = requireEnv("POSTS_TABLE");
 
 const headers = {
   "Content-Type": "application/json",

@@ -4,8 +4,10 @@ import { z } from "zod";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { isConditionalCheckFailure } from "../../common/dynamoErrors";
+import { requireEnv } from "../../common/env";
+import { parseJsonBody } from "../../common/httpBody";
 
-const TABLE_NAME = process.env.CATEGORIAS_TABLE;
+const TABLE_NAME = requireEnv("CATEGORIAS_TABLE");
 
 // Same anti-mass-assignment contract as postInputSchema (common/postSchema.ts):
 // .strip() discards any field outside this allowlist before it reaches
@@ -23,7 +25,7 @@ const categoriaInputSchema = z
     subcategorias: z.array(z.object({ slug: z.string(), nome: z.string() }).strip()).optional(),
   })
   .strip();
-const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
+const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 
 const headers = {
   "Content-Type": "application/json",
@@ -83,16 +85,6 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error", requestId }), headers };
   }
 };
-
-// A malformed body is a client error — without this, JSON.parse would throw
-// into the catch-all and surface as a 500.
-function parseJsonBody(body: string): unknown | undefined {
-  try {
-    return JSON.parse(body);
-  } catch {
-    return undefined;
-  }
-}
 
 async function listCategorias(requestId: string) {
   const result = await dynamo.send(new ScanCommand({ TableName: TABLE_NAME }));

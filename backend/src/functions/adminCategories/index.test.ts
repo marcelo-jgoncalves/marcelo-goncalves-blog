@@ -1,3 +1,9 @@
+// requireEnv() throws at module load if CATEGORIAS_TABLE/ADMIN_ORIGIN are
+// unset — this must run before the `./index` import below, not in beforeAll
+// (too late).
+process.env.CATEGORIAS_TABLE = 'test-categorias-table';
+process.env.ADMIN_ORIGIN = 'https://test-admin.example.com';
+
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';

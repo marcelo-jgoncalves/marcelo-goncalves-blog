@@ -5,11 +5,12 @@ import { S3Event } from "aws-lambda";
 import sharp from "sharp";
 import { Readable } from "stream";
 import { logger } from "../../common/logger";
+import { requireEnv } from "../../common/env";
 
 const s3 = new S3Client({});
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
-const DEST_BUCKET = process.env.DESTINATION_BUCKET;
+const DEST_BUCKET = requireEnv("DESTINATION_BUCKET");
 // POSTS_TABLE é lida em runtime (não no carregamento do módulo) para permitir
 // que testes configurem/removam a variável por caso individualmente.
 

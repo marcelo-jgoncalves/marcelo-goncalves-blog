@@ -19,6 +19,7 @@ const CATEGORIAS_TABLE_NAME = `integration-categorias-${Date.now()}-${process.pi
 process.env.POSTS_TABLE = TABLE_NAME;
 process.env.CATEGORIAS_TABLE = CATEGORIAS_TABLE_NAME;
 process.env.AUTHORS_TABLE = TABLE_NAME; // unused by these tests, but the module reads it at load time
+process.env.ADMIN_ORIGIN = "https://test-admin.example.com"; // adminPosts requires it (requireEnv)
 process.env.AWS_REGION = process.env.AWS_REGION ?? "us-east-1";
 process.env.AWS_ACCESS_KEY_ID = "local";
 process.env.AWS_SECRET_ACCESS_KEY = "local";

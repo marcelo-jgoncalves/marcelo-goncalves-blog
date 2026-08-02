@@ -1,3 +1,9 @@
+// requireEnv() throws at module load if UPLOADS_BUCKET/ADMIN_ORIGIN are
+// unset — this must run before the `./index` import below, not in
+// beforeEach (too late).
+process.env.UPLOADS_BUCKET = 'uploads-bucket';
+process.env.ADMIN_ORIGIN = 'https://admin.example.com';
+
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 
