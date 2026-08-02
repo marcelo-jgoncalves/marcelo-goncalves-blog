@@ -6,11 +6,11 @@
 
 data "aws_caller_identity" "current" {}
 
-# As 10 roles individuais (aws_iam_role.<nome>_role) viraram um único
-# for_each (aws_iam_role.function_role["<nome>"]) abaixo. Sem os `moved`,
-# o Terraform trataria a mudança de endereço como destroy+create das 10
-# roles reais na AWS -- os blocos abaixo preservam o mapeamento no state,
-# então o plan não mostra nenhuma mudança real de infraestrutura.
+# The 10 individual roles (aws_iam_role.<name>_role) were consolidated into
+# a single for_each (aws_iam_role.function_role["<name>"]) below. Without
+# these `moved` blocks, Terraform would treat the address change as a
+# destroy+create of the 10 real AWS roles -- these blocks preserve the
+# mapping in state, so the plan shows no real infrastructure change.
 moved {
   from = aws_iam_role.getPost_role
   to   = aws_iam_role.function_role["getPost"]
@@ -67,8 +67,8 @@ locals {
     Resource = "arn:aws:logs:*:*:*"
   }
 
-  # adminPosts/postScheduler invalidam o cache do CloudFront sob demanda
-  # após save/publish/delete (plano completo arquivado fora do repo:
+  # adminPosts/postScheduler invalidate the CloudFront cache on demand after
+  # save/publish/delete (full plan archived outside this repo:
   # marcelo-goncalves-blog-arquivo/docs-historico/plano-cache-invalidation-cloudfront.md).
   cloudfront_invalidation_statement = {
     Action   = ["cloudfront:CreateInvalidation"]
@@ -76,11 +76,11 @@ locals {
     Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${var.frontend_distribution_id}"
   }
 
-  # Nomes das 10 Lambdas com role dedicada de least-privilege. Só a role
-  # (assume_role_policy) é 100% idêntica entre elas -- por isso é a única
-  # parte convertida em for_each; as policies abaixo continuam explícitas
-  # uma a uma porque cada uma concede um conjunto diferente de permissões
-  # (o ponto inteiro de existir uma role por função).
+  # Names of the 10 Lambdas with a dedicated least-privilege role. Only the
+  # role itself (assume_role_policy) is 100% identical across all of them --
+  # that's why it's the only part converted to for_each; the policies below
+  # stay explicit one by one, since each grants a different set of
+  # permissions (the whole point of having one role per function).
   lambda_role_names = [
     "getPost", "getAuthor", "getPosts", "adminPosts", "adminAuthors",
     "adminCategorias", "adminSession", "adminAuthorizer", "mediaUpload", "postScheduler",
@@ -275,9 +275,9 @@ resource "aws_iam_role_policy_attachment" "adminCategorias_attach" {
   policy_arn = aws_iam_policy.adminCategorias_policy.arn
 }
 
-# --- adminSession: PutItem/GetItem/DeleteItem só na tabela de sessões.
-# Nenhuma permissão de Cognito é necessária — o idToken é verificado via
-# JWKS público (HTTPS), sem chamada a nenhuma API da AWS. ---
+# --- adminSession: PutItem/GetItem/DeleteItem on the sessions table only.
+# No Cognito permission is needed — the idToken is verified via public
+# JWKS (HTTPS), with no call to any AWS API. ---
 resource "aws_iam_policy" "adminSession_policy" {
   name = "${var.project_name}-${var.environment}-adminSession-policy"
 
@@ -300,9 +300,9 @@ resource "aws_iam_role_policy_attachment" "adminSession_attach" {
   policy_arn = aws_iam_policy.adminSession_policy.arn
 }
 
-# --- adminAuthorizer: GetItem só na tabela de sessões (leitura, nunca
-# escreve). Mesma observação sobre Cognito: verificação via JWKS, sem
-# permissão IAM de nenhuma API do Cognito. ---
+# --- adminAuthorizer: GetItem on the sessions table only (read, never
+# writes). Same note on Cognito: verification via JWKS, no IAM permission
+# for any Cognito API. ---
 resource "aws_iam_policy" "adminAuthorizer_policy" {
   name = "${var.project_name}-${var.environment}-adminAuthorizer-policy"
 

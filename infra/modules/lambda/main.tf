@@ -1,7 +1,7 @@
 #
-# IAM roles/policies (uma por Lambda, least-privilege) vivem em lambda-iam.tf.
+# IAM roles/policies (one per Lambda, least-privilege) live in lambda-iam.tf.
 
-# --- CloudWatch Log Groups (retenção explícita — criados antes das Lambdas) ---
+# --- CloudWatch Log Groups (explicit retention — created before the Lambdas) ---
 
 resource "aws_cloudwatch_log_group" "media_upload" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-mediaUpload"
@@ -257,8 +257,8 @@ resource "aws_lambda_function" "admin_authorizer" {
   filename         = "${path.root}/builds/adminAuthorizer.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/adminAuthorizer.zip")
 
-  # COGNITO_USER_POOL_ID/COGNITO_CLIENT_ID removidos junto com o fallback
-  # Bearer — não são mais lidos por este handler.
+  # COGNITO_USER_POOL_ID/COGNITO_CLIENT_ID removed along with the Bearer
+  # fallback — no longer read by this handler.
   environment {
     variables = {
       ADMIN_SESSIONS_TABLE = "${var.project_name}-${var.environment}-admin-sessions"
@@ -272,7 +272,7 @@ resource "aws_lambda_function" "admin_authorizer" {
 }
 
 # --- PostSchedulerLambda ---
-# IAM role/policy individual em lambda-iam.tf (aws_iam_role.function_role["postScheduler"]).
+# Individual IAM role/policy in lambda-iam.tf (aws_iam_role.function_role["postScheduler"]).
 
 resource "aws_lambda_function" "post_scheduler" {
   function_name = "${var.project_name}-${var.environment}-postScheduler"

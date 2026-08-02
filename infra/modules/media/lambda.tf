@@ -8,7 +8,7 @@ resource "aws_cloudwatch_log_group" "image_processor" {
   retention_in_days = var.log_retention_days
 }
 
-# 1. Role IAM
+# 1. IAM role
 resource "aws_iam_role" "processor_role" {
   name = "${var.project_name}-${var.environment}-processor-role"
 
@@ -22,7 +22,7 @@ resource "aws_iam_role" "processor_role" {
   })
 }
 
-# 2. Policy (Logs + S3 RW)
+# 2. Policy (logs + S3 read/write)
 resource "aws_iam_policy" "processor_policy" {
   name = "${var.project_name}-${var.environment}-processor-policy"
 
@@ -61,16 +61,16 @@ resource "aws_iam_role_policy_attachment" "processor_attach" {
   policy_arn = aws_iam_policy.processor_policy.arn
 }
 
-# 3. A Função Lambda
+# 3. The Lambda function
 resource "aws_lambda_function" "image_processor" {
   function_name = "${var.project_name}-${var.environment}-imageProcessor"
   role          = aws_iam_role.processor_role.arn
   handler       = "index.handler"
   runtime       = "nodejs22.x"
-  memory_size   = 1024 # Processamento de imagem precisa de RAM/CPU
+  memory_size   = 1024 # Image processing needs RAM/CPU headroom
   timeout       = 60
 
-  # Placeholder inicial
+  # Initial placeholder, replaced by the real build in CI/CD
   filename         = "${path.root}/builds/imageProcessor.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/imageProcessor.zip")
 
@@ -87,7 +87,7 @@ resource "aws_lambda_function" "image_processor" {
   depends_on = [aws_cloudwatch_log_group.image_processor]
 }
 
-# 4. Permissão para o S3 invocar a Lambda
+# 4. Permission for S3 to invoke the Lambda
 resource "aws_lambda_permission" "allow_s3" {
   statement_id  = "AllowExecutionFromS3"
   action        = "lambda:InvokeFunction"

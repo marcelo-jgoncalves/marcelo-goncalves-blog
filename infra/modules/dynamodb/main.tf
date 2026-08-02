@@ -9,25 +9,25 @@ variable "project_name" {
   type        = string
 }
 
-# Point-in-Time Recovery — desabilitado em dev por padrão (custo real, ~$0.20/GB-mês
-# em us-east-1, achado de registro histórico arquivado fora do repo (marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md), ponto 2). Mesmo padrão de
-# toggle de enable_xray_tracing/enable_guardduty — ligar só quando convier.
+# Point-in-Time Recovery — disabled in dev by default (real cost, ~$0.20/GB-month
+# in us-east-1; see marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md,
+# point 2). Same toggle pattern as enable_xray_tracing/enable_guardduty — turn
+# on only where it's worth the cost.
 variable "enable_point_in_time_recovery" {
   description = "Enables Point-in-Time Recovery on the 3 tables (posts/autores/categorias). Disabled in dev due to cost; enable in production."
   type        = bool
   default     = false
 }
 
-# --- Tabela 1: Posts (Seção 3.1) ---
+# --- Table 1: Posts ---
 resource "aws_dynamodb_table" "posts" {
   name         = "${var.project_name}-${var.environment}-posts"
-  billing_mode = "PAY_PER_REQUEST" # Serverless puro
+  billing_mode = "PAY_PER_REQUEST" # Pure serverless
   hash_key     = "slug"
 
-  # Sem isso, a tabela já é criptografada em repouso (default da AWS desde
-  # 2018), mas com uma chave AWS-owned — sem visibilidade de uso via
-  # CloudTrail/KMS. AWS-managed (este bloco) é igualmente gratuito e dá essa
-  # auditabilidade (achado da auditoria AppSec, Cat. 3).
+  # Without this, the table is already encrypted at rest (AWS default since
+  # 2018), but with an AWS-owned key — no usage visibility via CloudTrail/KMS.
+  # AWS-managed (this block) is equally free and provides that auditability.
   server_side_encryption {
     enabled = true
   }
@@ -66,12 +66,11 @@ resource "aws_dynamodb_table" "posts" {
     type = "S"
   }
 
-  # Sparse index markers — substituem e_projeto/e_popular (Number 0/1) como
-  # hash_key das GSIs ProjetoPorData/PopularesPorData. O atributo só existe
-  # no item quando o respectivo flag é 1 (REMOVE quando 0), então a GSI
-  # nunca concentra 100% dos itens numa única partição de valor fixo "0".
-  # Plano de migração completo: registro histórico arquivado fora do repo
-  # (marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
+  # Sparse index markers — replace e_projeto/e_popular (Number 0/1) as the
+  # hash_key of the ProjetoPorData/PopularesPorData GSIs. The attribute only
+  # exists on the item when the respective flag is 1 (REMOVEd when 0), so the
+  # GSI never concentrates 100% of items in a single fixed-value "0" partition.
+  # Full migration plan: marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md.
   attribute {
     name = "e_projeto_marker"
     type = "S"
@@ -82,17 +81,16 @@ resource "aws_dynamodb_table" "posts" {
     type = "S"
   }
 
-  # Projections trocadas de ALL para INCLUDE (achado #13 da auditoria de
-  # engenharia, registro histórico arquivado fora do repo em
-  # marcelo-goncalves-blog-arquivo/docs-historico/auditoria-engenharia/07-*.md):
-  # ALL duplicava conteudo_html (maior campo do item) em cada uma das 5 GSIs.
-  # A lista de non_key_attributes abaixo foi extraída dos consumidores reais
-  # (getPosts/adminPosts/postScheduler no backend + componentes de listagem
-  # no frontend) — ver registro histórico arquivado (marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md). As keys (hash/range da própria GSI +
-  # chave primária da tabela) são sempre projetadas automaticamente pela AWS,
-  # independente do projection_type, e não precisam aparecer na lista.
+  # Projections switched from ALL to INCLUDE (marcelo-goncalves-blog-arquivo/docs-historico/auditoria-engenharia/07-*.md):
+  # ALL was duplicating conteudo_html (the item's largest field) into each of
+  # the 5 GSIs. The non_key_attributes list below was extracted from the real
+  # consumers (getPosts/adminPosts/postScheduler in the backend + listing
+  # components in the frontend) — see marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md.
+  # The keys (the GSI's own hash/range + the table's primary key) are always
+  # auto-projected by AWS regardless of projection_type, so they don't need
+  # to appear in the list.
 
-  # GSI 1: StatusPorData (Para /artigos, Home e listagem do admin)
+  # GSI 1: StatusPorData (for /artigos, Home, and the admin listing)
   global_secondary_index {
     name            = "StatusPorData"
     hash_key        = "status"
@@ -102,11 +100,11 @@ resource "aws_dynamodb_table" "posts" {
       "titulo", "resumo", "imagem_destaque_url", "imagem_destaque_alt_text",
       "imagem_lqip_base64", "categoria_slug", "subcategoria_nome",
       "data_publicacao", "tempo_leitura_min", "autor_id",
-      "e_popular", "e_projeto", # Admin: badges Popular/Projeto na listagem de posts
+      "e_popular", "e_projeto", # Admin: Popular/Project badges in the post listing
     ]
   }
 
-  # GSI 2: CategoriaPorData (Para /categoria/[slug])
+  # GSI 2: CategoriaPorData (for /categoria/[slug])
   global_secondary_index {
     name            = "CategoriaPorData"
     hash_key        = "categoria_slug"
@@ -119,12 +117,10 @@ resource "aws_dynamodb_table" "posts" {
     ]
   }
 
-  # GSI 3: ProjetoPorData_v2 (Para /o-projeto) — sparse index via
-  # e_projeto_marker (string, só existe quando e_projeto=1). Substitui a
-  # GSI original (hash_key = e_projeto, Number 0/1 — anti-padrão de baixa
-  # cardinalidade, achado #2 da auditoria de engenharia, mesmo registro
-  # histórico arquivado citado acima). Migração completa: registro histórico
-  # arquivado (marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md).
+  # GSI 3: ProjetoPorData_v2 (for /o-projeto) — sparse index via
+  # e_projeto_marker (string, only exists when e_projeto=1). Replaces the
+  # original GSI (hash_key = e_projeto, Number 0/1 — a low-cardinality
+  # anti-pattern). Full migration plan: marcelo-goncalves-blog-arquivo/docs-historico/plano-migracao-gsi-dynamodb.md.
   global_secondary_index {
     name            = "ProjetoPorData_v2"
     hash_key        = "e_projeto_marker"
@@ -136,8 +132,8 @@ resource "aws_dynamodb_table" "posts" {
     ]
   }
 
-  # GSI 4: PopularesPorData_v2 (Para seções "Populares") — mesma razão da
-  # GSI 3 acima.
+  # GSI 4: PopularesPorData_v2 (for "Popular" sections) — same rationale as
+  # GSI 3 above.
   global_secondary_index {
     name            = "PopularesPorData_v2"
     hash_key        = "e_popular_marker"
@@ -150,10 +146,11 @@ resource "aws_dynamodb_table" "posts" {
     ]
   }
 
-  # GSI 5: StatusProgramadoPorData (Para Lambda Scheduler) — postScheduler já
-  # usa ProjectionExpression "slug, data_publicacao_programada, e_projeto";
-  # só falta e_projeto na projeção da própria GSI (slug é a PK da tabela e
-  # data_publicacao_programada é a range key — ambos sempre projetados).
+  # GSI 5: StatusProgramadoPorData (for the Lambda scheduler) — postScheduler
+  # already uses ProjectionExpression "slug, data_publicacao_programada,
+  # e_projeto"; only e_projeto is missing from the GSI's own projection
+  # (slug is the table's PK and data_publicacao_programada is the range
+  # key — both always projected).
   global_secondary_index {
     name               = "StatusProgramadoPorData"
     hash_key           = "status"
@@ -163,7 +160,7 @@ resource "aws_dynamodb_table" "posts" {
   }
 }
 
-# --- Tabela 2: Autores (Seção 3.3) ---
+# --- Table 2: Authors ---
 resource "aws_dynamodb_table" "autores" {
   name         = "${var.project_name}-${var.environment}-autores"
   billing_mode = "PAY_PER_REQUEST"
@@ -183,7 +180,7 @@ resource "aws_dynamodb_table" "autores" {
   }
 }
 
-# --- Tabela 3: Categorias (Seção 3.4) ---
+# --- Table 3: Categories ---
 resource "aws_dynamodb_table" "categorias" {
   name         = "${var.project_name}-${var.environment}-categorias"
   billing_mode = "PAY_PER_REQUEST"
@@ -203,14 +200,14 @@ resource "aws_dynamodb_table" "categorias" {
   }
 }
 
-# --- Tabela 4: Sessões do Admin (BFF) ---
-# Sessão de servidor pro painel admin: o cookie httpOnly que o browser recebe
-# carrega só um session_id opaco (UUID aleatório), nunca o JWT do Cognito. Este
-# item é a fonte de verdade da sessão — revogar é só um DeleteItem, sem esperar
-# o token expirar sozinho. `expires_at` é checado manualmente no código (Lambda
-# adminSession/adminAuthorizer), não só via TTL — o TTL do DynamoDB é faxina
-# best-effort (pode levar até 48h pra varrer), não é garantia de expiração
-# imediata. Decisão da sessão 2026-07-24 (auditoria world-class → BFF).
+# --- Table 4: Admin sessions (BFF) ---
+# Server-side session for the admin panel: the httpOnly cookie the browser
+# gets carries only an opaque session_id (random UUID), never the Cognito
+# JWT. This item is the session's source of truth — revoking is just a
+# DeleteItem, without waiting for the token to expire on its own.
+# `expires_at` is checked manually in code (adminSession/adminAuthorizer
+# Lambdas), not only via TTL — DynamoDB's TTL is best-effort housekeeping
+# (can take up to 48h to sweep), not a guarantee of immediate expiration.
 resource "aws_dynamodb_table" "admin_sessions" {
   name         = "${var.project_name}-${var.environment}-admin-sessions"
   billing_mode = "PAY_PER_REQUEST"

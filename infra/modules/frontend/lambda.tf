@@ -6,7 +6,7 @@ resource "aws_cloudwatch_log_group" "nextjs_server" {
   retention_in_days = var.log_retention_days
 }
 
-# Role para a Lambda do Next.js
+# Role for the Next.js Lambda
 resource "aws_iam_role" "nextjs_role" {
   name = "${var.project_name}-${var.environment}-nextjs-role"
 
@@ -20,31 +20,31 @@ resource "aws_iam_role" "nextjs_role" {
   })
 }
 
-# Permissões básicas de Log
+# Basic log permissions
 resource "aws_iam_role_policy_attachment" "nextjs_logs" {
   role       = aws_iam_role.nextjs_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# Permissão X-Ray (somente quando tracing ativo)
+# X-Ray permission (only when tracing is active)
 resource "aws_iam_role_policy_attachment" "nextjs_xray" {
   count      = var.enable_xray_tracing ? 1 : 0
   role       = aws_iam_role.nextjs_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
 }
 
-# A Função Lambda (Servidor SSR)
+# The Lambda function (SSR server)
 resource "aws_lambda_function" "nextjs_server" {
   function_name = "${var.project_name}-${var.environment}-nextjs-server"
   role          = aws_iam_role.nextjs_role.arn
   handler       = "index.handler"
   runtime       = "nodejs22.x"
 
-  # Aumentamos memória e timeout para SSR (Next.js é pesado)
+  # Higher memory/timeout than the other Lambdas: SSR is heavier than a plain API handler
   memory_size = 1024
   timeout     = 30
 
-  # Placeholder inicial (será substituído pelo build do Next.js no CI/CD)
+  # Initial placeholder, replaced by the real Next.js build in CI/CD
   filename         = "${path.root}/builds/nextjs.zip"
   source_code_hash = filebase64sha256("${path.root}/builds/nextjs.zip")
 
@@ -60,8 +60,8 @@ resource "aws_lambda_function" "nextjs_server" {
   depends_on = [aws_cloudwatch_log_group.nextjs_server]
 }
 
-# Provisioned Concurrency — mantém instâncias aquecidas para eliminar cold starts
-# Ativar em produção: provisioned_concurrency = 1 no env/prd.tfvars
+# Provisioned Concurrency — keeps instances warm to eliminate cold starts
+# Enable in production: provisioned_concurrency = 1 in env/prd.tfvars
 resource "aws_lambda_provisioned_concurrency_config" "nextjs_warm" {
   count                             = var.provisioned_concurrency > 0 ? 1 : 0
   function_name                     = aws_lambda_function.nextjs_server.function_name
@@ -69,13 +69,13 @@ resource "aws_lambda_provisioned_concurrency_config" "nextjs_warm" {
   provisioned_concurrent_executions = var.provisioned_concurrency
 }
 
-# URL da Lambda com AWS_IAM — apenas CloudFront (via OAC) pode invocar
+# Lambda URL with AWS_IAM — only CloudFront (via OAC) can invoke it
 resource "aws_lambda_function_url" "nextjs_url" {
   function_name      = aws_lambda_function.nextjs_server.function_name
   authorization_type = "AWS_IAM"
 }
 
-# Permite somente o CloudFront invocar a Lambda (via OAC com SigV4)
+# Allows only CloudFront to invoke the Lambda (via OAC with SigV4)
 resource "aws_lambda_permission" "allow_cloudfront" {
   statement_id  = "AllowCloudFrontServicePrincipalNextJS"
   action        = "lambda:InvokeFunctionUrl"

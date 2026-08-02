@@ -1,4 +1,4 @@
-# --- 1. A API REST ---
+# --- 1. The REST API ---
 resource "aws_api_gateway_rest_api" "main" {
   name        = "${var.project_name}-${var.environment}-api"
   description = "Main API for the Marcelo Gonçalves blog"
@@ -65,10 +65,12 @@ resource "aws_api_gateway_gateway_response" "unauthorized_cors" {
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
 
-  # Declarado explicitamente desde o provider AWS v6 (2026-08-02): era o
-  # default que a própria API Gateway aplica quando o atributo fica omitido,
-  # mas o v6 passou a tratar omitido como "vazio" e removeria o template real
-  # em uso — declarar aqui preserva o comportamento atual sem mudar nada.
+  # Declared explicitly because the AWS provider (v6+) treats an omitted
+  # response_templates as "should be empty" and strips the JSON error
+  # template API Gateway applies by default -- an older provider left an
+  # omitted attribute undiffed against that default, so this went unnoticed
+  # until upgrading. Declaring the current value here preserves the real
+  # error body without changing anything.
   response_templates = {
     "application/json" = "{\"message\":$context.error.messageString}"
   }
@@ -85,7 +87,7 @@ resource "aws_api_gateway_gateway_response" "access_denied_cors" {
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
 
-  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  # See the comment on unauthorized_cors above -- same case.
   response_templates = {
     "application/json" = "{\"message\":$context.error.messageString}"
   }
@@ -101,7 +103,7 @@ resource "aws_api_gateway_gateway_response" "default_4xx_cors" {
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
 
-  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  # See the comment on unauthorized_cors above -- same case.
   response_templates = {
     "application/json" = "{\"message\":$context.error.messageString}"
   }
@@ -117,13 +119,13 @@ resource "aws_api_gateway_gateway_response" "default_5xx_cors" {
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
 
-  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  # See the comment on unauthorized_cors above -- same case.
   response_templates = {
     "application/json" = "{\"message\":$context.error.messageString}"
   }
 }
 
-# --- 2. Recursos (Paths) ---
+# --- 2. Resources (Paths) ---
 
 # /post
 resource "aws_api_gateway_resource" "post" {
@@ -153,7 +155,7 @@ resource "aws_api_gateway_resource" "autor_id" {
   path_part   = "{id}"
 }
 
-# --- 3. Métodos e Integrações (Conexão com Lambda) ---
+# --- 3. Methods and Integrations (Lambda wiring) ---
 
 # GET /post/{slug} -> Lambda getPost
 resource "aws_api_gateway_method" "get_post" {
@@ -163,17 +165,17 @@ resource "aws_api_gateway_method" "get_post" {
   authorization = "NONE"
 }
 
-# --- Recursos Admin ---
+# --- Admin Resources ---
 
 
-# /admin/autores (Plural - Para Criar/Listar)
+# /admin/autores (plural - for create/list)
 resource "aws_api_gateway_resource" "admin_autores" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "autores"
 }
 
-# /admin/autor (Singular - Já existe o recurso pai 'autor' público, mas aqui é filho de 'admin')
+# /admin/autor (singular - the public 'autor' parent resource already exists, but this one is a child of 'admin')
 resource "aws_api_gateway_resource" "admin_autor_singular" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
@@ -276,21 +278,21 @@ resource "aws_api_gateway_resource" "admin_posts" {
   path_part   = "posts"
 }
 
-# --- Recurso: /admin/post (Singular) ---
+# --- Resource: /admin/post (singular) ---
 resource "aws_api_gateway_resource" "admin_post_singular" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "post"
 }
 
-# --- Recurso: /admin/post/{slug} ---
+# --- Resource: /admin/post/{slug} ---
 resource "aws_api_gateway_resource" "admin_post_slug" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin_post_singular.id
   path_part   = "{slug}"
 }
 
-# Método ANY em /admin/post/{slug} (Protegido)
+# ANY method on /admin/post/{slug} (protected)
 resource "aws_api_gateway_method" "admin_post_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_post_slug.id
@@ -305,19 +307,19 @@ resource "aws_api_gateway_integration" "admin_post_slug_integration" {
   http_method             = aws_api_gateway_method.admin_post_slug_any.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.admin_posts_invoke_arn # Reutilizamos a mesma Lambda!
+  uri                     = var.admin_posts_invoke_arn # Reuses the same Lambda
 }
 
-# --- CORS (OPTIONS) para /admin/post/{slug}, /admin/autor/{id},
-# /admin/posts, /admin/media/upload-url, /admin/categorias e
-# /admin/categorias/{slug} -- ver local.cors_preflight_endpoints e os 4
-# resources for_each "cors_preflight" logo antes de aws_api_gateway_deployment.main.
+# --- CORS (OPTIONS) for /admin/post/{slug}, /admin/autor/{id},
+# /admin/posts, /admin/media/upload-url, /admin/categorias, and
+# /admin/categorias/{slug} -- see local.cors_preflight_endpoints and the 4
+# "cors_preflight" for_each resources right before aws_api_gateway_deployment.main.
 
-# --- Recursos de Autores (Admin) ---
+# --- Author Resources (Admin) ---
 
-# --- Métodos ---
+# --- Methods ---
 
-# 1. ANY /admin/autor/{id} (GET para ler, PUT para editar) - Protegido
+# 1. ANY /admin/autor/{id} (GET to read, PUT to edit) - protected
 resource "aws_api_gateway_method" "admin_autor_id_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_autor_id.id
@@ -335,9 +337,9 @@ resource "aws_api_gateway_integration" "admin_autor_id_integration" {
   uri                     = var.admin_authors_invoke_arn
 }
 
-# OPTIONS /admin/autor/{id} (CORS) -- ver local.cors_preflight_endpoints
+# OPTIONS /admin/autor/{id} (CORS) -- see local.cors_preflight_endpoints
 
-# Permissão para o Gateway invocar a Lambda
+# Permission for the Gateway to invoke the Lambda
 resource "aws_lambda_permission" "apigw_admin_authors" {
   statement_id  = "AllowAPIGatewayInvokeAdminAuthors"
   action        = "lambda:InvokeFunction"
@@ -346,7 +348,7 @@ resource "aws_lambda_permission" "apigw_admin_authors" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# Integração com a Lambda getPosts (reutilizando a mesma lambda)
+# Integration with the getPosts Lambda (reusing the same Lambda)
 resource "aws_api_gateway_integration" "get_populares_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.posts_populares.id
@@ -356,14 +358,14 @@ resource "aws_api_gateway_integration" "get_populares_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# --- NOVO RECURSO: /posts/populares ---
+# --- NEW RESOURCE: /posts/populares ---
 resource "aws_api_gateway_resource" "posts_populares" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.posts.id
   path_part   = "populares"
 }
 
-# Método GET para /posts/populares
+# GET method para /posts/populares
 resource "aws_api_gateway_method" "get_populares" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.posts_populares.id
@@ -371,18 +373,18 @@ resource "aws_api_gateway_method" "get_populares" {
   authorization = "NONE"
 }
 
-# Método ANY em /admin/posts (Protegido pelo Cognito)
+# ANY method on /admin/posts (protected by Cognito)
 resource "aws_api_gateway_method" "admin_posts_any" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   resource_id = aws_api_gateway_resource.admin_posts.id
   http_method = "ANY"
 
-  # 🔒 AQUI ESTÁ A SEGURANÇA:
+  # This is where the actual access control happens:
   authorization = "CUSTOM"
   authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
-# Integração com a Lambda adminPosts
+# Integration with the adminPosts Lambda
 resource "aws_api_gateway_integration" "admin_posts_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.admin_posts.id
@@ -392,7 +394,7 @@ resource "aws_api_gateway_integration" "admin_posts_integration" {
   uri                     = var.admin_posts_invoke_arn
 }
 
-# OPTIONS /admin/posts (CORS Preflight) -- ver local.cors_preflight_endpoints
+# OPTIONS /admin/posts (CORS Preflight) -- see local.cors_preflight_endpoints
 
 resource "aws_lambda_permission" "apigw_admin_posts" {
   statement_id  = "AllowAPIGatewayInvokeAdminPosts"
@@ -406,12 +408,12 @@ resource "aws_api_gateway_integration" "get_post_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.post_slug.id
   http_method             = aws_api_gateway_method.get_post.http_method
-  integration_http_method = "POST" # Lambda requer POST para invocar
+  integration_http_method = "POST" # Lambda invocation always requires POST
   type                    = "AWS_PROXY"
   uri                     = var.get_post_invoke_arn
 }
 
-# --- Recursos de Mídia ---
+# --- Media Resources ---
 
 # /admin/media
 resource "aws_api_gateway_resource" "admin_media" {
@@ -427,7 +429,7 @@ resource "aws_api_gateway_resource" "admin_media_upload" {
   path_part   = "upload-url"
 }
 
-# Método POST (Protegido)
+# POST method (protected)
 resource "aws_api_gateway_method" "media_upload_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_media_upload.id
@@ -436,7 +438,7 @@ resource "aws_api_gateway_method" "media_upload_post" {
   authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
-# Integração com a Lambda mediaUpload
+# Integration with the mediaUpload Lambda
 resource "aws_api_gateway_integration" "media_upload_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.admin_media_upload.id
@@ -446,9 +448,10 @@ resource "aws_api_gateway_integration" "media_upload_integration" {
   uri                     = var.media_upload_invoke_arn
 }
 
-# OPTIONS /admin/media/upload-url (CORS) -- ver local.cors_preflight_endpoints
-# Único endpoint com Allow-Methods diferente (POST,OPTIONS -- não aceita
-# GET/PUT/DELETE, é upload-only), parametrizado no map em vez de ser exceção.
+# OPTIONS /admin/media/upload-url (CORS) -- see local.cors_preflight_endpoints
+# Only endpoint with a different Allow-Methods (POST,OPTIONS -- doesn't accept
+# GET/PUT/DELETE, it's upload-only), parameterized in the map instead of being
+# a special case.
 
 resource "aws_lambda_permission" "apigw_media_upload" {
   statement_id  = "AllowAPIGatewayInvokeMediaUpload"
@@ -475,8 +478,8 @@ resource "aws_api_gateway_integration" "get_author_integration" {
   uri                     = var.get_author_invoke_arn
 }
 
-# --- 4. Permissões (Lambda Permission) ---
-# Necessário para o API Gateway ter permissão de invocar a função
+# --- 4. Permissions (Lambda Permission) ---
+# Required for API Gateway to have permission to invoke the function
 
 resource "aws_lambda_permission" "apigw_get_post" {
   statement_id  = "AllowAPIGatewayInvoke"
@@ -494,7 +497,7 @@ resource "aws_lambda_permission" "apigw_get_author" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# --- 5. Deploy e Stage ---
+# --- 5. Deploy and Stage ---
 
 resource "aws_api_gateway_stage" "main" {
   deployment_id        = aws_api_gateway_deployment.main.id
@@ -503,9 +506,9 @@ resource "aws_api_gateway_stage" "main" {
   xray_tracing_enabled = var.enable_xray_tracing
 }
 
-# Throttling aplicado a todos os métodos do stage (* /*), sem exigir API key
-# — protege também as rotas públicas de leitura, que hoje não têm nenhuma
-# camada de autenticação para fazer essa limitação de outra forma.
+# Throttling applied to every method on the stage (*/*), without requiring
+# an API key — this also protects the public read routes, which today have
+# no auth layer of their own to enforce that limit otherwise.
 resource "aws_api_gateway_method_settings" "throttle_all" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = aws_api_gateway_stage.main.stage_name
@@ -541,9 +544,9 @@ resource "aws_api_gateway_method_settings" "throttle_admin_session" {
   }
 }
 
-# --- 1. Recursos para Listagem ---
+# --- 1. Listing Resources ---
 
-# /posts (Já existe /post singular, agora criamos o plural)
+# /posts (the singular /post already exists, this is the plural)
 resource "aws_api_gateway_resource" "posts" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
@@ -578,7 +581,7 @@ resource "aws_api_gateway_resource" "categoria_slug" {
   path_part   = "{slug}"
 }
 
-# --- 2. Integrações com a Lambda getPosts ---
+# --- 2. Integrations with the getPosts Lambda ---
 
 # A. GET /posts/recentes
 resource "aws_api_gateway_method" "get_recentes" {
@@ -597,7 +600,7 @@ resource "aws_api_gateway_integration" "get_recentes_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# B. GET /artigos (Paginado)
+# B. GET /artigos (paginated)
 resource "aws_api_gateway_method" "get_artigos" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.artigos.id
@@ -631,7 +634,7 @@ resource "aws_api_gateway_integration" "get_categoria_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# Permite que o API Gateway invoque a Lambda getPosts
+# Allows API Gateway to invoke the getPosts Lambda
 resource "aws_lambda_permission" "apigw_get_posts" {
   statement_id  = "AllowAPIGatewayInvokeGetPosts"
   action        = "lambda:InvokeFunction"
@@ -640,14 +643,14 @@ resource "aws_lambda_permission" "apigw_get_posts" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# Recurso /busca
+# /busca resource
 resource "aws_api_gateway_resource" "busca" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   path_part   = "busca"
 }
 
-# Método GET /busca
+# GET method /busca
 resource "aws_api_gateway_method" "get_busca" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.busca.id
@@ -655,7 +658,7 @@ resource "aws_api_gateway_method" "get_busca" {
   authorization = "NONE"
 }
 
-# Integração GET /busca -> Lambda getPosts
+# Integration GET /busca -> getPosts Lambda
 resource "aws_api_gateway_integration" "get_busca_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.busca.id
@@ -665,14 +668,14 @@ resource "aws_api_gateway_integration" "get_busca_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# --- Recurso /projeto (Timeline) ---
+# --- /projeto resource (Timeline) ---
 resource "aws_api_gateway_resource" "projeto" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   path_part   = "projeto"
 }
 
-# Método GET /projeto
+# GET method /projeto
 resource "aws_api_gateway_method" "get_projeto" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.projeto.id
@@ -680,7 +683,7 @@ resource "aws_api_gateway_method" "get_projeto" {
   authorization = "NONE"
 }
 
-# Integração /projeto -> Lambda getPosts
+# Integration /projeto -> getPosts Lambda
 resource "aws_api_gateway_integration" "get_projeto_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.projeto.id
@@ -721,7 +724,7 @@ resource "aws_api_gateway_integration" "admin_categorias_integration" {
   uri                     = var.admin_categorias_invoke_arn
 }
 
-# OPTIONS /admin/categorias (CORS) -- ver local.cors_preflight_endpoints
+# OPTIONS /admin/categorias (CORS) -- see local.cors_preflight_endpoints
 
 resource "aws_api_gateway_method" "admin_categorias_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
@@ -740,7 +743,7 @@ resource "aws_api_gateway_integration" "admin_categorias_slug_integration" {
   uri                     = var.admin_categorias_invoke_arn
 }
 
-# OPTIONS /admin/categorias/{slug} (CORS) -- ver local.cors_preflight_endpoints
+# OPTIONS /admin/categorias/{slug} (CORS) -- see local.cors_preflight_endpoints
 
 resource "aws_lambda_permission" "apigw_admin_categorias" {
   statement_id  = "AllowAPIGatewayInvokeAdminCategorias"
@@ -750,17 +753,17 @@ resource "aws_lambda_permission" "apigw_admin_categorias" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# --- CORS Preflight (OPTIONS) compartilhado ---
-# Os 6 endpoints abaixo tinham o mesmo padrão de 4 recursos (method OPTIONS +
-# integration MOCK + method_response 200 + integration_response) copiado à
-# mão. Unificado em for_each -- só media_upload diverge de verdade
-# (Allow-Methods "POST,OPTIONS" em vez de "GET,OPTIONS,POST,PUT,DELETE"),
-# por isso vira parâmetro do map em vez de virar exceção fora do padrão.
+# --- Shared CORS Preflight (OPTIONS) ---
+# The 6 endpoints below had the same 4-resource pattern (method OPTIONS +
+# integration MOCK + method_response 200 + integration_response) copied by
+# hand. Unified into a for_each -- only media_upload genuinely diverges
+# (Allow-Methods "POST,OPTIONS" instead of "GET,OPTIONS,POST,PUT,DELETE"),
+# so it becomes a map parameter instead of a special case outside the pattern.
 #
-# Os 24 `moved` abaixo (6 endpoints x 4 tipos de recurso) preservam o
-# mapeamento no state -- sem eles, essa mudança de endereço seria
-# destroy+create de cada um desses recursos no próximo apply, derrubando
-# o preflight CORS daquela rota durante a janela do apply.
+# The 24 `moved` blocks below (6 endpoints x 4 resource types) preserve the
+# mapping in state -- without them, this address change would be a
+# destroy+create of each of these resources on the next apply, dropping that
+# route's CORS preflight during the apply window.
 moved {
   from = aws_api_gateway_method.admin_post_slug_options
   to   = aws_api_gateway_method.cors_preflight["admin_post_slug"]

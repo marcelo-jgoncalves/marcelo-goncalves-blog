@@ -1,22 +1,17 @@
 
 terraform {
-  # Correção (auditoria 2026-08-02): `~> 1.8` com dois componentes libera
-  # toda a série 1.x (>= 1.8, < 2.0) -- NÃO trava em 1.8.x como um comentário
-  # anterior aqui afirmava (testado empiricamente: terraform 1.14.9 local
-  # passa por essa constraint sem erro). Quem de fato pina o CD em 1.8.0 é
-  # o literal TERRAFORM_VERSION/terraform_version nos workflows, não esta
-  # linha. Migrado para 1.15.x (changelog 1.9→1.15 conferido via GitHub
-  # releases API: nenhuma breaking change toca este projeto, só o locking
-  # via DynamoDB no backend S3 sendo deprecado em favor de `use_lockfile`
-  # — aviso, não erro; migração do locking em si fica pra depois, separada).
+  # `~>` with two version components allows the whole major series
+  # (>= 1.15, < 2.0), not just 1.15.x -- a tighter pin would need `~> 1.15.0`.
+  # The CD's actual version is the literal TERRAFORM_VERSION/terraform_version
+  # in the workflows; keep both in sync manually, this constraint alone
+  # doesn't enforce it.
+  # The S3 backend below still relies on the deprecated dynamodb_table
+  # locking mechanism (warning only, not an error) -- migrating to native
+  # `use_lockfile` locking is separate work, since it touches live state
+  # locking.
   required_version = "~> 1.15"
 
   required_providers {
-    # Migrado de v5 pra v6 em 2026-08-02: nenhuma breaking change documentada
-    # no guia oficial (rename de S3 `region`→`bucket_region`, etag computed-only
-    # em CloudFront response headers policy, formato de id de Cognito user-in-group,
-    # etc.) toca em recurso real deste projeto (confirmado via grep nos módulos
-    # antes da migração) — sem gatilho de risco pra continuar adiando.
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0"
