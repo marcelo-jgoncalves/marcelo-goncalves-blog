@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
@@ -313,7 +313,6 @@ export default function InteligenciaArtificialPage() {
             <span key="p2">Tarefas recorrentes de leitura, classificação ou triagem</span>,
             <span key="p3">Sistemas que podem receber apoio inteligente com controles definidos</span>,
           ]}
-          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
           cardLabel="Primeira conversa"
           cardTitle="Vamos entender o problema antes de propor IA."
           cardBody={<p className="cta-adv-body-text">A conversa inicial serve para avaliar a aderência e esclarecer os primeiros caminhos. Análises de dados, riscos, integrações e critérios de qualidade podem ser estruturadas como um diagnóstico comercial.</p>}

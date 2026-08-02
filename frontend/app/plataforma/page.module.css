@@ -277,20 +277,7 @@
   align-items: flex-start;
   gap: var(--eyebrow-gap);
   padding: var(--sp-4) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
   min-width: 0;
-}
-
-.checkIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(201, 96, 60, .2);
-  color: #E8A582;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
 }
 
 .benefitText {
@@ -389,7 +376,7 @@
 /* ===== NOSSA ABORDAGEM ===== */
 .approachSection {
   padding: var(--sp-10) 0;
-  background: #fff;
+  background: var(--ivory);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -550,7 +537,7 @@
 /* ===== SEGURANÇA, CONFIABILIDADE E CONTINUIDADE ===== */
 .reliability {
   padding: var(--sp-10) 0;
-  background: var(--petrol);
+  background: var(--petrol-deep);
   color: var(--ivory);
   position: relative;
   overflow: hidden;
@@ -587,6 +574,8 @@
 .reliabilityClosing {
   max-width: 720px;
   margin: var(--sp-8) auto 0;
+  padding-top: var(--sp-8);
+  border-top: 1px solid rgba(255, 255, 255, .1);
   text-align: center;
   color: rgba(250, 248, 243, .6);
   font-size: var(--type-caption);

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
@@ -320,7 +320,7 @@ export default function SistemasPlataformasPage() {
             <div className={styles.benefitsList}>
               {QUALIDADE_ITEMS.map((item) => (
                 <div className={styles.benefitItem} key={item}>
-                  <span className={styles.qualityCheckIcon} aria-hidden="true">
+                  <span className="check-icon-clay" aria-hidden="true">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
@@ -363,7 +363,6 @@ export default function SistemasPlataformasPage() {
             <span key="p2">Sistemas que não acompanham novas regras ou integrações</span>,
             <span key="p3">Necessidade de uma plataforma operacional específica</span>,
           ]}
-          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
           cardLabel="Primeira conversa"
           cardTitle="Vamos entender a necessidade antes de propor um sistema."
           cardBody={<p className="cta-adv-body-text">A conversa inicial serve para avaliar a aderência e esclarecer os primeiros caminhos. Descoberta, levantamento de requisitos e definição detalhada de escopo podem ser estruturados como uma etapa comercial própria.</p>}

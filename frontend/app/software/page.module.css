@@ -315,19 +315,6 @@
   .benefitsList > .benefitItem:nth-child(even) { padding-left: var(--sp-6); }
 }
 
-.qualityCheckIcon {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  color: var(--clay);
-}
-
-.qualityCheckIcon svg {
-  width: 14px;
-  height: 14px;
-}
-
 .benefitText {
   font-size: var(--type-body-sm);
   line-height: 1.5;
@@ -340,7 +327,7 @@
    + 5-step journey + 3 principles in split columns. ===== */
 .approachSection {
   padding: var(--sp-10) 0;
-  background: var(--surface);
+  background: var(--ivory);
 }
 
 @media (min-width: 680px) { .approachSection { padding: var(--sp-11) 0; } }

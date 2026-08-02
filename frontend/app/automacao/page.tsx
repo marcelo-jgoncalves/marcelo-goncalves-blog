@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import FaqSection from '@/components/ui/FaqSection';
 import PageHero from '@/components/ui/PageHero';
@@ -274,7 +274,7 @@ export default function IntegracaoAutomacaoPage() {
           <div className={styles.benefitsList}>
             {CONFIABILIDADE_ITEMS.map((item) => (
               <div className={styles.benefitItem} key={item}>
-                <span className={styles.checkIcon} aria-hidden="true">
+                <span className="check-icon-clay" aria-hidden="true">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>
                 </span>
                 <span className={styles.benefitText}>{item}</span>
@@ -306,7 +306,6 @@ export default function IntegracaoAutomacaoPage() {
             <span key="p2">Aprovações lentas ou difíceis de acompanhar</span>,
             <span key="p3">Sistemas que precisam trocar informações com mais confiabilidade</span>,
           ]}
-          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
           cardLabel="Primeira conversa"
           cardTitle="Vamos entender o processo e avaliar o próximo passo."
           cardBody={<p className="cta-adv-body-text">A conversa inicial serve para verificar a aderência e esclarecer os primeiros caminhos. Diagnósticos que exigem levantamento e recomendações detalhadas podem ser estruturados como uma entrega comercial própria.</p>}

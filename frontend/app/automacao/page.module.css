@@ -349,18 +349,6 @@
   min-width: 0;
 }
 
-.checkIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(201, 96, 60, .2);
-  color: #E8A582;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-}
-
 .benefitText {
   font-size: var(--type-body-sm);
   line-height: 1.5;
@@ -381,7 +369,7 @@
 /* ===== OUR APPROACH — text on the left, 3 numbered principles on the right ===== */
 .approach {
   padding: var(--sp-10) 0;
-  background: var(--surface);
+  background: var(--ivory);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
