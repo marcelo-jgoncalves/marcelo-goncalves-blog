@@ -109,6 +109,17 @@ describe('mediaUpload', () => {
     expect(res!.statusCode).toBe(400);
   });
 
+  it('responde 400 (não 500) quando o body está ausente', async () => {
+    const res = await handler(makeEvent(null), ctx, jest.fn());
+    expect(res!.statusCode).toBe(400);
+  });
+
+  it('responde 400 (não 500) quando o body é JSON inválido', async () => {
+    const event = { ...makeEvent({ nome_arquivo: 'foto.jpg', tipo_arquivo: 'image/jpeg' }), body: '{not valid json' };
+    const res = await handler(event, ctx, jest.fn());
+    expect(res!.statusCode).toBe(400);
+  });
+
   it('responde 200 para OPTIONS (CORS preflight)', async () => {
     const res = await handler(makeEvent(null, 'OPTIONS'), ctx, jest.fn());
     expect(res!.statusCode).toBe(200);

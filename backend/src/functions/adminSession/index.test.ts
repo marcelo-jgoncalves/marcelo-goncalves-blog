@@ -1,3 +1,8 @@
+// requireEnv() throws at module load if ADMIN_ORIGIN is unset — this must
+// be set before `./index` is required below (TypeScript emits commonjs
+// requires in source order, so this line runs first).
+process.env.ADMIN_ORIGIN = 'https://test-admin.example.com';
+
 import { APIGatewayEventRequestContext, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { handler } from './index';
 import { dynamo } from '../../common/dynamodb';
@@ -63,6 +68,12 @@ describe('adminSession handler', () => {
     it('400 quando idToken não vem no body', async () => {
       const res = await handler(event({ httpMethod: 'POST', body: JSON.stringify({}) }), ctx, jest.fn());
       expect(res?.statusCode).toBe(400);
+    });
+
+    it('400 (não 500) quando o body é JSON inválido', async () => {
+      const res = await handler(event({ httpMethod: 'POST', body: '{not valid json' }), ctx, jest.fn());
+      expect(res?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
     });
 
     it('401 quando o idToken é inválido', async () => {
@@ -139,6 +150,11 @@ describe('adminSession handler', () => {
       expect(res?.statusCode).toBe(200);
       expect(mockSend).toHaveBeenCalledTimes(1); // DeleteCommand
     });
+  });
+
+  it('nunca envia Allow-Origin: * (sempre o valor de ADMIN_ORIGIN)', async () => {
+    const res = await handler(event({ httpMethod: 'GET', headers: {} }), ctx, jest.fn());
+    expect(res?.headers?.['Access-Control-Allow-Origin']).toBe('https://test-admin.example.com');
   });
 
   it('405 para método não suportado', async () => {

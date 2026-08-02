@@ -2,6 +2,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { logger } from "../../common/logger";
+import { parseJsonBody } from "../../common/httpBody";
 
 const s3 = new S3Client({});
 const UPLOADS_BUCKET = process.env.UPLOADS_BUCKET;
@@ -40,8 +41,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   }
 
   try {
-    if (!event.body) throw new Error("Body missing");
-    const { nome_arquivo, tipo_arquivo } = JSON.parse(event.body);
+    if (!event.body) {
+      return { statusCode: 400, body: JSON.stringify({ message: "Body missing" }), headers };
+    }
+    const parsed = parseJsonBody<{ nome_arquivo?: string; tipo_arquivo?: string }>(event.body);
+    if (parsed === undefined) {
+      return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
+    }
+    const { nome_arquivo, tipo_arquivo } = parsed;
 
     logger.debug("media_upload_request", { requestId, nome_arquivo, tipo_arquivo });
 

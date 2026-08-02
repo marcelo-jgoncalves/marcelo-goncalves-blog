@@ -14,8 +14,15 @@ import { logger } from "../../common/logger";
 import { verifyIdToken } from "../../common/cognitoJwt";
 import { createSession, getSession, deleteSession, SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "../../common/adminSessionStore";
 import { parseCookies } from "../../common/cookies";
+import { requireEnv } from "../../common/env";
+import { parseJsonBody } from "../../common/httpBody";
 
-const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
+// No "*" fallback here: this endpoint always pairs Allow-Origin with
+// Allow-Credentials: true below, and browsers reject that combination for
+// credentialed requests outright — a missing env var must fail loudly
+// (cookie-based login breaks immediately, in an obvious way) rather than
+// silently serve a wildcard the browser will refuse anyway.
+const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 
 const baseHeaders = {
   "Content-Type": "application/json",
@@ -46,8 +53,11 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body é obrigatório" }), headers: baseHeaders };
       }
-      const parsed = JSON.parse(body);
-      const idToken = parsed?.idToken;
+      const parsed = parseJsonBody<{ idToken?: unknown }>(body);
+      if (parsed === undefined) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Corpo JSON inválido" }), headers: baseHeaders };
+      }
+      const idToken = parsed.idToken;
       if (!idToken || typeof idToken !== "string") {
         return { statusCode: 400, body: JSON.stringify({ message: "idToken é obrigatório" }), headers: baseHeaders };
       }
