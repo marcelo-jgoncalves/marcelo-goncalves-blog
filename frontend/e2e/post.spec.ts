@@ -50,7 +50,7 @@ test.describe('post individual', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const toc = page.locator('[data-audit="post-toc"]');
     if ((await toc.count()) === 0) {
-      // headings.length === 0 faz o componente retornar null — ramo válido, nada a testar.
+      // headings.length === 0 makes the component return null — valid branch, nothing to test.
       return;
     }
     await expect(toc).toBeVisible();
@@ -58,9 +58,9 @@ test.describe('post individual', () => {
     const itemCount = await items.count();
     if (itemCount === 0) return;
 
-    // handleClick faz e.preventDefault() + scrollIntoView (TableOfContents.tsx) —
-    // não é navegação real, então a URL nunca ganha o hash; a asserção certa é
-    // a heading alvo ficando visível no viewport, não a URL mudando.
+    // handleClick does e.preventDefault() + scrollIntoView (TableOfContents.tsx) —
+    // not a real navigation, so the URL never gains the hash; the right
+    // assertion is the target heading becoming visible in the viewport, not the URL changing.
     const target = items.nth(Math.min(1, itemCount - 1));
     const href = await target.getAttribute('href');
     await target.click();

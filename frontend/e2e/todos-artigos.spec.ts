@@ -68,7 +68,7 @@ test.describe('página /todos-artigos', () => {
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(/nextToken=/);
       await expect(page).toHaveURL(/page=2/);
-      // A grade da página 2 não deve repetir o primeiro card da página 1.
+      // Page 2's grid shouldn't repeat page 1's first card.
       const secondPageFirstCardText = await page.locator('#art-grid .post-card').first().textContent();
       expect(secondPageFirstCardText).not.toBe(firstCardText);
     }

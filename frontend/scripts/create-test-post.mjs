@@ -67,20 +67,20 @@ async function shot(page, name) {
   return file;
 }
 
-// Callout/pullQuote/table/closingFlourish são nodes "isolating" (Callout.ts,
-// PullQuote.ts) — clicar dentro deles, mesmo perto da borda inferior, mantém a
-// seleção PRESA lá dentro (confirmado ao vivo: todo o texto de negrito/lista/
-// link acabou digitado dentro do 1º callout por causa disso). O jeito correto de
-// escapar é o gap cursor do ProseMirror (Gapcursor vem no @tiptap/starter-kit):
-// clicar dentro do último bloco e apertar ArrowDown move a seleção para depois
-// dele quando é o último nó do documento — aí já dá pra digitar normalmente.
+// Callout/pullQuote/table/closingFlourish are "isolating" nodes (Callout.ts,
+// PullQuote.ts) — clicking inside them, even near the bottom edge, keeps the
+// selection TRAPPED there (confirmed live: all the bold/list/link text ended
+// up typed inside the first callout because of this). The correct way to
+// escape is ProseMirror's gap cursor (Gapcursor ships in @tiptap/starter-kit):
+// clicking inside the last block and pressing ArrowDown moves the selection
+// past it when it's the last node in the document — safe to type after that.
 async function clickDocEnd(page) {
   const editor = page.locator('.tiptap-content .ProseMirror');
   const lastChild = editor.locator('> *').last();
   await lastChild.scrollIntoViewIfNeeded();
-  // Callout tem título+ícone (contenteditable="false") no topo — clicar perto do
-  // fundo do bloco tem mais chance de acertar texto editável (parágrafo/célula)
-  // em qualquer um dos nodes isolating usados aqui.
+  // Callout has a title+icon (contenteditable="false") at the top — clicking
+  // near the bottom improves the odds of hitting editable text (paragraph/cell)
+  // across every isolating node type used here.
   const box = await lastChild.boundingBox();
   if (box) {
     await page.mouse.click(box.x + 10, box.y + Math.max(box.height - 8, 5));
@@ -131,12 +131,11 @@ async function run() {
     await page.locator('button:has-text("Novo post")').click();
     await page.waitForSelector('.ia-title');
 
-    // Título é uma div contenteditable (EditorView.vue) — não um <input> —
-    // desde o redesign full-bleed do editor (sessões 39-41). keyboard.type()
-    // caractere-por-caractere embaralhou o texto de verdade num teste real
-    // (acentos + delay entre teclas colidem com o timing do CDP em
-    // contenteditable) — setar innerText de uma vez e disparar 'input' é
-    // atômico e evita a corrida.
+    // Title is a contenteditable div (EditorView.vue), not an <input>.
+    // keyboard.type() character-by-character scrambled the text in a real
+    // run (accented characters + inter-key delay race against CDP timing on
+    // contenteditable) — setting innerText once and dispatching 'input' is
+    // atomic and avoids the race.
     await page.locator('.ia-title').click();
     await page.evaluate((text) => {
       const el = document.querySelector('.ia-title');
@@ -144,8 +143,8 @@ async function run() {
       el.dispatchEvent(new Event('input', { bubbles: true }));
     }, TITLE);
 
-    // Slug só é visível na gaveta de configurações (SettingsDrawer.vue) —
-    // abre para ler o valor gerado.
+    // Slug is only visible in the settings drawer (SettingsDrawer.vue) —
+    // open it to read the generated value.
     await page.locator('button[aria-label="Configurações do post"]').click();
     await page.waitForSelector('.ia-drawer');
     const slugInput = page.locator('.ia-slug-input');
@@ -222,10 +221,11 @@ async function run() {
     await shot(page, 'editor-content-filled');
 
     // ---- Callout (testa node customizado do Tiptap) — best-effort, não bloqueia o fluxo ----
-    // Callout.ts (admin/src/components/Callout.ts) dá um tratamento especial ao tipo
-    // "tip": wrapperClass = type==='tip' ? 'tip' : `callout ${type}` — só tip NÃO leva
-    // o prefixo "callout" na classe (os outros 4 tipos levam). Confirmado rodando
-    // contra o admin real: o node é inserido corretamente, só o seletor estava errado.
+    // Callout.ts (admin/src/components/Callout.ts) special-cases the "tip" type:
+    // wrapperClass = type==='tip' ? 'tip' : `callout ${type}` — only tip skips
+    // the "callout" class prefix (the other 4 types keep it). Confirmed by
+    // running against the real admin: the node was inserted fine, only the
+    // selector was wrong.
     const htmlBeforeCallout = await page.locator('.tiptap-content .ProseMirror').innerHTML();
     await page.locator('.tiptap-toolbar button[title="Callout: Dica de bastidor"]').click();
     const calloutAppeared = await page.locator('.ProseMirror .tip p').last()
@@ -361,8 +361,8 @@ async function run() {
     await shot(page, 'editor-content-full-coverage');
 
     // ---- Imagem de destaque via upload real ----
-    // Botão de capa vive na folha do editor (fora da gaveta), não num "panel"
-    // — post novo sempre começa sem capa, então é ".ia-add-cover".
+    // Cover button lives on the editor sheet (outside the drawer), not in a
+    // "panel" — a new post always starts without a cover, so it's ".ia-add-cover".
     log('Inserindo imagem de destaque via upload real...');
     await page.locator('.ia-add-cover').click();
     await page.waitForSelector('.modal-overlay');
@@ -371,7 +371,7 @@ async function run() {
       finding('Upload de imagem de destaque não fechou o modal em 20s.')
     );
 
-    // ---- Campos restantes do formulário — todos na gaveta de configurações ----
+    // ---- Remaining form fields — all live in the settings drawer ----
     await page.locator('button[aria-label="Configurações do post"]').click();
     await page.waitForSelector('.ia-drawer');
 
@@ -403,8 +403,8 @@ async function run() {
     await shot(page, 'form-filled-complete');
 
     // ---- Salvar como Rascunho primeiro (fluxo real de criação) ----
-    // Post novo: save() faz create() + router.replace (mesma view, sem navegar
-    // para o dashboard) — diferente do fluxo antigo, que navegava de volta.
+    // New post: save() does create() + router.replace (same view, no navigation
+    // to the dashboard) — unlike the old flow, which navigated back.
     log('Salvando como Rascunho...');
     await page.locator('.ia-btn-save').click();
     const toastOk = await page.waitForSelector('.ia-toast--success', { timeout: 15000 }).then(() => true).catch(() => false);
@@ -416,19 +416,19 @@ async function run() {
     log('Post salvo como Rascunho.');
     await shot(page, 'after-draft-save');
 
-    // ---- Recarregar via navegação real (exercita o round-trip com o servidor) ----
+    // ---- Reload via real navigation (exercises the round-trip with the server) ----
     log(`Recarregando /post/${slug} a partir do servidor...`);
     await page.goto(`${ADMIN_URL}/post/${slug}`);
     await page.waitForFunction(() => {
       const el = document.querySelector('.ia-title');
       return el && el.textContent && el.textContent.length > 0;
     });
-    // Título (form state) e conteúdo (Tiptap, inicializado separadamente a partir
-    // do mesmo onMounted) não populam no mesmo tick — ler o HTML cedo demais já
-    // pegou o vídeo do YouTube ausente numa rodada real, mesmo ele tendo sido
-    // salvo corretamente (confirmado pela validação da página pública, que não
-    // acusou o mesmo problema). Espera por um marcador presente e pesado (tabela)
-    // antes de considerar o conteúdo estável pra ler.
+    // Title (form state) and content (Tiptap, initialized separately from the
+    // same onMounted) don't populate on the same tick — reading the HTML too
+    // early caught the YouTube video missing in one real run, even though it
+    // had actually saved correctly (confirmed by the public-page validation,
+    // which didn't flag the same issue). Wait for a heavy, present marker
+    // (table) before treating the content as stable enough to read.
     await page.waitForFunction(() => {
       const el = document.querySelector('.tiptap-content .ProseMirror');
       return el && el.innerHTML.includes('<table');
@@ -468,9 +468,9 @@ async function run() {
 
     // Contagem de nós via DOMParser sobre o HTML recarregado do servidor — baseline
     // para comparar com o que a página pública efetivamente renderiza (ver validateRendered).
-    // page.evaluate(fn, arg) só aceita 1 argumento — passar (selectors, html) como
-    // 2 args posicionais nunca funcionou ("Too many arguments"), nunca tinha
-    // rodado de verdade pra pegar isso antes. Empacota num objeto só.
+    // page.evaluate(fn, arg) only accepts 1 argument — passing (selectors, html)
+    // as 2 positional args never worked ("Too many arguments"), the flow had
+    // never actually run far enough to catch it before. Pack into one object.
     adminNodeCounts = await page.evaluate(({ selectors, html }) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const out = {};
@@ -482,9 +482,9 @@ async function run() {
 
     await shot(page, 'before-publish');
 
-    // publish() (usePostForm.ts) já força form.status='Publicado' antes de
-    // salvar (a menos que seja 'Programado') — não precisa abrir a gaveta e
-    // clicar no radio manualmente, o botão "Publicar" sozinho já faz isso.
+    // publish() (usePostForm.ts) already forces form.status='Publicado' before
+    // saving (unless it's 'Programado') — no need to open the drawer and click
+    // the radio manually, the "Publicar" button alone already does it.
     log('Publicando...');
     await page.locator('.ia-btn-publish').click();
     await page.waitForSelector('.ia-toast--success', { timeout: 15000 }).catch(() =>
@@ -494,7 +494,7 @@ async function run() {
     log('Post publicado.');
     await shot(page, 'dashboard-after-publish');
 
-    // Confere status na listagem — DashboardView.vue usa divs (.ia-row), não <table>/<tr>.
+    // Check status in the listing — DashboardView.vue uses divs (.ia-row), not <table>/<tr>.
     const statusBadge = page.locator(`.ia-row:has(a[href="/post/${slug}"]) .ia-status-pill`);
     const badgeText = await statusBadge.textContent().catch(() => null);
     if (badgeText?.trim() !== 'Publicado') {
@@ -571,8 +571,8 @@ async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) 
       })();
 
       out.coverImage = (() => {
-        // postCoverFrame é CSS Module (post.module.css) — a classe real é hasheada;
-        // [data-audit] é o hook estável mantido de propósito para casos assim.
+        // postCoverFrame is a CSS Module (post.module.css) — the real class is
+        // hashed; [data-audit] is the stable hook kept exactly for cases like this.
         const img = document.querySelector('[data-audit="post-cover-frame"] img');
         if (!img) return { found: false };
         return {

@@ -50,9 +50,9 @@ test.describe('página /categoria/:slug', () => {
   });
 });
 
-// Slug inventado: nenhum post real tem essa categoria, então getPostsByCategory
-// sempre retorna posts=[] — cobre o ramo de estado vazio sem depender de um
-// slug real que pode ganhar posts no futuro e silenciosamente parar de testar isso.
+// Made-up slug: no real post has this category, so getPostsByCategory always
+// returns posts=[] — covers the empty-state branch without depending on a
+// real slug that could gain posts later and silently stop testing this.
 test.describe('página /categoria/:slug — categoria sem posts', () => {
   test('mostra estado vazio com link de volta para /todos-artigos', async ({ page }) => {
     await page.goto('/categoria/categoria-inventada-sem-posts-xyz', { waitUntil: 'networkidle' });
