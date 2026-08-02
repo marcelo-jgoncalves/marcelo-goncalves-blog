@@ -12,6 +12,8 @@ resource "aws_sns_topic" "budget_alerts" {
 
   # Sem tags{} próprio: os 3 valores aqui eram idênticos ao default_tags do
   # provider (providers.tf) -- redundância pura, o AWS provider já aplica.
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "budget_alerts_email" {

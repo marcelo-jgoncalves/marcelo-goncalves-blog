@@ -8,6 +8,8 @@
 resource "aws_sns_topic" "media_alerts" {
   count = var.enable_cloudwatch_alarms ? 1 : 0
   name  = "${var.project_name}-${var.environment}-media-alerts"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "media_alerts_email" {

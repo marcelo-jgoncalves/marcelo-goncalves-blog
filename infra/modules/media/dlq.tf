@@ -10,6 +10,9 @@ resource "aws_sqs_queue" "image_processor_dlq" {
   # Max SQS retention — the queue only receives messages on failure and
   # reprocessing is manual; 14 days leaves room to investigate without loss.
   message_retention_seconds = 1209600
+
+  # SSE-SQS (AWS-managed key, free) -- Trivy AWS-0096 flags unencrypted queues.
+  sqs_managed_sse_enabled = true
 }
 
 resource "aws_lambda_function_event_invoke_config" "image_processor" {
@@ -49,6 +52,8 @@ resource "aws_iam_role_policy_attachment" "image_processor_dlq_attach" {
 # this, the DLQ becomes a silent graveyard.
 resource "aws_sns_topic" "image_processor_dlq_alerts" {
   name = "${var.project_name}-${var.environment}-imageProcessor-dlq-alerts"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "image_processor_dlq_email" {

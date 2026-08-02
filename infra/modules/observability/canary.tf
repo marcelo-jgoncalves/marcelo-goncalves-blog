@@ -125,6 +125,8 @@ resource "aws_synthetics_canary" "heartbeat" {
 resource "aws_sns_topic" "canary_alerts" {
   count = var.enable_synthetic_canary ? 1 : 0
   name  = "${var.project_name}-${var.environment}-canary-alerts"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "canary_alerts_email" {

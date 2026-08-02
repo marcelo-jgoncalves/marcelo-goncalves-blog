@@ -10,6 +10,9 @@ resource "aws_sqs_queue" "post_scheduler_dlq" {
 
   # Max SQS retention — reprocessing is manual; 14 days of slack.
   message_retention_seconds = 1209600
+
+  # SSE-SQS (AWS-managed key, free) -- Trivy AWS-0096 flags unencrypted queues.
+  sqs_managed_sse_enabled = true
 }
 
 resource "aws_lambda_function_event_invoke_config" "post_scheduler" {
@@ -48,6 +51,8 @@ resource "aws_iam_role_policy_attachment" "post_scheduler_dlq_attach" {
 # and the cost is ~zero.
 resource "aws_sns_topic" "post_scheduler_dlq_alerts" {
   name = "${var.project_name}-${var.environment}-postScheduler-dlq-alerts"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "post_scheduler_dlq_email" {

@@ -1,0 +1,21 @@
+# Findings accepted as known risk, not fixed — see justification for each.
+# This project is dev-only with no production traffic yet (see CLAUDE.md
+# §8, "Estratégia de branch"); several hardening measures here trade real
+# cost/complexity for protecting an environment nothing depends on today.
+# Revisit each when its own trigger below is met — do not blanket-remove
+# this file just because Trivy started passing.
+
+# AWS-0011: CloudFront distribution has no WAF.
+# Already a deliberate, documented backlog decision (CLAUDE.md §10 item 18):
+# "WAF no Admin CloudFront — quando houver tráfego real". Same reasoning
+# extends to the frontend distribution, which this rule also flags.
+AVD-AWS-0011
+
+# AWS-0015: CloudTrail doesn't use a customer-managed KMS key.
+# AWS-0132: S3 bucket doesn't use a customer-managed KMS key.
+# Both require creating and managing a real KMS CMK (~$1/month + per-request
+# cost, plus a key policy to maintain) to protect logs of a dev environment
+# with no real user data. Trigger to revisit: production environment exists,
+# or CloudTrail/S3 here start holding data with real confidentiality needs.
+AVD-AWS-0015
+AVD-AWS-0132

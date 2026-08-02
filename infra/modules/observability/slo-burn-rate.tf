@@ -31,6 +31,8 @@ locals {
 resource "aws_sns_topic" "page_alerts" {
   count = var.enable_cloudwatch_alarms ? 1 : 0
   name  = "${var.project_name}-${var.environment}-slo-page"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "page_alerts_email" {
@@ -43,6 +45,8 @@ resource "aws_sns_topic_subscription" "page_alerts_email" {
 resource "aws_sns_topic" "ticket_alerts" {
   count = var.enable_cloudwatch_alarms ? 1 : 0
   name  = "${var.project_name}-${var.environment}-slo-ticket"
+  # AWS-managed key (free) -- Trivy AWS-0095 flags unencrypted topics.
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "ticket_alerts_email" {

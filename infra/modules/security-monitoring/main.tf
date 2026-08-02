@@ -91,6 +91,10 @@ resource "aws_cloudtrail" "main" {
   is_multi_region_trail         = true
   include_global_service_events = true
   enable_logging                = true
+  # Free, no infra of its own (SHA-256 digest files written next to the logs)
+  # -- Trivy AWS-0016 flags trails that skip this, since without it a
+  # compromised account could edit the log files with no way to detect it.
+  enable_log_file_validation = true
 
   depends_on = [aws_s3_bucket_policy.cloudtrail_logs]
 }
