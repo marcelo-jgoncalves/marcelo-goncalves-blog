@@ -279,6 +279,20 @@ jobs:
         working-directory: infra
         run: terraform fmt -check -recursive
 
+      # `terraform validate` evaluates filebase64sha256() over each Lambda
+      # zip (source_code_hash), which fails outright if the file doesn't
+      # exist — this job runs standalone (no build-backend/build-frontend
+      # dependency, to validate on every push regardless of whether the
+      # build succeeded), so the real zips never exist here. Content doesn't
+      # matter: validate only needs the function call to resolve, not a real
+      # deployable artifact.
+      - name: Create placeholder build artifacts (validate only, not a real deploy)
+        run: |
+          mkdir -p infra/builds
+          for name in nextjs mediaUpload getPost getAuthor getPosts adminPosts adminAuthors adminCategories adminSession adminAuthorizer postScheduler imageProcessor; do
+            touch "infra/builds/${name}.zip"
+          done
+
       - name: Terraform init (no backend)
         working-directory: infra
         run: terraform init -backend=false

@@ -213,6 +213,18 @@ jobs:
         run: terraform fmt --check -recursive
         if: steps.files.outputs.tf == 'true'
 
+      # terraform validate evaluates filebase64sha256() over each Lambda zip
+      # (source_code_hash) — the function call fails if the file doesn't
+      # exist, and this job never builds the real artifacts. Content is
+      # irrelevant for validate, only the function call needs to resolve.
+      - name: Criar artefatos de build placeholder (só para validate)
+        run: |
+          mkdir -p infra/builds
+          for name in nextjs mediaUpload getPost getAuthor getPosts adminPosts adminAuthors adminCategories adminSession adminAuthorizer postScheduler imageProcessor; do
+            touch "infra/builds/${name}.zip"
+          done
+        if: steps.files.outputs.tf == 'true'
+
       - name: Validacao de Sintaxe
         working-directory: infra
         run: terraform validate
