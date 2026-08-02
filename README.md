@@ -27,12 +27,12 @@ Monorepo serverless 100% AWS, infraestrutura como código.
 | Backend | Node.js 20 + TypeScript + esbuild | 9 Lambdas, uma por responsabilidade |
 | Banco de dados | DynamoDB | Single-table-ish por entidade, 5 GSIs otimizadas (projection `INCLUDE`) |
 | Imagens | Sharp.js (Lambda) | Pipeline automática: 6 variantes (AVIF/WebP x 3 breakpoints) + LQIP blur |
-| Auth | AWS Cognito | Admin único (`ALLOW_USER_PASSWORD_AUTH`, migração para SRP planejada) |
-| CDN / Edge | CloudFront + S3 + OAC | Cache de borda, invalidação sob demanda em save/publish/delete |
-| IaC | Terraform (~1.14) | 7+ módulos AWS, state em S3 |
-| CI/CD | GitHub Actions | Build, test, `terraform apply` e deploy, 100% automático em `develop` |
-| Observabilidade | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, tracing distribuído |
-| Testes | Jest (backend/frontend), Vitest (admin), Playwright (E2E) | ~157 testes unitários + 37 E2E |
+| Auth | AWS Cognito (SRP) + sessão BFF | Admin único; sessão opaca em cookie httpOnly (`SameSite=Strict`), armazenada em DynamoDB (`admin_sessions`), atrás de proxy same-origin no CloudFront |
+| CDN / Edge | CloudFront + S3 + OAC | Cache/origin-request policies gerenciadas, invalidação sob demanda em save/publish/delete |
+| IaC | Terraform (~> 1.8) | 10 módulos AWS, state em S3, lint via `tflint` + README por módulo via `terraform-docs` |
+| CI/CD | GitHub Actions | Build, lint, testes (unitários + integração + E2E smoke) e `terraform apply` gateando o deploy, 100% automático em `develop` |
+| Observabilidade | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, tracing distribuído, DLQ + alarme para as 2 Lambdas assíncronas |
+| Testes | Jest (backend/frontend), Vitest (admin), Playwright (E2E + smoke pós-deploy) | ~175 testes unitários backend + 5 de integração (DynamoDB Local), 81 frontend, 25 admin, 80 E2E |
 
 ---
 
@@ -44,7 +44,7 @@ marcelo-goncalves-blog/
 ├── backend/     Node.js 20 + TypeScript (9 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
 ├── infra/       Terraform, módulos AWS (lambda, dynamodb, frontend, admin,
-│                api-gateway, cognito, media, observability, security, finops)
+│                api-gateway, cognito, media, observability, security-monitoring, finops)
 └── .github/     Pipelines de CI/CD
 ```
 
@@ -63,17 +63,21 @@ marcelo-goncalves-blog/
 - Sanitização de HTML server-side em toda escrita: nenhum HTML bruto do editor é persistido sem allowlist.
 
 ### Performance & SEO
-- ISR real em `/post/[slug]` (`generateStaticParams` + `revalidate: 60`), confirmado via Lighthouse: LCP médio caiu de 2,70s para 2,37s pós-fix, dentro do threshold "Good" do Core Web Vitals.
-- Invalidação de cache CloudFront sob demanda (`/post/{slug}` + `/`) disparada automaticamente em save/publish/delete, sem depender só de TTL.
+- ISR real em `/post/[slug]` (`generateStaticParams` + `revalidate: 60`); LCP médio dentro do threshold "Good" do Core Web Vitals.
+- Cache/origin-request policies do CloudFront modernas nas rotas SSR, com TTL forçado na borda para listagens paginadas; invalidação sob demanda (`/post/{slug}` + `/`) disparada em save/publish/delete.
 - 18/20 itens da auditoria de SEO concluídos: JSON-LD (`BlogPosting`, `BreadcrumbList`, `Organization`, `Person`, `ProfessionalService`), Open Graph, canonical, sitemap, favicon/manifest.
-- GSIs do DynamoDB otimizadas (`ALL` para `INCLUDE`), contador atômico de posts publicados (evita scan duplicado em paginação).
-- Bundle de produção auditado (`@next/bundle-analyzer`); migração de ícones de CSS/webfont (74KB) para SVG tree-shaken (~15KB).
+- GSIs do DynamoDB com projection `INCLUDE`, contador atômico de posts publicados (evita scan duplicado em paginação).
+- Ícones renderizados como SVG tree-shaken por rota (sem webfont/CSS de ícone completo carregado globalmente).
 
 ### Segurança
 - CSP e security headers reais via `aws_cloudfront_response_headers_policy` (não meta tag, que não funciona para `X-Frame-Options`).
 - Lambda URLs com `AWS_IAM` + OAC SigV4: só CloudFront pode invocar.
+- Sessão do admin via BFF: cookie httpOnly, sem token Cognito em Web Storage.
+- Cognito com fluxo SRP (`ALLOW_USER_SRP_AUTH`), sem senha em texto plano na rede.
+- DLQ (SQS) + alarme de profundidade nas Lambdas assíncronas (`imageProcessor`, `postScheduler`), com notificação SNS.
+- Pipeline de CI trava o deploy se lint/testes (unitários, integração ou E2E smoke) falharem.
 - GuardDuty + CloudTrail ativos, Semgrep no CI a cada push, `npm audit --audit-level=high` obrigatório (zero high/critical tolerado).
-- Auditoria de AppSec dedicada (6 critérios) e auditoria de engenharia completa (12 critérios) realizadas e documentadas.
+- `tflint` + Trivy (config scan) no CI de infraestrutura.
 - Toggle de PITR (Point-in-Time Recovery) implementado via Terraform, pronto para produção.
 
 ### Observabilidade
@@ -81,37 +85,33 @@ marcelo-goncalves-blog/
 - Logging estruturado (JSON, `level`/`message`/`timestamp`/`requestId`): `console.log` proibido no backend.
 
 ### Qualidade & automação de testes
-- 96 testes backend (Jest) + 45 frontend (Jest) + 16 admin (Vitest) + 37 E2E (Playwright), cobrindo smoke, layout, post, artigos, busca, categoria.
+- ~175 testes backend (Jest) + 5 de integração contra DynamoDB Local + 81 frontend (Jest) + 25 admin (Vitest) + 80 E2E (Playwright, 19 specs), cobrindo smoke, layout, post, artigos, todos-artigos, busca, categoria, projeto e auditoria visual.
 - Ferramenta própria de QA: script Playwright que simula um usuário real publicando um post completo (login, digitação via input rules, upload de imagem, todos os node types do editor) e valida o resultado em duas camadas: round-trip no admin e DOM renderizado real da página pública (visibilidade, imagem decodificada, JSON-LD parseado, comparação de contagem de nós admin-vs-público, mobile + desktop).
 - Compliance/legal: Consent Mode v2 (Google), CMP próprio (LGPD), páginas de política de privacidade/cookies/termos.
 
 ---
 
-## Roadmap: camada de IA e expansão editorial
+## Roadmap
 
-A ordem abaixo segue a lógica de implementação técnica, não de prioridade de produto: agrupa primeiro tudo que reaproveita a mesma peça de infraestrutura (geração de texto via LLM), depois a próxima peça de infraestrutura nova (geração de imagem), e por último a camada de distribuição, que consome o que as etapas anteriores produzem.
+Mesmo roadmap exibido publicamente em [`/o-projeto`](https://dsns2wusdrj9z.cloudfront.net/o-projeto), organizado por horizonte de entrega (não por prioridade de produto).
 
-### 1. Resumos automáticos via IA
-Gerar um resumo do post (usado hoje manualmente como `resumo`/meta description) automaticamente a partir do `conteudo_html`, via chamada a LLM no momento do save/publish. Primeiro ponto de integração com um provedor de IA generativa no backend: estabelece o padrão (gestão de chave/custo, prompt, tratamento de erro) que as duas etapas seguintes reaproveitam.
-**Status:** planejado, não iniciado.
+### Agora
+- **Métricas editoriais** — visualizações e sinais de interesse para apoiar decisões de conteúdo.
 
-### 2. Geração de versão para LinkedIn
-A partir do post publicado, gerar uma versão adaptada ao formato/tom do LinkedIn (hook, quebras de linha, CTA), com edição humana antes da publicação. Não é postagem automática, é rascunho assistido. Reaproveita a mesma infraestrutura de geração de texto do item 1, só muda o prompt e a superfície de UI no admin.
-**Status:** planejado, não iniciado.
+### Depois
+- **Versão em inglês** — publicação multilíngue com rotas, metadata, canonical e hreflang próprios.
+- **Tradução assistida por IA** — geração de rascunho em inglês após decisão editorial, sempre com revisão humana.
+- **Publicação social com aprovação** — geração de rascunhos e mídias para redes sociais com etapa explícita de aprovação.
+- **Newsletter** — canal editorial opcional, condicionado a consentimento e infraestrutura específica.
 
-### 3. Versão do blog em inglês
-Tradução do post para inglês via IA a partir da versão original em português, sempre com aprovação/curadoria humana antes de publicar: nunca publicação automática de conteúdo traduzido. A geração em si ainda é uma chamada de LLM (mesma infra dos itens 1 e 2), mas a tradução exige trabalho estrutural pesado: rotas i18n no Next.js, campo de idioma/tradução vinculado no modelo de dados do post, fluxo de revisão no admin (rascunho de tradução, aprovação, publicação) e SEO multi-idioma (hreflang, sitemap por idioma). Faz sentido endereçar enquanto o padrão de integração com IA ainda está ativo, antes de migrar para um domínio de infraestrutura totalmente diferente (geração de imagem).
-**Status:** planejado, não iniciado. Maior item estrutural do roadmap.
+### Exploração
+- **Licenciamento da plataforma** — possibilidade futura de disponibilizar a base editorial como produto self-hosted ou serviço gerenciado.
+- **Resumos com IA** — síntese inteligente para cada artigo, facilitando leitura rápida e navegação eficiente.
+- **Atendimento via WhatsApp com IA** — triagem inicial automatizada, com escalonamento para atendimento humano quando necessário.
+- **Nutrição automatizada de leads** — sequência combinada a gatilhos por comportamento de leitura, conduzindo o contato até o diagnóstico de consultoria.
+- **Ebook proprietário** — material estruturado com os aprendizados e frameworks do projeto.
 
-### 4. Geração de imagens via template + IA
-Imagem de destaque gerada automaticamente a partir de um template de design (mantendo a identidade visual do blog) combinado com geração de imagem por IA, reduzindo a dependência de banco de imagens manual. Domínio de infraestrutura novo (geração de imagem, não de texto), mas reaproveita o pipeline de imagens já existente (Lambda `imageProcessor`, variantes responsivas, S3) como destino do output gerado.
-**Status:** planejado, não iniciado.
-
-### 5. Newsletter
-Envio recorrente (digest) reaproveitando os resumos gerados no item 1, com gestão de assinantes e disparo via serviço de e-mail transacional (ex. SES). Camada de distribuição, naturalmente a última: depende do conteúdo já existir pronto e curado (resumos, e idealmente já com a versão em inglês disponível) para ter o menor custo de produção possível.
-**Status:** planejado, não iniciado.
-
-> Nenhum desses 5 itens tem implementação iniciada nesta data: listados aqui para dar visibilidade da direção do produto, não do progresso técnico.
+Nenhum desses itens tem implementação iniciada nesta data.
 
 ---
 
@@ -128,10 +128,11 @@ cd admin && cp .env.example .env.local && npm run dev      # http://localhost:51
 ## Testes
 
 ```bash
-cd backend && npm test    # Jest, 96 testes
-cd frontend && npm test   # Jest, 45 testes
-cd admin && npm test      # Vitest, 16 testes
-cd frontend && npm run test:e2e   # Playwright, 37 testes E2E
+cd backend && npm test               # Jest, ~175 testes
+cd backend && npm run test:integration   # Jest + DynamoDB Local, 5 testes
+cd frontend && npm test              # Jest, 81 testes
+cd admin && npm test                 # Vitest, 25 testes
+cd frontend && npm run test:e2e      # Playwright, 80 testes E2E (19 specs)
 ```
 
 ## Ambiente e deploy
