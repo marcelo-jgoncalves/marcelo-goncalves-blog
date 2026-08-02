@@ -1,6 +1,6 @@
 # Marcelo Gonçalves Editorial Platform
 
-A complete editorial platform about AI, AWS, and DevOps. Not just a blog, but an end-to-end content engine: a proprietary CMS, an image pipeline, production-grade SEO/observability, and (in progress) an AI-assisted content generation and distribution layer: automatic summaries, LinkedIn repurposing, image generation, an English version, and a newsletter.
+A complete editorial platform about AI, AWS, and DevOps: an end-to-end content engine with a proprietary CMS, an image pipeline, production-grade SEO/observability, and (in progress) an AI-assisted content generation and distribution layer: automatic summaries, LinkedIn repurposing, image generation, an English version, and a newsletter.
 
 100% AWS serverless monorepo, infrastructure as code.
 
