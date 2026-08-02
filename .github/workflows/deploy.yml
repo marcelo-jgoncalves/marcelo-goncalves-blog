@@ -65,6 +65,38 @@ jobs:
         run: npm run build
         working-directory: backend
 
+  # --- JOB 1b: Testes de Integração do Backend (DynamoDB Local) ---
+  # Unit tests mock dynamo.send entirely — these run the real handlers
+  # against a real DynamoDB (see backend/src/integration/).
+  test-backend-integration:
+    runs-on: ubuntu-latest
+    name: 1b. Testes de Integração Backend (DynamoDB Local)
+
+    services:
+      dynamodb:
+        image: amazon/dynamodb-local@sha256:d7ebddeb60fa418bcda218a6c6a402a58441b2a20d54c9cb1d85fd5194341753 # 2.5.2
+        ports:
+          - 8000:8000
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependencias do Backend
+        run: npm ci
+        working-directory: backend
+
+      - name: Rodar Testes de Integração
+        run: npm run test:integration
+        working-directory: backend
+        env:
+          AWS_ENDPOINT_URL: http://localhost:8000
+
   # --- JOB 2: Testar o Frontend (Jest + audit) ---
   test-frontend:
     runs-on: ubuntu-latest

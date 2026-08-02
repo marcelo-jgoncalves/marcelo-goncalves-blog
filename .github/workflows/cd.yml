@@ -101,6 +101,48 @@ jobs:
           retention-days: 1
 
   # ==============================================================
+  # JOB 1b': Backend Integration Tests — paralelo com 1a/1b
+  # Unit tests mock dynamo.send entirely, so they can't catch a contract the
+  # mock accepts but the real service rejects (missing IAM permission, an
+  # empty string in a GSI range key, a TransactWriteItems rollback) — the
+  # class of bug that has actually bitten this project. These run the real
+  # handlers against DynamoDB Local (see backend/src/integration/).
+  # ==============================================================
+  test-backend-integration:
+    name: 1b'. Backend Integration Tests
+    runs-on: ubuntu-latest
+    needs: [check-types-drift]
+
+    services:
+      dynamodb:
+        image: amazon/dynamodb-local@sha256:d7ebddeb60fa418bcda218a6c6a402a58441b2a20d54c9cb1d85fd5194341753 # 2.5.2
+        ports:
+          - 8000:8000
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: backend/node_modules
+          key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: backend-${{ runner.os }}-
+
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+
+      - name: Run integration tests
+        run: npm run test:integration
+        working-directory: backend
+        env:
+          AWS_ENDPOINT_URL: http://localhost:8000
+
+  # ==============================================================
   # JOB 1b: Build Frontend (Next.js + OpenNext) — paralelo com 1a
   # ==============================================================
   build-frontend:
@@ -200,7 +242,7 @@ jobs:
   deploy-dev:
     name: 2a. Deploy → Dev
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin]
+    needs: [build-backend, build-frontend, test-admin, test-backend-integration]
     if: github.ref == 'refs/heads/develop'
     environment: dev
 
@@ -371,7 +413,7 @@ jobs:
   plan-prod:
     name: 2b. Terraform Plan → Prod
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin]
+    needs: [build-backend, build-frontend, test-admin, test-backend-integration]
     if: github.ref == 'refs/heads/main'
 
     steps:
