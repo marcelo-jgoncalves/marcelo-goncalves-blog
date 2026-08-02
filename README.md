@@ -93,22 +93,13 @@ marcelo-goncalves-blog/
 
 ## Roadmap
 
-Mesmo roadmap exibido publicamente em [`/o-projeto`](https://dsns2wusdrj9z.cloudfront.net/o-projeto), organizado por horizonte de entrega (não por prioridade de produto).
-
-### Agora
-- **Métricas editoriais** — visualizações e sinais de interesse para apoiar decisões de conteúdo.
-
-### Depois
+- **Resumos automáticos via IA** — síntese gerada para cada artigo, facilitando leitura rápida e navegação.
 - **Versão em inglês** — publicação multilíngue com rotas, metadata, canonical e hreflang próprios.
-- **Tradução assistida por IA** — geração de rascunho em inglês após decisão editorial, sempre com revisão humana.
-- **Publicação social com aprovação** — geração de rascunhos e mídias para redes sociais com etapa explícita de aprovação.
-- **Newsletter** — canal editorial opcional, condicionado a consentimento e infraestrutura específica.
-
-### Exploração
-- **Licenciamento da plataforma** — possibilidade futura de disponibilizar a base editorial como produto self-hosted ou serviço gerenciado.
-- **Resumos com IA** — síntese inteligente para cada artigo, facilitando leitura rápida e navegação eficiente.
+- **Tradução assistida por IA** — rascunho de tradução gerado após decisão editorial, sempre com revisão humana.
+- **Publicação social com aprovação** — rascunhos e mídias para redes sociais, com etapa explícita de aprovação.
+- **Newsletter** — canal editorial opcional, condicionado a consentimento e infraestrutura própria.
 - **Atendimento via WhatsApp com IA** — triagem inicial automatizada, com escalonamento para atendimento humano quando necessário.
-- **Nutrição automatizada de leads** — sequência combinada a gatilhos por comportamento de leitura, conduzindo o contato até o diagnóstico de consultoria.
+- **Nutrição automatizada de leads** — sequência guiada por comportamento de leitura, conduzindo o contato até o diagnóstico de consultoria.
 - **Ebook proprietário** — material estruturado com os aprendizados e frameworks do projeto.
 
 Nenhum desses itens tem implementação iniciada nesta data.
