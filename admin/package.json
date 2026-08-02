@@ -31,6 +31,7 @@
     "@tiptap/extension-table-row": "^2.27.2",
     "@tiptap/extension-youtube": "^2.27.2",
     "@tiptap/starter-kit": "^2.11.0",
+    "@tiptap/suggestion": "^2.27.2",
     "@tiptap/vue-3": "^2.11.0",
     "@types/dompurify": "^3.0.5",
     "aws-amplify": "^6.15.8",

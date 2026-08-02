@@ -163,6 +163,21 @@ watch(settingsOpen, (open) => {
     drawerPreviousFocusRef.value = null
   }
 })
+// Roving tabindex for the status radiogroup (WCAG radiogroup pattern) — Tab
+// enters the group at the checked option, arrow keys move the selection.
+const STATUS_OPTIONS = ['Rascunho', 'Publicado', 'Programado'] as const
+function onStatusRadioKeydown(e: KeyboardEvent) {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return
+  e.preventDefault()
+  const currentIndex = STATUS_OPTIONS.indexOf(form.value.status as (typeof STATUS_OPTIONS)[number])
+  const delta = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1
+  const nextIndex = (currentIndex + delta + STATUS_OPTIONS.length) % STATUS_OPTIONS.length
+  form.value.status = STATUS_OPTIONS[nextIndex]!
+  nextTick(() => {
+    const group = (e.currentTarget as HTMLElement)
+    group.querySelectorAll<HTMLElement>('[role="radio"]')[nextIndex]?.focus()
+  })
+}
 function onDrawerKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') {
     settingsOpen.value = false
@@ -515,12 +530,12 @@ function generateSlug() {
         <span>{{ form.tempo_leitura_min }} min</span>
       </div>
 
-      <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="ia-btn-ghost" title="Ver no Blog">
-        <i class="fas fa-external-link-alt"></i>
+      <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="ia-btn-ghost" title="Ver no Blog" aria-label="Ver no Blog">
+        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
       </a>
 
-      <button class="ia-btn-ghost" @click="settingsOpen = true" title="Configurações do post">
-        <i class="fas fa-sliders-h"></i>
+      <button class="ia-btn-ghost" @click="settingsOpen = true" title="Configurações do post" aria-label="Configurações do post">
+        <i class="fas fa-sliders-h" aria-hidden="true"></i>
       </button>
 
       <button class="ia-btn-focus" :class="{ on: focusMode }" @click="toggleFocus">
@@ -622,7 +637,7 @@ function generateSlug() {
         <span><span class="ia-key ia-key--dark">-&nbsp;␣</span> lista</span>
         <span class="ia-hint-sep">·</span>
         <span>selecione o texto para formatar</span>
-        <button class="ia-hint-close" @click="hintOpen = false">✕</button>
+        <button class="ia-hint-close" aria-label="Fechar dica" @click="hintOpen = false">✕</button>
       </div>
     </Transition>
 
@@ -645,10 +660,10 @@ function generateSlug() {
 
           <div class="ia-rail-card">
             <div class="ia-rail-header">Status</div>
-            <div class="ia-segmented" role="radiogroup" aria-label="Status do post">
-              <button role="radio" :aria-checked="form.status === 'Rascunho'" :class="['ia-seg', { active: form.status === 'Rascunho' }]" @click="form.status = 'Rascunho'">Rascunho</button>
-              <button role="radio" :aria-checked="form.status === 'Publicado'" :class="['ia-seg', { active: form.status === 'Publicado' }]" @click="form.status = 'Publicado'">Publicado</button>
-              <button role="radio" :aria-checked="form.status === 'Programado'" :class="['ia-seg', { active: form.status === 'Programado' }]" @click="form.status = 'Programado'">Programado</button>
+            <div class="ia-segmented" role="radiogroup" aria-label="Status do post" @keydown="onStatusRadioKeydown">
+              <button role="radio" :aria-checked="form.status === 'Rascunho'" :tabindex="form.status === 'Rascunho' ? 0 : -1" :class="['ia-seg', { active: form.status === 'Rascunho' }]" @click="form.status = 'Rascunho'">Rascunho</button>
+              <button role="radio" :aria-checked="form.status === 'Publicado'" :tabindex="form.status === 'Publicado' ? 0 : -1" :class="['ia-seg', { active: form.status === 'Publicado' }]" @click="form.status = 'Publicado'">Publicado</button>
+              <button role="radio" :aria-checked="form.status === 'Programado'" :tabindex="form.status === 'Programado' ? 0 : -1" :class="['ia-seg', { active: form.status === 'Programado' }]" @click="form.status = 'Programado'">Programado</button>
             </div>
             <div v-if="form.status === 'Programado'" class="ia-sched">
               <label class="ia-field-label">Publicar em</label>

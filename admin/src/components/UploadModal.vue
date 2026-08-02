@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { mediaApi } from '../services/api'
 
 const emit = defineEmits(['close', 'uploaded'])
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
 const error = ref('')
+const previewUrl = ref('')
 
 const VALID_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif']
 const MAX_SIZE_MB = 10
@@ -14,6 +15,11 @@ const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 function openFilePicker() {
   if (uploading.value) return
   fileInput.value?.click()
+}
+
+function clearPreview() {
+  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
+  previewUrl.value = ''
 }
 
 async function handleFileChange() {
@@ -32,6 +38,8 @@ async function handleUpload(file: File) {
     return
   }
 
+  clearPreview()
+  previewUrl.value = URL.createObjectURL(file)
   uploading.value = true
   error.value = ''
 
@@ -51,6 +59,8 @@ async function handleUpload(file: File) {
     if (fileInput.value) fileInput.value.value = ''
   }
 }
+
+onBeforeUnmount(clearPreview)
 </script>
 
 <template>
@@ -71,6 +81,10 @@ async function handleUpload(file: File) {
             :disabled="uploading"
             @change="handleFileChange"
           >
+          <div v-if="previewUrl" class="preview-wrap">
+            <img :src="previewUrl" class="preview-img" alt="Pré-visualização da imagem selecionada">
+            <span v-if="uploading" class="preview-uploading"><i class="fas fa-spinner fa-spin"></i> Enviando...</span>
+          </div>
           <p class="hint">Selecione PNG, JPEG, WebP, HEIC ou HEIF (máx. {{ MAX_SIZE_MB }} MB).</p>
         </div>
         <p v-if="error" class="error">{{ error }}</p>
@@ -99,6 +113,12 @@ async function handleUpload(file: File) {
 .close-btn { background: none; border: none; font-size: var(--text-xl); cursor: pointer; color: var(--slate-400); }
 .form-group { margin-bottom: var(--space-2); }
 .file-input-hidden { display: none; }
+.preview-wrap { position: relative; margin-bottom: var(--space-2); border-radius: 6px; overflow: hidden; }
+.preview-img { display: block; width: 100%; max-height: 260px; object-fit: cover; }
+.preview-uploading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  gap: var(--space-1); background: rgba(12, 32, 39, 0.55); color: #fff; font-weight: 600;
+}
 .hint { color: var(--slate-400); font-size: var(--text-sm); margin: 0; }
 .modal-footer { display: flex; justify-content: flex-end; gap: var(--space-1); margin-top: var(--space-3); }
 .error { color: #c0392b; font-size: var(--text-sm); }

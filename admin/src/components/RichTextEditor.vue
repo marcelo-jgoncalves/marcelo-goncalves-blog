@@ -9,6 +9,7 @@ import { Callout, CALLOUT_DEFAULTS, type CalloutType } from './Callout'
 import { PullQuote } from './tiptap/PullQuote'
 import { ClosingFlourish } from './tiptap/ClosingFlourish'
 import { SmartImage } from './tiptap/SmartImage'
+import { SlashCommand } from './tiptap/SlashCommand'
 import Code from '@tiptap/extension-code'
 import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
@@ -112,6 +113,9 @@ const editorExtensions = [
     HTMLAttributes: {
       class: 'inline-code',
     },
+  }),
+  SlashCommand.configure({
+    onRequestImage: () => emit('request-upload'),
   }),
 ]
 
