@@ -182,8 +182,8 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   }
 
   const now = new Date().toISOString();
-  const ePopular = Number(data.e_popular || 0);
-  const eProjeto = Number(data.e_projeto || 0);
+  const ePopular: 0 | 1 = data.e_popular === 1 ? 1 : 0;
+  const eProjeto: 0 | 1 = data.e_projeto === 1 ? 1 : 0;
 
   const item: Post = {
     ...data as Post,

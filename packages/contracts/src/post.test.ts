@@ -1,4 +1,4 @@
-import { postInputSchema } from './postSchema';
+import { postInputSchema } from './post';
 
 const BASE = {
   slug: 'meu-post',

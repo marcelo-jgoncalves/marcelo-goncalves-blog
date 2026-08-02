@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "description": "Monorepo: Marcelo Goncalves Editorial Platform (frontend, backend, admin, infra)",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
     "build:admin": "cd admin && npm run build",
-    "install:all": "cd backend && npm install && cd ../frontend && npm install && cd ../admin && npm install",
-    "check:types-drift": "node scripts/check-types-drift.mjs"
+    "install:all": "cd backend && npm install && cd ../frontend && npm install && cd ../admin && npm install"
   }
 }

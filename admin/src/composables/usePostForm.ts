@@ -62,6 +62,7 @@ export function usePostForm() {
     status: 'Rascunho',
     tempo_leitura_min: 5,
     data_publicacao: '',
+    data_atualizacao: '',
     autor_id: '',
     topico: '',
     variante_card: '',

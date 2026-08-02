@@ -19,6 +19,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mgoncalves/contracts": "file:../packages/contracts",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@tiptap/extension-bubble-menu": "^2.10.3",
     "@tiptap/extension-code": "^2.10.3",
