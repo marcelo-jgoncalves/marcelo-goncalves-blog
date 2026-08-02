@@ -101,8 +101,11 @@ data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
   name = "Managed-AllViewerExceptHostHeader"
 }
 
+# No "Managed-" prefix: AWS only prefixes the older managed policies; the
+# UseOriginCacheControlHeaders pair is listed without it (confirmed via
+# `aws cloudfront list-cache-policies --type managed`).
 data "aws_cloudfront_cache_policy" "use_origin_cache_control_qs" {
-  name = "Managed-UseOriginCacheControlHeaders-QueryStrings"
+  name = "UseOriginCacheControlHeaders-QueryStrings"
 }
 
 # min = default = max is the only combination where CloudFront caches even
