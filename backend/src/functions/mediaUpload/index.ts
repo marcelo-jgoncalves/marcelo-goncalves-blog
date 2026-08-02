@@ -53,9 +53,15 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return { statusCode: 400, body: JSON.stringify({ message: "Unsupported content type" }), headers };
     }
 
-    // Normaliza extensão para minúsculas — S3 filter_suffix é case-sensitive,
-    // então "foto.JPG" e "foto.jpg" precisam ter o mesmo comportamento.
-    const nome_normalizado = nome_arquivo.replace(/\.[^.]+$/, (ext: string) => ext.toLowerCase());
+    // Lowercase the extension — S3 filter_suffix is case-sensitive, so
+    // "foto.JPG" and "foto.jpg" must behave the same.
+    // Characters outside [A-Za-z0-9._-] become "-": the name comes from the
+    // client and is interpolated straight into the S3 key — "/" would create
+    // pseudo-folders outside the date prefix, and characters that require
+    // URL-encoding break the match with the variants imageProcessor writes.
+    const nome_normalizado = nome_arquivo
+      .replace(/\.[^.]+$/, (ext: string) => ext.toLowerCase())
+      .replace(/[^A-Za-z0-9._-]/g, "-");
 
     // Prefixo de data UTC (YYYY/MM/DD) gerado no momento do upload —
     // organiza o bucket por data automaticamente sem nenhuma ação manual.

@@ -47,6 +47,12 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
   } as APIGatewayProxyEvent;
 }
 
+// The written Item lives in a different place depending on the write shape:
+// plain Put (zero counter delta) vs TransactWrite (Put + counter ADD).
+function writtenItem(cmd: { input: { Item?: unknown; TransactItems?: Array<{ Put?: { Item: unknown } }> } }) {
+  return (cmd.input.Item ?? cmd.input.TransactItems?.[0]?.Put?.Item) as Record<string, unknown>;
+}
+
 const SAMPLE_POST = {
   slug: 'meu-post',
   titulo: 'Meu Post',
@@ -67,6 +73,12 @@ const SAMPLE_POST = {
 beforeAll(() => {
   process.env.POSTS_TABLE = 'test-posts-table';
   process.env.LOG_LEVEL = 'ERROR';
+});
+
+// Without this, values queued via mockResolvedValueOnce that a test doesn't
+// consume leak into the next test, shifting the whole response queue.
+beforeEach(() => {
+  jest.resetAllMocks();
 });
 
 describe('adminPosts handler', () => {
@@ -179,9 +191,8 @@ describe('adminPosts handler', () => {
       expect(body.slug).toBe('meu-post');
     });
 
-    it('incrementa total_publicado ao criar um post com status Publicado (sem 2ª query de COUNT)', async () => {
-      mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+    it('incrementa total_publicado na MESMA transação do Put ao criar um post Publicado', async () => {
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
@@ -189,13 +200,15 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockSend).toHaveBeenCalledTimes(2);
-      const counterCmd = mockSend.mock.calls[1][0];
-      expect(counterCmd.input.UpdateExpression).toBe('ADD total_publicado :dt, total_projeto_publicado :dp');
-      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
+      expect(mockSend).toHaveBeenCalledTimes(1);
+      const transact = mockSend.mock.calls[0][0].input.TransactItems;
+      expect(transact).toHaveLength(2);
+      expect(transact[0].Put.Item.slug).toBe('meu-post');
+      expect(transact[1].Update.UpdateExpression).toBe('ADD total_publicado :dt, total_projeto_publicado :dp');
+      expect(transact[1].Update.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
     });
 
-    it('NÃO chama o contador ao criar um Rascunho (delta zero)', async () => {
+    it('usa um Put simples (sem transação) ao criar um Rascunho (delta zero)', async () => {
       mockSend.mockResolvedValueOnce({}); // PutCommand
 
       await handler(
@@ -204,7 +217,8 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockSend).toHaveBeenCalledTimes(1); // só o Put, sem chamada de contador
+      expect(mockSend).toHaveBeenCalledTimes(1);
+      expect(mockSend.mock.calls[0][0].input.TransactItems).toBeUndefined();
     });
 
     it('invalida /post/{slug} e "/" ao criar um post já Publicado', async () => {
@@ -217,7 +231,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/todos-artigos', '/categoria/*']);
     });
 
     it('invalida só /post/{slug} (sem "/") ao criar um Rascunho', async () => {
@@ -272,7 +286,7 @@ describe('adminPosts handler', () => {
       );
 
       const sentCmd = mockSend.mock.calls[0][0];
-      expect(sentCmd.input.Item.data_atualizacao).toBeDefined();
+      expect(writtenItem(sentCmd).data_atualizacao).toBeDefined();
     });
 
     it('converts e_popular and e_projeto to Number', async () => {
@@ -285,8 +299,8 @@ describe('adminPosts handler', () => {
       );
 
       const sentCmd = mockSend.mock.calls[0][0];
-      expect(typeof sentCmd.input.Item.e_popular).toBe('number');
-      expect(typeof sentCmd.input.Item.e_projeto).toBe('number');
+      expect(typeof writtenItem(sentCmd).e_popular).toBe('number');
+      expect(typeof writtenItem(sentCmd).e_projeto).toBe('number');
     });
 
     it('descarta campos desconhecidos (mass assignment / overposting)', async () => {
@@ -299,9 +313,9 @@ describe('adminPosts handler', () => {
       );
 
       const sentCmd = mockSend.mock.calls[0][0];
-      expect(sentCmd.input.Item.isAdmin).toBeUndefined();
+      expect(writtenItem(sentCmd).isAdmin).toBeUndefined();
       // e_popular_marker is derived from e_popular server-side, never accepted from the client
-      expect(sentCmd.input.Item.e_popular_marker).toBeUndefined();
+      expect(writtenItem(sentCmd).e_popular_marker).toBeUndefined();
     });
 
     it('returns 400 when e_popular não é 0 ou 1', async () => {
@@ -357,10 +371,9 @@ describe('adminPosts handler', () => {
       expect(sentCmd.input.Item.data_publicacao).not.toBe('');
     });
 
-    it('atualiza o contador quando o status muda de Rascunho para Publicado', async () => {
+    it('atualiza o contador (na transação do Put) quando o status muda de Rascunho para Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
@@ -372,14 +385,14 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      const counterCmd = mockSend.mock.calls[2][0];
-      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
+      expect(mockSend).toHaveBeenCalledTimes(2);
+      const transact = mockSend.mock.calls[1][0].input.TransactItems;
+      expect(transact[1].Update.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 0 });
     });
 
-    it('decrementa o contador quando o status muda de Publicado para Rascunho', async () => {
+    it('decrementa o contador (na transação do Put) quando o status muda de Publicado para Rascunho', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
@@ -391,14 +404,13 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      const counterCmd = mockSend.mock.calls[2][0];
-      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': 0 });
+      const transact = mockSend.mock.calls[1][0].input.TransactItems;
+      expect(transact[1].Update.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': 0 });
     });
 
     it('invalida "/" também quando o status muda de Rascunho para Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
@@ -410,7 +422,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/todos-artigos', '/categoria/*']);
     });
 
     it('NÃO invalida "/" quando o post já era Publicado e continua Publicado (edição de conteúdo)', async () => {
@@ -430,7 +442,7 @@ describe('adminPosts handler', () => {
       expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post']);
     });
 
-    it('returns 500 on slug mismatch', async () => {
+    it('returns 400 on slug mismatch', async () => {
       const result = await handler(
         event({
           httpMethod: 'PUT',
@@ -441,7 +453,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(result?.statusCode).toBe(500);
+      expect(result?.statusCode).toBe(400);
     });
   });
 
@@ -475,10 +487,9 @@ describe('adminPosts handler', () => {
       expect(cmd.input.Key).toEqual({ slug: 'meu-post' });
     });
 
-    it('decrementa o contador ao deletar um post Publicado', async () => {
+    it('decrementa o contador (na transação do Delete) ao deletar um post Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // DeleteCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
 
       await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
@@ -486,14 +497,15 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      const counterCmd = mockSend.mock.calls[2][0];
-      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': -1 });
+      expect(mockSend).toHaveBeenCalledTimes(2);
+      const transact = mockSend.mock.calls[1][0].input.TransactItems;
+      expect(transact[0].Delete.Key).toEqual({ slug: 'meu-post' });
+      expect(transact[1].Update.ExpressionAttributeValues).toEqual({ ':dt': -1, ':dp': -1 });
     });
 
     it('invalida /post/{slug} e "/" ao deletar um post Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // DeleteCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
 
       await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
@@ -501,7 +513,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/categoria/*']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/meu-post', '/', '/artigos', '/todos-artigos', '/categoria/*']);
     });
 
     it('invalida só /post/{slug} (sem "/") ao deletar um Rascunho', async () => {

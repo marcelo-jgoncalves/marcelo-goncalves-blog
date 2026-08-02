@@ -31,8 +31,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
     }
 
+    // Sparse index markers are DynamoDB plumbing (GSI hash keys) — no
+    // consumer outside savePost/getPosts should ever see them.
+    const { e_popular_marker, e_projeto_marker, ...post } = result.Item;
+    void e_popular_marker;
+    void e_projeto_marker;
+
     logger.info("post_fetched", { requestId, slug });
-    return { statusCode: 200, body: JSON.stringify({ post: result.Item }), headers };
+    return { statusCode: 200, body: JSON.stringify({ post }), headers };
 
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

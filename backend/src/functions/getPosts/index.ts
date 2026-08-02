@@ -37,6 +37,10 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     return await getAllPosts(queryStringParameters, requestId);
 
   } catch (error) {
+    if (error instanceof InvalidNextTokenError) {
+      logger.warn("get_posts_invalid_next_token", { requestId, resource });
+      return { statusCode: 400, body: JSON.stringify({ message: "Invalid nextToken", requestId }), headers };
+    }
     const message = error instanceof Error ? error.message : String(error);
     logger.error("get_posts_error", { requestId, resource, error: message });
     return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error", requestId }), headers };
@@ -50,9 +54,36 @@ function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
+// Both user-controlled inputs need bounds: an unclamped ?limit reads the
+// whole GSI in one request (cheap RCU abuse), and a malformed nextToken
+// would otherwise throw inside JSON.parse/atob and surface as a 500 —
+// polluting the 5xx-based availability SLI with what is really a client error.
+const MAX_LIMIT = 50;
+
+function parseLimit(raw: string | undefined, fallback: number): number {
+  const parsed = raw ? parseInt(raw, 10) : NaN;
+  if (Number.isNaN(parsed) || parsed < 1) return fallback;
+  return Math.min(parsed, MAX_LIMIT);
+}
+
+class InvalidNextTokenError extends Error {}
+
+function parseNextToken(token: string | undefined): Record<string, unknown> | undefined {
+  if (!token) return undefined;
+  try {
+    const decoded = JSON.parse(atob(token));
+    if (!decoded || typeof decoded !== "object" || Array.isArray(decoded)) {
+      throw new Error("not an object");
+    }
+    return decoded as Record<string, unknown>;
+  } catch {
+    throw new InvalidNextTokenError("Malformed nextToken");
+  }
+}
+
 // Lógica Específica para "O Projeto"
 async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 8;
+  const limit = parseLimit(queryParams?.limit, 8);
   const nextToken = queryParams?.nextToken;
 
   const postsCommand = new QueryCommand({
@@ -64,7 +95,7 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
     ExpressionAttributeValues: { ":val": "PROJ", ":published": "Publicado" },
     ScanIndexForward: true,
     Limit: limit,
-    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined,
+    ExclusiveStartKey: parseNextToken(nextToken),
   });
 
   // totalCount comes from the aggregated counter (postCounters.ts), not a
@@ -115,7 +146,7 @@ async function searchPosts(term: string, queryParams: APIGatewayProxyEventQueryS
     ExpressionAttributeValues: {
       ":t1": tLower, ":t2": tUpper, ":t3": tTitle, ":published": "Publicado"
     },
-    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+    ExclusiveStartKey: parseNextToken(nextToken)
   });
 
   const result = await dynamo.send(command);
@@ -126,7 +157,7 @@ async function searchPosts(term: string, queryParams: APIGatewayProxyEventQueryS
 }
 
 async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
+  const limit = parseLimit(queryParams?.limit, 6);
 
   const command = new QueryCommand({
     TableName: TABLE_NAME,
@@ -149,7 +180,7 @@ async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParam
 }
 
 async function getRecentPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit, 10) : 6;
+  const limit = parseLimit(queryParams?.limit, 6);
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "StatusPorData",
@@ -165,7 +196,7 @@ async function getRecentPosts(queryParams: APIGatewayProxyEventQueryStringParame
 }
 
 async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
+  const limit = parseLimit(queryParams?.limit, 9);
   const nextToken = queryParams?.nextToken;
 
   const postsCommand = new QueryCommand({
@@ -176,7 +207,7 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
     ExpressionAttributeValues: { ":status": "Publicado" },
     ScanIndexForward: false,
     Limit: limit,
-    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+    ExclusiveStartKey: parseNextToken(nextToken)
   });
 
   // totalCount comes from the aggregated counter (postCounters.ts), not a
@@ -199,7 +230,7 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
 }
 
 async function getPostsByCategory(categorySlug: string, queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
-  const limit = queryParams?.limit ? parseInt(queryParams.limit) : 9;
+  const limit = parseLimit(queryParams?.limit, 9);
   const nextToken = queryParams?.nextToken;
 
   // Sem FilterExpression: Limit no QueryCommand conta itens ANTES do filtro,
@@ -212,7 +243,7 @@ async function getPostsByCategory(categorySlug: string, queryParams: APIGatewayP
     ExpressionAttributeValues: { ":cat": categorySlug },
     ScanIndexForward: false,
     Limit: limit,
-    ExclusiveStartKey: nextToken ? JSON.parse(atob(nextToken)) : undefined
+    ExclusiveStartKey: parseNextToken(nextToken)
   });
 
   const result = await dynamo.send(command);

@@ -1,10 +1,29 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { z } from "zod";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
 
 const TABLE_NAME = process.env.AUTHORS_TABLE || '';
+
+// Same anti-mass-assignment contract as postInputSchema (common/postSchema.ts):
+// .strip() discards any field outside this allowlist. The explicit item
+// mapping below already acted as an allowlist, but without validation a
+// non-string value (e.g. an object in nome_exibicao) went straight to
+// DynamoDB.
+const autorInputSchema = z
+  .object({
+    autor_id: z.string().min(1).optional(),
+    nome_exibicao: z.string().min(1),
+    bio: z.string().optional(),
+    foto_avatar_url: z.string().optional(),
+    foto_avatar_alt_text: z.string().optional(),
+    linkedin_url: z.string().optional(),
+    github_url: z.string().optional(),
+    instagram_url: z.string().optional(),
+  })
+  .strip();
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
 const headers = {
@@ -54,7 +73,20 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
       // O Blueprint define que o ID vem da URL no PUT, ou do corpo.
       // Vamos garantir que usamos o ID da URL se disponível
-      const data = JSON.parse(body);
+      let rawData: unknown;
+      try {
+        rawData = JSON.parse(body);
+      } catch {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) };
+      }
+
+      const parsed = autorInputSchema.safeParse(rawData);
+      if (!parsed.success) {
+        const issues = parsed.error.issues.map((issue) => ({ path: issue.path.join("."), message: issue.message }));
+        logger.warn("admin_authors_validation_error", { requestId, issues });
+        return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid author data", issues }) };
+      }
+      const data = parsed.data;
       const finalId = authorId || data.autor_id;
 
       if (!finalId) {

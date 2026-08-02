@@ -1,9 +1,9 @@
 // Triggered by EventBridge Scheduler every 15 minutes.
 // Publishes posts where status = "Programado" and data_publicacao_programada <= NOW.
-import { QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
-import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
+import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
@@ -69,31 +69,40 @@ async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; d
 }
 
 async function publishPost(slug: string, scheduledDate: string, eProjeto: number | undefined, now: string): Promise<void> {
-  await dynamo.send(
-    new UpdateCommand({
-      TableName: TABLE_NAME,
-      Key: { slug },
-      UpdateExpression: "SET #status = :published, data_publicacao = :scheduledDate, data_atualizacao = :now",
-      ConditionExpression: "#status = :programado",
-      ExpressionAttributeNames: { "#status": "status" },
-      ExpressionAttributeValues: {
-        ":published": "Publicado",
-        ":programado": "Programado",
-        ":scheduledDate": scheduledDate,
-        ":now": now,
-      },
-    }),
+  // "Programado" never counts toward the aggregates (only "Publicado" does),
+  // so this transition is always +1 total, and +1 project only if e_projeto=1.
+  // Post Update + counter ADD in a single transaction: a failure between two
+  // sequential writes would leave the counters drifted with no detection.
+  const counterUpdate = buildCounterTransactUpdate(
+    computeCounterDeltas({ status: "Programado", e_projeto: eProjeto }, { status: "Publicado", e_projeto: eProjeto }),
   );
 
-  // Programado nunca conta nos agregados (só Publicado conta) — a transição
-  // é sempre +1 no total, e +1 no de projeto só se e_projeto=1.
-  await applyCounterDeltas(
-    computeCounterDeltas({ status: "Programado", e_projeto: eProjeto }, { status: "Publicado", e_projeto: eProjeto }),
+  await dynamo.send(
+    new TransactWriteCommand({
+      TransactItems: [
+        {
+          Update: {
+            TableName: TABLE_NAME!,
+            Key: { slug },
+            UpdateExpression: "SET #status = :published, data_publicacao = :scheduledDate, data_atualizacao = :now",
+            ConditionExpression: "#status = :programado",
+            ExpressionAttributeNames: { "#status": "status" },
+            ExpressionAttributeValues: {
+              ":published": "Publicado",
+              ":programado": "Programado",
+              ":scheduledDate": scheduledDate,
+              ":now": now,
+            },
+          },
+        },
+        ...(counterUpdate ? [counterUpdate] : []),
+      ],
+    }),
   );
 
   // Sempre Programado -> Publicado: a home (posts recentes) sempre fica
   // stale aqui, diferente de savePost onde isso só acontece condicionalmente.
-  await invalidatePostCache([`/post/${slug}`, "/", "/artigos", "/categoria/*"]);
+  await invalidatePostCache([`/post/${slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"]);
 
   logger.info("post_published", { slug, scheduledDate });
 }

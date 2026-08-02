@@ -1,10 +1,27 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { ScanCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+import { z } from "zod";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
-import { Categoria } from "../../common/types";
 
 const TABLE_NAME = process.env.CATEGORIAS_TABLE;
+
+// Same anti-mass-assignment contract as postInputSchema (common/postSchema.ts):
+// .strip() discards any field outside this allowlist before it reaches
+// DynamoDB. icone_fa/descricao_seo are edited by the admin form even though
+// the public frontend doesn't consume them yet — dropping them here would
+// silently destroy admin-entered data on every save.
+const categoriaInputSchema = z
+  .object({
+    categoria_slug: z.string().min(1),
+    nome: z.string().min(1),
+    descricao: z.string().optional(),
+    descricao_seo: z.string().optional(),
+    icone_fa: z.string().optional(),
+    macro_areas: z.array(z.string()).optional(),
+    subcategorias: z.array(z.object({ slug: z.string(), nome: z.string() }).strip()).optional(),
+  })
+  .strip();
 const ADMIN_ORIGIN = process.env.ADMIN_ORIGIN || "*";
 
 const headers = {
@@ -36,14 +53,20 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     }
 
     if (httpMethod === "POST") {
-      if (!body) throw new Error("Body is required");
-      return await saveCategoria(JSON.parse(body), requestId);
+      if (!body) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
+      }
+      return await saveCategoria(parseJsonBody(body), requestId);
     }
 
     if (httpMethod === "PUT" && slug) {
-      if (!body) throw new Error("Body is required");
-      const data = JSON.parse(body);
-      if (data.categoria_slug !== slug) throw new Error("Slug mismatch");
+      if (!body) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
+      }
+      const data = parseJsonBody(body);
+      if ((data as { categoria_slug?: string } | undefined)?.categoria_slug !== slug) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Slug mismatch" }), headers };
+      }
       return await saveCategoria(data, requestId);
     }
 
@@ -59,6 +82,16 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     return { statusCode: 500, body: JSON.stringify({ message: "Internal Server Error", requestId }), headers };
   }
 };
+
+// A malformed body is a client error — without this, JSON.parse would throw
+// into the catch-all and surface as a 500.
+function parseJsonBody(body: string): unknown | undefined {
+  try {
+    return JSON.parse(body);
+  } catch {
+    return undefined;
+  }
+}
 
 async function listCategorias(requestId: string) {
   const result = await dynamo.send(new ScanCommand({ TableName: TABLE_NAME }));
@@ -76,10 +109,14 @@ async function getCategoria(slug: string, requestId: string) {
   return { statusCode: 200, body: JSON.stringify(result.Item), headers };
 }
 
-async function saveCategoria(data: Categoria, requestId: string) {
-  if (!data.categoria_slug || !data.nome) {
-    return { statusCode: 400, body: JSON.stringify({ message: "categoria_slug and nome are required" }), headers };
+async function saveCategoria(rawData: unknown, requestId: string) {
+  const parsed = categoriaInputSchema.safeParse(rawData);
+  if (!parsed.success) {
+    const issues = parsed.error.issues.map((issue) => ({ path: issue.path.join("."), message: issue.message }));
+    logger.warn("admin_categorias_validation_error", { requestId, issues });
+    return { statusCode: 400, body: JSON.stringify({ message: "Invalid categoria data", issues }), headers };
   }
+  const data = parsed.data;
 
   await dynamo.send(new PutCommand({ TableName: TABLE_NAME, Item: data }));
   logger.info("categoria_saved", { requestId, slug: data.categoria_slug });

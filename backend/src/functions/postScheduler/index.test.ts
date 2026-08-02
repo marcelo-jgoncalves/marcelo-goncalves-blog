@@ -52,33 +52,32 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      // 1 Query + (1 status UpdateItem + 1 counter ADD) per published post
-      expect(mockSend).toHaveBeenCalledTimes(5);
+      // 1 Query + 1 TransactWrite (status Update + counter ADD) per published post
+      expect(mockSend).toHaveBeenCalledTimes(3);
     });
 
-    it('incrementa total_publicado ao publicar (Programado nunca contava no agregado)', async () => {
+    it('incrementa total_publicado na mesma transacao do Update de status', async () => {
       const post = { slug: 'my-post', data_publicacao_programada: '2026-01-01T00:00:00.000Z', e_projeto: 1 };
       mockSend
         .mockResolvedValueOnce({ Items: [post] }) // Query
-        .mockResolvedValueOnce({}) // UpdateItem (status)
-        .mockResolvedValueOnce({}); // contador
+        .mockResolvedValueOnce({}); // TransactWriteCommand (Update + contador)
 
       await handler({});
 
-      const counterCmd = mockSend.mock.calls[2][0];
-      expect(counterCmd.input.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 1 });
+      const transact = mockSend.mock.calls[1][0].input.TransactItems;
+      expect(transact).toHaveLength(2);
+      expect(transact[1].Update.ExpressionAttributeValues).toEqual({ ':dt': 1, ':dp': 1 });
     });
 
     it('invalida /post/{slug} e "/" ao publicar (sempre afeta a home)', async () => {
       const post = { slug: 'my-post', data_publicacao_programada: '2026-01-01T00:00:00.000Z' };
       mockSend
         .mockResolvedValueOnce({ Items: [post] }) // Query
-        .mockResolvedValueOnce({}) // UpdateItem (status)
-        .mockResolvedValueOnce({}); // contador
+        .mockResolvedValueOnce({}); // TransactWriteCommand (Update + contador)
 
       await handler({});
 
-      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/my-post', '/', '/artigos', '/categoria/*']);
+      expect(mockInvalidatePostCache).toHaveBeenCalledWith(['/post/my-post', '/', '/artigos', '/todos-artigos', '/categoria/*']);
     });
 
     it('updates status to Publicado for each post', async () => {
@@ -89,10 +88,10 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      const updateCmd = mockSend.mock.calls[1][0];
-      expect(updateCmd.input.Key).toEqual({ slug: 'my-post' });
-      expect(updateCmd.input.ExpressionAttributeValues[':published']).toBe('Publicado');
-      expect(updateCmd.input.ExpressionAttributeValues[':scheduledDate']).toBe(post.data_publicacao_programada);
+      const statusUpdate = mockSend.mock.calls[1][0].input.TransactItems[0].Update;
+      expect(statusUpdate.Key).toEqual({ slug: 'my-post' });
+      expect(statusUpdate.ExpressionAttributeValues[':published']).toBe('Publicado');
+      expect(statusUpdate.ExpressionAttributeValues[':scheduledDate']).toBe(post.data_publicacao_programada);
     });
 
     it('uses ConditionExpression to avoid double-publish race condition', async () => {
@@ -103,8 +102,8 @@ describe('postScheduler handler', () => {
 
       await handler({});
 
-      const updateCmd = mockSend.mock.calls[1][0];
-      expect(updateCmd.input.ConditionExpression).toBe('#status = :programado');
+      const statusUpdate = mockSend.mock.calls[1][0].input.TransactItems[0].Update;
+      expect(statusUpdate.ConditionExpression).toBe('#status = :programado');
     });
 
     it('continues publishing other posts when one UpdateItem fails', async () => {

@@ -78,3 +78,21 @@ export async function applyCounterDeltas(deltas: CounterDeltas): Promise<void> {
     }),
   );
 }
+
+// Shape usable inside a TransactWriteCommand — lets a write path commit the
+// post mutation and the counter ADD in a single atomic transaction, instead
+// of two sequential calls where a crash in between leaves the counters
+// drifted with no detection. Returns null when the write doesn't change the
+// aggregates (caller falls back to a plain, cheaper single-item write).
+export function buildCounterTransactUpdate(deltas: CounterDeltas) {
+  if (deltas.deltaTotal === 0 && deltas.deltaProjeto === 0) return null;
+
+  return {
+    Update: {
+      TableName: TABLE_NAME!,
+      Key: { slug: COUNTERS_SLUG },
+      UpdateExpression: "ADD total_publicado :dt, total_projeto_publicado :dp",
+      ExpressionAttributeValues: { ":dt": deltas.deltaTotal, ":dp": deltas.deltaProjeto },
+    },
+  };
+}

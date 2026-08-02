@@ -1,11 +1,11 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { QueryCommand, GetCommand, PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, GetCommand, PutCommand, DeleteCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
 import { postInputSchema } from "../../common/postSchema";
-import { computeCounterDeltas, applyCounterDeltas } from "../../common/postCounters";
+import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
@@ -43,16 +43,28 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
     // 3. Criar
     if (httpMethod === "POST") {
-      if (!body) throw new Error("Body is required");
-      const postData = JSON.parse(body);
+      if (!body) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
+      }
+      const postData = parseJsonBody(body);
+      if (postData === undefined) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
+      }
       return await savePost(postData, true, requestId);
     }
 
     // 4. Atualizar
     if (httpMethod === "PUT" && slug) {
-      if (!body) throw new Error("Body is required");
-      const postData = JSON.parse(body);
-      if (postData.slug !== slug) throw new Error("Slug mismatch");
+      if (!body) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
+      }
+      const postData = parseJsonBody(body);
+      if (postData === undefined) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
+      }
+      if ((postData as { slug?: string }).slug !== slug) {
+        return { statusCode: 400, body: JSON.stringify({ message: "Slug mismatch" }), headers };
+      }
       return await savePost(postData, false, requestId);
     }
 
@@ -77,6 +89,16 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     };
   }
 };
+
+// A malformed body is a client error — without this, JSON.parse would throw
+// into the catch-all and surface as a 500, polluting the availability SLI.
+function parseJsonBody(body: string): unknown | undefined {
+  try {
+    return JSON.parse(body);
+  } catch {
+    return undefined;
+  }
+}
 
 // --- Funções Auxiliares (AGORA COM HEADERS) ---
 
@@ -174,18 +196,30 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
     tempo_leitura_min: Number(data.tempo_leitura_min || 5)
   };
 
-  await dynamo.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: item
-  }));
-
-  await applyCounterDeltas(computeCounterDeltas(existing, item));
+  // Put + counter ADD in one transaction: a crash between two sequential
+  // writes would leave the aggregated counters drifted with no detection
+  // (there is no reconciliation job yet). Falls back to a plain Put when the
+  // write doesn't change the aggregates — cheaper than a transaction.
+  const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, item));
+  if (counterUpdate) {
+    await dynamo.send(new TransactWriteCommand({
+      TransactItems: [
+        { Put: { TableName: TABLE_NAME!, Item: item } },
+        counterUpdate,
+      ],
+    }));
+  } else {
+    await dynamo.send(new PutCommand({
+      TableName: TABLE_NAME,
+      Item: item
+    }));
+  }
 
   // Post passou a contar como publicado agora (criação já publicada, ou
   // transição de Rascunho/Programado -> Publicado) -- a home (posts
   // recentes) também fica stale, não só a página do post.
   const ficouPublicado = item.status === "Publicado" && existing?.status !== "Publicado";
-  await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/", "/artigos", "/categoria/*"] : [`/post/${item.slug}`]);
+  await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"] : [`/post/${item.slug}`]);
 
   return {
     statusCode: 200,
@@ -197,14 +231,22 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
 async function deletePost(slug: string) {
   const existing = (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug } }))).Item as Post | undefined;
 
-  await dynamo.send(new DeleteCommand({
-    TableName: TABLE_NAME,
-    Key: { slug }
-  }));
+  const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, undefined));
+  if (counterUpdate) {
+    await dynamo.send(new TransactWriteCommand({
+      TransactItems: [
+        { Delete: { TableName: TABLE_NAME!, Key: { slug } } },
+        counterUpdate,
+      ],
+    }));
+  } else {
+    await dynamo.send(new DeleteCommand({
+      TableName: TABLE_NAME,
+      Key: { slug }
+    }));
+  }
 
-  await applyCounterDeltas(computeCounterDeltas(existing, undefined));
-
-  await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/", "/artigos", "/categoria/*"] : [`/post/${slug}`]);
+  await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"] : [`/post/${slug}`]);
 
   return {
     statusCode: 200,
