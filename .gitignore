@@ -92,6 +92,9 @@ contexto/
 ajustes/
 prints/
 
+# --- Configuração local de MCP servers (varia por máquina/usuário) ---
+.mcp.json
+
 # --- IDEs (Configurações locais) ---
 .vscode/
 .idea/
