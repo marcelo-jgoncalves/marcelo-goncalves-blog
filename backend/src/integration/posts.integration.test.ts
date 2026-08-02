@@ -171,6 +171,15 @@ describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a 
         Item: { slug: { S: slug }, status: { S: "Publicado" } }, // NOT Programado — condition below will fail
       }),
     );
+
+    // The counter item already exists at this point (earlier tests in this
+    // file published posts against the same shared table) — the assertion
+    // below is a before/after comparison, not "does it exist at all".
+    const before = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: { slug: { S: "__METADATA__#posts_counters" } } }),
+    );
+    const totalBefore = before.Item?.total_publicado?.N;
+
     await expect(
       client.send(
         new TransactWriteItemsCommand({
@@ -201,15 +210,12 @@ describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a 
       ),
     ).rejects.toThrow(/TransactionCanceledException|ConditionalCheckFailed/);
 
-    // The counter item must not exist at all — proves the 2nd Update (which
-    // has no condition of its own) was never applied, exactly the scenario
-    // buildCounterTransactUpdate relies on to keep counters from drifting.
-    const counter = await client.send(
-      new GetItemCommand({
-        TableName: TABLE_NAME,
-        Key: { slug: { S: "__METADATA__#posts_counters" } },
-      }),
+    // Unchanged — proves the 2nd Update (which has no condition of its own)
+    // was never applied, exactly the scenario buildCounterTransactUpdate
+    // relies on to keep counters from drifting.
+    const after = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: { slug: { S: "__METADATA__#posts_counters" } } }),
     );
-    expect(counter.Item).toBeUndefined();
+    expect(after.Item?.total_publicado?.N).toBe(totalBefore);
   });
 });
