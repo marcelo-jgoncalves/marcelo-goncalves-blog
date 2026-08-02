@@ -53,6 +53,14 @@ jobs:
           key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: backend-${{ runner.os }}-
 
+      # backend's package.json depends on @mgoncalves/contracts via `file:`,
+      # which only symlinks the source — it doesn't install *its own*
+      # node_modules (zod). Without this, TypeScript can't resolve zod's
+      # types through the symlink and silently widens ZodError.issues to any.
+      - name: Install contracts package dependencies
+        run: npm ci
+        working-directory: packages/contracts
+
       - name: Install backend dependencies
         run: npm ci
         working-directory: backend
@@ -109,6 +117,10 @@ jobs:
           path: backend/node_modules
           key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: backend-${{ runner.os }}-
+
+      - name: Install contracts package dependencies
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Install backend dependencies
         run: npm ci
@@ -203,6 +215,10 @@ jobs:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
           restore-keys: admin-${{ runner.os }}-
+
+      - name: Install contracts package dependencies
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Install admin dependencies
         run: npm ci
@@ -373,6 +389,10 @@ jobs:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
           restore-keys: admin-${{ runner.os }}-
+
+      - name: Install contracts package dependencies
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Install admin dependencies
         run: npm ci
@@ -615,6 +635,10 @@ jobs:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
           restore-keys: admin-${{ runner.os }}-
+
+      - name: Install contracts package dependencies
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Install admin dependencies
         run: npm ci

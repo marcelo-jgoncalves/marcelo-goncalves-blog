@@ -28,6 +28,10 @@ jobs:
         with:
           node-version: 22
 
+      - name: Instalar Dependencias do Pacote de Contratos
+        run: npm ci
+        working-directory: packages/contracts
+
       - name: Instalar Dependencias do Backend
         run: npm ci
         working-directory: backend
@@ -69,6 +73,10 @@ jobs:
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
+
+      - name: Instalar Dependencias do Pacote de Contratos
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Instalar Dependencias do Backend
         run: npm ci
@@ -130,6 +138,10 @@ jobs:
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
+
+      - name: Instalar Dependencias do Pacote de Contratos
+        run: npm ci
+        working-directory: packages/contracts
 
       - name: Instalar Dependencias do Admin
         run: npm ci
