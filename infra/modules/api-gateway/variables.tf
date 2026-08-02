@@ -33,8 +33,8 @@ variable "get_author_function_name" {
   type        = string
 }
 
-variable "cognito_user_pool_arn" {
-  description = "ARN of the Cognito User Pool used by the API Gateway Cognito authorizer"
+variable "admin_origin" {
+  description = "Full origin (https://...) of the admin SPA — the only origin allowed on CORS preflight responses and gateway responses of protected routes"
   type        = string
 }
 

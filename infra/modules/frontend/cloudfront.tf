@@ -91,6 +91,48 @@ resource "aws_cloudfront_response_headers_policy" "frontend_security_headers" {
   }
 }
 
+# Modern cache policies (replacing legacy forwarded_values on the routes
+# below — the default behavior still uses forwarded_values; migrate it in its
+# own validated round, since it fronts every SSR page at once).
+
+# "Except host": a Lambda Function URL origin rejects requests whose Host
+# header doesn't match the URL's own domain (SigV4 signature mismatch).
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
+  name = "Managed-AllViewerExceptHostHeader"
+}
+
+data "aws_cloudfront_cache_policy" "use_origin_cache_control_qs" {
+  name = "Managed-UseOriginCacheControlHeaders-QueryStrings"
+}
+
+# min = default = max is the only combination where CloudFront caches even
+# when the origin sends Cache-Control: no-store — which is what App Router
+# pages that read searchParams always send (see the /categoria/* behavior
+# comment). 300s matches the revalidate the pages declare but can't honor.
+resource "aws_cloudfront_cache_policy" "force_edge_300" {
+  name    = "${var.project_name}-${var.environment}-force-edge-300"
+  comment = "Pins a 300s edge TTL, overriding the origin's no-store"
+
+  min_ttl     = 300
+  default_ttl = 300
+  max_ttl     = 300
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    enable_accept_encoding_gzip   = true
+    enable_accept_encoding_brotli = true
+
+    cookies_config {
+      cookie_behavior = "none"
+    }
+    headers_config {
+      header_behavior = "none"
+    }
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
+}
+
 resource "aws_cloudfront_distribution" "frontend" {
   enabled         = true
   is_ipv6_enabled = true
@@ -223,15 +265,11 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
-  # --- /artigos e /categoria/*: TTL explícito de 300s no CloudFront ---
-  # Estas rotas leem searchParams (cursor de paginação), o que força renderização
-  # dinâmica no App Router e faz o Next.js emitir Cache-Control: no-store.
-  # O CloudFront normalmente respeita esse header; aqui sobrescrevemos o TTL
-  # diretamente para dar cache de 5 min na borda (match do revalidate: 300
-  # declarado nas páginas, que sem ISR funcional era no-op silencioso).
-  # query_string=true mantém entradas separadas por combinação de cursor —
-  # sem isso, /artigos?nextToken=abc serviria o conteúdo da página 1.
-
+  # --- /artigos: ISR works here (the page reads no searchParams), so the
+  # origin emits s-maxage=300 and CloudFront just has to respect it. Managed
+  # "UseOriginCacheControlHeaders-QueryStrings" does exactly that, with query
+  # strings in the cache key. Confirmed live: X-Cache Hit with Age after the
+  # first request.
   ordered_cache_behavior {
     path_pattern               = "/artigos"
     allowed_methods            = ["GET", "HEAD"]
@@ -239,21 +277,25 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
-    forwarded_values {
-      query_string = true
-      cookies {
-        forward = "none"
-      }
-      headers = ["Authorization"]
-    }
+    cache_policy_id          = data.aws_cloudfront_cache_policy.use_origin_cache_control_qs.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
-    min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 86400
   }
 
+  # --- /categoria/* and /todos-artigos: these pages read searchParams
+  # (pagination cursor), which forces dynamic rendering in the App Router and
+  # makes Next.js emit Cache-Control: no-store on EVERY response — including
+  # page 1 without any query string. CloudFront honors no-store whenever
+  # min TTL is 0, so a TTL override via default_ttl alone never caches
+  # anything (confirmed live: X-Cache Miss on every request). The custom
+  # policy below pins min=default=max=300s, the one configuration where
+  # CloudFront caches DESPITE the origin's no-store. Query strings stay in
+  # the cache key — without that, /todos-artigos?nextToken=abc would serve
+  # page 1's content. Staleness within the 300s window is bounded by the
+  # on-demand invalidation fired on publish/delete transitions
+  # (backend/src/common/cacheInvalidation.ts).
   ordered_cache_behavior {
     path_pattern               = "/categoria/*"
     allowed_methods            = ["GET", "HEAD"]
@@ -261,19 +303,25 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
-    forwarded_values {
-      query_string = true
-      cookies {
-        forward = "none"
-      }
-      headers = ["Authorization"]
-    }
+    cache_policy_id          = aws_cloudfront_cache_policy.force_edge_300.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
-    min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 86400
+  }
+
+  ordered_cache_behavior {
+    path_pattern               = "/todos-artigos"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "Lambda-SSR"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
+
+    cache_policy_id          = aws_cloudfront_cache_policy.force_edge_300.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
+
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
   }
 
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
@@ -288,7 +336,6 @@ resource "aws_cloudfront_distribution" "frontend" {
       cookies {
         forward = "none" # Blog público sem auth — cookies não afetam o render
       }
-      headers = ["Authorization"]
     }
 
     viewer_protocol_policy = "redirect-to-https"

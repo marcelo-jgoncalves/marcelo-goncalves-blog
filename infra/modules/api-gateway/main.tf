@@ -8,19 +8,8 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
-# Native Cognito authorizer — kept only as a historical reference; no
-# method uses this authorizer anymore (all migrated to admin_cookie_auth,
-# which supports session cookie + Bearer fallback in the same Lambda).
-# Remove once the BFF rollout is validated in production (see
-# admin_authorizer/index.ts for the fallback logic).
-resource "aws_api_gateway_authorizer" "cognito_auth" {
-  name          = "CognitoAuthorizer"
-  type          = "COGNITO_USER_POOLS"
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  provider_arns = [var.cognito_user_pool_arn]
-}
-
-# Lambda Authorizer (REQUEST) — replaces the COGNITO_USER_POOLS above on
+# Lambda Authorizer (REQUEST) — replaces the old native COGNITO_USER_POOLS
+# authorizer (removed after the BFF rollout was validated end to end) on
 # every protected /admin/* route. Supports the opaque session cookie (BFF,
 # new flow) and Authorization Bearer (Amplify client-side, legacy flow kept
 # during the transition) — see backend/src/functions/adminAuthorizer.
@@ -71,7 +60,7 @@ resource "aws_api_gateway_gateway_response" "unauthorized_cors" {
   status_code   = "401"
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
@@ -83,7 +72,7 @@ resource "aws_api_gateway_gateway_response" "access_denied_cors" {
   status_code   = "403"
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
@@ -94,7 +83,7 @@ resource "aws_api_gateway_gateway_response" "default_4xx_cors" {
   response_type = "DEFAULT_4XX"
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
@@ -105,7 +94,7 @@ resource "aws_api_gateway_gateway_response" "default_5xx_cors" {
   response_type = "DEFAULT_5XX"
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
@@ -923,7 +912,7 @@ resource "aws_api_gateway_integration_response" "cors_preflight" {
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
     "method.response.header.Access-Control-Allow-Methods" = "'${each.value.allow_methods}'",
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
   }
 
   depends_on = [aws_api_gateway_method_response.cors_preflight_200]
@@ -934,92 +923,15 @@ resource "aws_api_gateway_integration_response" "cors_preflight" {
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.main.id
 
-  # The trigger hashes all resources. If any changes, it forces a redeploy.
+  # Hash of this whole file, not a hand-maintained resource list: the old
+  # list (~50 entries) had to be updated for every new route and had already
+  # missed resources at least once (documented gap on media_upload preflight
+  # before the for_each unification). Any change to any resource in this
+  # module lives in this file, so its hash over-approximates "something
+  # changed" — a rare redeploy too many is harmless (create_before_destroy),
+  # a missing redeploy silently serves the old API.
   triggers = {
-    redeployment = sha1(jsonencode([
-      # --- Admin session BFF (/admin/session) + new authorizer ---
-      # Whole object, not just .id: the id doesn't change on an in-place
-      # update (e.g. an identity_source change), so using only .id never
-      # forced a redeploy — two consecutive identity_source fixes had no
-      # runtime effect because the stage kept serving the old deployment.
-      aws_api_gateway_authorizer.admin_cookie_auth,
-      aws_api_gateway_resource.admin_session,
-      aws_api_gateway_method.admin_session_post,
-      aws_api_gateway_method.admin_session_get,
-      aws_api_gateway_method.admin_session_delete,
-      aws_api_gateway_integration.admin_session_post_integration,
-      aws_api_gateway_integration.admin_session_get_integration,
-      aws_api_gateway_integration.admin_session_delete_integration,
-      # --- Public Resources (Old) ---
-      aws_api_gateway_resource.post_slug,
-      aws_api_gateway_method.get_post,
-      aws_api_gateway_integration.get_post_integration,
-      aws_api_gateway_resource.autor_id,
-      aws_api_gateway_method.get_author,
-      aws_api_gateway_integration.get_author_integration,
-      # --- Recursos Admin Plural (Antigos - /admin/posts) ---
-      aws_api_gateway_resource.admin_posts,
-      aws_api_gateway_method.admin_posts_any,
-      aws_api_gateway_integration.admin_posts_integration,
-      # --- Recursos Admin Singular (NOVOS - /admin/post/{slug}) ---
-      aws_api_gateway_resource.admin_post_singular,
-      aws_api_gateway_resource.admin_post_slug,
-      # Método ANY (Protegido)
-      aws_api_gateway_method.admin_post_slug_any,
-      aws_api_gateway_integration.admin_post_slug_integration,
-      # Método p/ MEDIA (CORS)
-      aws_api_gateway_resource.admin_media,
-      aws_api_gateway_resource.admin_media_upload,
-      aws_api_gateway_method.media_upload_post,
-      aws_api_gateway_integration.media_upload_integration,
-      aws_api_gateway_resource.posts_recentes,
-      aws_api_gateway_method.get_recentes,
-      aws_api_gateway_integration.get_recentes_integration,
-      aws_api_gateway_resource.artigos,
-      aws_api_gateway_method.get_artigos,
-      aws_api_gateway_integration.get_artigos_integration,
-      aws_api_gateway_resource.categoria_slug,
-      aws_api_gateway_method.get_categoria,
-      aws_api_gateway_integration.get_categoria_integration,
-      aws_api_gateway_resource.posts_populares,
-      aws_api_gateway_method.get_populares,
-      aws_api_gateway_integration.get_populares_integration,
-      aws_api_gateway_resource.busca,
-      aws_api_gateway_method.get_busca,
-      aws_api_gateway_integration.get_busca_integration,
-      aws_api_gateway_resource.projeto,
-      aws_api_gateway_method.get_projeto,
-      aws_api_gateway_integration.get_projeto_integration,
-      aws_api_gateway_resource.admin_autores,
-      aws_api_gateway_resource.admin_autor_singular,
-      aws_api_gateway_resource.admin_autor_id,
-      aws_api_gateway_method.admin_autor_id_any,
-      aws_api_gateway_integration.admin_autor_id_integration,
-      aws_api_gateway_resource.admin_categorias,
-      aws_api_gateway_method.admin_categorias_any,
-      aws_api_gateway_integration.admin_categorias_integration,
-      aws_api_gateway_resource.admin_categorias_slug,
-      aws_api_gateway_method.admin_categorias_slug_any,
-      aws_api_gateway_integration.admin_categorias_slug_integration,
-      # --- CORS Preflight (OPTIONS), unificado em for_each ---
-      # Mapa inteiro em vez de 1 linha por recurso -- também fecha uma lacuna
-      # pré-existente: o trigger antigo só rastreava method+integration_response
-      # do media_upload_options (faltavam a integration MOCK e o
-      # method_response), então uma mudança neles não forçava redeploy.
-      aws_api_gateway_method.cors_preflight,
-      aws_api_gateway_integration.cors_preflight,
-      aws_api_gateway_method_response.cors_preflight_200,
-      aws_api_gateway_integration_response.cors_preflight,
-      # Gateway Responses (CORS em erros do autorizador Cognito)
-      # Referencia só o .id (nao o objeto inteiro) — o provider AWS recalcula
-      # response_parameters durante o apply, e usar o objeto completo aqui
-      # causa "Provider produced inconsistent final plan" (hash do trigger
-      # muda entre plan e apply porque o proprio recurso esta sendo modificado).
-      aws_api_gateway_gateway_response.unauthorized_cors.id,
-      aws_api_gateway_gateway_response.access_denied_cors.id,
-      aws_api_gateway_gateway_response.default_4xx_cors.id,
-      aws_api_gateway_gateway_response.default_5xx_cors.id,
-    ]))
+    redeployment = filesha1("${path.module}/main.tf")
   }
 
   lifecycle {
