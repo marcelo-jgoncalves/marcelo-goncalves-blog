@@ -122,7 +122,7 @@ mgoncalves-editorial-platform/
 ├── frontend/    # Next.js 16 + OpenNext v3 (blog público)
 ├── backend/     # Node.js 22 + TypeScript — 11 Lambdas
 ├── admin/       # Vue 3 + Vite + Pinia + AWS Amplify (CMS)
-├── infra/       # Terraform — 7 módulos AWS
+├── infra/       # Terraform — 10 módulos AWS
 └── contexto/        # Documentação viva do projeto
 ```
 
