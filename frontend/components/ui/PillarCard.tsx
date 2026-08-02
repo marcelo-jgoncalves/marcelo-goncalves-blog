@@ -1,6 +1,6 @@
 // Card for one of the 4 commercial pillars (Automação, IA, Sistemas,
-// Cloud), used on the Home. Icon + kicker + title + description + tags +
-// "Saiba mais" link.
+// Cloud) — same format used on the Home and the central Serviços page
+// (/servicos). Icon + kicker + title + description + tags + "Saiba mais" link.
 
 import Link from 'next/link';
 import type { ReactNode } from 'react';

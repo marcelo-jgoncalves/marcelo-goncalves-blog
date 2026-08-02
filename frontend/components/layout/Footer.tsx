@@ -6,11 +6,9 @@ import './Footer.css';
 import ConsentTrigger from '@/components/consent/ConsentTrigger';
 import { AUTHOR_EMAIL, AUTHOR_LOCATION } from '@/lib/config';
 
-// Visão geral first, then the 4 pillars. The /servicos hub page was removed
-// (no unique content beyond overview cards already on the Home) — the
-// overview link now points at the Home's own services section.
+// Visão geral first, then the 4 pillars.
 const SERVICES_LINKS = [
-  { name: 'Visão geral', href: '/#servicos' },
+  { name: 'Visão geral', href: '/servicos' },
   { name: 'Automação e Integração', href: '/automacao' },
   { name: 'Inteligência Artificial Aplicada', href: '/inteligencia-artificial' },
   { name: 'Sistemas e Plataformas', href: '/software' },

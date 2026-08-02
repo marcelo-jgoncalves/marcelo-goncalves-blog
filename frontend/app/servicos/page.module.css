@@ -1,0 +1,721 @@
+/* Page's own breakpoints (680/1040) */
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--sp-5);
+}
+
+@media (min-width: 680px) { .wrap { padding: 0 var(--sp-7); } }
+@media (min-width: 1040px) { .wrap { padding: 0 var(--sp-8); } }
+
+.h2 {
+  letter-spacing: -.04em;
+  color: var(--ink);
+  text-wrap: balance;
+  font-size: var(--type-h3);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.h2Dark {
+  letter-spacing: -.04em;
+  color: var(--ivory);
+  text-wrap: balance;
+  font-size: var(--type-h3);
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.sectionDesc {
+  color: var(--slate);
+  max-width: 580px;
+  margin: var(--sp-6) 0 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--sp-10);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.eyebrowLight,
+.eyebrowDark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-caption);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.eyebrowDark { color: rgba(255, 255, 255, .65); }
+.eyebrowLight { color: var(--clay); }
+
+.eyebrowLight::before,
+.eyebrowDark::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+.eyebrowDual { justify-content: center; }
+
+.eyebrowDual::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--clay);
+  flex: none;
+}
+
+.oquefazemos,
+.frentes,
+.especialidades,
+.abordagem,
+.comoComeca,
+.paraQuem,
+.diferenciaisSection {
+  margin-block: 0;
+}
+
+/* ===== HERO ===== */
+.svcHero {
+  --ph-pad: 88px 40px var(--sp-9);
+}
+
+.heroCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--eyebrow-gap);
+  margin-top: var(--sp-7);
+}
+
+.heroMicrocopy {
+  margin-top: var(--sp-3);
+  color: var(--slate);
+  font-size: var(--type-caption);
+}
+
+@media (max-width: 860px) {
+  .heroCtaRow { justify-content: center; flex-direction: column; align-items: center; }
+  .heroMicrocopy { text-align: center; }
+}
+
+/* scroll-margin-top on the page's anchors (100px — same pattern already
+   used across the project, see frontend/app/post/[slug]/post.css). */
+:global(#problemas),
+:global(#frentes),
+:global(#servicos-especializados),
+:global(#solucoes-integradas),
+:global(#como-comeca),
+:global(#para-quem),
+:global(#diferenciais),
+:global(#perguntas),
+:global(#contato) {
+  scroll-margin-top: 100px;
+}
+
+/* ===== PROBLEMS WE SOLVE ===== */
+.oquefazemos {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .oquefazemos { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .oquefazemos { padding: var(--sp-12) 0; } }
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .cardGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .cardGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.problemasClosing {
+  max-width: 720px;
+  margin: var(--sp-9) auto 0;
+  text-align: center;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+}
+
+/* ===== TWO FRONTS ===== */
+.frentes {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .frentes { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .frentes { padding: var(--sp-12) 0; } }
+
+.frentesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .frentesGrid { grid-template-columns: repeat(2, 1fr); } }
+
+.frenteCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: var(--sp-8);
+}
+
+.frenteTitle {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-3);
+}
+
+.frenteText {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0 0 var(--sp-6);
+}
+
+.frenteList {
+  list-style: none;
+  margin: 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.frenteList a {
+  font-weight: 600;
+  font-size: var(--type-body-sm);
+  color: var(--petrol);
+  text-decoration: none;
+}
+
+.frenteList a:hover {
+  color: var(--petrol-deep);
+  text-decoration: underline;
+}
+
+/* Single panel with a vertical divider between the two fronts, 01/02
+   numbering and inline links with an arrow — no horizontal lines between
+   items. */
+.frontsPanel {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  max-width: 1120px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.front {
+  position: relative;
+  min-width: 0;
+  padding: var(--sp-8) var(--sp-7) var(--sp-8) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.front + .front {
+  padding-right: 0;
+  padding-left: var(--sp-8);
+  border-left: 1px solid var(--line);
+}
+
+.front::before {
+  content: attr(data-front);
+  display: block;
+  margin-bottom: var(--sp-4);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.front .frenteTitle {
+  max-width: 23ch;
+  margin-bottom: var(--sp-4);
+  color: var(--ink);
+  font-size: var(--type-h4);
+  line-height: 1.16;
+}
+
+.front .frenteText {
+  max-width: 57ch;
+  color: var(--slate);
+  font-size: var(--type-body-sm);
+  line-height: 1.65;
+}
+
+.front .frenteList {
+  margin-top: var(--sp-6);
+  padding-top: 0;
+  border-top: 0;
+  gap: 0;
+}
+
+.front .frenteList li {
+  padding: var(--sp-3) 0;
+  border-bottom: 0;
+}
+
+.front .frenteList a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  font-weight: 700;
+}
+
+.front .frenteList a::after {
+  content: "→";
+  flex: none;
+  color: var(--clay);
+}
+
+@media (max-width: 680px) {
+  .frontsPanel { grid-template-columns: 1fr; }
+  .front { padding: var(--sp-7) 0; }
+  .front + .front {
+    padding: var(--sp-7) 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
+/* ===== SPECIALIZED SERVICES ===== */
+.especialidades {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
+
+/* flex-wrap grid (not CSS grid) — PillarCard.css sets flex:1 1 340px per
+   card, same pattern as .ih-pillars-grid on the Home. */
+.pillarsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap-grid);
+}
+
+/* ===== INTEGRATED SOLUTIONS ===== */
+.abordagem {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .abordagem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .abordagem { padding: var(--sp-12) 0; } }
+
+.exemploCard {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: var(--sp-8);
+  box-shadow: 0 30px 60px -42px rgba(12, 32, 39, .25);
+}
+
+.subblocoKicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: var(--sp-4);
+}
+
+.exemploIntro {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0 0 var(--sp-5);
+}
+
+.exemploList {
+  list-style: none;
+  margin: 0 0 var(--sp-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.exemploList li {
+  position: relative;
+  padding-left: var(--sp-6);
+  font-size: var(--type-body-sm);
+  color: var(--slate);
+}
+
+.exemploList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--clay);
+  font-weight: 700;
+}
+
+.exemploResultado {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+}
+
+/* Text on the left, "Exemplo" card on the right — replaces the centered
+   header above the card. */
+.integratedLayout {
+  display: grid;
+  grid-template-columns: minmax(300px, .82fr) minmax(0, 1.18fr);
+  gap: var(--sp-10);
+  align-items: start;
+}
+
+.integratedHead {
+  margin-bottom: 0;
+}
+
+.integratedHead h2 {
+  max-width: 17ch;
+}
+
+@media (max-width: 900px) {
+  .integratedLayout { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+
+/* "Exemplo" card gets the same treatment as the Home's "Nosso método" card
+   (subtle petrol border + --clay bar on the left), numbered list in 2
+   columns — keeps the horizontal lines between items (those weren't part
+   of the removal that only applies to "frentes"). */
+.integratedExample {
+  margin: 0 auto;
+  padding: var(--sp-8);
+  border: 1px solid rgba(15, 76, 92, .12);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 14px 14px 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.integratedExample .exemploIntro {
+  max-width: 68ch;
+  margin-bottom: var(--sp-6);
+  color: var(--slate);
+  line-height: 1.65;
+}
+
+.integratedExample .exemploList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--sp-7);
+  margin: 0;
+  padding: 0;
+}
+
+.integratedExample .exemploList li {
+  padding: var(--sp-5) 0 var(--sp-5) var(--sp-9);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.integratedExample .exemploList li::before {
+  content: attr(data-index);
+  position: absolute;
+  top: var(--sp-5);
+  left: 0;
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid rgba(201, 96, 60, .24);
+  border-radius: 8px;
+  background: var(--clay-soft);
+  color: var(--clay);
+  font-family: var(--font-numbers);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.integratedExample .exemploResultado {
+  margin-top: var(--sp-6);
+  color: var(--slate);
+}
+
+.integratedExample .exemploResultado strong {
+  color: var(--petrol);
+}
+
+@media (max-width: 720px) {
+  .integratedExample .exemploList { grid-template-columns: 1fr; }
+}
+
+/* ===== HOW THE WORK BEGINS ===== */
+.comoComeca {
+  padding: var(--sp-10) 0;
+  background: var(--petrol);
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 680px) { .comoComeca { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .comoComeca { padding: var(--sp-12) 0; } }
+
+.confiabilidadeOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 55% at 100% 0, rgba(201, 96, 60, .22), transparent 58%),
+    radial-gradient(38% 55% at 0 100%, rgba(91, 139, 150, .18), transparent 62%);
+}
+
+.comoComeca .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.etapasGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-grid);
+}
+
+@media (min-width: 680px) { .etapasGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .etapasGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.etapa {
+  text-align: center;
+  padding: 0 var(--sp-2);
+}
+
+.etapaCirculo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  margin: 0 auto var(--sp-5);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(150deg, var(--clay), var(--clay-hover));
+  box-shadow: 0 8px 18px -8px rgba(201, 96, 60, .55);
+}
+
+.etapaTitle {
+  font-weight: 700;
+  font-size: var(--type-lead);
+  color: #fff;
+  margin: 0 0 var(--sp-2);
+}
+
+.etapaText {
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: rgba(250, 248, 243, .72);
+  margin: 0;
+}
+
+.comoComecaNota {
+  max-width: 720px;
+  margin: var(--sp-9) auto 0;
+  text-align: center;
+  color: rgba(250, 248, 243, .6);
+  font-size: var(--type-caption);
+  line-height: 1.6;
+}
+
+/* ===== WHO IT'S FOR ===== */
+.paraQuem {
+  padding: var(--sp-10) 0;
+}
+
+@media (min-width: 680px) { .paraQuem { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .paraQuem { padding: var(--sp-12) 0; } }
+
+.paraQuemGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-9);
+}
+
+@media (min-width: 680px) { .paraQuemGrid { grid-template-columns: repeat(2, 1fr); } }
+
+.paraQuemTitle {
+  font-weight: 800;
+  font-size: var(--type-lead);
+  color: var(--ink);
+  margin: 0 0 var(--sp-5);
+}
+
+.paraQuemList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.paraQuemList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.checkPos {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(63, 107, 71, .14);
+  color: var(--moss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.checkNeg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--line);
+  color: var(--steel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+/* ===== DELIVERY DIFFERENTIATORS ===== */
+.diferenciaisSection {
+  padding: var(--sp-10) 0;
+  background: var(--ivory);
+}
+
+@media (min-width: 680px) { .diferenciaisSection { padding: var(--sp-11) 0; } }
+@media (min-width: 1040px) { .diferenciaisSection { padding: var(--sp-12) 0; } }
+
+.diferenciaisGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3) var(--sp-7);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (min-width: 680px) {
+  .diferenciaisGrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.diferencialItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--title-gap);
+  min-width: 0;
+}
+
+.diferencialCheck {
+  flex: none;
+  color: var(--clay);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.diferencialText {
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+  color: var(--ink);
+  min-width: 0;
+}
+
+/* Title on the left, differentiators list on the right — replaces the
+   centered header above the grid. Keeps the horizontal lines between
+   items (those weren't part of the removal). */
+.diferenciaisBlock {
+  display: grid;
+  grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr);
+  gap: var(--sp-10);
+  align-items: start;
+}
+
+.headLeft {
+  align-items: flex-start;
+  text-align: left;
+  margin: 0;
+  max-width: none;
+}
+
+.diffGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--sp-7);
+  max-width: none;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.diffGrid .diferencialItem {
+  min-width: 0;
+  padding: var(--sp-4) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.diffGrid .diferencialText {
+  color: var(--ink);
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .diferenciaisBlock { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+
+@media (max-width: 680px) {
+  .diffGrid { grid-template-columns: 1fr; }
+}

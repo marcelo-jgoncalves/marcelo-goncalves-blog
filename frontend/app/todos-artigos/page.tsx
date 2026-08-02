@@ -197,7 +197,7 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
           <h2>Precisa transformar um desafio técnico em uma solução para a operação?</h2>
           <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que sua empresa precisa resolver.</p>
           <div className={styles.artCtaActions}>
-            <Link className="btn" href="/#servicos">Conhecer os serviços</Link>
+            <Link className="btn" href="/servicos">Conhecer os serviços</Link>
             <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
           </div>
         </div>

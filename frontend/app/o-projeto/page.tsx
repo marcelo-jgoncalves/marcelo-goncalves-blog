@@ -442,7 +442,7 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
           <h2>Precisa aplicar esse nível de engenharia a um problema da sua empresa?</h2>
           <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que precisa evoluir.</p>
           <div className={styles.opCtaActions}>
-            <Link className="btn" href="/#servicos">Conhecer os serviços</Link>
+            <Link className="btn" href="/servicos">Conhecer os serviços</Link>
             <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
           </div>
         </div>
