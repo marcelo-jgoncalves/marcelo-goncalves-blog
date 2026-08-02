@@ -58,6 +58,7 @@ override.tf.json
 
 # --- SCRIPTS (snapshots de dados, não código-fonte) ---
 scripts/backups/
+.test-post-screenshots/
 
 # --- BACKEND (Builds & Artefatos) ---
 # Ignora os zips gerados que vão para o S3/Lambda

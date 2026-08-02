@@ -17,10 +17,10 @@ const REPORT_PATH = path.join(SCREENSHOT_DIR, 'report.md');
 
 fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
 
-const creds = fs.readFileSync(path.join(REPO_ROOT, 'docs', 'creds.txt'), 'utf-8');
+const creds = fs.readFileSync(path.join(REPO_ROOT, 'contexto', 'creds.txt'), 'utf-8');
 const USERNAME = creds.match(/user:\s*(\S+)/)?.[1];
 const PASSWORD = creds.match(/password:\s*(\S+)/)?.[1];
-if (!USERNAME || !PASSWORD) throw new Error('Não foi possível extrair credenciais de docs/creds.txt');
+if (!USERNAME || !PASSWORD) throw new Error('Não foi possível extrair credenciais de contexto/creds.txt');
 
 const TITLE = '[TESTE] Como Reduzir Custos de Lambda em Produção: 7 Técnicas Práticas';
 
@@ -67,11 +67,28 @@ async function shot(page, name) {
   return file;
 }
 
-// Nodes de bloco (tabela, youtube, pullQuote, closingFlourish) podem deixar a seleção
-// "presa" dentro do nó inserido — clicar bem abaixo do conteúdo reposiciona o cursor
-// no fim do documento antes do próximo bloco, sem depender de coordenadas exatas.
+// Callout/pullQuote/table/closingFlourish são nodes "isolating" (Callout.ts,
+// PullQuote.ts) — clicar dentro deles, mesmo perto da borda inferior, mantém a
+// seleção PRESA lá dentro (confirmado ao vivo: todo o texto de negrito/lista/
+// link acabou digitado dentro do 1º callout por causa disso). O jeito correto de
+// escapar é o gap cursor do ProseMirror (Gapcursor vem no @tiptap/starter-kit):
+// clicar dentro do último bloco e apertar ArrowDown move a seleção para depois
+// dele quando é o último nó do documento — aí já dá pra digitar normalmente.
 async function clickDocEnd(page) {
-  await page.locator('.tiptap-content .ProseMirror').click({ position: { x: 5, y: 6000 } });
+  const editor = page.locator('.tiptap-content .ProseMirror');
+  const lastChild = editor.locator('> *').last();
+  await lastChild.scrollIntoViewIfNeeded();
+  // Callout tem título+ícone (contenteditable="false") no topo — clicar perto do
+  // fundo do bloco tem mais chance de acertar texto editável (parágrafo/célula)
+  // em qualquer um dos nodes isolating usados aqui.
+  const box = await lastChild.boundingBox();
+  if (box) {
+    await page.mouse.click(box.x + 10, box.y + Math.max(box.height - 8, 5));
+  } else {
+    await lastChild.click();
+  }
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('End');
 }
 
 // Seleciona as últimas `len` posições de caractere digitadas (shift+seta-esquerda),
@@ -106,25 +123,39 @@ async function run() {
     await shot(page, 'login-filled');
     await page.locator('button:has-text("Entrar")').click();
 
-    await page.waitForSelector('h1:has-text("Dashboard de Posts")', { timeout: 20000 });
+    await page.waitForSelector('h1:has-text("Posts")', { timeout: 20000 });
     log('Login OK — dashboard carregado.');
     await shot(page, 'dashboard');
 
     log('Abrindo novo post...');
-    await page.locator('button:has-text("Novo Post")').click();
-    await page.waitForSelector('h1:has-text("Novo Post")');
+    await page.locator('button:has-text("Novo post")').click();
+    await page.waitForSelector('.ia-title');
 
-    const tituloInput = page.locator('input[placeholder="Título do Artigo"]');
-    await tituloInput.fill(TITLE);
-    // dispara o @input que gera o slug — fill() já emite 'input', mas confirmamos
-    await page.keyboard.press('Tab');
+    // Título é uma div contenteditable (EditorView.vue) — não um <input> —
+    // desde o redesign full-bleed do editor (sessões 39-41). keyboard.type()
+    // caractere-por-caractere embaralhou o texto de verdade num teste real
+    // (acentos + delay entre teclas colidem com o timing do CDP em
+    // contenteditable) — setar innerText de uma vez e disparar 'input' é
+    // atômico e evita a corrida.
+    await page.locator('.ia-title').click();
+    await page.evaluate((text) => {
+      const el = document.querySelector('.ia-title');
+      el.innerText = text;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, TITLE);
 
-    const slugInput = page.locator('.main-column input[type="text"]').nth(1);
+    // Slug só é visível na gaveta de configurações (SettingsDrawer.vue) —
+    // abre para ler o valor gerado.
+    await page.locator('button[aria-label="Configurações do post"]').click();
+    await page.waitForSelector('.ia-drawer');
+    const slugInput = page.locator('.ia-slug-input');
     slug = await slugInput.inputValue();
     log(`Slug auto-gerado: "${slug}"`);
     if (!slug || !slug.startsWith('teste')) {
       finding(`Slug auto-gerado a partir do título "${TITLE}" não começa com "teste": "${slug}" — slugify() pode não remover colchetes/acentos como esperado.`);
     }
+    await page.locator('button[aria-label="Fechar configurações"]').click();
+    await page.waitForSelector('.ia-drawer', { state: 'detached' });
 
     // ---- Conteúdo via editor real (Tiptap), usando input rules estilo markdown ----
     const editor = page.locator('.tiptap-content .ProseMirror');
@@ -191,13 +222,17 @@ async function run() {
     await shot(page, 'editor-content-filled');
 
     // ---- Callout (testa node customizado do Tiptap) — best-effort, não bloqueia o fluxo ----
+    // Callout.ts (admin/src/components/Callout.ts) dá um tratamento especial ao tipo
+    // "tip": wrapperClass = type==='tip' ? 'tip' : `callout ${type}` — só tip NÃO leva
+    // o prefixo "callout" na classe (os outros 4 tipos levam). Confirmado rodando
+    // contra o admin real: o node é inserido corretamente, só o seletor estava errado.
     const htmlBeforeCallout = await page.locator('.tiptap-content .ProseMirror').innerHTML();
     await page.locator('.tiptap-toolbar button[title="Callout: Dica de bastidor"]').click();
-    const calloutAppeared = await page.locator('.ProseMirror .callout p').last()
+    const calloutAppeared = await page.locator('.ProseMirror .tip p').last()
       .click({ clickCount: 3, timeout: 8000 }).then(() => true).catch(() => false);
     if (!calloutAppeared) {
       const htmlAfterCallout = await page.locator('.tiptap-content .ProseMirror').innerHTML();
-      finding('Inserção de Callout via toolbar não produziu um nó ".callout p" em 8s — possível falha silenciosa no addCallout/insertContent.');
+      finding('Inserção de Callout via toolbar não produziu um nó ".tip p" em 8s — possível falha silenciosa no addCallout/insertContent.');
       fs.writeFileSync(path.join(SCREENSHOT_DIR, 'callout-debug-before.html'), htmlBeforeCallout, 'utf-8');
       fs.writeFileSync(path.join(SCREENSHOT_DIR, 'callout-debug-after.html'), htmlAfterCallout, 'utf-8');
       if (!htmlAfterCallout.includes('Conclusão: monitoramento')) {
@@ -325,22 +360,32 @@ async function run() {
 
     await shot(page, 'editor-content-full-coverage');
 
-    // ---- Campos restantes do formulário ----
-    await page.locator('textarea').nth(0).fill(
-      'Sete técnicas práticas, testadas em produção, para reduzir o custo de execução de funções Lambda sem sacrificar performance.'
-    );
-    await page.locator('textarea').nth(1).fill(
-      'Cold start, memória e arquitetura: o que realmente move a agulha na fatura da AWS.'
+    // ---- Imagem de destaque via upload real ----
+    // Botão de capa vive na folha do editor (fora da gaveta), não num "panel"
+    // — post novo sempre começa sem capa, então é ".ia-add-cover".
+    log('Inserindo imagem de destaque via upload real...');
+    await page.locator('.ia-add-cover').click();
+    await page.waitForSelector('.modal-overlay');
+    await page.locator('.file-input-hidden').setInputFiles(TEST_IMAGE);
+    await page.locator('.modal-overlay').waitFor({ state: 'detached', timeout: 20000 }).catch(() =>
+      finding('Upload de imagem de destaque não fechou o modal em 20s.')
     );
 
-    await page.locator('input[id]').count(); // no-op, mantém referência de debug
-    const metaTitulo = page.locator('.seo-box input[type="text"]');
+    // ---- Campos restantes do formulário — todos na gaveta de configurações ----
+    await page.locator('button[aria-label="Configurações do post"]').click();
+    await page.waitForSelector('.ia-drawer');
+
+    await page.locator('.ia-rail-card:has-text("URL") textarea').fill(
+      'Sete técnicas práticas, testadas em produção, para reduzir o custo de execução de funções Lambda sem sacrificar performance.'
+    );
+
+    const metaTitulo = page.locator('.ia-rail-card:has-text("SEO") input[type="text"]');
     await metaTitulo.fill('Reduzir Custos de Lambda em Produção: 7 Técnicas | Marcelo Gonçalves');
-    const metaDesc = page.locator('.seo-box textarea');
+    const metaDesc = page.locator('.ia-rail-card:has-text("SEO") textarea');
     await metaDesc.fill('Guia prático com 7 técnicas testadas para reduzir o custo de execução de funções AWS Lambda em produção sem perder performance.');
 
     // Categoria — tenta achar "DevOps", senão mantém o default carregado da API
-    const categoriaSelect = page.locator('select').first();
+    const categoriaSelect = page.locator('.ia-rail-card:has-text("Categoria") select').first();
     const categoriaOptions = await categoriaSelect.locator('option').allTextContents();
     const devopsOption = categoriaOptions.find((t) => /devops/i.test(t));
     if (devopsOption) {
@@ -350,40 +395,45 @@ async function run() {
       log(`Categoria "DevOps" não encontrada nas opções (${categoriaOptions.join(', ')}); mantendo default.`);
     }
 
-    // ---- Imagem de destaque via upload real ----
-    log('Inserindo imagem de destaque via upload real...');
-    await page.locator('.panel:has-text("Imagem de Destaque") button:has-text("Upload Imagem")').click();
-    await page.waitForSelector('.modal-overlay');
-    await page.locator('.file-input-hidden').setInputFiles(TEST_IMAGE);
-    await page.locator('.modal-overlay').waitFor({ state: 'detached', timeout: 20000 }).catch(() =>
-      finding('Upload de imagem de destaque não fechou o modal em 20s.')
-    );
-    await page.locator('input').filter({ hasText: '' }); // no-op
-    const altTextInput = page.locator('.panel:has-text("Imagem de Destaque") input[type="text"]').last();
+    const altTextInput = page.locator('.ia-rail-card:has-text("Imagem de destaque") input[type="text"]');
     await altTextInput.fill('Painel de monitoramento de custos AWS Lambda com gráfico de execução por função');
+
+    await page.locator('button[aria-label="Fechar configurações"]').click();
+    await page.waitForSelector('.ia-drawer', { state: 'detached' });
     await shot(page, 'form-filled-complete');
 
     // ---- Salvar como Rascunho primeiro (fluxo real de criação) ----
+    // Post novo: save() faz create() + router.replace (mesma view, sem navegar
+    // para o dashboard) — diferente do fluxo antigo, que navegava de volta.
     log('Salvando como Rascunho...');
-    await page.locator('button:has-text("Salvar Post")').click();
-    const toastOk = await page.waitForSelector('.toast--success', { timeout: 15000 }).then(() => true).catch(() => false);
+    await page.locator('.ia-btn-save').click();
+    const toastOk = await page.waitForSelector('.ia-toast--success', { timeout: 15000 }).then(() => true).catch(() => false);
     if (!toastOk) {
       finding('Toast de sucesso não apareceu após salvar — possível erro silencioso ou lentidão na API.');
       await shot(page, 'save-no-toast');
     }
-    await page.waitForURL(`${ADMIN_URL}/`, { timeout: 15000 });
-    log('Post salvo como Rascunho, de volta ao dashboard.');
-    await shot(page, 'dashboard-after-draft-save');
+    await page.waitForURL(`${ADMIN_URL}/post/${slug}`, { timeout: 15000 });
+    log('Post salvo como Rascunho.');
+    await shot(page, 'after-draft-save');
 
-    // ---- Reabrir para publicar (exercita fluxo de edição real) ----
-    log(`Reabrindo /post/${slug} para publicar...`);
+    // ---- Recarregar via navegação real (exercita o round-trip com o servidor) ----
+    log(`Recarregando /post/${slug} a partir do servidor...`);
     await page.goto(`${ADMIN_URL}/post/${slug}`);
-    await page.waitForSelector('h1:has-text("Editar Post")');
     await page.waitForFunction(() => {
-      const input = document.querySelector('input[placeholder="Título do Artigo"]');
-      return input && input.value.length > 0;
+      const el = document.querySelector('.ia-title');
+      return el && el.textContent && el.textContent.length > 0;
     });
-    const reloadedTitle = await page.locator('input[placeholder="Título do Artigo"]').inputValue();
+    // Título (form state) e conteúdo (Tiptap, inicializado separadamente a partir
+    // do mesmo onMounted) não populam no mesmo tick — ler o HTML cedo demais já
+    // pegou o vídeo do YouTube ausente numa rodada real, mesmo ele tendo sido
+    // salvo corretamente (confirmado pela validação da página pública, que não
+    // acusou o mesmo problema). Espera por um marcador presente e pesado (tabela)
+    // antes de considerar o conteúdo estável pra ler.
+    await page.waitForFunction(() => {
+      const el = document.querySelector('.tiptap-content .ProseMirror');
+      return el && el.innerHTML.includes('<table');
+    }, { timeout: 10000 }).catch(() => {});
+    const reloadedTitle = await page.locator('.ia-title').textContent();
     if (reloadedTitle !== TITLE) {
       finding(`Título recarregado ("${reloadedTitle}") difere do salvo ("${TITLE}") — possível problema de round-trip.`);
     }
@@ -418,30 +468,34 @@ async function run() {
 
     // Contagem de nós via DOMParser sobre o HTML recarregado do servidor — baseline
     // para comparar com o que a página pública efetivamente renderiza (ver validateRendered).
-    adminNodeCounts = await page.evaluate((selectors, html) => {
+    // page.evaluate(fn, arg) só aceita 1 argumento — passar (selectors, html) como
+    // 2 args posicionais nunca funcionou ("Too many arguments"), nunca tinha
+    // rodado de verdade pra pegar isso antes. Empacota num objeto só.
+    adminNodeCounts = await page.evaluate(({ selectors, html }) => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const out = {};
       for (const [label, selector] of Object.entries(selectors)) {
         out[label] = doc.querySelectorAll(selector).length;
       }
       return out;
-    }, NODE_CHECKS, reloadedHtml);
+    }, { selectors: NODE_CHECKS, html: reloadedHtml });
 
-    const statusSelect = page.locator('select').filter({ has: page.locator('option:has-text("Publicado")') }).first();
-    await statusSelect.selectOption('Publicado');
     await shot(page, 'before-publish');
 
+    // publish() (usePostForm.ts) já força form.status='Publicado' antes de
+    // salvar (a menos que seja 'Programado') — não precisa abrir a gaveta e
+    // clicar no radio manualmente, o botão "Publicar" sozinho já faz isso.
     log('Publicando...');
-    await page.locator('button:has-text("Salvar Post")').click();
-    await page.waitForSelector('.toast--success', { timeout: 15000 }).catch(() =>
+    await page.locator('.ia-btn-publish').click();
+    await page.waitForSelector('.ia-toast--success', { timeout: 15000 }).catch(() =>
       finding('Toast de sucesso não apareceu após publicar.')
     );
     await page.waitForURL(`${ADMIN_URL}/`, { timeout: 15000 });
     log('Post publicado.');
     await shot(page, 'dashboard-after-publish');
 
-    // Confere status na listagem
-    const statusBadge = page.locator(`tr:has-text("${slug}") .badge`);
+    // Confere status na listagem — DashboardView.vue usa divs (.ia-row), não <table>/<tr>.
+    const statusBadge = page.locator(`.ia-row:has(a[href="/post/${slug}"]) .ia-status-pill`);
     const badgeText = await statusBadge.textContent().catch(() => null);
     if (badgeText?.trim() !== 'Publicado') {
       finding(`Badge de status na listagem mostra "${badgeText}" em vez de "Publicado" — pode ser cache de UI desatualizado.`);
@@ -517,7 +571,9 @@ async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) 
       })();
 
       out.coverImage = (() => {
-        const img = document.querySelector('.post-cover-frame img');
+        // postCoverFrame é CSS Module (post.module.css) — a classe real é hasheada;
+        // [data-audit] é o hook estável mantido de propósito para casos assim.
+        const img = document.querySelector('[data-audit="post-cover-frame"] img');
         if (!img) return { found: false };
         return {
           found: true,
@@ -571,7 +627,7 @@ async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) 
     }
 
     if (!result.coverImage.found) {
-      finding('Imagem de destaque (.post-cover-frame img) não encontrada no DOM.');
+      finding('Imagem de destaque ([data-audit="post-cover-frame"] img) não encontrada no DOM.');
     } else if (!result.coverImage.complete || result.coverImage.naturalWidth === 0) {
       finding(`Imagem de destaque não decodificou (naturalWidth=${result.coverImage.naturalWidth}, complete=${result.coverImage.complete}) — src: ${result.coverImage.currentSrc}`);
     }
