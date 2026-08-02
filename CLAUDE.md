@@ -118,7 +118,7 @@ Também não marcar no código que uma mudança foi feita por IA (nem comentári
 ## 3. Arquitetura
 
 ```
-marcelo-goncalves-blog/
+mgoncalves-editorial-platform/
 ├── frontend/    # Next.js 16 + OpenNext v3 (blog público)
 ├── backend/     # Node.js 20 + TypeScript — 9 Lambdas
 ├── admin/       # Vue 3 + Vite + Pinia + AWS Amplify (CMS)

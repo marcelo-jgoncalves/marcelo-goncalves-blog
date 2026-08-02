@@ -75,7 +75,7 @@ Cross-cutting monitoring: CloudWatch dashboards, Synthetics Canary, SLO burn-rat
 ## Monorepo layout
 
 ```
-marcelo-goncalves-blog/
+mgoncalves-editorial-platform/
 ├── frontend/    Next.js 16 + OpenNext v3 (public site)
 ├── backend/     Node.js 20 + TypeScript (9 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
