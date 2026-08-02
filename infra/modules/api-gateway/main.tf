@@ -64,6 +64,14 @@ resource "aws_api_gateway_gateway_response" "unauthorized_cors" {
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
+
+  # Declarado explicitamente desde o provider AWS v6 (2026-08-02): era o
+  # default que a própria API Gateway aplica quando o atributo fica omitido,
+  # mas o v6 passou a tratar omitido como "vazio" e removeria o template real
+  # em uso — declarar aqui preserva o comportamento atual sem mudar nada.
+  response_templates = {
+    "application/json" = "{\"message\":$context.error.messageString}"
+  }
 }
 
 resource "aws_api_gateway_gateway_response" "access_denied_cors" {
@@ -76,6 +84,11 @@ resource "aws_api_gateway_gateway_response" "access_denied_cors" {
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
+
+  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  response_templates = {
+    "application/json" = "{\"message\":$context.error.messageString}"
+  }
 }
 
 resource "aws_api_gateway_gateway_response" "default_4xx_cors" {
@@ -87,6 +100,11 @@ resource "aws_api_gateway_gateway_response" "default_4xx_cors" {
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
   }
+
+  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  response_templates = {
+    "application/json" = "{\"message\":$context.error.messageString}"
+  }
 }
 
 resource "aws_api_gateway_gateway_response" "default_5xx_cors" {
@@ -97,6 +115,11 @@ resource "aws_api_gateway_gateway_response" "default_5xx_cors" {
     "gatewayresponse.header.Access-Control-Allow-Origin"  = "'${var.admin_origin}'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "gatewayresponse.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
+  }
+
+  # Ver comentário em unauthorized_cors acima — mesmo caso.
+  response_templates = {
+    "application/json" = "{\"message\":$context.error.messageString}"
   }
 }
 

@@ -5,12 +5,20 @@ terraform {
   # apply só roda via pipeline (nunca local), então essa é a versão que
   # realmente escreve o state; um terraform local mais novo é bloqueado
   # aqui em vez de arriscar gravar um state em formato incompatível.
+  # Gap de 7 minors vs. 1.15.x estável (auditoria 2026-08-02): decisão
+  # deliberada de não perseguir, não lacuna esquecida — revisitar só se
+  # um recurso novo de Terraform CLI virar necessidade real do projeto.
   required_version = "~> 1.8"
 
   required_providers {
+    # Migrado de v5 pra v6 em 2026-08-02: nenhuma breaking change documentada
+    # no guia oficial (rename de S3 `region`→`bucket_region`, etag computed-only
+    # em CloudFront response headers policy, formato de id de Cognito user-in-group,
+    # etc.) toca em recurso real deste projeto (confirmado via grep nos módulos
+    # antes da migração) — sem gatilho de risco pra continuar adiando.
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.0"
     }
   }
 
