@@ -10,9 +10,9 @@ import { AUTHOR_EMAIL, AUTHOR_LOCATION } from '@/lib/config';
 const SERVICES_LINKS = [
   { name: 'Visão geral', href: '/servicos' },
   { name: 'Automação e Integração', href: '/automacao' },
-  { name: 'Inteligência Artificial Aplicada', href: '/inteligencia-artificial' },
+  { name: 'IA Aplicada', href: '/inteligencia-artificial' },
   { name: 'Sistemas e Plataformas', href: '/software' },
-  { name: 'Cloud, DevOps e Confiabilidade', href: '/plataforma' },
+  { name: 'Cloud e DevOps', href: '/plataforma' },
 ];
 
 // No "Serviços" (already has its own column) and no "Blog".

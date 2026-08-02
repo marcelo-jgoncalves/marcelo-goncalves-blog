@@ -62,9 +62,9 @@
   line-height: 1.65;
   max-width: 390px;
   margin-top: var(--sp-5);
-  padding: var(--sp-5) 0 0;
+  padding: var(--sp-5) 0 0 var(--sp-4);
   border-top: 1px solid rgba(255, 255, 255, .1);
-  border-left: 0;
+  border-left: 2px solid var(--clay);
   color: var(--petrol-soft);
   font-size: var(--type-label);
 }
