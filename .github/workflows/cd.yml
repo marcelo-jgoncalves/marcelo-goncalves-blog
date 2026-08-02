@@ -5,14 +5,11 @@ on:
     branches:
       - develop
       - main
+  # No `environment` input: every job below already branches on `github.ref`
+  # (develop -> deploy-dev, main -> plan-prod/deploy-prod) — a dispatch input
+  # here would have no effect on which one runs, since the ref you pick when
+  # triggering manually already decides that.
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Ambiente alvo'
-        required: true
-        default: 'dev'
-        type: choice
-        options: [dev, prod]
 
 permissions:
   contents: read
@@ -72,7 +69,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: backend/node_modules
           key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
@@ -80,6 +77,10 @@ jobs:
 
       - name: Install backend dependencies
         run: npm ci
+        working-directory: backend
+
+      - name: Dependency audit (npm audit)
+        run: npm audit --audit-level=high
         working-directory: backend
 
       - name: Lint backend
@@ -94,7 +95,7 @@ jobs:
         run: npm run build
         working-directory: backend
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-artifacts-backend
           path: infra/builds/
@@ -126,7 +127,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: backend/node_modules
           key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
@@ -157,7 +158,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: frontend/node_modules
           key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
@@ -165,6 +166,10 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm ci
+        working-directory: frontend
+
+      - name: Dependency audit (npm audit)
+        run: npm audit --audit-level=high
         working-directory: frontend
 
       # Direct pushes to develop are this project's normal flow, so the full
@@ -193,7 +198,7 @@ jobs:
       - name: Copy frontend static assets
         run: cp -r frontend/.open-next/assets infra/builds/nextjs-assets
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-artifacts-frontend
           path: |
@@ -218,7 +223,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
@@ -226,6 +231,10 @@ jobs:
 
       - name: Install admin dependencies
         run: npm ci
+        working-directory: admin
+
+      - name: Dependency audit (npm audit)
+        run: npm audit --audit-level=high
         working-directory: admin
 
       - name: Lint admin
@@ -237,24 +246,90 @@ jobs:
         working-directory: admin
 
   # ==============================================================
+  # JOB 1d: Security scans (Semgrep + Gitleaks) — reused from security.yml
+  # via workflow_call. Previously this ran only as a parallel, independent
+  # workflow with no bearing on whether deploy-dev/plan-prod ran below — a
+  # failing scan never blocked a deploy. Listing it in their `needs` is what
+  # turns it into an actual gate.
+  # ==============================================================
+  security-scans:
+    name: 1d. Security Scans (Semgrep + Gitleaks)
+    uses: ./.github/workflows/security.yml
+    secrets: inherit
+
+  # ==============================================================
+  # JOB 1e: Validate infra (Terraform fmt/validate/TFLint + Trivy config
+  # scan) — same checks deploy.yml already runs on PRs against main, but
+  # deploy.yml rarely runs in this project's normal flow (direct pushes to
+  # develop). Without this job here, TFLint/Trivy never actually gated a
+  # deploy despite existing in the repo.
+  # ==============================================================
+  validate-infra:
+    name: 1e. Validate Infra (Terraform + TFLint + Trivy)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform fmt check
+        working-directory: infra
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init (no backend)
+        working-directory: infra
+        run: terraform init -backend=false
+
+      - name: Terraform validate
+        working-directory: infra
+        run: terraform validate
+
+      - uses: terraform-linters/setup-tflint@6e1e0642c0289bd619021bf6b34e3c08ed1e005a # v6.3.0
+        with:
+          tflint_version: v0.64.0
+
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('infra/.tflint.hcl') }}
+
+      - name: TFLint
+        working-directory: infra
+        run: |
+          tflint --init
+          tflint --recursive --chdir=.
+
+      - name: Trivy config scan (IaC)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+  # ==============================================================
   # JOB 2a: Deploy para Dev (branch develop)
   # ==============================================================
   deploy-dev:
     name: 2a. Deploy → Dev
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-backend-integration]
+    needs: [build-backend, build-frontend, test-admin, test-backend-integration, security-scans, validate-infra]
     if: github.ref == 'refs/heads/develop'
     environment: dev
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-backend
           path: infra/builds/
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-frontend
           path: infra/builds/
@@ -304,7 +379,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
@@ -374,7 +449,7 @@ jobs:
       # the app renders. The Playwright smoke spec drives a real browser
       # against the freshly deployed environment. Chromium only: cross-browser
       # belongs to the full e2e suite (local), not to this deploy gate.
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: frontend/node_modules
           key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
@@ -384,7 +459,7 @@ jobs:
         run: npm ci
         working-directory: frontend
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
@@ -413,18 +488,18 @@ jobs:
   plan-prod:
     name: 2b. Terraform Plan → Prod
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-backend-integration]
+    needs: [build-backend, build-frontend, test-admin, test-backend-integration, security-scans, validate-infra]
     if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-backend
           path: infra/builds/
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-frontend
           path: infra/builds/
@@ -455,7 +530,7 @@ jobs:
           terraform plan -var-file="env/prd.tfvars" -out=tfplan-prod
           terraform show -no-color tfplan-prod >> $GITHUB_STEP_SUMMARY
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tfplan-prod
           path: infra/tfplan-prod
@@ -486,17 +561,17 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-backend
           path: infra/builds/
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-artifacts-frontend
           path: infra/builds/
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: tfplan-prod
           path: infra/
@@ -546,7 +621,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: admin/node_modules
           key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
