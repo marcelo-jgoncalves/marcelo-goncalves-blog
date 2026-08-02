@@ -34,7 +34,12 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
     const message = import.meta.env.PROD
       ? 'Erro ao processar a solicitação'
       : errorBody.message || 'Erro na API'
-    throw new Error(message)
+    const error = new Error(message) as Error & { status?: number }
+    // Status code alone isn't sensitive — kept even in prod so callers can
+    // react to specific cases (e.g. 409 = optimistic concurrency conflict in
+    // usePostForm.ts) without needing the masked message text.
+    error.status = res.status
+    throw error
   }
 
   return res.json()

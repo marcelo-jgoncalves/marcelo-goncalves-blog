@@ -250,8 +250,21 @@ export function usePostForm() {
         await router.replace({ name: 'edit-post', params: { slug: form.value.slug } })
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro desconhecido'
-      showToast('Erro ao salvar: ' + message, 'error')
+      const status = (error as { status?: number } | undefined)?.status
+      if (status === 409) {
+        // Optimistic concurrency conflict (backend/src/functions/adminPosts):
+        // someone else saved this post since it was loaded here. Reloading
+        // now would discard whatever the user just typed, so instead the
+        // form is left as-is and `form.value.version` stays stale on
+        // purpose — the very next save attempt hits the same 409 until the
+        // user reloads the page deliberately, which is the correct outcome
+        // (silently overwriting the other edit would be the bug this exists
+        // to prevent).
+        showToast('Este post foi alterado em outra sessão desde que foi carregado. Recarregue a página antes de salvar novamente.', 'error')
+      } else {
+        const message = error instanceof Error ? error.message : 'Erro desconhecido'
+        showToast('Erro ao salvar: ' + message, 'error')
+      }
     } finally {
       saving.value = false
     }

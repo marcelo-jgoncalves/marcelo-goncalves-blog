@@ -27,6 +27,10 @@ export interface Post {
   autor_id: string
   topico?: string
   variante_card?: string
+  // Optimistic concurrency counter (backend/src/common/postSchema.ts) — read
+  // on GET, echoed back on PUT so the backend can reject a save based on
+  // stale data with 409 instead of silently overwriting a concurrent edit.
+  version?: number
 }
 
 export interface Subcategoria {
