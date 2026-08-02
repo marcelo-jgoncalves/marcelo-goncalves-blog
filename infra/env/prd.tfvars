@@ -10,9 +10,13 @@ log_retention_days = 30
 enable_xray_tracing       = true
 enable_cloudwatch_alarms  = true
 alarm_email               = "marcelo.mjgoncalves@gmail.com"
-enable_cloudfront_logging = false # setar true quando prod tiver tráfego real
-enable_synthetic_canary   = true  # monitoramento contínuo de disponibilidade, sempre ativo em prod
-enable_guardduty          = true  # detecção de ameaça sempre ativa em prod (achado AppSec Cat. 6)
+enable_cloudfront_logging = true # logs de acesso desde o dia 1 — são o insumo de forense e análise de tráfego
+enable_synthetic_canary   = true # monitoramento contínuo de disponibilidade, sempre ativo em prod
+enable_guardduty          = true # detecção de ameaça sempre ativa em prod (achado AppSec Cat. 6)
+
+# DLQ (imageProcessor/postScheduler): alarm always on. Personal e-mail for
+# now; switch to the company mailbox once it exists.
+dlq_alert_email = "marcelo.mjgoncalves@gmail.com"
 
 # PITR no DynamoDB — protege contra delete/corrupção acidental (inclusive humana)
 # em produção. Custo real (~$0.20/GB-mês), aceitável dado o benefício em prod.

@@ -27,6 +27,7 @@ module "lambda" {
   enable_xray_tracing      = var.enable_xray_tracing
   enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
   alarm_email              = var.alarm_email
+  dlq_alert_email          = var.dlq_alert_email
 
   posts_table_arn          = module.dynamodb.posts_table_arn
   autores_table_arn        = module.dynamodb.autores_table_arn
@@ -55,11 +56,14 @@ module "api-gateway" {
   alarm_email              = var.alarm_email
 
   # Conecta as saídas do módulo lambda nas entradas do api-gateway
-  get_post_invoke_arn            = module.lambda.get_post_invoke_arn
-  get_post_function_name         = module.lambda.get_post_function_name
-  get_author_invoke_arn          = module.lambda.get_author_invoke_arn
-  get_author_function_name       = module.lambda.get_author_function_name
-  cognito_user_pool_arn          = module.cognito.user_pool_arn
+  get_post_invoke_arn      = module.lambda.get_post_invoke_arn
+  get_post_function_name   = module.lambda.get_post_function_name
+  get_author_invoke_arn    = module.lambda.get_author_invoke_arn
+  get_author_function_name = module.lambda.get_author_function_name
+  # Same value already injected into the admin Lambdas as ADMIN_ORIGIN — the
+  # admin module doesn't depend on api-gateway (it takes the domain as a
+  # literal var), so this reference creates no cycle.
+  admin_origin                   = "https://${module.admin.cloudfront_url}"
   admin_posts_invoke_arn         = module.lambda.admin_posts_invoke_arn
   admin_posts_function_name      = module.lambda.admin_posts_function_name
   media_upload_invoke_arn        = module.lambda.media_upload_invoke_arn
@@ -119,6 +123,7 @@ module "media" {
   enable_xray_tracing      = var.enable_xray_tracing
   enable_cloudwatch_alarms = var.enable_cloudwatch_alarms
   alarm_email              = var.alarm_email
+  dlq_alert_email          = var.dlq_alert_email
   admin_origin             = module.admin.cloudfront_url
   frontend_origin          = module.frontend.cloudfront_url
   assets_bucket_name       = module.frontend.s3_bucket_name

@@ -34,6 +34,12 @@ variable "log_level" {
   default     = "INFO"
 }
 
+variable "dlq_alert_email" {
+  description = "E-mail notified when the postScheduler DLQ receives a lost event. Independent of enable_cloudwatch_alarms — the DLQ alarm is always on."
+  type        = string
+  default     = ""
+}
+
 variable "log_retention_days" {
   description = "CloudWatch log retention in days"
   type        = number

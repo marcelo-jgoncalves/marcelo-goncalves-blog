@@ -62,6 +62,12 @@ variable "alarm_email" {
   default     = ""
 }
 
+variable "dlq_alert_email" {
+  description = "E-mail notified when a DLQ (imageProcessor/postScheduler) receives an event lost after retries. Deliberately separate from alarm_email and always on (the DLQ alarm does not depend on enable_cloudwatch_alarms): a message in a DLQ is genuinely lost data, even in dev."
+  type        = string
+  default     = ""
+}
+
 variable "enable_synthetic_canary" {
   description = "Cria um CloudWatch Synthetics canary (heartbeat) verificando a URL pública a cada 15min. Custo recorrente (~US$3-4/mês) independente de tráfego/deploy — variável própria, separada de enable_cloudwatch_alarms, para ligar/desligar em dev sob demanda."
   type        = bool

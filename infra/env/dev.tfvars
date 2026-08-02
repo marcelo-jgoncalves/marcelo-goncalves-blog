@@ -10,6 +10,12 @@ enable_cloudwatch_alarms  = false
 alarm_email               = ""
 enable_cloudfront_logging = false
 
+# DLQ (imageProcessor/postScheduler): alarm always on, independent of
+# enable_cloudwatch_alarms — a message in a DLQ is a genuinely lost event,
+# even in dev. Personal e-mail for now; switch to the company mailbox once
+# it exists.
+dlq_alert_email = "marcelo.mjgoncalves@gmail.com"
+
 # Canary sintético (~US$3-4/mês quando ligado) — variável própria,
 # independente das demais. Ligar temporariamente (true) só para validar
 # o heartbeat funcionando, depois voltar para false. Em prod fica sempre true.
