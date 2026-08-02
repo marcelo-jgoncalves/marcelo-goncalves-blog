@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # scripts/bootstrap-state.sh
-# Creates the S3 bucket and DynamoDB table for Terraform remote state.
+# Creates the S3 bucket for Terraform remote state. Locking is S3-native
+# (use_lockfile in the backend config) -- no DynamoDB table needed.
 # Run ONCE per AWS account/environment before the first `terraform init`.
 #
 # Usage:
@@ -13,11 +14,9 @@ ENV="${ENV:-dev}"
 PROJECT="marcelo-goncalves-blog"
 REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 BUCKET="${PROJECT}-${ENV}-tfstate"
-TABLE="${PROJECT}-${ENV}-tflock"
 
 echo "==> Bootstrapping Terraform remote state for ENV=${ENV}"
 echo "    Bucket : ${BUCKET}"
-echo "    Table  : ${TABLE}"
 echo "    Region : ${REGION}"
 echo ""
 
@@ -54,25 +53,8 @@ else
   echo "    [ok] S3 bucket created and secured"
 fi
 
-# --- DynamoDB Table ---
-if aws dynamodb describe-table --table-name "${TABLE}" 2>/dev/null; then
-  echo "    [skip] DynamoDB table already exists"
-else
-  echo "==> Creating DynamoDB lock table..."
-  aws dynamodb create-table \
-    --table-name "${TABLE}" \
-    --attribute-definitions AttributeName=LockID,AttributeType=S \
-    --key-schema AttributeName=LockID,KeyType=HASH \
-    --billing-mode PAY_PER_REQUEST \
-    --region "${REGION}"
-
-  aws dynamodb wait table-exists --table-name "${TABLE}" --region "${REGION}"
-  echo "    [ok] DynamoDB table created"
-fi
-
 echo ""
 echo "==> Bootstrap complete. Next steps:"
 echo "    1. Copy infra/backend.hcl.example to infra/backend.hcl"
 echo "    2. Set bucket = \"${BUCKET}\" in backend.hcl"
-echo "    3. Set dynamodb_table = \"${TABLE}\" in backend.hcl"
-echo "    4. Run: terraform init -backend-config=backend.hcl -var-file=env/${ENV}.tfvars"
+echo "    3. Run: terraform init -backend-config=backend.hcl -var-file=env/${ENV}.tfvars"

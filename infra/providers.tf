@@ -5,10 +5,6 @@ terraform {
   # The CD's actual version is the literal TERRAFORM_VERSION/terraform_version
   # in the workflows; keep both in sync manually, this constraint alone
   # doesn't enforce it.
-  # The S3 backend below still relies on the deprecated dynamodb_table
-  # locking mechanism (warning only, not an error) -- migrating to native
-  # `use_lockfile` locking is separate work, since it touches live state
-  # locking.
   required_version = "~> 1.15"
 
   required_providers {
@@ -18,17 +14,18 @@ terraform {
     }
   }
 
-  # Remote state via S3 + DynamoDB locking.
+  # Remote state via S3, with S3-native locking (use_lockfile) -- no
+  # DynamoDB table involved.
   # Backend is configured at runtime — CI/CD passes -backend-config flags,
   # local dev uses infra/backend.hcl (gitignored).
   # Bootstrap: run scripts/bootstrap-state.sh once per AWS account.
   backend "s3" {
     # Values injected at `terraform init` via -backend-config or backend.hcl:
-    #   bucket         = "marcelo-goncalves-blog-<env>-tfstate"
-    #   key            = "blog/terraform.tfstate"
-    #   region         = "us-east-1"
-    #   dynamodb_table = "marcelo-goncalves-blog-<env>-tflock"
-    #   encrypt        = true
+    #   bucket       = "marcelo-goncalves-blog-<env>-tfstate"
+    #   key          = "blog/terraform.tfstate"
+    #   region       = "us-east-1"
+    #   use_lockfile = true
+    #   encrypt      = true
   }
 }
 

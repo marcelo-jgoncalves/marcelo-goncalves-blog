@@ -4,9 +4,9 @@
 # Usage:
 #   terraform init -backend-config=backend.hcl -var-file=env/dev.tfvars
 
-bucket         = "marcelo-goncalves-blog-dev-tfstate"
-key            = "blog/terraform.tfstate"
-region         = "us-east-1"
-dynamodb_table = "marcelo-goncalves-blog-dev-tflock"
-encrypt        = true
-profile        = "claude-dev"
+bucket       = "marcelo-goncalves-blog-dev-tfstate"
+key          = "blog/terraform.tfstate"
+region       = "us-east-1"
+use_lockfile = true
+encrypt      = true
+profile      = "claude-dev"
