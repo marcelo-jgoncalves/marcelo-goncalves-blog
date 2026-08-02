@@ -109,11 +109,38 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
-# No "Managed-" prefix: AWS only prefixes the older managed policies; the
-# UseOriginCacheControlHeaders pair is listed without it (confirmed via
-# `aws cloudfront list-cache-policies --type managed`).
-data "aws_cloudfront_cache_policy" "use_origin_cache_control_qs" {
-  name = "UseOriginCacheControlHeaders-QueryStrings"
+# Same TTL/query-string semantics as the AWS-managed
+# "UseOriginCacheControlHeaders-QueryStrings" policy above, but without its
+# header whitelist. That managed policy whitelists "host" among its cache-key
+# headers — cache policy headers are forwarded to origin in addition to
+# whatever the origin request policy sends, so it silently reintroduces the
+# exact Host-header/SigV4 mismatch that all_viewer_except_host exists to
+# avoid on a Lambda Function URL origin. Confirmed live: /artigos 403'd with
+# AccessDeniedException from CloudFront (Lambda never even invoked — no
+# matching CloudWatch log entries) until this custom policy replaced the
+# managed one.
+resource "aws_cloudfront_cache_policy" "origin_cache_control_qs_no_host" {
+  name    = "${var.project_name}-${var.environment}-origin-cache-control-qs-no-host"
+  comment = "Like the managed UseOriginCacheControlHeaders-QueryStrings, minus the Host header whitelist that breaks Lambda Function URL SigV4"
+
+  min_ttl     = 0
+  default_ttl = 0
+  max_ttl     = 31536000
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    enable_accept_encoding_gzip   = true
+    enable_accept_encoding_brotli = true
+
+    cookies_config {
+      cookie_behavior = "all"
+    }
+    headers_config {
+      header_behavior = "none"
+    }
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
 }
 
 # min = default = max is the only combination where CloudFront caches even
@@ -277,10 +304,10 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   # --- /artigos: ISR works here (the page reads no searchParams), so the
-  # origin emits s-maxage=300 and CloudFront just has to respect it. Managed
-  # "UseOriginCacheControlHeaders-QueryStrings" does exactly that, with query
-  # strings in the cache key. Confirmed live: X-Cache Hit with Age after the
-  # first request.
+  # origin emits s-maxage=300 and CloudFront just has to respect it.
+  # origin_cache_control_qs_no_host does exactly that, with query strings in
+  # the cache key — see its comment above for why it's a custom policy and
+  # not the AWS-managed one with the same name.
   ordered_cache_behavior {
     path_pattern               = "/artigos"
     allowed_methods            = ["GET", "HEAD"]
@@ -288,7 +315,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
-    cache_policy_id          = data.aws_cloudfront_cache_policy.use_origin_cache_control_qs.id
+    cache_policy_id          = aws_cloudfront_cache_policy.origin_cache_control_qs_no_host.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
 
     viewer_protocol_policy = "redirect-to-https"
