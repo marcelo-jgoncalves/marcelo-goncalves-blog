@@ -200,19 +200,42 @@ jobs:
         with:
           terraform_version: 1.8.0
         if: steps.files.outputs.tf == 'true'
-      
+
       # O passo 'Instalar Scanner de Seguranca (tfsec)' foi removido.
 
       - name: Terraform Init
+        working-directory: infra
         run: terraform init -backend=false
         if: steps.files.outputs.tf == 'true'
 
       - name: Lint de Infra (Formato)
-        run: terraform fmt --check
+        working-directory: infra
+        run: terraform fmt --check -recursive
         if: steps.files.outputs.tf == 'true'
 
       - name: Validacao de Sintaxe
+        working-directory: infra
         run: terraform validate
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Configurar TFLint
+        uses: terraform-linters/setup-tflint@6e1e0642c0289bd619021bf6b34e3c08ed1e005a # v6.3.0
+        with:
+          tflint_version: v0.64.0
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Cache de plugins do TFLint
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('infra/.tflint.hcl') }}
+        if: steps.files.outputs.tf == 'true'
+
+      - name: Lint de Infra (TFLint)
+        working-directory: infra
+        run: |
+          tflint --init
+          tflint --recursive --chdir=.
         if: steps.files.outputs.tf == 'true'
 
       # CORRECAO: Substituindo o 'tfsec' obsoleto pelo 'trivy'

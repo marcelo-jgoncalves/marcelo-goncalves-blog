@@ -161,11 +161,10 @@ module "observability" {
 module "finops" {
   source = "./modules/finops"
 
-  environment              = var.environment
-  project_name             = var.project_name
-  budget_monthly_limit_usd = var.budget_monthly_limit_usd
-  alert_email              = var.budget_alert_email
-  enable_budget_alerts     = var.enable_budget_alerts
+  environment          = var.environment
+  project_name         = var.project_name
+  alert_email          = var.budget_alert_email
+  enable_budget_alerts = var.enable_budget_alerts
 }
 
 module "security-monitoring" {

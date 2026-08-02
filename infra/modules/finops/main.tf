@@ -4,7 +4,7 @@
 # para aws_budgets_budget varia conforme provider version).
 #
 # Referência para criação manual: AWS Budgets → Create budget → Monthly budget
-# → SPENDING → Limit: var.budget_monthly_limit_usd → Notifications → Email
+# → SPENDING → Limit: definir manualmente → Notifications → Email
 
 resource "aws_sns_topic" "budget_alerts" {
   count = var.enable_budget_alerts ? 1 : 0
