@@ -25,6 +25,10 @@
     "audit:inteligencia-artificial": "playwright test e2e/visual-audit/inteligencia-artificial.audit.spec.ts",
     "audit:all": "playwright test e2e/visual-audit/"
   },
+  "overrides": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.3.0",
     "@fortawesome/free-brands-svg-icons": "^7.3.0",
