@@ -30,242 +30,242 @@
 <path fill="#e5f5fd" stroke="#aeb6be" d="M349,-32.5C349,-32.5 852,-32.5 852,-32.5 858,-32.5 864,-38.5 864,-44.5 864,-44.5 864,-225.85 864,-225.85 864,-231.85 858,-237.85 852,-237.85 852,-237.85 349,-237.85 349,-237.85 343,-237.85 337,-231.85 337,-225.85 337,-225.85 337,-44.5 337,-44.5 337,-38.5 343,-32.5 349,-32.5"/>
 <text xml:space="preserve" text-anchor="middle" x="357" y="-222.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Data</text>
 </g>
-<!-- 21410a861805447db3c3b1209870b802 -->
+<!-- 75cf41a376eb4cca9010d3982a459dd7 -->
 <g id="node1" class="node">
-<title>21410a861805447db3c3b1209870b802</title>
+<title>75cf41a376eb4cca9010d3982a459dd7</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/onprem/client\users.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="529.6" y="-1166.15"/>
 <text xml:space="preserve" text-anchor="middle" x="580" y="-1051.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Editor</text>
 </g>
-<!-- 1feef1feafdd436a9b7d05e2d7619b67 -->
+<!-- b60b4a6628364403a14a4dfc559deacf -->
 <g id="node2" class="node">
-<title>1feef1feafdd436a9b7d05e2d7619b67</title>
+<title>b60b4a6628364403a14a4dfc559deacf</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/network\cloudfront.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="529.6" y="-936.45"/>
 <text xml:space="preserve" text-anchor="middle" x="580" y="-823.35" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">CloudFront</text>
 <text xml:space="preserve" text-anchor="middle" x="580" y="-807.6" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Admin (SPA)</text>
 </g>
-<!-- 21410a861805447db3c3b1209870b802&#45;&gt;1feef1feafdd436a9b7d05e2d7619b67 -->
+<!-- 75cf41a376eb4cca9010d3982a459dd7&#45;&gt;b60b4a6628364403a14a4dfc559deacf -->
 <g id="edge1" class="edge">
-<title>21410a861805447db3c3b1209870b802&#45;&gt;1feef1feafdd436a9b7d05e2d7619b67</title>
+<title>75cf41a376eb4cca9010d3982a459dd7&#45;&gt;b60b4a6628364403a14a4dfc559deacf</title>
 <path fill="none" stroke="#7b8894" d="M580,-1047.36C580,-1026.27 580,-1002.61 580,-980.08"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="583.5,-980.28 580,-970.28 576.5,-980.28 583.5,-980.28"/>
 <text xml:space="preserve" text-anchor="middle" x="599.5" y="-1004" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">HTTPS</text>
 </g>
-<!-- 70dc1fa5a20d4fb58567e93238523f9d -->
+<!-- 2fe5010d6ab84e79a1214b14e7872ff6 -->
 <g id="node3" class="node">
-<title>70dc1fa5a20d4fb58567e93238523f9d</title>
+<title>2fe5010d6ab84e79a1214b14e7872ff6</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/storage\simple-storage-service-s3.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="15.6" y="-681.5"/>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-567.05" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">S3: admin&#45;assets</text>
 </g>
-<!-- 1feef1feafdd436a9b7d05e2d7619b67&#45;&gt;70dc1fa5a20d4fb58567e93238523f9d -->
+<!-- b60b4a6628364403a14a4dfc559deacf&#45;&gt;2fe5010d6ab84e79a1214b14e7872ff6 -->
 <g id="edge2" class="edge">
-<title>1feef1feafdd436a9b7d05e2d7619b67&#45;&gt;70dc1fa5a20d4fb58567e93238523f9d</title>
+<title>b60b4a6628364403a14a4dfc559deacf&#45;&gt;2fe5010d6ab84e79a1214b14e7872ff6</title>
 <path fill="none" stroke="#7b8894" d="M529.78,-860.34C434.66,-813.52 228.58,-712.11 126.22,-661.73"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="127.92,-658.67 117.4,-657.4 124.83,-664.95 127.92,-658.67"/>
 <text xml:space="preserve" text-anchor="middle" x="350.41" y="-751.65" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">OAC</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693 -->
+<!-- 632978ce0ba141fc8bad96dbce24b445 -->
 <g id="node6" class="node">
-<title>366a91522dc14678b8eb95b9a7117693</title>
+<title>632978ce0ba141fc8bad96dbce24b445</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/network\api-gateway.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="529.6" y="-681.5"/>
 <text xml:space="preserve" text-anchor="middle" x="580" y="-567.05" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">API Gateway</text>
 </g>
-<!-- 1feef1feafdd436a9b7d05e2d7619b67&#45;&gt;366a91522dc14678b8eb95b9a7117693 -->
+<!-- b60b4a6628364403a14a4dfc559deacf&#45;&gt;632978ce0ba141fc8bad96dbce24b445 -->
 <g id="edge3" class="edge">
-<title>1feef1feafdd436a9b7d05e2d7619b67&#45;&gt;366a91522dc14678b8eb95b9a7117693</title>
+<title>b60b4a6628364403a14a4dfc559deacf&#45;&gt;632978ce0ba141fc8bad96dbce24b445</title>
 <path fill="none" stroke="#7b8894" d="M580,-803.27C580,-773.58 580,-740.12 580,-710.71"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="583.5,-710.74 580,-700.74 576.5,-710.74 583.5,-710.74"/>
 <text xml:space="preserve" text-anchor="middle" x="630.25" y="-759.9" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/* proxy</text>
 <text xml:space="preserve" text-anchor="middle" x="630.25" y="-743.4" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">(httpOnly cookie)</text>
 </g>
-<!-- 52829ad838af4f2daba86869ad1c4a13 -->
+<!-- e6815afd51b141738a09d7e0ef343c50 -->
 <g id="node4" class="node">
-<title>52829ad838af4f2daba86869ad1c4a13</title>
+<title>e6815afd51b141738a09d7e0ef343c50</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/mobile\amplify.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="15.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-313.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Auth client</text>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-297.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(Amplify)</text>
 </g>
-<!-- 70dc1fa5a20d4fb58567e93238523f9d&#45;&gt;52829ad838af4f2daba86869ad1c4a13 -->
+<!-- 2fe5010d6ab84e79a1214b14e7872ff6&#45;&gt;e6815afd51b141738a09d7e0ef343c50 -->
 <g id="edge4" class="edge">
-<title>70dc1fa5a20d4fb58567e93238523f9d&#45;&gt;52829ad838af4f2daba86869ad1c4a13</title>
+<title>2fe5010d6ab84e79a1214b14e7872ff6&#45;&gt;e6815afd51b141738a09d7e0ef343c50</title>
 <path fill="none" stroke="#7b8894" d="M66,-562.98C66,-534.43 66,-500.67 66,-469.8"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="69.5,-470.09 66,-460.09 62.5,-470.09 69.5,-470.09"/>
 </g>
-<!-- a6b3bbf7f30f41dc8280b1fd07280913 -->
+<!-- b2d1d313e0ba4ce0b0e3bc6930ba1864 -->
 <g id="node5" class="node">
-<title>a6b3bbf7f30f41dc8280b1fd07280913</title>
+<title>b2d1d313e0ba4ce0b0e3bc6930ba1864</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/security\cognito.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="14.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="65" y="-60.6" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Cognito User Pool</text>
 <text xml:space="preserve" text-anchor="middle" x="65" y="-44.85" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(SRP)</text>
 </g>
-<!-- 52829ad838af4f2daba86869ad1c4a13&#45;&gt;a6b3bbf7f30f41dc8280b1fd07280913 -->
+<!-- e6815afd51b141738a09d7e0ef343c50&#45;&gt;b2d1d313e0ba4ce0b0e3bc6930ba1864 -->
 <g id="edge5" class="edge">
-<title>52829ad838af4f2daba86869ad1c4a13&#45;&gt;a6b3bbf7f30f41dc8280b1fd07280913</title>
+<title>e6815afd51b141738a09d7e0ef343c50&#45;&gt;b2d1d313e0ba4ce0b0e3bc6930ba1864</title>
 <path fill="none" stroke="#7b8894" d="M22.82,-293.45C18.9,-283.21 15.55,-272.69 13.25,-262.35 9.92,-247.37 10.99,-231.84 14.58,-216.83"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="17.87,-218.04 17.2,-207.47 11.13,-216.15 17.87,-218.04"/>
 <text xml:space="preserve" text-anchor="middle" x="40.62" y="-250" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">SRP login</text>
 </g>
-<!-- 7b27145a94084a0f95b57ef95b6cfcfa -->
+<!-- d273ce4b5d7c426cb8b99c21f380de64 -->
 <g id="node7" class="node">
-<title>7b27145a94084a0f95b57ef95b6cfcfa</title>
+<title>d273ce4b5d7c426cb8b99c21f380de64</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="168.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="219" y="-313.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">adminSession</text>
 <text xml:space="preserve" text-anchor="middle" x="219" y="-297.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(login / me / logout)</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;7b27145a94084a0f95b57ef95b6cfcfa -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;d273ce4b5d7c426cb8b99c21f380de64 -->
 <g id="edge6" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;7b27145a94084a0f95b57ef95b6cfcfa</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;d273ce4b5d7c426cb8b99c21f380de64</title>
 <path fill="none" stroke="#7b8894" d="M529.84,-622.22C445.35,-607.91 280.13,-575.04 242.25,-531.7 227.36,-514.66 219.7,-492.32 216.14,-469.94"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="219.63,-469.58 214.87,-460.12 212.69,-470.48 219.63,-469.58"/>
 <text xml:space="preserve" text-anchor="middle" x="298.12" y="-519.35" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">POST/GET/DELETE</text>
 <text xml:space="preserve" text-anchor="middle" x="298.12" y="-502.85" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/session</text>
 </g>
-<!-- 7d60f386c8ed4fe0ab96cd1c28fffc72 -->
+<!-- 43f2d430821341499f6bc20ba8d66761 -->
 <g id="node8" class="node">
-<title>7d60f386c8ed4fe0ab96cd1c28fffc72</title>
+<title>43f2d430821341499f6bc20ba8d66761</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="305.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="356" y="-313.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">adminAuthorizer</text>
 <text xml:space="preserve" text-anchor="middle" x="356" y="-297.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(REQUEST authorizer)</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;7d60f386c8ed4fe0ab96cd1c28fffc72 -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;43f2d430821341499f6bc20ba8d66761 -->
 <g id="edge7" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;7d60f386c8ed4fe0ab96cd1c28fffc72</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;43f2d430821341499f6bc20ba8d66761</title>
 <path fill="none" stroke="#7b8894" stroke-dasharray="1,5" d="M529.81,-619.78C482.73,-607.33 414.28,-581.52 378,-531.7 365.02,-513.88 358.07,-491.79 354.63,-469.93"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="358.1,-469.51 353.33,-460.05 351.16,-470.42 358.1,-469.51"/>
 <text xml:space="preserve" text-anchor="middle" x="433.5" y="-511.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">CUSTOM authorizer</text>
 </g>
-<!-- 7684a8b55d8241b4aff4fde754cb5368 -->
+<!-- 3956b97d8abb413cad5105357d433ede -->
 <g id="node9" class="node">
-<title>7684a8b55d8241b4aff4fde754cb5368</title>
+<title>3956b97d8abb413cad5105357d433ede</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="892.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="943" y="-312.1" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">adminPosts</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;7684a8b55d8241b4aff4fde754cb5368 -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;3956b97d8abb413cad5105357d433ede -->
 <g id="edge8" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;7684a8b55d8241b4aff4fde754cb5368</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;3956b97d8abb413cad5105357d433ede</title>
 <path fill="none" stroke="#7b8894" d="M630.16,-622.34C715.12,-608.13 881.83,-575.36 920,-531.7 938.04,-511.06 945.43,-482.63 947.75,-455.78"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="951.24,-456.1 948.36,-445.9 944.25,-455.67 951.24,-456.1"/>
 <text xml:space="preserve" text-anchor="middle" x="980.56" y="-511.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/posts*</text>
 </g>
-<!-- 5999ced7d8ab4ce7b422abd0f9c1aaf1 -->
+<!-- 885b608ffa654948a03aea9ba0a5837b -->
 <g id="node10" class="node">
-<title>5999ced7d8ab4ce7b422abd0f9c1aaf1</title>
+<title>885b608ffa654948a03aea9ba0a5837b</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="481.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="532" y="-312.1" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">adminAuthors</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;5999ced7d8ab4ce7b422abd0f9c1aaf1 -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;885b608ffa654948a03aea9ba0a5837b -->
 <g id="edge9" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;5999ced7d8ab4ce7b422abd0f9c1aaf1</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;885b608ffa654948a03aea9ba0a5837b</title>
 <path fill="none" stroke="#7b8894" d="M529.76,-578.24C519.13,-564.2 509.42,-548.26 503.75,-531.7 495.48,-507.53 497.04,-480.36 502.35,-455.62"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="505.75,-456.45 504.68,-445.91 498.94,-454.82 505.75,-456.45"/>
 <text xml:space="preserve" text-anchor="middle" x="555.88" y="-511.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/autor/{id}</text>
 </g>
-<!-- 63f9735988a54ab7bc97c3c22107833b -->
+<!-- b766c0cc8ce04b23970e531f5d65e4c4 -->
 <g id="node11" class="node">
-<title>63f9735988a54ab7bc97c3c22107833b</title>
+<title>b766c0cc8ce04b23970e531f5d65e4c4</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="618.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="669" y="-312.1" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">adminCategorias</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;63f9735988a54ab7bc97c3c22107833b -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;b766c0cc8ce04b23970e531f5d65e4c4 -->
 <g id="edge10" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;63f9735988a54ab7bc97c3c22107833b</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;b766c0cc8ce04b23970e531f5d65e4c4</title>
 <path fill="none" stroke="#7b8894" d="M603.62,-562.98C615.33,-529.69 629.54,-489.3 641.72,-454.69"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="644.91,-456.17 644.93,-445.57 638.3,-453.85 644.91,-456.17"/>
 <text xml:space="preserve" text-anchor="middle" x="680.38" y="-511.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/categorias*</text>
 </g>
-<!-- bf338475bb7541cb9afe67eb4c79a75c -->
+<!-- a1220cbd13dc45e98444d415794cbfeb -->
 <g id="node12" class="node">
-<title>bf338475bb7541cb9afe67eb4c79a75c</title>
+<title>a1220cbd13dc45e98444d415794cbfeb</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="755.6" y="-426.55"/>
 <text xml:space="preserve" text-anchor="middle" x="806" y="-313.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">mediaUpload</text>
 <text xml:space="preserve" text-anchor="middle" x="806" y="-297.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(presigned URL)</text>
 </g>
-<!-- 366a91522dc14678b8eb95b9a7117693&#45;&gt;bf338475bb7541cb9afe67eb4c79a75c -->
+<!-- 632978ce0ba141fc8bad96dbce24b445&#45;&gt;a1220cbd13dc45e98444d415794cbfeb -->
 <g id="edge11" class="edge">
-<title>366a91522dc14678b8eb95b9a7117693&#45;&gt;bf338475bb7541cb9afe67eb4c79a75c</title>
+<title>632978ce0ba141fc8bad96dbce24b445&#45;&gt;a1220cbd13dc45e98444d415794cbfeb</title>
 <path fill="none" stroke="#7b8894" d="M630.39,-610.58C666.58,-594.3 714.22,-567.91 745,-531.7 760.25,-513.76 771.98,-491.54 780.88,-469.6"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="784.14,-470.87 784.48,-460.28 777.61,-468.35 784.14,-470.87"/>
 <text xml:space="preserve" text-anchor="middle" x="838.13" y="-511.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/admin/media/upload&#45;url</text>
 </g>
-<!-- 7b27145a94084a0f95b57ef95b6cfcfa&#45;&gt;a6b3bbf7f30f41dc8280b1fd07280913 -->
+<!-- d273ce4b5d7c426cb8b99c21f380de64&#45;&gt;b2d1d313e0ba4ce0b0e3bc6930ba1864 -->
 <g id="edge12" class="edge">
-<title>7b27145a94084a0f95b57ef95b6cfcfa&#45;&gt;a6b3bbf7f30f41dc8280b1fd07280913</title>
+<title>d273ce4b5d7c426cb8b99c21f380de64&#45;&gt;b2d1d313e0ba4ce0b0e3bc6930ba1864</title>
 <path fill="none" stroke="#7b8894" stroke-dasharray="5,2" d="M168.81,-322.17C157.13,-310 144.69,-297.17 133,-285.35 122.72,-274.96 117.19,-274.78 109.5,-262.35 100.81,-248.3 93.65,-232.38 87.8,-216.47"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="91.26,-215.75 84.65,-207.47 84.65,-218.06 91.26,-215.75"/>
 <text xml:space="preserve" text-anchor="middle" x="182.25" y="-250" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">validates idToken (JWKS)</text>
 </g>
-<!-- b14b30846a734019bedc230574079692 -->
+<!-- 494e8343820042fc937aaea092ed446a -->
 <g id="node13" class="node">
-<title>b14b30846a734019bedc230574079692</title>
+<title>494e8343820042fc937aaea092ed446a</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="344.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="395" y="-60.6" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">admin_sessions</text>
 <text xml:space="preserve" text-anchor="middle" x="395" y="-44.85" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(TTL)</text>
 </g>
-<!-- 7b27145a94084a0f95b57ef95b6cfcfa&#45;&gt;b14b30846a734019bedc230574079692 -->
+<!-- d273ce4b5d7c426cb8b99c21f380de64&#45;&gt;494e8343820042fc937aaea092ed446a -->
 <g id="edge13" class="edge">
-<title>7b27145a94084a0f95b57ef95b6cfcfa&#45;&gt;b14b30846a734019bedc230574079692</title>
+<title>d273ce4b5d7c426cb8b99c21f380de64&#45;&gt;494e8343820042fc937aaea092ed446a</title>
 <path fill="none" stroke="#7b8894" d="M262.08,-293.36C271.41,-277.27 281.61,-260.76 292,-245.85 305.78,-226.07 322.11,-205.67 337.67,-187.37"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="339.91,-190.13 343.76,-180.26 334.59,-185.57 339.91,-190.13"/>
 <text xml:space="preserve" text-anchor="middle" x="335.5" y="-250" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">Put/Get/Delete</text>
 </g>
-<!-- 7d60f386c8ed4fe0ab96cd1c28fffc72&#45;&gt;b14b30846a734019bedc230574079692 -->
+<!-- 43f2d430821341499f6bc20ba8d66761&#45;&gt;494e8343820042fc937aaea092ed446a -->
 <g id="edge14" class="edge">
-<title>7d60f386c8ed4fe0ab96cd1c28fffc72&#45;&gt;b14b30846a734019bedc230574079692</title>
+<title>43f2d430821341499f6bc20ba8d66761&#45;&gt;494e8343820042fc937aaea092ed446a</title>
 <path fill="none" stroke="#7b8894" d="M381.52,-293.39C384.07,-283.02 386.33,-272.49 388,-262.35 390.38,-247.92 392.03,-232.53 393.15,-217.46"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="396.64,-217.74 393.81,-207.53 389.65,-217.27 396.64,-217.74"/>
 <text xml:space="preserve" text-anchor="middle" x="413.78" y="-250" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">GetItem</text>
 </g>
-<!-- 7684a8b55d8241b4aff4fde754cb5368&#45;&gt;1feef1feafdd436a9b7d05e2d7619b67 -->
+<!-- 3956b97d8abb413cad5105357d433ede&#45;&gt;b60b4a6628364403a14a4dfc559deacf -->
 <g id="edge19" class="edge">
-<title>7684a8b55d8241b4aff4fde754cb5368&#45;&gt;1feef1feafdd436a9b7d05e2d7619b67</title>
+<title>3956b97d8abb413cad5105357d433ede&#45;&gt;b60b4a6628364403a14a4dfc559deacf</title>
 <path fill="none" stroke="#666666" stroke-dasharray="5,2" d="M993.28,-419.92C1022.8,-450.47 1050.93,-492.88 1032,-531.7 949.71,-700.49 743.49,-812.31 640.5,-859.53"/>
 <polygon fill="#666666" stroke="#666666" points="639.31,-856.22 631.64,-863.54 642.19,-862.6 639.31,-856.22"/>
 <text xml:space="preserve" text-anchor="middle" x="1063.11" y="-627" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">CreateInvalidation</text>
 </g>
-<!-- 2f1e3e1db02a40f0a5b737f437fedd83 -->
+<!-- 2be95e5806134c0aaffc42fbdf9e95e9 -->
 <g id="node14" class="node">
-<title>2f1e3e1db02a40f0a5b737f437fedd83</title>
+<title>2be95e5806134c0aaffc42fbdf9e95e9</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="755.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="806" y="-59.25" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">posts</text>
 </g>
-<!-- 7684a8b55d8241b4aff4fde754cb5368&#45;&gt;2f1e3e1db02a40f0a5b737f437fedd83 -->
+<!-- 3956b97d8abb413cad5105357d433ede&#45;&gt;2be95e5806134c0aaffc42fbdf9e95e9 -->
 <g id="edge15" class="edge">
-<title>7684a8b55d8241b4aff4fde754cb5368&#45;&gt;2f1e3e1db02a40f0a5b737f437fedd83</title>
+<title>3956b97d8abb413cad5105357d433ede&#45;&gt;2be95e5806134c0aaffc42fbdf9e95e9</title>
 <path fill="none" stroke="#7b8894" d="M945.79,-307.92C943.23,-285.46 936.2,-262.05 920,-245.85 905.64,-231.49 891.76,-249.33 875,-237.85 861.1,-228.34 849.52,-215.01 840.06,-200.83"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="843.24,-199.3 834.96,-192.69 837.31,-203.03 843.24,-199.3"/>
 </g>
-<!-- 7e3f12ecb5fd484b841bd7e5965b60a9 -->
+<!-- 0949693cf33344e4acbb93dc25215887 -->
 <g id="node15" class="node">
-<title>7e3f12ecb5fd484b841bd7e5965b60a9</title>
+<title>0949693cf33344e4acbb93dc25215887</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="481.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="532" y="-59.25" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">autores</text>
 </g>
-<!-- 5999ced7d8ab4ce7b422abd0f9c1aaf1&#45;&gt;7e3f12ecb5fd484b841bd7e5965b60a9 -->
+<!-- 885b608ffa654948a03aea9ba0a5837b&#45;&gt;0949693cf33344e4acbb93dc25215887 -->
 <g id="edge16" class="edge">
-<title>5999ced7d8ab4ce7b422abd0f9c1aaf1&#45;&gt;7e3f12ecb5fd484b841bd7e5965b60a9</title>
+<title>885b608ffa654948a03aea9ba0a5837b&#45;&gt;0949693cf33344e4acbb93dc25215887</title>
 <path fill="none" stroke="#7b8894" d="M532,-307.93C532,-275.46 532,-236.31 532,-202.51"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="535.5,-202.79 532,-192.79 528.5,-202.79 535.5,-202.79"/>
 </g>
-<!-- defdf5ed3a0a43aead9b489745376b94 -->
+<!-- d7a0589d1fd84b4b92574aa035573824 -->
 <g id="node16" class="node">
-<title>defdf5ed3a0a43aead9b489745376b94</title>
+<title>d7a0589d1fd84b4b92574aa035573824</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="618.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="669" y="-59.25" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">categorias</text>
 </g>
-<!-- 63f9735988a54ab7bc97c3c22107833b&#45;&gt;defdf5ed3a0a43aead9b489745376b94 -->
+<!-- b766c0cc8ce04b23970e531f5d65e4c4&#45;&gt;d7a0589d1fd84b4b92574aa035573824 -->
 <g id="edge17" class="edge">
-<title>63f9735988a54ab7bc97c3c22107833b&#45;&gt;defdf5ed3a0a43aead9b489745376b94</title>
+<title>b766c0cc8ce04b23970e531f5d65e4c4&#45;&gt;d7a0589d1fd84b4b92574aa035573824</title>
 <path fill="none" stroke="#7b8894" d="M669,-307.93C669,-275.46 669,-236.31 669,-202.51"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="672.5,-202.79 669,-192.79 665.5,-202.79 672.5,-202.79"/>
 </g>
-<!-- e3933b43e358446897aac7c525d60692 -->
+<!-- c427d9688a2647ebbec186f927ce329e -->
 <g id="node17" class="node">
-<title>e3933b43e358446897aac7c525d60692</title>
+<title>c427d9688a2647ebbec186f927ce329e</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/storage\simple-storage-service-s3.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="892.6" y="-173.7"/>
 <text xml:space="preserve" text-anchor="middle" x="943" y="-59.25" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">S3: uploads&#45;raw</text>
 </g>
-<!-- bf338475bb7541cb9afe67eb4c79a75c&#45;&gt;e3933b43e358446897aac7c525d60692 -->
+<!-- a1220cbd13dc45e98444d415794cbfeb&#45;&gt;c427d9688a2647ebbec186f927ce329e -->
 <g id="edge18" class="edge">
-<title>bf338475bb7541cb9afe67eb4c79a75c&#45;&gt;e3933b43e358446897aac7c525d60692</title>
+<title>a1220cbd13dc45e98444d415794cbfeb&#45;&gt;c427d9688a2647ebbec186f927ce329e</title>
 <path fill="none" stroke="#7b8894" stroke-dasharray="5,2" d="M850.67,-293.36C866.87,-263.69 885.11,-230.29 901.07,-201.07"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="903.95,-203.11 905.67,-192.66 897.8,-199.76 903.95,-203.11"/>
 <text xml:space="preserve" text-anchor="middle" x="916.5" y="-250" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">presigned URL</text>

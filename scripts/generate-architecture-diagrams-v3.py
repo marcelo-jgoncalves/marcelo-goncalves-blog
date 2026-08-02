@@ -15,6 +15,10 @@ without following crossing lines:
 Re-run whenever the infrastructure topology changes materially.
 """
 
+import glob
+
+from PIL import Image
+
 from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.compute import Lambda
 from diagrams.aws.database import Dynamodb
@@ -272,3 +276,23 @@ with new_diagram("05-observability", "Observability and security (cross-cutting)
     canary >> Edge(label="failure") >> sns_canary
     apigw >> Edge(label="5xx / p99 latency", style="dotted", color="gray60") >> slo
     nextjs >> Edge(label="heartbeat", style="dotted", color="gray60") >> canary
+
+
+# ---------------------------------------------------------------------------
+# Normalize canvas width across the set: pad every PNG (white background,
+# matching graph_attr bgcolor) to the widest diagram's width, centering the
+# original drawing horizontally. Diagrams naturally vary in width/height
+# depending on how many nodes they show, but displayed side by side (or in
+# sequence in the README) they read better lined up on the same width.
+# ---------------------------------------------------------------------------
+pngs = sorted(glob.glob("prints/architecture-v3-*.png"))
+max_width = max(Image.open(p).width for p in pngs)
+
+for path in pngs:
+    img = Image.open(path)
+    if img.width == max_width:
+        continue
+    canvas = Image.new("RGB", (max_width, img.height), "white")
+    offset_x = (max_width - img.width) // 2
+    canvas.paste(img, (offset_x, 0))
+    canvas.save(path)
