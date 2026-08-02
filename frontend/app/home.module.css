@@ -136,8 +136,8 @@
   gap: var(--gap-grid);
 }
 
-/* The 4 pillar cards were migrated to components/ui/PillarCard.tsx (.pillar-*),
-   also reused in /servicos — see PillarCard.css. */
+/* The 4 pillar cards were migrated to components/ui/PillarCard.tsx (.pillar-*)
+   — see PillarCard.module.css. */
 
 .ihCaseTags span {
   font-family: var(--mono);

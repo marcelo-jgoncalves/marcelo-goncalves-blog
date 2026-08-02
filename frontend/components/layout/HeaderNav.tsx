@@ -30,8 +30,9 @@ const SERVICE_LINKS = [
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
 ] as const;
 
-// /servicos (central page) — first item in the dropdown, above the 4 individual links.
-const SERVICES_OVERVIEW_LINK = { name: 'Visão geral dos serviços', href: '/servicos' } as const;
+// Anchor on the institutional Home — the standalone /servicos hub page was
+// removed (no unique content beyond overview cards already on the Home).
+const SERVICES_TRIGGER_HREF = '/#servicos';
 
 export default function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function HeaderNav() {
         ? isArticlesActive(pathname)
         : pathname.startsWith(href);
 
-  const isServicesActive = pathname === SERVICES_OVERVIEW_LINK.href || SERVICE_LINKS.some((link) => isActive(link.href));
+  const isServicesActive = SERVICE_LINKS.some((link) => isActive(link.href));
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -133,12 +134,7 @@ export default function HeaderNav() {
 
         <div className={styles.navDropdown} ref={servicesRef}>
           <span className={`${styles.navDropdownTrigger}${isServicesActive ? ` ${styles.activeLink}` : ''}`}>
-            <Link
-              href="/servicos"
-              prefetch={false}
-              className={isActive('/servicos') ? styles.activeLink : ''}
-              aria-current={isActive('/servicos') ? 'page' : undefined}
-            >
+            <Link href={SERVICES_TRIGGER_HREF} prefetch={false}>
               Serviços
             </Link>
             <button
@@ -154,15 +150,6 @@ export default function HeaderNav() {
             </button>
           </span>
           <div id="services-dropdown" className={`${styles.navDropdownPanel}${isServicesOpen ? ` ${styles.dropdownOpen}` : ''}`}>
-            <Link
-              href={SERVICES_OVERVIEW_LINK.href}
-              prefetch={false}
-              onClick={() => setIsServicesOpen(false)}
-              className={`${styles.navDropdownOverview}${pathname === SERVICES_OVERVIEW_LINK.href ? ` ${styles.activeLink}` : ''}`}
-              aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
-            >
-              {SERVICES_OVERVIEW_LINK.name}
-            </Link>
             {SERVICE_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -230,14 +217,7 @@ export default function HeaderNav() {
         ))}
 
         <div className={`${styles.navMobileServicesToggle}${isServicesActive ? ` ${styles.activeLink}` : ''}`}>
-          <Link
-            href="/servicos"
-            prefetch={false}
-            onClick={closeMenu}
-            tabIndex={isMenuOpen ? 0 : -1}
-            className={isActive('/servicos') ? styles.activeLink : ''}
-            aria-current={isActive('/servicos') ? 'page' : undefined}
-          >
+          <Link href={SERVICES_TRIGGER_HREF} prefetch={false} onClick={closeMenu} tabIndex={isMenuOpen ? 0 : -1}>
             Serviços
           </Link>
           <button
@@ -253,16 +233,6 @@ export default function HeaderNav() {
         </div>
         {isServicesMobileOpen && (
           <div id="mobile-services-list" className={styles.navMobileServicesList}>
-            <Link
-              href={SERVICES_OVERVIEW_LINK.href}
-              prefetch={false}
-              onClick={closeMenu}
-              tabIndex={isMenuOpen ? 0 : -1}
-              className={`${styles.navDropdownOverview}${pathname === SERVICES_OVERVIEW_LINK.href ? ` ${styles.activeLink}` : ''}`}
-              aria-current={pathname === SERVICES_OVERVIEW_LINK.href ? 'page' : undefined}
-            >
-              {SERVICES_OVERVIEW_LINK.name}
-            </Link>
             {SERVICE_LINKS.map((link) => (
               <Link
                 key={link.href}

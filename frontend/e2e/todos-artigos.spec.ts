@@ -40,7 +40,7 @@ test.describe('página /todos-artigos', () => {
   test('CTA editorial aparece no final com links de serviços e contato', async ({ page }) => {
     const cta = page.locator('.art-cta-editorial');
     await expect(cta).toBeVisible();
-    await expect(cta.locator('a[href="/servicos"]')).toBeVisible();
+    await expect(cta.locator('a[href="/#servicos"]')).toBeVisible();
     await expect(cta.locator('a[href="/contato"]')).toBeVisible();
   });
 

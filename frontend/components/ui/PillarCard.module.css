@@ -1,5 +1,4 @@
-/* Extracted from frontend/app/home.css (.ih-pillar-*) — same card reused
-   on the Home and in /servicos (see PillarCard.tsx). */
+/* Extracted from frontend/app/home.css (.ih-pillar-*) — see PillarCard.tsx. */
 
 .pillarCard {
   flex: 1 1 340px;

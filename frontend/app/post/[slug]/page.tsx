@@ -277,7 +277,7 @@ export default async function PostPage({ params }: Props) {
           <h2>Precisa aplicar esse tipo de engenharia na sua operação?</h2>
           <p>Conheça as frentes de atuação da consultoria ou apresente o contexto que sua empresa precisa resolver.</p>
           <div className={styles.postCtaActions}>
-            <Link className="btn" href="/servicos">Conhecer os serviços</Link>
+            <Link className="btn" href="/#servicos">Conhecer os serviços</Link>
             <Link className="btn btn-petrol" href="/contato">Apresentar um desafio</Link>
           </div>
         </div>

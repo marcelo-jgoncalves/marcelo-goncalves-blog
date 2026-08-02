@@ -1,5 +1,4 @@
 // Icon + title + text + footer card — same pattern as
-// frontend/app/servicos/servicos.css (.svc-card) and
 // frontend/app/home.css (.ih-pillar-card). Single source of truth for this
 // format: only size and content vary per use. Footer is flexible: `tags`
 // renders the standard pill row; `footer` accepts any content (e.g. an

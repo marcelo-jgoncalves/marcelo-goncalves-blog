@@ -14,9 +14,8 @@ const CATEGORY_SLUGS = [
   'tutoriais-aws',
 ];
 
-// The 4 pillar landing pages — replace the /servicos hub, which left the
-// sitemap for being orphaned from navigation once the nav's "Serviços"
-// dropdown started linking directly to them.
+// The 4 pillar landing pages — the /servicos hub page was removed (no
+// unique content beyond overview cards already on the Home).
 const PILLAR_SLUGS = [
   'software',
   'plataforma',
