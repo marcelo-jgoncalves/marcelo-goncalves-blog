@@ -73,6 +73,15 @@ export async function createPostsTable(client: DynamoDBClient, tableName: string
   }));
 }
 
+export async function createCategoriasTable(client: DynamoDBClient, tableName: string): Promise<void> {
+  await client.send(new CreateTableCommand({
+    TableName: tableName,
+    BillingMode: "PAY_PER_REQUEST",
+    AttributeDefinitions: [{ AttributeName: "categoria_slug", AttributeType: "S" }],
+    KeySchema: [{ AttributeName: "categoria_slug", KeyType: "HASH" }],
+  }));
+}
+
 export async function deleteTable(client: DynamoDBClient, tableName: string): Promise<void> {
   await client.send(new DeleteTableCommand({ TableName: tableName })).catch(() => {});
 }

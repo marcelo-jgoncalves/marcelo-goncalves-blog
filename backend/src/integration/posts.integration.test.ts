@@ -11,11 +11,13 @@
 // at module-load time — importing early would bind it to the wrong endpoint.
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { PutItemCommand, GetItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
-import { integrationClient, createPostsTable, deleteTable } from "./setup";
+import { integrationClient, createPostsTable, createCategoriasTable, deleteTable } from "./setup";
 
 const TABLE_NAME = `integration-posts-${Date.now()}-${process.pid}`;
+const CATEGORIAS_TABLE_NAME = `integration-categorias-${Date.now()}-${process.pid}`;
 
 process.env.POSTS_TABLE = TABLE_NAME;
+process.env.CATEGORIAS_TABLE = CATEGORIAS_TABLE_NAME;
 process.env.AUTHORS_TABLE = TABLE_NAME; // unused by these tests, but the module reads it at load time
 process.env.AWS_REGION = process.env.AWS_REGION ?? "us-east-1";
 process.env.AWS_ACCESS_KEY_ID = "local";
@@ -75,6 +77,7 @@ function samplePost(overrides: Record<string, unknown> = {}) {
 
 beforeAll(async () => {
   await createPostsTable(client, TABLE_NAME);
+  await createCategoriasTable(client, CATEGORIAS_TABLE_NAME);
   ({ handler: adminPostsHandler } = await import("../functions/adminPosts"));
   ({ handler: getPostsHandler } = await import("../functions/getPosts"));
   ({ handler: postSchedulerHandler } = await import("../functions/postScheduler"));
@@ -82,6 +85,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await deleteTable(client, TABLE_NAME);
+  await deleteTable(client, CATEGORIAS_TABLE_NAME);
 });
 
 describe("adminPosts.savePost against real DynamoDB", () => {
