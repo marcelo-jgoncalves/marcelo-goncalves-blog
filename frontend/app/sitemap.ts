@@ -14,8 +14,6 @@ const CATEGORY_SLUGS = [
   'tutoriais-aws',
 ];
 
-const now = new Date();
-
 // The 4 pillar landing pages — replace the /servicos hub, which left the
 // sitemap for being orphaned from navigation once the nav's "Serviços"
 // dropdown started linking directly to them.
@@ -26,7 +24,9 @@ const PILLAR_SLUGS = [
   'inteligencia-artificial',
 ];
 
-const staticPages: MetadataRoute.Sitemap = [
+// Function, not module-level const: a module-scope `now` freezes lastModified
+// at Lambda-instance init and every revalidation would emit the same stale date.
+const buildStaticPages = (now: Date): MetadataRoute.Sitemap => [
   { url: SITE_URL,                     lastModified: now, changeFrequency: 'daily',   priority: 1.0 },
   { url: `${SITE_URL}/artigos`,        lastModified: now, changeFrequency: 'daily',   priority: 0.9 },
   { url: `${SITE_URL}/todos-artigos`,  lastModified: now, changeFrequency: 'daily',   priority: 0.8 },
@@ -69,6 +69,7 @@ async function fetchAllPosts() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticPages = buildStaticPages(new Date());
   const posts = await fetchAllPosts();
 
   const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({

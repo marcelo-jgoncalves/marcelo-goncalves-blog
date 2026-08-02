@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import PageHero from '@/components/ui/PageHero';
 import './not-found.css';
 
@@ -28,9 +29,9 @@ export default function ErrorBoundary({
         <button type="button" className="btn" onClick={() => reset()}>
           Tentar novamente
         </button>
-        <a href="/" className="btn btn-petrol">
+        <Link href="/" className="btn btn-petrol">
           Voltar para a Home
-        </a>
+        </Link>
       </div>
     </PageHero>
   );

@@ -30,7 +30,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const viewport = {
-  themeColor: 'var(--petrol)',
+  // Literal hex, not var(--petrol): <meta name="theme-color"> does not
+  // resolve CSS custom properties — browsers ignore the value entirely.
+  themeColor: '#0F4C5C',
 };
 
 export const metadata: Metadata = {

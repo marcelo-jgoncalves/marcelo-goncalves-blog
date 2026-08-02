@@ -14,8 +14,10 @@ export const AUTHOR_LINKEDIN_URL = 'https://www.linkedin.com/in/marcelo-jgoncalv
 export const AUTHOR_GITHUB_URL = 'https://github.com/marcelo-jgoncalves';
 export const AUTHOR_EMAIL = 'contato@marcelogoncalves.com';
 export const AUTHOR_LOCATION = 'Belo Horizonte, MG · Atendimento remoto';
-// TODO: placeholder — pending the real Instagram URL.
-export const AUTHOR_INSTAGRAM_URL = 'https://instagram.com/foo';
+// Empty until the real Instagram URL exists — a placeholder here would point
+// any future consumer at a stranger's account. Consumers must render the
+// link only when the value is non-empty.
+export const AUTHOR_INSTAGRAM_URL = '';
 
 // Controls whether the "Available for new projects" badge shows in the Home's final CTA.
 export const ACCEPTING_NEW_PROJECTS = true;
