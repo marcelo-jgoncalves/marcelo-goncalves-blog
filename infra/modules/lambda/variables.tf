@@ -69,28 +69,28 @@ variable "enable_xray_tracing" {
 }
 
 variable "enable_cloudwatch_alarms" {
-  description = "Cria alarmes CloudWatch de erro para todas as funções Lambda"
+  description = "Creates CloudWatch error alarms for all Lambda functions"
   type        = bool
   default     = false
 }
 
 variable "alarm_email" {
-  description = "E-mail para notificações SNS dos alarmes Lambda"
+  description = "Email for Lambda alarm SNS notifications"
   type        = string
   default     = ""
 }
 
 variable "admin_sessions_table_arn" {
-  description = "ARN da tabela DynamoDB de sessões do admin (BFF), usada por adminSession/adminAuthorizer"
+  description = "ARN of the admin sessions (BFF) DynamoDB table, used by adminSession/adminAuthorizer"
   type        = string
 }
 
 variable "cognito_user_pool_id" {
-  description = "ID do User Pool do Cognito, usado por adminSession/adminAuthorizer para verificar o idToken via JWKS"
+  description = "ID of the Cognito User Pool, used by adminSession/adminAuthorizer to verify the idToken via JWKS"
   type        = string
 }
 
 variable "cognito_client_id" {
-  description = "ID do App Client do Cognito, usado por adminSession/adminAuthorizer para verificar o idToken via JWKS"
+  description = "ID of the Cognito App Client, used by adminSession/adminAuthorizer to verify the idToken via JWKS"
   type        = string
 }

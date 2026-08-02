@@ -1,7 +1,7 @@
 # --- 1. A API REST ---
 resource "aws_api_gateway_rest_api" "main" {
   name        = "${var.project_name}-${var.environment}-api"
-  description = "API principal do blog Marcelo Gonçalves"
+  description = "Main API for the Marcelo Gonçalves blog"
 
   endpoint_configuration {
     types = ["REGIONAL"]

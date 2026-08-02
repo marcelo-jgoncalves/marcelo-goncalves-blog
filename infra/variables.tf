@@ -1,23 +1,23 @@
 
 variable "aws_region" {
-  description = "Região da AWS para deploy"
+  description = "AWS region for deploy"
   type        = string
   default     = "us-east-1"
 }
 
 variable "environment" {
-  description = "Ambiente de deploy (dev ou prod)"
+  description = "Deployment environment (dev or prod)"
   type        = string
 }
 
 variable "project_name" {
-  description = "Nome do projeto"
+  description = "Project name"
   type        = string
   default     = "marcelo-goncalves-blog"
 }
 
 variable "log_level" {
-  description = "Log level para as Lambdas. DEBUG em dev, INFO em prod."
+  description = "Log level for the Lambdas. DEBUG in dev, INFO in prod."
   type        = string
   default     = "INFO"
 
@@ -28,36 +28,36 @@ variable "log_level" {
 }
 
 variable "log_retention_days" {
-  description = "Retenção dos logs no CloudWatch em dias. 7 para dev, 30 para prod."
+  description = "CloudWatch log retention in days. 7 for dev, 30 for prod."
   type        = number
   default     = 7
 
   validation {
     condition     = contains([1, 3, 5, 7, 14, 30, 60, 90, 180, 365], var.log_retention_days)
-    error_message = "log_retention_days deve ser um valor válido do CloudWatch: 1, 3, 5, 7, 14, 30, 60, 90, 180 ou 365."
+    error_message = "log_retention_days must be a valid CloudWatch value: 1, 3, 5, 7, 14, 30, 60, 90, 180 or 365."
   }
 }
 
 variable "enable_xray_tracing" {
-  description = "Habilita AWS X-Ray tracing ativo nas Lambdas e no API Gateway. Desativado em dev para reduzir custos."
+  description = "Enables active AWS X-Ray tracing on the Lambdas and API Gateway. Disabled in dev to reduce costs."
   type        = bool
   default     = false
 }
 
 variable "enable_point_in_time_recovery" {
-  description = "Habilita Point-in-Time Recovery nas 3 tabelas DynamoDB (posts/autores/categorias). Desativado em dev por custo (~$0.20/GB-mês); ativar em produção."
+  description = "Enables Point-in-Time Recovery on the 3 DynamoDB tables (posts/autores/categorias). Disabled in dev due to cost (~$0.20/GB-month); enable in production."
   type        = bool
   default     = false
 }
 
 variable "enable_cloudwatch_alarms" {
-  description = "Cria CloudWatch Alarms para erros de Lambda e 5xx do API Gateway. Desativado em dev."
+  description = "Creates CloudWatch Alarms for Lambda errors and API Gateway 5xx. Disabled in dev."
   type        = bool
   default     = false
 }
 
 variable "alarm_email" {
-  description = "Email para notificações SNS dos CloudWatch Alarms. Obrigatório se enable_cloudwatch_alarms=true."
+  description = "Email for SNS notifications of the CloudWatch Alarms. Required if enable_cloudwatch_alarms=true."
   type        = string
   default     = ""
 }
@@ -69,53 +69,47 @@ variable "dlq_alert_email" {
 }
 
 variable "enable_synthetic_canary" {
-  description = "Cria um CloudWatch Synthetics canary (heartbeat) verificando a URL pública a cada 15min. Custo recorrente (~US$3-4/mês) independente de tráfego/deploy — variável própria, separada de enable_cloudwatch_alarms, para ligar/desligar em dev sob demanda."
+  description = "Creates a CloudWatch Synthetics canary (heartbeat) checking the public URL every 15min. Recurring cost (~US$3-4/month) regardless of traffic/deploy — a separate flag from enable_cloudwatch_alarms, so it can be toggled in dev on demand."
   type        = bool
   default     = false
 }
 
 variable "enable_cloudfront_logging" {
-  description = "Habilita logs de acesso do CloudFront em bucket S3. Logs expiram conforme log_retention_days. Desativado em dev para reduzir custos."
+  description = "Enables CloudFront access logs in an S3 bucket. Logs expire per log_retention_days. Disabled in dev to reduce costs."
   type        = bool
   default     = false
 }
 
 variable "enable_budget_alerts" {
-  description = "Cria AWS Budgets com alertas via SNS quando limite mensal é atingido. Desativado em dev para manter custo zero."
+  description = "Creates AWS Budgets with SNS alerts when the monthly limit is reached. Disabled in dev to keep cost at zero."
   type        = bool
   default     = false
 }
 
-variable "budget_monthly_limit_usd" {
-  description = "Limite orçamentário mensal em USD para ativar alertas. Default: 100 USD (margem de segurança para dev)."
-  type        = number
-  default     = 100
-}
-
 variable "budget_alert_email" {
-  description = "Email para notificações de orçamento excedido via AWS Budgets. Obrigatório se enable_budget_alerts=true."
+  description = "Email for AWS Budgets overspend notifications. Required if enable_budget_alerts=true."
   type        = string
   default     = ""
 }
 
 variable "enable_guardduty" {
-  description = "Habilita o detector do GuardDuty. Tem 30 dias de trial gratuito; depois cobra por volume de eventos analisados (~poucos USD/mês). Desativado em dev por padrão — ativar quando o ambiente de produção for criado."
+  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default — enable when the production environment is created."
   type        = bool
   default     = false
 }
 
 variable "frontend_cloudfront_distribution_id" {
-  description = "ID da distribution CloudFront do frontend (module.frontend), usado por adminPosts/postScheduler para invalidar cache sob demanda. Valor literal, não referência de módulo — module.lambda -> module.frontend -> module.api-gateway -> module.lambda criaria um ciclo no Terraform. Atualizar manualmente se a distribution for recriada (raro)."
+  description = "CloudFront distribution ID of the frontend (module.frontend), used by adminPosts/postScheduler to invalidate cache on demand. Literal value, not a module reference — module.lambda -> module.frontend -> module.api-gateway -> module.lambda would create a Terraform cycle. Update manually if the distribution is recreated (rare)."
   type        = string
 }
 
 variable "admin_api_gateway_domain_name" {
-  description = "Domínio do API Gateway (ex: abc123.execute-api.us-east-1.amazonaws.com), usado pelo CloudFront do admin (module.admin) como origin do proxy same-origin /admin/*. Valor literal, não referência de módulo — module.admin -> module.api-gateway -> module.lambda -> module.admin (via admin_origin) criaria um ciclo no Terraform. Atualizar manualmente se a REST API for recriada (raro)."
+  description = "API Gateway domain (e.g. abc123.execute-api.us-east-1.amazonaws.com), used by the admin CloudFront (module.admin) as the origin of the same-origin /admin/* proxy. Literal value, not a module reference — module.admin -> module.api-gateway -> module.lambda -> module.admin (via admin_origin) would create a Terraform cycle. Update manually if the REST API is recreated (rare)."
   type        = string
 }
 
 variable "admin_api_gateway_stage_path" {
-  description = "Path do stage do API Gateway (ex: /v1), usado junto com admin_api_gateway_domain_name no origin_path do proxy /admin/* do CloudFront do admin. Mesmo motivo de valor literal do var acima."
+  description = "API Gateway stage path (e.g. /v1), used together with admin_api_gateway_domain_name in the origin_path of the admin CloudFront's /admin/* proxy. Same reason for a literal value as the var above."
   type        = string
   default     = "/v1"
 }

@@ -1,31 +1,31 @@
 variable "project_name" {
-  description = "Nome do projeto, usado como prefixo de nomenclatura de recursos (bucket S3, distribution CloudFront)"
+  description = "Project name, used as prefix for resource naming (S3 bucket, CloudFront distribution)"
   type        = string
 }
 
 variable "environment" {
-  description = "Ambiente de deploy (dev/prd), usado como sufixo de nomenclatura de recursos"
+  description = "Deployment environment (dev/prd), used as suffix for resource naming"
   type        = string
 }
 
 variable "log_retention_days" {
-  description = "Retenção dos logs S3 do CloudFront em dias (lifecycle rule)."
+  description = "CloudFront S3 log retention in days (lifecycle rule)."
   type        = number
   default     = 7
 }
 
 variable "enable_cloudfront_logging" {
-  description = "Habilita logs de acesso do CloudFront em bucket S3. Logs expiram conforme log_retention_days."
+  description = "Enables CloudFront access logs in an S3 bucket. Logs expire per log_retention_days."
   type        = bool
   default     = false
 }
 
 variable "api_gateway_domain_name" {
-  description = "Domínio do API Gateway (sem stage), usado como origin do proxy same-origin /admin/* — evita CORS cross-origin e permite cookie SameSite=Strict na sessão do BFF."
+  description = "API Gateway domain (no stage), used as the origin of the same-origin /admin/* proxy — avoids cross-origin CORS and allows a SameSite=Strict cookie on the BFF session."
   type        = string
 }
 
 variable "api_gateway_stage_path" {
-  description = "Path do stage do API Gateway (ex: /v1), usado como origin_path do proxy /admin/*"
+  description = "API Gateway stage path (e.g. /v1), used as origin_path of the /admin/* proxy"
   type        = string
 }

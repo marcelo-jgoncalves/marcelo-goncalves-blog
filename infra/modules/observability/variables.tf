@@ -1,50 +1,59 @@
-variable "project_name" {}
-variable "environment" {}
-variable "aws_region" {}
+variable "project_name" {
+  description = "Project name, used as prefix for all resource names"
+  type        = string
+}
+variable "environment" {
+  description = "Deployment environment (dev/prd)"
+  type        = string
+}
+variable "aws_region" {
+  description = "AWS region the observability resources are deployed to"
+  type        = string
+}
 
 variable "enable_cloudwatch_alarms" {
-  description = "Cria o CloudWatch Dashboard unificado (4 golden signals). Reaproveita o mesmo flag dos demais módulos."
+  description = "Creates the unified CloudWatch Dashboard (4 golden signals). Reuses the same flag as the other modules."
   type        = bool
   default     = false
 }
 
 variable "enable_synthetic_canary" {
-  description = "Cria um CloudWatch Synthetics canary (heartbeat) que verifica a URL pública a cada 15min. Custo ~US$3-4/mês quando ativo — desligar em dev quando não estiver validando."
+  description = "Creates a CloudWatch Synthetics canary (heartbeat) that checks the public URL every 15min. Cost ~US$3-4/month when active — turn off in dev when not validating."
   type        = bool
   default     = false
 }
 
 variable "alarm_email" {
-  description = "E-mail para notificações via SNS (alarme de falha do canary)."
+  description = "Email for SNS notifications (canary failure alarm)."
   type        = string
   default     = ""
 }
 
 variable "frontend_url" {
-  description = "URL pública do blog (com https://) que o canary deve verificar."
+  description = "Public blog URL (with https://) that the canary should check."
   type        = string
   default     = ""
 }
 
 variable "api_gateway_name" {
-  description = "Nome do API Gateway, para os widgets de tráfego/latência/erros do dashboard."
+  description = "API Gateway name, for the dashboard's traffic/latency/error widgets."
   type        = string
   default     = ""
 }
 
 variable "lambda_function_names" {
-  description = "Mapa nome-amigável -> function_name real, para os widgets de erros/throttles/duration do dashboard."
+  description = "Map of friendly name -> real function_name, for the dashboard's errors/throttles/duration widgets."
   type        = map(string)
   default     = {}
 }
 
 variable "availability_slo" {
-  description = "SLO de disponibilidade do API Gateway (proporção de requests não-5xx), em janela de 30 dias. Define o error budget usado nos burn rate alarms."
+  description = "API Gateway availability SLO (proportion of non-5xx requests), over a 30-day window. Defines the error budget used in the burn rate alarms."
   type        = number
   default     = 0.995
 
   validation {
     condition     = var.availability_slo > 0 && var.availability_slo < 1
-    error_message = "availability_slo deve ser uma proporção entre 0 e 1 (ex.: 0.995 para 99.5%)."
+    error_message = "availability_slo must be a proportion between 0 and 1 (e.g. 0.995 for 99.5%)."
   }
 }

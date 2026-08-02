@@ -41,7 +41,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "cf_logs" {
 
 resource "aws_cloudfront_origin_access_control" "admin_oac" {
   name                              = "${var.project_name}-${var.environment}-admin-oac"
-  description                       = "Acesso restrito S3 Admin"
+  description                       = "Restricted access to Admin S3"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"

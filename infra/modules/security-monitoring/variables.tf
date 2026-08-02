@@ -1,20 +1,20 @@
 variable "project_name" {
-  description = "Nome do projeto, usado como prefixo de nomenclatura de recursos (alarmes, detector GuardDuty)"
+  description = "Project name, used as prefix for resource naming (alarms, GuardDuty detector)"
   type        = string
 }
 
 variable "environment" {
-  description = "Ambiente de deploy (dev/prd), usado como sufixo de nomenclatura de recursos"
+  description = "Deployment environment (dev/prd), used as suffix for resource naming"
   type        = string
 }
 
 variable "log_retention_days" {
-  description = "Dias de retenção dos logs monitorados (usado para alinhar alarmes/janelas de avaliação ao período de retenção real)"
+  description = "Retention days of the monitored logs (used to align alarms/evaluation windows to the actual retention period)"
   type        = number
 }
 
 variable "enable_guardduty" {
-  description = "Habilita o detector do GuardDuty. Tem 30 dias de trial gratuito; depois cobra por volume de eventos analisados (~poucos USD/mês). Desativado em dev por padrão — ativar quando o ambiente de produção for criado."
+  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default — enable when the production environment is created."
   type        = bool
   default     = false
 }

@@ -8,20 +8,14 @@ variable "environment" {
   type        = string
 }
 
-variable "budget_monthly_limit_usd" {
-  description = "Limite orçamentário mensal em USD para alertar"
-  type        = number
-  default     = 100
-}
-
 variable "alert_email" {
-  description = "E-mail para notificações de orçamento excedido"
+  description = "Email for budget overspend notifications"
   type        = string
   default     = ""
 }
 
 variable "enable_budget_alerts" {
-  description = "Habilita criação de Budget Alerts (false para manter custo mínimo em dev)"
+  description = "Enables creation of Budget Alerts (false to keep minimum cost in dev)"
   type        = bool
   default     = false
 }

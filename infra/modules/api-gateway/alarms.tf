@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "api_5xx" {
   period              = 60
   statistic           = "Sum"
   threshold           = 5
-  alarm_description   = "API Gateway acumulou mais de 5 erros 5xx em 1 minuto"
+  alarm_description   = "API Gateway accumulated more than 5 5xx errors in 1 minute"
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -44,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "api_latency_p99" {
   period              = 300
   extended_statistic  = "p99"
   threshold           = 5000
-  alarm_description   = "API Gateway P99 de latência de integração excedeu 5s"
+  alarm_description   = "API Gateway integration latency P99 exceeded 5s"
   treat_missing_data  = "notBreaching"
 
   dimensions = {

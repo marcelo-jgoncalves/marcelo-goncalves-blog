@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   period              = 60
   statistic           = "Sum"
   threshold           = 5
-  alarm_description   = "Lambda ${each.key} acumulou mais de 5 erros em 1 minuto"
+  alarm_description   = "Lambda ${each.key} accumulated more than 5 errors in 1 minute"
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles" {
   period              = 60
   statistic           = "Sum"
   threshold           = 10
-  alarm_description   = "Lambda ${each.key} está sendo throttled"
+  alarm_description   = "Lambda ${each.key} is being throttled"
   treat_missing_data  = "notBreaching"
 
   dimensions = {

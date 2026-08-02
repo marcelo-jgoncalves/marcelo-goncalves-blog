@@ -36,19 +36,19 @@ variable "log_retention_days" {
 }
 
 variable "enable_xray_tracing" {
-  description = "Habilita AWS X-Ray tracing na Lambda imageProcessor"
+  description = "Enables AWS X-Ray tracing on the imageProcessor Lambda"
   type        = bool
   default     = false
 }
 
 variable "enable_cloudwatch_alarms" {
-  description = "Cria alarme CloudWatch de erro/throttle para a Lambda imageProcessor"
+  description = "Creates a CloudWatch error/throttle alarm for the imageProcessor Lambda"
   type        = bool
   default     = false
 }
 
 variable "alarm_email" {
-  description = "E-mail para notificacoes SNS do alarme de imageProcessor"
+  description = "Email for imageProcessor alarm SNS notifications"
   type        = string
   default     = ""
 }

@@ -144,7 +144,7 @@ resource "aws_cloudwatch_metric_alarm" "canary_failure" {
   period              = 900
   statistic           = "Average"
   threshold           = 100
-  alarm_description   = "Heartbeat canary falhou em ${var.frontend_url} por 2 execuções consecutivas"
+  alarm_description   = "Heartbeat canary failed at ${var.frontend_url} for 2 consecutive executions"
   treat_missing_data  = "breaching"
 
   dimensions = {

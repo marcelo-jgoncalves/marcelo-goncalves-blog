@@ -109,19 +109,19 @@ variable "admin_authorizer_function_name" {
 }
 
 variable "enable_xray_tracing" {
-  description = "Habilita AWS X-Ray tracing no API Gateway stage"
+  description = "Enables AWS X-Ray tracing on the API Gateway stage"
   type        = bool
   default     = false
 }
 
 variable "enable_cloudwatch_alarms" {
-  description = "Cria alarmes CloudWatch para 5xx e latência do API Gateway"
+  description = "Creates CloudWatch alarms for API Gateway 5xx and latency"
   type        = bool
   default     = false
 }
 
 variable "alarm_email" {
-  description = "E-mail para notificações dos alarmes via SNS"
+  description = "Email for alarm notifications via SNS"
   type        = string
   default     = ""
 }
@@ -131,13 +131,13 @@ variable "alarm_email" {
 # limite de requisições. Aplicado via method_settings, não usage_plan, para
 # não exigir API key nas rotas públicas existentes.
 variable "throttle_rate_limit" {
-  description = "Requisições por segundo sustentadas, por padrão, em todo o stage"
+  description = "Sustained requests per second, by default, across the whole stage"
   type        = number
   default     = 20
 }
 
 variable "throttle_burst_limit" {
-  description = "Burst de requisições simultâneas permitido antes do throttling"
+  description = "Burst of concurrent requests allowed before throttling"
   type        = number
   default     = 40
 }

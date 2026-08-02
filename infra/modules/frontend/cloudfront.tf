@@ -44,7 +44,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "cf_logs" {
 # OAC para o bucket S3 de assets estáticos
 resource "aws_cloudfront_origin_access_control" "oac" {
   name                              = "${var.project_name}-${var.environment}-oac"
-  description                       = "Acesso restrito S3 Frontend"
+  description                       = "Restricted access to Frontend S3"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -53,7 +53,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 # OAC para a Lambda Function URL — garante que só o CloudFront pode invocar
 resource "aws_cloudfront_origin_access_control" "lambda_oac" {
   name                              = "${var.project_name}-${var.environment}-lambda-oac"
-  description                       = "Acesso restrito Lambda SSR via SigV4"
+  description                       = "Restricted access to SSR Lambda via SigV4"
   origin_access_control_origin_type = "lambda"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"

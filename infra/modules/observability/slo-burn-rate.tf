@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_fast_short" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.fast_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.fast_burn_rate}x do error budget de disponibilidade — janela curta (5min)"
+  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget — short window (5min)"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -97,7 +97,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_fast_long" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.fast_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.fast_burn_rate}x do error budget de disponibilidade — janela longa (1h), confirma a janela curta"
+  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget — long window (1h), confirms the short window"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -132,7 +132,7 @@ resource "aws_cloudwatch_composite_alarm" "availability_burn_fast" {
   count             = var.enable_cloudwatch_alarms ? 1 : 0
   alarm_name        = "${var.project_name}-${var.environment}-availability-burn-fast"
   alarm_rule        = "ALARM(\"${aws_cloudwatch_metric_alarm.availability_burn_fast_short[0].alarm_name}\") AND ALARM(\"${aws_cloudwatch_metric_alarm.availability_burn_fast_long[0].alarm_name}\")"
-  alarm_description = "PAGE: consumindo o error budget de disponibilidade rápido o bastante para esgotar em poucos dias se sustentado."
+  alarm_description = "PAGE: burning the availability error budget fast enough to exhaust it within a few days if sustained."
 
   alarm_actions = [aws_sns_topic.page_alerts[0].arn]
   ok_actions    = [aws_sns_topic.page_alerts[0].arn]
@@ -146,7 +146,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_slow_short" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.slow_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.slow_burn_rate}x do error budget de disponibilidade — janela curta (1h)"
+  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget — short window (1h)"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -183,7 +183,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_slow_long" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.slow_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.slow_burn_rate}x do error budget de disponibilidade — janela longa (6h), confirma a janela curta"
+  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget — long window (6h), confirms the short window"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -218,7 +218,7 @@ resource "aws_cloudwatch_composite_alarm" "availability_burn_slow" {
   count             = var.enable_cloudwatch_alarms ? 1 : 0
   alarm_name        = "${var.project_name}-${var.environment}-availability-burn-slow"
   alarm_rule        = "ALARM(\"${aws_cloudwatch_metric_alarm.availability_burn_slow_short[0].alarm_name}\") AND ALARM(\"${aws_cloudwatch_metric_alarm.availability_burn_slow_long[0].alarm_name}\")"
-  alarm_description = "TICKET: consumindo o error budget de disponibilidade num ritmo que vale investigar, sem urgência de page."
+  alarm_description = "TICKET: burning the availability error budget at a rate worth investigating, without page urgency."
 
   alarm_actions = [aws_sns_topic.ticket_alerts[0].arn]
   ok_actions    = [aws_sns_topic.ticket_alerts[0].arn]

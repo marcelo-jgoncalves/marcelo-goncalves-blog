@@ -13,7 +13,7 @@ variable "project_name" {
 # em us-east-1, achado de registro histórico arquivado fora do repo (marcelo-goncalves-blog-arquivo/docs-historico/investigacao-dynamodb.md), ponto 2). Mesmo padrão de
 # toggle de enable_xray_tracing/enable_guardduty — ligar só quando convier.
 variable "enable_point_in_time_recovery" {
-  description = "Habilita Point-in-Time Recovery nas 3 tabelas (posts/autores/categorias). Desativado em dev por custo; ativar em produção."
+  description = "Enables Point-in-Time Recovery on the 3 tables (posts/autores/categorias). Disabled in dev due to cost; enable in production."
   type        = bool
   default     = false
 }
