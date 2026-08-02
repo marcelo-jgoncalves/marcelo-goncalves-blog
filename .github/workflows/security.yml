@@ -21,8 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
+      # Pinned version — this was the pipeline's only unpinned link (everything
+      # else is SHA-pinned). Without a pin, a new Semgrep release can change
+      # scan results with no code change. Dependabot doesn't cover pip inside
+      # workflows, so bump manually from time to time.
       - name: Install Semgrep
-        run: pip install semgrep
+        run: pip install semgrep==1.99.0
 
       - name: Scan backend (TypeScript + Node.js + segurança dedicada)
         run: |

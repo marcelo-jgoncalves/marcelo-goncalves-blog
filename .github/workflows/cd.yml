@@ -18,6 +18,15 @@ permissions:
   contents: read
   id-token: write
 
+# Two close pushes to develop would trigger concurrent terraform applies —
+# the state lock prevents corruption, but the older run fails on the lock and
+# apply order becomes a lottery. cancel-in-progress is false on purpose:
+# cancelling a terraform apply midway leaves a stuck lock/partial apply; runs
+# queue up and apply in commit order.
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   PROJECT_NAME: marcelo-goncalves-blog
   AWS_REGION: us-east-1
@@ -245,6 +254,30 @@ jobs:
             fi
             echo "OK: $url respondeu $status"
           done
+
+      # The curl smoke above only proves both URLs answer 2xx/3xx — not that
+      # the app renders. The Playwright smoke spec drives a real browser
+      # against the freshly deployed environment. Chromium only: cross-browser
+      # belongs to the full e2e suite (local), not to this deploy gate.
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: frontend/node_modules
+          key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: frontend-${{ runner.os }}-
+
+      - name: Install frontend dependencies (E2E smoke)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: frontend
+
+      - name: E2E smoke pós-deploy (Playwright)
+        run: npx playwright test e2e/smoke.spec.ts --project=chromium
+        working-directory: frontend
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.tf.outputs.frontend_url }}
 
       - name: Deploy summary
         run: |
