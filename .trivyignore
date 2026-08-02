@@ -13,9 +13,14 @@ AVD-AWS-0011
 
 # AWS-0015: CloudTrail doesn't use a customer-managed KMS key.
 # AWS-0132: S3 bucket doesn't use a customer-managed KMS key.
-# Both require creating and managing a real KMS CMK (~$1/month + per-request
-# cost, plus a key policy to maintain) to protect logs of a dev environment
-# with no real user data. Trigger to revisit: production environment exists,
-# or CloudTrail/S3 here start holding data with real confidentiality needs.
+# AWS-0136: SNS topic uses the AWS-managed key instead of a customer-managed one
+#   (all 9 aws_sns_topic resources here use alias/aws/sns — free, but this
+#   rule wants a CMK specifically).
+# All three require creating and managing a real KMS CMK (~$1/month + per-
+# request cost, plus a key policy to maintain) to protect logs/messages in a
+# dev environment with no real user data. Trigger to revisit: production
+# environment exists, or these resources start holding data with real
+# confidentiality needs.
 AVD-AWS-0015
 AVD-AWS-0132
+AVD-AWS-0136
