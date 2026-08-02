@@ -101,6 +101,14 @@ data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
   name = "Managed-AllViewerExceptHostHeader"
 }
 
+# Same behavior the default behavior's forwarded_values already had
+# (min/default/max TTL = 0): no edge caching at all, every request goes to
+# the Lambda. Combined with all_viewer_except_host above, the origin still
+# gets the full query string it needs for pagination/search.
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
 # No "Managed-" prefix: AWS only prefixes the older managed policies; the
 # UseOriginCacheControlHeaders pair is listed without it (confirmed via
 # `aws cloudfront list-cache-policies --type managed`).
@@ -328,24 +336,22 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   # --- Comportamento Padrão (Rota *): Manda para o Next.js (Lambda) ---
+  # Last of the 4 Lambda-SSR behaviors migrated off deprecated forwarded_values
+  # (the other 3 — /artigos, /categoria/*, /todos-artigos — moved earlier).
+  # Managed-CachingDisabled reproduces the same min=default=max=0 TTLs this
+  # behavior already had: ISR caching is handled by OpenNext, SSR caching
+  # would require Suspense streaming.
   default_cache_behavior {
     allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods             = ["GET", "HEAD"]
     target_origin_id           = "Lambda-SSR"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.frontend_security_headers.id
 
-    forwarded_values {
-      query_string = true # Necessário para paginação (?nextToken) e busca (?q)
-      cookies {
-        forward = "none" # Blog público sem auth — cookies não afetam o render
-      }
-    }
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true # Gzip/Brotli — reduz payload HTML em ~70%
-    min_ttl                = 0
-    default_ttl            = 0
-    max_ttl                = 0 # ISR cache gerenciado pelo OpenNext; SSR caching requer Suspense streaming
   }
 
   # --- Comportamento Estático (_next/static/*): Manda para o S3 ---
