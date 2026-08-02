@@ -198,7 +198,7 @@ jobs:
       - name: Configurar Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
         with:
-          terraform_version: 1.8.0
+          terraform_version: 1.15.8
         if: steps.files.outputs.tf == 'true'
 
       # O passo 'Instalar Scanner de Seguranca (tfsec)' foi removido.

@@ -1,14 +1,15 @@
 
 terraform {
-  # Trava alinhada à versão real usada pelo CD (.github/workflows/cd.yml e
-  # deploy.yml, TERRAFORM_VERSION/terraform_version: 1.8.0) -- terraform
-  # apply só roda via pipeline (nunca local), então essa é a versão que
-  # realmente escreve o state; um terraform local mais novo é bloqueado
-  # aqui em vez de arriscar gravar um state em formato incompatível.
-  # Gap de 7 minors vs. 1.15.x estável (auditoria 2026-08-02): decisão
-  # deliberada de não perseguir, não lacuna esquecida — revisitar só se
-  # um recurso novo de Terraform CLI virar necessidade real do projeto.
-  required_version = "~> 1.8"
+  # Correção (auditoria 2026-08-02): `~> 1.8` com dois componentes libera
+  # toda a série 1.x (>= 1.8, < 2.0) -- NÃO trava em 1.8.x como um comentário
+  # anterior aqui afirmava (testado empiricamente: terraform 1.14.9 local
+  # passa por essa constraint sem erro). Quem de fato pina o CD em 1.8.0 é
+  # o literal TERRAFORM_VERSION/terraform_version nos workflows, não esta
+  # linha. Migrado para 1.15.x (changelog 1.9→1.15 conferido via GitHub
+  # releases API: nenhuma breaking change toca este projeto, só o locking
+  # via DynamoDB no backend S3 sendo deprecado em favor de `use_lockfile`
+  # — aviso, não erro; migração do locking em si fica pra depois, separada).
+  required_version = "~> 1.15"
 
   required_providers {
     # Migrado de v5 pra v6 em 2026-08-02: nenhuma breaking change documentada

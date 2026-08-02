@@ -587,6 +587,6 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 | Sharp | ^0.33.2 | Build com `--os=linux --cpu=x64` |
 | esbuild | ^0.27.0 | `format: 'cjs'` obrigatório |
 | Lambda runtime | nodejs22.x | LTS ativo, EOL 30/04/2027 — migrado de nodejs20.x em 2026-08-02 (deadline AWS era 30/09/2026) |
-| Terraform | ~> 1.8 | State no S3 — pin alinhado ao CD (1.8.0), ver `infra/providers.tf`. Gap vs. 1.15.x estável é decisão consciente de adiar, não lacuna (ver comentário no arquivo) |
+| Terraform | ~> 1.15 | State no S3 — pin alinhado ao CD (1.15.8), ver `infra/providers.tf`. Migrado de `~> 1.8` em 2026-08-02: esse pin nunca travou de fato em 1.8.x (`~>` com 2 componentes libera toda a série 1.x — quem pinava era só o literal no CI); changelog 1.9→1.15 conferido, nenhuma breaking change real |
 | Terraform AWS provider | ~> 6.0 | Migrado de v5 em 2026-08-02 — breaking changes documentadas não tocavam recurso nenhum do projeto (confirmado por `grep`); único achado real foi `response_templates` de `aws_api_gateway_gateway_response` (default da AWS que o v6 passou a tratar como "deveria ficar vazio" — corrigido declarando o valor explícito) |
 | GitHub Actions (checkout/setup-node) | v6 (pinado por SHA) | Atualizado de v4 em 2026-08-02 — `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` já resolvido (v6 roda em Node 24 nativamente) |
