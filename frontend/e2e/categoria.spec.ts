@@ -49,3 +49,25 @@ test.describe('página /categoria/:slug', () => {
     }
   });
 });
+
+// Slug inventado: nenhum post real tem essa categoria, então getPostsByCategory
+// sempre retorna posts=[] — cobre o ramo de estado vazio sem depender de um
+// slug real que pode ganhar posts no futuro e silenciosamente parar de testar isso.
+test.describe('página /categoria/:slug — categoria sem posts', () => {
+  test('mostra estado vazio com link de volta para /todos-artigos', async ({ page }) => {
+    await page.goto('/categoria/categoria-inventada-sem-posts-xyz', { waitUntil: 'networkidle' });
+    await expect(page.locator('.categoria-empty')).toBeVisible();
+    const backLink = page.locator('.categoria-empty a[href="/todos-artigos"]');
+    await expect(backLink).toBeVisible();
+  });
+
+  test('título da categoria cai no fallback derivado do slug', async ({ page }) => {
+    await page.goto('/categoria/categoria-inventada-sem-posts-xyz', { waitUntil: 'networkidle' });
+    await expect(page.locator('.page-hero h1')).toContainText('Categoria Inventada Sem Posts Xyz');
+  });
+
+  test('paginação não renderiza quando não há posts nem página anterior', async ({ page }) => {
+    await page.goto('/categoria/categoria-inventada-sem-posts-xyz', { waitUntil: 'networkidle' });
+    await expect(page.locator('.op-pagination')).toHaveCount(0);
+  });
+});

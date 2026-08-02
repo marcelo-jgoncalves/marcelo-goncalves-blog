@@ -52,4 +52,38 @@ test.describe('página /todos-artigos', () => {
       await expect(page).toHaveURL(/\/post\/.+/);
     }
   });
+
+  test('busca com termo vazio não quebra a página (mantém grade/estado vazio)', async ({ page }) => {
+    await page.goto('/todos-artigos?q=', { waitUntil: 'networkidle' });
+    const hasCards = (await page.locator('#art-grid .post-card').count()) > 0;
+    const hasEmpty = (await page.locator('#art-empty').count()) > 0;
+    expect(hasCards || hasEmpty).toBe(true);
+  });
+
+  test('clicar em "Próxima" avança a página e atualiza a URL', async ({ page }) => {
+    const nextLink = page.locator('.op-pagination a[rel="next"]');
+    if ((await nextLink.count()) > 0) {
+      const firstCardText = await page.locator('#art-grid .post-card').first().textContent();
+      await nextLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(/nextToken=/);
+      await expect(page).toHaveURL(/page=2/);
+      // A grade da página 2 não deve repetir o primeiro card da página 1.
+      const secondPageFirstCardText = await page.locator('#art-grid .post-card').first().textContent();
+      expect(secondPageFirstCardText).not.toBe(firstCardText);
+    }
+  });
+
+  test('após avançar, "Anterior" volta para a página 1 sem cursor', async ({ page }) => {
+    const nextLink = page.locator('.op-pagination a[rel="next"]');
+    if ((await nextLink.count()) > 0) {
+      await nextLink.click();
+      await page.waitForLoadState('networkidle');
+      const prevLink = page.locator('.op-pagination a[rel="prev"]');
+      await expect(prevLink).toBeVisible();
+      await prevLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).not.toHaveURL(/page=2/);
+    }
+  });
 });
