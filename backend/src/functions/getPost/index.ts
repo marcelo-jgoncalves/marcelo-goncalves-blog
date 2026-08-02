@@ -2,6 +2,7 @@ import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
+import { getCategoriaNomeMap } from "../../common/categorias";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -37,8 +38,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     void e_popular_marker;
     void e_projeto_marker;
 
+    const categoriaMap = await getCategoriaNomeMap();
+    const categoryNome = post.categoria_slug ? categoriaMap.get(post.categoria_slug) : undefined;
+    const category = categoryNome
+      ? { categoria_slug: post.categoria_slug, nome_exibicao: categoryNome }
+      : undefined;
+
     logger.info("post_fetched", { requestId, slug });
-    return { statusCode: 200, body: JSON.stringify({ post }), headers };
+    return { statusCode: 200, body: JSON.stringify({ post, category }), headers };
 
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

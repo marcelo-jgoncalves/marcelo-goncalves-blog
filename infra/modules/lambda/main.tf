@@ -90,10 +90,11 @@ resource "aws_lambda_function" "get_post" {
 
   environment {
     variables = {
-      POSTS_TABLE   = "${var.project_name}-${var.environment}-posts"
-      AUTORES_TABLE = "${var.project_name}-${var.environment}-autores"
-      LOG_LEVEL     = var.log_level
-      XRAY_ENABLED  = tostring(var.enable_xray_tracing)
+      POSTS_TABLE      = "${var.project_name}-${var.environment}-posts"
+      AUTORES_TABLE    = "${var.project_name}-${var.environment}-autores"
+      CATEGORIAS_TABLE = "${var.project_name}-${var.environment}-categorias"
+      LOG_LEVEL        = var.log_level
+      XRAY_ENABLED     = tostring(var.enable_xray_tracing)
     }
   }
 
@@ -135,9 +136,10 @@ resource "aws_lambda_function" "get_posts" {
 
   environment {
     variables = {
-      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
-      LOG_LEVEL    = var.log_level
-      XRAY_ENABLED = tostring(var.enable_xray_tracing)
+      POSTS_TABLE      = "${var.project_name}-${var.environment}-posts"
+      CATEGORIAS_TABLE = "${var.project_name}-${var.environment}-categorias"
+      LOG_LEVEL        = var.log_level
+      XRAY_ENABLED     = tostring(var.enable_xray_tracing)
     }
   }
 

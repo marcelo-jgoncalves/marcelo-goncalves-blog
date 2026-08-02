@@ -43,7 +43,16 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
 
 beforeAll(() => {
   process.env.POSTS_TABLE = 'test-posts-table';
+  process.env.CATEGORIAS_TABLE = 'test-categorias-table';
   process.env.LOG_LEVEL = 'ERROR';
+});
+
+beforeEach(() => {
+  mockSend.mockReset();
+  // Default fallback for the categorias Scan fired after a found post
+  // (getCategoriaNomeMap) — individual tests still queue their own
+  // mockResolvedValueOnce for the post GetItem they assert on.
+  mockSend.mockImplementation(() => Promise.resolve({ Items: [] }));
 });
 
 describe('getPost handler', () => {
@@ -104,6 +113,30 @@ describe('getPost handler', () => {
       mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
       const result = await handler(event(), ctx, jest.fn());
       expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('*');
+    });
+
+    it('anexa category com o nome real da tabela categorias, não o slug', async () => {
+      mockSend.mockResolvedValueOnce({
+        Item: { slug: 'test-slug', status: 'Publicado', categoria_slug: 'devops-automacao' },
+      });
+      mockSend.mockResolvedValueOnce({
+        Items: [{ categoria_slug: 'devops-automacao', nome: 'DevOps & Automação' }],
+      });
+
+      const result = await handler(event(), ctx, jest.fn());
+
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.category).toEqual({ categoria_slug: 'devops-automacao', nome_exibicao: 'DevOps & Automação' });
+    });
+
+    it('omite category quando o post não tem categoria_slug correspondente', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      mockSend.mockResolvedValueOnce({ Items: [] });
+
+      const result = await handler(event(), ctx, jest.fn());
+
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.category).toBeUndefined();
     });
   });
 

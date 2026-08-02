@@ -3,6 +3,7 @@ import { QueryCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { getPostCounters } from "../../common/postCounters";
+import { getCategoriaNomeMap, attachCategoriaNome } from "../../common/categorias";
 
 const TABLE_NAME = process.env.POSTS_TABLE;
 
@@ -101,20 +102,22 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
   // totalCount comes from the aggregated counter (postCounters.ts), not a
   // 2nd Query — avoids doubling the read cost on every request just to
   // show "Page X of Y".
-  const [result, counters] = await Promise.all([
+  const [result, counters, categoriaMap] = await Promise.all([
     dynamo.send(postsCommand),
     getPostCounters(),
+    getCategoriaNomeMap(),
   ]);
 
   const newNextToken = result.LastEvaluatedKey
     ? btoa(JSON.stringify(result.LastEvaluatedKey))
     : null;
   const totalCount = counters.total_projeto_publicado;
+  const posts = attachCategoriaNome(result.Items || [], categoriaMap);
 
-  logger.info("project_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
+  logger.info("project_posts_fetched", { requestId, count: posts.length, totalCount });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, totalCount }),
+    body: JSON.stringify({ posts, nextToken: newNextToken, totalCount }),
     headers
   };
 }
@@ -149,11 +152,12 @@ async function searchPosts(term: string, queryParams: APIGatewayProxyEventQueryS
     ExclusiveStartKey: parseNextToken(nextToken)
   });
 
-  const result = await dynamo.send(command);
+  const [result, categoriaMap] = await Promise.all([dynamo.send(command), getCategoriaNomeMap()]);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const posts = attachCategoriaNome(result.Items || [], categoriaMap);
 
-  logger.info("search_posts_fetched", { requestId, term, count: result.Items?.length ?? 0 });
-  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts: result.Items || [], nextToken: newNextToken }), headers };
+  logger.info("search_posts_fetched", { requestId, term, count: posts.length });
+  return { statusCode: 200, body: JSON.stringify({ termo_busca: term, posts, nextToken: newNextToken }), headers };
 }
 
 async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
@@ -170,11 +174,12 @@ async function getPopularPosts(queryParams: APIGatewayProxyEventQueryStringParam
     Limit: limit,
   });
 
-  const result = await dynamo.send(command);
-  logger.info("popular_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
+  const [result, categoriaMap] = await Promise.all([dynamo.send(command), getCategoriaNomeMap()]);
+  const posts = attachCategoriaNome(result.Items || [], categoriaMap);
+  logger.info("popular_posts_fetched", { requestId, count: posts.length });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [] }),
+    body: JSON.stringify({ posts }),
     headers,
   };
 }
@@ -190,9 +195,10 @@ async function getRecentPosts(queryParams: APIGatewayProxyEventQueryStringParame
     ScanIndexForward: false,
     Limit: limit
   });
-  const result = await dynamo.send(command);
-  logger.info("recent_posts_fetched", { requestId, count: result.Items?.length ?? 0 });
-  return { statusCode: 200, body: JSON.stringify({ posts: result.Items || [] }), headers };
+  const [result, categoriaMap] = await Promise.all([dynamo.send(command), getCategoriaNomeMap()]);
+  const posts = attachCategoriaNome(result.Items || [], categoriaMap);
+  logger.info("recent_posts_fetched", { requestId, count: posts.length });
+  return { statusCode: 200, body: JSON.stringify({ posts }), headers };
 }
 
 async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
@@ -213,18 +219,20 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
   // totalCount comes from the aggregated counter (postCounters.ts), not a
   // 2nd Query — this second query used to make /artigos the slowest route
   // under load, just to show "Page X of Y".
-  const [result, counters] = await Promise.all([
+  const [result, counters, categoriaMap] = await Promise.all([
     dynamo.send(postsCommand),
-    getPostCounters()
+    getPostCounters(),
+    getCategoriaNomeMap(),
   ]);
 
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
   const totalCount = counters.total_publicado;
+  const posts = attachCategoriaNome(result.Items || [], categoriaMap);
 
-  logger.info("all_posts_fetched", { requestId, count: result.Items?.length ?? 0, totalCount });
+  logger.info("all_posts_fetched", { requestId, count: posts.length, totalCount });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts: result.Items || [], nextToken: newNextToken, totalCount }),
+    body: JSON.stringify({ posts, nextToken: newNextToken, totalCount }),
     headers
   };
 }
@@ -246,14 +254,16 @@ async function getPostsByCategory(categorySlug: string, queryParams: APIGatewayP
     ExclusiveStartKey: parseNextToken(nextToken)
   });
 
-  const result = await dynamo.send(command);
-  const posts = (result.Items || []).filter((item) => item.status === "Publicado");
+  const [result, categoriaMap] = await Promise.all([dynamo.send(command), getCategoriaNomeMap()]);
+  const publishedPosts = (result.Items || []).filter((item) => item.status === "Publicado");
+  const posts = attachCategoriaNome(publishedPosts, categoriaMap);
   const newNextToken = result.LastEvaluatedKey ? btoa(JSON.stringify(result.LastEvaluatedKey)) : null;
+  const categoryName = categoriaMap.get(categorySlug) || categorySlug;
 
   logger.info("category_posts_fetched", { requestId, categorySlug, count: posts.length });
   return {
     statusCode: 200,
-    body: JSON.stringify({ posts, nextToken: newNextToken, category: { slug: categorySlug, nome: categorySlug } }),
+    body: JSON.stringify({ posts, nextToken: newNextToken, category: { slug: categorySlug, nome: categoryName } }),
     headers
   };
 }

@@ -46,7 +46,17 @@ const POST_B = { slug: 'post-b', status: 'Publicado', titulo: 'Post B' };
 
 beforeAll(() => {
   process.env.POSTS_TABLE = 'test-posts-table';
+  process.env.CATEGORIAS_TABLE = 'test-categorias-table';
   process.env.LOG_LEVEL = 'ERROR';
+});
+
+beforeEach(() => {
+  mockSend.mockReset();
+  // Default fallback for the categorias Scan every handler now fires
+  // alongside the posts query (getCategoriaNomeMap) — individual tests still
+  // queue their own mockResolvedValueOnce for the calls they assert on;
+  // this only backstops the untested category-lookup call.
+  mockSend.mockImplementation(() => Promise.resolve({ Items: [] }));
 });
 
 describe('getPosts handler', () => {
@@ -138,8 +148,9 @@ describe('getPosts handler', () => {
 
       await handler(event({ resource: '/posts/populares' }), ctx, jest.fn());
 
-      // getAllPosts fires 2 calls (item Query + counter GetCommand); populares fires only 1
-      expect(mockSend).toHaveBeenCalledTimes(1);
+      // getAllPosts fires 3 calls (item Query + counter GetCommand + categoria Scan);
+      // populares fires only 2 (item Query + categoria Scan, no counter).
+      expect(mockSend).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -184,6 +195,27 @@ describe('getPosts handler', () => {
       // filter; without it, Limit counts only category items and we filter
       // status in memory.
       expect(cmd.input.FilterExpression).toBeUndefined();
+    });
+
+    it('anexa nome real da categoria a partir da tabela categorias, não do slug', async () => {
+      const postComCategoria = { ...POST_A, categoria_slug: 'devops-automacao' };
+      mockSend.mockResolvedValueOnce({ Items: [postComCategoria] }); // posts query
+      mockSend.mockResolvedValueOnce({
+        Items: [{ categoria_slug: 'devops-automacao', nome: 'DevOps & Automação' }],
+      }); // categorias scan
+
+      const result = await handler(
+        event({ resource: '/categoria/{slug}', pathParameters: { slug: 'devops-automacao' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const body = JSON.parse(result?.body ?? '{}');
+      // Real category name from the categorias table, not a Title-Case guess
+      // from the slug (which would produce "Devops Automacao" — wrong caps,
+      // missing accent, missing "&").
+      expect(body.posts[0].categoria.nome_exibicao).toBe('DevOps & Automação');
+      expect(body.category.nome).toBe('DevOps & Automação');
     });
 
     it('filtra apenas posts Publicado em memória', async () => {

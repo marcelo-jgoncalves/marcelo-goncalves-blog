@@ -101,7 +101,7 @@ resource "aws_iam_role" "function_role" {
   })
 }
 
-# --- getPost: read posts_table + autores_table (GetItem, Query) ---
+# --- getPost: read posts_table + autores_table (GetItem, Query) + categorias_table (Scan, category display name) ---
 resource "aws_iam_policy" "getPost_policy" {
   name = "${var.project_name}-${var.environment}-getPost-policy"
 
@@ -117,6 +117,11 @@ resource "aws_iam_policy" "getPost_policy" {
           "${var.posts_table_arn}/index/*",
           var.autores_table_arn,
         ]
+      },
+      {
+        Action   = ["dynamodb:Scan"]
+        Effect   = "Allow"
+        Resource = var.categorias_table_arn
       },
       local.xray_statement
     ]
@@ -154,7 +159,7 @@ resource "aws_iam_role_policy_attachment" "getAuthor_attach" {
   policy_arn = aws_iam_policy.getAuthor_policy.arn
 }
 
-# --- getPosts: read posts_table (GetItem, Query, Scan) ---
+# --- getPosts: read posts_table (GetItem, Query, Scan) + categorias_table (Scan, category display name) ---
 resource "aws_iam_policy" "getPosts_policy" {
   name = "${var.project_name}-${var.environment}-getPosts-policy"
 
@@ -169,6 +174,11 @@ resource "aws_iam_policy" "getPosts_policy" {
           var.posts_table_arn,
           "${var.posts_table_arn}/index/*",
         ]
+      },
+      {
+        Action   = ["dynamodb:Scan"]
+        Effect   = "Allow"
+        Resource = var.categorias_table_arn
       },
       local.xray_statement
     ]
