@@ -52,7 +52,6 @@ interface AdvisoryCtaProps {
   title?: ReactNode;
   description?: string;
   points?: ReactNode[];
-  cardTagline?: string | null;
   cardLabel?: string;
   cardTitle?: string;
   cardBody?: ReactNode;
@@ -68,7 +67,6 @@ export default function AdvisoryCta({
   title = 'Precisa de ajuda com seu projeto?',
   description = 'O que você lê aqui, aplicado ao seu negócio. Sem hype, sem overhead. Engenharia cloud com IA onde faz sentido e corte de custo onde é possível.',
   points = DEFAULT_POINTS,
-  cardTagline = 'Disponível para novos projetos',
   cardLabel,
   cardTitle = 'Conte-nos seu desafio. Nós ajudamos a encontrar a melhor solução.',
   cardBody = DEFAULT_CARD_BODY,
@@ -87,7 +85,7 @@ export default function AdvisoryCta({
           <ul className={`cta-adv-points ${styles.ctaAdvPoints}`}>
             {points.map((point, i) => (
               <li key={i}>
-                <span className="ck">{CHECK_ICON}</span>
+                <span className="ck check-icon-clay">{CHECK_ICON}</span>
                 {point}
               </li>
             ))}
@@ -95,8 +93,7 @@ export default function AdvisoryCta({
         </div>
         <div className="cta-adv-card-wrap">
           <div className={`cta-adv-card ${styles.ctaAdvCard}`} data-audit="cta-adv-card">
-            {cardTagline && <div className={`cta-adv-tagline ${styles.ctaAdvTagline}`}><span className="dot" />{cardTagline}</div>}
-            {cardLabel && <div className={`cta-adv-label ${styles.ctaAdvLabel}`}>{cardLabel}</div>}
+            {cardLabel && <div className={`cta-adv-label ${styles.ctaAdvLabel}`}><span className={`dot ${styles.ctaAdvLabelDot}`} />{cardLabel}</div>}
             <h3>{cardTitle}</h3>
             {cardBody}
             {ctaExternal || ctaHref.includes('#') ? (

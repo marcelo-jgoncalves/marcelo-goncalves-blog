@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faBullseye, faFilter, faCubes, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
 import { getAuthor } from '@/lib/api';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME, AUTHOR_TWITTER } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 import AdvisoryCta from '@/components/ui/AdvisoryCta';
@@ -271,7 +271,6 @@ export default async function SobrePage() {
           <span key="p2">Sistemas desconectados ou difíceis de evoluir</span>,
           <span key="p3">Plataformas que precisam ganhar segurança, confiabilidade ou escala</span>,
         ]}
-        cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
         cardLabel="Primeira conversa"
         cardTitle="Vamos entender o problema e avaliar o próximo passo."
         cardBody={<p className="cta-adv-body-text">Você não precisa saber qual tecnologia ou serviço contratar. Começamos pelo contexto e identificamos o caminho mais adequado.</p>}

@@ -94,16 +94,7 @@
 }
 
 .ctaAdvPoints li .ck {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
   margin-top: 1px;
-  background: rgba(201, 96, 60, .2);
-  color: #E8A582;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .ctaAdvPoints li .ck svg {
@@ -125,26 +116,6 @@
   box-shadow: 0 24px 60px -28px rgba(0, 0, 0, .55);
 }
 
-.ctaAdvTagline {
-  font-family: var(--mono);
-  font-size: var(--type-caption);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .6);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--gap-loose);
-}
-
-.ctaAdvTagline .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--moss);
-  box-shadow: 0 0 0 3px rgba(63, 107, 71, .25);
-}
-
 .ctaAdvLabel {
   font-family: var(--mono);
   font-size: var(--type-caption);
@@ -152,6 +123,17 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, .5);
   margin-bottom: var(--sp-2);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.ctaAdvLabelDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--clay);
+  box-shadow: 0 0 0 3px rgba(201, 96, 60, .25);
 }
 
 .ctaAdvCard h3 {

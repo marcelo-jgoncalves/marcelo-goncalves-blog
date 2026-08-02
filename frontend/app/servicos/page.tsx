@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_URL, SITE_NAME, AUTHOR_NAME, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME, AUTHOR_NAME } from '@/lib/config';
 import { jsonLdScript } from '@/lib/json-ld';
 import PageHero from '@/components/ui/PageHero';
 import FeatureCard from '@/components/ui/FeatureCard';
@@ -377,7 +377,6 @@ export default function ServicosPage() {
             <span key="p2">Sistemas desconectados ou difíceis de evoluir</span>,
             <span key="p3">Plataformas que precisam ganhar segurança, confiabilidade ou escala</span>,
           ]}
-          cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
           cardLabel="Primeira conversa"
           cardTitle="Vamos entender o problema e avaliar o próximo passo."
           cardBody={<p className="cta-adv-body-text">Você não precisa saber qual tecnologia ou serviço contratar. Começamos pelo contexto e identificamos o caminho mais adequado.</p>}

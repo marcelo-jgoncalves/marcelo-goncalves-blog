@@ -10,7 +10,7 @@ import PillarCard from '@/components/ui/PillarCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faBrain, faRobot } from '@fortawesome/free-solid-svg-icons';
 import { RESULT_CASE_ILLUSTRATIONS } from '@/components/ui/ResultCaseIllustrations';
-import { SITE_URL, SITE_NAME, ACCEPTING_NEW_PROJECTS } from '@/lib/config';
+import { SITE_URL, SITE_NAME } from '@/lib/config';
 import styles from './home.module.css';
 
 export const revalidate = 300;
@@ -307,7 +307,6 @@ export default async function InstitutionalHome() {
           <span key="p2">Sistemas desconectados ou difíceis de evoluir</span>,
           <span key="p3">Plataformas que precisam ganhar segurança, confiabilidade ou escala</span>,
         ]}
-        cardTagline={ACCEPTING_NEW_PROJECTS ? 'Disponível para novos projetos' : null}
         cardLabel="Primeira conversa"
         cardTitle="Vamos entender o problema e avaliar o próximo passo."
         cardBody={<p className="cta-adv-body-text">Você não precisa saber qual tecnologia ou serviço contratar. Começamos pelo contexto e identificamos o caminho mais adequado.</p>}
