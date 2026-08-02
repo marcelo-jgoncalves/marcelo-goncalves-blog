@@ -38,7 +38,7 @@ resource "aws_lambda_function" "nextjs_server" {
   function_name = "${var.project_name}-${var.environment}-nextjs-server"
   role          = aws_iam_role.nextjs_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs20.x"
+  runtime       = "nodejs22.x"
 
   # Aumentamos memória e timeout para SSR (Next.js é pesado)
   memory_size = 1024

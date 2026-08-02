@@ -66,7 +66,7 @@ resource "aws_lambda_function" "image_processor" {
   function_name = "${var.project_name}-${var.environment}-imageProcessor"
   role          = aws_iam_role.processor_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs20.x"
+  runtime       = "nodejs22.x"
   memory_size   = 1024 # Processamento de imagem precisa de RAM/CPU
   timeout       = 60
 

@@ -120,7 +120,7 @@ Também não marcar no código que uma mudança foi feita por IA (nem comentári
 ```
 mgoncalves-editorial-platform/
 ├── frontend/    # Next.js 16 + OpenNext v3 (blog público)
-├── backend/     # Node.js 20 + TypeScript — 9 Lambdas
+├── backend/     # Node.js 22 + TypeScript — 9 Lambdas
 ├── admin/       # Vue 3 + Vite + Pinia + AWS Amplify (CMS)
 ├── infra/       # Terraform — 7 módulos AWS
 └── contexto/        # Documentação viva do projeto
@@ -586,5 +586,7 @@ Pipeline vermelha = trabalho incompleto. Investigar antes de continuar.
 | AWS Amplify | ^6.15.8 | Auth via `aws-amplify/auth` |
 | Sharp | ^0.33.2 | Build com `--os=linux --cpu=x64` |
 | esbuild | ^0.27.0 | `format: 'cjs'` obrigatório |
-| Terraform | ~> 1.8 | State no S3 — pin alinhado ao CD (1.8.0), ver `infra/providers.tf` |
-| Node.js Actions | — | `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` (deadline Jun 2026) |
+| Lambda runtime | nodejs22.x | LTS ativo, EOL 30/04/2027 — migrado de nodejs20.x em 2026-08-02 (deadline AWS era 30/09/2026) |
+| Terraform | ~> 1.8 | State no S3 — pin alinhado ao CD (1.8.0), ver `infra/providers.tf`. Gap vs. 1.15.x estável é decisão consciente de adiar, não lacuna (ver comentário no arquivo) |
+| Terraform AWS provider | ~> 6.0 | Migrado de v5 em 2026-08-02 — breaking changes documentadas não tocavam recurso nenhum do projeto (confirmado por `grep`); único achado real foi `response_templates` de `aws_api_gateway_gateway_response` (default da AWS que o v6 passou a tratar como "deveria ficar vazio" — corrigido declarando o valor explícito) |
+| GitHub Actions (checkout/setup-node) | v6 (pinado por SHA) | Atualizado de v4 em 2026-08-02 — `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` já resolvido (v6 roda em Node 24 nativamente) |
