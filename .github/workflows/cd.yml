@@ -302,7 +302,7 @@ jobs:
       - name: Create placeholder build artifacts (validate only, not a real deploy)
         run: |
           mkdir -p infra/builds
-          for name in nextjs mediaUpload getPost getAuthor getPosts adminPosts adminAuthors adminCategories adminSession adminAuthorizer postScheduler imageProcessor; do
+          for name in nextjs mediaUpload getPost getAuthor getPosts adminPosts adminAuthors adminCategories adminSession adminAuthorizer postScheduler imageProcessor postCounterReconciler; do
             touch "infra/builds/${name}.zip"
           done
 

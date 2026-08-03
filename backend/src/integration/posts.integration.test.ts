@@ -306,7 +306,11 @@ describe("adminPosts DELETE vs concurrent DELETE (real ConditionExpression, not 
     const totalBefore = Number(before.Item?.total_publicado?.N ?? "0");
 
     const firstDelete: APIGatewayProxyResult = await adminPostsHandler(
-      apiEvent({ httpMethod: "DELETE", pathParameters: { slug: post.slug } }),
+      apiEvent({
+        httpMethod: "DELETE",
+        pathParameters: { slug: post.slug },
+        queryStringParameters: { version: String(versionAtGet) },
+      }),
       ctx,
     );
     expect(firstDelete.statusCode).toBe(200);
