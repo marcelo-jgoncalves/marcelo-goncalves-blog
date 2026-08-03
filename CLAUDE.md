@@ -344,11 +344,11 @@ Categoria diferente de imagem: não vem de upload de usuário, é parte do códi
 
 | Workspace | Runner | Comando | Total |
 |---|---|---|---|
-| `backend/` | Jest | `npm test` | 172 testes |
-| `backend/` | Jest + DynamoDB Local | `npm run test:integration` | 5 testes (handlers reais contra DynamoDB real — ver `src/integration/`, `docs/backlog.md` item 55) |
+| `backend/` | Jest | `npm test` | 208 testes |
+| `backend/` | Jest + DynamoDB Local | `npm run test:integration` | 10 testes (handlers reais contra DynamoDB real — ver `src/integration/`, `docs/backlog.md` item 55) |
 | `frontend/` | Jest | `npm test` | 81 testes |
-| `admin/` | Vitest | `npm test` | 27 testes |
-| `frontend/` | Playwright | `npm run test:e2e` | 37 testes (smoke, home-layout, post, artigos, busca, categoria) |
+| `admin/` | Vitest | `npm test` | 43 testes |
+| `frontend/` | Playwright | `npm run test:e2e` | 93 testes, 19 specs (smoke, home-layout, post, artigos, todos-artigos, busca, categoria, sobre, projeto, spacing-role, typography-role, visual-audit), rodando em Chromium + Firefox |
 
 - `tsconfig.test.json` separado no backend com `"types": ["jest"]`.
 - `npm audit --audit-level=high` roda em cada job de CI. Zero high/critical tolerado.
