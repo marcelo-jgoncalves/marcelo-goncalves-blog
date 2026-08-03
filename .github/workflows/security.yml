@@ -2,16 +2,16 @@ name: Security Scan
 
 on:
   # No `push` trigger: cd.yml already calls this workflow via `workflow_call`
-  # on every push to develop/main (see its security-scans job) — a separate
+  # on every push to develop (see its security-scans job) — a separate
   # `push` trigger here ran a second, independent scan of the same commit,
   # doubling runner time with no extra coverage.
   pull_request:
-    branches: [develop, main]
+    branches: [develop]
   workflow_dispatch:
   # Lets cd.yml call this as a required job instead of only running it in
   # parallel — a failing scan here used to have no effect on whether
-  # deploy-dev/plan-prod ran (see cd.yml's security-scans job for the
-  # `needs` wiring that actually makes it a gate).
+  # deploy-dev ran (see cd.yml's security-scans job for the `needs` wiring
+  # that actually makes it a gate).
   workflow_call:
 
 env:

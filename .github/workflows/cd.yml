@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - develop
-      - main
-  # No `environment` input: every job below already branches on `github.ref`
-  # (develop -> deploy-dev, main -> plan-prod/deploy-prod) — a dispatch input
-  # here would have no effect on which one runs, since the ref you pick when
-  # triggering manually already decides that.
+  # No `environment` input: deploy-dev is the only deploy job, gated on
+  # `github.ref == 'refs/heads/develop'` — a dispatch input here would have
+  # no effect on which one runs.
   workflow_dispatch:
 
 permissions:
@@ -263,9 +261,9 @@ jobs:
   # ==============================================================
   # JOB 1d: Security scans (Semgrep + Gitleaks) — reused from security.yml
   # via workflow_call. Previously this ran only as a parallel, independent
-  # workflow with no bearing on whether deploy-dev/plan-prod ran below — a
-  # failing scan never blocked a deploy. Listing it in their `needs` is what
-  # turns it into an actual gate.
+  # workflow with no bearing on whether deploy-dev ran below — a failing
+  # scan never blocked a deploy. Listing it in `needs` is what turns it
+  # into an actual gate.
   # ==============================================================
   security-scans:
     name: 1d. Security Scans (Semgrep + Gitleaks)
@@ -274,7 +272,7 @@ jobs:
 
   # ==============================================================
   # JOB 1e: Validate infra (Terraform fmt/validate/TFLint + Trivy config
-  # scan) — same checks deploy.yml already runs on PRs against main, but
+  # scan) — same checks deploy.yml already runs on PRs against develop, but
   # deploy.yml rarely runs in this project's normal flow (direct pushes to
   # develop). Without this job here, TFLint/Trivy never actually gated a
   # deploy despite existing in the repo.
@@ -496,217 +494,6 @@ jobs:
       - name: Deploy summary
         run: |
           echo "### Dev Deploy Complete ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
-
-  # ==============================================================
-  # JOB 2b: Terraform Plan for Prod (branch main)
-  # ==============================================================
-  plan-prod:
-    name: 2b. Terraform Plan → Prod
-    runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-contracts, test-backend-integration, security-scans, validate-infra]
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: build-artifacts-backend
-          path: infra/builds/
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: build-artifacts-frontend
-          path: infra/builds/
-
-      - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
-
-      - name: Terraform Init (prod)
-        working-directory: infra
-        run: |
-          terraform init \
-            -backend-config="bucket=${{ env.PROJECT_NAME }}-prod-tfstate" \
-            -backend-config="key=blog/terraform.tfstate" \
-            -backend-config="region=${{ env.AWS_REGION }}" \
-            -backend-config="use_lockfile=true" \
-            -backend-config="encrypt=true"
-
-      - name: Terraform Plan (prod)
-        working-directory: infra
-        run: |
-          terraform plan -var-file="env/prd.tfvars" -out=tfplan-prod
-          terraform show -no-color tfplan-prod >> $GITHUB_STEP_SUMMARY
-
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: tfplan-prod
-          path: infra/tfplan-prod
-          retention-days: 1
-
-  # ==============================================================
-  # JOB 3: Manual Approval (gate for prod)
-  # ==============================================================
-  approve-prod:
-    name: 3. Manual Approval
-    runs-on: ubuntu-latest
-    needs: plan-prod
-    if: github.ref == 'refs/heads/main'
-    environment: production
-
-    steps:
-      - run: echo "Production deploy approved."
-
-  # ==============================================================
-  # JOB 4: Deploy to Prod (after approval)
-  # ==============================================================
-  deploy-prod:
-    name: 4. Deploy → Prod
-    runs-on: ubuntu-latest
-    needs: approve-prod
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: build-artifacts-backend
-          path: infra/builds/
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: build-artifacts-frontend
-          path: infra/builds/
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: tfplan-prod
-          path: infra/
-
-      - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
-
-      - name: Terraform Init (prod)
-        working-directory: infra
-        run: |
-          terraform init \
-            -backend-config="bucket=${{ env.PROJECT_NAME }}-prod-tfstate" \
-            -backend-config="key=blog/terraform.tfstate" \
-            -backend-config="region=${{ env.AWS_REGION }}" \
-            -backend-config="use_lockfile=true" \
-            -backend-config="encrypt=true"
-
-      - name: Terraform Apply (prod — executa o plano aprovado)
-        working-directory: infra
-        run: terraform apply tfplan-prod
-
-      # Single -json call instead of 9 separate -raw invocations — each -raw
-      # spawns a full terraform process (~1.5-2s each, ~15s per deploy).
-      - name: Get Terraform outputs
-        id: tf
-        working-directory: infra
-        run: |
-          outputs=$(terraform output -json)
-          jq -r '"api_url=\(.api_base_url.value)",
-                 "frontend_bucket=\(.frontend_bucket.value)",
-                 "frontend_cf=\(.frontend_cloudfront_id.value)",
-                 "admin_bucket=\(.admin_bucket.value)",
-                 "admin_cf=\(.admin_cloudfront_id.value)",
-                 "cognito_pool=\(.cognito_user_pool_id.value)",
-                 "cognito_client=\(.cognito_client_id.value)",
-                 "admin_url=\(.admin_url.value)",
-                 "frontend_url=\(.frontend_url.value)"' <<< "$outputs" >> $GITHUB_OUTPUT
-
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
-        with:
-          path: node_modules
-          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-${{ runner.os }}-
-
-      - name: Install dependencies (npm workspaces)
-        run: npm ci
-
-      - name: Build admin SPA (com outputs de prod)
-        working-directory: admin
-        env:
-          VITE_API_BASE_URL: ${{ steps.tf.outputs.api_url }}
-          VITE_COGNITO_USER_POOL_ID: ${{ steps.tf.outputs.cognito_pool }}
-          VITE_COGNITO_CLIENT_ID: ${{ steps.tf.outputs.cognito_client }}
-          VITE_ASSETS_URL: ${{ steps.tf.outputs.frontend_url }}
-        run: npm run build
-
-      - name: Sync frontend static assets to S3
-        run: |
-          aws s3 sync infra/builds/nextjs-assets s3://${{ steps.tf.outputs.frontend_bucket }} \
-            --cache-control "public, max-age=31536000, immutable" \
-            --exclude "media/*"
-
-      - name: Sync admin SPA to S3
-        run: |
-          aws s3 sync admin/dist s3://${{ steps.tf.outputs.admin_bucket }} \
-            --cache-control "no-cache, no-store, must-revalidate" \
-            --delete
-
-      - name: Invalidate CloudFront (frontend + admin)
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ steps.tf.outputs.frontend_cf }} \
-            --paths "/*"
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ steps.tf.outputs.admin_cf }} \
-            --paths "/*"
-
-      - name: Post-deploy smoke test
-        run: |
-          # frontend_url and admin_url already come with https:// (infra/outputs.tf)
-          for url in "${{ steps.tf.outputs.frontend_url }}" "${{ steps.tf.outputs.admin_url }}"; do
-            echo "Checking $url ..."
-            status=$(curl -s -o /dev/null -w "%{http_code}" --retry 5 --retry-delay 10 --retry-all-errors "$url")
-            if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
-              echo "FAILED: $url returned $status"
-              exit 1
-            fi
-            echo "OK: $url returned $status"
-          done
-
-          # API smoke: catches IAM/policy and gateway-wiring gaps that only
-          # manifest against the real services (unit tests mock all of AWS).
-          for path in "/artigos" "/posts/recentes?limit=1"; do
-            api="${{ steps.tf.outputs.api_url }}${path}"
-            echo "Checking API $api ..."
-            status=$(curl -s -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 5 --retry-all-errors "$api")
-            if [ "$status" != "200" ]; then
-              echo "FAILED: $api returned $status"
-              exit 1
-            fi
-            echo "OK: $api returned 200"
-          done
-
-      - name: Deploy summary
-        run: |
-          echo "### Prod Deploy Complete ✅" >> $GITHUB_STEP_SUMMARY
           echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
           echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
