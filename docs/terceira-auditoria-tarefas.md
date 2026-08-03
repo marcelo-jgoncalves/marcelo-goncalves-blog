@@ -18,7 +18,7 @@ Execução iniciada em 2026-08-02. Retomar lendo este arquivo antes de qualquer 
 ## P2 — Preparação de produção
 
 - [ ] ~~**P2.1** Adicionar smoke Playwright em produção no `cd.yml`~~ — POSTERGADO por decisão de Marcelo (2026-08-02): produção ainda não existe; criar esse smoke só quando produção for ativada de fato.
-- [ ] **P2.2** Confirmar pipeline verde do commit final (depende do push feito ao fim deste ciclo — verificar via `gh run list` depois).
+- [x] **P2.2** Confirmar pipeline verde do commit final (depende do push feito ao fim deste ciclo — verificar via `gh run list` depois).
 - [x] **P2.3** Atualizar comentário no código sobre proteção de concorrência (`adminPosts/index.ts`) para refletir a condição real, não a intenção antiga.
 
 ## Itens que dependem de autorização do Marcelo (postergados)
@@ -29,3 +29,7 @@ Execução iniciada em 2026-08-02. Retomar lendo este arquivo antes de qualquer 
 - 2026-08-03 — **P1.1**: `data_publicacao_programada` validado e normalizado dentro de `createPostInputSchema`/`updatePostInputSchema` (só quando `status === "Programado"`, para não quebrar o re-save de posts já publicados que mantêm a data antiga) — rejeita data passada/não parseável, normaliza para ISO 8601 UTC completo via `.transform()`. `postScheduler` já comparava com `new Date().toISOString()`, sem mudança necessária lá. Testes em `post.test.ts` e `adminPosts/index.test.ts`; teste de integração do scheduler ajustado para criar com data futura e empurrar para o passado via `UpdateItemCommand` direto (criar já-vencido deixou de ser possível pela validação nova).
 - 2026-08-03 — **P1.2**: `status` tem `.default("Rascunho")` em `createPostInputSchema` (schema de update permanece sem default, mantendo comportamento existente). Teste em `post.test.ts` e `adminPosts/index.test.ts`.
 - 2026-08-03 — **P2.3**: comentário de `savePost()` sobre a ConditionExpression de version atualizado — não fala mais em clausula "extra"/best-effort, já que `updatePostInputSchema` agora torna `version` obrigatório e a cláusula é incondicional em todo update.
+- 2026-08-03 — **P2.2**: commit `521b57e` (push em `develop`) — pipeline CD confirmada verde via `gh run list` (run `30779568283`, 3m56s, `completed success`).
+
+## Status final
+Todos os itens aplicáveis (P0.1, P0.2, P1.1, P1.2, P2.2, P2.3) concluídos e no `develop` (commit `521b57e`), pipeline verde. Único item pendente é **P2.1**, deliberadamente postergado — ver seção acima.
