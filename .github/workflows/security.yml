@@ -35,7 +35,7 @@ jobs:
       - name: Install Semgrep
         run: pip install semgrep==1.99.0
 
-      - name: Scan backend (TypeScript + Node.js + segurança dedicada)
+      - name: Scan backend (TypeScript + Node.js + dedicated security rules)
         run: |
           semgrep scan \
             --config p/typescript \
@@ -48,7 +48,7 @@ jobs:
             --quiet \
             backend/src/
 
-      - name: Scan frontend (TypeScript + segurança dedicada)
+      - name: Scan frontend (TypeScript + dedicated security rules)
         run: |
           semgrep scan \
             --config p/typescript \
@@ -60,7 +60,7 @@ jobs:
             --quiet \
             frontend/
 
-      - name: Scan admin (TypeScript + segurança dedicada)
+      - name: Scan admin (TypeScript + dedicated security rules)
         run: |
           semgrep scan \
             --config p/typescript \

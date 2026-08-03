@@ -1,4 +1,4 @@
-name: Validacao de Pull Request (CI)
+name: Pull Request Validation (CI)
 
 on:
   pull_request:
@@ -14,24 +14,24 @@ permissions:
   contents: read
 
 jobs:
-  # --- JOB 1: Testar o Backend (Jest + audit) ---
+  # --- JOB 1: Test Backend (Jest + audit) ---
   test-backend:
     runs-on: ubuntu-latest
-    name: 1. Testes Backend (Jest)
+    name: 1. Backend Tests (Jest)
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Instalar Dependencias (npm workspaces)
+      - name: Install dependencies (npm workspaces)
         run: npm ci
 
-      - name: Scan de Seguranca (npm audit)
+      - name: Security scan (npm audit)
         run: npm audit --audit-level=high
         working-directory: backend
 
@@ -39,7 +39,7 @@ jobs:
         run: npm run lint
         working-directory: backend
 
-      - name: Rodar Testes Unitarios
+      - name: Run unit tests
         run: npm test
         working-directory: backend
 
@@ -47,12 +47,12 @@ jobs:
         run: npm run build
         working-directory: backend
 
-  # --- JOB 1b: Testes de Integração do Backend (DynamoDB Local) ---
+  # --- JOB 1b: Backend Integration Tests (DynamoDB Local) ---
   # Unit tests mock dynamo.send entirely — these run the real handlers
   # against a real DynamoDB (see backend/src/integration/).
   test-backend-integration:
     runs-on: ubuntu-latest
-    name: 1b. Testes de Integração Backend (DynamoDB Local)
+    name: 1b. Backend Integration Tests (DynamoDB Local)
 
     services:
       dynamodb:
@@ -61,45 +61,45 @@ jobs:
           - 8000:8000
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Instalar Dependencias (npm workspaces)
+      - name: Install dependencies (npm workspaces)
         run: npm ci
 
-      - name: Rodar Testes de Integração
+      - name: Run integration tests
         run: npm run test:integration
         working-directory: backend
         env:
           AWS_ENDPOINT_URL: http://localhost:8000
 
-  # --- JOB 2: Testar o Frontend (Jest + audit) ---
+  # --- JOB 2: Test Frontend (Jest + audit) ---
   test-frontend:
     runs-on: ubuntu-latest
-    name: 2. Testes Frontend (Jest)
+    name: 2. Frontend Tests (Jest)
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Instalar Dependencias (npm workspaces)
+      - name: Install dependencies (npm workspaces)
         run: npm ci
 
-      - name: Scan de Seguranca (npm audit)
+      - name: Security scan (npm audit)
         run: npm audit --audit-level=high
         working-directory: frontend
 
-      - name: Rodar Testes Unitarios
+      - name: Run unit tests
         run: npm test
         working-directory: frontend
 
@@ -114,28 +114,28 @@ jobs:
           API_URL: https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1
           NEXT_PUBLIC_SITE_URL: http://localhost:3000
 
-  # --- JOB 3: Testar o Admin (Vitest + audit) ---
+  # --- JOB 3: Test Admin (Vitest + audit) ---
   test-admin:
     runs-on: ubuntu-latest
-    name: 3. Testes Admin (Vitest)
+    name: 3. Admin Tests (Vitest)
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Instalar Dependencias (npm workspaces)
+      - name: Install dependencies (npm workspaces)
         run: npm ci
 
-      - name: Scan de Seguranca (npm audit)
+      - name: Security scan (npm audit)
         run: npm audit --audit-level=high
         working-directory: admin
 
-      - name: Rodar Testes Unitarios
+      - name: Run unit tests
         run: npm test
         working-directory: admin
 
@@ -152,24 +152,24 @@ jobs:
           VITE_COGNITO_CLIENT_ID: placeholder
           VITE_ASSETS_URL: https://dsns2wusdrj9z.cloudfront.net
 
-  # --- JOB 3b: Testar o pacote @mgoncalves/contracts (Jest + typecheck + audit) ---
+  # --- JOB 3b: Test the @mgoncalves/contracts package (Jest + typecheck + audit) ---
   test-contracts:
     runs-on: ubuntu-latest
-    name: 3b. Testes Contracts (Jest)
+    name: 3b. Contracts Tests (Jest)
 
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Instalar Dependencias (npm workspaces)
+      - name: Install dependencies (npm workspaces)
         run: npm ci
 
-      - name: Scan de Seguranca (npm audit)
+      - name: Security scan (npm audit)
         run: npm audit --audit-level=high
         working-directory: packages/contracts
 
@@ -177,25 +177,25 @@ jobs:
         run: npm run typecheck
         working-directory: packages/contracts
 
-      - name: Rodar Testes Unitarios
+      - name: Run unit tests
         run: npm test
         working-directory: packages/contracts
 
-  # --- JOB 3: Validar a Infraestrutura (Terraform) ---
+  # --- JOB 3: Validate Infrastructure (Terraform) ---
   validate-infrastructure:
     runs-on: ubuntu-latest
-    name: 3. Validar Infra (Terraform)
-    
+    name: 3. Validate Infra (Terraform)
+
     outputs:
       tf_files_found: ${{ steps.files.outputs.tf }}
-      
+
     steps:
-      - name: Checkout do Codigo
+      - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - name: Verificar existencia de arquivos .tf
+      - name: Check for .tf files
         id: files
-        # Verifica se algum arquivo .tf existe
+        # Checks whether any .tf file exists
         run: |
           if [ -n "$(find . -maxdepth 2 -type f -name '*.tf' -print -quit)" ]; then
             echo "tf=true" >> $GITHUB_OUTPUT
@@ -203,20 +203,20 @@ jobs:
             echo "tf=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Configurar Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: 1.15.8
         if: steps.files.outputs.tf == 'true'
 
-      # O passo 'Instalar Scanner de Seguranca (tfsec)' foi removido.
+      # The 'Install Security Scanner (tfsec)' step was removed.
 
       - name: Terraform Init
         working-directory: infra
         run: terraform init -backend=false
         if: steps.files.outputs.tf == 'true'
 
-      - name: Lint de Infra (Formato)
+      - name: Infra Lint (Format)
         working-directory: infra
         run: terraform fmt --check -recursive
         if: steps.files.outputs.tf == 'true'
@@ -225,7 +225,7 @@ jobs:
       # (source_code_hash) — the function call fails if the file doesn't
       # exist, and this job never builds the real artifacts. Content is
       # irrelevant for validate, only the function call needs to resolve.
-      - name: Criar artefatos de build placeholder (só para validate)
+      - name: Create placeholder build artifacts (validate only)
         run: |
           mkdir -p infra/builds
           for name in nextjs mediaUpload getPost getAuthor getPosts adminPosts adminAuthors adminCategories adminSession adminAuthorizer postScheduler imageProcessor; do
@@ -233,46 +233,45 @@ jobs:
           done
         if: steps.files.outputs.tf == 'true'
 
-      - name: Validacao de Sintaxe
+      - name: Syntax Validation
         working-directory: infra
         run: terraform validate
         if: steps.files.outputs.tf == 'true'
 
-      - name: Configurar TFLint
+      - name: Setup TFLint
         uses: terraform-linters/setup-tflint@6e1e0642c0289bd619021bf6b34e3c08ed1e005a # v6.3.0
         with:
           tflint_version: v0.64.0
         if: steps.files.outputs.tf == 'true'
 
-      - name: Cache de plugins do TFLint
+      - name: Cache TFLint plugins
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('infra/.tflint.hcl') }}
         if: steps.files.outputs.tf == 'true'
 
-      - name: Lint de Infra (TFLint)
+      - name: Infra Lint (TFLint)
         working-directory: infra
         run: |
           tflint --init
           tflint --recursive --chdir=.
         if: steps.files.outputs.tf == 'true'
 
-      # CORRECAO: Substituindo o 'tfsec' obsoleto pelo 'trivy'
-      - name: Scan de Seguranca (SAST com Trivy)
+      - name: Security Scan (SAST with Trivy)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          # Tipo de scan: 'config' para arquivos IaC (Terraform, etc.)
+          # Scan type: 'config' for IaC files (Terraform, etc.)
           scan-type: 'config'
-          # Diretorio que sera escaneado
+          # Directory to scan
           scan-ref: '.'
-          # Formato da saida (opcional, mas bom para logs)
+          # Output format (optional, but good for logs)
           format: 'table'
-          # Falhar o pipeline se encontrar vulnerabilidades CRITICAS ou ALTAS
+          # Fail the pipeline if CRITICAL or HIGH vulnerabilities are found
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
         if: steps.files.outputs.tf == 'true'
-        
-      - name: Pular passos de Terraform
-        run: echo "Nenhum arquivo .tf encontrado, pulando checks de Infra."
+
+      - name: Skip Terraform steps
+        run: echo "No .tf files found, skipping Infra checks."
         if: steps.files.outputs.tf == 'false'

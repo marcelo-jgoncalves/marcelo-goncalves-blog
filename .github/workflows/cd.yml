@@ -341,7 +341,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
   # ==============================================================
-  # JOB 2a: Deploy para Dev (branch develop)
+  # JOB 2a: Deploy to Dev (branch develop)
   # ==============================================================
   deploy-dev:
     name: 2a. Deploy → Dev
@@ -447,30 +447,30 @@ jobs:
             --distribution-id ${{ steps.tf.outputs.admin_cf }} \
             --paths "/*"
 
-      - name: Smoke test pós-deploy
+      - name: Post-deploy smoke test
         run: |
-          # frontend_url e admin_url ja vem com https:// (infra/outputs.tf)
+          # frontend_url and admin_url already come with https:// (infra/outputs.tf)
           for url in "${{ steps.tf.outputs.frontend_url }}" "${{ steps.tf.outputs.admin_url }}"; do
-            echo "Verificando $url ..."
+            echo "Checking $url ..."
             status=$(curl -s -o /dev/null -w "%{http_code}" --retry 5 --retry-delay 10 --retry-all-errors "$url")
             if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
-              echo "FALHA: $url respondeu $status"
+              echo "FAILED: $url returned $status"
               exit 1
             fi
-            echo "OK: $url respondeu $status"
+            echo "OK: $url returned $status"
           done
 
           # API smoke: catches IAM/policy and gateway-wiring gaps that only
           # manifest against the real services (unit tests mock all of AWS).
           for path in "/artigos" "/posts/recentes?limit=1"; do
             api="${{ steps.tf.outputs.api_url }}${path}"
-            echo "Verificando API $api ..."
+            echo "Checking API $api ..."
             status=$(curl -s -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 5 --retry-all-errors "$api")
             if [ "$status" != "200" ]; then
-              echo "FALHA: $api respondeu $status"
+              echo "FAILED: $api returned $status"
               exit 1
             fi
-            echo "OK: $api respondeu 200"
+            echo "OK: $api returned 200"
           done
 
       # The curl smoke above only proves both URLs answer 2xx/3xx — not that
@@ -487,7 +487,7 @@ jobs:
         run: npx playwright install --with-deps chromium
         working-directory: frontend
 
-      - name: E2E smoke pós-deploy (Playwright)
+      - name: E2E post-deploy smoke (Playwright)
         run: npx playwright test e2e/smoke.spec.ts --project=chromium
         working-directory: frontend
         env:
@@ -495,13 +495,13 @@ jobs:
 
       - name: Deploy summary
         run: |
-          echo "### Deploy Dev Concluído ✅" >> $GITHUB_STEP_SUMMARY
+          echo "### Dev Deploy Complete ✅" >> $GITHUB_STEP_SUMMARY
           echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
           echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
 
   # ==============================================================
-  # JOB 2b: Terraform Plan para Prod (branch main)
+  # JOB 2b: Terraform Plan for Prod (branch main)
   # ==============================================================
   plan-prod:
     name: 2b. Terraform Plan → Prod
@@ -555,20 +555,20 @@ jobs:
           retention-days: 1
 
   # ==============================================================
-  # JOB 3: Aprovação Manual (gate para prod)
+  # JOB 3: Manual Approval (gate for prod)
   # ==============================================================
   approve-prod:
-    name: 3. Aprovação Manual
+    name: 3. Manual Approval
     runs-on: ubuntu-latest
     needs: plan-prod
     if: github.ref == 'refs/heads/main'
     environment: production
 
     steps:
-      - run: echo "Deploy para produção aprovado."
+      - run: echo "Production deploy approved."
 
   # ==============================================================
-  # JOB 4: Deploy para Prod (após aprovação)
+  # JOB 4: Deploy to Prod (after approval)
   # ==============================================================
   deploy-prod:
     name: 4. Deploy → Prod
@@ -678,35 +678,35 @@ jobs:
             --distribution-id ${{ steps.tf.outputs.admin_cf }} \
             --paths "/*"
 
-      - name: Smoke test pós-deploy
+      - name: Post-deploy smoke test
         run: |
-          # frontend_url e admin_url ja vem com https:// (infra/outputs.tf)
+          # frontend_url and admin_url already come with https:// (infra/outputs.tf)
           for url in "${{ steps.tf.outputs.frontend_url }}" "${{ steps.tf.outputs.admin_url }}"; do
-            echo "Verificando $url ..."
+            echo "Checking $url ..."
             status=$(curl -s -o /dev/null -w "%{http_code}" --retry 5 --retry-delay 10 --retry-all-errors "$url")
             if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
-              echo "FALHA: $url respondeu $status"
+              echo "FAILED: $url returned $status"
               exit 1
             fi
-            echo "OK: $url respondeu $status"
+            echo "OK: $url returned $status"
           done
 
           # API smoke: catches IAM/policy and gateway-wiring gaps that only
           # manifest against the real services (unit tests mock all of AWS).
           for path in "/artigos" "/posts/recentes?limit=1"; do
             api="${{ steps.tf.outputs.api_url }}${path}"
-            echo "Verificando API $api ..."
+            echo "Checking API $api ..."
             status=$(curl -s -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 5 --retry-all-errors "$api")
             if [ "$status" != "200" ]; then
-              echo "FALHA: $api respondeu $status"
+              echo "FAILED: $api returned $status"
               exit 1
             fi
-            echo "OK: $api respondeu 200"
+            echo "OK: $api returned 200"
           done
 
       - name: Deploy summary
         run: |
-          echo "### Deploy Prod Concluído ✅" >> $GITHUB_STEP_SUMMARY
+          echo "### Prod Deploy Complete ✅" >> $GITHUB_STEP_SUMMARY
           echo "- **Frontend:** https://${{ steps.tf.outputs.frontend_bucket }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Admin:** ${{ steps.tf.outputs.admin_url }}" >> $GITHUB_STEP_SUMMARY
           echo "- **API:** ${{ steps.tf.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
