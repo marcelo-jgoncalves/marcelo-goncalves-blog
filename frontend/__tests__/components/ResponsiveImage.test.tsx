@@ -11,6 +11,9 @@ jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: Record<string, unknown>) => {
     const { fill, priority, sizes, alt, ...rest } = props;
+    // Test double for next/image, not real page content — the lint rule
+    // that flags <img> for real usage doesn't apply here.
+    // eslint-disable-next-line @next/next/no-img-element
     return <img data-fill={String(fill)} data-priority={String(priority)} data-sizes={sizes as string} alt={alt as string} {...(rest as React.ImgHTMLAttributes<HTMLImageElement>)} />;
   },
 }));

@@ -211,6 +211,10 @@ export default async function SobrePage() {
               {author.foto_avatar_url ? (
                 <ResponsiveImage src={author.foto_avatar_url} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" fill priority />
               ) : (
+                // next/image's /_next/image endpoint isn't deployed here (no image
+                // optimizer Lambda) — it 404s on any local src, so static assets use
+                // a plain <img> instead.
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={FALLBACK_PHOTO} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" width={720} height={960} loading="lazy" decoding="async" />
               )}
             </div>

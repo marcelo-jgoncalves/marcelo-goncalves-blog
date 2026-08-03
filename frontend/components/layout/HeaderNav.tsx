@@ -78,7 +78,6 @@ export default function HeaderNav() {
   useEffect(() => {
     if (previousPathnameRef.current === pathname) return;
     previousPathnameRef.current = pathname;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs with a route change (external to React), not with props/state
     setIsServicesOpen(false);
     setIsMenuOpen(false);
     setIsServicesMobileOpen(false);

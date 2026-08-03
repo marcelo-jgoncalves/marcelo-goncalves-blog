@@ -86,6 +86,7 @@ function validate(form: FormState): Partial<Record<RequiredField, string>> {
 // Target contract: ContactRequest with { name, email, company, role?,
 // phone?, companySize?, area, message, website?, context } → 200 { success,
 // referenceId } | 400/429/500.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept as the target contract's param shape until the real POST replaces this mock
 function submitContact(_form: FormState): Promise<{ referenceId: string }> {
   return new Promise((resolve) => setTimeout(() => resolve({ referenceId: 'local-mock' }), 250));
 }

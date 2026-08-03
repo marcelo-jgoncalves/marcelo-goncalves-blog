@@ -12,14 +12,21 @@ import { setActivePinia, createPinia } from 'pinia'
 
 const create = vi.fn()
 const update = vi.fn()
+const getPost = vi.fn()
+
+// Mutable so individual tests can switch between the "new post" (no slug
+// param) and "editing" (slug param present) routes usePostForm's isEditing
+// computed branches on.
+const mockRoute: { params: Record<string, string> } = { params: {} }
 
 vi.mock('vue-router', () => ({
-  useRoute: () => ({ params: {} }),
+  useRoute: () => mockRoute,
   useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
 }))
 
 vi.mock('../../services/api', () => ({
   postsApi: {
+    get: (...args: unknown[]) => getPost(...args),
     create: (...args: unknown[]) => create(...args),
     update: (...args: unknown[]) => update(...args),
   },
@@ -46,6 +53,7 @@ beforeEach(() => {
   setActivePinia(createPinia())
   vi.clearAllMocks()
   create.mockResolvedValue({})
+  mockRoute.params = {}
 })
 
 describe('usePostForm save() — agendamento', () => {
@@ -77,5 +85,30 @@ describe('usePostForm save() — agendamento', () => {
 
     expect(create).not.toHaveBeenCalled()
     expect(toast.value?.type).toBe('error')
+  })
+})
+
+describe('usePostForm save() — versionamento otimista', () => {
+  it('round-trips the version loaded from GET unchanged in the update payload', async () => {
+    mockRoute.params = { slug: 'post-existente' }
+    getPost.mockResolvedValue({
+      slug: 'post-existente',
+      titulo: 'Post existente',
+      status: 'Rascunho',
+      conteudo_html: '',
+      version: 7,
+    })
+    update.mockResolvedValue({})
+
+    const { form, loadInitialData, save } = usePostForm()
+    await loadInitialData()
+    expect(form.value.version).toBe(7)
+
+    form.value.titulo = 'Post editado'
+    await save()
+
+    expect(update).toHaveBeenCalledTimes(1)
+    const [, payload] = update.mock.calls[0]! as [string, Record<string, unknown>]
+    expect(payload.version).toBe(7)
   })
 })

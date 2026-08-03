@@ -207,12 +207,11 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   // The base ConditionExpression is the actual protection against a slug
   // already existing on create (a plain Put with no condition silently
   // overwrites), or against updating a post deleted between the Get above
-  // and this write (the race the pre-check above can't close). When the
-  // caller echoes back the `version` it read, an extra clause also rejects a
-  // write based on stale data from a second concurrent editor — nobody sends
-  // this yet (the admin UI doesn't round-trip `version` through its forms),
-  // so today this clause never triggers; it exists so a future client can
-  // opt in without a backend change.
+  // and this write (the race the pre-check above can't close). The admin's
+  // edit form loads `version` from the GET response and round-trips it
+  // unchanged in the update payload (usePostForm.ts), so the extra clause
+  // below actively rejects a write based on stale data from a second
+  // concurrent editor — see the 409 handling in usePostForm.ts's save().
   let conditionExpression = isNew ? "attribute_not_exists(slug)" : "attribute_exists(slug)";
   let expressionAttributeNames: Record<string, string> | undefined;
   let expressionAttributeValues: Record<string, unknown> | undefined;

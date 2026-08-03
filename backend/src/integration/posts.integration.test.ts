@@ -245,6 +245,10 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
       ctx,
     );
 
+    // ConditionalCheckFailedException's message is the generic "The
+    // conditional request failed" (unlike TransactWriteItems' cancellation
+    // error below, whose message does embed the reason code) — the
+    // exception name, not the message, is what identifies it here.
     await expect(
       client.send(
         new DeleteItemCommand({
@@ -255,7 +259,7 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
           ExpressionAttributeValues: { ":expectedVersion": { N: String(staleVersion) } },
         }),
       ),
-    ).rejects.toThrow(/ConditionalCheckFailed/);
+    ).rejects.toMatchObject({ name: "ConditionalCheckFailedException" });
 
     const getResult: APIGatewayProxyResult = await adminPostsHandler(
       apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),

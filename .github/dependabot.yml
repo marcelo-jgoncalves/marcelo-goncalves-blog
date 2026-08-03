@@ -1,28 +1,12 @@
 version: 2
 updates:
-  # Backend Lambdas
+  # npm workspaces (packages/contracts, backend, frontend, admin) share a
+  # single hoisted lockfile at the repo root — Dependabot resolves updates
+  # against the whole workspace tree from this one root entry, same as `npm
+  # ci` does. One entry per workspace folder (the pre-migration setup) would
+  # each point at a lockfile that no longer exists in that folder.
   - package-ecosystem: "npm"
-    directory: "/backend"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    groups:
-      minor-and-patch:
-        update-types: ["minor", "patch"]
-
-  # Frontend Next.js
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    groups:
-      minor-and-patch:
-        update-types: ["minor", "patch"]
-
-  # Admin Vue
-  - package-ecosystem: "npm"
-    directory: "/admin"
+    directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
