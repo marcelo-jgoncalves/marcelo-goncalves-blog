@@ -620,6 +620,82 @@ describe('adminPosts handler', () => {
       expect(cmd.input.Key).toEqual({ slug: 'meu-post' });
     });
 
+    it('returns 404 when the post no longer exists', async () => {
+      mockSend.mockResolvedValueOnce({ Item: undefined }); // Get (not found)
+
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(404);
+      expect(mockSend).toHaveBeenCalledTimes(1); // só o Get, sem tentativa de Delete
+    });
+
+    it('sends a version ConditionExpression on the plain DeleteCommand', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 3 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // DeleteCommand
+
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const cmd = mockSend.mock.calls[1][0];
+      expect(cmd.input.ConditionExpression).toBe('attribute_not_exists(#version) OR #version = :expectedVersion');
+      expect(cmd.input.ExpressionAttributeValues).toEqual({ ':expectedVersion': 3 });
+    });
+
+    it('sends a version ConditionExpression on the TransactWriteCommand Delete item', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 5 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand
+
+      await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const del = mockSend.mock.calls[1][0].input.TransactItems[0].Delete;
+      expect(del.ConditionExpression).toBe('attribute_not_exists(#version) OR #version = :expectedVersion');
+      expect(del.ExpressionAttributeValues).toEqual({ ':expectedVersion': 5 });
+    });
+
+    it('returns 409 when a concurrent update changed the version since the Get (plain Delete)', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 3 } }); // Get (existing)
+      const conditionalError = Object.assign(new Error('conditional check failed'), { name: 'ConditionalCheckFailedException' });
+      mockSend.mockRejectedValueOnce(conditionalError); // DeleteCommand
+
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(409);
+      expect(JSON.parse(result?.body ?? '{}').message).toBe('Post was modified by someone else since it was loaded');
+    });
+
+    it('returns 409 when a concurrent update changed the version since the Get (TransactWrite)', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 5 } }); // Get (existing)
+      const cancelledError = Object.assign(new Error('transaction cancelled'), {
+        name: 'TransactionCanceledException',
+        CancellationReasons: [{ Code: 'ConditionalCheckFailed' }, { Code: 'None' }],
+      });
+      mockSend.mockRejectedValueOnce(cancelledError); // TransactWriteCommand
+
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(409);
+      expect(JSON.parse(result?.body ?? '{}').message).toBe('Post was modified by someone else since it was loaded');
+    });
+
     it('decrementa o contador (na transação do Delete) ao deletar um post Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)

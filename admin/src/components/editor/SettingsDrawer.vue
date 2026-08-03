@@ -70,7 +70,7 @@ void props
           </div>
           <div v-if="form.status === 'Programado'" class="ia-sched">
             <label class="ia-field-label">Publicar em</label>
-            <input v-model="form.data_publicacao" type="datetime-local" class="ia-input" />
+            <input v-model="form.data_publicacao_programada" type="datetime-local" class="ia-input" />
           </div>
         </div>
 

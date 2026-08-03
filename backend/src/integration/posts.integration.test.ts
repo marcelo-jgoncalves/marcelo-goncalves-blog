@@ -220,6 +220,40 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
   });
 });
 
+describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not a mock)", () => {
+  it("rejects a delete whose Get is stale because another request updated the post first, and the post survives", async () => {
+    const post = samplePost();
+    await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
+
+    // Simulates a second admin session updating the post between this
+    // test's Get (inside deletePost) and its Delete — savePost bumps
+    // `version`, which is exactly the drift deletePost's ConditionExpression
+    // must catch to avoid removing a post whose counters were already
+    // adjusted by that other write.
+    await adminPostsHandler(
+      apiEvent({
+        httpMethod: "PUT",
+        pathParameters: { slug: post.slug },
+        body: JSON.stringify({ ...post, titulo: "Edited concurrently" }),
+      }),
+      ctx,
+    );
+
+    const deleteResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "DELETE", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(deleteResult.statusCode).toBe(409);
+
+    const getResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(getResult.statusCode).toBe(200);
+    expect(JSON.parse(getResult.body).titulo).toBe("Edited concurrently");
+  });
+});
+
 describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a mock assumption", () => {
   it("rejects the whole transaction and applies NEITHER item when one Update's ConditionExpression fails", async () => {
     const slug = `post-${Math.random().toString(36).slice(2)}`;

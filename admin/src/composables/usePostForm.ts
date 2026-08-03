@@ -62,6 +62,7 @@ export function usePostForm() {
     status: 'Rascunho',
     tempo_leitura_min: 5,
     data_publicacao: '',
+    data_publicacao_programada: '',
     data_atualizacao: '',
     autor_id: '',
     topico: '',
@@ -209,11 +210,11 @@ export function usePostForm() {
   async function save() {
     // Validation: Programado status requires a future date
     if (form.value.status === 'Programado') {
-      if (!form.value.data_publicacao) {
+      if (!form.value.data_publicacao_programada) {
         showToast('Defina a data de publicação para agendar o post.', 'error')
         return
       }
-      if (new Date(form.value.data_publicacao) <= new Date()) {
+      if (new Date(form.value.data_publicacao_programada) <= new Date()) {
         showToast('A data de publicação deve ser no futuro para agendar o post.', 'error')
         return
       }

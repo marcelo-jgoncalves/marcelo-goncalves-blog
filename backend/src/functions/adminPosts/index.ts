@@ -273,19 +273,54 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
 async function deletePost(slug: string) {
   const existing = (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug } }))).Item as Post | undefined;
 
+  if (!existing) {
+    return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
+  }
+
+  // Same protection savePost already has: the counter deltas above are
+  // computed from this Get, so a second delete (or an update) racing
+  // between that Get and this Delete could remove a post whose counters
+  // were already adjusted by the other request, drifting the aggregates
+  // with no detection. The version condition rejects the loser instead.
+  // "attribute_not_exists(version) OR ..." covers posts saved before the
+  // version field existed (never re-saved since) — there's no real
+  // optimistic-lock value to check against those, so the delete proceeds
+  // unconditionally for them, same as before this fix.
+  const deleteConditionExpression = "attribute_not_exists(#version) OR #version = :expectedVersion";
+  const deleteExpressionAttributeNames = { "#version": "version" };
+  const deleteExpressionAttributeValues = { ":expectedVersion": existing.version ?? 0 };
+
   const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, undefined));
-  if (counterUpdate) {
-    await dynamo.send(new TransactWriteCommand({
-      TransactItems: [
-        { Delete: { TableName: TABLE_NAME!, Key: { slug } } },
-        counterUpdate,
-      ],
-    }));
-  } else {
-    await dynamo.send(new DeleteCommand({
-      TableName: TABLE_NAME,
-      Key: { slug }
-    }));
+  try {
+    if (counterUpdate) {
+      await dynamo.send(new TransactWriteCommand({
+        TransactItems: [
+          {
+            Delete: {
+              TableName: TABLE_NAME!,
+              Key: { slug },
+              ConditionExpression: deleteConditionExpression,
+              ExpressionAttributeNames: deleteExpressionAttributeNames,
+              ExpressionAttributeValues: deleteExpressionAttributeValues,
+            },
+          },
+          counterUpdate,
+        ],
+      }));
+    } else {
+      await dynamo.send(new DeleteCommand({
+        TableName: TABLE_NAME,
+        Key: { slug },
+        ConditionExpression: deleteConditionExpression,
+        ExpressionAttributeNames: deleteExpressionAttributeNames,
+        ExpressionAttributeValues: deleteExpressionAttributeValues,
+      }));
+    }
+  } catch (error) {
+    if (isConditionalCheckFailure(error)) {
+      return { statusCode: 409, body: JSON.stringify({ message: "Post was modified by someone else since it was loaded" }), headers };
+    }
+    throw error;
   }
 
   await invalidatePostCache(existing?.status === "Publicado" ? [`/post/${slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"] : [`/post/${slug}`]);

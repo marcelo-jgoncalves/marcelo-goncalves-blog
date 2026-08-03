@@ -28,13 +28,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar Dependencias do Pacote de Contratos
+      - name: Instalar Dependencias (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Instalar Dependencias do Backend
-        run: npm ci
-        working-directory: backend
 
       - name: Scan de Seguranca (npm audit)
         run: npm audit --audit-level=high
@@ -74,13 +69,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar Dependencias do Pacote de Contratos
+      - name: Instalar Dependencias (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Instalar Dependencias do Backend
-        run: npm ci
-        working-directory: backend
 
       - name: Rodar Testes de Integração
         run: npm run test:integration
@@ -102,9 +92,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar Dependencias do Frontend
+      - name: Instalar Dependencias (npm workspaces)
         run: npm ci
-        working-directory: frontend
 
       - name: Scan de Seguranca (npm audit)
         run: npm audit --audit-level=high
@@ -139,13 +128,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar Dependencias do Pacote de Contratos
+      - name: Instalar Dependencias (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Instalar Dependencias do Admin
-        run: npm ci
-        working-directory: admin
 
       - name: Scan de Seguranca (npm audit)
         run: npm audit --audit-level=high
@@ -167,6 +151,35 @@ jobs:
           VITE_COGNITO_USER_POOL_ID: placeholder
           VITE_COGNITO_CLIENT_ID: placeholder
           VITE_ASSETS_URL: https://dsns2wusdrj9z.cloudfront.net
+
+  # --- JOB 3b: Testar o pacote @mgoncalves/contracts (Jest + typecheck + audit) ---
+  test-contracts:
+    runs-on: ubuntu-latest
+    name: 3b. Testes Contracts (Jest)
+
+    steps:
+      - name: Checkout do Codigo
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+
+      - name: Instalar Dependencias (npm workspaces)
+        run: npm ci
+
+      - name: Scan de Seguranca (npm audit)
+        run: npm audit --audit-level=high
+        working-directory: packages/contracts
+
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: packages/contracts
+
+      - name: Rodar Testes Unitarios
+        run: npm test
+        working-directory: packages/contracts
 
   # --- JOB 3: Validar a Infraestrutura (Terraform) ---
   validate-infrastructure:

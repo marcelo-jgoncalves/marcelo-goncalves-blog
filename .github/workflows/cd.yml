@@ -49,21 +49,17 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: backend/node_modules
-          key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
-          restore-keys: backend-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      # backend's package.json depends on @mgoncalves/contracts via `file:`,
-      # which only symlinks the source — it doesn't install *its own*
-      # node_modules (zod). Without this, TypeScript can't resolve zod's
-      # types through the symlink and silently widens ZodError.issues to any.
-      - name: Install contracts package dependencies
+      # Single root install: package.json declares npm workspaces
+      # (packages/contracts, backend, frontend, admin) resolved against one
+      # hoisted lockfile, so `npm ci` at repo root installs every
+      # workspace's deps (including @mgoncalves/contracts' own deps, like
+      # zod) in one pass instead of a separate ci per folder.
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Install backend dependencies
-        run: npm ci
-        working-directory: backend
 
       - name: Dependency audit (npm audit)
         run: npm audit --audit-level=high
@@ -114,17 +110,12 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: backend/node_modules
-          key: backend-${{ runner.os }}-${{ hashFiles('backend/package-lock.json') }}
-          restore-keys: backend-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      - name: Install contracts package dependencies
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Install backend dependencies
-        run: npm ci
-        working-directory: backend
 
       - name: Run integration tests
         run: npm run test:integration
@@ -148,13 +139,12 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: frontend/node_modules
-          key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: frontend-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      - name: Install frontend dependencies
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: frontend
 
       - name: Dependency audit (npm audit)
         run: npm audit --audit-level=high
@@ -212,17 +202,12 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: admin/node_modules
-          key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
-          restore-keys: admin-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      - name: Install contracts package dependencies
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Install admin dependencies
-        run: npm ci
-        working-directory: admin
 
       - name: Dependency audit (npm audit)
         run: npm audit --audit-level=high
@@ -235,6 +220,45 @@ jobs:
       - name: Test admin
         run: npm test
         working-directory: admin
+
+  # ==============================================================
+  # JOB 1c': Test @mgoncalves/contracts — the shared Zod schema package
+  # backend/admin both depend on via workspace. Its own test suite and
+  # typecheck never ran in CI before (only `npm ci` for the install side
+  # effect) — backend/admin tests exercise it indirectly through their own
+  # code paths, but never its internal edge cases in isolation.
+  # ==============================================================
+  test-contracts:
+    name: 1c'. Test Contracts Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
+
+      - name: Install dependencies (npm workspaces)
+        run: npm ci
+
+      - name: Dependency audit (npm audit)
+        run: npm audit --audit-level=high
+        working-directory: packages/contracts
+
+      - name: Typecheck contracts
+        run: npm run typecheck
+        working-directory: packages/contracts
+
+      - name: Test contracts
+        run: npm test
+        working-directory: packages/contracts
 
   # ==============================================================
   # JOB 1d: Security scans (Semgrep + Gitleaks) — reused from security.yml
@@ -322,7 +346,7 @@ jobs:
   deploy-dev:
     name: 2a. Deploy → Dev
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-backend-integration, security-scans, validate-infra]
+    needs: [build-backend, build-frontend, test-admin, test-contracts, test-backend-integration, security-scans, validate-infra]
     if: github.ref == 'refs/heads/develop'
     environment: dev
 
@@ -386,17 +410,12 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: admin/node_modules
-          key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
-          restore-keys: admin-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      - name: Install contracts package dependencies
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Install admin dependencies
-        run: npm ci
-        working-directory: admin
 
       - name: Build admin SPA
         working-directory: admin
@@ -460,18 +479,8 @@ jobs:
       # belongs to the full e2e suite (local), not to this deploy gate.
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: frontend/node_modules
-          key: frontend-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: frontend-${{ runner.os }}-
-
-      - name: Install frontend dependencies (E2E smoke)
-        run: npm ci
-        working-directory: frontend
-
-      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
-        with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('frontend/package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: playwright-${{ runner.os }}-
 
       - name: Install Playwright chromium
@@ -497,7 +506,7 @@ jobs:
   plan-prod:
     name: 2b. Terraform Plan → Prod
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-backend-integration, security-scans, validate-infra]
+    needs: [build-backend, build-frontend, test-admin, test-contracts, test-backend-integration, security-scans, validate-infra]
     if: github.ref == 'refs/heads/main'
 
     steps:
@@ -632,17 +641,12 @@ jobs:
 
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
-          path: admin/node_modules
-          key: admin-${{ runner.os }}-${{ hashFiles('admin/package-lock.json') }}
-          restore-keys: admin-${{ runner.os }}-
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-      - name: Install contracts package dependencies
+      - name: Install dependencies (npm workspaces)
         run: npm ci
-        working-directory: packages/contracts
-
-      - name: Install admin dependencies
-        run: npm ci
-        working-directory: admin
 
       - name: Build admin SPA (com outputs de prod)
         working-directory: admin
