@@ -10,9 +10,9 @@ The application domain is an editorial platform about AI, AWS, and DevOps, with 
 
 - 100% of the AWS infrastructure provisioned with Terraform — 10 modules, state in S3, linted with `tflint`.
 - CI/CD via GitHub Actions using AWS OIDC (`id-token: write` + `role-to-assume`) — no long-lived cloud credentials stored as secrets.
-- 11 single-responsibility Lambdas behind least-privilege IAM, reachable only through CloudFront (Lambda URL + OAC SigV4) or API Gateway.
+- 12 single-responsibility Lambdas with least-privilege IAM: API-facing functions are reachable only through CloudFront (Lambda URL + OAC SigV4) or API Gateway, while the 3 asynchronous ones are triggered by S3 or EventBridge instead.
 - DynamoDB with optimistic concurrency (client-supplied `version`, `409` on conflict) and 5 GSIs with `INCLUDE` projection.
-- 435 automated tests gating every deploy: unit (Jest/Vitest), integration against DynamoDB Local, and E2E (Playwright, Chromium + Firefox).
+- 473 automated tests across the repository; 380 of them (backend, frontend, admin, and contracts unit tests, plus DynamoDB Local integration tests) gate every deploy alongside the security scans below and a post-deploy Playwright smoke check — the full 93-test E2E suite (Chromium + Firefox) runs locally/on demand, not as a CI deploy gate.
 - Security gates on every push: Semgrep (SAST), Gitleaks (secret scanning), `npm audit --audit-level=high`, TFLint + Trivy on the infrastructure code.
 - Distributed tracing (X-Ray) on every Lambda, CloudWatch dashboards, Synthetics Canary, SLO burn-rate alarms.
 - Asynchronous workloads (S3-triggered image processing, EventBridge-triggered scheduled publishing) isolated with a DLQ + SNS alert on failure.
@@ -23,14 +23,20 @@ I designed and implemented the architecture, AWS infrastructure, CI/CD pipeline,
 
 That includes:
 
-- the serverless AWS architecture (11 Lambdas, DynamoDB access patterns, CloudFront edge behavior, S3 media pipeline);
+- the serverless AWS architecture (12 Lambdas, DynamoDB access patterns, CloudFront edge behavior, S3 media pipeline);
 - the Terraform modules and their composition (10 modules, remote state, `tflint`-enforced);
-- the CI/CD pipeline (build → lint/typecheck → unit/integration tests → security scans → Terraform validate → deploy → E2E smoke), including moving CI/CD authentication to OIDC;
+- the CI/CD pipeline (build → lint/typecheck → unit/integration tests → security scans → Terraform validate → deploy → post-deploy smoke), including moving CI/CD authentication to OIDC;
 - least-privilege IAM policies and the Cognito SRP + BFF opaque-session auth flow;
 - the DynamoDB consistency model (optimistic concurrency, partial-update semantics on `PATCH`);
-- the asynchronous processing paths (image pipeline, scheduled publishing) and their failure handling (DLQ, alarms);
+- the asynchronous processing paths (image pipeline, scheduled publishing, counter reconciliation) and their failure handling (DLQ, alarms);
 - the observability model (X-Ray tracing, CloudWatch dashboards, Synthetics Canary, SLO burn-rate alerting);
-- the automated test strategy across three workspaces and three test layers.
+- the automated test strategy across four workspaces and three test layers.
+
+## AI-assisted engineering workflow
+
+Claude Code was used as an AI engineering assistant to accelerate implementation, investigate defects, review changes, expand automated tests and maintain technical documentation.
+
+Architecture, technical decisions, security controls, acceptance criteria and final approval remained under my responsibility. AI-assisted changes were reviewed against the established architecture and accepted only after passing the project's automated tests, security gates and CI/CD pipeline.
 
 ## Key engineering decisions
 
@@ -51,9 +57,9 @@ That includes:
 |---|---|
 | **Public site** | Next.js 16, SSR/ISR, full SEO, "Good" Core Web Vitals |
 | **CMS (admin)** | Vue 3 + Tiptap, in-house rich-text editor, not a third-party SaaS |
-| **Backend** | 11 Node.js/TypeScript Lambdas, DynamoDB, S3, CloudFront |
+| **Backend** | 12 Node.js/TypeScript Lambdas, DynamoDB, S3, CloudFront |
 | **Infrastructure** | Terraform, 100% IaC, no manual clicks in the AWS console |
-| **Active environment** | `dev` is deployed and operational; production is designed and pipeline-ready, not yet provisioned |
+| **Active environment** | `dev` is deployed and operational; Terraform is environment-ready for production, but no production environment or deployment workflow exists yet |
 
 ---
 
@@ -63,27 +69,27 @@ That includes:
 |---|---|---|
 | Public frontend | Next.js 16 + React 19 + OpenNext v3 | Site rendered via Lambda + CloudFront, ISR |
 | CMS / Admin | Vue 3 + Vite + Pinia + Tiptap 2 | Rich-text post editor, author/category management |
-| Backend | Node.js 22 + TypeScript + esbuild | 11 Lambdas, one per responsibility |
+| Backend | Node.js 22 + TypeScript + esbuild | 12 Lambdas, one per responsibility |
 | Database | DynamoDB | Single-table-ish per entity, 5 optimized GSIs (`INCLUDE` projection) |
 | Images | Sharp.js (Lambda) | Automatic pipeline: 6 variants (AVIF/WebP x 3 breakpoints) + LQIP blur |
 | Auth | AWS Cognito (SRP) + BFF session | Single admin; opaque session in an httpOnly cookie (`SameSite=Strict`), stored in DynamoDB (`admin_sessions`), behind a same-origin CloudFront proxy |
 | CDN / Edge | CloudFront + S3 + OAC | Managed cache/origin-request policies, on-demand invalidation on save/publish/delete |
 | IaC | Terraform (~> 1.15) | 10 AWS modules, state in S3, linted with `tflint` + per-module README via `terraform-docs` |
-| CI/CD | GitHub Actions | Build, lint, tests (unit + integration + E2E smoke), and `terraform apply` gating the deploy, 100% automatic on `develop` |
-| Observability | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, distributed tracing, DLQ + alarm for the 2 async Lambdas |
-| Tests | Jest (backend/frontend), Vitest (admin), Playwright (E2E + post-deploy smoke) | 208 backend unit tests + 10 integration (DynamoDB Local), 81 frontend, 43 admin, 93 E2E (19 specs, run on Chromium + Firefox) |
+| CI/CD | GitHub Actions | Build, unit/integration/contract tests, security scans, and `terraform apply` gate `deploy-dev`; a single Chromium smoke spec runs post-deploy — 100% automatic on `develop`, no `deploy-prod` job exists yet |
+| Observability | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, distributed tracing, DLQ + alarm on `imageProcessor`/`postScheduler` (2 of the 3 async Lambdas) |
+| Tests | Jest (backend/frontend/contracts), Vitest (admin), Playwright (E2E + post-deploy smoke) | 217 backend unit + 10 integration (DynamoDB Local) + 81 frontend + 43 admin + 29 contracts = 380 tests gating every deploy, plus a 93-test E2E suite (19 specs, Chromium + Firefox) run locally/on demand |
 
 ---
 
 ## Architecture
 
-Source of truth: `infra/` (Terraform modules). Diagrams are generated with the Python [`diagrams`](https://diagrams.mingrammer.com/) library — see `scripts/generate-architecture-diagrams-v3.py`. Re-run the script whenever the infrastructure topology changes materially.
+Source of truth: `infra/` (Terraform modules). Diagrams are generated with the Python [`diagrams`](https://diagrams.mingrammer.com/) library — see `scripts/generate-architecture-diagrams-v3.py`. Re-run the script whenever the infrastructure topology changes materially (the diagrams below predate the `postCounterReconciler` Lambda described in the next section).
 
 ### Overview
 
 ![Architecture overview](docs/architecture/architecture-v3-01-overview.png)
 
-Layered view: edge/CDN, applications, auth, the 11 Lambdas grouped by concern, data & media, and the reliability/observability layer.
+Layered view: edge/CDN, applications, auth, the Lambdas grouped by concern, data & media, and the reliability/observability layer.
 
 ### Public read path
 
@@ -101,7 +107,7 @@ Editor login via Cognito (SRP), the BFF session (`adminSession`/`adminAuthorizer
 
 ![Media pipeline and scheduled publishing](docs/architecture/architecture-v3-04-media-async.png)
 
-The two Lambdas with no API Gateway route: `imageProcessor` (triggered by an S3 event) and `postScheduler` (triggered by EventBridge), both with a DLQ + SNS failure path.
+The three Lambdas with no API Gateway route: `imageProcessor` (triggered by an S3 event) and `postScheduler` (triggered by EventBridge), both with a DLQ + SNS failure path; and `postCounterReconciler` (also EventBridge, daily), which self-heals the aggregated post counters and doesn't yet have a DLQ of its own — a missed run just gets caught the next day.
 
 ### Observability and security
 
@@ -113,16 +119,19 @@ Cross-cutting monitoring: CloudWatch dashboards, Synthetics Canary, SLO burn-rat
 
 ## CI/CD
 
-Working branch: `develop` (`main` is the stable snapshot). A push to `develop` triggers the full pipeline via GitHub Actions, each stage gating the next:
+Working branch: `develop` (`main` is the stable snapshot). A push to `develop` triggers the `deploy-dev` pipeline via GitHub Actions, each stage gating the next:
 
 ```
-lint/typecheck → unit tests → integration tests (DynamoDB Local)
+lint/typecheck → unit tests (backend, frontend, admin, contracts)
+→ integration tests (DynamoDB Local)
 → security scans (Semgrep, Gitleaks, npm audit)
 → Terraform validate + TFLint + Trivy → terraform apply
-→ deploy (frontend, admin, Lambdas) → E2E smoke
+→ deploy (frontend, admin, Lambdas) → post-deploy smoke
 ```
 
-AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-lived AWS access keys stored in GitHub Secrets. Third-party GitHub Actions are pinned by commit SHA, not by floating version tag.
+The post-deploy smoke step is a curl health check plus a single Playwright spec (`e2e/smoke.spec.ts`, Chromium only) against the freshly deployed environment — not the full 93-test E2E suite, which runs locally/on demand instead.
+
+AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-lived AWS access keys stored in GitHub Secrets. Third-party GitHub Actions are pinned by commit SHA, not by floating version tag. There is no `deploy-prod` job today — only `deploy-dev` exists, gated on `github.ref == 'refs/heads/develop'`.
 
 ---
 
@@ -133,7 +142,7 @@ AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-
 - Admin session via BFF: httpOnly cookie, no Cognito token in Web Storage.
 - Cognito with SRP flow (`ALLOW_USER_SRP_AUTH`), no plaintext password over the network.
 - DLQ (SQS) + depth alarm on the async Lambdas (`imageProcessor`, `postScheduler`), with SNS notification.
-- CI pipeline blocks the deploy if lint/tests (unit, integration, or E2E smoke) fail.
+- CI pipeline fails the run if lint, tests (unit, integration, contract), or the post-deploy smoke check fail.
 - GuardDuty + CloudTrail always on, Semgrep on every CI push, `npm audit --audit-level=high` required (zero high/critical tolerated).
 - `tflint` + Trivy (config scan) in the infrastructure CI.
 - PITR (Point-in-Time Recovery) toggle implemented via Terraform, ready for production.
@@ -145,7 +154,7 @@ AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-
 
 ## Testing
 
-- 208 backend tests (Jest) + 10 integration tests against DynamoDB Local + 81 frontend (Jest) + 43 admin (Vitest) + 93 E2E (Playwright, 19 specs, run on Chromium + Firefox), covering smoke, layout, post, articles, all-articles, search, category, project, and visual audit.
+- 217 backend tests (Jest) + 10 integration tests against DynamoDB Local + 81 frontend (Jest) + 43 admin (Vitest) + 29 contracts (Jest) = 380 tests, all gating every deploy. Plus a separate 93-test E2E suite (Playwright, 19 specs, Chromium + Firefox) covering smoke, layout, post, articles, all-articles, search, category, project, and visual audit — run locally/on demand; only its `smoke.spec.ts` (Chromium) runs post-deploy in CI.
 - A homegrown QA tool: a Playwright script that simulates a real user publishing a complete post (login, typing via input rules, image upload, every editor node type) and validates the result on two layers: an admin round-trip and the real rendered DOM of the public page (visibility, decoded image, parsed JSON-LD, admin-vs-public node count comparison, mobile + desktop).
 - Compliance/legal: Google Consent Mode v2, an in-house CMP (LGPD), privacy/cookies/terms pages.
 
@@ -185,14 +194,14 @@ The admin CloudFront distribution rewrites 403/404 to `index.html` for client-si
 mgoncalves-editorial-platform/
 ├── packages/contracts/  Shared Zod schemas/types (backend ↔ admin ↔ frontend contract)
 ├── frontend/    Next.js 16 + OpenNext v3 (public site)
-├── backend/     Node.js 22 + TypeScript (11 Lambdas)
+├── backend/     Node.js 22 + TypeScript (12 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
 ├── infra/       Terraform, 10 AWS modules (lambda, dynamodb, frontend, admin,
 │                api-gateway, cognito, media, observability, security-monitoring, finops)
 └── .github/     CI/CD pipelines
 ```
 
-**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `adminSession`, `adminAuthorizer`, `mediaUpload`, `imageProcessor`, `postScheduler`.
+**Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `adminSession`, `adminAuthorizer`, `mediaUpload`, `imageProcessor`, `postScheduler`, `postCounterReconciler`.
 
 **Posts write API (`adminPosts`):** all persisted dates use UTC in ISO 8601. `POST /admin/posts` creates (201); `PATCH /admin/post/{slug}` updates (200) with partial-update semantics — the server merges the payload onto the existing item, so a field the client omits keeps its previous value, and an explicit `null` on a removable field (`subtitulo`, `imagem_lqip_base64`) deletes it. Every update requires the client's currently-known `version` (optimistic concurrency); a stale or missing version returns 409. Both responses return `{ message, slug, version, data_atualizacao }` (`packages/contracts`' `savePostResponseSchema`) so the caller can sync local state without a follow-up GET.
 
@@ -203,7 +212,7 @@ mgoncalves-editorial-platform/
 ## Local setup
 
 ```bash
-npm run install:all     # installs all 4 workspaces (packages/contracts, backend, frontend, admin)
+npm install     # single root install — npm workspaces resolve packages/contracts, backend, frontend, and admin against one hoisted lockfile
 
 cd frontend && cp .env.example .env.local && npm run dev   # http://localhost:3000
 cd admin && cp .env.example .env.local && npm run dev      # http://localhost:5173
@@ -213,11 +222,12 @@ cd admin && cp .env.example .env.local && npm run dev      # http://localhost:51
 ## Tests
 
 ```bash
-cd backend && npm test                  # Jest, 208 tests
+cd backend && npm test                  # Jest, 217 tests
 cd backend && npm run test:integration  # Jest + DynamoDB Local, 10 tests
 cd frontend && npm test                 # Jest, 81 tests
 cd admin && npm test                    # Vitest, 43 tests
-cd frontend && npm run test:e2e         # Playwright, 93 E2E tests (19 specs, Chromium + Firefox)
+cd packages/contracts && npm test       # Jest, 29 tests
+cd frontend && npm run test:e2e         # Playwright, 93 E2E tests (19 specs, Chromium + Firefox) — local/on-demand, not a CI gate
 ```
 
 ---
@@ -226,7 +236,7 @@ cd frontend && npm run test:e2e         # Playwright, 93 E2E tests (19 specs, Ch
 
 The `dev` environment is deployed and operational — it's where the pipeline described in [CI/CD](#cicd) runs on every push to `develop`.
 
-The production Terraform configuration and deploy workflow are implemented and gated by the same CI/CD pipeline as `dev`, but the production environment itself has not been provisioned yet.
+The Terraform modules are environment-ready for production (a full `infra/env/prd.tfvars` already exists, with production-only settings like PITR, provisioned concurrency, and mandatory observability), but production has not been provisioned and no active production deployment workflow currently exists — `cd.yml` only defines a `deploy-dev` job.
 
 The AI-assisted features listed below in [Roadmap](#roadmap) are not started; they're documented as direction, not as shipped functionality.
 
