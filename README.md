@@ -1,4 +1,4 @@
-# Marcelo Gonçalves Editorial Platform
+# Marcelo Gonçalves — AWS Serverless Editorial Platform
 
 Production-grade AWS serverless platform designed and built end to end: infrastructure as code (Terraform), CI/CD via GitHub Actions with OIDC (no long-lived AWS credentials), automated testing at three levels, security scanning on every push, and full-stack observability (distributed tracing, SLO alarms, synthetic monitoring).
 
