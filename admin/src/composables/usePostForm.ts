@@ -67,6 +67,10 @@ export function usePostForm() {
     autor_id: '',
     topico: '',
     variante_card: '',
+    // Overwritten by the GET response on edit; a new post's create payload
+    // never sends this field (createPostInputSchema strips it if present) —
+    // this default only exists to satisfy Post.version now being required.
+    version: 0,
   })
 
   // Dirty state — detects unsaved changes

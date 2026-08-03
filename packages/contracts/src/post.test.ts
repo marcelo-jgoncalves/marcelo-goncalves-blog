@@ -1,4 +1,4 @@
-import { postInputSchema } from './post';
+import { createPostInputSchema, updatePostInputSchema } from './post';
 
 const BASE = {
   slug: 'meu-post',
@@ -6,13 +6,21 @@ const BASE = {
   autor_id: 'marcelo-goncalves',
 };
 
-describe('postInputSchema', () => {
+const FUTURE_DATE = '2099-01-01T10:00';
+
+describe('createPostInputSchema', () => {
   it('accepts a minimal valid post', () => {
-    expect(postInputSchema.safeParse(BASE).success).toBe(true);
+    expect(createPostInputSchema.safeParse(BASE).success).toBe(true);
+  });
+
+  it('defaults status to Rascunho when omitted', () => {
+    const result = createPostInputSchema.safeParse(BASE);
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.status).toBe('Rascunho');
   });
 
   it('rejects a slug with uppercase or spaces', () => {
-    expect(postInputSchema.safeParse({ ...BASE, slug: 'Meu Post' }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, slug: 'Meu Post' }).success).toBe(false);
   });
 
   it('accepts every real slug shape seen in production (alphanumeric segments joined by hyphens)', () => {
@@ -22,57 +30,136 @@ describe('postInputSchema', () => {
       'testeerroedicao',
     ];
     for (const slug of realSlugs) {
-      expect(postInputSchema.safeParse({ ...BASE, slug }).success).toBe(true);
+      expect(createPostInputSchema.safeParse({ ...BASE, slug }).success).toBe(true);
     }
   });
 
   it('rejects a slug longer than 200 chars', () => {
-    expect(postInputSchema.safeParse({ ...BASE, slug: 'a'.repeat(201) }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, slug: 'a'.repeat(201) }).success).toBe(false);
   });
 
   it('rejects titulo longer than 300 chars', () => {
-    expect(postInputSchema.safeParse({ ...BASE, titulo: 'a'.repeat(301) }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, titulo: 'a'.repeat(301) }).success).toBe(false);
   });
 
   it('rejects tempo_leitura_min when not an integer', () => {
-    expect(postInputSchema.safeParse({ ...BASE, tempo_leitura_min: 3.5 }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, tempo_leitura_min: 3.5 }).success).toBe(false);
   });
 
   it('rejects tempo_leitura_min of 0 or below', () => {
-    expect(postInputSchema.safeParse({ ...BASE, tempo_leitura_min: 0 }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, tempo_leitura_min: 0 }).success).toBe(false);
   });
 
   it('rejects tempo_leitura_min above 180', () => {
-    expect(postInputSchema.safeParse({ ...BASE, tempo_leitura_min: 181 }).success).toBe(false);
+    expect(createPostInputSchema.safeParse({ ...BASE, tempo_leitura_min: 181 }).success).toBe(false);
   });
 
   it('accepts data_publicacao in the admin datetime-local shape (no seconds, no timezone)', () => {
-    const result = postInputSchema.safeParse({ ...BASE, data_publicacao: '2026-08-02T14:30' });
+    const result = createPostInputSchema.safeParse({ ...BASE, data_publicacao: '2026-08-02T14:30' });
     expect(result.success).toBe(true);
   });
 
   it('rejects status "Programado" without data_publicacao_programada', () => {
-    const result = postInputSchema.safeParse({ ...BASE, status: 'Programado' });
+    const result = createPostInputSchema.safeParse({ ...BASE, status: 'Programado' });
     expect(result.success).toBe(false);
   });
 
-  it('accepts status "Programado" with data_publicacao_programada', () => {
-    const result = postInputSchema.safeParse({
+  it('accepts status "Programado" with a future data_publicacao_programada', () => {
+    const result = createPostInputSchema.safeParse({
       ...BASE,
       status: 'Programado',
-      data_publicacao_programada: '2026-08-02T14:30',
+      data_publicacao_programada: FUTURE_DATE,
     });
     expect(result.success).toBe(true);
   });
 
+  it('rejects status "Programado" with an unparseable data_publicacao_programada', () => {
+    const result = createPostInputSchema.safeParse({
+      ...BASE,
+      status: 'Programado',
+      data_publicacao_programada: 'not-a-date',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects status "Programado" with a past data_publicacao_programada', () => {
+    const result = createPostInputSchema.safeParse({
+      ...BASE,
+      status: 'Programado',
+      data_publicacao_programada: '2020-01-01T10:00:00.000Z',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('normalizes data_publicacao_programada to full UTC ISO 8601 on a scheduled post', () => {
+    const result = createPostInputSchema.safeParse({
+      ...BASE,
+      status: 'Programado',
+      data_publicacao_programada: FUTURE_DATE,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.data_publicacao_programada).toBe(new Date(FUTURE_DATE).toISOString());
+    }
+  });
+
   it('does not require data_publicacao_programada for other statuses', () => {
-    expect(postInputSchema.safeParse({ ...BASE, status: 'Rascunho' }).success).toBe(true);
-    expect(postInputSchema.safeParse({ ...BASE, status: 'Publicado' }).success).toBe(true);
+    expect(createPostInputSchema.safeParse({ ...BASE, status: 'Rascunho' }).success).toBe(true);
+    expect(createPostInputSchema.safeParse({ ...BASE, status: 'Publicado' }).success).toBe(true);
+  });
+
+  it('does not reject a past data_publicacao_programada when status is not Programado', () => {
+    // A published post keeps whatever scheduled date it had before publishing
+    // (postScheduler never clears the field) — re-saving it must not 400.
+    const result = createPostInputSchema.safeParse({
+      ...BASE,
+      status: 'Publicado',
+      data_publicacao_programada: '2020-01-01T10:00:00.000Z',
+    });
+    expect(result.success).toBe(true);
   });
 
   it('strips unknown fields (mass assignment protection)', () => {
-    const result = postInputSchema.safeParse({ ...BASE, isAdmin: true });
+    const result = createPostInputSchema.safeParse({ ...BASE, isAdmin: true });
     expect(result.success).toBe(true);
     expect((result as { data: Record<string, unknown> }).data.isAdmin).toBeUndefined();
+  });
+
+  it('strips a client-sent version instead of accepting it', () => {
+    const result = createPostInputSchema.safeParse({ ...BASE, version: 7 });
+    expect(result.success).toBe(true);
+    expect((result as { data: Record<string, unknown> }).data.version).toBeUndefined();
+  });
+});
+
+describe('updatePostInputSchema', () => {
+  it('accepts a minimal valid post with version', () => {
+    expect(updatePostInputSchema.safeParse({ ...BASE, version: 1 }).success).toBe(true);
+  });
+
+  it('rejects a post without version', () => {
+    const result = updatePostInputSchema.safeParse(BASE);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a negative or non-integer version', () => {
+    expect(updatePostInputSchema.safeParse({ ...BASE, version: -1 }).success).toBe(false);
+    expect(updatePostInputSchema.safeParse({ ...BASE, version: 1.5 }).success).toBe(false);
+  });
+
+  it('rejects status "Programado" with a past data_publicacao_programada', () => {
+    const result = updatePostInputSchema.safeParse({
+      ...BASE,
+      version: 1,
+      status: 'Programado',
+      data_publicacao_programada: '2020-01-01T10:00:00.000Z',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('does not default status when omitted (update keeps whatever the caller sends)', () => {
+    const result = updatePostInputSchema.safeParse({ ...BASE, version: 1 });
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.status).toBeUndefined();
   });
 });

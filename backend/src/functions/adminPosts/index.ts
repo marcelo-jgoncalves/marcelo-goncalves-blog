@@ -4,7 +4,7 @@ import { dynamo } from "../../common/dynamodb";
 import { Post } from "../../common/types";
 import { logger } from "../../common/logger";
 import { sanitizePostHtml } from "../../common/sanitizer";
-import { postInputSchema } from "../../common/postSchema";
+import { createPostInputSchema, updatePostInputSchema, UpdatePostInput } from "../../common/postSchema";
 import { computeCounterDeltas, buildCounterTransactUpdate } from "../../common/postCounters";
 import { invalidatePostCache } from "../../common/cacheInvalidation";
 import { isConditionalCheckFailure } from "../../common/dynamoErrors";
@@ -144,7 +144,8 @@ async function getPost(slug: string) {
 }
 
 async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
-  const parsed = postInputSchema.safeParse(rawData);
+  const schema = isNew ? createPostInputSchema : updatePostInputSchema;
+  const parsed = schema.safeParse(rawData);
   if (!parsed.success) {
     const issues = parsed.error.issues.map((issue) => ({ path: issue.path.join("."), message: issue.message }));
     logger.warn("admin_posts_validation_error", { requestId, issues });
@@ -207,18 +208,17 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   // The base ConditionExpression is the actual protection against a slug
   // already existing on create (a plain Put with no condition silently
   // overwrites), or against updating a post deleted between the Get above
-  // and this write (the race the pre-check above can't close). The admin's
-  // edit form loads `version` from the GET response and round-trips it
-  // unchanged in the update payload (usePostForm.ts), so the extra clause
-  // below actively rejects a write based on stale data from a second
-  // concurrent editor — see the 409 handling in usePostForm.ts's save().
+  // and this write (the race the pre-check above can't close). updatePostInputSchema
+  // requires `version`, so the match clause below is unconditional on every
+  // update, not best-effort: it always rejects a write based on stale data
+  // from a second concurrent editor — see the 409 handling in usePostForm.ts's save().
   let conditionExpression = isNew ? "attribute_not_exists(slug)" : "attribute_exists(slug)";
   let expressionAttributeNames: Record<string, string> | undefined;
   let expressionAttributeValues: Record<string, unknown> | undefined;
-  if (!isNew && typeof data.version === "number") {
+  if (!isNew) {
     conditionExpression += " AND #version = :expectedVersion";
     expressionAttributeNames = { "#version": "version" };
-    expressionAttributeValues = { ":expectedVersion": data.version };
+    expressionAttributeValues = { ":expectedVersion": (data as UpdatePostInput).version };
   }
 
   const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, item));
@@ -281,11 +281,15 @@ async function deletePost(slug: string) {
   // between that Get and this Delete could remove a post whose counters
   // were already adjusted by the other request, drifting the aggregates
   // with no detection. The version condition rejects the loser instead.
-  // "attribute_not_exists(version) OR ..." covers posts saved before the
-  // version field existed (never re-saved since) — there's no real
-  // optimistic-lock value to check against those, so the delete proceeds
-  // unconditionally for them, same as before this fix.
-  const deleteConditionExpression = "attribute_not_exists(#version) OR #version = :expectedVersion";
+  // The leading attribute_exists(slug) is load-bearing, not redundant: once
+  // the first delete in a race removes the item, "attribute_not_exists(version)"
+  // alone is also true for the now-gone item, so a lone version clause would
+  // let a second concurrent delete slip through and double-decrement the
+  // counters. attribute_exists(slug) closes that by requiring the item to
+  // still be there. "OR #version = :expectedVersion" still covers posts
+  // saved before the version field existed (never re-saved since) — there's
+  // no real optimistic-lock value to check against those.
+  const deleteConditionExpression = "attribute_exists(slug) AND (attribute_not_exists(#version) OR #version = :expectedVersion)";
   const deleteExpressionAttributeNames = { "#version": "version" };
   const deleteExpressionAttributeValues = { ":expectedVersion": existing.version ?? 0 };
 

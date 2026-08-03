@@ -371,18 +371,81 @@ describe('adminPosts handler', () => {
 
       expect(writtenItem(mockSend.mock.calls[0][0]).version).toBe(1);
     });
+
+    it('defaults status to Rascunho when omitted', async () => {
+      mockSend.mockResolvedValueOnce({}); // PutCommand (Rascunho: zero delta, no transaction)
+      const { status, ...noStatus } = SAMPLE_POST;
+
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify(noStatus) }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(writtenItem(mockSend.mock.calls[0][0]).status).toBe('Rascunho');
+    });
+
+    it('discards a client-sent version instead of accepting it', async () => {
+      mockSend.mockResolvedValueOnce({});
+      await handler(
+        event({ httpMethod: 'POST', body: JSON.stringify({ ...SAMPLE_POST, version: 99 }) }),
+        ctx,
+        jest.fn(),
+      );
+
+      // Server always computes version itself on create — never the client-sent value.
+      expect(writtenItem(mockSend.mock.calls[0][0]).version).toBe(1);
+    });
+
+    it('rejects a scheduled post with a past data_publicacao_programada', async () => {
+      const result = await handler(
+        event({
+          httpMethod: 'POST',
+          body: JSON.stringify({
+            ...SAMPLE_POST,
+            status: 'Programado',
+            data_publicacao_programada: '2020-01-01T10:00:00.000Z',
+          }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
+    it('normalizes data_publicacao_programada to full UTC ISO 8601 on a scheduled post', async () => {
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Programado: zero delta actually — see below)
+      await handler(
+        event({
+          httpMethod: 'POST',
+          body: JSON.stringify({
+            ...SAMPLE_POST,
+            status: 'Programado',
+            data_publicacao_programada: '2099-01-01T10:00',
+          }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(writtenItem(mockSend.mock.calls[0][0]).data_publicacao_programada).toBe(
+        new Date('2099-01-01T10:00').toISOString(),
+      );
+    });
   });
 
   describe('PUT /admin/posts/:slug (update)', () => {
     it('updates an existing post', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // PutCommand
 
       const result = await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -393,9 +456,24 @@ describe('adminPosts handler', () => {
       expect(mockSend).toHaveBeenCalledTimes(2);
     });
 
+    it('returns 400 when version is missing from the update payload', async () => {
+      const result = await handler(
+        event({
+          httpMethod: 'PUT',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify(SAMPLE_POST),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
     it('nunca grava data_publicacao vazia — cai para o valor existente quando o client manda "" (regressão: crashava o GSI esparso ProjetoPorData_v2)', async () => {
       mockSend.mockResolvedValueOnce({
-        Item: { status: 'Rascunho', e_projeto: 0, data_publicacao: '2026-05-01T00:00:00.000Z' },
+        Item: { status: 'Rascunho', e_projeto: 0, data_publicacao: '2026-05-01T00:00:00.000Z', version: 1 },
       }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // PutCommand
 
@@ -403,7 +481,7 @@ describe('adminPosts handler', () => {
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', e_projeto: 1, data_publicacao: '' }),
+          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', e_projeto: 1, data_publicacao: '', version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -415,14 +493,14 @@ describe('adminPosts handler', () => {
     });
 
     it('atualiza o contador (na transação do Put) quando o status muda de Rascunho para Publicado', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST), // SAMPLE_POST.status === 'Publicado'
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }), // SAMPLE_POST.status === 'Publicado'
         }),
         ctx,
         jest.fn(),
@@ -434,14 +512,14 @@ describe('adminPosts handler', () => {
     });
 
     it('decrementa o contador (na transação do Put) quando o status muda de Publicado para Rascunho', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho' }),
+          body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -452,14 +530,14 @@ describe('adminPosts handler', () => {
     });
 
     it('invalida "/" também quando o status muda de Rascunho para Publicado', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
 
       await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST), // SAMPLE_POST.status === 'Publicado'
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }), // SAMPLE_POST.status === 'Publicado'
         }),
         ctx,
         jest.fn(),
@@ -469,14 +547,14 @@ describe('adminPosts handler', () => {
     });
 
     it('NÃO invalida "/" quando o post já era Publicado e continua Publicado (edição de conteúdo)', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // PutCommand
 
       await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -490,7 +568,7 @@ describe('adminPosts handler', () => {
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'outro-slug' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -506,7 +584,7 @@ describe('adminPosts handler', () => {
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
         ctx,
         jest.fn(),
@@ -517,20 +595,20 @@ describe('adminPosts handler', () => {
     });
 
     it('sends attribute_exists(slug) as the ConditionExpression', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0 } }); // Get
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 1 } }); // Get
       mockSend.mockResolvedValueOnce({}); // Put
 
       await handler(
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
         ctx,
         jest.fn(),
       );
 
-      expect(mockSend.mock.calls[1][0].input.ConditionExpression).toBe('attribute_exists(slug)');
+      expect(mockSend.mock.calls[1][0].input.ConditionExpression).toBe('attribute_exists(slug) AND #version = :expectedVersion');
     });
 
     it('increments version on update', async () => {
@@ -541,7 +619,7 @@ describe('adminPosts handler', () => {
         event({
           httpMethod: 'PUT',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify(SAMPLE_POST),
+          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }),
         }),
         ctx,
         jest.fn(),
@@ -550,7 +628,7 @@ describe('adminPosts handler', () => {
       expect(writtenItem(mockSend.mock.calls[1][0]).version).toBe(5);
     });
 
-    it('adds an extra version-match clause when the client echoes back the version it read', async () => {
+    it('sends the version-match clause built from the client-sent version', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 4 } }); // Get
       mockSend.mockResolvedValueOnce({}); // Put
 
@@ -644,7 +722,7 @@ describe('adminPosts handler', () => {
       );
 
       const cmd = mockSend.mock.calls[1][0];
-      expect(cmd.input.ConditionExpression).toBe('attribute_not_exists(#version) OR #version = :expectedVersion');
+      expect(cmd.input.ConditionExpression).toBe('attribute_exists(slug) AND (attribute_not_exists(#version) OR #version = :expectedVersion)');
       expect(cmd.input.ExpressionAttributeValues).toEqual({ ':expectedVersion': 3 });
     });
 
@@ -659,7 +737,7 @@ describe('adminPosts handler', () => {
       );
 
       const del = mockSend.mock.calls[1][0].input.TransactItems[0].Delete;
-      expect(del.ConditionExpression).toBe('attribute_not_exists(#version) OR #version = :expectedVersion');
+      expect(del.ConditionExpression).toBe('attribute_exists(slug) AND (attribute_not_exists(#version) OR #version = :expectedVersion)');
       expect(del.ExpressionAttributeValues).toEqual({ ':expectedVersion': 5 });
     });
 

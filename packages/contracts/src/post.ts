@@ -9,61 +9,140 @@ const SLUG_PATTERN = /^[a-z0-9]+(?:[-_][a-z0-9]+)*$/;
 export const POST_STATUSES = ["Publicado", "Rascunho", "Programado"] as const;
 export type PostStatus = (typeof POST_STATUSES)[number];
 
+// A bare `new Date(raw)` accepts far more than ISO 8601 (RFC 2822, plain
+// "2026-08-02", the admin's own datetime-local shape without a timezone
+// suffix), which is why this stays a runtime check instead of a regex: the
+// goal is "does this resolve to a real instant", not "is this one specific
+// string shape".
+function parseScheduledDate(raw: string): Date | null {
+  const parsed = new Date(raw);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+// Only enforced when status is actually "Programado": a post that already
+// went through postScheduler keeps its now-past data_publicacao_programada
+// forever (publishing never clears the field), so a blanket "must be in the
+// future" check would 400 on every later edit of an already-published post.
+function validateScheduledDate<T extends { status?: PostStatus; data_publicacao_programada?: string }>(
+  data: T,
+  ctx: z.RefinementCtx,
+) {
+  if (data.status !== "Programado") return;
+
+  if (!data.data_publicacao_programada) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["data_publicacao_programada"],
+      message: "A scheduled post requires data_publicacao_programada.",
+    });
+    return;
+  }
+
+  const parsed = parseScheduledDate(data.data_publicacao_programada);
+  if (!parsed) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["data_publicacao_programada"],
+      message: "data_publicacao_programada must be a valid date.",
+    });
+    return;
+  }
+
+  if (parsed.getTime() <= Date.now()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["data_publicacao_programada"],
+      message: "data_publicacao_programada must be in the future.",
+    });
+  }
+}
+
+// Normalizes whatever parseable shape data_publicacao_programada arrived in
+// (the admin's datetime-local value, a round-tripped ISO string, ...) to a
+// full UTC ISO 8601 string. postScheduler compares this field against
+// `new Date().toISOString()` as a plain string (StatusProgramadoPorData
+// GSI range key) — that only sorts correctly if every value written here is
+// the same format. Left untouched when unparseable so a non-"Programado"
+// save with a legacy/garbage value already in the field isn't blocked by a
+// transform that validateScheduledDate above didn't get a chance to reject.
+function normalizeScheduledDate<T extends { data_publicacao_programada?: string }>(data: T): T {
+  if (!data.data_publicacao_programada) return data;
+  const parsed = parseScheduledDate(data.data_publicacao_programada);
+  if (!parsed) return data;
+  return { ...data, data_publicacao_programada: parsed.toISOString() };
+}
+
 // Ceilings, not editorial targets: sized well above every real value seen in
 // production data (checked via a live scan while writing this schema — max
 // slug 68 chars, max titulo 71, max resumo 370) so no legitimate existing
 // post is rejected on its next save. Their job is to reject pathological
 // input (a multi-MB string in a text field), not to enforce a house style.
-export const postInputSchema = z
+const basePostFields = {
+  slug: z.string().min(1).max(200).regex(SLUG_PATTERN, "slug must be lowercase alphanumeric segments joined by hyphens"),
+  titulo: z.string().min(1).max(300),
+  conteudo_html: z.string().max(300_000).optional(),
+  resumo: z.string().max(600).optional(),
+  subtitulo: z.string().max(300).optional(),
+  imagem_destaque_url: z.string().optional(),
+  imagem_destaque_alt_text: z.string().optional(),
+  imagem_lqip_base64: z.string().optional(),
+  categoria_slug: z.string().optional(),
+  subcategoria_slug: z.string().optional(),
+  subcategoria_nome: z.string().optional(),
+  autor_id: z.string().min(1),
+  // Not `.datetime()`: the admin's scheduling field is an
+  // <input type="datetime-local">, which emits "2026-08-02T14:30" — no
+  // seconds, no timezone suffix. Real ISO 8601 (from data_atualizacao)
+  // also flows through this same field on read-modify-write, so the
+  // format actually varies by caller; a strict datetime check would reject
+  // the admin's own scheduling requests.
+  data_publicacao: z.string().optional(),
+  data_publicacao_programada: z.string().optional(),
+  tempo_leitura_min: z.number().int().min(1).max(180).optional(),
+  e_popular: z.union([z.literal(0), z.literal(1)]).optional(),
+  e_projeto: z.union([z.literal(0), z.literal(1)]).optional(),
+  meta_titulo_seo: z.string().max(160).optional(),
+  meta_descricao_seo: z.string().max(300).optional(),
+  topico: z.string().max(120).optional(),
+  variante_card: z.string().optional(),
+};
+
+// Creation never accepts a client-sent version: the server always starts a
+// new item at version 1, and `.strip()` on the object below silently drops
+// a `version` key if one is sent, same as any other unrecognized field.
+export const createPostInputSchema = z
   .object({
-    slug: z.string().min(1).max(200).regex(SLUG_PATTERN, "slug must be lowercase alphanumeric segments joined by hyphens"),
-    titulo: z.string().min(1).max(300),
-    conteudo_html: z.string().max(300_000).optional(),
-    resumo: z.string().max(600).optional(),
-    subtitulo: z.string().max(300).optional(),
-    imagem_destaque_url: z.string().optional(),
-    imagem_destaque_alt_text: z.string().optional(),
-    imagem_lqip_base64: z.string().optional(),
-    categoria_slug: z.string().optional(),
-    subcategoria_slug: z.string().optional(),
-    subcategoria_nome: z.string().optional(),
-    autor_id: z.string().min(1),
-    status: z.enum(POST_STATUSES).optional(),
-    // Not `.datetime()`: the admin's scheduling field is an
-    // <input type="datetime-local">, which emits "2026-08-02T14:30" — no
-    // seconds, no timezone suffix. Real ISO 8601 (from data_atualizacao)
-    // also flows through this same field on read-modify-write, so the
-    // format actually varies by caller; a strict datetime check would reject
-    // the admin's own scheduling requests.
-    data_publicacao: z.string().optional(),
-    data_publicacao_programada: z.string().optional(),
-    tempo_leitura_min: z.number().int().min(1).max(180).optional(),
-    e_popular: z.union([z.literal(0), z.literal(1)]).optional(),
-    e_projeto: z.union([z.literal(0), z.literal(1)]).optional(),
-    meta_titulo_seo: z.string().max(160).optional(),
-    meta_descricao_seo: z.string().max(300).optional(),
-    topico: z.string().max(120).optional(),
-    variante_card: z.string().optional(),
-    // Optimistic concurrency: sent back only by a client that read the post
-    // first (round-trip from a previous GET's `version`).
-    version: z.number().int().min(0).optional(),
+    ...basePostFields,
+    // Default rather than required: a client that omits status entirely
+    // (e.g. a bare "save draft" action) still needs a real value to persist
+    // — falling back to "Rascunho" is safer than letting the field reach
+    // savePost() as undefined and land in DynamoDB that way.
+    status: z.enum(POST_STATUSES).default("Rascunho"),
   })
   .strip()
-  .superRefine((data, ctx) => {
-    if (data.status === "Programado" && !data.data_publicacao_programada) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["data_publicacao_programada"],
-        message: "A scheduled post requires data_publicacao_programada.",
-      });
-    }
-  });
+  .superRefine(validateScheduledDate)
+  .transform(normalizeScheduledDate);
 
-export type PostInput = z.infer<typeof postInputSchema>;
+export type CreatePostInput = z.infer<typeof createPostInputSchema>;
 
-// Persisted shape in DynamoDB — a superset of PostInput (server-computed
-// fields like data_atualizacao and the sparse GSI markers never come from
-// a client request).
+// Update requires version: it's the client's optimistic-concurrency token
+// (round-tripped from a prior GET), and skipping the field must not silently
+// skip the ConditionExpression's version clause in savePost().
+export const updatePostInputSchema = z
+  .object({
+    ...basePostFields,
+    status: z.enum(POST_STATUSES).optional(),
+    version: z.number().int().min(0),
+  })
+  .strip()
+  .superRefine(validateScheduledDate)
+  .transform(normalizeScheduledDate);
+
+export type UpdatePostInput = z.infer<typeof updatePostInputSchema>;
+
+// Persisted shape in DynamoDB — a superset of the input schemas
+// (server-computed fields like data_atualizacao and the sparse GSI markers
+// never come from a client request).
 export interface Post {
   slug: string;
   titulo: string;
@@ -94,5 +173,5 @@ export interface Post {
   meta_descricao_seo?: string; // SEO (Blueprint v1.7)
   topico?: string; // eyebrow exibido no card (pc-cat) — pode diferir da categoria
   variante_card?: string; // variante visual do card (gradiente): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
-  version?: number; // optimistic concurrency counter, incremented on every save
+  version: number; // optimistic concurrency counter, incremented on every save
 }

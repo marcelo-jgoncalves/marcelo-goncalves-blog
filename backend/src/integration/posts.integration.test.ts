@@ -10,7 +10,7 @@
 // importing the handler modules, since common/dynamodb.ts builds its client
 // at module-load time — importing early would bind it to the wrong endpoint.
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { PutItemCommand, GetItemCommand, DeleteItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
+import { PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
 import { integrationClient, createPostsTable, createCategoriasTable, deleteTable } from "./setup";
 
 const TABLE_NAME = `integration-posts-${Date.now()}-${process.pid}`;
@@ -147,9 +147,25 @@ describe("DynamoDB's own key-attribute validation (not app logic)", () => {
 
 describe("postScheduler.handler against real DynamoDB (happy path, real TransactWriteItems)", () => {
   it("publishes a due Programado post and atomically increments total_publicado in the same transaction", async () => {
-    const dueDate = new Date(Date.now() - 60_000).toISOString(); // 1 minute in the past
-    const post = samplePost({ status: "Programado", data_publicacao_programada: dueDate });
+    // createPostInputSchema rejects a past data_publicacao_programada, so the
+    // post is created with a future date and then pushed into the past via a
+    // raw UpdateItemCommand — simulating time passing rather than a save that
+    // was already invalid the moment it was made.
+    const post = samplePost({
+      status: "Programado",
+      data_publicacao_programada: new Date(Date.now() + 3_600_000).toISOString(),
+    });
     await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
+
+    const dueDate = new Date(Date.now() - 60_000).toISOString(); // 1 minute in the past
+    await client.send(
+      new UpdateItemCommand({
+        TableName: TABLE_NAME,
+        Key: { slug: { S: post.slug } },
+        UpdateExpression: "SET data_publicacao_programada = :due",
+        ExpressionAttributeValues: { ":due": { S: dueDate } },
+      }),
+    );
 
     await postSchedulerHandler({});
 
@@ -191,7 +207,7 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
       apiEvent({
         httpMethod: "PUT",
         pathParameters: { slug },
-        body: JSON.stringify(samplePost({ slug })),
+        body: JSON.stringify(samplePost({ slug, version: 1 })),
       }),
       ctx,
     );
@@ -240,7 +256,7 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
       apiEvent({
         httpMethod: "PUT",
         pathParameters: { slug: post.slug },
-        body: JSON.stringify({ ...post, titulo: "Edited concurrently" }),
+        body: JSON.stringify({ ...post, titulo: "Edited concurrently", version: staleVersion }),
       }),
       ctx,
     );
@@ -267,6 +283,56 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
     );
     expect(getResult.statusCode).toBe(200);
     expect(JSON.parse(getResult.body).titulo).toBe("Edited concurrently");
+  });
+});
+
+describe("adminPosts DELETE vs concurrent DELETE (real ConditionExpression, not a mock)", () => {
+  // Reproduces the P0.1 finding from the third audit: two concurrent deletes
+  // reading the same version before either write lands. The first delete
+  // through the handler removes the item; a raw DeleteItemCommand replays
+  // the exact ConditionExpression deletePost built from that same stale Get,
+  // proving attribute_exists(slug) is what rejects the second delete now —
+  // "attribute_not_exists(version) OR ..." alone would have let it through,
+  // since the item is already gone by the time it runs.
+  it("rejects a second concurrent delete once the item is already gone, decrementing the counter only once", async () => {
+    const post = samplePost();
+    await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
+
+    const versionAtGet = 1; // savePost's version on create, what both racing Gets would have read
+
+    const before = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: { slug: { S: "__METADATA__#posts_counters" } } }),
+    );
+    const totalBefore = Number(before.Item?.total_publicado?.N ?? "0");
+
+    const firstDelete: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "DELETE", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(firstDelete.statusCode).toBe(200);
+
+    await expect(
+      client.send(
+        new DeleteItemCommand({
+          TableName: TABLE_NAME,
+          Key: { slug: { S: post.slug } },
+          ConditionExpression: "attribute_exists(slug) AND (attribute_not_exists(#version) OR #version = :expectedVersion)",
+          ExpressionAttributeNames: { "#version": "version" },
+          ExpressionAttributeValues: { ":expectedVersion": { N: String(versionAtGet) } },
+        }),
+      ),
+    ).rejects.toMatchObject({ name: "ConditionalCheckFailedException" });
+
+    const getResult: APIGatewayProxyResult = await adminPostsHandler(
+      apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),
+      ctx,
+    );
+    expect(getResult.statusCode).toBe(404);
+
+    const after = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: { slug: { S: "__METADATA__#posts_counters" } } }),
+    );
+    expect(Number(after.Item?.total_publicado?.N ?? "0")).toBe(totalBefore - 1);
   });
 });
 
