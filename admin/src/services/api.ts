@@ -63,7 +63,12 @@ export const postsApi = {
   // instead of replacing it wholesale (backend/src/functions/adminPosts/index.ts).
   update: (slug: string, data: Partial<Post>) =>
     saveResponse(apiCall(`/admin/post/${slug}`, { method: 'PATCH', body: JSON.stringify(data) })),
-  delete: (slug: string) => apiCall(`/admin/post/${slug}`, { method: 'DELETE' })
+  // version is required (backend/src/functions/adminPosts/index.ts's
+  // deletePost): a query string, not a body, because DELETE requests
+  // shouldn't need a body and this avoids adding a custom header to the
+  // CORS Access-Control-Allow-Headers allowlist for a single call site.
+  delete: (slug: string, version: number) =>
+    apiCall(`/admin/post/${slug}?version=${version}`, { method: 'DELETE' })
 }
 
 export const mediaApi = {

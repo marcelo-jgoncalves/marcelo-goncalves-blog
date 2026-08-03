@@ -183,6 +183,19 @@ describe('updatePostInputSchema', () => {
     expect(result.success).toBe(false);
   });
 
+  // Regression test: the schema used to require slug/titulo/autor_id
+  // (inherited from basePostFields) even though savePost()'s merge logic
+  // already treated an update as a genuine partial payload. A client sending
+  // only the field it actually changed used to fail validation despite the
+  // backend being able to handle it.
+  it('accepts a genuinely partial payload with only version and one mutable field', () => {
+    const result = updatePostInputSchema.safeParse({ version: 1, titulo: 'Novo título' });
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.titulo).toBe('Novo título');
+    expect(result.success && result.data.slug).toBeUndefined();
+    expect(result.success && result.data.autor_id).toBeUndefined();
+  });
+
   it('accepts explicit null on subtitulo/imagem_lqip_base64 as a field-removal signal', () => {
     const result = updatePostInputSchema.safeParse({
       ...BASE,

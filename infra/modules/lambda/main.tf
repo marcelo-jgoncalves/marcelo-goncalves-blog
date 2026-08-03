@@ -53,6 +53,11 @@ resource "aws_cloudwatch_log_group" "admin_authorizer" {
   retention_in_days = var.log_retention_days
 }
 
+resource "aws_cloudwatch_log_group" "post_counter_reconciler" {
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-postCounterReconciler"
+  retention_in_days = var.log_retention_days
+}
+
 # --- Lambda Functions ---
 
 resource "aws_lambda_function" "media_upload" {
@@ -297,6 +302,33 @@ resource "aws_lambda_function" "post_scheduler" {
   depends_on = [aws_cloudwatch_log_group.post_scheduler]
 }
 
+# --- postCounterReconciler ---
+# Individual IAM role/policy in lambda-iam.tf (aws_iam_role.function_role["postCounterReconciler"]).
+# Closes docs/backlog.md item #23: recounts the posts table once a day and
+# self-heals postCounters.ts's aggregates if a write path ever drifts them.
+
+resource "aws_lambda_function" "post_counter_reconciler" {
+  function_name = "${var.project_name}-${var.environment}-postCounterReconciler"
+  role          = aws_iam_role.function_role["postCounterReconciler"].arn
+  handler       = "index.handler"
+  runtime       = "nodejs22.x"
+  timeout       = 60 # full-table Scan, generous headroom over dev's current volume
+
+  filename         = "${path.root}/builds/postCounterReconciler.zip"
+  source_code_hash = filebase64sha256("${path.root}/builds/postCounterReconciler.zip")
+
+  environment {
+    variables = {
+      POSTS_TABLE  = "${var.project_name}-${var.environment}-posts"
+      LOG_LEVEL    = var.log_level
+      XRAY_ENABLED = tostring(var.enable_xray_tracing)
+    }
+  }
+
+  tracing_config { mode = local.xray_mode }
+  depends_on = [aws_cloudwatch_log_group.post_counter_reconciler]
+}
+
 # --- EventBridge Scheduler ---
 
 resource "aws_iam_role" "eventbridge_scheduler_role" {
@@ -318,9 +350,12 @@ resource "aws_iam_policy" "eventbridge_scheduler_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action   = ["lambda:InvokeFunction"]
-      Effect   = "Allow"
-      Resource = aws_lambda_function.post_scheduler.arn
+      Action = ["lambda:InvokeFunction"]
+      Effect = "Allow"
+      Resource = [
+        aws_lambda_function.post_scheduler.arn,
+        aws_lambda_function.post_counter_reconciler.arn,
+      ]
     }]
   })
 }
@@ -340,6 +375,24 @@ resource "aws_scheduler_schedule" "post_scheduler" {
 
   target {
     arn      = aws_lambda_function.post_scheduler.arn
+    role_arn = aws_iam_role.eventbridge_scheduler_role.arn
+  }
+}
+
+resource "aws_scheduler_schedule" "post_counter_reconciler" {
+  name       = "${var.project_name}-${var.environment}-post-counter-reconciler"
+  group_name = "default"
+
+  flexible_time_window { mode = "OFF" }
+
+  # Daily, not on the 15-minute cadence of post_scheduler: this is a
+  # self-healing safety net for a theoretical drift (docs/backlog.md item
+  # #23), not a time-sensitive publish action — no reason to Scan the whole
+  # table more often than that at this volume.
+  schedule_expression = "rate(1 day)"
+
+  target {
+    arn      = aws_lambda_function.post_counter_reconciler.arn
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
   }
 }

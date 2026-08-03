@@ -7,7 +7,7 @@ import type { Post } from '../types'
 
 type PostListItem = Pick<Post,
   'slug' | 'titulo' | 'status' | 'data_atualizacao' | 'autor_id' | 'categoria_slug' |
-  'imagem_destaque_url' | 'e_popular' | 'e_projeto' | 'tempo_leitura_min' | 'data_publicacao'
+  'imagem_destaque_url' | 'e_popular' | 'e_projeto' | 'tempo_leitura_min' | 'data_publicacao' | 'version'
 >
 
 const THUMB_GRADIENTS = [
@@ -170,7 +170,10 @@ const { toast, showToast } = useToast()
 async function bulkDelete() {
   if (!confirm(`Excluir ${selected.value.length} post(s)? Esta ação não pode ser desfeita.`)) return
   try {
-    await Promise.all(selected.value.map(slug => postsApi.delete(slug)))
+    await Promise.all(selected.value.map(slug => {
+      const post = posts.value.find(p => p.slug === slug)
+      return postsApi.delete(slug, post!.version)
+    }))
     posts.value = posts.value.filter(p => !selected.value.includes(p.slug))
     showToast('Posts excluídos')
     clearSelection()
@@ -210,18 +213,21 @@ async function duplicatePost(post: PostListItem) {
 }
 
 const confirmDeleteSlug = ref<string | null>(null)
+const confirmDeleteVersion = ref<number | null>(null)
 const confirmDeleteTitle = ref('')
 function askDelete(post: PostListItem) {
   confirmDeleteSlug.value = post.slug
+  confirmDeleteVersion.value = post.version
   confirmDeleteTitle.value = post.titulo
 }
 function cancelDelete() {
   confirmDeleteSlug.value = null
+  confirmDeleteVersion.value = null
 }
 async function confirmDeleteYes() {
-  if (!confirmDeleteSlug.value) return
+  if (!confirmDeleteSlug.value || confirmDeleteVersion.value === null) return
   try {
-    await postsApi.delete(confirmDeleteSlug.value)
+    await postsApi.delete(confirmDeleteSlug.value, confirmDeleteVersion.value)
     posts.value = posts.value.filter(p => p.slug !== confirmDeleteSlug.value)
     selected.value = selected.value.filter(s => s !== confirmDeleteSlug.value)
     showToast('Post excluído')
@@ -229,6 +235,7 @@ async function confirmDeleteYes() {
     showToast(err instanceof Error ? err.message : 'Erro ao excluir post', 'error')
   } finally {
     confirmDeleteSlug.value = null
+    confirmDeleteVersion.value = null
   }
 }
 

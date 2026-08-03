@@ -84,6 +84,7 @@ locals {
   lambda_role_names = [
     "getPost", "getAuthor", "getPosts", "adminPosts", "adminAuthors",
     "adminCategorias", "adminSession", "adminAuthorizer", "mediaUpload", "postScheduler",
+    "postCounterReconciler",
   ]
 }
 
@@ -375,4 +376,29 @@ resource "aws_iam_policy" "postScheduler_policy" {
 resource "aws_iam_role_policy_attachment" "postScheduler_attach" {
   role       = aws_iam_role.function_role["postScheduler"].name
   policy_arn = aws_iam_policy.postScheduler_policy.arn
+}
+
+# --- postCounterReconciler: Scan the full posts_table (recount) + GetItem/
+# UpdateItem on the counters metadata item only (same key postCounters.ts
+# always uses). No Query permission needed — it never reads a specific GSI. ---
+resource "aws_iam_policy" "postCounterReconciler_policy" {
+  name = "${var.project_name}-${var.environment}-postCounterReconciler-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      local.logs_statement,
+      {
+        Action   = ["dynamodb:Scan", "dynamodb:GetItem", "dynamodb:UpdateItem"]
+        Effect   = "Allow"
+        Resource = var.posts_table_arn
+      },
+      local.xray_statement
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "postCounterReconciler_attach" {
+  role       = aws_iam_role.function_role["postCounterReconciler"].name
+  policy_arn = aws_iam_policy.postCounterReconciler_policy.arn
 }

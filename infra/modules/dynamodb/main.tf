@@ -101,6 +101,7 @@ resource "aws_dynamodb_table" "posts" {
       "imagem_lqip_base64", "categoria_slug", "subcategoria_nome",
       "data_publicacao", "tempo_leitura_min", "autor_id",
       "e_popular", "e_projeto", # Admin: Popular/Project badges in the post listing
+      "version",                # Admin: the delete confirmation needs the version the list last saw
     ]
   }
 

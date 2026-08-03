@@ -35,7 +35,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     return { statusCode: 200, body: "", headers };
   }
 
-  const { httpMethod, pathParameters, body } = event;
+  const { httpMethod, pathParameters, body, queryStringParameters } = event;
   const slug = pathParameters?.slug;
 
   logger.debug("admin_posts_request", { requestId, httpMethod, slug });
@@ -72,15 +72,21 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if (postData === undefined) {
         return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
       }
-      if ((postData as { slug?: string }).slug !== slug) {
+      // slug is optional on a partial PATCH payload now that
+      // updatePostInputSchema doesn't require it — only reject when the
+      // client actually sent one and it disagrees with the URL's {slug}.
+      const bodySlug = (postData as { slug?: string }).slug;
+      if (bodySlug !== undefined && bodySlug !== slug) {
         return { statusCode: 400, body: JSON.stringify({ message: "Slug mismatch" }), headers };
       }
       return await savePost(postData, false, requestId, slug);
     }
 
-    // 5. Deletar
+    // 5. Deletar (exige a version conhecida pelo cliente via query string —
+    // ver deletePost() para o porquê de não bastar a version lida pelo
+    // próprio backend no momento da requisição)
     if (httpMethod === "DELETE" && slug) {
-      return await deletePost(slug);
+      return await deletePost(slug, queryStringParameters?.version);
     }
 
     return {
@@ -114,7 +120,7 @@ async function listPosts() {
         ExpressionAttributeNames: { "#status": "status" },
         ExpressionAttributeValues: { ":status": status },
         ProjectionExpression:
-          "slug, titulo, #status, data_atualizacao, autor_id, categoria_slug, imagem_destaque_url, tempo_leitura_min, e_popular, e_projeto",
+          "slug, titulo, #status, data_atualizacao, autor_id, categoria_slug, imagem_destaque_url, tempo_leitura_min, e_popular, e_projeto, version",
         ScanIndexForward: false,
       }))
     )
@@ -168,9 +174,13 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   // e computar o delta dos contadores agregados (postCounters.ts) — não
   // existia leitura prévia aqui antes, savePost confiava 100% no body do
   // client para os campos não recalculados.
+  // urlSlug, not data.slug: slug is optional on updatePostInputSchema now
+  // (a genuinely partial PATCH may omit it), and urlSlug is already the only
+  // source of truth for which item an update targets (see the comment on
+  // `item.slug` below).
   const existing = isNew
     ? undefined
-    : (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug: data.slug } }))).Item as Post | undefined;
+    : (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug: urlSlug } }))).Item as Post | undefined;
 
   // Cheap early exit for the common (non-racing) case: the Get above already
   // tells us the post is gone, so there's no reason to sanitize HTML and
@@ -297,18 +307,28 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   };
 }
 
-async function deletePost(slug: string) {
+async function deletePost(slug: string, clientVersionRaw?: string) {
+  // Required, not optional: a version read by this handler off DynamoDB
+  // right before the delete only protects the race between that read and
+  // this write, not whether the user actually saw the version they're
+  // removing. Without a client-supplied version, a user looking at a stale
+  // v5 in their UI can silently delete a post that's really at v6 (edited
+  // from another session/tab since) with no warning — the same staleness
+  // PATCH already rejects with a 409 via its own required `version` field.
+  if (clientVersionRaw === undefined) {
+    return { statusCode: 400, body: JSON.stringify({ message: "version is required to delete a post" }), headers };
+  }
+  const clientVersion = Number(clientVersionRaw);
+  if (!Number.isInteger(clientVersion) || clientVersion < 0) {
+    return { statusCode: 400, body: JSON.stringify({ message: "version must be a non-negative integer" }), headers };
+  }
+
   const existing = (await dynamo.send(new GetCommand({ TableName: TABLE_NAME, Key: { slug } }))).Item as Post | undefined;
 
   if (!existing) {
     return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
   }
 
-  // Same protection savePost already has: the counter deltas above are
-  // computed from this Get, so a second delete (or an update) racing
-  // between that Get and this Delete could remove a post whose counters
-  // were already adjusted by the other request, drifting the aggregates
-  // with no detection. The version condition rejects the loser instead.
   // The leading attribute_exists(slug) is load-bearing, not redundant: once
   // the first delete in a race removes the item, "attribute_not_exists(version)"
   // alone is also true for the now-gone item, so a lone version clause would
@@ -316,10 +336,14 @@ async function deletePost(slug: string) {
   // counters. attribute_exists(slug) closes that by requiring the item to
   // still be there. "OR #version = :expectedVersion" still covers posts
   // saved before the version field existed (never re-saved since) — there's
-  // no real optimistic-lock value to check against those.
+  // no real optimistic-lock value to check against those. The clause is
+  // checked against the client's own version (not existing.version, read a
+  // moment ago by this same request) so a second editor's concurrent update
+  // between the client's last GET and this delete is rejected with a 409,
+  // same as a stale PATCH.
   const deleteConditionExpression = "attribute_exists(slug) AND (attribute_not_exists(#version) OR #version = :expectedVersion)";
   const deleteExpressionAttributeNames = { "#version": "version" };
-  const deleteExpressionAttributeValues = { ":expectedVersion": existing.version ?? 0 };
+  const deleteExpressionAttributeValues = { ":expectedVersion": clientVersion };
 
   const counterUpdate = buildCounterTransactUpdate(computeCounterDeltas(existing, undefined));
   try {

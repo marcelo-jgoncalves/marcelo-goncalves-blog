@@ -142,9 +142,18 @@ export type CreatePostInput = z.infer<typeof createPostInputSchema>;
 // savePost() merges this payload onto the existing item (PATCH semantics),
 // so a field silently stripped here would silently fail to update instead
 // of being visibly rejected.
+//
+// Every other base field is `.partial()`-ed to optional here: savePost()'s
+// merge already treats an omitted field as "keep the existing value" (real
+// PATCH semantics), but until this schema matched that, the *contract*
+// still required `slug`/`titulo`/`autor_id` on every update — the only
+// reason a client could get away with a partial payload in practice was
+// that the one real client (the admin form) always sends the full object.
+// A future caller sending just `{ version, titulo }` would have failed
+// validation despite the backend being able to handle it correctly.
 export const updatePostInputSchema = z
   .object({
-    ...basePostFields,
+    ...z.object(basePostFields).partial().shape,
     // Nullable only where savePost()'s merge treats an explicit `null` as
     // "delete this key from the persisted item" — every other optional
     // field simply stays untouched when omitted from a partial payload, so

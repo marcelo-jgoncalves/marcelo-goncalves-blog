@@ -179,11 +179,11 @@ describe('postsApi', () => {
     expect(call[0]).toContain('/admin/post/my-post')
   })
 
-  it('delete calls DELETE /admin/post/:slug', async () => {
+  it('delete calls DELETE /admin/post/:slug with the known version as a query param', async () => {
     mockFetch(200, {})
-    await postsApi.delete('my-post')
+    await postsApi.delete('my-post', 3)
     const call = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]
     expect(call[1].method).toBe('DELETE')
-    expect(call[0]).toContain('/admin/post/my-post')
+    expect(call[0]).toContain('/admin/post/my-post?version=3')
   })
 })

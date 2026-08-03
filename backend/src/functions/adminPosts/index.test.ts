@@ -597,6 +597,33 @@ describe('adminPosts handler', () => {
       expect(result?.statusCode).toBe(400);
     });
 
+    // Regression test: updatePostInputSchema used to require
+    // slug/titulo/autor_id even though this merge logic already supported a
+    // genuinely partial update. A body that omits slug entirely must not
+    // trip the mismatch check above, and the existing item's other fields
+    // must survive untouched.
+    it('accepts a genuinely partial payload with no slug in the body, keeping the rest of the existing item', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { ...SAMPLE_POST, version: 4 } }); // Get
+      mockSend.mockResolvedValueOnce({}); // Put
+
+      const result = await handler(
+        event({
+          httpMethod: 'PATCH',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ version: 4, titulo: 'Novo título' }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+      const item = writtenItem(mockSend.mock.calls[1][0]);
+      expect(item.slug).toBe('meu-post');
+      expect(item.titulo).toBe('Novo título');
+      expect(item.autor_id).toBe(SAMPLE_POST.autor_id);
+      expect(item.resumo).toBe(SAMPLE_POST.resumo);
+    });
+
     it('returns 404 when updating a post that does not exist, without attempting a write', async () => {
       mockSend.mockResolvedValueOnce({ Item: undefined }); // Get finds nothing
 
@@ -771,12 +798,36 @@ describe('adminPosts handler', () => {
   });
 
   describe('DELETE /admin/posts/:slug', () => {
+    it('returns 400 when no version query param is sent', async () => {
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(400);
+      expect(JSON.parse(result?.body ?? '{}').message).toBe('version is required to delete a post');
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when version is not a valid non-negative integer', async () => {
+      const result = await handler(
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: 'abc' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(400);
+      expect(JSON.parse(result?.body ?? '{}').message).toBe('version must be a non-negative integer');
+      expect(mockSend).not.toHaveBeenCalled();
+    });
+
     it('deletes the post and returns 200', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // DeleteCommand
 
       const result = await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
@@ -788,10 +839,10 @@ describe('adminPosts handler', () => {
     });
 
     it('calls DynamoDB DeleteCommand with correct key', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // DeleteCommand
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
@@ -804,7 +855,7 @@ describe('adminPosts handler', () => {
       mockSend.mockResolvedValueOnce({ Item: undefined }); // Get (not found)
 
       const result = await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
@@ -813,12 +864,12 @@ describe('adminPosts handler', () => {
       expect(mockSend).toHaveBeenCalledTimes(1); // só o Get, sem tentativa de Delete
     });
 
-    it('sends a version ConditionExpression on the plain DeleteCommand', async () => {
+    it('sends a version ConditionExpression on the plain DeleteCommand, checked against the client version', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 3 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // DeleteCommand
 
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '3' } }),
         ctx,
         jest.fn(),
       );
@@ -833,7 +884,7 @@ describe('adminPosts handler', () => {
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand
 
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '5' } }),
         ctx,
         jest.fn(),
       );
@@ -843,13 +894,33 @@ describe('adminPosts handler', () => {
       expect(del.ExpressionAttributeValues).toEqual({ ':expectedVersion': 5 });
     });
 
+    // The real bug this closes: the server used to read the CURRENT version
+    // off DynamoDB and check the delete against that — which always passes,
+    // even when the client's own view of the post is stale. Asserting the
+    // client's (older) version ends up in the ConditionExpression is what
+    // proves the fix, not just that a 409 happens on a DynamoDB-level error.
+    it('checks the ConditionExpression against the client-supplied version, not the version just read from DynamoDB', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 6 } }); // Get: real version is already 6
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand
+
+      await handler(
+        // Client still thinks it's looking at version 5 (stale)
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '5' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      const del = mockSend.mock.calls[1][0].input.TransactItems[0].Delete;
+      expect(del.ExpressionAttributeValues).toEqual({ ':expectedVersion': 5 });
+    });
+
     it('returns 409 when a concurrent update changed the version since the Get (plain Delete)', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 3 } }); // Get (existing)
       const conditionalError = Object.assign(new Error('conditional check failed'), { name: 'ConditionalCheckFailedException' });
       mockSend.mockRejectedValueOnce(conditionalError); // DeleteCommand
 
       const result = await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '2' } }),
         ctx,
         jest.fn(),
       );
@@ -867,7 +938,7 @@ describe('adminPosts handler', () => {
       mockSend.mockRejectedValueOnce(cancelledError); // TransactWriteCommand
 
       const result = await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '4' } }),
         ctx,
         jest.fn(),
       );
@@ -877,11 +948,11 @@ describe('adminPosts handler', () => {
     });
 
     it('decrementa o contador (na transação do Delete) ao deletar um post Publicado', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
 
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
@@ -893,11 +964,11 @@ describe('adminPosts handler', () => {
     });
 
     it('invalida /post/{slug} e "/" ao deletar um post Publicado', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
 
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
@@ -906,11 +977,11 @@ describe('adminPosts handler', () => {
     });
 
     it('invalida só /post/{slug} (sem "/") ao deletar um Rascunho', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Rascunho', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // DeleteCommand
 
       await handler(
-        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' } }),
+        event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
         ctx,
         jest.fn(),
       );
