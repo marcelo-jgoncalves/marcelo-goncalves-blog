@@ -10,7 +10,7 @@
 // importing the handler modules, since common/dynamodb.ts builds its client
 // at module-load time — importing early would bind it to the wrong endpoint.
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { PutItemCommand, GetItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
+import { PutItemCommand, GetItemCommand, DeleteItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
 import { integrationClient, createPostsTable, createCategoriasTable, deleteTable } from "./setup";
 
 const TABLE_NAME = `integration-posts-${Date.now()}-${process.pid}`;
@@ -221,15 +221,21 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
 });
 
 describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not a mock)", () => {
-  it("rejects a delete whose Get is stale because another request updated the post first, and the post survives", async () => {
+  // deletePost() always re-Gets right before its Delete, so a sequential
+  // PUT-then-DELETE through the handler is never actually stale by the time
+  // the Delete runs — there's no window to land an update between deletePost's
+  // own Get and Delete without controlling DynamoDB's network timing directly.
+  // This issues the exact ConditionExpression deletePost builds via a raw
+  // DeleteItemCommand carrying a deliberately stale expected version (the
+  // value a concurrent request's earlier Get would have captured), proving
+  // the real DynamoDB service enforces it — not just the mocked unit tests.
+  it("rejects a delete carrying a stale expected version once the real item has moved on, and the item survives", async () => {
     const post = samplePost();
     await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
 
-    // Simulates a second admin session updating the post between this
-    // test's Get (inside deletePost) and its Delete — savePost bumps
-    // `version`, which is exactly the drift deletePost's ConditionExpression
-    // must catch to avoid removing a post whose counters were already
-    // adjusted by that other write.
+    const staleVersion = 1; // savePost's version on create
+
+    // A second admin session's update lands, bumping version to 2.
     await adminPostsHandler(
       apiEvent({
         httpMethod: "PUT",
@@ -239,11 +245,17 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
       ctx,
     );
 
-    const deleteResult: APIGatewayProxyResult = await adminPostsHandler(
-      apiEvent({ httpMethod: "DELETE", pathParameters: { slug: post.slug } }),
-      ctx,
-    );
-    expect(deleteResult.statusCode).toBe(409);
+    await expect(
+      client.send(
+        new DeleteItemCommand({
+          TableName: TABLE_NAME,
+          Key: { slug: { S: post.slug } },
+          ConditionExpression: "attribute_not_exists(#version) OR #version = :expectedVersion",
+          ExpressionAttributeNames: { "#version": "version" },
+          ExpressionAttributeValues: { ":expectedVersion": { N: String(staleVersion) } },
+        }),
+      ),
+    ).rejects.toThrow(/ConditionalCheckFailed/);
 
     const getResult: APIGatewayProxyResult = await adminPostsHandler(
       apiEvent({ httpMethod: "GET", pathParameters: { slug: post.slug } }),

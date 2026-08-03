@@ -9,6 +9,10 @@
     "frontend",
     "admin"
   ],
+  "overrides": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  },
   "scripts": {
     "build:backend": "npm run build --workspace backend",
     "build:frontend": "npm run build --workspace frontend",
