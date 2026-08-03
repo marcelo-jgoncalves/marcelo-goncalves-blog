@@ -450,7 +450,7 @@ Backlog técnico único do projeto: ver [`docs/backlog.md`](docs/backlog.md) (ex
 |---|---|---|
 | Next.js | ^16.2.4 | `params` é Promise — `await params` |
 | OpenNext | `@opennextjs/aws` ^4.1.0 | Migrado do pacote descontinuado `open-next` em 2026-08-03 (peer `next >=16.2.11`, compatível com o Next.js 16 do projeto). Output: `server-functions/default/` (PLURAL) — inalterado |
-| Tiptap | 2.11.0 | Fixado em v2 — migração para v3 **planejada, não implementada** (`docs/backlog.md` item #60) |
+| Tiptap | 3.29.2 | Migrado de 2.11.0 em 2026-08-03 (`docs/backlog.md` item #60, plano completo em `docs/migracao-tiptap-v3.md`). `BubbleMenu`/`FloatingMenu` agora importam de `@tiptap/vue-3/menus` (tippy.js→Floating UI, prop `tippy-options`→`options`); `StarterKit.configure()` precisa de `link: false` (StarterKit v3 passou a incluir `Link` por padrão); `tippy.js` virou dependência direta do admin (`SlashCommand.ts` usa diretamente, antes vinha só transitivo via Tiptap v2). Local (`vue-tsc`/`eslint`/`vitest`/`vite build`) validado; QA funcional real (`create-test-post.mjs` contra o ambiente `dev` implantado) ainda pendente do próximo deploy |
 | AWS Amplify | ^6.15.8 | Auth via `aws-amplify/auth` |
 | Sharp | ^0.33.2 | Build com `--os=linux --cpu=x64` |
 | esbuild | ^0.27.0 | `format: 'cjs'` obrigatório |

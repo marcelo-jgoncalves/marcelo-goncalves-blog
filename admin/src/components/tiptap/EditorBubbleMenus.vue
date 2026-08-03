@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { BubbleMenu, type Editor } from '@tiptap/vue-3'
+import { BubbleMenu } from '@tiptap/vue-3/menus'
+import type { Editor } from '@tiptap/vue-3'
 import type { TiptapCommands } from '../../composables/useTiptapCommands'
 
 defineProps<{ editor: Editor; commands: TiptapCommands }>()
@@ -8,7 +9,6 @@ defineProps<{ editor: Editor; commands: TiptapCommands }>()
 <template>
   <bubble-menu
     :editor="editor"
-    :tippy-options="{ duration: 100 }"
     class="bubble-menu"
   >
     <button
@@ -44,7 +44,7 @@ defineProps<{ editor: Editor; commands: TiptapCommands }>()
   </bubble-menu>
   <bubble-menu
     :editor="editor"
-    :tippy-options="{ duration: 100, placement: 'top' }"
+    :options="{ placement: 'top' }"
     :should-show="({ editor: e }) => e.isActive('table')"
     class="bubble-menu-table"
   >

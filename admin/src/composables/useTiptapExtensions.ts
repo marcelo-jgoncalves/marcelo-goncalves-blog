@@ -2,7 +2,7 @@ import Link from '@tiptap/extension-link'
 import StarterKit from '@tiptap/starter-kit'
 import BubbleMenuExtension from '@tiptap/extension-bubble-menu'
 import FloatingMenuExtension from '@tiptap/extension-floating-menu'
-import Table from '@tiptap/extension-table'
+import { Table } from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
@@ -55,6 +55,7 @@ export function buildTiptapExtensions(onRequestImage: () => void) {
       code: false,
       heading: { levels: [2, 3] },
       codeBlock: false,
+      link: false,
       blockquote: {},
       horizontalRule: {
         HTMLAttributes: {

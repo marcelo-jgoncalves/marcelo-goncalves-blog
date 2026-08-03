@@ -32,7 +32,7 @@ watch(
     if (!editorInstance.value) return
     const isSame = editorInstance.value.getHTML() === newValue
     if (!isSame) {
-      editorInstance.value.commands.setContent(newValue, false)
+      editorInstance.value.commands.setContent(newValue, { emitUpdate: false })
     }
   },
 )

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { FloatingMenu, type Editor } from '@tiptap/vue-3'
+import { FloatingMenu } from '@tiptap/vue-3/menus'
+import type { Editor } from '@tiptap/vue-3'
 import type { TiptapCommands } from '../../composables/useTiptapCommands'
 
 defineProps<{ editor: Editor; commands: TiptapCommands }>()
@@ -8,7 +9,7 @@ defineProps<{ editor: Editor; commands: TiptapCommands }>()
 <template>
   <floating-menu
     :editor="editor"
-    :tippy-options="{ duration: 100, placement: 'left-start', maxWidth: 'none' }"
+    :options="{ placement: 'left-start' }"
   >
     <div class="floating-menu-card">
       <button
