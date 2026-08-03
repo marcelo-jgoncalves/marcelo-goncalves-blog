@@ -1,4 +1,5 @@
 import type { Post, Autor } from '../types'
+import { savePostResponseSchema, type SavePostResponse } from '@mgoncalves/contracts'
 
 // Always a relative path — never VITE_API_BASE_URL (the API Gateway's
 // absolute URL) here. The admin's CloudFront does a same-origin proxy of
@@ -45,11 +46,23 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
   return res.json()
 }
 
+// Parses create/update responses through the same schema the backend's
+// response body is built from (packages/contracts) — usePostForm's save()
+// needs the server-assigned slug/version/data_atualizacao back to sync its
+// local state, so the body can't be an untyped passthrough here.
+async function saveResponse(promise: Promise<unknown>): Promise<SavePostResponse> {
+  return savePostResponseSchema.parse(await promise)
+}
+
 export const postsApi = {
   list: () => apiCall('/admin/posts'),
   get: (slug: string) => apiCall(`/admin/post/${slug}`),
-  create: (data: Partial<Post>) => apiCall('/admin/posts', { method: 'POST', body: JSON.stringify(data) }),
-  update: (slug: string, data: Partial<Post>) => apiCall(`/admin/post/${slug}`, { method: 'PUT', body: JSON.stringify(data) }),
+  create: (data: Partial<Post>) =>
+    saveResponse(apiCall('/admin/posts', { method: 'POST', body: JSON.stringify(data) })),
+  // PATCH, not PUT: the backend merges the payload onto the existing item
+  // instead of replacing it wholesale (backend/src/functions/adminPosts/index.ts).
+  update: (slug: string, data: Partial<Post>) =>
+    saveResponse(apiCall(`/admin/post/${slug}`, { method: 'PATCH', body: JSON.stringify(data) })),
   delete: (slug: string) => apiCall(`/admin/post/${slug}`, { method: 'DELETE' })
 }
 

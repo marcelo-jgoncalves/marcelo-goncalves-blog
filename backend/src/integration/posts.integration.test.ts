@@ -97,7 +97,7 @@ describe("adminPosts.savePost against real DynamoDB", () => {
       apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }),
       ctx,
     );
-    expect(createResult.statusCode).toBe(200);
+    expect(createResult.statusCode).toBe(201);
 
     const listResult: APIGatewayProxyResult = await getPostsHandler(
       apiEvent({ resource: "/artigos", queryStringParameters: { limit: "10" } }),
@@ -205,7 +205,7 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
     const slug = `post-${Math.random().toString(36).slice(2)}`;
     const result: APIGatewayProxyResult = await adminPostsHandler(
       apiEvent({
-        httpMethod: "PUT",
+        httpMethod: "PATCH",
         pathParameters: { slug },
         body: JSON.stringify(samplePost({ slug, version: 1 })),
       }),
@@ -220,7 +220,7 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
 
     const staleResult: APIGatewayProxyResult = await adminPostsHandler(
       apiEvent({
-        httpMethod: "PUT",
+        httpMethod: "PATCH",
         pathParameters: { slug: post.slug },
         body: JSON.stringify({ ...post, titulo: "Edited with stale version", version: 999 }),
       }),
@@ -254,7 +254,7 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
     // A second admin session's update lands, bumping version to 2.
     await adminPostsHandler(
       apiEvent({
-        httpMethod: "PUT",
+        httpMethod: "PATCH",
         pathParameters: { slug: post.slug },
         body: JSON.stringify({ ...post, titulo: "Edited concurrently", version: staleVersion }),
       }),

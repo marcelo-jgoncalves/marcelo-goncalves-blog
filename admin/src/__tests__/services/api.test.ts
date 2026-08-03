@@ -155,19 +155,27 @@ describe('postsApi', () => {
     expect((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0]).toContain('/admin/post/test-post')
   })
 
+  const SAVE_RESPONSE = { message: 'Post created', slug: 'new', version: 1, data_atualizacao: '2026-08-03T00:00:00.000Z' }
+
   it('create calls POST /admin/posts', async () => {
-    mockFetch(200, {})
+    mockFetch(201, SAVE_RESPONSE)
     await postsApi.create({ slug: 'new', titulo: 'New Post' })
     const call = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]
     expect(call[1].method).toBe('POST')
     expect(call[0]).toContain('/admin/posts')
   })
 
-  it('update calls PUT /admin/post/:slug', async () => {
-    mockFetch(200, {})
+  it('create parses and returns the savePostResponseSchema body (slug/version/data_atualizacao)', async () => {
+    mockFetch(201, SAVE_RESPONSE)
+    const result = await postsApi.create({ slug: 'new', titulo: 'New Post' })
+    expect(result).toEqual(SAVE_RESPONSE)
+  })
+
+  it('update calls PATCH /admin/post/:slug', async () => {
+    mockFetch(200, { ...SAVE_RESPONSE, message: 'Post updated', slug: 'my-post', version: 2 })
     await postsApi.update('my-post', { titulo: 'Updated' })
     const call = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]
-    expect(call[1].method).toBe('PUT')
+    expect(call[1].method).toBe('PATCH')
     expect(call[0]).toContain('/admin/post/my-post')
   })
 

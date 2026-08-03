@@ -52,7 +52,8 @@ import { usePostForm } from '../../composables/usePostForm'
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.clearAllMocks()
-  create.mockResolvedValue({})
+  create.mockResolvedValue({ message: 'Post created', slug: 'post-agendado', version: 1, data_atualizacao: '2026-08-03T00:00:00.000Z' })
+  update.mockResolvedValue({ message: 'Post updated', slug: 'post-existente', version: 8, data_atualizacao: '2026-08-03T01:00:00.000Z' })
   mockRoute.params = {}
 })
 
@@ -110,5 +111,83 @@ describe('usePostForm save() — versionamento otimista', () => {
     expect(update).toHaveBeenCalledTimes(1)
     const [, payload] = update.mock.calls[0]! as [string, Record<string, unknown>]
     expect(payload.version).toBe(7)
+  })
+})
+
+describe('usePostForm save() — sincronização de estado local após salvar', () => {
+  it('creating twice in a row (no reload) calls create only once — the second save is an update', async () => {
+    const { form, save } = usePostForm()
+
+    form.value.titulo = 'Post novo'
+    form.value.slug = 'post-novo'
+
+    await save()
+    expect(create).toHaveBeenCalledTimes(1)
+    expect(form.value.slug).toBe('post-agendado') // synced from the mocked create response
+    expect(form.value.version).toBe(1)
+
+    // Route hasn't actually changed yet in this test double (router.replace
+    // is mocked as a no-op) — createdInSession is what prevents a second
+    // create from firing here, not route.params.slug.
+    await save()
+    expect(create).toHaveBeenCalledTimes(1)
+    expect(update).toHaveBeenCalledTimes(1)
+  })
+
+  it('syncs form.value.slug/version/data_atualizacao from the update response', async () => {
+    mockRoute.params = { slug: 'post-existente' }
+    getPost.mockResolvedValue({
+      slug: 'post-existente',
+      titulo: 'Post existente',
+      status: 'Rascunho',
+      conteudo_html: '',
+      version: 7,
+    })
+
+    const { form, loadInitialData, save } = usePostForm()
+    await loadInitialData()
+
+    form.value.titulo = 'Post editado'
+    await save()
+
+    expect(form.value.version).toBe(8)
+    expect(form.value.data_atualizacao).toBe('2026-08-03T01:00:00.000Z')
+  })
+
+  it('shows a conflict-specific toast on a real 409 from a concurrent editor, distinct from other errors', async () => {
+    mockRoute.params = { slug: 'post-existente' }
+    getPost.mockResolvedValue({
+      slug: 'post-existente',
+      titulo: 'Post existente',
+      status: 'Rascunho',
+      conteudo_html: '',
+      version: 7,
+    })
+    const conflictError = Object.assign(new Error('Post was modified by someone else since it was loaded'), { status: 409 })
+    update.mockRejectedValueOnce(conflictError)
+
+    const { form, loadInitialData, save, toast } = usePostForm()
+    await loadInitialData()
+
+    form.value.titulo = 'Post editado concorrentemente'
+    await save()
+
+    expect(toast.value?.type).toBe('error')
+    expect(toast.value?.message).toContain('outra sessão')
+  })
+
+  it('shows a slug-conflict toast (not the generic concurrent-edit message) on a 409 during create', async () => {
+    const slugConflictError = Object.assign(new Error('A post with this slug already exists'), { status: 409 })
+    create.mockRejectedValueOnce(slugConflictError)
+
+    const { form, save, toast } = usePostForm()
+    form.value.titulo = 'Post duplicado'
+    form.value.slug = 'post-duplicado'
+
+    await save()
+
+    expect(toast.value?.type).toBe('error')
+    expect(toast.value?.message).toContain('slug')
+    expect(toast.value?.message).not.toContain('outra sessão')
   })
 })

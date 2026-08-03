@@ -190,10 +190,12 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      expect(result?.statusCode).toBe(200);
+      expect(result?.statusCode).toBe(201);
       const body = JSON.parse(result?.body ?? '{}');
-      expect(body.message).toBe('Post saved');
+      expect(body.message).toBe('Post created');
       expect(body.slug).toBe('meu-post');
+      expect(body.version).toBe(1);
+      expect(body.data_atualizacao).toBeDefined();
     });
 
     it('incrementa total_publicado na MESMA transação do Put ao criar um post Publicado', async () => {
@@ -423,7 +425,7 @@ describe('adminPosts handler', () => {
           body: JSON.stringify({
             ...SAMPLE_POST,
             status: 'Programado',
-            data_publicacao_programada: '2099-01-01T10:00',
+            data_publicacao_programada: '2099-01-01T10:00:00-03:00',
           }),
         }),
         ctx,
@@ -431,19 +433,37 @@ describe('adminPosts handler', () => {
       );
 
       expect(writtenItem(mockSend.mock.calls[0][0]).data_publicacao_programada).toBe(
-        new Date('2099-01-01T10:00').toISOString(),
+        new Date('2099-01-01T10:00:00-03:00').toISOString(),
       );
+    });
+
+    it('rejects a scheduled post whose data_publicacao_programada has no explicit UTC offset (datetime-local raw shape)', async () => {
+      const result = await handler(
+        event({
+          httpMethod: 'POST',
+          body: JSON.stringify({
+            ...SAMPLE_POST,
+            status: 'Programado',
+            data_publicacao_programada: '2099-01-01T10:00',
+          }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(400);
+      expect(mockSend).not.toHaveBeenCalled();
     });
   });
 
-  describe('PUT /admin/posts/:slug (update)', () => {
+  describe('PATCH /admin/posts/:slug (update)', () => {
     it('updates an existing post', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 1 } }); // Get (existing)
       mockSend.mockResolvedValueOnce({}); // PutCommand
 
       const result = await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
@@ -459,7 +479,7 @@ describe('adminPosts handler', () => {
     it('returns 400 when version is missing from the update payload', async () => {
       const result = await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify(SAMPLE_POST),
         }),
@@ -479,7 +499,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', e_projeto: 1, data_publicacao: '', version: 1 }),
         }),
@@ -498,7 +518,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }), // SAMPLE_POST.status === 'Publicado'
         }),
@@ -517,7 +537,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, status: 'Rascunho', version: 1 }),
         }),
@@ -535,7 +555,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }), // SAMPLE_POST.status === 'Publicado'
         }),
@@ -552,7 +572,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
@@ -566,7 +586,7 @@ describe('adminPosts handler', () => {
     it('returns 400 on slug mismatch', async () => {
       const result = await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'outro-slug' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
@@ -582,7 +602,7 @@ describe('adminPosts handler', () => {
 
       const result = await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
@@ -600,7 +620,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
         }),
@@ -617,7 +637,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 4 }),
         }),
@@ -634,7 +654,7 @@ describe('adminPosts handler', () => {
 
       await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 4 }),
         }),
@@ -656,7 +676,7 @@ describe('adminPosts handler', () => {
 
       const result = await handler(
         event({
-          httpMethod: 'PUT',
+          httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
           body: JSON.stringify({ ...SAMPLE_POST, version: 4 }), // stale — real version is 5
         }),
@@ -665,6 +685,88 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(409);
+    });
+
+    it('returns the updated slug/version/data_atualizacao in the response body', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 0, version: 4 } }); // Get
+      mockSend.mockResolvedValueOnce({}); // Put
+
+      const result = await handler(
+        event({
+          httpMethod: 'PATCH',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+      const body = JSON.parse(result?.body ?? '{}');
+      expect(body.message).toBe('Post updated');
+      expect(body.slug).toBe('meu-post');
+      expect(body.version).toBe(5);
+      expect(body.data_atualizacao).toBeDefined();
+    });
+
+    it('preserves a field not present in the PATCH payload (merges onto the existing item)', async () => {
+      mockSend.mockResolvedValueOnce({
+        Item: { ...SAMPLE_POST, version: 1, subtitulo: 'Subtítulo original', topico: 'AWS' },
+      }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      const { subtitulo, topico, ...payloadWithoutOptionalFields } = SAMPLE_POST as Record<string, unknown>;
+      await handler(
+        event({
+          httpMethod: 'PATCH',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...payloadWithoutOptionalFields, version: 1 }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[1][0];
+      expect(writtenItem(sentCmd).subtitulo).toBe('Subtítulo original');
+      expect(writtenItem(sentCmd).topico).toBe('AWS');
+    });
+
+    it('removes a field when the client sends an explicit null (subtitulo)', async () => {
+      mockSend.mockResolvedValueOnce({
+        Item: { ...SAMPLE_POST, version: 1, subtitulo: 'Subtítulo a remover' },
+      }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({
+          httpMethod: 'PATCH',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1, subtitulo: null }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[1][0];
+      expect(writtenItem(sentCmd).subtitulo).toBeUndefined();
+    });
+
+    it('ignores a client-sent slug in the PATCH body — the URL path param is the only source of truth', async () => {
+      mockSend.mockResolvedValueOnce({ Item: { ...SAMPLE_POST, version: 1 } }); // Get (existing)
+      mockSend.mockResolvedValueOnce({}); // PutCommand
+
+      await handler(
+        event({
+          httpMethod: 'PATCH',
+          pathParameters: { slug: 'meu-post' },
+          body: JSON.stringify({ ...SAMPLE_POST, version: 1 }),
+        }),
+        ctx,
+        jest.fn(),
+      );
+
+      const sentCmd = mockSend.mock.calls[1][0];
+      expect(writtenItem(sentCmd).slug).toBe('meu-post');
     });
   });
 
@@ -819,7 +921,7 @@ describe('adminPosts handler', () => {
 
   describe('unknown method', () => {
     it('returns 405 Method Not Allowed', async () => {
-      const result = await handler(event({ httpMethod: 'PATCH' }), ctx, jest.fn());
+      const result = await handler(event({ httpMethod: 'PUT' }), ctx, jest.fn());
       expect(result?.statusCode).toBe(405);
     });
   });

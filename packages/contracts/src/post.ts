@@ -23,7 +23,7 @@ function parseScheduledDate(raw: string): Date | null {
 // went through postScheduler keeps its now-past data_publicacao_programada
 // forever (publishing never clears the field), so a blanket "must be in the
 // future" check would 400 on every later edit of an already-published post.
-function validateScheduledDate<T extends { status?: PostStatus; data_publicacao_programada?: string }>(
+function validateScheduledDate<T extends { status?: PostStatus; data_publicacao_programada?: string | null }>(
   data: T,
   ctx: z.RefinementCtx,
 ) {
@@ -90,14 +90,24 @@ const basePostFields = {
   subcategoria_slug: z.string().optional(),
   subcategoria_nome: z.string().optional(),
   autor_id: z.string().min(1),
-  // Not `.datetime()`: the admin's scheduling field is an
-  // <input type="datetime-local">, which emits "2026-08-02T14:30" — no
-  // seconds, no timezone suffix. Real ISO 8601 (from data_atualizacao)
-  // also flows through this same field on read-modify-write, so the
-  // format actually varies by caller; a strict datetime check would reject
-  // the admin's own scheduling requests.
+  // data_publicacao stays a loose string: it also flows through this same
+  // field on read-modify-write with whatever shape the caller last stored
+  // (admin datetime-local, ISO 8601, ...) — a strict check here would reject
+  // round-tripped data. data_publicacao_programada below is stricter because
+  // it is exclusively client-originated (never read-modify-written from a
+  // pre-existing value in a different shape) and its ordering-by-string in
+  // postScheduler's GSI range key requires every value to share one format.
   data_publicacao: z.string().optional(),
-  data_publicacao_programada: z.string().optional(),
+  // Requires an explicit UTC offset (the admin converts its datetime-local
+  // input before sending, see localDateTimeToUtcIso()) so postScheduler's
+  // string comparison against `new Date().toISOString()` is never comparing
+  // two different formats. Empty string is preprocessed to undefined since
+  // the admin form's default/cleared value is "", which z.string().datetime()
+  // would otherwise reject as a malformed (non-empty) date.
+  data_publicacao_programada: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().datetime({ offset: true }).optional(),
+  ),
   tempo_leitura_min: z.number().int().min(1).max(180).optional(),
   e_popular: z.union([z.literal(0), z.literal(1)]).optional(),
   e_projeto: z.union([z.literal(0), z.literal(1)]).optional(),
@@ -127,18 +137,47 @@ export type CreatePostInput = z.infer<typeof createPostInputSchema>;
 
 // Update requires version: it's the client's optimistic-concurrency token
 // (round-tripped from a prior GET), and skipping the field must not silently
-// skip the ConditionExpression's version clause in savePost().
+// skip the ConditionExpression's version clause in savePost(). `.strict()`
+// (not `.strip()` like create) rejects an unknown/internal field outright —
+// savePost() merges this payload onto the existing item (PATCH semantics),
+// so a field silently stripped here would silently fail to update instead
+// of being visibly rejected.
 export const updatePostInputSchema = z
   .object({
     ...basePostFields,
+    // Nullable only where savePost()'s merge treats an explicit `null` as
+    // "delete this key from the persisted item" — every other optional
+    // field simply stays untouched when omitted from a partial payload, so
+    // only fields with a real "remove it" use case (cover subtitle, LQIP
+    // placeholder) need the extra null branch.
+    subtitulo: basePostFields.subtitulo.nullable(),
+    imagem_lqip_base64: basePostFields.imagem_lqip_base64.nullable(),
     status: z.enum(POST_STATUSES).optional(),
     version: z.number().int().min(0),
+    // Accepted, never trusted: the admin form's local state (loaded from a
+    // prior GET) naturally round-trips this field on every save, and
+    // `.strict()` would otherwise 400 a normal update. savePost() always
+    // overwrites it with the server's own `now`, regardless of what's sent.
+    data_atualizacao: z.string().optional(),
   })
-  .strip()
+  .strict()
   .superRefine(validateScheduledDate)
   .transform(normalizeScheduledDate);
 
 export type UpdatePostInput = z.infer<typeof updatePostInputSchema>;
+
+// Response shape for both create and update — shared between backend
+// (adminPosts/index.ts) and admin (services/api.ts) so the client parses the
+// same fields it needs to sync local form state (slug/version/data_atualizacao)
+// instead of trusting an untyped body.
+export const savePostResponseSchema = z.object({
+  message: z.string(),
+  slug: z.string(),
+  version: z.number().int(),
+  data_atualizacao: z.string(),
+});
+
+export type SavePostResponse = z.infer<typeof savePostResponseSchema>;
 
 // Persisted shape in DynamoDB — a superset of the input schemas
 // (server-computed fields like data_atualizacao and the sparse GSI markers

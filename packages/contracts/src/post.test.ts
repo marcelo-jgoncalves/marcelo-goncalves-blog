@@ -6,7 +6,7 @@ const BASE = {
   autor_id: 'marcelo-goncalves',
 };
 
-const FUTURE_DATE = '2099-01-01T10:00';
+const FUTURE_DATE = '2099-01-01T10:00:00Z';
 
 describe('createPostInputSchema', () => {
   it('accepts a minimal valid post', () => {
@@ -119,6 +119,21 @@ describe('createPostInputSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('rejects a data_publicacao_programada without an explicit UTC offset (raw datetime-local shape)', () => {
+    const result = createPostInputSchema.safeParse({
+      ...BASE,
+      status: 'Programado',
+      data_publicacao_programada: '2099-01-01T10:00',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('treats an empty data_publicacao_programada as absent instead of a format error', () => {
+    const result = createPostInputSchema.safeParse({ ...BASE, data_publicacao_programada: '' });
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.data_publicacao_programada).toBeUndefined();
+  });
+
   it('strips unknown fields (mass assignment protection)', () => {
     const result = createPostInputSchema.safeParse({ ...BASE, isAdmin: true });
     expect(result.success).toBe(true);
@@ -161,5 +176,22 @@ describe('updatePostInputSchema', () => {
     const result = updatePostInputSchema.safeParse({ ...BASE, version: 1 });
     expect(result.success).toBe(true);
     expect(result.success && result.data.status).toBeUndefined();
+  });
+
+  it('rejects an unknown field instead of silently stripping it', () => {
+    const result = updatePostInputSchema.safeParse({ ...BASE, version: 1, isAdmin: true });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts explicit null on subtitulo/imagem_lqip_base64 as a field-removal signal', () => {
+    const result = updatePostInputSchema.safeParse({
+      ...BASE,
+      version: 1,
+      subtitulo: null,
+      imagem_lqip_base64: null,
+    });
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.subtitulo).toBeNull();
+    expect(result.success && result.data.imagem_lqip_base64).toBeNull();
   });
 });

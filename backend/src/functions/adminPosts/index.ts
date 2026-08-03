@@ -17,9 +17,16 @@ const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": ADMIN_ORIGIN,
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
+
+// Fields where the merge below treats an explicit `null` in the client
+// payload as "delete this key from the persisted item" — matches
+// updatePostInputSchema's nullable fields exactly (packages/contracts/src/post.ts).
+// DynamoDB's marshaller (common/dynamodb.ts, removeUndefinedValues: true)
+// only strips `undefined`, not a literal `null`, so this has to be explicit.
+const REMOVABLE_FIELDS = ["subtitulo", "imagem_lqip_base64"] as const;
 
 export const handler: APIGatewayProxyHandler = async (event, context) => {
   const requestId = context.awsRequestId;
@@ -56,8 +63,8 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return await savePost(postData, true, requestId);
     }
 
-    // 4. Atualizar
-    if (httpMethod === "PUT" && slug) {
+    // 4. Atualizar (PATCH parcial — savePost() faz merge com o item existente)
+    if (httpMethod === "PATCH" && slug) {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
       }
@@ -68,7 +75,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if ((postData as { slug?: string }).slug !== slug) {
         return { statusCode: 400, body: JSON.stringify({ message: "Slug mismatch" }), headers };
       }
-      return await savePost(postData, false, requestId);
+      return await savePost(postData, false, requestId, slug);
     }
 
     // 5. Deletar
@@ -143,7 +150,7 @@ async function getPost(slug: string) {
   };
 }
 
-async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
+async function savePost(rawData: unknown, isNew: boolean, requestId?: string, urlSlug?: string) {
   const schema = isNew ? createPostInputSchema : updatePostInputSchema;
   const parsed = schema.safeParse(rawData);
   if (!parsed.success) {
@@ -175,12 +182,28 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   }
 
   const now = new Date().toISOString();
-  const ePopular: 0 | 1 = data.e_popular === 1 ? 1 : 0;
-  const eProjeto: 0 | 1 = data.e_projeto === 1 ? 1 : 0;
+
+  // PATCH semantics: an update's payload only overrides what it actually
+  // sends — a field the admin form omits (or a future partial client that
+  // only sends the diff) keeps its previous value instead of being wiped by
+  // spreading `data` alone. On create there's no `existing` to merge onto.
+  const merged: Record<string, unknown> = { ...(existing ?? {}), ...(data as Record<string, unknown>) };
+  if (!isNew) {
+    for (const field of REMOVABLE_FIELDS) {
+      if ((data as Record<string, unknown>)[field] === null) delete merged[field];
+    }
+  }
+
+  const ePopular: 0 | 1 = merged.e_popular === 1 ? 1 : 0;
+  const eProjeto: 0 | 1 = merged.e_projeto === 1 ? 1 : 0;
 
   const item: Post = {
-    ...data as Post,
-    conteudo_html: sanitizePostHtml(data.conteudo_html ?? ""),
+    ...(merged as unknown as Post),
+    // slug is never taken from the client payload on update — the URL's
+    // {slug} path param is the only source of truth, closing off a PATCH
+    // body that tries to rewrite which item it's targeting.
+    slug: isNew ? (data as { slug: string }).slug : urlSlug!,
+    conteudo_html: sanitizePostHtml((merged.conteudo_html as string) ?? ""),
     data_atualizacao: now,
     // Nunca gravar string vazia: quando e_popular/e_projeto=1, os GSIs
     // esparsos (PopularesPorData_v2/ProjetoPorData_v2) usam este campo como
@@ -188,7 +211,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
     // é rejeitada pelo DynamoDB (crash observado ao salvar um Rascunho
     // marcado como "projeto" sem nunca ter tido data de publicação). Cai
     // para o valor já existente no update, ou "agora" na criação/1ª vez.
-    data_publicacao: data.data_publicacao || existing?.data_publicacao || now,
+    data_publicacao: (merged.data_publicacao as string) || existing?.data_publicacao || now,
     e_popular: ePopular,
     e_projeto: eProjeto,
     // undefined é omitido pelo marshaller (removeUndefinedValues: true em
@@ -196,7 +219,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
     // simplesmente não existe no item quando o flag é 0.
     e_popular_marker: ePopular === 1 ? "POP" : undefined,
     e_projeto_marker: eProjeto === 1 ? "PROJ" : undefined,
-    tempo_leitura_min: Number(data.tempo_leitura_min || 5),
+    tempo_leitura_min: Number(merged.tempo_leitura_min || 5),
     version: (existing?.version ?? 0) + 1,
   };
 
@@ -263,9 +286,14 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string) {
   await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"] : [`/post/${item.slug}`]);
 
   return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Post saved", slug: item.slug }),
-    headers, // <--- ADICIONADO
+    statusCode: isNew ? 201 : 200,
+    body: JSON.stringify({
+      message: isNew ? "Post created" : "Post updated",
+      slug: item.slug,
+      version: item.version,
+      data_atualizacao: item.data_atualizacao,
+    }),
+    headers,
   };
 }
 

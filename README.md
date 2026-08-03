@@ -86,6 +86,8 @@ mgoncalves-editorial-platform/
 
 **Lambdas (backend):** `getPost`, `getPosts`, `getAuthor`, `adminPosts`, `adminAuthors`, `adminCategories`, `adminSession`, `adminAuthorizer`, `mediaUpload`, `imageProcessor`, `postScheduler`.
 
+**Posts write API (`adminPosts`):** all persisted dates use UTC in ISO 8601. `POST /admin/posts` creates (201); `PATCH /admin/post/{slug}` updates (200) with partial-update semantics — the server merges the payload onto the existing item, so a field the client omits keeps its previous value, and an explicit `null` on a removable field (`subtitulo`, `imagem_lqip_base64`) deletes it. Every update requires the client's currently-known `version` (optimistic concurrency); a stale or missing version returns 409. Both responses return `{ message, slug, version, data_atualizacao }` (`packages/contracts`' `savePostResponseSchema`) so the caller can sync local state without a follow-up GET.
+
 `CLAUDE.md`, at the repo root, documents the project's non-negotiable engineering rules (architecture, design system, critical patterns).
 
 ---

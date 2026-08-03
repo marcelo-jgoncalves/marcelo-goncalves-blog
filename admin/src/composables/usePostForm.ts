@@ -4,6 +4,7 @@ import { postsApi, categoriesApi, authorsApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import { slugify } from '../utils/slug'
 import { sanitizeHtml } from '../utils/sanitizeHtml'
+import { localDateTimeToUtcIso, utcIsoToLocalDateTimeInput } from '../utils/date'
 import { useToast } from './useToast'
 import type { Autor, Categoria, Post } from '../types'
 
@@ -37,6 +38,12 @@ export function usePostForm() {
   const { toast, showToast } = useToast()
 
   const isEditing = computed(() => route.params.slug !== undefined)
+  // Tracks a create that already succeeded in THIS component instance, ahead
+  // of route.params.slug actually changing (router.replace() is async and
+  // deliberately runs after local state sync — see save()). Without this, a
+  // second "Salvar" clicked before the route finishes updating would still
+  // read isEditing as false and POST a duplicate create with the same slug.
+  const createdInSession = ref(false)
   const loading = ref(false)
   const saving = ref(false)
   const loadingCategories = ref(true)
@@ -201,6 +208,11 @@ export function usePostForm() {
           subcategoria_slug: data.subcategoria_slug || '',
           subcategoria_nome: data.subcategoria_nome || '',
           subtitulo: data.subtitulo || '',
+          // GET returns the persisted UTC ISO — the <datetime-local> input
+          // needs the admin's own local wall-clock time to display correctly.
+          data_publicacao_programada: data.data_publicacao_programada
+            ? utcIsoToLocalDateTimeInput(data.data_publicacao_programada)
+            : '',
         }
       } catch {
         showToast('Erro ao carregar post', 'error')
@@ -224,6 +236,11 @@ export function usePostForm() {
       }
     }
 
+    // Decided once, before the request: isEditing.value alone would flip
+    // back to "create" logic on a stale route between the create response
+    // and router.replace() actually landing (see createdInSession above).
+    const wasNew = !isEditing.value && !createdInSession.value
+
     saving.value = true
     try {
       const payload = {
@@ -231,14 +248,25 @@ export function usePostForm() {
         conteudo_html: sanitizeHtml(form.value.conteudo_html),
         e_popular: (form.value.e_popular ? 1 : 0) as 0 | 1,
         e_projeto: (form.value.e_projeto ? 1 : 0) as 0 | 1,
+        // Only the payload sent over the wire is UTC — form.value keeps the
+        // local datetime-local shape so the input keeps displaying correctly.
+        data_publicacao_programada: form.value.data_publicacao_programada
+          ? localDateTimeToUtcIso(form.value.data_publicacao_programada)
+          : '',
       }
 
-      const wasNew = !isEditing.value
-      if (isEditing.value) {
-        await postsApi.update(form.value.slug, payload)
-      } else {
-        await postsApi.create(payload)
-      }
+      const response = wasNew
+        ? await postsApi.create(payload)
+        : await postsApi.update(form.value.slug, payload)
+
+      // Synced from the server's response BEFORE router.replace: the server
+      // is the source of truth for slug/version/data_atualizacao (version in
+      // particular — the client must echo back exactly what the server now
+      // has, or the very next save 409s against its own successful write).
+      form.value.slug = response.slug
+      form.value.version = response.version
+      form.value.data_atualizacao = response.data_atualizacao
+      if (wasNew) createdInSession.value = true
 
       // captureInitialState() BEFORE router.replace: onBeforeRouteLeave only
       // allows navigating without confirmation if isDirty is already false —
@@ -257,7 +285,13 @@ export function usePostForm() {
       }
     } catch (error) {
       const status = (error as { status?: number } | undefined)?.status
-      if (status === 409) {
+      if (status === 409 && wasNew) {
+        // Create-time 409: the ConditionExpression rejected attribute_not_exists(slug) —
+        // a post with this exact slug already exists (not this session's
+        // own write racing itself, since wasNew guards this branch to only
+        // the create attempt, before createdInSession is ever set).
+        showToast('Já existe um post com esse slug. Ajuste o título/slug e tente salvar novamente.', 'error')
+      } else if (status === 409) {
         // Optimistic concurrency conflict (backend/src/functions/adminPosts):
         // someone else saved this post since it was loaded here. Reloading
         // now would discard whatever the user just typed, so instead the
@@ -267,6 +301,14 @@ export function usePostForm() {
         // (silently overwriting the other edit would be the bug this exists
         // to prevent).
         showToast('Este post foi alterado em outra sessão desde que foi carregado. Recarregue a página antes de salvar novamente.', 'error')
+      } else if (status === 404) {
+        // The post existed when this form loaded but is gone now (deleted by
+        // another session) — there's no "existing" item left for the
+        // ConditionExpression's attribute_exists(slug) to match against.
+        showToast('Este post foi removido em outra sessão. Recarregue a página — não é possível salvar sobre um post excluído.', 'error')
+      } else if (status === 400) {
+        const message = error instanceof Error ? error.message : 'Dados inválidos'
+        showToast('Dados inválidos: ' + message, 'error')
       } else {
         const message = error instanceof Error ? error.message : 'Erro desconhecido'
         showToast('Erro ao salvar: ' + message, 'error')
