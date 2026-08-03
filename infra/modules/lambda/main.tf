@@ -64,7 +64,7 @@ resource "aws_lambda_function" "media_upload" {
   function_name = "${var.project_name}-${var.environment}-mediaUpload"
   role          = aws_iam_role.function_role["mediaUpload"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/mediaUpload.zip"
@@ -87,7 +87,7 @@ resource "aws_lambda_function" "get_post" {
   function_name = "${var.project_name}-${var.environment}-getPost"
   role          = aws_iam_role.function_role["getPost"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/getPost.zip"
@@ -111,7 +111,7 @@ resource "aws_lambda_function" "get_author" {
   function_name = "${var.project_name}-${var.environment}-getAuthor"
   role          = aws_iam_role.function_role["getAuthor"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/getAuthor.zip"
@@ -133,7 +133,7 @@ resource "aws_lambda_function" "get_posts" {
   function_name = "${var.project_name}-${var.environment}-getPosts"
   role          = aws_iam_role.function_role["getPosts"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/getPosts.zip"
@@ -156,7 +156,7 @@ resource "aws_lambda_function" "admin_posts" {
   function_name = "${var.project_name}-${var.environment}-adminPosts"
   role          = aws_iam_role.function_role["adminPosts"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/adminPosts.zip"
@@ -180,7 +180,7 @@ resource "aws_lambda_function" "admin_authors" {
   function_name = "${var.project_name}-${var.environment}-adminAuthors"
   role          = aws_iam_role.function_role["adminAuthors"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/adminAuthors.zip"
@@ -203,7 +203,7 @@ resource "aws_lambda_function" "admin_categorias" {
   function_name = "${var.project_name}-${var.environment}-adminCategorias"
   role          = aws_iam_role.function_role["adminCategorias"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 512
 
   filename         = "${path.root}/builds/adminCategories.zip"
@@ -227,7 +227,7 @@ resource "aws_lambda_function" "admin_session" {
   function_name = "${var.project_name}-${var.environment}-adminSession"
   role          = aws_iam_role.function_role["adminSession"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 256
 
   filename         = "${path.root}/builds/adminSession.zip"
@@ -256,7 +256,7 @@ resource "aws_lambda_function" "admin_authorizer" {
   function_name = "${var.project_name}-${var.environment}-adminAuthorizer"
   role          = aws_iam_role.function_role["adminAuthorizer"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   memory_size   = 256
 
   filename         = "${path.root}/builds/adminAuthorizer.zip"
@@ -283,7 +283,7 @@ resource "aws_lambda_function" "post_scheduler" {
   function_name = "${var.project_name}-${var.environment}-postScheduler"
   role          = aws_iam_role.function_role["postScheduler"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   timeout       = 30
 
   filename         = "${path.root}/builds/postScheduler.zip"
@@ -311,7 +311,7 @@ resource "aws_lambda_function" "post_counter_reconciler" {
   function_name = "${var.project_name}-${var.environment}-postCounterReconciler"
   role          = aws_iam_role.function_role["postCounterReconciler"].arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   timeout       = 60 # full-table Scan, generous headroom over dev's current volume
 
   filename         = "${path.root}/builds/postCounterReconciler.zip"

@@ -120,7 +120,7 @@ Também não marcar no código que uma mudança foi feita por IA (nem comentári
 ```
 mgoncalves-editorial-platform/
 ├── frontend/    # Next.js 16 + OpenNext v3 (blog público)
-├── backend/     # Node.js 22 + TypeScript — 11 Lambdas
+├── backend/     # Node.js 22 + TypeScript — 12 Lambdas
 ├── admin/       # Vue 3 + Vite + Pinia + AWS Amplify (CMS)
 ├── infra/       # Terraform — 10 módulos AWS
 └── contexto/        # Documentação viva do projeto
@@ -344,10 +344,11 @@ Categoria diferente de imagem: não vem de upload de usuário, é parte do códi
 
 | Workspace | Runner | Comando | Total |
 |---|---|---|---|
-| `backend/` | Jest | `npm test` | 208 testes |
+| `backend/` | Jest | `npm test` | 217 testes |
 | `backend/` | Jest + DynamoDB Local | `npm run test:integration` | 10 testes (handlers reais contra DynamoDB real — ver `src/integration/`, `docs/backlog.md` item 55) |
 | `frontend/` | Jest | `npm test` | 81 testes |
 | `admin/` | Vitest | `npm test` | 43 testes |
+| `packages/contracts/` | Jest | `npm test` | 29 testes |
 | `frontend/` | Playwright | `npm run test:e2e` | 93 testes, 19 specs (smoke, home-layout, post, artigos, todos-artigos, busca, categoria, sobre, projeto, spacing-role, typography-role, visual-audit), rodando em Chromium + Firefox |
 
 - `tsconfig.test.json` separado no backend com `"types": ["jest"]`.
@@ -448,12 +449,12 @@ Backlog técnico único do projeto: ver [`docs/backlog.md`](docs/backlog.md) (ex
 | Componente | Versão | Notas |
 |---|---|---|
 | Next.js | ^16.2.4 | `params` é Promise — `await params` |
-| OpenNext | ^3.1.3 | Output: `server-functions/default/` (PLURAL) |
-| Tiptap | 2.11.0 | Fixado em v2 — **não migrar para v3** |
+| OpenNext | `@opennextjs/aws` ^4.1.0 | Migrado do pacote descontinuado `open-next` em 2026-08-03 (peer `next >=16.2.11`, compatível com o Next.js 16 do projeto). Output: `server-functions/default/` (PLURAL) — inalterado |
+| Tiptap | 2.11.0 | Fixado em v2 — migração para v3 **planejada, não implementada** (`docs/backlog.md` item #60) |
 | AWS Amplify | ^6.15.8 | Auth via `aws-amplify/auth` |
 | Sharp | ^0.33.2 | Build com `--os=linux --cpu=x64` |
 | esbuild | ^0.27.0 | `format: 'cjs'` obrigatório |
-| Lambda runtime | nodejs22.x | LTS ativo, EOL 30/04/2027 — migrado de nodejs20.x em 2026-08-02 (deadline AWS era 30/09/2026) |
+| Lambda runtime | nodejs24.x | Migrado de nodejs22.x em 2026-08-03; `@types/node` alinhado em `^24` nos 4 workspaces (`backend`, `frontend`, `admin`, `packages/contracts`), CI (`cd.yml`/`deploy.yml`) e `admin/tsconfig.node.json` (`@tsconfig/node24`) |
 | Terraform | ~> 1.15 | State no S3 — pin alinhado ao CD (1.15.8), ver `infra/providers.tf`. Migrado de `~> 1.8` em 2026-08-02: esse pin nunca travou de fato em 1.8.x (`~>` com 2 componentes libera toda a série 1.x — quem pinava era só o literal no CI); changelog 1.9→1.15 conferido, nenhuma breaking change real. Locking migrado de `dynamodb_table` para `use_lockfile` (S3-nativo) em 2026-08-02 — ver `docs/backlog.md` para o racional completo |
 | Terraform AWS provider | ~> 6.0 | Migrado de v5 em 2026-08-02 — breaking changes documentadas não tocavam recurso nenhum do projeto (confirmado por `grep`); único achado real foi `response_templates` de `aws_api_gateway_gateway_response` (default da AWS que o v6 passou a tratar como "deveria ficar vazio" — corrigido declarando o valor explícito) |
 | GitHub Actions (checkout/setup-node) | v6 (pinado por SHA) | Atualizado de v4 em 2026-08-02 — `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` já resolvido (v6 roda em Node 24 nativamente) |

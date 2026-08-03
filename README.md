@@ -67,9 +67,9 @@ Architecture, technical decisions, security controls, acceptance criteria and fi
 
 | Layer | Technology | Role |
 |---|---|---|
-| Public frontend | Next.js 16 + React 19 + OpenNext v3 | Site rendered via Lambda + CloudFront, ISR |
-| CMS / Admin | Vue 3 + Vite + Pinia + Tiptap 2 | Rich-text post editor, author/category management |
-| Backend | Node.js 22 + TypeScript + esbuild | 12 Lambdas, one per responsibility |
+| Public frontend | Next.js 16 + React 19 + OpenNext for AWS | Site rendered via Lambda + CloudFront, ISR |
+| CMS / Admin | Vue 3 + Vite + Pinia 3 + Tiptap | Rich-text post editor, author/category management |
+| Backend | Node.js 24 + TypeScript + esbuild | 12 Lambdas, one per responsibility |
 | Database | DynamoDB | Single-table-ish per entity, 5 optimized GSIs (`INCLUDE` projection) |
 | Images | Sharp.js (Lambda) | Automatic pipeline: 6 variants (AVIF/WebP x 3 breakpoints) + LQIP blur |
 | Auth | AWS Cognito (SRP) + BFF session | Single admin; opaque session in an httpOnly cookie (`SameSite=Strict`), stored in DynamoDB (`admin_sessions`), behind a same-origin CloudFront proxy |
@@ -193,8 +193,8 @@ The admin CloudFront distribution rewrites 403/404 to `index.html` for client-si
 ```
 mgoncalves-editorial-platform/
 ├── packages/contracts/  Shared Zod schemas/types (backend ↔ admin ↔ frontend contract)
-├── frontend/    Next.js 16 + OpenNext v3 (public site)
-├── backend/     Node.js 22 + TypeScript (12 Lambdas)
+├── frontend/    Next.js 16 + OpenNext for AWS (public site)
+├── backend/     Node.js 24 + TypeScript (12 Lambdas)
 ├── admin/       Vue 3 + Vite + Pinia (CMS)
 ├── infra/       Terraform, 10 AWS modules (lambda, dynamodb, frontend, admin,
 │                api-gateway, cognito, media, observability, security-monitoring, finops)

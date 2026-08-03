@@ -16,7 +16,7 @@ Ver `.env.example` — `VITE_API_BASE_URL`, `VITE_COGNITO_USER_POOL_ID`, `VITE_C
 
 ## Stack real deste workspace
 
-- **Editor rich text:** `RichTextEditor` (Tiptap v2.11.0 — fixado, não migrar para v3).
+- **Editor rich text:** `RichTextEditor` (Tiptap v2.11.0 — fixado; migração para v3 planejada, ver `docs/backlog.md` item #60, ainda não implementada).
 - **Toasts:** sempre `showToast(msg, type)` — nunca `alert()`/`window.confirm()`.
 - **Slug:** sempre `slugify()` de `src/utils/slug.ts`.
 - **Tipos centralizados:** `src/types/index.ts` — não redefinir `Post`/`Categoria`/`Autor` inline.

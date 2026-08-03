@@ -1,6 +1,6 @@
 # frontend — Blog Marcelo Gonçalves
 
-Next.js 16 (App Router) + React 19, deployado via OpenNext v3 em AWS Lambda + CloudFront + S3 (não Vercel).
+Next.js 16 (App Router) + React 19, deployado via OpenNext for AWS (`@opennextjs/aws`) em AWS Lambda + CloudFront + S3 (não Vercel).
 
 ## Setup
 

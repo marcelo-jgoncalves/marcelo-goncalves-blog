@@ -25,7 +25,7 @@ concurrency:
 env:
   PROJECT_NAME: marcelo-goncalves-blog
   AWS_REGION: us-east-1
-  NODE_VERSION: '22'
+  NODE_VERSION: '24'
   TERRAFORM_VERSION: '1.15.8'
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 

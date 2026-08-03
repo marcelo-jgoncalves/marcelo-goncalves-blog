@@ -38,7 +38,7 @@ resource "aws_lambda_function" "nextjs_server" {
   function_name = "${var.project_name}-${var.environment}-nextjs-server"
   role          = aws_iam_role.nextjs_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
 
   # Higher memory/timeout than the other Lambdas: SSR is heavier than a plain API handler
   memory_size = 1024
