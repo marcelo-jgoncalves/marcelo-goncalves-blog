@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Monorepo: Marcelo Goncalves Editorial Platform (frontend, backend, admin, infra)",
+  "engines": {
+    "node": "24.x"
+  },
   "workspaces": [
     "packages/contracts",
     "backend",
@@ -16,6 +19,10 @@
   "scripts": {
     "build:backend": "npm run build --workspace backend",
     "build:frontend": "npm run build --workspace frontend",
-    "build:admin": "npm run build --workspace admin"
+    "build:admin": "npm run build --workspace admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "verify": "npm run typecheck && npm run lint && npm test"
   }
 }

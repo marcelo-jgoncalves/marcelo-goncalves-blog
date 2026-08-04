@@ -4,13 +4,18 @@
     "module": "commonjs",
     "lib": ["ES2020"],
     "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedSideEffectImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "types": ["aws-lambda", "node"]
+    "types": ["aws-lambda", "node", "jest"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

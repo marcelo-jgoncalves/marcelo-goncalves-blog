@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "node build.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint .",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:integration": "jest --config jest.integration.config.js"
+    "test:integration": "jest --config jest.integration.config.js",
+    "verify": "npm run typecheck && npm run lint && npm test"
   },
   "keywords": [],
   "author": "",

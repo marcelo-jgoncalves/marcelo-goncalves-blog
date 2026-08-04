@@ -45,15 +45,15 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     if (!event.body) {
       return { statusCode: 400, body: JSON.stringify({ message: "Body missing" }), headers };
     }
-    const parsed = parseJsonBody<{ nome_arquivo?: string; tipo_arquivo?: string }>(event.body);
-    if (parsed === undefined) {
+    const parsed = parseJsonBody(event.body);
+    if (parsed === undefined || typeof parsed !== "object" || parsed === null) {
       return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
     }
-    const { nome_arquivo, tipo_arquivo } = parsed;
+    const { nome_arquivo, tipo_arquivo } = parsed as Record<string, unknown>;
 
     logger.debug("media_upload_request", { requestId, nome_arquivo, tipo_arquivo });
 
-    if (!nome_arquivo || !tipo_arquivo) {
+    if (!nome_arquivo || !tipo_arquivo || typeof nome_arquivo !== "string" || typeof tipo_arquivo !== "string") {
       return { statusCode: 400, body: JSON.stringify({ message: "Missing params" }), headers };
     }
 
@@ -82,7 +82,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     // Presigned POST (url + fields) valid for 5 minutes; Content-Type and
     // max size are enforced by S3 itself at upload time.
     const { url, fields } = await createPresignedPost(s3, {
-      Bucket: UPLOADS_BUCKET!,
+      Bucket: UPLOADS_BUCKET,
       Key: key,
       Conditions: [
         ["content-length-range", 0, MAX_UPLOAD_BYTES],

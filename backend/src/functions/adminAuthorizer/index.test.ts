@@ -40,25 +40,25 @@ describe('adminAuthorizer handler', () => {
 
     const result = await handler(event({ Cookie: 'admin_session=abc-123' }), ctx, jest.fn());
 
-    expect(result?.policyDocument.Statement[0].Effect).toBe('Allow');
+    expect(result?.policyDocument.Statement[0]!.Effect).toBe('Allow');
     expect(result?.principalId).toBe('user-sub-1');
   });
 
   it('Deny quando o cookie de sessão não existe/expirou no Dynamo', async () => {
     mockSend.mockResolvedValue({ Item: undefined });
     const result = await handler(event({ Cookie: 'admin_session=expirado' }), ctx, jest.fn());
-    expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
+    expect(result?.policyDocument.Statement[0]!.Effect).toBe('Deny');
   });
 
   it('Deny quando um Authorization Bearer é enviado sem cookie (fallback legado removido)', async () => {
     const result = await handler(event({ Authorization: 'Bearer any-token' }), ctx, jest.fn());
-    expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
+    expect(result?.policyDocument.Statement[0]!.Effect).toBe('Deny');
     expect(mockSend).not.toHaveBeenCalled();
   });
 
   it('Deny quando não há cookie nem Authorization header', async () => {
     const result = await handler(event({}), ctx, jest.fn());
-    expect(result?.policyDocument.Statement[0].Effect).toBe('Deny');
+    expect(result?.policyDocument.Statement[0]!.Effect).toBe('Deny');
     expect(mockSend).not.toHaveBeenCalled();
   });
 });

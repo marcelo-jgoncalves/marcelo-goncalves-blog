@@ -53,11 +53,11 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body é obrigatório" }), headers: baseHeaders };
       }
-      const parsed = parseJsonBody<{ idToken?: unknown }>(body);
-      if (parsed === undefined) {
+      const parsed = parseJsonBody(body);
+      if (parsed === undefined || typeof parsed !== "object" || parsed === null) {
         return { statusCode: 400, body: JSON.stringify({ message: "Corpo JSON inválido" }), headers: baseHeaders };
       }
-      const idToken = parsed.idToken;
+      const idToken = (parsed as Record<string, unknown>).idToken;
       if (!idToken || typeof idToken !== "string") {
         return { statusCode: 400, body: JSON.stringify({ message: "idToken é obrigatório" }), headers: baseHeaders };
       }

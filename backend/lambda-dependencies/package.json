@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Pinned native dependency installed into the imageProcessor Lambda artifact. Kept separate from backend/package.json so its lockfile only tracks this one dependency.",
+  "dependencies": {
+    "sharp": "0.35.3"
+  }
+}

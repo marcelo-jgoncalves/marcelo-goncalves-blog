@@ -18,9 +18,12 @@ export async function getCategoriaNomeMap(): Promise<Map<string, string>> {
     }),
   );
   const map = new Map<string, string>();
-  for (const item of result.Items || []) {
-    if (item.categoria_slug && item.nome) {
-      map.set(item.categoria_slug, item.nome);
+  const items: Record<string, unknown>[] = result.Items ?? [];
+  for (const item of items) {
+    const slug = item.categoria_slug;
+    const nome = item.nome;
+    if (typeof slug === "string" && typeof nome === "string") {
+      map.set(slug, nome);
     }
   }
   return map;

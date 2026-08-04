@@ -4,6 +4,7 @@ import { dynamo } from "../../common/dynamodb";
 import { logger } from "../../common/logger";
 import { getCategoriaNomeMap } from "../../common/categorias";
 import { requireEnv } from "../../common/env";
+import { parsePostItem } from "../../common/postPersistence";
 
 const TABLE_NAME = requireEnv("POSTS_TABLE");
 
@@ -32,9 +33,11 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
     }
 
+    const validated = parsePostItem(result.Item, { requestId, slug });
+
     // Sparse index markers are DynamoDB plumbing (GSI hash keys): no
     // consumer outside savePost/getPosts should ever see them.
-    const { e_popular_marker, e_projeto_marker, ...post } = result.Item;
+    const { e_popular_marker, e_projeto_marker, ...post } = validated;
     void e_popular_marker;
     void e_projeto_marker;
 
