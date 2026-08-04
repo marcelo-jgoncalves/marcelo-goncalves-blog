@@ -172,7 +172,10 @@ async function bulkDelete() {
   try {
     await Promise.all(selected.value.map(slug => {
       const post = posts.value.find(p => p.slug === slug)
-      return postsApi.delete(slug, post!.version)
+      // Legacy posts saved before the version field existed have none: the
+      // backend's ConditionExpression already accepts any value in that case
+      // (attribute_not_exists(#version) OR ...), so 0 is a safe placeholder.
+      return postsApi.delete(slug, post!.version ?? 0)
     }))
     posts.value = posts.value.filter(p => !selected.value.includes(p.slug))
     showToast('Posts excluídos')
@@ -217,7 +220,7 @@ const confirmDeleteVersion = ref<number | null>(null)
 const confirmDeleteTitle = ref('')
 function askDelete(post: PostListItem) {
   confirmDeleteSlug.value = post.slug
-  confirmDeleteVersion.value = post.version
+  confirmDeleteVersion.value = post.version ?? 0
   confirmDeleteTitle.value = post.titulo
 }
 function cancelDelete() {
