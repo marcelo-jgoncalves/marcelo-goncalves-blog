@@ -13,8 +13,25 @@ function getApiUrl(): string {
   return url;
 }
 
+// The static build fetches every published post in parallel (3 workers,
+// several requests per page), which can trip API Gateway's stage throttle
+// even after raising its limits (confirmed against real dev data: some
+// requests came back with zero Lambda invocation at all, consistent with a
+// 429 rejected upstream). A transient 429/5xx here fails the entire build,
+// not just one page, so it's worth a few short retries before giving up.
+async function fetchWithRetry(url: string, init: RequestInit, maxRetries = 4): Promise<Response> {
+  let lastResponse: Response;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    lastResponse = await fetch(url, init);
+    if (lastResponse.ok || lastResponse.status === 404) return lastResponse;
+    if (lastResponse.status !== 429 && lastResponse.status < 500) return lastResponse;
+    if (attempt < maxRetries) await new Promise((r) => setTimeout(r, 400 * 2 ** attempt));
+  }
+  return lastResponse!;
+}
+
 export async function getPost(slug: string) {
-  const res = await fetch(`${getApiUrl()}/post/${slug}`, {
+  const res = await fetchWithRetry(`${getApiUrl()}/post/${slug}`, {
     next: { revalidate: 60 },
   });
 
