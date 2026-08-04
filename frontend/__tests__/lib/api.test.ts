@@ -42,10 +42,25 @@ describe('getPost', () => {
     expect(result).toBeNull();
   });
 
-  it('throws on non-404 error', async () => {
+  it('throws on non-404 error after exhausting retries', async () => {
     mockFetch(500, null);
     await expect(getPost('err')).rejects.toThrow('Failed to fetch post');
-  });
+  }, 15000); // fetchWithRetry backs off for real time before giving up
+
+  it('retries on 429/5xx and succeeds once the response is healthy', async () => {
+    let calls = 0;
+    global.fetch = jest.fn().mockImplementation(() => {
+      calls += 1;
+      return Promise.resolve({
+        ok: calls > 2,
+        status: calls > 2 ? 200 : 429,
+        json: () => Promise.resolve({ slug: 'my-post' }),
+      } as Response);
+    });
+    const result = await getPost('my-post');
+    expect(calls).toBe(3);
+    expect(result).toEqual({ slug: 'my-post' });
+  }, 15000);
 
   it('uses revalidate: 60', async () => {
     mockFetch(200, {});
