@@ -229,9 +229,11 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   };
 
   // Put + counter ADD in one transaction: a crash between two sequential
-  // writes would leave the aggregated counters drifted with no detection
-  // (there is no reconciliation job yet). Falls back to a plain Put when the
-  // write doesn't change the aggregates: cheaper than a transaction.
+  // writes would leave the aggregated counters drifted. The scheduled
+  // postCounterReconciler detects and repairs this drift, but only on its
+  // next run, so the transaction still matters to keep the window small.
+  // Falls back to a plain Put when the write doesn't change the aggregates:
+  // cheaper than a transaction.
   //
   // The base ConditionExpression is the actual protection against a slug
   // already existing on create (a plain Put with no condition silently
