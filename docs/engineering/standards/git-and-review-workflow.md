@@ -1,13 +1,63 @@
 # Git, commits, pull requests e revisão
 
+## Política de integração
+
+Toda alteração versionada deve ser realizada em uma branch curta e integrada por pull request.
+
+Push direto em `develop` e `main` não é permitido, inclusive para mudanças pequenas de código, documentação, configuração, contexto ou skills.
+
+Mudanças pequenas podem usar pull requests simplificados, mas não ficam dispensadas de:
+
+- branch dedicada;
+- revisão do diff;
+- checks aplicáveis;
+- descrição mínima da intenção;
+- merge explícito.
+
+Em um fluxo individual, o autor pode revisar e fazer o merge do próprio pull request. Não é obrigatória a aprovação de uma segunda pessoa, salvo quando uma política futura determinar isso.
+
+Correções de typo, documentação ou arquivos de contexto não constituem, por si só, situações emergenciais.
+
+Exceções somente podem ocorrer mediante decisão humana explícita em uma situação emergencial real. A exceção deve ser documentada posteriormente, com: justificativa, risco considerado, arquivos afetados, commit, pull request posterior (quando aplicável), e ação necessária para evitar recorrência.
+
+Decisão registrada em 2026-08-04, resolvendo uma contradição de autoridade entre este documento e `CLAUDE.md` (achado `PCA-20260804-001`, `source-authority-conflict`) — a versão anterior deste documento permitia push direto em `develop` para mudanças pequenas; essa permissão foi removida, não suavizada.
+
 ## Branches
 
-- `main`: estado estável, não recebe commit direto.
-- `develop`: branch de integração — push aqui dispara o pipeline CD (build → terraform apply → deploy). Onde o trabalho do dia a dia acontece.
-- `feature/<descricao>` / `fix/<descricao>`: de vida curta, nascem de `develop`, voltam via PR — para mudanças que atravessam vários componentes, alteram arquitetura/contratos, envolvem segurança, modificam infraestrutura ou têm valor pedagógico/risco relevante.
-- Mudanças pequenas, isoladas e de baixo risco podem ser feitas diretamente em `develop`, como já era o padrão do projeto.
+`main`
+
+- estado estável;
+- integração somente por pull request;
+- sem push direto, sem force push, sem exclusão;
+- checks obrigatórios;
+- política igual ou mais restritiva que `develop`, quando aplicável.
+
+`develop`
+
+- branch de integração — merge de PR aqui dispara o pipeline CD (build → terraform apply → deploy);
+- integração somente por pull request;
+- sem push direto, sem force push, sem exclusão;
+- checks aplicáveis obrigatórios.
+
+Branches curtas, nascem de `develop`, voltam via PR:
+
+```text
+feature/<descricao>
+fix/<descricao>
+refactor/<descricao>
+docs/<descricao>
+chore/<descricao>
+test/<descricao>
+ci/<descricao>
+```
+
+Devem ter escopo claro, durar apenas o necessário, não acumular mudanças não relacionadas, e ser removidas depois do merge salvo justificativa.
 
 GitFlow completo (`release/*`, `hotfix/*`, `support/*`) não foi adotado — resolve um problema de cadência de release versionada que este projeto não tem ainda (sem ambiente de produção). Gatilho para revisitar: produção existir de fato.
+
+## Mudanças pequenas
+
+"Mudança pequena" altera o nível de formalidade do PR, não a exigência de PR. Um PR pequeno pode ter descrição curta, poucos arquivos, checks proporcionais, self-review e self-merge — mas ainda precisa de branch, diff revisável, intenção registrada, validações aplicáveis e integração explícita. Não existem exceções automáticas por tipo de arquivo (typo, documentação, comentário, contexto, skill, configuração, ajuste de workflow) — o tamanho da mudança determina o tamanho do PR, nunca a dispensa do PR.
 
 ## Commits — Conventional Commits
 
@@ -44,7 +94,7 @@ Abrir cedo em mudanças relevantes, preferencialmente como draft — o PR deve r
 
 Estrutura recomendada: Contexto, Problema, Hipótese/decisão proposta, Escopo, Fora de escopo, Alternativas consideradas, Riscos, Critérios de aceitação, Obrigações de prova, Alterações realizadas, Evidências, Participação da IA, Decisões e intervenções humanas, Rollback, Documentação relacionada, Estudo de caso relacionado. Nem toda seção precisa ser extensa.
 
-**O PR não duplica o estudo de caso**: PR é revisão e aprovação da mudança; estudo de caso é evolução do raciocínio; ADR é decisão arquitetural vigente; backlog é trabalho pendente. Usar links entre eles.
+**O PR não duplica o estudo de caso**: PR é revisão e aprovação da mudança; estudo de caso é evolução do raciocínio; ADR é decisão arquitetural vigente; backlog é trabalho pendente; work item (`docs/engineering/work-items/`) é o pacote de instrução da mudança, quando existir um. Usar links entre eles, nunca reproduzir o conteúdo de um dentro do outro. Commit não substitui PR — é a unidade de granularidade dentro dele.
 
 ## Revisão de PR
 
@@ -69,7 +119,7 @@ Uma tarefa está concluída quando as obrigações aplicáveis estiverem satisfe
 ## Fluxo recomendado
 
 ```text
-Backlog ou problema → branch/PR quando necessário → hipótese e critérios de aceitação
+Backlog ou problema → branch curta e pull request → hipótese e critérios de aceitação
 → caso do livro, se aplicável → implementação em ciclos pequenos → evidências e revisão
 → atualização de ADR/documentação → merge → encerramento ou revisão futura do caso
 ```
