@@ -44,7 +44,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     resource: '/admin/categorias',
     stageVariables: null,
     ...overrides,
-  } as APIGatewayProxyEvent;
+  };
 }
 
 const SAMPLE_CATEGORIA = { categoria_slug: 'devops-automacao', nome: 'DevOps & Automação' };

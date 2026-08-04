@@ -70,7 +70,7 @@ class InvalidNextTokenError extends Error {}
 function parseNextToken(token: string | undefined): Record<string, unknown> | undefined {
   if (!token) return undefined;
   try {
-    const decoded = JSON.parse(atob(token));
+    const decoded: unknown = JSON.parse(atob(token));
     if (!decoded || typeof decoded !== "object" || Array.isArray(decoded)) {
       throw new Error("not an object");
     }

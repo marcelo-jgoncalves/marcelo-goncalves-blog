@@ -88,7 +88,8 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
 
 async function listCategorias(requestId: string) {
   const result = await dynamo.send(new ScanCommand({ TableName: TABLE_NAME }));
-  const items = (result.Items || []).sort((a, b) => (a.nome ?? "").localeCompare(b.nome ?? ""));
+  const nomeOf = (item: Record<string, unknown>) => (typeof item.nome === "string" ? item.nome : "");
+  const items = (result.Items || []).sort((a, b) => nomeOf(a).localeCompare(nomeOf(b)));
   logger.info("categorias_listed", { requestId, count: items.length });
   return { statusCode: 200, body: JSON.stringify({ items, count: items.length }), headers };
 }

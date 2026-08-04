@@ -42,7 +42,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     resource: '/posts',
     stageVariables: null,
     ...overrides,
-  } as APIGatewayProxyEvent;
+  };
 }
 
 const POST_A = { slug: 'post-a', status: 'Publicado', titulo: 'Post A' };

@@ -49,7 +49,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     resource: '/admin/session',
     stageVariables: null,
     ...overrides,
-  } as APIGatewayProxyEvent;
+  };
 }
 
 describe('adminSession handler', () => {
