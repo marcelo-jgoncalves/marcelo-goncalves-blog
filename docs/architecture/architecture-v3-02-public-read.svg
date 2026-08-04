@@ -25,162 +25,162 @@
 <path fill="#e5f5fd" stroke="#aeb6be" d="M20,-32.5C20,-32.5 386,-32.5 386,-32.5 392,-32.5 398,-38.5 398,-44.5 398,-44.5 398,-197.05 398,-197.05 398,-203.05 392,-209.05 386,-209.05 386,-209.05 20,-209.05 20,-209.05 14,-209.05 8,-203.05 8,-197.05 8,-197.05 8,-44.5 8,-44.5 8,-38.5 14,-32.5 20,-32.5"/>
 <text xml:space="preserve" text-anchor="middle" x="45.25" y="-193.65" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">DynamoDB</text>
 </g>
-<!-- d6aab82cdd914acd8f987502ea94f723 -->
+<!-- 378df2255347420282c8297e471ee6a9 -->
 <g id="node1" class="node">
-<title>d6aab82cdd914acd8f987502ea94f723</title>
+<title>378df2255347420282c8297e471ee6a9</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/onprem/client\users.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="220.6" y="-1411.25"/>
 <text xml:space="preserve" text-anchor="middle" x="271" y="-1296.8" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Visitor</text>
 </g>
-<!-- ec14e72f7a274cb7a7dc35fcdc016d7e -->
+<!-- afa6a752b3f2465a8369efd2522cab02 -->
 <g id="node2" class="node">
-<title>ec14e72f7a274cb7a7dc35fcdc016d7e</title>
+<title>afa6a752b3f2465a8369efd2522cab02</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/network\cloudfront.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="220.6" y="-1181.55"/>
 <text xml:space="preserve" text-anchor="middle" x="271" y="-1068.45" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">CloudFront</text>
 <text xml:space="preserve" text-anchor="middle" x="271" y="-1052.7" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">Public frontend</text>
 </g>
-<!-- d6aab82cdd914acd8f987502ea94f723&#45;&gt;ec14e72f7a274cb7a7dc35fcdc016d7e -->
+<!-- 378df2255347420282c8297e471ee6a9&#45;&gt;afa6a752b3f2465a8369efd2522cab02 -->
 <g id="edge1" class="edge">
-<title>d6aab82cdd914acd8f987502ea94f723&#45;&gt;ec14e72f7a274cb7a7dc35fcdc016d7e</title>
+<title>378df2255347420282c8297e471ee6a9&#45;&gt;afa6a752b3f2465a8369efd2522cab02</title>
 <path fill="none" stroke="#7b8894" d="M271,-1292.46C271,-1271.37 271,-1247.71 271,-1225.18"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="274.5,-1225.38 271,-1215.38 267.5,-1225.38 274.5,-1225.38"/>
 <text xml:space="preserve" text-anchor="middle" x="290.5" y="-1249.1" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">HTTPS</text>
 </g>
-<!-- e0dd8a2ff2dc46acbd0b9d52b15f0da8 -->
+<!-- 80558ad2d6a8499c8bb83dc66eaedc13 -->
 <g id="node3" class="node">
-<title>e0dd8a2ff2dc46acbd0b9d52b15f0da8</title>
+<title>80558ad2d6a8499c8bb83dc66eaedc13</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="152.6" y="-912.2"/>
 <text xml:space="preserve" text-anchor="middle" x="203" y="-799.1" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">nextjs&#45;server</text>
 <text xml:space="preserve" text-anchor="middle" x="203" y="-783.35" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(SSR/ISR)</text>
 </g>
-<!-- ec14e72f7a274cb7a7dc35fcdc016d7e&#45;&gt;e0dd8a2ff2dc46acbd0b9d52b15f0da8 -->
+<!-- afa6a752b3f2465a8369efd2522cab02&#45;&gt;80558ad2d6a8499c8bb83dc66eaedc13 -->
 <g id="edge3" class="edge">
-<title>ec14e72f7a274cb7a7dc35fcdc016d7e&#45;&gt;e0dd8a2ff2dc46acbd0b9d52b15f0da8</title>
+<title>afa6a752b3f2465a8369efd2522cab02&#45;&gt;80558ad2d6a8499c8bb83dc66eaedc13</title>
 <path fill="none" stroke="#7b8894" d="M220.69,-1050.83C215.57,-1039.92 211.12,-1028.59 208,-1017.35 202.58,-997.82 199.92,-976.36 198.86,-955.81"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="202.37,-955.88 198.49,-946.02 195.37,-956.15 202.37,-955.88"/>
 <text xml:space="preserve" text-anchor="middle" x="250" y="-1005" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">OAC + SigV4</text>
 <text xml:space="preserve" text-anchor="middle" x="250" y="-988.5" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">(Lambda URL)</text>
 </g>
-<!-- 9d5735f4cb66450d98fe3a515011f50b -->
+<!-- 115da8cc49434124b2d3394b3259b92c -->
 <g id="node4" class="node">
-<title>9d5735f4cb66450d98fe3a515011f50b</title>
+<title>115da8cc49434124b2d3394b3259b92c</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/storage\simple-storage-service-s3.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="289.6" y="-912.2"/>
 <text xml:space="preserve" text-anchor="middle" x="340" y="-799.1" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">S3: assets</text>
 <text xml:space="preserve" text-anchor="middle" x="340" y="-783.35" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(static + media/*)</text>
 </g>
-<!-- ec14e72f7a274cb7a7dc35fcdc016d7e&#45;&gt;9d5735f4cb66450d98fe3a515011f50b -->
+<!-- afa6a752b3f2465a8369efd2522cab02&#45;&gt;115da8cc49434124b2d3394b3259b92c -->
 <g id="edge2" class="edge">
-<title>ec14e72f7a274cb7a7dc35fcdc016d7e&#45;&gt;9d5735f4cb66450d98fe3a515011f50b</title>
+<title>afa6a752b3f2465a8369efd2522cab02&#45;&gt;115da8cc49434124b2d3394b3259b92c</title>
 <path fill="none" stroke="#7b8894" d="M292.08,-1048.48C299.67,-1019.08 308.28,-985.7 316.09,-955.43"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="319.44,-956.45 318.55,-945.89 312.67,-954.7 319.44,-956.45"/>
 <text xml:space="preserve" text-anchor="middle" x="333.82" y="-996.75" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">OAC (S3)</text>
 </g>
-<!-- a440c65de2bb4da0aa099981b880f546 -->
+<!-- 5694cc62626e4ca7ac9739338d39d746 -->
 <g id="node5" class="node">
-<title>a440c65de2bb4da0aa099981b880f546</title>
+<title>5694cc62626e4ca7ac9739338d39d746</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/network\api-gateway.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="152.6" y="-682.5"/>
 <text xml:space="preserve" text-anchor="middle" x="203" y="-568.05" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">API Gateway</text>
 </g>
-<!-- e0dd8a2ff2dc46acbd0b9d52b15f0da8&#45;&gt;a440c65de2bb4da0aa099981b880f546 -->
+<!-- 80558ad2d6a8499c8bb83dc66eaedc13&#45;&gt;5694cc62626e4ca7ac9739338d39d746 -->
 <g id="edge4" class="edge">
-<title>e0dd8a2ff2dc46acbd0b9d52b15f0da8&#45;&gt;a440c65de2bb4da0aa099981b880f546</title>
+<title>80558ad2d6a8499c8bb83dc66eaedc13&#45;&gt;5694cc62626e4ca7ac9739338d39d746</title>
 <path fill="none" stroke="#7b8894" d="M203,-779.24C203,-757.18 203,-733.36 203,-711.48"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="206.5,-711.74 203,-701.74 199.5,-711.74 206.5,-711.74"/>
 <text xml:space="preserve" text-anchor="middle" x="243.88" y="-735.65" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">fetch API_URL</text>
 </g>
-<!-- 6d2889f0e2eb456fb016e81739efce58 -->
+<!-- d3813532a8e84c579a01aa9ceb2fb11c -->
 <g id="node6" class="node">
-<title>6d2889f0e2eb456fb016e81739efce58</title>
+<title>d3813532a8e84c579a01aa9ceb2fb11c</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="152.6" y="-396.65"/>
 <text xml:space="preserve" text-anchor="middle" x="203" y="-282.2" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">getPost</text>
 </g>
-<!-- a440c65de2bb4da0aa099981b880f546&#45;&gt;6d2889f0e2eb456fb016e81739efce58 -->
+<!-- 5694cc62626e4ca7ac9739338d39d746&#45;&gt;d3813532a8e84c579a01aa9ceb2fb11c -->
 <g id="edge5" class="edge">
-<title>a440c65de2bb4da0aa099981b880f546&#45;&gt;6d2889f0e2eb456fb016e81739efce58</title>
+<title>5694cc62626e4ca7ac9739338d39d746&#45;&gt;d3813532a8e84c579a01aa9ceb2fb11c</title>
 <path fill="none" stroke="#7b8894" d="M199.9,-563.89C199.53,-553.45 199.2,-542.79 199,-532.7 198.29,-497.71 198.9,-459 199.84,-426.04"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="203.34,-426.25 200.14,-416.15 196.34,-426.04 203.34,-426.25"/>
 <text xml:space="preserve" text-anchor="middle" x="248.5" y="-503.85" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">GET /post/{slug}</text>
 </g>
-<!-- e10492dfbb704b58b044a826bdc1d81d -->
+<!-- 9ccd0dacaa274301b4156348b3576910 -->
 <g id="node7" class="node">
-<title>e10492dfbb704b58b044a826bdc1d81d</title>
+<title>9ccd0dacaa274301b4156348b3576910</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="15.6" y="-396.65"/>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-284.9" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">getPosts</text>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-269.15" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">(recent, popular, articles,</text>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-253.4" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">category, search, project)</text>
 </g>
-<!-- a440c65de2bb4da0aa099981b880f546&#45;&gt;e10492dfbb704b58b044a826bdc1d81d -->
+<!-- 5694cc62626e4ca7ac9739338d39d746&#45;&gt;9ccd0dacaa274301b4156348b3576910 -->
 <g id="edge6" class="edge">
-<title>a440c65de2bb4da0aa099981b880f546&#45;&gt;e10492dfbb704b58b044a826bdc1d81d</title>
+<title>5694cc62626e4ca7ac9739338d39d746&#45;&gt;9ccd0dacaa274301b4156348b3576910</title>
 <path fill="none" stroke="#7b8894" d="M152.7,-617.29C112.27,-603.25 58.14,-577.09 32.5,-532.7 18.84,-509.04 17.65,-481.09 22.26,-454.16"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="25.64,-455.08 24.18,-444.59 18.78,-453.7 25.64,-455.08"/>
 <text xml:space="preserve" text-anchor="middle" x="111.25" y="-520.35" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">GET /posts/recentes,</text>
 <text xml:space="preserve" text-anchor="middle" x="111.25" y="-503.85" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/posts/populares, /artigos,</text>
 <text xml:space="preserve" text-anchor="middle" x="111.25" y="-487.35" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">/categoria, /busca, /projeto</text>
 </g>
-<!-- c6df2cd51e144592bfd6cfe4e2633097 -->
+<!-- 9a942bc076444476a67fb66c0131ee3b -->
 <g id="node8" class="node">
-<title>c6df2cd51e144592bfd6cfe4e2633097</title>
+<title>9a942bc076444476a67fb66c0131ee3b</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/compute\lambda.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="289.6" y="-396.65"/>
 <text xml:space="preserve" text-anchor="middle" x="340" y="-282.2" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">getAuthor</text>
 </g>
-<!-- a440c65de2bb4da0aa099981b880f546&#45;&gt;c6df2cd51e144592bfd6cfe4e2633097 -->
+<!-- 5694cc62626e4ca7ac9739338d39d746&#45;&gt;9a942bc076444476a67fb66c0131ee3b -->
 <g id="edge7" class="edge">
-<title>a440c65de2bb4da0aa099981b880f546&#45;&gt;c6df2cd51e144592bfd6cfe4e2633097</title>
+<title>5694cc62626e4ca7ac9739338d39d746&#45;&gt;9a942bc076444476a67fb66c0131ee3b</title>
 <path fill="none" stroke="#7b8894" d="M253.39,-592.5C271.66,-576 290.79,-555.31 303,-532.7 320.67,-499.99 329.94,-459.93 334.8,-425.42"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="338.21,-426.3 336.03,-415.93 331.27,-425.4 338.21,-426.3"/>
 <text xml:space="preserve" text-anchor="middle" x="367.56" y="-503.85" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">GET /autor/{id}</text>
 </g>
-<!-- 37a922367b67405ca841f527f589898d -->
+<!-- 16cbd7c5e92e4873a3017058838042a0 -->
 <g id="node9" class="node">
-<title>37a922367b67405ca841f527f589898d</title>
+<title>16cbd7c5e92e4873a3017058838042a0</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="15.6" y="-159.3"/>
 <text xml:space="preserve" text-anchor="middle" x="66" y="-44.85" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">posts</text>
 </g>
-<!-- 6d2889f0e2eb456fb016e81739efce58&#45;&gt;37a922367b67405ca841f527f589898d -->
+<!-- d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;16cbd7c5e92e4873a3017058838042a0 -->
 <g id="edge8" class="edge">
-<title>6d2889f0e2eb456fb016e81739efce58&#45;&gt;37a922367b67405ca841f527f589898d</title>
+<title>d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;16cbd7c5e92e4873a3017058838042a0</title>
 <path fill="none" stroke="#7b8894" d="M163.92,-278.12C147.37,-249.68 127.98,-216.38 110.84,-186.94"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="113.94,-185.31 105.89,-178.42 107.89,-188.83 113.94,-185.31"/>
 </g>
-<!-- ce77c71eccdb463da46c4524af3ef001 -->
+<!-- 3e854dc5b95c4caeaf2b617db661e81a -->
 <g id="node10" class="node">
-<title>ce77c71eccdb463da46c4524af3ef001</title>
+<title>3e854dc5b95c4caeaf2b617db661e81a</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="289.6" y="-159.3"/>
 <text xml:space="preserve" text-anchor="middle" x="340" y="-44.85" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">autores</text>
 </g>
-<!-- 6d2889f0e2eb456fb016e81739efce58&#45;&gt;ce77c71eccdb463da46c4524af3ef001 -->
+<!-- d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;3e854dc5b95c4caeaf2b617db661e81a -->
 <g id="edge9" class="edge">
-<title>6d2889f0e2eb456fb016e81739efce58&#45;&gt;ce77c71eccdb463da46c4524af3ef001</title>
+<title>d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;3e854dc5b95c4caeaf2b617db661e81a</title>
 <path fill="none" stroke="#7b8894" d="M242.08,-278.12C258.63,-249.68 278.02,-216.38 295.16,-186.94"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="298.11,-188.83 300.11,-178.42 292.06,-185.31 298.11,-188.83"/>
 </g>
-<!-- c0f1c279f870460f84c1c738315365ac -->
+<!-- 9c097a18ce724ade8c37d64a344dc993 -->
 <g id="node11" class="node">
-<title>c0f1c279f870460f84c1c738315365ac</title>
+<title>9c097a18ce724ade8c37d64a344dc993</title>
 <image xlink:href="C:\Users\Usuario\AppData\Roaming\Python\Python312\site-packages\resources/aws/database\dynamodb.png" width="100.8px" height="100.8px" preserveAspectRatio="xMinYMin meet" x="152.6" y="-159.3"/>
 <text xml:space="preserve" text-anchor="middle" x="203" y="-44.85" font-family="Sans-Serif" font-size="12.00" fill="#2d3436">categorias</text>
 </g>
-<!-- 6d2889f0e2eb456fb016e81739efce58&#45;&gt;c0f1c279f870460f84c1c738315365ac -->
+<!-- d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;9c097a18ce724ade8c37d64a344dc993 -->
 <g id="edge10" class="edge">
-<title>6d2889f0e2eb456fb016e81739efce58&#45;&gt;c0f1c279f870460f84c1c738315365ac</title>
+<title>d3813532a8e84c579a01aa9ceb2fb11c&#45;&gt;9c097a18ce724ade8c37d64a344dc993</title>
 <path fill="none" stroke="#7b8894" d="M203,-278.12C203,-250.18 203,-217.53 203,-188.48"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="206.5,-188.63 203,-178.63 199.5,-188.63 206.5,-188.63"/>
 </g>
-<!-- e10492dfbb704b58b044a826bdc1d81d&#45;&gt;37a922367b67405ca841f527f589898d -->
+<!-- 9ccd0dacaa274301b4156348b3576910&#45;&gt;16cbd7c5e92e4873a3017058838042a0 -->
 <g id="edge11" class="edge">
-<title>e10492dfbb704b58b044a826bdc1d81d&#45;&gt;37a922367b67405ca841f527f589898d</title>
+<title>9ccd0dacaa274301b4156348b3576910&#45;&gt;16cbd7c5e92e4873a3017058838042a0</title>
 <path fill="none" stroke="#7b8894" d="M66,-249.18C66,-229 66,-207.93 66,-188.47"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="69.5,-188.74 66,-178.74 62.5,-188.74 69.5,-188.74"/>
 </g>
-<!-- e10492dfbb704b58b044a826bdc1d81d&#45;&gt;c0f1c279f870460f84c1c738315365ac -->
+<!-- 9ccd0dacaa274301b4156348b3576910&#45;&gt;9c097a18ce724ade8c37d64a344dc993 -->
 <g id="edge12" class="edge">
-<title>e10492dfbb704b58b044a826bdc1d81d&#45;&gt;c0f1c279f870460f84c1c738315365ac</title>
+<title>9ccd0dacaa274301b4156348b3576910&#45;&gt;9c097a18ce724ade8c37d64a344dc993</title>
 <path fill="none" stroke="#7b8894" d="M116.24,-258.95C130,-235.3 144.83,-209.83 158.26,-186.75"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="161.16,-188.73 163.17,-178.33 155.11,-185.21 161.16,-188.73"/>
 </g>
-<!-- c6df2cd51e144592bfd6cfe4e2633097&#45;&gt;ce77c71eccdb463da46c4524af3ef001 -->
+<!-- 9a942bc076444476a67fb66c0131ee3b&#45;&gt;3e854dc5b95c4caeaf2b617db661e81a -->
 <g id="edge13" class="edge">
-<title>c6df2cd51e144592bfd6cfe4e2633097&#45;&gt;ce77c71eccdb463da46c4524af3ef001</title>
+<title>9a942bc076444476a67fb66c0131ee3b&#45;&gt;3e854dc5b95c4caeaf2b617db661e81a</title>
 <path fill="none" stroke="#7b8894" d="M340,-278.12C340,-250.18 340,-217.53 340,-188.48"/>
 <polygon fill="#7b8894" stroke="#7b8894" points="343.5,-188.63 340,-178.63 336.5,-188.63 343.5,-188.63"/>
 </g>

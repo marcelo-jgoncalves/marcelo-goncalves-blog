@@ -72,10 +72,10 @@ with new_diagram("01-overview", "Marcelo Gonçalves Platform - Architecture over
 
     apigw = APIGateway("API Gateway\n(REST, stage v1)")
 
-    with Cluster("Compute (10 Lambdas)"):
+    with Cluster("Compute (12 Lambdas)"):
         lambdas_public = Lambda("Public reads\n(getPost, getPosts, getAuthor)")
         lambdas_admin = Lambda("Admin CRUD + BFF\n(adminPosts/Authors/Categorias,\nadminSession, adminAuthorizer,\nmediaUpload)")
-        lambdas_async = Lambda("Async\n(postScheduler,\nimageProcessor)")
+        lambdas_async = Lambda("Async\n(postScheduler, imageProcessor,\npostCounterReconciler)")
 
     with Cluster("Data & Media"):
         data = Dynamodb("DynamoDB\n(posts, autores,\ncategorias, admin_sessions)")
@@ -219,6 +219,9 @@ with new_diagram("04-media-async", "Media pipeline and scheduled publishing"):
     eventbridge = Eventbridge("EventBridge\nSchedule (15min)")
     post_scheduler = Lambda("postScheduler")
 
+    eventbridge_reconciler = Eventbridge("EventBridge\nSchedule (daily)")
+    post_counter_reconciler = Lambda("postCounterReconciler\n(no DLQ yet - a missed run\nis caught the next day)")
+
     posts_table = Dynamodb("posts")
     cf_public = CloudFront("CloudFront\nPublic frontend")
 
@@ -233,6 +236,9 @@ with new_diagram("04-media-async", "Media pipeline and scheduled publishing"):
 
     eventbridge >> Edge(label="rate(15min)") >> post_scheduler
     post_scheduler >> Edge(label="Query/UpdateItem\n(scheduled -> published)") >> posts_table
+
+    eventbridge_reconciler >> Edge(label="rate(1 day)") >> post_counter_reconciler
+    post_counter_reconciler >> Edge(label="Scan + recompute\n(self-heals drifted counters)") >> posts_table
 
     image_processor >> Edge(label="CreateInvalidation", style="dashed", color="gray40") >> cf_public
     post_scheduler >> Edge(label="CreateInvalidation", style="dashed", color="gray40") >> cf_public
@@ -250,7 +256,7 @@ with new_diagram("05-observability", "Observability and security (cross-cutting)
     with Cluster("Monitored surfaces"):
         apigw = APIGateway("API Gateway")
         nextjs = Lambda("nextjs-server")
-        lambdas = Lambda("10 Lambdas\n(errors, throttles, duration)")
+        lambdas = Lambda("12 Lambdas\n(errors, throttles, duration)")
 
     with Cluster("CloudWatch"):
         dashboard = Cloudwatch("Dashboard\n(golden signals)")

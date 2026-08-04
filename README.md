@@ -83,7 +83,7 @@ Architecture, technical decisions, security controls, acceptance criteria and fi
 
 ## Architecture
 
-Source of truth: `infra/` (Terraform modules). Diagrams are generated with the Python [`diagrams`](https://diagrams.mingrammer.com/) library — see `scripts/generate-architecture-diagrams-v3.py`. Re-run the script whenever the infrastructure topology changes materially (the diagrams below predate the `postCounterReconciler` Lambda described in the next section).
+Source of truth: `infra/` (Terraform modules). Diagrams are generated with the Python [`diagrams`](https://diagrams.mingrammer.com/) library — see `scripts/generate-architecture-diagrams-v3.py`. Re-run the script whenever the infrastructure topology changes materially.
 
 ### Overview
 
