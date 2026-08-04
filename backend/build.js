@@ -25,23 +25,25 @@ async function build() {
       bundle: true,
       minify: true,
       platform: 'node',
-      target: 'node20',
+      target: 'node24',
       format: 'cjs',
       outfile: path.join(funcDistDir, 'index.js'),
-      // 'sharp' is external because it's installed separately below (needs Linux binaries)
-      // '@aws-sdk' is external because it already ships with the Lambda runtime
-      external: ['@aws-sdk/*', 'sharp'],
+      // 'sharp' is external because it's installed separately below (needs Linux binaries).
+      // The AWS SDK is bundled (not external): relying on the runtime's built-in
+      // version ties production behavior to whatever SDK version AWS ships that
+      // month, drifting from package-lock.json/tests/what's actually built here.
+      external: ['sharp'],
     });
 
     if (func === 'imageProcessor') {
         console.log(`🐧 Installing Linux binaries for Sharp...`);
-        // Temporary package.json scoped to sharp only, so npm install below doesn't pull the rest of the project's deps
-        fs.writeFileSync(
-            path.join(funcDistDir, 'package.json'),
-            JSON.stringify({ dependencies: { sharp: "^0.35.3" } }) // libvips CVEs fixed in >=0.35.0
-        );
+        // Pinned exact version + committed lockfile (backend/lambda-dependencies) so every
+        // build resolves the same Sharp/libvips binaries via `npm ci`, not a version range.
+        const lambdaDepsDir = path.join(__dirname, 'lambda-dependencies');
+        fs.copyFileSync(path.join(lambdaDepsDir, 'package.json'), path.join(funcDistDir, 'package.json'));
+        fs.copyFileSync(path.join(lambdaDepsDir, 'package-lock.json'), path.join(funcDistDir, 'package-lock.json'));
 
-        execSync('npm install --os=linux --cpu=x64 --omit=dev', { cwd: funcDistDir });
+        execSync('npm ci --os=linux --cpu=x64 --omit=dev', { cwd: funcDistDir });
     }
 
     const zipName = `${func}.zip`;
