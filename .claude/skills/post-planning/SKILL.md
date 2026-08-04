@@ -1,10 +1,10 @@
 ---
-name: post-planejamento
+name: post-planning
 description: Gera um planejamento de postagem (pauta/outline, não o texto final) para o blog, seguindo o modelo de 14 seções já estabelecido na série. Acionar manualmente, no momento em que uma decisão/investigação real da sessão parecer boa matéria-prima de post — não é automático.
-trigger: "/post-planejamento", pedido explícito para criar planejamento de postagem, pauta ou outline de post
+trigger: "/post-planning", pedido explícito para criar planejamento de postagem, pauta ou outline de post
 ---
 
-# Post Planejamento — Gerador de pauta de postagem no padrão da série
+# Post Planning — Gerador de pauta de postagem no padrão da série
 
 Gera um arquivo de planejamento de postagem (pauta/outline) em `editorial/plans/YYYY/MM/`, seguindo exatamente o modelo de 14 seções consolidado nos arquivos `21`, `22`, `23` da série histórica (hoje em `projects/publishing-content/postagens/`, fora do repositório — consultar lá como referência de padrão, não como destino de novos arquivos). **Não escreve o texto final do post** — só o planejamento que orienta quem escrever depois.
 
