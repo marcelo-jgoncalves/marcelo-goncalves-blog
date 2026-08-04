@@ -28,4 +28,4 @@ docs/book/cases/evidence/CASE-NNN/
 
 Esse subdiretório é opcional e criado sob demanda — não existe um por padrão para cada caso, e um diretório vazio nunca deve ser criado. As regras completas sobre quando criar cada arquivo e como preservar evidência de antes e depois estão em `docs/book/capture-protocol.md`, seção "Evidência de antes e depois" — não duplicadas aqui.
 
-Os protocolos detalhados serão definidos em uma etapa posterior.
+As regras completas de captura, avaliação de gatilhos e ciclo de vida de um caso estão em `docs/book/capture-protocol.md`.
