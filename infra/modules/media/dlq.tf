@@ -72,7 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "image_processor_dlq_depth" {
   period              = 300
   statistic           = "Maximum"
   threshold           = 1
-  alarm_description   = "Event lost by imageProcessor after retries — inspect the DLQ and reprocess (image variants not generated)"
+  alarm_description   = "Event lost by imageProcessor after retries: inspect the DLQ and reprocess (image variants not generated)"
   treat_missing_data  = "notBreaching"
 
   dimensions = {

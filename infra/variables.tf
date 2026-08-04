@@ -75,7 +75,7 @@ variable "dlq_alert_email" {
 }
 
 variable "enable_synthetic_canary" {
-  description = "Creates a CloudWatch Synthetics canary (heartbeat) checking the public URL every 15min. Recurring cost (~US$3-4/month) regardless of traffic/deploy — a separate flag from enable_cloudwatch_alarms, so it can be toggled in dev on demand."
+  description = "Creates a CloudWatch Synthetics canary (heartbeat) checking the public URL every 15min. Recurring cost (~US$3-4/month) regardless of traffic/deploy, a separate flag from enable_cloudwatch_alarms, so it can be toggled in dev on demand."
   type        = bool
   default     = false
 }
@@ -99,18 +99,18 @@ variable "budget_alert_email" {
 }
 
 variable "enable_guardduty" {
-  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default — enable when the production environment is created."
+  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default, enable when the production environment is created."
   type        = bool
   default     = false
 }
 
 variable "frontend_cloudfront_distribution_id" {
-  description = "CloudFront distribution ID of the frontend (module.frontend), used by adminPosts/postScheduler to invalidate cache on demand. Literal value, not a module reference — module.lambda -> module.frontend -> module.api-gateway -> module.lambda would create a Terraform cycle. Update manually if the distribution is recreated (rare)."
+  description = "CloudFront distribution ID of the frontend (module.frontend), used by adminPosts/postScheduler to invalidate cache on demand. Literal value, not a module reference: module.lambda -> module.frontend -> module.api-gateway -> module.lambda would create a Terraform cycle. Update manually if the distribution is recreated (rare)."
   type        = string
 }
 
 variable "admin_api_gateway_domain_name" {
-  description = "API Gateway domain (e.g. abc123.execute-api.us-east-1.amazonaws.com), used by the admin CloudFront (module.admin) as the origin of the same-origin /admin/* proxy. Literal value, not a module reference — module.admin -> module.api-gateway -> module.lambda -> module.admin (via admin_origin) would create a Terraform cycle. Update manually if the REST API is recreated (rare)."
+  description = "API Gateway domain (e.g. abc123.execute-api.us-east-1.amazonaws.com), used by the admin CloudFront (module.admin) as the origin of the same-origin /admin/* proxy. Literal value, not a module reference: module.admin -> module.api-gateway -> module.lambda -> module.admin (via admin_origin) would create a Terraform cycle. Update manually if the REST API is recreated (rare)."
   type        = string
 }
 

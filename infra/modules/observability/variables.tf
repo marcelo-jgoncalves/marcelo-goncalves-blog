@@ -18,7 +18,7 @@ variable "enable_cloudwatch_alarms" {
 }
 
 variable "enable_synthetic_canary" {
-  description = "Creates a CloudWatch Synthetics canary (heartbeat) that checks the public URL every 15min. Cost ~US$3-4/month when active — turn off in dev when not validating."
+  description = "Creates a CloudWatch Synthetics canary (heartbeat) that checks the public URL every 15min. Cost ~US$3-4/month when active, turn off in dev when not validating."
   type        = bool
   default     = false
 }

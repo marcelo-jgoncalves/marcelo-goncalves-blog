@@ -71,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "post_scheduler_dlq_depth" {
   period              = 300
   statistic           = "Maximum"
   threshold           = 1
-  alarm_description   = "Event lost by postScheduler after retries — inspect the DLQ and reprocess (scheduled post not published)"
+  alarm_description   = "Event lost by postScheduler after retries: inspect the DLQ and reprocess (scheduled post not published)"
   treat_missing_data  = "notBreaching"
 
   dimensions = {

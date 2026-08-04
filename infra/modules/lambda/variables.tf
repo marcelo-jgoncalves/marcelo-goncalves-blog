@@ -35,7 +35,7 @@ variable "log_level" {
 }
 
 variable "dlq_alert_email" {
-  description = "E-mail notified when the postScheduler DLQ receives a lost event. Independent of enable_cloudwatch_alarms — the DLQ alarm is always on."
+  description = "E-mail notified when the postScheduler DLQ receives a lost event. Independent of enable_cloudwatch_alarms: the DLQ alarm is always on."
   type        = string
   default     = ""
 }

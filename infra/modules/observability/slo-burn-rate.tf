@@ -64,7 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_fast_short" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.fast_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget — short window (5min)"
+  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget, short window (5min)"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -101,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_fast_long" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.fast_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget — long window (1h), confirms the short window"
+  alarm_description   = "Burn rate ${local.fast_burn_rate}x of the availability error budget, long window (1h), confirms the short window"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -150,7 +150,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_slow_short" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.slow_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget — short window (1h)"
+  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget, short window (1h)"
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -187,7 +187,7 @@ resource "aws_cloudwatch_metric_alarm" "availability_burn_slow_long" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   threshold           = local.slow_burn_threshold_pct
-  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget — long window (6h), confirms the short window"
+  alarm_description   = "Burn rate ${local.slow_burn_rate}x of the availability error budget, long window (6h), confirms the short window"
   treat_missing_data  = "notBreaching"
 
   metric_query {

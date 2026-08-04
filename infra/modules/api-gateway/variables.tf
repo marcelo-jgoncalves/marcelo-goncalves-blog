@@ -34,7 +34,7 @@ variable "get_author_function_name" {
 }
 
 variable "admin_origin" {
-  description = "Full origin (https://...) of the admin SPA — the only origin allowed on CORS preflight responses and gateway responses of protected routes"
+  description = "Full origin (https://...) of the admin SPA: the only origin allowed on CORS preflight responses and gateway responses of protected routes"
   type        = string
 }
 

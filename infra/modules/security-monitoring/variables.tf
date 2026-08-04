@@ -14,7 +14,7 @@ variable "log_retention_days" {
 }
 
 variable "enable_guardduty" {
-  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default — enable when the production environment is created."
+  description = "Enables the GuardDuty detector. Has a 30-day free trial; afterward it charges by volume of events analyzed (~a few USD/month). Disabled in dev by default, enable when the production environment is created."
   type        = bool
   default     = false
 }
