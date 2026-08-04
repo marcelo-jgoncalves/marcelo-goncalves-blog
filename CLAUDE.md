@@ -62,11 +62,15 @@ Investigações com valor pedagógico usam o mecanismo de captura de aprendizado
 - **Segurança**: nunca introduzir XSS/SQL injection/command injection; sanitizar toda entrada de usuário na fronteira do sistema.
 - Invariantes técnicos críticos que atravessam componentes (Next.js, DynamoDB, Sharp, CloudFront, variáveis de ambiente, SEO dev): `docs/architecture/system-overview.md`.
 
-## 9. Estratégia de Git e commits
+## 9. Git e integração
 
-Projeto usa Gitflow enxuto (decisão de 2026-08-04). `main` é snapshot estável (sem commit direto). `develop` é a branch de integração cujo push dispara o CD, mas **nunca recebe commit direto** — todo trabalho, mesmo mudança pequena, passa por branch curta (`feature/*`/`fix/*`) a partir de `develop` e pull request de volta para `develop`. Sem `release/*`/`hotfix/*` formais (projeto de mantenedor único). Conventional Commits obrigatório (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:` etc.); nunca atribuir autoria de IA no commit.
+Toda alteração versionada deve ocorrer em uma branch curta e ser integrada por pull request.
 
-Detalhes de PR, revisão, preservação de histórico e Definition of Done: `docs/engineering/standards/git-and-review-workflow.md`. Deploy e ambientes: `docs/operations/deployment.md`.
+Não faça push direto em `develop` ou `main` — inclusive para mudanças pequenas de código, documentação, configuração, contexto ou skills.
+
+Mudanças pequenas podem usar PRs simplificados, mas continuam exigindo branch, revisão do diff e checks aplicáveis. Conventional Commits obrigatório (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:` etc.); nunca atribuir autoria de IA no commit.
+
+Siga a política completa em `docs/engineering/standards/git-and-review-workflow.md`. Deploy e ambientes: `docs/operations/deployment.md`.
 
 ## 10. Mapa das fontes canônicas
 

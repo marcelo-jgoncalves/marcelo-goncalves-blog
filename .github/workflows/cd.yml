@@ -152,10 +152,10 @@ jobs:
         run: npm audit --audit-level=high
         working-directory: frontend
 
-      # Direct pushes to develop are this project's normal flow, so the full
-      # PR CI (deploy.yml) usually never runs — without these two steps the
-      # main delivery path would deploy frontend code that was never tested
-      # or linted.
+      # cd.yml triggers on push to develop (the post-merge state), independent
+      # of whether deploy.yml's PR checks ran on the source branch — without
+      # these two steps here, cd.yml itself would deploy frontend code that
+      # was never tested or linted by this pipeline.
       - name: Lint frontend
         run: npm run lint
         working-directory: frontend
@@ -277,9 +277,10 @@ jobs:
   # ==============================================================
   # JOB 1e: Validate infra (Terraform fmt/validate/TFLint + Trivy config
   # scan) — same checks deploy.yml already runs on PRs against develop, but
-  # deploy.yml rarely runs in this project's normal flow (direct pushes to
-  # develop). Without this job here, TFLint/Trivy never actually gated a
-  # deploy despite existing in the repo.
+  # cd.yml triggers on push to develop independent of which PR (if any) ran
+  # deploy.yml's checks on the source branch. Without this job here,
+  # TFLint/Trivy would never actually gate a deploy despite existing in the
+  # repo.
   # ==============================================================
   validate-infra:
     name: 1e. Validate Infra (Terraform + TFLint + Trivy)
