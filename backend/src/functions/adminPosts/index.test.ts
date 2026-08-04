@@ -49,7 +49,7 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     resource: '/admin/posts',
     stageVariables: null,
     ...overrides,
-  } as APIGatewayProxyEvent;
+  };
 }
 
 // The written Item lives in a different place depending on the write shape:
@@ -153,7 +153,7 @@ describe('adminPosts handler', () => {
 
   describe('GET /admin/posts/:slug (get one)', () => {
     it('returns the post when found', async () => {
-      mockSend.mockResolvedValueOnce({ Item: SAMPLE_POST });
+      mockSend.mockResolvedValueOnce({ Item: { ...SAMPLE_POST, version: 1 } });
 
       const result = await handler(
         event({ httpMethod: 'GET', pathParameters: { slug: 'meu-post' } }),

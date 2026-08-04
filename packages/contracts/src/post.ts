@@ -23,7 +23,7 @@ function parseScheduledDate(raw: string): Date | null {
 // went through postScheduler keeps its now-past data_publicacao_programada
 // forever (publishing never clears the field), so a blanket "must be in the
 // future" check would 400 on every later edit of an already-published post.
-function validateScheduledDate<T extends { status?: PostStatus; data_publicacao_programada?: string | null }>(
+function validateScheduledDate<T extends { status?: PostStatus | undefined; data_publicacao_programada?: string | null | undefined }>(
   data: T,
   ctx: z.RefinementCtx,
 ) {
@@ -65,7 +65,7 @@ function validateScheduledDate<T extends { status?: PostStatus; data_publicacao_
 // the same format. Left untouched when unparseable so a non-"Programado"
 // save with a legacy/garbage value already in the field isn't blocked by a
 // transform that validateScheduledDate above didn't get a chance to reject.
-function normalizeScheduledDate<T extends { data_publicacao_programada?: string }>(data: T): T {
+function normalizeScheduledDate<T extends { data_publicacao_programada?: string | undefined }>(data: T): T {
   if (!data.data_publicacao_programada) return data;
   const parsed = parseScheduledDate(data.data_publicacao_programada);
   if (!parsed) return data;
@@ -190,36 +190,40 @@ export type SavePostResponse = z.infer<typeof savePostResponseSchema>;
 
 // Persisted shape in DynamoDB, a superset of the input schemas
 // (server-computed fields like data_atualizacao and the sparse GSI markers
-// never come from a client request).
-export interface Post {
-  slug: string;
-  titulo: string;
-  conteudo_html: string;
-  resumo: string;
-  subtitulo?: string; // displayed in the post page hero, below the title
-  imagem_destaque_url: string;
-  imagem_destaque_alt_text: string;
-  imagem_lqip_base64?: string; // inline data URI for the LQIP blur placeholder
-  categoria_slug: string;
-  subcategoria_slug?: string; // fixed sub-taxonomy, defined in the category's subcategories
-  subcategoria_nome?: string; // denormalized on save to avoid a join at read time
-  autor_id: string;
-  status: PostStatus;
-  data_publicacao: string; // ISO 8601
-  data_atualizacao: string; // ISO 8601
-  data_publicacao_programada?: string;
-  tempo_leitura_min: number;
-  e_popular: 0 | 1; // DynamoDB has no boolean type for an indexed attribute
-  e_projeto: 0 | 1; // DynamoDB has no boolean type for an indexed attribute
+// never come from a client request). A schema, not a hand-written interface,
+// so a read from DynamoDB can be validated at the boundary (parsePostItem in
+// backend/src/common/postPersistence.ts) instead of trusted via `as Post`.
+export const postEntitySchema = z.object({
+  slug: z.string(),
+  titulo: z.string(),
+  conteudo_html: z.string(),
+  resumo: z.string(),
+  subtitulo: z.string().optional(), // displayed in the post page hero, below the title
+  imagem_destaque_url: z.string(),
+  imagem_destaque_alt_text: z.string(),
+  imagem_lqip_base64: z.string().optional(), // inline data URI for the LQIP blur placeholder
+  categoria_slug: z.string(),
+  subcategoria_slug: z.string().optional(), // fixed sub-taxonomy, defined in the category's subcategories
+  subcategoria_nome: z.string().optional(), // denormalized on save to avoid a join at read time
+  autor_id: z.string(),
+  status: z.enum(POST_STATUSES),
+  data_publicacao: z.string(), // ISO 8601
+  data_atualizacao: z.string(), // ISO 8601
+  data_publicacao_programada: z.string().optional(),
+  tempo_leitura_min: z.number(),
+  e_popular: z.union([z.literal(0), z.literal(1)]), // DynamoDB has no boolean type for an indexed attribute
+  e_projeto: z.union([z.literal(0), z.literal(1)]), // DynamoDB has no boolean type for an indexed attribute
   // Sparse index markers, only exist on the item when the corresponding
   // flag is 1. Hash key of PopularesPorData_v2/ProjetoPorData_v2. Never
   // read/written outside of savePost() and getPosts(): e_popular/e_projeto
   // remain the source of truth for all business logic and UI.
-  e_popular_marker?: "POP";
-  e_projeto_marker?: "PROJ";
-  meta_titulo_seo?: string;
-  meta_descricao_seo?: string;
-  topico?: string; // eyebrow shown on the card (pc-cat), may differ from the category
-  variante_card?: string; // card visual variant (gradient): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
-  version: number; // optimistic concurrency counter, incremented on every save
-}
+  e_popular_marker: z.literal("POP").optional(),
+  e_projeto_marker: z.literal("PROJ").optional(),
+  meta_titulo_seo: z.string().optional(),
+  meta_descricao_seo: z.string().optional(),
+  topico: z.string().optional(), // eyebrow shown on the card (pc-cat), may differ from the category
+  variante_card: z.string().optional(), // card visual variant (gradient): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
+  version: z.number().int(), // optimistic concurrency counter, incremented on every save
+});
+
+export type Post = z.infer<typeof postEntitySchema>;

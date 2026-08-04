@@ -43,8 +43,30 @@ function event(overrides: Partial<APIGatewayProxyEvent> = {}): APIGatewayProxyEv
     resource: '/posts/{slug}',
     stageVariables: null,
     ...overrides,
-  } as APIGatewayProxyEvent;
+  };
 }
+
+// A minimal valid post: every field parsePostItem's schema requires.
+// "post not found" tests below don't need this (Rascunho/Programado are
+// rejected by the status check before parsePostItem ever runs), but every
+// "post found" test does, since a real Publicado item always has all of it.
+const BASE_PUBLISHED_POST = {
+  slug: 'test-slug',
+  titulo: 'My Post',
+  conteudo_html: '<p>Content</p>',
+  resumo: 'Resumo',
+  imagem_destaque_url: 'https://example.com/img.jpg',
+  imagem_destaque_alt_text: 'Alt text',
+  categoria_slug: 'aws',
+  autor_id: 'marcelo-goncalves',
+  status: 'Publicado',
+  data_publicacao: '2026-01-01T00:00:00.000Z',
+  data_atualizacao: '2026-01-01T00:00:00.000Z',
+  tempo_leitura_min: 5,
+  e_popular: 0,
+  e_projeto: 0,
+  version: 1,
+};
 
 beforeAll(() => {
   process.env.POSTS_TABLE = 'test-posts-table';
@@ -96,18 +118,17 @@ describe('getPost handler', () => {
 
   describe('post found', () => {
     it('returns 200 with post data when status is Publicado', async () => {
-      const post = { slug: 'test-slug', status: 'Publicado', titulo: 'My Post' };
-      mockSend.mockResolvedValueOnce({ Item: post });
+      mockSend.mockResolvedValueOnce({ Item: BASE_PUBLISHED_POST });
 
       const result = await handler(event(), ctx, jest.fn());
 
       expect(result?.statusCode).toBe(200);
       const body = JSON.parse(result?.body ?? '{}');
-      expect(body.post).toEqual(post);
+      expect(body.post).toEqual(BASE_PUBLISHED_POST);
     });
 
     it('calls DynamoDB with correct key', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      mockSend.mockResolvedValueOnce({ Item: BASE_PUBLISHED_POST });
       await handler(event(), ctx, jest.fn());
 
       const sentCommand = mockSend.mock.calls[0][0];
@@ -115,14 +136,14 @@ describe('getPost handler', () => {
     });
 
     it('response includes CORS headers', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      mockSend.mockResolvedValueOnce({ Item: BASE_PUBLISHED_POST });
       const result = await handler(event(), ctx, jest.fn());
       expect(result?.headers?.['Access-Control-Allow-Origin']).toBe('*');
     });
 
     it('anexa category com o nome real da tabela categorias, não o slug', async () => {
       mockSend.mockResolvedValueOnce({
-        Item: { slug: 'test-slug', status: 'Publicado', categoria_slug: 'devops-automacao' },
+        Item: { ...BASE_PUBLISHED_POST, categoria_slug: 'devops-automacao' },
       });
       mockSend.mockResolvedValueOnce({
         Items: [{ categoria_slug: 'devops-automacao', nome: 'DevOps & Automação' }],
@@ -135,7 +156,7 @@ describe('getPost handler', () => {
     });
 
     it('omite category quando o post não tem categoria_slug correspondente', async () => {
-      mockSend.mockResolvedValueOnce({ Item: { slug: 'test-slug', status: 'Publicado' } });
+      mockSend.mockResolvedValueOnce({ Item: BASE_PUBLISHED_POST });
       mockSend.mockResolvedValueOnce({ Items: [] });
 
       const result = await handler(event(), ctx, jest.fn());
