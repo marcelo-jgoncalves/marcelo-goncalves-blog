@@ -133,11 +133,11 @@ variable "alarm_email" {
 variable "throttle_rate_limit" {
   description = "Sustained requests per second, by default, across the whole stage"
   type        = number
-  default     = 20
+  default     = 50
 }
 
 variable "throttle_burst_limit" {
   description = "Burst of concurrent requests allowed before throttling"
   type        = number
-  default     = 40
+  default     = 100
 }
