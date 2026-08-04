@@ -127,6 +127,16 @@ describe('getPost handler', () => {
       expect(body.post).toEqual(BASE_PUBLISHED_POST);
     });
 
+    it('returns 200 for a legacy post with no version field (real dev data has these)', async () => {
+      const { version, ...legacyPost } = BASE_PUBLISHED_POST;
+      void version;
+      mockSend.mockResolvedValueOnce({ Item: legacyPost });
+
+      const result = await handler(event(), ctx, jest.fn());
+
+      expect(result?.statusCode).toBe(200);
+    });
+
     it('calls DynamoDB with correct key', async () => {
       mockSend.mockResolvedValueOnce({ Item: BASE_PUBLISHED_POST });
       await handler(event(), ctx, jest.fn());

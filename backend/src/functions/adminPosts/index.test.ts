@@ -177,6 +177,18 @@ describe('adminPosts handler', () => {
 
       expect(result?.statusCode).toBe(404);
     });
+
+    it('returns 200 for a legacy post with no version field (real dev data has these)', async () => {
+      mockSend.mockResolvedValueOnce({ Item: SAMPLE_POST });
+
+      const result = await handler(
+        event({ httpMethod: 'GET', pathParameters: { slug: 'meu-post' } }),
+        ctx,
+        jest.fn(),
+      );
+
+      expect(result?.statusCode).toBe(200);
+    });
   });
 
   describe('POST /admin/posts (create)', () => {

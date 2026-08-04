@@ -223,7 +223,11 @@ export const postEntitySchema = z.object({
   meta_descricao_seo: z.string().optional(),
   topico: z.string().optional(), // eyebrow shown on the card (pc-cat), may differ from the category
   variante_card: z.string().optional(), // card visual variant (gradient): t-petrol | t-deep | t-soft | t-clay | t-teal | t-moss
-  version: z.number().int(), // optimistic concurrency counter, incremented on every save
+  // Optional: posts saved before this field existed (and never re-saved
+  // since) have no version attribute in DynamoDB at all — confirmed against
+  // real dev data. savePost()'s `existing?.version ?? 0` already treats a
+  // missing version as 0, so this isn't a gap introduced by making it optional.
+  version: z.number().int().optional(),
 });
 
 export type Post = z.infer<typeof postEntitySchema>;
