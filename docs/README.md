@@ -20,6 +20,7 @@ Mapa de autoridade da documentação. Cada informação tem uma única fonte can
 | Aprendizados históricos para o livro | `book/cases/` |
 | Padrões extraídos de vários casos | `book/syntheses/` |
 | Protocolo de captura de aprendizado | `book/capture-protocol.md` |
+| Metodologia de auditoria de consistência do projeto | `engineering/audits/project-consistency-audit.md` |
 
 ## Política de fonte canônica
 

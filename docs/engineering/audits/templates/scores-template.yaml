@@ -1,0 +1,108 @@
+# Template de snapshot de notas — auditoria de consistência do projeto.
+# Fonte canônica das regras: docs/engineering/audits/project-consistency-audit.md
+# Nunca editar um snapshot já gerado; cada execução cria um arquivo novo.
+# Não armazenar trechos grandes de código aqui — só notas, referências e observações curtas.
+
+schema_version: 1
+audit_id: PCA-YYYYMMDD-<MODO>
+date: YYYY-MM-DD
+mode: quick # quick | full | delta | area
+area: null # preencher só quando mode == area
+
+repository:
+  branch: null
+  commit: null
+  working_tree_clean: null # true | false
+
+methodology:
+  version: 1
+  weights_version: 1
+
+overall:
+  score: null # null quando o modo não produz nota global (quick/area)
+  confidence: null # high | medium-high | medium | low | unknown
+  verdict: null # resumo curto
+
+areas:
+  architecture:
+    score: null # 0-10 ou null se not-assessed
+    status: not-assessed # assessed | not-assessed
+    confidence: null
+    evidence:
+      - path: null
+        observation: null
+        evidence_type: null # direct-code | direct-config | direct-documentation | git-history | automated-check | manual-inspection | self-reported | inference | external-verification
+    limitations: []
+    findings: []
+  infrastructure_as_code:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  ci_cd:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  security:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  tests:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  application_code:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  contracts_and_monorepo:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  documentation:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  production_readiness:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+  context_and_ai_governance:
+    score: null
+    status: not-assessed
+    confidence: null
+    evidence: []
+    limitations: []
+    findings: []
+
+comparison:
+  baseline_snapshot: null # caminho do snapshot anterior comparável, ou null
+  comparable: null # true | false | partial
+  notes: null
+
+critical_findings: []
+high_findings: []
+limitations: []
