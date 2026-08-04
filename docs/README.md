@@ -21,6 +21,12 @@ Mapa de autoridade da documentação. Cada informação tem uma única fonte can
 | Padrões extraídos de vários casos | `book/syntheses/` |
 | Protocolo de captura de aprendizado | `book/capture-protocol.md` |
 | Metodologia de auditoria de consistência do projeto | `engineering/audits/project-consistency-audit.md` |
+| Relatórios e snapshots de auditorias anteriores | `engineering/audits/reports/`, `engineering/audits/snapshots/` |
+| Prompts de engenharia reutilizáveis ou históricos | `engineering/prompts/` |
+| Pacotes de instrução para uma mudança específica (work items) | `engineering/work-items/` |
+| Planejamentos editoriais do blog (pauta/outline) | `../editorial/plans/` |
+| Evidência ligada a um estudo de caso específico | `book/cases/evidence/CASE-NNN/` |
+| Arquivo histórico ainda sem classificação | `archive/unclassified/` (área de triagem temporária, não destino permanente) |
 
 ## Política de fonte canônica
 
