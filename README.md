@@ -12,7 +12,7 @@ The application domain is an editorial platform about AI, AWS, and DevOps, with 
 - CI/CD via GitHub Actions using AWS OIDC (`id-token: write` + `role-to-assume`) — no long-lived cloud credentials stored as secrets.
 - 12 single-responsibility Lambdas with least-privilege IAM: API-facing functions are reachable only through CloudFront (Lambda URL + OAC SigV4) or API Gateway, while the 3 asynchronous ones are triggered by S3 or EventBridge instead.
 - DynamoDB with optimistic concurrency (client-supplied `version`, `409` on conflict) and 5 GSIs with `INCLUDE` projection.
-- 473 automated tests across the repository; 380 of them (backend, frontend, admin, and contracts unit tests, plus DynamoDB Local integration tests) gate every deploy alongside the security scans below and a post-deploy Playwright smoke check — the full 93-test E2E suite (Chromium + Firefox) runs locally/on demand, not as a CI deploy gate.
+- Automated tests span unit (backend, frontend, admin, contracts), DynamoDB Local integration, and Playwright E2E layers; all but the full E2E suite gate every deploy alongside the security scans below and a post-deploy smoke check — the full E2E suite (Chromium + Firefox) runs locally/on demand, not as a CI deploy gate.
 - Security gates on every push: Semgrep (SAST), Gitleaks (secret scanning), `npm audit --audit-level=high`, TFLint + Trivy on the infrastructure code.
 - Distributed tracing (X-Ray) on every Lambda, CloudWatch dashboards, Synthetics Canary, SLO burn-rate alarms.
 - Asynchronous workloads (S3-triggered image processing, EventBridge-triggered scheduled publishing) isolated with a DLQ + SNS alert on failure.
@@ -77,7 +77,7 @@ Architecture, technical decisions, security controls, acceptance criteria and fi
 | IaC | Terraform (~> 1.15) | 10 AWS modules, state in S3, linted with `tflint` + per-module README via `terraform-docs` |
 | CI/CD | GitHub Actions | Build, unit/integration/contract tests, security scans, and `terraform apply` gate `deploy-dev`; a single Chromium smoke spec runs post-deploy — 100% automatic on `develop`, no `deploy-prod` job exists yet |
 | Observability | CloudWatch, X-Ray, Synthetics Canary, GuardDuty, CloudTrail | Dashboards, SLO burn-rate, distributed tracing, DLQ + alarm on `imageProcessor`/`postScheduler` (2 of the 3 async Lambdas) |
-| Tests | Jest (backend/frontend/contracts), Vitest (admin), Playwright (E2E + post-deploy smoke) | 217 backend unit + 10 integration (DynamoDB Local) + 81 frontend + 43 admin + 29 contracts = 380 tests gating every deploy, plus a 93-test E2E suite (19 specs, Chromium + Firefox) run locally/on demand |
+| Tests | Jest (backend/frontend/contracts), Vitest (admin), Playwright (E2E + post-deploy smoke) | 220 backend unit + 10 integration (DynamoDB Local) + 82 frontend + 43 admin + 29 contracts = 384 tests gating every deploy, plus a 93-test E2E suite (20 specs, Chromium + Firefox) run locally/on demand |
 
 ---
 
@@ -129,7 +129,7 @@ lint/typecheck → unit tests (backend, frontend, admin, contracts)
 → deploy (frontend, admin, Lambdas) → post-deploy smoke
 ```
 
-The post-deploy smoke step is a curl health check plus a single Playwright spec (`e2e/smoke.spec.ts`, Chromium only) against the freshly deployed environment — not the full 93-test E2E suite, which runs locally/on demand instead.
+The post-deploy smoke step is a curl health check plus a single Playwright spec (`e2e/smoke.spec.ts`, Chromium only) against the freshly deployed environment — not the full E2E suite, which runs locally/on demand instead.
 
 AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-lived AWS access keys stored in GitHub Secrets. Third-party GitHub Actions are pinned by commit SHA, not by floating version tag. There is no `deploy-prod` job today — only `deploy-dev` exists, gated on `github.ref == 'refs/heads/develop'`.
 
@@ -154,7 +154,7 @@ AWS authentication uses OIDC (`id-token: write` + `role-to-assume`) — no long-
 
 ## Testing
 
-- 217 backend tests (Jest) + 10 integration tests against DynamoDB Local + 81 frontend (Jest) + 43 admin (Vitest) + 29 contracts (Jest) = 380 tests, all gating every deploy. Plus a separate 93-test E2E suite (Playwright, 19 specs, Chromium + Firefox) covering smoke, layout, post, articles, all-articles, search, category, project, and visual audit — run locally/on demand; only its `smoke.spec.ts` (Chromium) runs post-deploy in CI.
+- 220 backend tests (Jest) + 10 integration tests against DynamoDB Local + 82 frontend (Jest) + 43 admin (Vitest) + 29 contracts (Jest) = 384 tests, all gating every deploy. Plus a separate 93-test E2E suite (Playwright, 20 specs, Chromium + Firefox) covering smoke, layout, post, articles, all-articles, search, category, project, and visual audit — run locally/on demand; only its `smoke.spec.ts` (Chromium) runs post-deploy in CI.
 - A homegrown QA tool: a Playwright script that simulates a real user publishing a complete post (login, typing via input rules, image upload, every editor node type) and validates the result on two layers: an admin round-trip and the real rendered DOM of the public page (visibility, decoded image, parsed JSON-LD, admin-vs-public node count comparison, mobile + desktop).
 - Compliance/legal: Google Consent Mode v2, an in-house CMP (LGPD), privacy/cookies/terms pages.
 
@@ -222,12 +222,12 @@ cd admin && cp .env.example .env.local && npm run dev      # http://localhost:51
 ## Tests
 
 ```bash
-cd backend && npm test                  # Jest, 217 tests
+cd backend && npm test                  # Jest, 220 tests
 cd backend && npm run test:integration  # Jest + DynamoDB Local, 10 tests
-cd frontend && npm test                 # Jest, 81 tests
+cd frontend && npm test                 # Jest, 82 tests
 cd admin && npm test                    # Vitest, 43 tests
 cd packages/contracts && npm test       # Jest, 29 tests
-cd frontend && npm run test:e2e         # Playwright, 93 E2E tests (19 specs, Chromium + Firefox) — local/on-demand, not a CI gate
+cd frontend && npm run test:e2e         # Playwright, 93 E2E tests (20 specs, Chromium + Firefox) — local/on-demand, not a CI gate
 ```
 
 ---
