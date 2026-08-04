@@ -101,7 +101,11 @@ A skill também pode ser acionada manualmente por `/engineering-book-capture`, p
 
 As regras detalhadas estão em `docs/book/capture-protocol.md` e `.claude/skills/engineering-book-capture/SKILL.md`; a estrutura canônica de um caso está em `docs/book/cases/templates/case-template.md`. Os estudos de caso em `docs/book/cases/` são registros históricos, não estado operacional atual, e nunca devem ser duplicados integralmente em `.project-context.md`, `memory/` ou `docs/backlog.md`.
 
-## 12. Regra de manutenção do CLAUDE.md
+## 12. Auditoria de consistência do projeto
+
+Após mudanças estruturais em documentação, contexto, arquitetura ou governança, avalie a execução de `project-consistency-audit`. Não execute auditoria completa em tarefas rotineiras. Metodologia e modos: `docs/engineering/audits/project-consistency-audit.md`.
+
+## 13. Regra de manutenção do CLAUDE.md
 
 O `CLAUDE.md` contém somente regras duráveis que alteram o comportamento da IA em várias sessões futuras.
 
