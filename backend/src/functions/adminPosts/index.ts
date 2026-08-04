@@ -10,6 +10,7 @@ import { invalidatePostCache } from "../../common/cacheInvalidation";
 import { isConditionalCheckFailure } from "../../common/dynamoErrors";
 import { requireEnv } from "../../common/env";
 import { parseJsonBody } from "../../common/httpBody";
+import { parsePostItem } from "../../common/postPersistence";
 
 const TABLE_NAME = requireEnv("POSTS_TABLE");
 const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
@@ -46,7 +47,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     }
 
     if (httpMethod === "GET" && slug) {
-      return await getPost(slug);
+      return await getPost(slug, requestId);
     }
 
     if (httpMethod === "POST") {
@@ -130,12 +131,12 @@ async function listPosts() {
   };
 }
 
-async function getPost(slug: string) {
+async function getPost(slug: string, requestId?: string) {
   const result = await dynamo.send(new GetCommand({
     TableName: TABLE_NAME,
     Key: { slug }
   }));
-  
+
   if (!result.Item) {
     return {
         statusCode: 404,
@@ -144,9 +145,11 @@ async function getPost(slug: string) {
     };
   }
 
+  const post = parsePostItem(result.Item, { requestId, slug });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(post),
     headers,
   };
 }
@@ -253,7 +256,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
         TransactItems: [
           {
             Put: {
-              TableName: TABLE_NAME!,
+              TableName: TABLE_NAME,
               Item: item,
               ConditionExpression: conditionExpression,
               ExpressionAttributeNames: expressionAttributeNames,
@@ -344,7 +347,7 @@ async function deletePost(slug: string, clientVersionRaw?: string) {
         TransactItems: [
           {
             Delete: {
-              TableName: TABLE_NAME!,
+              TableName: TABLE_NAME,
               Key: { slug },
               ConditionExpression: deleteConditionExpression,
               ExpressionAttributeNames: deleteExpressionAttributeNames,

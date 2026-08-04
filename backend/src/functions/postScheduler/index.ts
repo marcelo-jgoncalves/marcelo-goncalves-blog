@@ -57,9 +57,17 @@ async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; d
       }),
     );
 
-    for (const item of result.Items ?? []) {
-      if (item.slug && item.data_publicacao_programada) {
-        items.push({ slug: item.slug, data_publicacao_programada: item.data_publicacao_programada, e_projeto: item.e_projeto });
+    const scanItems: Record<string, unknown>[] = result.Items ?? [];
+    for (const item of scanItems) {
+      const slug = item.slug;
+      const dataProgramada = item.data_publicacao_programada;
+      const eProjeto = item.e_projeto;
+      if (typeof slug === "string" && typeof dataProgramada === "string") {
+        items.push({
+          slug,
+          data_publicacao_programada: dataProgramada,
+          ...(typeof eProjeto === "number" ? { e_projeto: eProjeto } : {}),
+        });
       }
     }
 
@@ -83,7 +91,7 @@ async function publishPost(slug: string, scheduledDate: string, eProjeto: number
       TransactItems: [
         {
           Update: {
-            TableName: TABLE_NAME!,
+            TableName: TABLE_NAME,
             Key: { slug },
             UpdateExpression: "SET #status = :published, data_publicacao = :scheduledDate, data_atualizacao = :now",
             ConditionExpression: "#status = :programado",

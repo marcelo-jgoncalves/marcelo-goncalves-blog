@@ -7,7 +7,7 @@ import { DynamoDBClient, CreateTableCommand, DeleteTableCommand } from "@aws-sdk
 
 export function integrationClient(): DynamoDBClient {
   return new DynamoDBClient({
-    endpoint: process.env.AWS_ENDPOINT_URL,
+    ...(process.env.AWS_ENDPOINT_URL ? { endpoint: process.env.AWS_ENDPOINT_URL } : {}),
     region: process.env.AWS_REGION ?? "us-east-1",
     credentials: { accessKeyId: "local", secretAccessKey: "local" },
   });

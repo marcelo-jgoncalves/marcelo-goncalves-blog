@@ -32,7 +32,7 @@ describe('logger', () => {
       const logger = importLogger('DEBUG');
       logger.info('test_event', { requestId: 'abc' });
 
-      const raw = consoleSpy.log.mock.calls[0][0];
+      const raw = consoleSpy.log.mock.calls[0]![0];
       const parsed = JSON.parse(raw);
       expect(parsed.level).toBe('INFO');
       expect(parsed.message).toBe('test_event');
@@ -44,7 +44,7 @@ describe('logger', () => {
       const logger = importLogger('DEBUG');
       logger.debug('event', { foo: 'bar', count: 42 });
 
-      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0]![0]);
       expect(parsed.foo).toBe('bar');
       expect(parsed.count).toBe(42);
     });
@@ -53,7 +53,7 @@ describe('logger', () => {
       const logger = importLogger('DEBUG');
       logger.info('no_context');
 
-      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0]![0]);
       expect(parsed.message).toBe('no_context');
     });
   });
@@ -64,7 +64,7 @@ describe('logger', () => {
       const logger = importLogger('DEBUG');
       logger.info('event');
 
-      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0]![0]);
       expect(parsed.traceId).toBe('1-5e1b4151-5ac6c58fbe39d72f9b00f9bb');
     });
 
@@ -72,7 +72,7 @@ describe('logger', () => {
       const logger = importLogger('DEBUG');
       logger.info('event');
 
-      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0]![0]);
       expect(parsed.traceId).toBeUndefined();
     });
   });
@@ -84,7 +84,7 @@ describe('logger', () => {
       logger.info('should_appear');
 
       expect(consoleSpy.log).toHaveBeenCalledTimes(1);
-      const parsed = JSON.parse(consoleSpy.log.mock.calls[0][0]);
+      const parsed = JSON.parse(consoleSpy.log.mock.calls[0]![0]);
       expect(parsed.message).toBe('should_appear');
     });
 
@@ -128,6 +128,16 @@ describe('logger', () => {
 
       expect(consoleSpy.log).toHaveBeenCalledTimes(0);
       expect(consoleSpy.error).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls back to INFO and warns when LOG_LEVEL is an invalid value', () => {
+      const logger = importLogger('WARNING'); // not a real level
+      logger.debug('should_be_suppressed');
+      logger.info('should_appear');
+
+      expect(consoleSpy.error).toHaveBeenCalledWith(expect.stringContaining('invalid_log_level_fallback'));
+      const infoEntry = consoleSpy.log.mock.calls.find((call) => JSON.parse(call[0]).message === 'should_appear');
+      expect(infoEntry).toBeDefined();
     });
   });
 

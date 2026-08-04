@@ -23,9 +23,12 @@ export async function getPostCounters(): Promise<PostCounters> {
   const result = await dynamo.send(
     new GetCommand({ TableName: TABLE_NAME, Key: { slug: COUNTERS_SLUG } }),
   );
+  const item: Record<string, unknown> | undefined = result.Item;
+  const total = item?.total_publicado;
+  const totalProjeto = item?.total_projeto_publicado;
   return {
-    total_publicado: result.Item?.total_publicado ?? 0,
-    total_projeto_publicado: result.Item?.total_projeto_publicado ?? 0,
+    total_publicado: typeof total === "number" ? total : 0,
+    total_projeto_publicado: typeof totalProjeto === "number" ? totalProjeto : 0,
   };
 }
 
@@ -33,8 +36,8 @@ export async function getPostCounters(): Promise<PostCounters> {
 // accepts undefined to represent "doesn't exist" (new post on create, or
 // already deleted).
 export interface CounterRelevantState {
-  status?: string;
-  e_projeto?: number;
+  status?: string | undefined;
+  e_projeto?: number | undefined;
 }
 
 function contaComoPublicado(item?: CounterRelevantState): boolean {
