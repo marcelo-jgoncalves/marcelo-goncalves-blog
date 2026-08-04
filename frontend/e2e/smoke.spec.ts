@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-// Smoke test — valida que a página inicial carrega e o layout básico existe.
-// Para rodar: npx playwright test --headed
-// Requer o servidor rodando: npm run dev  (ou PLAYWRIGHT_BASE_URL apontando para o ambiente)
+// Smoke test: validates that the home page loads and the basic layout exists.
+// To run: npx playwright test --headed
+// Requires the server running: npm run dev (or PLAYWRIGHT_BASE_URL pointing at the target env)
 
 test("homepage carrega sem erro", async ({ page }) => {
   await page.goto("/");

@@ -26,7 +26,7 @@ export default function PostFooter({ author, social }: PostFooterProps) {
       <div className={styles.abBody}>
         <b className={styles.abName}>{author.name}</b>
         {author.role && <span className={styles.abRole}>{author.role}</span>}{' '}
-        {/* nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- bio é sanitizado no backend (adminAuthors/index.ts, sanitizePostHtml) antes de persistir */}
+        {/* nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- bio is sanitized on the backend (adminAuthors/index.ts, sanitizePostHtml) before persisting */}
         <span dangerouslySetInnerHTML={{ __html: author.bio }} />
         <Link href="/sobre" className={styles.abCta}>Conhecer a trajetória</Link>
       </div>

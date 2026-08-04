@@ -1,5 +1,5 @@
 //
-// Verifies Cognito ID Tokens against the User Pool's public JWKS — requires
+// Verifies Cognito ID Tokens against the User Pool's public JWKS: requires
 // no IAM permission (it's a public HTTPS call, with internal key caching
 // done by aws-jwt-verify itself). Used in 2 places: adminSession (login:
 // exchanges the idToken from Amplify's client-side SRP for an opaque

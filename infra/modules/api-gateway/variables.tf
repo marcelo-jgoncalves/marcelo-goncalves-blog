@@ -126,10 +126,10 @@ variable "alarm_email" {
   default     = ""
 }
 
-# Throttling de stage (achado da auditoria AppSec, Cat. 4) — sem isso a API
-# inteira, incluindo as rotas públicas sem autenticação, não tinha nenhum
-# limite de requisições. Aplicado via method_settings, não usage_plan, para
-# não exigir API key nas rotas públicas existentes.
+# Stage-level throttling: without it, the whole API, including the public
+# unauthenticated routes, had no request limit at all. Applied via
+# method_settings rather than usage_plan, to avoid requiring an API key on
+# the existing public routes.
 variable "throttle_rate_limit" {
   description = "Sustained requests per second, by default, across the whole stage"
   type        = number

@@ -60,7 +60,7 @@ const jsonLd = {
   serviceType: 'Consultoria em automação, inteligência artificial, sistemas e cloud',
 };
 
-// Six situations that lead to contact — not a "negative block", but
+// Six situations that lead to contact: not a "negative block", but
 // acknowledging the problem before any mention of technology.
 const PROBLEMAS = [
   { Icon: IconAutomacaoProcessos, title: 'Processos manuais e repetitivos', text: 'A equipe gasta horas copiando dados, conferindo informações, atualizando planilhas ou executando tarefas que poderiam seguir regras automatizadas.' },
@@ -181,7 +181,6 @@ export default function ServicosPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      {/* HERO */}
       <PageHero
         singleColumn
         className={styles.svcHero}
@@ -197,7 +196,6 @@ export default function ServicosPage() {
         <p className={styles.heroMicrocopy}>Você não precisa saber qual tecnologia contratar. A primeira etapa é entender o problema e avaliar o caminho mais adequado.</p>
       </PageHero>
 
-      {/* PROBLEMAS QUE RESOLVEMOS */}
       <section id="problemas" className={styles.oquefazemos} data-audit="svc-problemas">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -216,7 +214,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* DUAS FRENTES DE ATUAÇÃO */}
       <section id="frentes" className={styles.frentes} data-audit="svc-frentes">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -240,7 +237,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* SERVIÇOS ESPECIALIZADOS */}
       <section id="servicos-especializados" className={styles.especialidades} data-audit="svc-especializados">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -264,7 +260,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* SOLUÇÕES INTEGRADAS */}
       <section id="solucoes-integradas" className={styles.abordagem} data-audit="svc-integradas">
         <div className={styles.wrap}>
           <div className={styles.integratedLayout}>
@@ -287,7 +282,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* COMO O TRABALHO COMEÇA */}
       <section id="como-comeca" className={styles.comoComeca} data-audit="svc-como-comeca">
         <div className={styles.confiabilidadeOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
@@ -308,7 +302,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* PARA QUEM A CONSULTORIA É INDICADA */}
       <section id="para-quem" className={styles.paraQuem} data-audit="svc-para-quem">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -336,7 +329,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* DIFERENCIAIS DA ENTREGA */}
       <section id="diferenciais" className={styles.diferenciaisSection} data-audit="svc-diferenciais">
         <div className={styles.wrap}>
           <div className={styles.diferenciaisBlock}>
@@ -356,7 +348,6 @@ export default function ServicosPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <FaqSection
         id="perguntas"
         items={FAQ_ITEMS}
@@ -365,7 +356,6 @@ export default function ServicosPage() {
         title="Dúvidas antes de começar"
       />
 
-      {/* CTA FINAL */}
       <div data-audit="svc-cta-final">
         <AdvisoryCta
           id="contato"

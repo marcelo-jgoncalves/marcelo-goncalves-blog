@@ -20,7 +20,7 @@ async function handleLogin() {
   loading.value = false
   
   if (result.success) {
-    router.push('/') // Redireciona para Dashboard
+    router.push('/')
   } else {
     errorMsg.value = result.error || 'Falha no login. Verifique suas credenciais.'
   }

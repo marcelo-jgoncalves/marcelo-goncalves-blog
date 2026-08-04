@@ -6,7 +6,6 @@ import './Footer.css';
 import ConsentTrigger from '@/components/consent/ConsentTrigger';
 import { AUTHOR_EMAIL, AUTHOR_LOCATION } from '@/lib/config';
 
-// Visão geral first, then the 4 pillars.
 const SERVICES_LINKS = [
   { name: 'Visão geral', href: '/servicos' },
   { name: 'Automação e Integração', href: '/automacao' },

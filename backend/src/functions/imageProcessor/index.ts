@@ -11,8 +11,8 @@ const s3 = new S3Client({});
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 const DEST_BUCKET = requireEnv("DESTINATION_BUCKET");
-// POSTS_TABLE é lida em runtime (não no carregamento do módulo) para permitir
-// que testes configurem/removam a variável por caso individualmente.
+// POSTS_TABLE is read at runtime (not at module load) so tests can
+// set/unset the variable per case individually.
 
 const VARIANTS: Array<{
   width: number;
@@ -27,7 +27,7 @@ const VARIANTS: Array<{
   { width: 768,  format: "webp", quality: 80, contentType: "image/webp" },
   { width: 1280, format: "avif", quality: 65, contentType: "image/avif" },
   { width: 1280, format: "webp", quality: 80, contentType: "image/webp" },
-  // LQIP: 20px WebP tiny placeholder — browser upscaling natural blur, sem CSS filter
+  // LQIP: 20px WebP tiny placeholder, browser upscaling gives natural blur without a CSS filter
   { width: 20,   format: "webp", quality: 20, contentType: "image/webp", keySuffix: "lqip.webp" },
 ];
 
@@ -41,13 +41,13 @@ const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 };
 
 /**
- * Salva o base64 do LQIP no campo imagem_lqip_base64 dos posts que usam esta imagem.
- * Usa Scan com FilterExpression contains(imagem_destaque_url, basename) — eficiente
- * para a escala atual do blog (~20 posts). Se nenhum post encontrado (imagem ainda não
- * associada), loga aviso e encerra silenciosamente.
+ * Saves the LQIP base64 to the imagem_lqip_base64 field of posts using this image.
+ * Uses Scan with FilterExpression contains(imagem_destaque_url, basename): there is
+ * no index for this lookup, but it stays cheap at the blog's current scale (~20 posts).
+ * If no post is found (image not yet associated), logs a warning and returns silently.
  */
 async function saveLqipToPost(basename: string, lqipBase64: string): Promise<void> {
-  const postsTable = process.env.POSTS_TABLE; // lida em runtime para facilitar testes
+  const postsTable = process.env.POSTS_TABLE; // read at runtime to simplify testing
   if (!postsTable) {
     logger.debug("lqip_dynamo_skip", { reason: "POSTS_TABLE_not_set" });
     return;
@@ -107,7 +107,8 @@ export const handler = async (event: S3Event) => {
     }
 
     try {
-      // 1. Baixar imagem original uma única vez
+      // Download the original once and reuse the buffer for every variant below,
+      // instead of re-fetching from S3 per variant.
       const { Body } = await s3.send(new GetObjectCommand({ Bucket: srcBucket, Key: srcKey }));
       if (!Body) throw new Error("S3 body vazio");
 
@@ -116,8 +117,6 @@ export const handler = async (event: S3Event) => {
 
       logger.info("image_processor_start", { srcKey, variants: VARIANTS.length });
 
-      // 2. Gerar todas as variantes em paralelo (Sharp + S3 upload)
-      // Captura o buffer do LQIP para salvar o base64 no DynamoDB
       let lqipBuffer: Buffer | null = null;
 
       await Promise.all(
@@ -127,7 +126,8 @@ export const handler = async (event: S3Event) => {
             .resize({ width, withoutEnlargement: true })
             .toFormat(format, {
               quality,
-              // AVIF: effort 2 = encode rápido (Lambda CPU), arquivo ~5% maior que effort 4
+              // AVIF: effort 2 trades ~5% larger output (vs effort 4) for faster
+              // encode time, which matters on Lambda's limited CPU.
               ...(format === "avif" && { effort: 2 }),
             })
             .toBuffer();
@@ -142,7 +142,6 @@ export const handler = async (event: S3Event) => {
             CacheControl: "public, max-age=31536000, immutable",
           }));
 
-          // Captura o buffer do LQIP para reutilizar como base64
           if (keySuffix === "lqip.webp") {
             lqipBuffer = outputBuffer;
           }
@@ -151,7 +150,8 @@ export const handler = async (event: S3Event) => {
         })
       );
 
-      // 3. Salvar base64 do LQIP no DynamoDB (não-bloqueante: erro não falha o handler)
+      // Non-blocking: a DynamoDB error here is logged but must not fail the handler,
+      // since the S3 variants were already saved successfully.
       if (lqipBuffer) {
         const lqipBase64 = `data:image/webp;base64,${(lqipBuffer as Buffer).toString("base64")}`;
         await saveLqipToPost(basename, lqipBase64);

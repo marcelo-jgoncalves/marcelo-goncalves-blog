@@ -1,9 +1,9 @@
 // Error policy is deliberately two-tiered, not uniform:
 // - Primary content of a page (getPost 5xx, getRecentPosts, getAllPosts)
-//   THROWS — a broken main listing should surface the error boundary, not
+//   THROWS: a broken main listing should surface the error boundary, not
 //   render a page that looks legitimately empty.
 // - Secondary/degradable content (populares, busca, projeto, categoria,
-//   autor) returns a fallback — a widget failing must not take down the page.
+//   autor) returns a fallback: a widget failing must not take down the page.
 // When adding a fetcher, pick the tier by asking: "is an empty result here
 // indistinguishable from a bug for the reader?"
 

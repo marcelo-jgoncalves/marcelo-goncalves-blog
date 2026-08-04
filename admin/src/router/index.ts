@@ -40,7 +40,7 @@ const router = createRouter({
         }
       ]
     },
-    // The writing screen is full-bleed (no Admin sidebar) — it has its own
+    // The writing screen is full-bleed (no Admin sidebar): it has its own
     // top bar with "‹ Posts".
     {
       path: '/posts/new',

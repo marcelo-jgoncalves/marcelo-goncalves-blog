@@ -37,7 +37,7 @@ export const handler = async (_event: unknown): Promise<void> => {
 
     // Self-heals via the same ADD-delta primitive the runtime write paths use
     // (postCounters.ts), then logs at "warn" so the drift is visible in
-    // CloudWatch Logs/Insights even though it was corrected automatically —
+    // CloudWatch Logs/Insights even though it was corrected automatically:
     // repeated drift here is a symptom of a write path that isn't going
     // through computeCounterDeltas/applyCounterDeltas, worth investigating.
     await applyCounterDeltas({ deltaTotal, deltaProjeto });

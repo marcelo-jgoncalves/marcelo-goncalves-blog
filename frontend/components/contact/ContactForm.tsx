@@ -14,10 +14,10 @@ interface FormState {
   companySize: string;
   area: string;
   message: string;
-  website: string; // honeypot — never sent in the email
+  website: string; // honeypot, never sent in the email
 }
 
-// Options and values for the "area" field — also used as a query string
+// Options and values for the "area" field, also used as a query string
 // (?area=...) coming from the specific CTAs on the 4 pillar landings.
 export const AREA_OPTIONS = [
   { value: 'automacao-integracao', label: 'Automação e Integração de Processos' },
@@ -82,7 +82,7 @@ function validate(form: FormState): Partial<Record<RequiredField, string>> {
 }
 
 // TODO: replace with a real POST once the contact Lambda (SES + honeypot +
-// rate limit) exists — today this is just the local mock.
+// rate limit) exists: today this is just the local mock.
 // Target contract: ContactRequest with { name, email, company, role?,
 // phone?, companySize?, area, message, website?, context } → 200 { success,
 // referenceId } | 400/429/500.
@@ -190,7 +190,7 @@ export default function ContactForm() {
         </div>
       )}
 
-      {/* Honeypot — invisible, out of tab order, never sent in the email. */}
+      {/* Honeypot: invisible, out of tab order, never sent in the email. */}
       <label className={styles.contactHoneypot} aria-hidden="true">
         Não preencha este campo
         <input

@@ -77,7 +77,7 @@ const ENTREGAS = [
   { Icon: IconApisServicos, title: 'APIs e serviços de integração', text: 'Desenvolvemos interfaces documentadas e componentes de integração para conectar aplicações atuais e facilitar a incorporação de novos sistemas no futuro.', tags: ['APIs', 'Webhooks', 'Baixo acoplamento'] },
 ];
 
-// "Fluxo operacional" panel next to the deliverables — illustrates the
+// "Fluxo operacional" panel next to the deliverables: illustrates the
 // typical path of an event through the automation, from trigger to follow-up.
 const FLUXO_OPERACIONAL = [
   'Evento ou solicitação',
@@ -136,7 +136,7 @@ export default function IntegracaoAutomacaoPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
+      {/* HERO: standard project component (frontend/components/ui/PageHero.tsx), only the content changes */}
       <PageHero
         singleColumn
         className={styles.iaHero}
@@ -153,7 +153,6 @@ export default function IntegracaoAutomacaoPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE AUTOMATIZAMOS E INTEGRAMOS */}
       <section id="entregas" className={styles.whatWeDo} data-audit="ia2-entregas">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -191,7 +190,6 @@ export default function IntegracaoAutomacaoPage() {
         </div>
       </section>
 
-      {/* BENEFÍCIOS */}
       <BenefitsSection
         id="beneficios"
         dataAudit="ia2-beneficios"
@@ -200,7 +198,6 @@ export default function IntegracaoAutomacaoPage() {
         items={BENEFICIOS}
       />
 
-      {/* NOSSA ABORDAGEM — texto à esquerda, 3 princípios numerados à direita */}
       <section id="abordagem" className={styles.approach} data-audit="ia2-abordagem">
         <div className={styles.wrap}>
           <div className={styles.approachGrid}>
@@ -225,7 +222,6 @@ export default function IntegracaoAutomacaoPage() {
         </div>
       </section>
 
-      {/* CAPACIDADES TÉCNICAS — mapa técnico único em 4 estágios */}
       <section id="capacidades" className={styles.capabilitiesSection} data-audit="ia2-capacidades">
         <div className={styles.wrap}>
           <div className={styles.capabilitiesGrid}>
@@ -262,7 +258,6 @@ export default function IntegracaoAutomacaoPage() {
         </div>
       </section>
 
-      {/* CONFIABILIDADE E CONTROLE */}
       <section id="confiabilidade" className={styles.reliability} data-audit="ia2-confiabilidade">
         <div className={styles.reliabilityOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
@@ -285,7 +280,6 @@ export default function IntegracaoAutomacaoPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <FaqSection
         id="perguntas"
         items={FAQ_ITEMS}
@@ -294,7 +288,7 @@ export default function IntegracaoAutomacaoPage() {
         title="Dúvidas antes de automatizar um processo"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
+      {/* Final CTA: standard project component (frontend/components/ui/AdvisoryCta.tsx), only the content changes */}
       <div data-audit="ia2-cta-final">
         <AdvisoryCta
           id="contato"

@@ -65,7 +65,6 @@ export default function ContatoPage() {
         <p className={styles.ctHeroMicrocopy}>Retorno em até um dia útil · Primeira conversa sem compromisso</p>
       </PageHero>
 
-      {/* Bloco principal: formulário + próximos passos, lado a lado */}
       <section className={`${styles.ctSection} ${styles.ctSectionSurface}`} id="formulario-contato">
         <div className={`wrap ${styles.ctMainGrid}`}>
           <div className="ct-form-col">
@@ -103,7 +102,6 @@ export default function ContatoPage() {
         </div>
       </section>
 
-      {/* Canais alternativos */}
       <section id="canais" className={styles.ctSection}>
         <div className={`wrap ${styles.ctOtherwaysGrid}`}>
           <div>

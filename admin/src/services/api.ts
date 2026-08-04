@@ -1,11 +1,11 @@
 import type { Post, Autor } from '../types'
 import { savePostResponseSchema, type SavePostResponse } from '@mgoncalves/contracts'
 
-// Always a relative path — never VITE_API_BASE_URL (the API Gateway's
+// Always a relative path, never VITE_API_BASE_URL (the API Gateway's
 // absolute URL) here. The admin's CloudFront does a same-origin proxy of
 // /admin/* to the API Gateway (infra/modules/admin/cloudfront.tf); calling
 // the absolute URL would bypass that proxy, making the call genuinely
-// cross-origin — and a cross-origin request with `credentials: 'include'`
+// cross-origin, and a cross-origin request with `credentials: 'include'`
 // never works with Access-Control-Allow-Origin: '*' (a requirement of the
 // CORS spec itself), so the session cookie would never be sent.
 
@@ -22,7 +22,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
   const res = await fetch(endpoint, { ...options, headers, credentials: 'include' })
 
   // 401 (no session/Lambda authorizer threw "Unauthorized") or 403 (Deny
-  // policy from the Lambda Authorizer — missing cookie/expired session/
+  // policy from the Lambda Authorizer: missing cookie/expired session/
   // invalid Bearer token) mean the same thing here: invalid session, redo login.
   if (res.status === 401 || res.status === 403) {
     redirectToLogin()
@@ -36,7 +36,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
       ? 'Erro ao processar a solicitação'
       : errorBody.message || 'Erro na API'
     const error = new Error(message) as Error & { status?: number }
-    // Status code alone isn't sensitive — kept even in prod so callers can
+    // Status code alone isn't sensitive, kept even in prod so callers can
     // react to specific cases (e.g. 409 = optimistic concurrency conflict in
     // usePostForm.ts) without needing the masked message text.
     error.status = res.status
@@ -47,7 +47,7 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
 }
 
 // Parses create/update responses through the same schema the backend's
-// response body is built from (packages/contracts) — usePostForm's save()
+// response body is built from (packages/contracts): usePostForm's save()
 // needs the server-assigned slug/version/data_atualizacao back to sync its
 // local state, so the body can't be an untyped passthrough here.
 async function saveResponse(promise: Promise<unknown>): Promise<SavePostResponse> {

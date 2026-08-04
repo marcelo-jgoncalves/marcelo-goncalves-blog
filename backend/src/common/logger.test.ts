@@ -79,7 +79,7 @@ describe('logger', () => {
 
   describe('log level filtering', () => {
     it('defaults to INFO — suppresses DEBUG', () => {
-      const logger = importLogger(); // sem LOG_LEVEL → INFO
+      const logger = importLogger(); // no LOG_LEVEL, defaults to INFO
       logger.debug('should_be_suppressed');
       logger.info('should_appear');
 

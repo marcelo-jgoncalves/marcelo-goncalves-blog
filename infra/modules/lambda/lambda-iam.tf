@@ -1,5 +1,5 @@
 #
-# IAM roles + policies — one per Lambda function (least-privilege scoping).
+# IAM roles + policies, one per Lambda function (least-privilege scoping).
 # Each role grants ONLY the permissions that specific Lambda needs.
 #
 # Logs + X-Ray statements are included in every role (inert when disabled).
@@ -277,7 +277,7 @@ resource "aws_iam_role_policy_attachment" "adminCategorias_attach" {
 }
 
 # --- adminSession: PutItem/GetItem/DeleteItem on the sessions table only.
-# No Cognito permission is needed — the idToken is verified via public
+# No Cognito permission is needed: the idToken is verified via public
 # JWKS (HTTPS), with no call to any AWS API. ---
 resource "aws_iam_policy" "adminSession_policy" {
   name = "${var.project_name}-${var.environment}-adminSession-policy"
@@ -380,7 +380,7 @@ resource "aws_iam_role_policy_attachment" "postScheduler_attach" {
 
 # --- postCounterReconciler: Scan the full posts_table (recount) + GetItem/
 # UpdateItem on the counters metadata item only (same key postCounters.ts
-# always uses). No Query permission needed — it never reads a specific GSI. ---
+# always uses). No Query permission needed: it never reads a specific GSI. ---
 resource "aws_iam_policy" "postCounterReconciler_policy" {
   name = "${var.project_name}-${var.environment}-postCounterReconciler-policy"
 

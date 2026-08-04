@@ -6,21 +6,21 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ResponsiveImage from '@/components/ui/ResponsiveImage';
 
-// Next/Image renderiza como <img> em ambiente de teste
+// next/image renders as a plain <img> under jsdom, so assertions target <img> attributes
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: Record<string, unknown>) => {
     const { fill, priority, sizes, alt, ...rest } = props;
-    // Test double for next/image, not real page content — the lint rule
+    // Test double for next/image, not real page content: the lint rule
     // that flags <img> for real usage doesn't apply here.
     // eslint-disable-next-line @next/next/no-img-element
     return <img data-fill={String(fill)} data-priority={String(priority)} data-sizes={sizes as string} alt={alt as string} {...(rest as React.ImgHTMLAttributes<HTMLImageElement>)} />;
   },
 }));
 
-// URLs com extensão (.webp/.jpg/.png) são tratadas como basePath — a extensão
-// é stripped e o componente renderiza <picture> com variantes AVIF/WebP.
-// Isso cobre tanto URLs do admin antigo (uuid.webp) quanto novos basePaths.
+// URLs with an extension (.webp/.jpg/.png) are treated as a basePath: the
+// extension is stripped and the component renders a <picture> with AVIF/WebP
+// variants. This covers both legacy admin URLs (uuid.webp) and new basePaths.
 const LEGACY_URL = 'https://cdn.example.com/media/ts-uuid-foto.webp';
 const BASE_URL   = 'https://cdn.example.com/media/ts-uuid-foto';
 
@@ -67,7 +67,7 @@ describe('ResponsiveImage', () => {
     it('inclui sources WebP para todos os breakpoints', () => {
       const { container } = render(<ResponsiveImage src={BASE_URL} alt="foto" />);
       const webpSources = container.querySelectorAll('source[type="image/webp"]');
-      expect(webpSources).toHaveLength(2); // 480, 768 (1280 é o <img> fallback)
+      expect(webpSources).toHaveLength(2); // 480, 768 (1280 is the <img> fallback)
     });
 
     it('source mobile AVIF aponta para -480.avif', () => {

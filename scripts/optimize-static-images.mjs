@@ -1,16 +1,16 @@
 // scripts/optimize-static-images.mjs
 //
-// Gera variantes AVIF/WebP (1x/2x) dos assets estáticos de /sobre (badges de
-// certificação e logos de empresas/universidades) a partir dos originais
-// preservados em assets-source/, escrevendo o resultado em
-// frontend/public/static/{badges,logos}/. Não toca no pipeline de upload
-// (imageProcessor) — esses arquivos não vêm de upload de usuário, são parte
-// do código-fonte do site, e por isso são otimizados em build-time, uma vez,
-// não em runtime.
+// Generates AVIF/WebP variants (1x/2x) of the static assets from /sobre
+// (certification badges and company/university logos) from the originals
+// preserved in assets-source/, writing the result to
+// frontend/public/static/{badges,logos}/. Does not touch the upload
+// pipeline (imageProcessor): these files do not come from user upload, they
+// are part of the site's source code, so they are optimized at build time,
+// once, not at runtime.
 //
-// Mesmas escolhas de qualidade do imageProcessor (backend/src/functions/
-// imageProcessor/index.ts) para consistência visual entre os dois pipelines:
-// AVIF quality 65 (effort 2), WebP quality 80.
+// Same quality choices as imageProcessor (backend/src/functions/
+// imageProcessor/index.ts) for visual consistency between the two
+// pipelines: AVIF quality 65 (effort 2), WebP quality 80.
 
 import sharp from "sharp";
 import { readFile, writeFile, mkdir, readdir } from "fs/promises";
@@ -21,26 +21,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SOURCE_ROOT = path.resolve(__dirname, "../assets-source");
 const DEST_ROOT = path.resolve(__dirname, "../frontend/public/static");
 
-// width/height de exibição real em CSS (ver app/sobre/sobre.css,
-// components/ui/CertificacoesWidget.css) — a variante "1x" é exportada
-// exatamente nesse tamanho, "2x" no dobro, para telas retina.
+// Real display width/height in CSS (see app/sobre/sobre.css,
+// components/ui/CertificacoesWidget.css): the "1x" variant is exported at
+// exactly that size, "2x" at double, for retina screens.
 const MANIFEST = {
   badges: {
     dimension: "width",
-    // maior valor de exibição real entre .sobre-cert-badge (64px) e
-    // .certs-widget__badge (80px) — um único par 1x/2x cobre os dois usos.
+    // Largest real display value between .sobre-cert-badge (64px) and
+    // .certs-widget__badge (80px): a single 1x/2x pair covers both uses.
     size1x: 80,
     files: ["pactitioner", "solutions", "splunk", "sysops", "terraform"],
   },
   logos: {
     dimension: "height",
-    // .sobre-tc-logo varia 42-72px de altura (nth-child) — 72px é o maior.
+    // .sobre-tc-logo ranges 42-72px in height (nth-child); 72px is the largest.
     size1x: 72,
     files: ["accenture-logo", "anynines-logo", "credisis-logo", "deutsche-bahn-logo"],
   },
   "logos-tile": {
-    // .sobre-acad-tile: caixa 68x68 com padding 10px (~48px de área visível)
-    // — exportado um pouco maior que a área visível mínima para folga.
+    // .sobre-acad-tile: 68x68 box with 10px padding (~48px visible area),
+    // exported slightly larger than the minimum visible area for slack.
     dimension: "width",
     size1x: 56,
     outputDir: "logos",

@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-// Declaração necessária para que o TS entenda arquivos .vue como componentes
+// TS has no built-in type for .vue files without this ambient declaration
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type

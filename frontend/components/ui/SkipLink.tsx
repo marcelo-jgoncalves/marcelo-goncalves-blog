@@ -1,6 +1,3 @@
-
-/* frontend/components/ui/SkipLink.tsx */
-
 import styles from './SkipLink.module.css';
 
 export default function SkipLink() {

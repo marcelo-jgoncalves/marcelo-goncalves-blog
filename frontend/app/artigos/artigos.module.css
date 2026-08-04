@@ -1,19 +1,19 @@
-/* Fullwidth sections — overrides the global `section { margin-block: var(--sp-10) }` */
+/* Fullwidth sections: overrides the global `section { margin-block: var(--sp-10) }` */
 .homeHero,
 .homeSection,
 .homeIaSection {
   margin-block: 0;
 }
 
-/* ── Hero ──
+/* Hero
    Selector .page-hero.home-hero (double class, not just .home-hero): the
    previous single-class version lost the cascade to .page-hero
-   (PageHero.css) by source order at the same specificity — none of these
+   (PageHero.css) by source order at the same specificity, so none of these
    custom properties (--ph-cols/--ph-gap/--ph-sub-max) were actually being
    applied, the hero always fell back to the 1fr 1fr default instead of
    1.1fr/.9fr. Same specificity pattern already used in home.css/contato.css.
    padding-bottom 18px: the last visible element of the left column is the
-   subtitle, which already has margin-bottom:30px (PageHero.css) — 18+30=48px
+   subtitle, which already has margin-bottom:30px (PageHero.css); 18+30=48px
    (var(--sp-9)) actually reaches the section's edge. Without this, it
    inherited PageHero.css's default padding-bottom:0 and the text ended up
    flush against the border. */
@@ -41,19 +41,19 @@
   mask-image: radial-gradient(ellipse at 65% 25%, #000 30%, transparent 78%);
 }
 
-/* Buttons — use the global .btn/.btn-petrol pattern (globals.css); the
+/* Buttons: use the global .btn/.btn-petrol pattern (globals.css); the
    local class only handles context (arrow font). */
 .homeBtnClayHero :global(.arrow) {
   font-family: var(--mono);
 }
 
-/* ── Hero — featured card ── */
+/* Hero, featured card */
 .homeHero :global(.page-hero-right) {
   display: flex;
   align-items: stretch;
 }
 
-/* ── Hero — project panel (mirrors art-proj-card exactly) ── */
+/* Hero, project panel (mirrors art-proj-card exactly) */
 .homeProjPanel {
   position: relative;
   flex: 1;
@@ -184,10 +184,10 @@
   color: rgba(255, 255, 255, .48);
 }
 
-/* .home-pp-btn is a <span> (the whole card is the link) — uses the global
+/* .home-pp-btn is a <span> (the whole card is the link), uses the global
    .btn pattern, only adjusts width/height in the card's context. Since the
    button sits at the card's footer (margin-top:auto), the cursor rarely
-   sits literally over it while hovering the card — so the hover is also
+   sits literally over it while hovering the card, so the hover is also
    triggered explicitly by the parent card's hover, with the same color as
    the global .btn:hover (never its own color). */
 .homePpBtn {
@@ -208,7 +208,7 @@
 }
 
 
-/* ── Shared section layout ──
+/* Shared section layout
    Spacing reduced from --section-pad (96px) to var(--sp-9) (48px) on each
    side, matching the pattern adopted on the Home, the 4 landing pages and
    Contato. #recentes (home-section--surface) keeps the real divider line
@@ -223,7 +223,7 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* ── Most read ── */
+/* Most read */
 .homeMlGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -467,7 +467,7 @@
   align-self: center;
 }
 
-/* ── Recent posts ── */
+/* Recent posts */
 .homePostsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -485,7 +485,7 @@
   font-family: var(--mono);
 }
 
-/* ── AI posts (dark) ── */
+/* AI posts (dark) */
 .homeIaSection {
   background: var(--petrol);
   color: var(--ivory);
@@ -497,7 +497,7 @@
 
 /* Final CTA (AdvisoryCta, default id "assessoria"): .cta-adv-in uses
    align-items:center, centering the text column against the taller card
-   next to it — that pushes the eyebrow well past the padding-top alone
+   next to it, which pushes the eyebrow well past the padding-top alone
    (same problem solved on the Home, see home.css #contato.cta-adv). */
 :global(#assessoria.cta-adv .cta-adv-in) {
   align-items: flex-start;
@@ -576,7 +576,7 @@
   margin-top: var(--title-gap);
 }
 
-/* Centered variant — eyebrow with a rule on both sides, title and subtitle
+/* Centered variant: eyebrow with a rule on both sides, title and subtitle
    centered (same pattern as .sec-head-row--center in globals.css,
    replicated here since this section uses its own dark-theme classes). */
 .homeIaSecHeadRowCenter {
@@ -803,7 +803,7 @@
   letter-spacing: .04em;
 }
 
-/* ── O Projeto ── */
+/* O Projeto */
 .homeProjetoSection {
   background: var(--sand);
   border-top: 1px solid var(--line);
@@ -816,7 +816,7 @@
   margin-bottom: var(--sp-8);
 }
 
-/* ── Responsive ── */
+/* Responsive */
 @media (max-width: 1040px) {
   .homeMlGrid {
     grid-template-columns: 1fr;
@@ -833,7 +833,7 @@
 }
 
 @media (max-width: 860px) {
-  /* Card (.home-proj-panel) stacks below the text on mobile — the
+  /* Card (.home-proj-panel) stacks below the text on mobile: the
      default --ph-pad (var(--gap-loose)=18px) was designed for desktop,
      where the text column is the shortest element. Same fix as
      .page-hero.sobre-hero in sobre.css for the same scenario. */

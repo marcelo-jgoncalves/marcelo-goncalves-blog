@@ -49,16 +49,13 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   }
 };
 
-// --- Funções Auxiliares ---
-
-// Converte para Title Case (ajuda na busca)
 function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 // Both user-controlled inputs need bounds: an unclamped ?limit reads the
 // whole GSI in one request (cheap RCU abuse), and a malformed nextToken
-// would otherwise throw inside JSON.parse/atob and surface as a 500 —
+// would otherwise throw inside JSON.parse/atob and surface as a 500,
 // polluting the 5xx-based availability SLI with what is really a client error.
 const MAX_LIMIT = 50;
 
@@ -83,7 +80,6 @@ function parseNextToken(token: string | undefined): Record<string, unknown> | un
   }
 }
 
-// Lógica Específica para "O Projeto"
 async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParameters | null, requestId?: string) {
   const limit = parseLimit(queryParams?.limit, 8);
   const nextToken = queryParams?.nextToken;
@@ -101,7 +97,7 @@ async function getProjectPosts(queryParams: APIGatewayProxyEventQueryStringParam
   });
 
   // totalCount comes from the aggregated counter (postCounters.ts), not a
-  // 2nd Query — avoids doubling the read cost on every request just to
+  // 2nd Query: avoids doubling the read cost on every request just to
   // show "Page X of Y".
   const [result, counters, categoriaMap] = await Promise.all([
     dynamo.send(postsCommand),
@@ -134,9 +130,9 @@ async function searchPosts(term: string, queryParams: APIGatewayProxyEventQueryS
   const tUpper = term.toUpperCase();
   const tTitle = toTitleCase(term);
 
-  // Sem Limit: o Limit no ScanCommand aplica-se ANTES do FilterExpression,
-  // o que faria o DynamoDB ler apenas N itens e retornar 0 resultados mesmo
-  // havendo posts que correspondam ao termo. O Scan lê a tabela inteira.
+  // No Limit: Limit on ScanCommand applies BEFORE the FilterExpression,
+  // which would make DynamoDB read only N items and return 0 results even
+  // when matching posts exist. The Scan reads the whole table instead.
   const command = new ScanCommand({
     TableName: TABLE_NAME,
     FilterExpression: `
@@ -218,7 +214,7 @@ async function getAllPosts(queryParams: APIGatewayProxyEventQueryStringParameter
   });
 
   // totalCount comes from the aggregated counter (postCounters.ts), not a
-  // 2nd Query — this second query used to make /artigos the slowest route
+  // 2nd Query: this second query used to make /artigos the slowest route
   // under load, just to show "Page X of Y".
   const [result, counters, categoriaMap] = await Promise.all([
     dynamo.send(postsCommand),
@@ -242,9 +238,9 @@ async function getPostsByCategory(categorySlug: string, queryParams: APIGatewayP
   const limit = parseLimit(queryParams?.limit, 9);
   const nextToken = queryParams?.nextToken;
 
-  // Sem FilterExpression: Limit no QueryCommand conta itens ANTES do filtro,
-  // o que causaria retorno de < limit resultados quando há rascunhos na categoria.
-  // Filtramos status em memória — volume por categoria é baixo.
+  // No FilterExpression: Limit on QueryCommand counts items BEFORE the
+  // filter, which would return fewer than limit results when the category
+  // has drafts. Status is filtered in memory instead; volume per category is low.
   const command = new QueryCommand({
     TableName: TABLE_NAME,
     IndexName: "CategoriaPorData",

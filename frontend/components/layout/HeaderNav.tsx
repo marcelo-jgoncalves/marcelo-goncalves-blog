@@ -7,7 +7,6 @@ import styles from './Header.module.css';
 
 const NAV_LINKS_BEFORE = [{ name: 'Home', href: '/' }] as const;
 
-// Order: Home, Serviços, Sobre, Artigos, O Projeto, Contato, CTA.
 const NAV_LINKS_AFTER = [
   { name: 'Sobre', href: '/sobre' },
   { name: 'Artigos', href: '/artigos' },
@@ -22,7 +21,7 @@ const isArticlesActive = (pathname: string) =>
   pathname.startsWith('/post/') ||
   pathname.startsWith('/categoria/');
 
-// Pillar landing pages — all 4 are already implemented.
+// Pillar landing pages: all 4 are already implemented.
 const SERVICE_LINKS = [
   { name: 'Engenharia de Software', href: '/software' },
   { name: 'Cloud & DevOps', href: '/plataforma' },
@@ -30,7 +29,7 @@ const SERVICE_LINKS = [
   { name: 'Inteligência Artificial', href: '/inteligencia-artificial' },
 ] as const;
 
-// /servicos (central page) — first item in the dropdown, above the 4 individual links.
+// /servicos (central page): first item in the dropdown, above the 4 individual links.
 const SERVICES_OVERVIEW_LINK = { name: 'Visão geral dos serviços', href: '/servicos' } as const;
 
 export default function HeaderNav() {

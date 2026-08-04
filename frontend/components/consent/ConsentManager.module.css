@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   BANNER — fixed bottom bar
+   BANNER: fixed bottom bar
 ═══════════════════════════════════════════ */
 .cmpBanner {
   position: fixed;
@@ -48,7 +48,6 @@
   flex-shrink: 0;
 }
 
-/* Banner buttons */
 .cmpBtn {
   font-family: var(--font-display);
   font-weight: 700;
@@ -63,7 +62,7 @@
 }
 
 /* Accept/Reject have the same visual weight (outline, same border and
-   padding) — only the color changes. Prevents the accept choice from
+   padding): only the color changes. Prevents the accept choice from
    looking like the "default"/mandatory option. */
 .cmpBtnAccept {
   background: transparent;
@@ -97,7 +96,7 @@
 }
 
 /* ═══════════════════════════════════════════
-   MODAL — preferences dialog
+   MODAL: preferences dialog
 ═══════════════════════════════════════════ */
 .cmpOverlay {
   position: fixed;

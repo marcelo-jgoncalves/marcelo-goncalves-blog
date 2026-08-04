@@ -1,5 +1,3 @@
-/** admin/src/layouts/AdminLayout.vue */
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAuthStore } from '../stores/auth'
@@ -11,7 +9,7 @@ const route = useRoute()
 
 const BLOG_URL = (import.meta.env.VITE_ASSETS_URL || '').split('/').slice(0, 3).join('/')
 
-// Posts, Editor de post e Pré-visualização mantêm o item "Posts" ativo na sidebar
+// Post editor and preview routes also keep the "Posts" sidebar item active
 const activeSection = computed(() => {
   if (route.path.startsWith('/categories')) return 'categorias'
   if (route.path.startsWith('/profile')) return 'autor'
@@ -22,7 +20,7 @@ async function handleLogout() {
   try {
     await auth.logout()
   } catch {
-    // Erro no signOut remoto não impede limpeza local
+    // A remote signOut error should not block local cleanup
   } finally {
     auth.$reset()
     router.push('/login')

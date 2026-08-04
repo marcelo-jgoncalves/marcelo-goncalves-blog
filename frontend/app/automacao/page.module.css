@@ -50,7 +50,7 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Eyebrow — same pattern as frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
+/* Eyebrow, same pattern as frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
    margin-bottom:var(--eyebrow-gap); .eyebrowDual centers and adds the 2nd
    rule. Never apply dual to a section meant to be left-aligned — check
    "rule on both sides" (dual) vs "::before only" (single) per section. */
@@ -99,16 +99,16 @@
   margin-block: 0;
 }
 
-/* ===== HERO — override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
+/* ===== HERO: override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
 .iaHero {
   --ph-pad: 88px 40px var(--sp-9);
 }
 
 /* Inter-section spacing standardized with the same treatment as the Home:
-   var(--sp-9) on each side of every transition without a real divider line
-   — previously each section used its module.css's raw padding (64/80/100px
+   var(--sp-9) on each side of every transition without a real divider line,
+   because previously each section used its module.css's raw padding (64/80/100px
    per breakpoint), creating large gaps between sections. Overridden via an
-   #id selector (:global — Turbopack CSS Modules hashes even ids), higher
+   #id selector (:global, Turbopack CSS Modules hashes even ids), higher
    specificity than .class at any width. */
 :global(#entregas),
 :global(#beneficios),
@@ -142,7 +142,7 @@
 }
 
 /* Button duplicates the nav CTA on desktop (.nav-cta, always visible
-   there) — only shows on mobile, where the nav CTA becomes
+   there); only shows on mobile, where the nav CTA becomes
    .nav-cta-mobile and hides behind the hamburger (same breakpoint as
    Header.css: 860px). */
 .heroCtaRow {
@@ -172,7 +172,7 @@
   }
 }
 
-/* ===== WHAT WE DO — 5 cards (3+2) ===== */
+/* ===== WHAT WE DO: 5 cards (3+2) ===== */
 .whatWeDo {
   padding: var(--sp-10) 0;
 }
@@ -181,7 +181,7 @@
 @media (min-width: 1040px) { .whatWeDo { padding: var(--sp-12) 0; } }
 
 /* Deliverables list on the left (icon + title + text + tags, no
-   card/border — uses the hairline that .feature-card-footer already has),
+   card/border, uses the hairline that .feature-card-footer already has),
    sticky "Fluxo operacional" panel on the right, illustrating an event's
    path through the automation. */
 .automationLayout {
@@ -324,7 +324,7 @@
   color: var(--ink);
 }
 
-/* ===== RELIABILITY AND CONTROL — .benefitsList/.benefitItem reused by
+/* ===== RELIABILITY AND CONTROL: .benefitsList/.benefitItem reused by
    this section. "Benefícios" itself uses the shared BenefitsSection
    component (see components/ui/). ===== */
 .benefitsList {
@@ -357,7 +357,7 @@
   min-width: 0;
 }
 
-/* ===== SPECIALTIES — 8 items ===== */
+/* ===== SPECIALTIES: 8 items ===== */
 .capabilitiesSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -366,7 +366,7 @@
 @media (min-width: 680px) { .capabilitiesSection { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .capabilitiesSection { padding: var(--sp-12) 0; } }
 
-/* ===== OUR APPROACH — text on the left, 3 numbered principles on the right ===== */
+/* ===== OUR APPROACH: text on the left, 3 numbered principles on the right ===== */
 .approach {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -495,7 +495,7 @@
   line-height: 1.7;
 }
 
-/* ===== TECHNICAL CAPABILITIES — single technical map in 4 stages ===== */
+/* ===== TECHNICAL CAPABILITIES: single technical map in 4 stages ===== */
 .capabilitiesNote {
   display: grid;
   grid-template-columns: 5px minmax(0, 1fr);

@@ -1,4 +1,4 @@
-// "Benefícios/Resultados" section for the pillar landings — self-contained
+// "Benefits/Results" section for the pillar landings, self-contained
 // (own visual, no longer depends on page classes): clay checkmark with no
 // background, 2-column grid with no borders, large headline. See
 // BenefitsSection.module.css.

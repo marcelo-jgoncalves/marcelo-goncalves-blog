@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if POSTS_TABLE is unset — this must
+// requireEnv() throws at module load if POSTS_TABLE is unset: this must
 // run before the `./index` import below, not in beforeAll (too late).
 process.env.POSTS_TABLE = 'test-posts-table';
 process.env.CATEGORIAS_TABLE = 'test-categorias-table';
@@ -55,7 +55,7 @@ beforeAll(() => {
 beforeEach(() => {
   mockSend.mockReset();
   // Default fallback for the categorias Scan fired after a found post
-  // (getCategoriaNomeMap) — individual tests still queue their own
+  // (getCategoriaNomeMap): individual tests still queue their own
   // mockResolvedValueOnce for the post GetItem they assert on.
   mockSend.mockImplementation(() => Promise.resolve({ Items: [] }));
 });

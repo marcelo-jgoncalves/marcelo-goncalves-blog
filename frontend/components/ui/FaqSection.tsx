@@ -1,4 +1,4 @@
-// Complete "Perguntas frequentes" section (eyebrow + title + accordion) —
+// Complete "Perguntas frequentes" section (eyebrow + title + accordion),
 // previously duplicated byte for byte across the 4 pillar landings' page
 // files. Single source of truth: only `items` (and optionally
 // eyebrow/title) vary per use.

@@ -1,19 +1,19 @@
 /**
  * home.audit.spec.ts
- * Audit visual da curadoria de artigos: compara computed styles do
- * protótipo (fixtures/home.html) com o app renderizado em "/artigos".
+ * Visual audit of the curated article feed: compares computed styles of the
+ * prototype (fixtures/home.html) against the app rendered at "/artigos".
  *
  * The "home.html" fixture matches the curated-blog design that now lives
- * at /artigos (the root "/" route is the institutional Home instead) —
+ * at /artigos (the root "/" route is the institutional Home instead):
  * the fixture file wasn't renamed when the route changed.
  *
  * TARGETS is restricted to the keys that both the fixture and the real
- * /artigos implementation (frontend/app/artigos/page.tsx) share — some
+ * /artigos implementation (frontend/app/artigos/page.tsx) share: some
  * prototype sections (hero stats strip, "O Projeto" block's own CTA
  * strip) were simplified in the implementation and have no matching
  * data-audit today.
  *
- * Referência: specs/VALIDATION-STRATEGY.md
+ * Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';

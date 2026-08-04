@@ -8,7 +8,7 @@
    ========================================= */
 :root {
   /* ─────────────────────────────────────
-     PALETTE — Petrol / Clay / Ivory
+     PALETTE: Petrol / Clay / Ivory
      ───────────────────────────────────── */
   --petrol:        #0F4C5C;
   --petrol-deep:   #08323D;
@@ -28,10 +28,10 @@
   /* ─────────────────────────────────────
      LAYOUT
      ───────────────────────────────────── */
-  --read:              720px;       /* reading width — post page */
+  --read:              720px;       /* reading width, post page */
 
   /* ─────────────────────────────────────
-     TYPOGRAPHY — Font families
+     TYPOGRAPHY: Font families
      ───────────────────────────────────── */
   --font:              'Inter', system-ui, sans-serif;
   --mono:              'JetBrains Mono', ui-monospace, monospace;
@@ -39,73 +39,73 @@
   --font-sans:         'Inter', sans-serif;             /* body, prose, inputs */
   --font-body:         'Inter', sans-serif;             /* alias for --font-sans */
   --font-mono:         'JetBrains Mono', monospace;
-  --font-numbers:      var(--font-display); /* large decorative index numbers (01/02/03) — Inter, not mono: JetBrains Mono has a dotted zero by default, no CSS workaround */
+  --font-numbers:      var(--font-display); /* large decorative index numbers (01/02/03) use Inter, not mono: JetBrains Mono has a dotted zero by default, no CSS workaround */
 
   /* ─────────────────────────────────────
-     SPACING SCALE — base 4px
+     SPACING SCALE: base 4px
      Never use values outside this scale without explicit approval.
      ───────────────────────────────────── */
-  --sp-1:    4px;   /* micro — dots, thin separators */
-  --sp-2:    8px;   /* xs — icon/label gap, badge padding */
-  --sp-3:   12px;   /* sm — nav link gap, footer list gap */
-  --sp-4:   16px;   /* base — secondary text margin-top, badge margin */
-  --sp-5:   20px;   /* md — specialty grid gap, badge margin */
-  --sp-6:   24px;   /* lg — button gap, nav h padding */
-  --sp-7:   32px;   /* xl — compact card inset, hero-actions margin */
-  --sp-8:   40px;   /* 2xl — wrap horizontal padding */
-  --sp-9:   48px;   /* 3xl — sec-head margin-bottom, card XL padding */
-  --sp-10:  64px;   /* 4xl — tight section padding / post hero */
-  --sp-11:  80px;   /* 5xl — accent/dark band section padding */
-  --sp-12:  96px;   /* 6xl — canonical section padding */
-  --sp-13: 128px;   /* 7xl — post layout padding-top */
+  --sp-1:    4px;   /* micro: dots, thin separators */
+  --sp-2:    8px;   /* xs: icon/label gap, badge padding */
+  --sp-3:   12px;   /* sm: nav link gap, footer list gap */
+  --sp-4:   16px;   /* base: secondary text margin-top, badge margin */
+  --sp-5:   20px;   /* md: specialty grid gap, badge margin */
+  --sp-6:   24px;   /* lg: button gap, nav h padding */
+  --sp-7:   32px;   /* xl: compact card inset, hero-actions margin */
+  --sp-8:   40px;   /* 2xl: wrap horizontal padding */
+  --sp-9:   48px;   /* 3xl: sec-head margin-bottom, card XL padding */
+  --sp-10:  64px;   /* 4xl: tight section padding / post hero */
+  --sp-11:  80px;   /* 5xl: accent/dark band section padding */
+  --sp-12:  96px;   /* 6xl: canonical section padding */
+  --sp-13: 128px;   /* 7xl: post layout padding-top */
 
   /* ── semantic aliases (used across the codebase) ── */
   --gap-grid:           22px;          /* gap between cards in a standard grid */
-  --gap-loose:          18px;          /* between --sp-4 (16) and --sp-5 (20) — doesn't round without losing rhythm */
+  --gap-loose:          18px;          /* between --sp-4 (16) and --sp-5 (20), doesn't round without losing rhythm */
   --eyebrow-gap:        14px;          /* eyebrow → title */
   --title-gap:          10px;          /* title → description */
-  --sechead-gap:        var(--sp-9);   /* 48px — section header → content (left-aligned) */
+  --sechead-gap:        var(--sp-9);   /* 48px, section header → content (left-aligned) */
   --sechead-center-gap: 56px;          /* section header → content (centered) */
   --nav-height:         68px;          /* sticky nav height */
   --wrap-max:           1240px;        /* default page max-width */
   --wrap-max-narrow:    1180px;        /* narrow max-width (post, O Projeto) */
-  --wrap-pad-h:         var(--sp-8);   /* 40px — wrap horizontal padding */
+  --wrap-pad-h:         var(--sp-8);   /* 40px, wrap horizontal padding */
   --wrap-pad-h-mobile:  20px;          /* horizontal padding on mobile (<680px) */
-  --section-pad:        var(--sp-12); /* 96px — standard section vertical padding */
-  --section-accent:     var(--sp-11); /* 80px — accent/dark band section padding */
+  --section-pad:        var(--sp-12); /* 96px, standard section vertical padding */
+  --section-accent:     var(--sp-11); /* 80px, accent/dark band section padding */
   --section-cta:        88px;          /* CTA vertical padding */
   --hero-top:           88px;          /* canonical hero padding-top */
   --stats-top:          56px;          /* stats strip margin-top inside the hero */
 
   /* ─────────────────────────────────────
-     TYPE SCALE — fluid (clamp), 11 tokens named by content role.
+     TYPE SCALE: fluid (clamp), 11 tokens named by content role.
      Method: linear interpolation between 400px (mobile) and 1280px
-     (desktop), Utopia-style (https://utopia.fyi) — each token is already
+     (desktop), Utopia-style (https://utopia.fyi): each token is already
      responsive, never needs a media query override.
      ───────────────────────────────────── */
-  --type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px — timestamp, numeric badge, micro caption */
-  --type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px — eyebrow, tag, meta, button text */
-  --type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px — secondary body, card excerpt */
-  --type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px — standard paragraph */
-  --type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px — hero subtitle, lead paragraph */
-  --type-h4:           clamp(1.424rem, 1.172rem + 1.01vw, 1.978rem);  /* 22.8 → 31.6px — card title, widget header, TOC */
-  --type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px — editorial h3 */
-  --type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px — section h2 */
-  --type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px — standard page h1 */
-  --type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px — large hero h1 */
-  --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px — maximum display size ("manifesto" style) */
+  --type-caption:      clamp(0.79rem, 0.745rem + 0.18vw, 0.889rem);   /* 12.6 → 14.2px: timestamp, numeric badge, micro caption */
+  --type-label:        clamp(0.889rem, 0.838rem + 0.2vw, 1rem);       /* 14.2 → 16px: eyebrow, tag, meta, button text */
+  --type-body-sm:      clamp(1rem, 0.943rem + 0.23vw, 1.125rem);      /*   16 → 18px: secondary body, card excerpt */
+  --type-body:         clamp(1.125rem, 1.061rem + 0.26vw, 1.266rem);  /*   18 → 20.25px: standard paragraph */
+  --type-lead:         clamp(1.266rem, 1.122rem + 0.58vw, 1.582rem);  /* 20.25 → 25.3px: hero subtitle, lead paragraph */
+  --type-h4:           clamp(1.424rem, 1.172rem + 1.01vw, 1.978rem);  /* 22.8 → 31.6px: card title, widget header, TOC */
+  --type-h3:           clamp(1.602rem, 1.206rem + 1.58vw, 2.472rem);  /* 25.6 → 39.6px: editorial h3 */
+  --type-h2:           clamp(1.802rem, 1.216rem + 2.34vw, 3.09rem);   /* 28.8 → 49.4px: section h2 */
+  --type-h1:           clamp(2.028rem, 1.193rem + 3.34vw, 3.863rem);  /* 32.4 → 61.8px: standard page h1 */
+  --type-display-sm:   clamp(2.281rem, 1.123rem + 4.63vw, 4.828rem);  /* 36.5 → 77.3px: large hero h1 */
+  --type-display-lg:   clamp(2.566rem, 0.989rem + 6.31vw, 6.035rem);  /*   41 → 96.6px: maximum display size ("manifesto" style) */
 
   /* ─────────────────────────────────────
-     PROSE SPACING — scale in `em`, only for vertical rhythm inside
+     PROSE SPACING: scale in `em`, only for vertical rhythm inside
      .post-content (long-form article content). Deliberately separate from
      --sp-* (px, layout rhythm): editorial spacing scales with the
      element's font size, not a fixed page measurement.
      ───────────────────────────────────── */
-  --prose-sp-1: 0.5em;   /* micro — within a block (e.g. caption → quote) */
-  --prose-sp-2: 1em;     /* small — paragraph → list */
-  --prose-sp-3: 1.5em;   /* medium — between paragraphs, H3 → body */
-  --prose-sp-4: 2em;     /* large — H2 → body, block → block */
-  --prose-sp-5: 2.5em;   /* macro — before an H2/H3 of a new section */
+  --prose-sp-1: 0.5em;   /* micro: within a block (e.g. caption → quote) */
+  --prose-sp-2: 1em;     /* small: paragraph → list */
+  --prose-sp-3: 1.5em;   /* medium: between paragraphs, H3 → body */
+  --prose-sp-4: 2em;     /* large: H2 → body, block → block */
+  --prose-sp-5: 2.5em;   /* macro: before an H2/H3 of a new section */
 
   /* ─────────────────────────────────────
      BORDER RADIUS
@@ -125,7 +125,7 @@
      Z-INDEX SCALE.
      `.siteHeader` has `isolation: isolate`, so its own children (nav content,
      mobile drawer, decorative ::before) only stack against each other, never
-     against page body content — those keep their small local values (0/1)
+     against page body content, those keep their small local values (0/1)
      unscaled. These tokens cover the layers that DO compete page-wide.
      ───────────────────────────────────── */
   --z-sticky:          50;    /* sticky header itself, and the mobile nav drawer (contained inside it) */
@@ -134,7 +134,7 @@
   --z-modal-top:       9001;  /* consent modal, above the banner it can be opened from */
 
   /* ─────────────────────────────────────
-     SHADOWS — generic (black/ink)
+     SHADOWS: generic (black/ink)
      ───────────────────────────────────── */
   --shadow-sm:         0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md:         0 5px 15px rgba(0,0,0,0.05);
@@ -160,10 +160,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Global visible focus (a11y) — keyboard navigation needs a clear indicator.
+/* Global visible focus (a11y): keyboard navigation needs a clear indicator.
    :focus-visible (not :focus) keeps the ring from showing on a mouse click,
    only on Tab/keyboard navigation. Some components (SearchBar, NewsletterCTA)
-   removed outline without a substitute — covered by the generic selector below. */
+   removed outline without a substitute, covered by the generic selector below. */
 :focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 2px;
@@ -179,7 +179,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings — Inter (--font-display), ink color (#0C2027) */
+/* Headings: Inter (--font-display), ink color (#0C2027) */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--ink);
@@ -216,7 +216,7 @@ h5, h6 {
   font-weight: 600;
 }
 
-/* Links — Petrol (#0F4C5C) with Clay hover (#C9603C) */
+/* Links: Petrol (#0F4C5C) with Clay hover (#C9603C) */
 a {
   color: var(--petrol);
   text-decoration: none;
@@ -247,10 +247,10 @@ img {
   padding: 0 var(--sp-4);
 }
 
-/* PostCard grid — shared between /artigos (.art-grid overrides to 3
-   columns), /categoria and /busca. Previously lived only in categoria.css,
-   with other pages depending on it via implicit coupling — moved here as
-   the single source of truth. */
+/* PostCard grid: shared between /artigos (.art-grid overrides to 3
+   columns), /categoria and /busca. Kept in one place because other pages
+   depend on it via implicit coupling, so a change here must stay
+   consistent across all consumers. */
 .posts-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -277,7 +277,7 @@ img {
   border: 0;
 }
 
-/* Wrap — main page container */
+/* Wrap: main page container */
 .wrap {
   max-width: var(--wrap-max);
   margin: 0 auto;
@@ -290,7 +290,7 @@ img {
   }
 }
 
-/* Section head row — standard section header pattern */
+/* Section head row: standard section header pattern */
 .sec-head-row {
   display: flex;
   align-items: flex-end;
@@ -338,14 +338,14 @@ img {
   line-height: 1.65;
   color: var(--slate);
   max-width: 520px;
-  /* --sp-4 (16px) — converged with .ih-center-desc/.ih-results-desc
+  /* --sp-4 (16px): converged with .ih-center-desc/.ih-results-desc
      (home.css) onto the same "eyebrow/title → description" role. Used to
      be --sp-6 (24px); the 3 usages diverged with no dedicated semantic token. */
   margin-top: var(--sp-4);
 }
 
 /* Modifiers for section title/description over a dark background (e.g.
-   .ih-results on the Home) — reuse .sec-t/.sec-desc instead of duplicating
+   .ih-results on the Home): reuse .sec-t/.sec-desc instead of duplicating
    font-size/weight/letter-spacing in a parallel class. */
 .sec-t--onDark {
   color: #fff;
@@ -360,7 +360,7 @@ img {
   color: rgba(250, 248, 243, .72);
 }
 
-/* Centered variant of sec-head-row/sec-ey — eyebrow with a rule on both
+/* Centered variant of sec-head-row/sec-ey: eyebrow with a rule on both
    sides, title and subtitle centered. Reusable in any section that
    follows the sec-head-row/sec-ey/sec-t/sec-desc pattern. */
 .sec-head-row--center {
@@ -415,10 +415,10 @@ img {
 /* =========================================
    3. BUTTONS
    ========================================= */
-/* Site's standard button — two single types (orange/clay and petrol),
+/* Site's standard button: two single types (orange/clay and petrol),
    reused across the whole platform. Vary only in text and width.
    Color/hover: same pattern as the navbar's "Solicitar Diagnóstico"
-   (HeaderNav .nav-cta) — the color darkens into its own hover variant,
+   (HeaderNav .nav-cta): the color darkens into its own hover variant,
    never switches family (clay→clay-hover, petrol→petrol-deep). Shape
    (border-radius): same pattern as the Footer's "Back to top" (pill, 999px). */
 .btn {
@@ -446,7 +446,7 @@ img {
   transform: translateY(-2px);
 }
 
-/* Petrol variant — same shape, secondary color (same hover mechanism:
+/* Petrol variant: same shape, secondary color (same hover mechanism:
    darkens within the petrol family itself, never switches to clay) */
 .btn-petrol {
   background-color: var(--petrol);
@@ -458,7 +458,7 @@ img {
   color: #ffffff;
 }
 
-/* Check icon for benefit/point lists — clay glyph, no background box.
+/* Check icon for benefit/point lists: clay glyph, no background box.
    Single source for the pattern that used to be reimplemented per page
    (translucent clay box + light clay glyph) in AdvisoryCta, the pillar
    landings' "Segurança"/"Qualidade" sections and /automacao. */
@@ -472,7 +472,7 @@ img {
   color: var(--clay);
 }
 
-/* Button sizes — vary width/height, never base color/shape */
+/* Button sizes: vary width/height, never base color/shape */
 .btn-sm {
   padding: var(--sp-2) var(--sp-4);
   font-size: var(--type-caption);
@@ -484,7 +484,7 @@ img {
 }
 
 /* =========================================
-   4. EYEBROW — single pattern
+   4. EYEBROW: single pattern
    ::before rule (24px) + uppercase text, font-mono or display
    ========================================= */
 /* Eyebrow styles moved to Eyebrow.css component */
@@ -505,7 +505,7 @@ section {
 }
 
 /* =========================================
-   5. DEBUG — baseline grid overlay
+   5. DEBUG: baseline grid overlay
    Enable: <body class="debug-rhythm">
    ========================================= */
 body.debug-rhythm {
@@ -518,7 +518,7 @@ body.debug-rhythm {
 }
 
 /* =========================================
-   6. REVEAL — entrance animation (components/ui/Reveal.tsx)
+   6. REVEAL: entrance animation (components/ui/Reveal.tsx)
    ========================================= */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {

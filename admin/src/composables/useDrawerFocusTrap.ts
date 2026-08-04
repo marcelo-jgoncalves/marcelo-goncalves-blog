@@ -1,6 +1,6 @@
 import { ref, nextTick, watch, type Ref } from 'vue'
 
-// Dialog semantics (focus trap, Escape, focus restore) for an overlay panel —
+// Dialog semantics (focus trap, Escape, focus restore) for an overlay panel:
 // same pattern as frontend/components/consent/ConsentModal.tsx.
 export function useDrawerFocusTrap(open: Ref<boolean>, panelRef: Ref<HTMLElement | null>) {
   const previousFocusRef = ref<HTMLElement | null>(null)

@@ -12,7 +12,7 @@ const TABLE_NAME = requireEnv("CATEGORIAS_TABLE");
 // Same anti-mass-assignment contract as postInputSchema (common/postSchema.ts):
 // .strip() discards any field outside this allowlist before it reaches
 // DynamoDB. icone_fa/descricao_seo are edited by the admin form even though
-// the public frontend doesn't consume them yet — dropping them here would
+// the public frontend doesn't consume them yet: dropping them here would
 // silently destroy admin-entered data on every save.
 const categoriaInputSchema = z
   .object({

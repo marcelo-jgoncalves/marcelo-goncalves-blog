@@ -1,7 +1,7 @@
 /**
  * artigos.audit.spec.ts
- * Audit visual Artigos: compara computed styles do protótipo (fixtures/artigos.html)
- * com o app renderizado em "/artigos". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Artigos: compares computed styles of the prototype (fixtures/artigos.html)
+ * against the app rendered at "/artigos". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -28,12 +28,12 @@ const TARGETS = [
   'art-adv-card',
 ];
 
-// Fixture congela o design ANTIGO de /artigos (antes da troca de papéis com
-// /todos-artigos, ver CLAUDE.md §10 item 44). Classes do TARGETS acima
-// (art-filterbar, art-twoup, art-mini, art-readband, art-cta-adv etc.) não
-// existem mais em nenhuma das duas rotas reais — a estrutura mudou, não só a
-// URL. Recapturar o fixture a partir do protótipo aprovado atual antes de
-// reativar.
+// Fixture freezes the OLD design of /artigos (before the role swap with
+// /todos-artigos). Classes in TARGETS above
+// (art-filterbar, art-twoup, art-mini, art-readband, art-cta-adv etc.) no
+// longer exist on either real route: the structure changed, not just the
+// URL. Recapture the fixture from the current approved prototype before
+// re-enabling.
 test.skip('artigos: audit protótipo vs app', async ({ page }) => {
   await page.setViewportSize(VIEWPORT);
 

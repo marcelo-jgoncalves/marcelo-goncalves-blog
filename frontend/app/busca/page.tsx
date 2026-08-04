@@ -11,9 +11,9 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   const params = await searchParams;
   const term = params.q || 'Busca';
   return {
-    // absolute (não string simples): sem isso, o template "%s | SITE_NAME"
-    // do layout raiz aplica em cima de um título que já inclui SITE_NAME,
-    // duplicando o nome do site na aba do navegador.
+    // absolute (not a plain string): without it, the root layout's
+    // "%s | SITE_NAME" template applies on top of a title that already
+    // includes SITE_NAME, duplicating the site name in the browser tab.
     title: { absolute: `Resultados para "${term}" | ${SITE_NAME}` },
     description: `Resultados da busca por ${term}.`,
     robots: 'noindex, follow',

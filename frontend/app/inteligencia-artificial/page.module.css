@@ -46,7 +46,7 @@
   line-height: 1.7;
 }
 
-/* Left-aligned section headers (not centered) — this landing's own
+/* Left-aligned section headers (not centered): this landing's own
    identity, different from the other 3 (automacao/plataforma/software). */
 .sectionHead {
   display: flex;
@@ -57,7 +57,7 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Eyebrow — same corrected pattern as the other 3 landings: rule on the
+/* Eyebrow: same corrected pattern as the other 3 landings: rule on the
    left by default, margin-bottom:var(--eyebrow-gap); .eyebrowDual centers
    and adds the 2nd rule (::after). */
 .eyebrowLight,
@@ -105,16 +105,16 @@
   margin-block: 0;
 }
 
-/* ===== HERO — override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
+/* ===== HERO: override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
 .aiHero {
   --ph-pad: 88px 40px var(--sp-9);
 }
 
 /* Inter-section spacing standardized with the same treatment as the Home:
-   var(--sp-9) on each side of every transition without a real divider line
-   — previously each section used its module.css's raw padding (64/80/100px
+   var(--sp-9) on each side of every transition without a real divider line,
+   previously each section used its module.css's raw padding (64/80/100px
    per breakpoint), creating large gaps between sections. Overridden via an
-   #id selector (:global — Turbopack CSS Modules hashes even ids), higher
+   #id selector (:global, Turbopack CSS Modules hashes even ids), higher
    specificity than .class at any width. */
 :global(#solucoes),
 :global(#aplicacoes),
@@ -178,7 +178,7 @@
   }
 }
 
-/* ===== WHAT WE BUILD — 3 editorial territories (Knowledge / Documents and
+/* ===== WHAT WE BUILD: 3 editorial territories (Knowledge / Documents and
    information / Actions and processes), no card grid. ===== */
 .whatWeDo {
   padding: var(--sp-10) 0;
@@ -300,7 +300,7 @@
   text-transform: uppercase;
 }
 
-/* ===== USE CASES — asymmetric composition: sticky header + numbered
+/* ===== USE CASES: asymmetric composition, sticky header + numbered
    2-column catalog, no cards. ===== */
 .useCasesSection {
   padding: var(--sp-10) 0;
@@ -371,7 +371,7 @@
   line-height: 1.65;
 }
 
-/* ===== OUR APPROACH — sticky header + vertical path of 5 decisions,
+/* ===== OUR APPROACH: sticky header + vertical path of 5 decisions,
    closes with the "AI integrated into the operation" manifesto. ===== */
 .approachSection {
   padding: var(--sp-10) 0;
@@ -529,7 +529,7 @@
   .manifestoText { grid-column: 3; }
 }
 
-/* ===== GOVERNANCE AND CONTROL — structural chapter in Petrol Deep: header
+/* ===== GOVERNANCE AND CONTROL: structural chapter in Petrol Deep: header
    with proportionality principle + 4 domains + integrated privacy. ===== */
 .governance {
   padding: var(--sp-10) 0;

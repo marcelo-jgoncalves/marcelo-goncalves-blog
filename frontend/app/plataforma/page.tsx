@@ -97,7 +97,7 @@ const ABORDAGEM_PRINCIPIOS = [
   { label: 'Operação desde o projeto', title: 'Construir considerando quem vai manter.', text: 'Documentação, automação, observabilidade, segurança e transferência de conhecimento fazem parte da solução. O objetivo é evitar uma arquitetura que funcione apenas enquanto quem a criou está presente.' },
 ];
 
-// Critérios usados para decidir a profundidade da mudança em cada projeto.
+// Criteria used to decide the depth of change on each project.
 const DECISAO_CRITERIOS = [
   'Contexto atual',
   'Risco operacional',
@@ -143,7 +143,7 @@ export default function CloudDevOpsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
+      {/* HERO: default project component (frontend/components/ui/PageHero.tsx), only content changes */}
       <PageHero
         singleColumn
         className={styles.cdHero}
@@ -160,7 +160,7 @@ export default function CloudDevOpsPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE ESTRUTURAMOS E MODERNIZAMOS */}
+      {/* WHAT WE STRUCTURE AND MODERNIZE */}
       <section id="atuacao" className={styles.whatWeDo} data-audit="cd-atuacao">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -183,7 +183,7 @@ export default function CloudDevOpsPage() {
         </div>
       </section>
 
-      {/* BENEFÍCIOS */}
+      {/* BENEFITS */}
       <BenefitsSection
         id="beneficios"
         dataAudit="cd-beneficios"
@@ -191,7 +191,7 @@ export default function CloudDevOpsPage() {
         items={BENEFICIOS}
       />
 
-      {/* NOSSA ABORDAGEM */}
+      {/* OUR APPROACH */}
       <section id="abordagem" className={styles.approachSection} data-audit="cd-abordagem">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -228,7 +228,7 @@ export default function CloudDevOpsPage() {
         </div>
       </section>
 
-      {/* CAPACIDADES TÉCNICAS */}
+      {/* TECHNICAL CAPABILITIES */}
       <section id="capacidades" className={styles.capabilitiesSection} data-audit="cd-capacidades">
         <div className={styles.capabilitiesWrap}>
           <div className={`${styles.sectionHead} ${styles.capabilitiesHead}`}>
@@ -250,7 +250,7 @@ export default function CloudDevOpsPage() {
         </div>
       </section>
 
-      {/* SEGURANÇA, CONFIABILIDADE E CONTINUIDADE */}
+      {/* SECURITY, RELIABILITY AND CONTINUITY */}
       <section id="confiabilidade" className={styles.reliability} data-audit="cd-confiabilidade">
         <div className={styles.reliabilityOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
@@ -282,7 +282,7 @@ export default function CloudDevOpsPage() {
         title="Dúvidas antes de modernizar uma plataforma"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
+      {/* FINAL CTA: default project component (frontend/components/ui/AdvisoryCta.tsx), only content changes */}
       <div data-audit="cd-cta-final">
         <AdvisoryCta
           id="contato"

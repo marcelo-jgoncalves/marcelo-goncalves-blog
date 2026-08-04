@@ -43,7 +43,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   logger.debug("admin_authors_request", { requestId, httpMethod, authorId });
 
   try {
-    // 1. GET - Buscar Autor pelo ID
+    // 1. GET - fetch author by ID
     if (httpMethod === 'GET') {
       if (!authorId) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Author ID is required" }) };
@@ -67,14 +67,13 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       };
     }
 
-    // 2. PUT - Atualizar/Criar Autor (Upsert)
+    // 2. PUT - update/create author (upsert)
     if (httpMethod === 'PUT' || httpMethod === 'POST') {
       if (!body) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Body is required" }) };
       }
 
-      // O Blueprint define que o ID vem da URL no PUT, ou do corpo.
-      // Vamos garantir que usamos o ID da URL se disponível
+      // URL id takes precedence over the body id when both are present.
       const rawData = parseJsonBody(body);
       if (rawData === undefined) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) };
@@ -93,19 +92,18 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
         return { statusCode: 400, headers, body: JSON.stringify({ error: "Author ID is required" }) };
       }
 
-      // Mapeamento conforme Modelo de Dados [Blueprint 3.3]. `bio` é HTML
-      // renderizado via dangerouslySetInnerHTML no blog público
-      // (PostFooter.tsx, AuthorBox.tsx) — precisa do mesmo allowlist usado
-      // em conteudo_html (adminPosts), senão é stored XSS direto.
+      // `bio` is rendered via dangerouslySetInnerHTML on the public blog
+      // (PostFooter.tsx, AuthorBox.tsx): needs the same allowlist used on
+      // conteudo_html (adminPosts), otherwise it's a direct stored XSS vector.
       const authorItem = {
         autor_id: finalId,
         nome_exibicao: data.nome_exibicao,
         bio: sanitizePostHtml(data.bio ?? ""),
         foto_avatar_url: data.foto_avatar_url,
-        foto_avatar_alt_text: data.foto_avatar_alt_text, // Acessibilidade Mandatória
+        foto_avatar_alt_text: data.foto_avatar_alt_text,
         linkedin_url: data.linkedin_url,
         github_url: data.github_url,
-        instagram_url: data.instagram_url, // Novo campo solicitado
+        instagram_url: data.instagram_url,
         updated_at: new Date().toISOString()
       };
 

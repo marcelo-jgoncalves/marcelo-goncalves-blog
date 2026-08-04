@@ -25,7 +25,7 @@ const form = defineModel<PostFormState>('form', { required: true })
 const drawerRef = ref<HTMLElement | null>(null)
 const { onKeydown: onDrawerKeydown } = useDrawerFocusTrap(open, drawerRef)
 
-// Roving tabindex for the status radiogroup (WCAG radiogroup pattern) — Tab
+// Roving tabindex for the status radiogroup (WCAG radiogroup pattern): Tab
 // enters the group at the checked option, arrow keys move the selection.
 const STATUS_OPTIONS = ['Rascunho', 'Publicado', 'Programado'] as const
 function onStatusRadioKeydown(e: KeyboardEvent) {

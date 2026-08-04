@@ -1,16 +1,16 @@
 /* ==========================================================================
-   POST PAGE — chrome (hero, cover, layout shell)
+   POST PAGE: chrome (hero, cover, layout shell)
    Tokens: petrol / clay / ivory / sand (frontend/app/globals.css)
 
    The prose/content section (.post-content and everything nested in it,
-   plus .post-toc — DOM-queried directly by TableOfContents.tsx via
+   plus .post-toc, DOM-queried directly by TableOfContents.tsx via
    `.post-toc-mk`, not through React refs) stays in the plain global
    postContent.css: that markup is either persisted HTML from the CMS
    (Tiptap output stored in DynamoDB) or targeted by literal
    querySelector calls, so it can never be hashed by CSS Modules.
    ========================================================================== */
 
-/* Fullwidth sections — overrides the global `section { margin-block: var(--sp-10) }` */
+/* Fullwidth sections: overrides the global `section { margin-block: var(--sp-10) }` */
 .postHero {
   margin-block: 0;
 }
@@ -173,7 +173,7 @@
 }
 
 /* ==========================================================================
-   12. CONTEXTUAL CTA — compact editorial (between body and author)
+   12. CONTEXTUAL CTA: compact editorial (between body and author)
    ========================================================================== */
 .postCtaEditorial {
   margin-block: 0;

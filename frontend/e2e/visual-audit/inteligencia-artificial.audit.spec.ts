@@ -1,9 +1,9 @@
 /**
  * inteligencia-artificial.audit.spec.ts
- * Audit visual Inteligência Artificial: compara computed styles do protótipo
- * (fixtures/inteligencia-artificial.html, DOM final extraído do bundle
- * "new-prots/Inteligência Artificial - standalone.html" via Playwright) com o
- * app renderizado em "/inteligencia-artificial". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Inteligência Artificial: compares computed styles of the prototype
+ * (fixtures/inteligencia-artificial.html, final DOM extracted from the
+ * "new-prots/Inteligência Artificial - standalone.html" bundle via Playwright) against the
+ * app rendered at "/inteligencia-artificial". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';

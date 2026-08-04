@@ -31,7 +31,7 @@ export default function ConsentManager() {
 
   useEffect(() => {
     // One-time hydration from localStorage (unavailable during server
-    // render) — this isn't a "derived state" anti-pattern, it's reading a
+    // render): this isn't a "derived state" anti-pattern, it's reading a
     // synchronous external system that only exists on the client, which is
     // why it runs inside the effect instead of the component body.
     const stored = readConsent();
@@ -54,7 +54,7 @@ export default function ConsentManager() {
   }, []);
 
   const acceptAll = () => {
-    // Only one optional category exists today (analytics) — ads is
+    // Only one optional category exists today (analytics): ads is
     // reserved for when AdSense gets configured.
     const state = saveConsent({ analytics: true, ads: false });
     setConsent(state);

@@ -13,7 +13,7 @@ export default function NewsletterCTA() {
     e.preventDefault();
     if (!consent || !email || status === 'loading') return;
     setStatus('loading');
-    // TODO: integrar com endpoint de newsletter
+    // TODO: integrate with newsletter endpoint
     await new Promise((r) => setTimeout(r, 600));
     setStatus('success');
   };
@@ -23,7 +23,6 @@ export default function NewsletterCTA() {
       <div className="container">
         <div className={styles.nlCtaInner}>
 
-          {/* ── Coluna esquerda ── */}
           <div className={styles.nlCtaLeft}>
             <div className={styles.nlCtaEyebrow}>Newsletter semanal</div>
             <h2 className={styles.nlCtaTitle}>
@@ -39,7 +38,6 @@ export default function NewsletterCTA() {
             </div>
           </div>
 
-          {/* ── Coluna direita ── */}
           <div className={styles.nlCtaRight}>
             {status === 'success' ? (
               <div className={styles.nlCtaSuccess} role="status" aria-live="polite">

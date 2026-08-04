@@ -6,13 +6,12 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // Mesmas propriedades que o Stylelint já proíbe hardcoded em .css
-    // (CLAUDE.md §5) — mas o Stylelint só varre .css, então um
-    // style={{ fontSize: '...' }} em JSX passava despercebido (achado
-    // real em busca/page.tsx na sessão 48 e em contato/page.tsx depois).
-    // Não se aplica a opengraph-image.tsx/icon.tsx: são renderizados via
-    // next/og (Satori) para gerar uma imagem estática, sem acesso ao
-    // globals.css/tokens do app — px cru ali é o único jeito de escrever.
+    // Same properties Stylelint already forbids as hardcoded in .css,
+    // but Stylelint only scans .css, so a
+    // style={{ fontSize: '...' }} in JSX went unnoticed.
+    // Does not apply to opengraph-image.tsx/icon.tsx: they render via
+    // next/og (Satori) to produce a static image, with no access to
+    // globals.css/tokens, raw px there is the only way to write it.
     ignores: ["**/opengraph-image.tsx", "**/twitter-image.tsx", "**/icon.tsx"],
     rules: {
       "no-restricted-syntax": [
@@ -33,8 +32,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Scripts de debug standalone (CommonJS, rodados via `node` direto —
-    // fora do build do Next, não seguem as regras de módulo ESM/TS do app).
+    // Standalone debug scripts (CommonJS, run directly via `node`), outside
+    // the Next.js build, don't follow the app's ESM/TS module rules.
     "scripts/**",
   ]),
 ]);

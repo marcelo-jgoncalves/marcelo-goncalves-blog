@@ -79,7 +79,7 @@ function onError() {
   display: inline-block;
   border-radius: 8px;
   overflow: hidden;
-  line-height: 0; /* Remove espaço extra embaixo da img */
+  line-height: 0; /* inline images otherwise leave a gap below from the line box */
 }
 .image-container.selected {
   outline: 3px solid var(--aws-orange);

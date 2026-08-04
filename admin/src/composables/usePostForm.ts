@@ -8,7 +8,7 @@ import { localDateTimeToUtcIso, utcIsoToLocalDateTimeInput } from '../utils/date
 import { useToast } from './useToast'
 import type { Autor, Categoria, Post } from '../types'
 
-// e_popular/e_projeto become boolean only here (toggle UI state) — Post's
+// e_popular/e_projeto become boolean only here (toggle UI state): Post's
 // real type (API contract) is 0|1 (backend/src/common/types.ts, DynamoDB
 // has no boolean type for an indexed attribute). The conversion to 0|1
 // already happened on save ("? 1 : 0"); only the form's type was wrong,
@@ -27,7 +27,7 @@ const FALLBACK_CATEGORIAS = [
   { categoria_slug: 'noticias-e-mercado', nome: 'Notícias e Mercado' },
 ]
 
-// The blog has only 1 author by design — same hardcoded AUTHOR_ID used in AuthorEditView.vue.
+// The blog has only 1 author by design: same hardcoded AUTHOR_ID used in AuthorEditView.vue.
 const AUTHOR_ID = 'marcelo-goncalves'
 const ASSETS_URL = import.meta.env.VITE_ASSETS_URL || ''
 
@@ -40,7 +40,7 @@ export function usePostForm() {
   const isEditing = computed(() => route.params.slug !== undefined)
   // Tracks a create that already succeeded in THIS component instance, ahead
   // of route.params.slug actually changing (router.replace() is async and
-  // deliberately runs after local state sync — see save()). Without this, a
+  // deliberately runs after local state sync, see save()). Without this, a
   // second "Salvar" clicked before the route finishes updating would still
   // read isEditing as false and POST a duplicate create with the same slug.
   const createdInSession = ref(false)
@@ -75,12 +75,12 @@ export function usePostForm() {
     topico: '',
     variante_card: '',
     // Overwritten by the GET response on edit; a new post's create payload
-    // never sends this field (createPostInputSchema strips it if present) —
+    // never sends this field (createPostInputSchema strips it if present):
     // this default only exists to satisfy Post.version now being required.
     version: 0,
   })
 
-  // Dirty state — detects unsaved changes
+  // Dirty state: detects unsaved changes
   const initialFormJson = ref('')
   const isDirty = computed(() =>
     initialFormJson.value !== '' && JSON.stringify(form.value) !== initialFormJson.value
@@ -189,7 +189,7 @@ export function usePostForm() {
       const data = await authorsApi.get(AUTHOR_ID)
       if (data.autor) author.value = data.autor
     } catch {
-      // Author not registered yet — preview falls back to the default author name
+      // Author not registered yet: preview falls back to the default author name
     }
 
     if (isEditing.value) {
@@ -208,7 +208,7 @@ export function usePostForm() {
           subcategoria_slug: data.subcategoria_slug || '',
           subcategoria_nome: data.subcategoria_nome || '',
           subtitulo: data.subtitulo || '',
-          // GET returns the persisted UTC ISO — the <datetime-local> input
+          // GET returns the persisted UTC ISO: the <datetime-local> input
           // needs the admin's own local wall-clock time to display correctly.
           data_publicacao_programada: data.data_publicacao_programada
             ? utcIsoToLocalDateTimeInput(data.data_publicacao_programada)
@@ -248,7 +248,7 @@ export function usePostForm() {
         conteudo_html: sanitizeHtml(form.value.conteudo_html),
         e_popular: (form.value.e_popular ? 1 : 0) as 0 | 1,
         e_projeto: (form.value.e_projeto ? 1 : 0) as 0 | 1,
-        // Only the payload sent over the wire is UTC — form.value keeps the
+        // Only the payload sent over the wire is UTC: form.value keeps the
         // local datetime-local shape so the input keeps displaying correctly.
         data_publicacao_programada: form.value.data_publicacao_programada
           ? localDateTimeToUtcIso(form.value.data_publicacao_programada)
@@ -261,7 +261,7 @@ export function usePostForm() {
 
       // Synced from the server's response BEFORE router.replace: the server
       // is the source of truth for slug/version/data_atualizacao (version in
-      // particular — the client must echo back exactly what the server now
+      // particular: the client must echo back exactly what the server now
       // has, or the very next save 409s against its own successful write).
       form.value.slug = response.slug
       form.value.version = response.version
@@ -269,7 +269,7 @@ export function usePostForm() {
       if (wasNew) createdInSession.value = true
 
       // captureInitialState() BEFORE router.replace: onBeforeRouteLeave only
-      // allows navigating without confirmation if isDirty is already false —
+      // allows navigating without confirmation if isDirty is already false,
       // otherwise the replace below would trigger the "unsaved changes"
       // prompt even right after a successful save.
       captureInitialState()
@@ -277,7 +277,7 @@ export function usePostForm() {
 
       if (wasNew) {
         // Without this, "Salvar" (without publishing) twice in a row on a new
-        // post would call postsApi.create again with the same slug —
+        // post would call postsApi.create again with the same slug:
         // router.replace switches the route to edit-post without remounting
         // the component (only the param changes), so isEditing then reflects
         // reality and the slug locks, exactly like reopening an already-saved post.
@@ -286,7 +286,7 @@ export function usePostForm() {
     } catch (error) {
       const status = (error as { status?: number } | undefined)?.status
       if (status === 409 && wasNew) {
-        // Create-time 409: the ConditionExpression rejected attribute_not_exists(slug) —
+        // Create-time 409: the ConditionExpression rejected attribute_not_exists(slug):
         // a post with this exact slug already exists (not this session's
         // own write racing itself, since wasNew guards this branch to only
         // the create attempt, before createdInSession is ever set).
@@ -296,14 +296,14 @@ export function usePostForm() {
         // someone else saved this post since it was loaded here. Reloading
         // now would discard whatever the user just typed, so instead the
         // form is left as-is and `form.value.version` stays stale on
-        // purpose — the very next save attempt hits the same 409 until the
+        // purpose: the very next save attempt hits the same 409 until the
         // user reloads the page deliberately, which is the correct outcome
         // (silently overwriting the other edit would be the bug this exists
         // to prevent).
         showToast('Este post foi alterado em outra sessão desde que foi carregado. Recarregue a página antes de salvar novamente.', 'error')
       } else if (status === 404) {
         // The post existed when this form loaded but is gone now (deleted by
-        // another session) — there's no "existing" item left for the
+        // another session): there's no "existing" item left for the
         // ConditionExpression's attribute_exists(slug) to match against.
         showToast('Este post foi removido em outra sessão. Recarregue a página — não é possível salvar sobre um post excluído.', 'error')
       } else if (status === 400) {
@@ -323,8 +323,8 @@ export function usePostForm() {
     await save()
     if (!toast.value || toast.value.type !== 'error') {
       showToast(form.value.status === 'Programado' ? 'Post agendado' : 'Post publicado')
-      // Toast vive nesta view (useToast não é singleton, ver composable) — sem
-      // esse delay, router.push desmonta o componente antes do toast ser visto.
+      // The toast lives in this view's local state (useToast is not a singleton):
+      // without this delay, router.push unmounts the component before the toast is seen.
       await new Promise((resolve) => setTimeout(resolve, 1400))
       router.push('/')
     }
@@ -337,12 +337,12 @@ export function usePostForm() {
     }, 2500)
   }
 
-  // relativePath = "media/{uuid}-{name}" (no extension — multi-variant format)
+  // relativePath = "media/{uuid}-{name}" (no extension: multi-variant format)
   function applyUploadedImage(relativePath: string, context: 'destaque' | 'editor', onEditorImage: (url: string, alt: string) => void) {
     const baseUrl = `${ASSETS_URL}/${relativePath}`
 
     if (context === 'destaque') {
-      // Stores the basePath with no extension — the frontend's
+      // Stores the basePath with no extension: the frontend's
       // ResponsiveImage automatically builds the variants (-480.avif, -480.webp, -768.*, -1280.*)
       form.value.imagem_destaque_url = baseUrl
       featureImageCacheBuster.value = Date.now()

@@ -51,7 +51,7 @@ test.describe('página /categoria/:slug', () => {
 });
 
 // Made-up slug: no real post has this category, so getPostsByCategory always
-// returns posts=[] — covers the empty-state branch without depending on a
+// returns posts=[]: covers the empty-state branch without depending on a
 // real slug that could gain posts later and silently stop testing this.
 test.describe('página /categoria/:slug — categoria sem posts', () => {
   test('mostra estado vazio com link de volta para /todos-artigos', async ({ page }) => {

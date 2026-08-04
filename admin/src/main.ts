@@ -18,7 +18,7 @@ Amplify.configure({
   }
 })
 
-// Amplify is only used for the SRP handshake (login) — after that, the
+// Amplify is only used for the SRP handshake (login): after that, the
 // real session is the BFF's httpOnly cookie (see stores/auth.ts, POST
 // /admin/session). That's why Amplify keeps tokens only in memory
 // (sharedInMemoryStorage), never in localStorage/sessionStorage: they live

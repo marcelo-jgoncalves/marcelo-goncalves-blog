@@ -1,9 +1,9 @@
 /**
  * engenharia-de-software.audit.spec.ts
- * Audit visual Engenharia de Software: compara computed styles do protótipo
- * (fixtures/engenharia-de-software.html, DOM final extraído do bundle
- * "new-prots/Engenharia de Software - standalone.html" via Playwright) com o
- * app renderizado em "/engenharia-de-software". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Engenharia de Software: compares computed styles of the prototype
+ * (fixtures/engenharia-de-software.html, final DOM extracted from the
+ * "new-prots/Engenharia de Software - standalone.html" bundle via Playwright) against the
+ * app rendered at "/engenharia-de-software". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -14,7 +14,7 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/engenharia-de-so
 
 // esw-hero and esw-cta-final are excluded from the literal diff: both
 // sections use the project's shared components (PageHero/AdvisoryCta)
-// instead of replicating the standalone prototype's inline padding/grid —
+// instead of replicating the standalone prototype's inline padding/grid:
 // the bar here is "matches the reusable component", not pixel parity with
 // the prototype. See frontend/components/ui/PageHero.tsx and AdvisoryCta.tsx.
 //
@@ -47,7 +47,7 @@ test('engenharia-de-software (/software): audit protótipo vs app', async ({ pag
 
   // All targets are <section> wrappers with no direct text: the app inherits
   // the project's base font-size (18px) while the fixture (file://, no font
-  // CDN) inherits the browser default (16px). Doesn't affect real text —
+  // CDN) inherits the browser default (16px). Doesn't affect real text:
   // every visible element has its own explicit font-size (see
   // page.module.css). The lineHeight diff ("normal" vs "28.8px") is a direct
   // consequence of the same base font-size gap.

@@ -24,9 +24,9 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    // Restrito ao hostname exato do projeto — evita que Next/Image otimize
-    // imagens de qualquer CloudFront/S3 da AWS (vetor de abuso).
-    // Atualizar quando o domínio definitivo for configurado.
+    // Restricted to the project's exact hostname: prevents Next/Image from
+    // optimizing images from any AWS CloudFront/S3 (abuse vector).
+    // Update once the final domain is configured.
     remotePatterns: [
       {
         protocol: "https",
@@ -36,11 +36,11 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    // fontawesome-free (CSS de todos os ícones, ~74KB) foi substituído por
-    // SVG por ícone (free-solid/regular/brands-svg-icons) — agora esses
-    // pacotes têm imports JS nomeados de verdade, então optimizePackageImports
-    // tem efeito real (antes apontava pro pacote CSS, que nunca era importado
-    // via JS, então a flag não fazia nada).
+    // fontawesome-free (CSS for all icons, ~74KB) was replaced with per-icon
+    // SVG imports (free-solid/regular/brands-svg-icons): those packages now
+    // have real named JS exports, so optimizePackageImports has an actual
+    // effect (previously it pointed at the CSS package, which was never
+    // imported via JS, so the flag was a no-op).
     optimizePackageImports: [
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-regular-svg-icons",

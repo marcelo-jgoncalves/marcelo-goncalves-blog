@@ -9,7 +9,7 @@ interface AdsenseInArticleProps {
   variant: 'summary-divider' | 'in-content' | 'in-feed';
 }
 
-const ADSENSE_CONFIGURED = false; // Trocar para true quando o publisher ID estiver ativo
+const ADSENSE_CONFIGURED = false; // Switch to true once the publisher ID is active
 
 const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: string }> = ({
   blockId,
@@ -19,7 +19,7 @@ const AdsenseSlot: React.FC<{ blockId: string; className: string; format?: strin
     useEffect(() => {
       if (ADSENSE_CONFIGURED) {
         try {
-          // @ts-expect-error adsbygoogle não tem tipos oficiais — injetado pelo script do AdSense
+          // @ts-expect-error adsbygoogle has no official types, injected by the AdSense script
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (err) {
           console.error('Erro ao carregar o AdSense', err);
@@ -64,7 +64,7 @@ export default function AdsenseInArticle({ blockId, variant }: AdsenseInArticleP
     return <AdsenseSlot blockId={blockId} className={placeholderClass} format={adFormat} />;
   }
 
-  // Retorno simplificado para desenvolvimento: apenas uma DIV com a classe correta
+  // Simplified return for development: just a div with the correct class
   return (
     <div className={`${styles.opAdsenseWrapper} ${styles.opAdsenseDevMock} ${placeholderClass}`}>
       <span aria-hidden="true">

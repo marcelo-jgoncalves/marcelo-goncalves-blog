@@ -1,5 +1,5 @@
-// Configuração global do site — fonte única de verdade para SEO e metadados.
-// Atualizar NEXT_PUBLIC_SITE_URL no Terraform quando o domínio definitivo for configurado.
+// Global site config: single source of truth for SEO and metadata.
+// Update NEXT_PUBLIC_SITE_URL in Terraform once the final domain is configured.
 
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://dsns2wusdrj9z.cloudfront.net'
@@ -14,7 +14,7 @@ export const AUTHOR_LINKEDIN_URL = 'https://www.linkedin.com/in/marcelo-jgoncalv
 export const AUTHOR_GITHUB_URL = 'https://github.com/marcelo-jgoncalves';
 export const AUTHOR_EMAIL = 'contato@marcelogoncalves.com';
 export const AUTHOR_LOCATION = 'Belo Horizonte, MG · Atendimento remoto';
-// Empty until the real Instagram URL exists — a placeholder here would point
+// Empty until the real Instagram URL exists: a placeholder here would point
 // any future consumer at a stranger's account. Consumers must render the
 // link only when the value is non-empty.
 export const AUTHOR_INSTAGRAM_URL = '';

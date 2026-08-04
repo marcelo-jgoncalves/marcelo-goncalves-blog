@@ -1,9 +1,9 @@
 /**
  * integracao-automacao.audit.spec.ts
- * Audit visual Integração & Automação: compara computed styles do protótipo
- * (fixtures/integracao-automacao.html, DOM final extraído do bundle
- * "new-prots/Integração e Automação - standalone.html" via Playwright) com o
- * app renderizado em "/integracao-automacao". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Integração & Automação: compares computed styles of the prototype
+ * (fixtures/integracao-automacao.html, final DOM extracted from the
+ * "new-prots/Integração e Automação - standalone.html" bundle via Playwright) against the
+ * app rendered at "/integracao-automacao". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -42,7 +42,7 @@ test('integracao-automacao (/automacao): audit protótipo vs app', async ({ page
   // All targets are <section> wrappers with no direct text: the app inherits
   // the project's base font-size (18px) while the fixture (file://, no font
   // CDN) inherits the browser default (16px) and falls back to a system
-  // font. Neither affects real text — every visible element has its own
+  // font. Neither affects real text: every visible element has its own
   // explicit font-size.
   const knownIntentionalDiffs = diffs.filter(
     (d) => d.property === 'fontFamily' || d.property === 'fontSize' || d.property === 'lineHeight',

@@ -130,7 +130,7 @@
   text-align: right;
 }
 
-/* Honeypot — visually invisible, but present in the DOM/tab order avoided
+/* Honeypot: visually invisible, but present in the DOM/tab order avoided
    via tabindex=-1 (don't use display:none, which some simple spam
    filters ignore during detection). */
 .contactHoneypot {

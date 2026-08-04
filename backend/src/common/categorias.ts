@@ -33,7 +33,7 @@ interface PostWithCategorySlug {
 
 // Attaches { categoria: { nome_exibicao } } to each post, matching the shape
 // the frontend's PostWithCategory type (frontend/lib/format.ts) already
-// expects — no frontend change needed once posts carry this field.
+// expects: no frontend change needed once posts carry this field.
 export function attachCategoriaNome<T extends PostWithCategorySlug>(
   posts: T[],
   nomeMap: Map<string, string>,

@@ -1,6 +1,5 @@
-/* frontend/components/ui/FeatureCard.css
-   Valores base = frontend/app/servicos/servicos.css .svc-card (tamanho "md").
-   Variante "lg" = frontend/app/home.css .ih-pillar-card (radius/padding maiores). */
+/* Base values match frontend/app/servicos/servicos.css .svc-card (size "md").
+   The "lg" variant matches frontend/app/home.css .ih-pillar-card (larger radius/padding). */
 
 .featureCard {
   height: 100%;
@@ -24,9 +23,9 @@
   margin-bottom: var(--gap-grid);
 }
 
-/* Mesmo padrão de "kicker" mono/uppercase usado acima do título nos cards de
-   pilar da Home (.ih-pillar-kicker, home.css) — reaproveitado aqui como campo
-   opcional em vez de cada uso inventar seu próprio rótulo. */
+/* Same mono/uppercase "kicker" pattern used above the title in the Home's
+   pillar cards (.ih-pillar-kicker, home.css), reused here as an optional
+   field instead of every usage inventing its own label. */
 .featureCardKicker {
   display: block;
   font-family: var(--mono);
@@ -53,8 +52,8 @@
   line-height: 1.65;
 }
 
-/* Wrapper do rodapé — comum a tags e a qualquer `footer` customizado passado ao
-   componente (ex.: bloco "Exemplo" da landing Integração & Automação). */
+/* Footer wrapper, shared by tags and any custom `footer` passed to the
+   component (e.g. the "Exemplo" block on the Integração & Automação landing). */
 .featureCardFooter {
   margin-top: auto;
   padding-top: var(--gap-loose);
@@ -80,7 +79,7 @@
   white-space: nowrap;
 }
 
-/* size="lg" — cards maiores (ex.: pilares da Home) */
+/* size="lg": larger cards (e.g. Home's pillars) */
 .featureCardLg {
   border-radius: 18px;
   padding: var(--sp-7);

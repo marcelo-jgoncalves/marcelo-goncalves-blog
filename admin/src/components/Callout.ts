@@ -49,7 +49,7 @@ export const Callout = Node.create({
         },
       },
       {
-        // Legacy format — div.content-callout.callout-{type}
+        // Legacy format: div.content-callout.callout-{type}
         tag: 'div.content-callout',
         contentElement: (node) => (node as HTMLElement).querySelector('.callout-content-area') || node,
         getAttrs: (node) => {

@@ -1,9 +1,8 @@
 
-# 1. O Bucket de Assets
 resource "aws_s3_bucket" "frontend_assets" {
   bucket = "${var.project_name}-${var.environment}-assets"
 
-  # Boa Prática: Forçar destruição em dev para facilitar limpeza (cuidado em prod!)
+  # Dev convenience: force_destroy simplifies cleanup (be careful in prod)
   force_destroy = var.environment == "dev" ? true : false
 
   tags = {
@@ -11,7 +10,7 @@ resource "aws_s3_bucket" "frontend_assets" {
   }
 }
 
-# 2. Boa Prática: Controle de Versão (Segurança contra deleção acidental/sobrescrita)
+# Versioning protects against accidental deletion/overwrite
 resource "aws_s3_bucket_versioning" "assets_versioning" {
   bucket = aws_s3_bucket.frontend_assets.id
   versioning_configuration {
@@ -19,7 +18,6 @@ resource "aws_s3_bucket_versioning" "assets_versioning" {
   }
 }
 
-# 3. Boa Prática: Criptografia em Repouso (Default)
 resource "aws_s3_bucket_server_side_encryption_configuration" "assets_encryption" {
   bucket = aws_s3_bucket.frontend_assets.id
   rule {
@@ -29,7 +27,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "assets_encryption
   }
 }
 
-# 4. Boa Prática: Bloqueio Total de Acesso Público (Segurança Máxima)
 resource "aws_s3_bucket_public_access_block" "assets_block" {
   bucket = aws_s3_bucket.frontend_assets.id
 
@@ -39,7 +36,6 @@ resource "aws_s3_bucket_public_access_block" "assets_block" {
   restrict_public_buckets = true
 }
 
-# 5. Política do bucket de assets: Permitir APENAS o CloudFront ler
 resource "aws_s3_bucket_policy" "allow_cloudfront" {
   bucket = aws_s3_bucket.frontend_assets.id
   policy = jsonencode({

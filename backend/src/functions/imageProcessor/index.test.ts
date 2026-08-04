@@ -219,7 +219,7 @@ describe('imageProcessor', () => {
       .mockRejectedValueOnce(new Error('DynamoDB indisponível'));
 
     const { handler } = await import('./index');
-    // Should not throw — the DynamoDB error is logged as a warning and ignored
+    // Should not throw: the DynamoDB error is logged as a warning and ignored
     await expect(handler(makeS3Event('hero.jpg'))).resolves.not.toThrow();
   });
 

@@ -3,7 +3,7 @@ import { setActivePinia, createPinia } from 'pinia'
 
 // The BFF contract this store implements: the password only ever goes to
 // Cognito via SRP (Amplify), the idToken is exchanged once for an opaque
-// httpOnly cookie session, and Amplify is discarded (signOut) right after —
+// httpOnly cookie session, and Amplify is discarded (signOut) right after:
 // from then on the cookie is the only credential. These tests pin each of
 // those steps, since none of them is enforced by types.
 const signIn = vi.fn()
@@ -92,7 +92,7 @@ describe('login', () => {
 
     expect(result.success).toBe(false)
     expect(store.isAuthenticated).toBe(false)
-    // Amplify credentials must be discarded even when the exchange fails —
+    // Amplify credentials must be discarded even when the exchange fails:
     // nothing client-side should keep a usable token after login ends.
     expect(signOut).toHaveBeenCalled()
   })

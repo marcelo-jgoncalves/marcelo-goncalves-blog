@@ -115,7 +115,7 @@
   .heroMicrocopy { text-align: center; }
 }
 
-/* scroll-margin-top on the page's anchors (100px — same pattern already
+/* scroll-margin-top on the page's anchors (100px, same pattern already
    used across the project, see frontend/app/post/[slug]/post.css). */
 :global(#problemas),
 :global(#frentes),
@@ -216,7 +216,7 @@
 }
 
 /* Single panel with a vertical divider between the two fronts, 01/02
-   numbering and inline links with an arrow — no horizontal lines between
+   numbering and inline links with an arrow, no horizontal lines between
    items. */
 .frontsPanel {
   position: relative;
@@ -315,7 +315,7 @@
 @media (min-width: 680px) { .especialidades { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .especialidades { padding: var(--sp-12) 0; } }
 
-/* flex-wrap grid (not CSS grid) — PillarCard.css sets flex:1 1 340px per
+/* flex-wrap grid (not CSS grid): PillarCard.css sets flex:1 1 340px per
    card, same pattern as .ih-pillars-grid on the Home. */
 .pillarsGrid {
   display: flex;
@@ -393,7 +393,7 @@
   border-top: 1px solid var(--line);
 }
 
-/* Text on the left, "Exemplo" card on the right — replaces the centered
+/* Text on the left, "Exemplo" card on the right: replaces the centered
    header above the card. */
 .integratedLayout {
   display: grid;
@@ -416,7 +416,7 @@
 
 /* "Exemplo" card gets the same treatment as the Home's "Nosso método" card
    (subtle petrol border + --clay bar on the left), numbered list in 2
-   columns — keeps the horizontal lines between items (those weren't part
+   columns, keeps the horizontal lines between items (those weren't part
    of the removal that only applies to "frentes"). */
 .integratedExample {
   margin: 0 auto;
@@ -675,7 +675,7 @@
   min-width: 0;
 }
 
-/* Title on the left, differentiators list on the right — replaces the
+/* Title on the left, differentiators list on the right: replaces the
    centered header above the grid. Keeps the horizontal lines between
    items (those weren't part of the removal). */
 .diferenciaisBlock {

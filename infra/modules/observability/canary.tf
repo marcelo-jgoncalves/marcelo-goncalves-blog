@@ -1,12 +1,12 @@
-# CloudWatch Synthetics heartbeat — monitoramento sintético contínuo,
-# independente de deploy/tráfego real. Gated por enable_synthetic_canary
-# (variável própria, separada de enable_cloudwatch_alarms — custo
-# recorrente mesmo sem nenhum deploy acontecer, então fica fácil
-# ligar/desligar em dev sem afetar os demais alarmes).
+# CloudWatch Synthetics heartbeat: continuous synthetic monitoring, independent
+# of any real deploy/traffic. Gated by enable_synthetic_canary (its own
+# variable, separate from enable_cloudwatch_alarms: recurring cost even with
+# no deploy happening, so it can be toggled independently in dev without
+# affecting the other alarms).
 #
-# Runtime syn-nodejs-puppeteer — confirmar a versão mais recente em
+# Runtime syn-nodejs-puppeteer: confirm the latest version at
 # https://docs.aws.amazon.com/AmazonSynthetics/latest/userguide/CloudWatch_Synthetics_Canaries_Library.html
-# antes do primeiro apply (AWS deprecia versões antigas periodicamente).
+# before the first apply (AWS deprecates old versions periodically).
 
 data "archive_file" "canary_script" {
   count       = var.enable_synthetic_canary ? 1 : 0

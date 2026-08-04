@@ -2,8 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // Some sections referenced by earlier prototypes (hero stat indicators,
 // career quote, company logos, area cards, certification/academic logos)
-// were never implemented on this page — see CLAUDE.md §10 item #40 for the
-// deferred section. This spec covers only the structure that exists today.
+// were never implemented on this page. This spec covers only the structure that exists today.
 
 test.describe('página /sobre', () => {
   test.beforeEach(async ({ page }) => {
@@ -53,7 +52,7 @@ test.describe('página /sobre', () => {
   test('bloco de experiência/certificações exibe os 4 cards de autoridade', async ({ page }) => {
     const grid = page.locator('[data-audit="sobre-evidence-grid"]');
     await expect(grid).toBeVisible();
-    // FeatureCard não expõe data-audit próprio aqui — conta pelo componente pai.
+    // FeatureCard has no data-audit of its own here, so it's counted via the parent component.
     const cards = grid.locator('> *');
     await expect(cards).toHaveCount(4);
   });

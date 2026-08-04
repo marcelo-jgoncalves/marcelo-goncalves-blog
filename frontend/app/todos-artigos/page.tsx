@@ -76,10 +76,10 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
 
   const recent: ArtigoPost[] = recentData?.posts || [];
 
-  // Destaque só aparece na primeira página (sem cursor/página anterior aplicada)
+  // Feature only appears on the first page (no cursor/previous page applied)
   const feature = page === 1 && !nextToken ? recent[0] : undefined;
 
-  // Exclui o destaque da grade, caso ele também apareça nos resultados paginados
+  // Excludes the feature from the grid, in case it also appears in the paginated results
   const gridPosts = feature ? posts.filter((p) => p.slug !== feature.slug) : posts;
 
   const breadcrumbJsonLd = {
@@ -96,7 +96,6 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
-      {/* HERO */}
       <PageHero
         singleColumn
         className={`art-hero ${styles.artHero}`}
@@ -106,7 +105,6 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         subtitle="Um acervo de aprendizados reais sobre cloud, automação, inteligência artificial e operações, do problema à solução."
       />
 
-      {/* DESTAQUE */}
       {feature && (
         <section className={`wrap art-masthead ${styles.artMasthead}`} data-audit="art-masthead">
           <Link className={`art-feature ${styles.artFeature}`} href={`/post/${feature.slug}`} data-audit="art-feature">
@@ -138,7 +136,6 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         </section>
       )}
 
-      {/* BUSCA */}
       <section className={styles.artSearchSection} data-audit="art-search">
         <div className={`wrap ${styles.artSearchIn}`}>
           <label className={styles.artSearchLabel} htmlFor="art-search-input">Pesquisar artigos</label>
@@ -151,7 +148,6 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         </div>
       </section>
 
-      {/* GRADE PRINCIPAL */}
       <section className={`wrap art-section ${styles.artSection} ${styles.artSectionPaginated}`}>
         <div className="sec-head-row sec-head-row--center">
           <div className="left">
@@ -190,7 +186,6 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         </div>
       </section>
 
-      {/* CTA EDITORIAL COMPACTO */}
       <section className={`wrap art-cta-editorial ${styles.artCtaEditorial}`} data-audit="art-cta-editorial">
         <div className={styles.artCtaIn}>
           <div className="sec-ey sec-ey--dual">Aplicação prática</div>

@@ -2,10 +2,10 @@
 /**
  * scripts/backup-posts-table.mjs
  *
- * Backup completo (scan) da tabela posts, salvo como JSON local. Roda via
- * AWS SDK direto (não AWS CLI) — AWS CLI no Windows corrompe caracteres
- * não-ASCII em conteudo_html (codepage 850), causando crash a meio do
- * stream. Ver memory/feedback_aws_cli_windows_encoding.md.
+ * Full backup (scan) of the posts table, saved as a local JSON file. Runs via
+ * the AWS SDK directly, not the AWS CLI: on Windows, the AWS CLI corrupts
+ * non-ASCII characters in conteudo_html (codepage 850), causing a crash
+ * mid-stream. See memory/feedback_aws_cli_windows_encoding.md.
  *
  * Uso (a partir de scripts/, após `npm install` uma vez):
  *   AWS_PROFILE=claude-dev node backup-posts-table.mjs [--table marcelo-goncalves-blog-dev-posts]

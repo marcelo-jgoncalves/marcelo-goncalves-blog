@@ -8,7 +8,6 @@ resource "aws_cloudwatch_log_group" "image_processor" {
   retention_in_days = var.log_retention_days
 }
 
-# 1. IAM role
 resource "aws_iam_role" "processor_role" {
   name = "${var.project_name}-${var.environment}-processor-role"
 
@@ -22,7 +21,6 @@ resource "aws_iam_role" "processor_role" {
   })
 }
 
-# 2. Policy (logs + S3 read/write)
 resource "aws_iam_policy" "processor_policy" {
   name = "${var.project_name}-${var.environment}-processor-policy"
 
@@ -61,7 +59,6 @@ resource "aws_iam_role_policy_attachment" "processor_attach" {
   policy_arn = aws_iam_policy.processor_policy.arn
 }
 
-# 3. The Lambda function
 resource "aws_lambda_function" "image_processor" {
   function_name = "${var.project_name}-${var.environment}-imageProcessor"
   role          = aws_iam_role.processor_role.arn
@@ -87,7 +84,6 @@ resource "aws_lambda_function" "image_processor" {
   depends_on = [aws_cloudwatch_log_group.image_processor]
 }
 
-# 4. Permission for S3 to invoke the Lambda
 resource "aws_lambda_permission" "allow_s3" {
   statement_id  = "AllowExecutionFromS3"
   action        = "lambda:InvokeFunction"

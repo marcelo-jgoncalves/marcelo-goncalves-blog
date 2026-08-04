@@ -1,7 +1,7 @@
 // Shared table-lifecycle helpers for integration tests running against a
 // real DynamoDB (DynamoDB Local in CI, see package.json test:integration and
 // .github/workflows/cd.yml). Schema mirrors the posts table Terraform
-// actually creates (infra/modules/dynamodb/main.tf) — kept in sync by hand,
+// actually creates (infra/modules/dynamodb/main.tf), kept in sync by hand,
 // since Terraform doesn't export a machine-readable schema to import here.
 import { DynamoDBClient, CreateTableCommand, DeleteTableCommand } from "@aws-sdk/client-dynamodb";
 

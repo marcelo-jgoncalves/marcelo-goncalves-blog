@@ -18,7 +18,7 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
   const [analytics, setAnalytics] = useState(current?.analytics ?? false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Focuses the dialog on open (not the close button — better ergonomics)
+  // Focuses the dialog on open (not the close button: better ergonomics)
   useEffect(() => {
     dialogRef.current?.focus();
   }, []);
@@ -31,7 +31,6 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  // Focus trap: keeps focus inside the modal
   const trapFocus = useCallback((e: React.KeyboardEvent) => {
     if (e.key !== 'Tab' || !dialogRef.current) return;
     const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
@@ -83,7 +82,6 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
             plataforma.
           </p>
 
-          {/* Necessários — sempre ativo */}
           <div className={styles.cmpRow}>
             <div className={styles.cmpRowInfo}>
               <span className={styles.cmpRowLabel}>
@@ -101,7 +99,6 @@ export default function ConsentModal({ current, onSave, onAcceptAll, onRejectAll
             </label>
           </div>
 
-          {/* Analíticos — opcional */}
           <div className={styles.cmpRow}>
             <div className={styles.cmpRowInfo}>
               <span className={styles.cmpRowLabel}>

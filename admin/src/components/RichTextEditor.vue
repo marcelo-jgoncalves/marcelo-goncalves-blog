@@ -117,7 +117,7 @@ defineExpose({
 
 /* ===== Horizontal Rule (Divider) ===== */
 :deep(.ProseMirror hr) {
-  /* Visual style comes from the inline 'style'. Only behavior here. */
+  /* Visual style comes from the inline 'style'; only behavior here. */
   cursor: pointer;
 }
 
@@ -236,7 +236,7 @@ defineExpose({
   line-height: 1.6;
 }
 
-/* Warning — clay accent */
+/* Warning: clay accent */
 :deep(.ProseMirror .callout.warn) {
   border-left-color: #C9603C;
   background: #FCF6F1;
@@ -244,7 +244,7 @@ defineExpose({
 :deep(.ProseMirror .callout.warn .ic) { background: #F3DDD0; color: #A94C2D; }
 :deep(.ProseMirror .callout.warn .t) { color: #A94C2D; }
 
-/* Error — red accent */
+/* Error: red accent */
 :deep(.ProseMirror .callout.error) {
   border-left-color: #A33A2B;
   background: #FBF0EE;
@@ -252,7 +252,7 @@ defineExpose({
 :deep(.ProseMirror .callout.error .ic) { background: #F4D9D4; color: #A33A2B; }
 :deep(.ProseMirror .callout.error .t) { color: #A33A2B; }
 
-/* Ok — moss accent */
+/* Ok: moss accent */
 :deep(.ProseMirror .callout.ok) {
   border-left-color: #3F6B47;
   background: #F1F5F0;
@@ -260,7 +260,7 @@ defineExpose({
 :deep(.ProseMirror .callout.ok .ic) { background: #DCE8DD; color: #3F6B47; }
 :deep(.ProseMirror .callout.ok .t) { color: #3F6B47; }
 
-/* Tip — clay accent, standalone class */
+/* Tip: clay accent, standalone class */
 :deep(.ProseMirror .tip) {
   border-left-color: #C9603C;
 }

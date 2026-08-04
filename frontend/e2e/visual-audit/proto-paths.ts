@@ -1,6 +1,6 @@
 /**
  * proto-paths.ts
- * Caminhos file:// dos protótipos em new-prots/ (referência visual do redesign 2026).
+ * file:// paths to the prototypes in new-prots/ (visual reference for the 2026 redesign).
  */
 import path from 'path';
 

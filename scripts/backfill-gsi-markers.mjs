@@ -2,13 +2,13 @@
 /**
  * scripts/backfill-gsi-markers.mjs
  *
- * Migração de GSI de baixa cardinalidade (docs/plano-migracao-gsi-dynamodb.md).
- * Popula os atributos esparsos e_popular_marker/e_projeto_marker — só
- * existem no item quando o respectivo flag é 1. Isso permite recriar as
- * GSIs PopularesPorData/ProjetoPorData com uma hash_key de alta
- * cardinalidade efetiva (sparse index), em vez de um Number 0/1.
+ * Low-cardinality GSI migration (docs/plano-migracao-gsi-dynamodb.md).
+ * Populates the sparse attributes e_popular_marker/e_projeto_marker: they
+ * only exist on the item when the respective flag is 1. This allows
+ * recreating the PopularesPorData/ProjetoPorData GSIs with an effectively
+ * high-cardinality hash_key (sparse index), instead of a Number 0/1.
  *
- * Roda via AWS SDK direto (não AWS CLI) — ver
+ * Runs via the AWS SDK directly (not the AWS CLI), see
  * memory/feedback_aws_cli_windows_encoding.md.
  *
  * Uso (a partir de scripts/, após `npm install` uma vez):
@@ -60,14 +60,14 @@ async function main() {
     const updates = {};
     const removes = [];
 
-    // e_popular_marker: setar "POP" se e_popular=1, remover se já existir e e_popular!=1
+    // e_popular_marker: set "POP" if e_popular=1, remove if it already exists and e_popular!=1
     if (item.e_popular === 1) {
       if (item.e_popular_marker !== "POP") updates.e_popular_marker = "POP";
     } else if (item.e_popular_marker !== undefined) {
       removes.push("e_popular_marker");
     }
 
-    // e_projeto_marker: setar "PROJ" se e_projeto=1, remover se já existir e e_projeto!=1
+    // e_projeto_marker: set "PROJ" if e_projeto=1, remove if it already exists and e_projeto!=1
     if (item.e_projeto === 1) {
       if (item.e_projeto_marker !== "PROJ") updates.e_projeto_marker = "PROJ";
     } else if (item.e_projeto_marker !== undefined) {

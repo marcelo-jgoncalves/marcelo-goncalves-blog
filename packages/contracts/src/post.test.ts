@@ -110,7 +110,7 @@ describe('createPostInputSchema', () => {
 
   it('does not reject a past data_publicacao_programada when status is not Programado', () => {
     // A published post keeps whatever scheduled date it had before publishing
-    // (postScheduler never clears the field) — re-saving it must not 400.
+    // (postScheduler never clears the field): re-saving it must not 400.
     const result = createPostInputSchema.safeParse({
       ...BASE,
       status: 'Publicado',

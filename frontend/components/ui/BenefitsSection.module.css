@@ -1,6 +1,6 @@
 /* Recipe refined in /software: clay checkmark with no background (no
    longer a number or icon with a colored box), 2-column grid with no
-   visible borders, large headline (--type-h1). Single source of truth —
+   visible borders, large headline (--type-h1). Single source of truth,
    see BenefitsSection.tsx. */
 
 .section {

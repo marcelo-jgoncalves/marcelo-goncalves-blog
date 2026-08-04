@@ -14,7 +14,7 @@ function mockFetch(status: number, body: unknown) {
 
 // ─── apiCall ──────────────────────────────────────────────────────────────────
 // The BFF session travels in an httpOnly cookie sent automatically by the
-// browser (credentials: 'include') — no token/Authorization header built on
+// browser (credentials: 'include'): no token/Authorization header built on
 // the client. 401/403 mean "invalid session" and redirect to login (see
 // services/api.ts and the Lambda Authorizer, which returns 403 on an
 // explicit Deny policy and 401 only when it can't identify the request at all).

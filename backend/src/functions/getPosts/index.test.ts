@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if POSTS_TABLE is unset — this must
+// requireEnv() throws at module load if POSTS_TABLE is unset: this must
 // run before the `./index` import below, not in beforeAll (too late).
 process.env.POSTS_TABLE = 'test-posts-table';
 
@@ -57,7 +57,7 @@ beforeAll(() => {
 beforeEach(() => {
   mockSend.mockReset();
   // Default fallback for the categorias Scan every handler now fires
-  // alongside the posts query (getCategoriaNomeMap) — individual tests still
+  // alongside the posts query (getCategoriaNomeMap): individual tests still
   // queue their own mockResolvedValueOnce for the calls they assert on;
   // this only backstops the untested category-lookup call.
   mockSend.mockImplementation(() => Promise.resolve({ Items: [] }));
@@ -216,7 +216,7 @@ describe('getPosts handler', () => {
 
       const body = JSON.parse(result?.body ?? '{}');
       // Real category name from the categorias table, not a Title-Case guess
-      // from the slug (which would produce "Devops Automacao" — wrong caps,
+      // from the slug (which would produce "Devops Automacao": wrong caps,
       // missing accent, missing "&").
       expect(body.posts[0].categoria.nome_exibicao).toBe('DevOps & Automação');
       expect(body.category.nome).toBe('DevOps & Automação');
@@ -289,7 +289,7 @@ describe('getPosts handler', () => {
 
       const cmd = mockSend.mock.calls[0][0];
       // Limit on a ScanCommand with FilterExpression reads N items BEFORE
-      // filtering — with Limit:9, if the first 9 items don't match, it
+      // filtering: with Limit:9, if the first 9 items don't match, it
       // returns an empty array.
       expect(cmd.input.Limit).toBeUndefined();
     });

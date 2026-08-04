@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 /**
  * Stylelint only enforces that SOME valid token from the scale is used,
  * never that it's the right token for the element's role (reading text,
- * link/CTA, card title — see CLAUDE.md §5 "Papel -> token mínimo"). This
+ * link/CTA, card title, see CLAUDE.md §5 "Papel -> token mínimo"). This
  * checks the rendered outcome (computed font-size on mobile) instead of
  * which CSS token produced it, so it stays valid even if a selector's
  * token changes later, as long as the rendered value still meets the
@@ -32,7 +32,7 @@ const HOME_CHECKS: RoleCheck[] = [
   { role: 'título de card', selector: '.ih-case-text h3', minPx: 20 },
 ];
 
-// Depends on recent posts existing (conditional section in page.tsx) — only
+// Depends on recent posts existing (conditional section in page.tsx): only
 // runs when the API/backend is reachable, same as the other PostCard checks
 // in this suite (see home-layout.spec.ts).
 const HOME_BLOG_CHECKS: RoleCheck[] = [

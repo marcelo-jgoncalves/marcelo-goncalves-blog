@@ -1,5 +1,5 @@
-// Diagnóstico rápido: qual rota e qual status code está causando as falhas
-// vistas no load-test.js (16.66% de erro, mas não 429).
+// Quick diagnosis: which route and status code is causing the failures
+// seen in load-test.js (16.66% error rate, but not 429).
 import http from "k6/http";
 
 const BASE_URL = "https://5duus31al8.execute-api.us-east-1.amazonaws.com/v1";

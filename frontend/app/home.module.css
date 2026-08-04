@@ -3,7 +3,7 @@
 }
 
 /* The hero has 2 always-visible CTAs (primary + secondary), side by side
-   on desktop, stacked on mobile — doesn't duplicate the nav CTA (the two
+   on desktop, stacked on mobile: doesn't duplicate the nav CTA (the two
    coexist: nav leads to /contato, the hero also offers #servicos). */
 .ihHeroActions {
   display: flex;
@@ -29,7 +29,7 @@
   }
 }
 
-/* Button — uses the global .btn/.btn-petrol pattern (globals.css). */
+/* Button: uses the global .btn/.btn-petrol pattern (globals.css). */
 
 .ihSection {
   margin-block: 0;
@@ -54,7 +54,7 @@
 /* Spacing between "Conheça o blog" (#insights) and the "Vamos conversar"
    eyebrow reduced to the same total as the other cases.
    .cta-adv-in uses align-items:center (centers the text column against
-   the taller card on the right) — that pushed the eyebrow well past the
+   the taller card on the right): that pushed the eyebrow well past the
    padding-top alone. Switched to align-items:flex-start only for this
    instance (id="contato", Home-only) so the eyebrow actually sits
    var(--sp-9) from the section's top; other pages using AdvisoryCta are
@@ -74,7 +74,7 @@
   background: var(--sand);
 }
 
-/* Eyebrow — local variant (supports a centered double rule) */
+/* Eyebrow: local variant (supports a centered double rule) */
 .ihEyebrow {
   font-family: var(--mono);
   font-size: var(--type-caption);
@@ -122,7 +122,7 @@
 
 .ihCenterDesc {
   max-width: 580px;
-  /* --sp-4 (16px) — converged with .sec-desc/.ih-results-desc onto the
+  /* --sp-4 (16px): converged with .sec-desc/.ih-results-desc onto the
      same "eyebrow/title → description" role. Used to be --eyebrow-gap
      (14px, a token for a different role reused by value coincidence). */
   margin: var(--sp-4) auto 0;
@@ -137,7 +137,7 @@
 }
 
 /* The 4 pillar cards were migrated to components/ui/PillarCard.tsx (.pillar-*),
-   also reused in /servicos — see PillarCard.css. */
+   also reused in /servicos, see PillarCard.css. */
 
 .ihCaseTags span {
   font-family: var(--mono);
@@ -152,7 +152,7 @@
   border-color: rgba(15, 76, 92, .14);
 }
 
-/* Section-closing button — always at the end of the section, always
+/* Section-closing button: always at the end of the section, always
    centered, same pattern across Serviços/Metodologia/Resultados/Blog. */
 .ihSectionFooterCenter {
   display: flex;
@@ -196,7 +196,7 @@
 }
 
 /* margin: top = "eyebrow → title" (--eyebrow-gap), bottom = "title →
-   body" (--title-gap) — used to use --sp-4/--eyebrow-gap, each other's
+   body" (--title-gap): used to use --sp-4/--eyebrow-gap, each other's
    role tokens. */
 .ihMcTitle { font-weight: 800; font-size: var(--type-h4); color: var(--petrol); margin: var(--eyebrow-gap) 0 var(--title-gap); }
 .ihMcText { font-size: var(--type-body-sm); line-height: 1.6; color: var(--slate); margin: 0; }
@@ -226,7 +226,7 @@
 
 .ihResultsDesc {
   max-width: 560px;
-  /* --sp-4 (16px) — this was already the value; .sec-desc/.ih-center-desc
+  /* --sp-4 (16px): this was already the value; .sec-desc/.ih-center-desc
      were converged onto it. */
   margin: var(--sp-4) auto 0;
   line-height: 1.6;
@@ -354,7 +354,7 @@
   /* The gap between cases and the image→text gap within the same case
      (var(--sp-10)=64px for both, inherited from the desktop side-by-side
      layout) turned into two DIFFERENT gaps around the image once stacked
-     on mobile (64px on one side, a different value on the other) —
+     on mobile (64px on one side, a different value on the other),
      standardized on the same token (--sp-7=32px) so all spacing around
      the image in this section is equal. */
   .ihResults .ihCases {
@@ -379,7 +379,7 @@
   }
   .ihResults .ihCaseText {
     /* flex: 1 1 440px (base) uses that 440px as the preferred width in the
-       desktop side-by-side layout — on mobile (column), the same value
+       desktop side-by-side layout: on mobile (column), the same value
        becomes a MINIMUM height for the text block, leaving empty space
        below the tags when content is shorter than 440px (varied per case,
        since each has a different amount of text/tags). flex-basis:auto

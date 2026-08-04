@@ -3,43 +3,43 @@
 @import '@fortawesome/fontawesome-free/css/all.css';
 
 :root {
-  /* ── Brand — paleta "Painel de conteúdo" (petróleo/argila) ── */
-  --accent:       #C9603C; /* argila — ação primária */
-  --accent-hover: #A94C2D; /* argila hover */
-  --accent-light: #F3DDD0; /* argila suave */
+  /* Brand: "Content dashboard" palette (petrol/clay) */
+  --accent:       #C9603C; /* clay, primary action */
+  --accent-hover: #A94C2D; /* clay hover */
+  --accent-light: #F3DDD0; /* clay soft */
   --accent-dark:  #A94C2D;
 
-  --petrol:       #0F4C5C; /* títulos, tabs ativas, acentos */
+  --petrol:       #0F4C5C; /* titles, active tabs, accents */
   --petrol-deep:  #08323D; /* sidebar, avatar */
-  --petrol-soft:  #5B8B96; /* gradientes de thumbnail */
-  --moss:         #3F6B47; /* status publicado, sucesso */
-  --clay-red-bg:  #FBEEE9; /* hover excluir (fundo) */
-  --clay-red-bd:  #E6C9BC; /* borda excluir */
+  --petrol-soft:  #5B8B96; /* thumbnail gradients */
+  --moss:         #3F6B47; /* published status, success */
+  --clay-red-bg:  #FBEEE9; /* delete hover (background) */
+  --clay-red-bd:  #E6C9BC; /* delete border */
 
-  /* ── Dark scale ── */
-  --dark-900: #0F4C5C; /* petróleo — headings */
+  /* Dark scale */
+  --dark-900: #0F4C5C; /* petrol, headings */
   --dark-800: #08323D;
-  --dark-700: #0C2027; /* tinta — texto de interface */
-  --dark-600: #3C5A64; /* ardósia — texto secundário */
+  --dark-700: #0C2027; /* ink, interface text */
+  --dark-600: #3C5A64; /* slate, secondary text */
 
-  /* ── Slate neutrals (aço/areia/marfim) ── */
-  --slate-50:  #FAF8F3; /* marfim — fundo de área */
-  --slate-100: #F0ECE2; /* areia */
-  --slate-200: #E4DDD0; /* linha — bordas */
-  --slate-300: #E9E2D6; /* areia escura — hover toolbar */
-  --slate-400: #7E969E; /* aço — metadados, placeholders */
-  --slate-500: #3C5A64; /* ardósia — texto secundário */
+  /* Slate neutrals (steel/sand/ivory) */
+  --slate-50:  #FAF8F3; /* ivory, area background */
+  --slate-100: #F0ECE2; /* sand */
+  --slate-200: #E4DDD0; /* line, borders */
+  --slate-300: #E9E2D6; /* dark sand, toolbar hover */
+  --slate-400: #7E969E; /* steel, metadata, placeholders */
+  --slate-500: #3C5A64; /* slate, secondary text */
 
-  /* ── Surface ── */
+  /* Surface */
   --border-color: #E4DDD0;
   --blue-600:     #3182CE;
 
-  /* ── Fonts ── */
+  /* Fonts */
   --font-sans:    'Inter', sans-serif;
   --font-display: 'Inter', sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
 
-  /* ── Type scale — base 16px (admin UI) ── */
+  /* Type scale, base 16px (admin UI) */
   --text-xs:   0.75rem;   /* 12px */
   --text-sm:   0.875rem;  /* 14px */
   --text-base: 1rem;      /* 16px */
@@ -49,7 +49,7 @@
   --text-3xl:  2.5rem;    /* 40px */
   --text-4xl:  3rem;      /* 48px */
 
-  /* ── Spacing scale — 8px grid ── */
+  /* Spacing scale, 8px grid */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;

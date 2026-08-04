@@ -11,7 +11,7 @@
 }
 
 /* scroll-margin-top on the page's anchors, same pattern already used
-   across the project (100px — see frontend/app/post/[slug]/post.css). */
+   across the project (100px, see frontend/app/post/[slug]/post.css). */
 #visao,
 #origem,
 #principios,
@@ -23,7 +23,7 @@
 }
 
 /* ==========================================================================
-   HERO — single column (the "Nossa Visão" card was removed from the hero;
+   HERO: single column (the "Nossa Visão" card was removed from the hero;
    the vision became its own section right below, see .sobre-visao).
    ========================================================================== */
 :global(.page-hero).sobreHero {
@@ -180,7 +180,7 @@
   .sobrePrTitle { font-size: var(--type-lead); }
 }
 
-/* Manifesto — visually belongs to the principles section, not a new
+/* Manifesto: visually belongs to the principles section, not a new
    section. Dark closing band, no numbering or CTA — same petrol
    background + glow treatment used in .sobre-abordagem. */
 .sobreManifesto {
@@ -217,7 +217,7 @@
 /* ==========================================================================
    HOW WE THINK
    ========================================================================== */
-/* Petrol background — same color as the Results section on the Home (var(--petrol)). */
+/* Petrol background: same color as the Results section on the Home (var(--petrol)). */
 .sobreAbordagem { background: var(--petrol); padding: var(--sp-9) 0; }
 
 .sobreAbordagemHead {
@@ -254,7 +254,7 @@
   gap: var(--gap-grid);
 }
 
-/* Translucent cards over the petrol background — same treatment used in
+/* Translucent cards over the petrol background: same treatment used in
    the Results section's illustrations (.ih-case-visual in home.css). */
 .sobreModule {
   position: relative;
@@ -393,7 +393,7 @@
 
 .sobreBehindH3 { font-weight: 800; font-size: var(--type-h3); line-height: 1.05; color: var(--ink); margin: 0 0 var(--sp-4); }
 
-/* Role tags — same visual treatment as .ih-pillar-tags (Home). */
+/* Role tags: same visual treatment as .ih-pillar-tags (Home). */
 .sobreBehindTags {
   display: flex;
   flex-wrap: wrap;
@@ -415,7 +415,7 @@
 
 .sobreBehindContent p { font-size: var(--type-body-sm); line-height: 1.68; color: var(--slate); max-width: 63ch; margin: 0 0 var(--sp-4); }
 
-/* "Uma estrutura adaptável ao projeto" block — belongs to the same
+/* "Uma estrutura adaptável ao projeto" block: belongs to the same
    leadership macro-block, right after the bio. */
 .sobreBoutique {
   margin-top: var(--sp-5);
@@ -450,7 +450,7 @@
   color: var(--clay);
 }
 
-/* Certification names in full — simple list (not pill), because
+/* Certification names in full, simple list (not pill), because
    .feature-card-tags uses white-space:nowrap, which broke/overflowed with
    long text like "AWS Certified Solutions Architect – Associate". */
 .sobreCertList {

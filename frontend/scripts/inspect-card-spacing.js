@@ -9,10 +9,11 @@ const { chromium } = require('playwright');
   await page.waitForTimeout(2000);
 
   const result = await page.evaluate(() => {
-    // Pegar o segundo card (que tem excerpt)
+    // Not every card has an excerpt: pick the first one that does, so the
+    // measurement below reflects the excerpt spacing, not an empty gap.
     const cards = Array.from(document.querySelectorAll('.post-card__content'));
     const card = cards.find(c => c.querySelector('.post-card__excerpt')) || cards[1];
-    if (!card) return { error: 'card com excerpt não encontrado' };
+    if (!card) return { error: 'card with excerpt not found' };
 
     const title   = card.querySelector('.post-card__title');
     const excerpt = card.querySelector('.post-card__excerpt');
@@ -39,7 +40,6 @@ const { chromium } = require('playwright');
     const e = fullInfo(excerpt, 'excerpt');
     const c = fullInfo(cta, 'cta');
 
-    // Também checar o container
     const cardCs = window.getComputedStyle(card);
 
     return {

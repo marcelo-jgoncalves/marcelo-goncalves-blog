@@ -45,7 +45,7 @@ export function saveConsent(settings: ConsentSettings): ConsentState {
   return state;
 }
 
-// Invalida se a versão do schema mudou — mostra banner novamente
+// Invalidates when the schema version changes: shows the banner again
 export function isConsentValid(state: ConsentState): boolean {
   return state.version === CONSENT_VERSION;
 }
@@ -55,8 +55,8 @@ export function isConsentValid(state: ConsentState): boolean {
 const loadedScripts = new Set<string>();
 
 function loadScriptsByConsent(state: ConsentState): void {
-  // AdSense — descomente e configure quando ADSENSE_CONFIGURED = true
-  // Carrega mesmo sem consent: Consent Mode controla personalização
+  // AdSense: uncomment and configure when ADSENSE_CONFIGURED = true
+  // Loads even without consent: Consent Mode controls personalization
   // if (!loadedScripts.has('adsense')) {
   //   const s = document.createElement('script');
   //   s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
@@ -67,7 +67,7 @@ function loadScriptsByConsent(state: ConsentState): void {
   //   loadedScripts.add('adsense');
   // }
 
-  // Google Analytics — apenas com consent analytics
+  // Google Analytics: only with analytics consent
   // if (state.analytics && !loadedScripts.has('analytics')) {
   //   const s = document.createElement('script');
   //   s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';

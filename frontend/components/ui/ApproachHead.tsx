@@ -1,7 +1,7 @@
-// Extraído das 4 landings de pilar — bloco "Nossa abordagem" (texto à esquerda) +
-// card de resultado/objetivo/compromisso (aside à direita), mesmo papel semântico
-// nas 4 páginas. Recebe as classes de CSS Module de cada página via prop `classes`
-// para não alterar nenhum seletor CSS existente (zero risco visual).
+// Extracted from the 4 pillar landings: "Nossa abordagem" block (text on the
+// left) plus a result/goal/commitment card (aside on the right), same semantic
+// role on all 4 pages. Takes each page's own CSS Module classes via the
+// `classes` prop so no existing CSS selector changes (zero visual risk).
 
 import type { ReactNode } from 'react';
 

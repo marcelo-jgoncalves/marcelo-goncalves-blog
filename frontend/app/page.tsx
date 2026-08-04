@@ -101,7 +101,7 @@ const STEPS = [
   { title: 'Acompanhamento e evolução', description: 'Acompanhamos o comportamento da solução, corrigimos desvios e planejamos novas etapas quando elas geram valor real para a operação.' },
 ];
 
-// Hardcoded cases — validate against real records/measurements before
+// Hardcoded cases: validate against real records/measurements before
 // publishing to production. Until validated, don't describe these as
 // "real projects" anywhere in this section's copy.
 const CASES = [
@@ -149,7 +149,7 @@ interface HomePost {
 
 export default async function InstitutionalHome() {
   // Fetches more than 3 because test-post filtering happens here, before
-  // rendering — never only via CSS. The backend already restricts the
+  // rendering, never only via CSS. The backend already restricts the
   // query to status="Publicado" (getPosts/index.ts), so drafts never
   // reach this point.
   const recentData = await getRecentPosts(9).catch(() => ({ posts: [] }));
@@ -180,7 +180,6 @@ export default async function InstitutionalHome() {
         <p className={styles.ihHeroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* Serviços */}
       <section className={styles.ihSection} id="servicos">
         <div className="wrap">
           <div className={styles.ihCenterHead}>
@@ -206,7 +205,6 @@ export default async function InstitutionalHome() {
         </div>
       </section>
 
-      {/* Metodologia */}
       <section className={`${styles.ihSection} ${styles.ihSectionSurface}`} id="como-trabalhamos">
         <div className="wrap">
           <div className={styles.ihMethodGrid} data-audit="ih-method-grid">
@@ -232,7 +230,6 @@ export default async function InstitutionalHome() {
         </div>
       </section>
 
-      {/* Resultados */}
       <section className={styles.ihResults} id="resultados">
         <div className="wrap">
           <div className={styles.ihCenterHead}>
@@ -276,7 +273,6 @@ export default async function InstitutionalHome() {
         </div>
       </section>
 
-      {/* Blog */}
       <section className={`${styles.ihSection} ${styles.ihSectionSand}`} id="conteudo">
         <div className="wrap">
           <div className={styles.ihCenterHead}>

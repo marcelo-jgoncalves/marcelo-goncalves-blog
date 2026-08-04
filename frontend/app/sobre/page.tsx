@@ -19,14 +19,12 @@ const TITLE = `Sobre a Consultoria | ${SITE_NAME}`;
 const DESCRIPTION = 'Conheça a consultoria boutique liderada por Marcelo Gonçalves, sua visão de engenharia, experiência em tecnologia, certificações e forma de conduzir projetos.';
 const FALLBACK_PHOTO = '/static/foto-perfil-oculos.png';
 
-// §7.4: três resultados curtos da Visão.
 const VISION_RESULTS = [
   'Menos esforço manual',
   'Sistemas mais integrados',
   'Soluções preparadas para evoluir',
 ];
 
-// §9.6-9.10: cinco princípios de engenharia.
 const PRINCIPLES = [
   { num: '01', title: 'Simplicidade', text: 'Projetamos soluções fáceis de entender, operar e manter. A complexidade só deve existir quando o problema realmente exige.' },
   { num: '02', title: 'Modularidade', text: 'Organizamos sistemas em partes bem definidas, com responsabilidades claras e capacidade de evolução sem reconstruções desnecessárias.' },
@@ -35,7 +33,7 @@ const PRINCIPLES = [
   { num: '05', title: 'Evolução', text: 'Construímos soluções preparadas para mudanças, novas demandas e crescimento, sem transformar cada etapa em um novo começo.' },
 ];
 
-// §11.6-11.10: cinco etapas do processo decisório (distinto dos princípios).
+// Distinct from PRINCIPLES: this models the decision process steps, not engineering principles.
 const DECISIONS = [
   { num: '01', icon: faMagnifyingGlass, title: 'Entendemos o contexto', text: 'Mapeamos a operação, as pessoas envolvidas, os sistemas existentes, as limitações e o resultado que precisa ser alcançado.', span: 4 },
   { num: '02', icon: faBullseye, title: 'Questionamos premissas', text: 'Verificamos se o problema está corretamente definido e se ele exige mais tecnologia, uma integração, uma mudança de processo ou uma combinação dessas alternativas.', span: 4 },
@@ -96,7 +94,6 @@ export default async function SobrePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(personJsonLd) }} />
 
-      {/* ── HERO ── */}
       <PageHero
         singleColumn
         className={`sobre-hero ${styles.sobreHero}`}
@@ -106,12 +103,11 @@ export default async function SobrePage() {
         subtitle="Somos uma consultoria boutique liderada por Marcelo Gonçalves. Combinamos automação, inteligência artificial, software e arquitetura em nuvem para ajudar empresas a operar com mais eficiência, integração e confiabilidade."
       >
         <div className={styles.sobreHeroActions}>
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- <a> nativo intencional: next/link não dispara scroll até o hash no 1º clique (mesmo padrão de HeaderNav.tsx) */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- native <a> intentional: next/link doesn't trigger scroll to the hash on the 1st click (same pattern as HeaderNav.tsx) */}
           <a className={`btn sobre-btn-clay ${styles.sobreBtnClay}`} href="/#servicos">Conhecer os serviços</a>
         </div>
       </PageHero>
 
-      {/* ── NOSSA VISÃO ── */}
       <section className={styles.sobreVisao} id="visao">
         <div className={`wrap ${styles.sobreCenterHead}`}>
           <div className={`sec-ey ${styles.sobreEyCenter}`}>Nossa visão</div>
@@ -124,7 +120,6 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── ORIGEM E PROPÓSITO ── */}
       <section className={styles.sobreOrigem} id="origem">
         <div className={`wrap ${styles.sobreOrigemGrid}`} data-audit="sobre-origem-grid">
           <div className={styles.sobreOrigemText}>
@@ -142,7 +137,6 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── PRINCÍPIOS DE ENGENHARIA ── */}
       <section className={styles.sobreFilosofia} id="principios">
         <div className="wrap">
           <div className={styles.sobreCenterHead}>
@@ -166,7 +160,6 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── COMO TOMAMOS DECISÕES ── */}
       <section className={styles.sobreAbordagem} id="decisoes">
         <div className="wrap">
           <div className={styles.sobreAbordagemHead} data-audit="sobre-abordagem-head">
@@ -198,7 +191,6 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* ── QUEM LIDERA A CONSULTORIA ── */}
       <section className={styles.sobreBehind} id="lideranca" aria-labelledby="behind-title">
         <div className={styles.sobreBehindContainer}>
           <header className={styles.sobreBehindHead}>
@@ -212,7 +204,7 @@ export default async function SobrePage() {
                 <ResponsiveImage src={author.foto_avatar_url} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" fill priority />
               ) : (
                 // next/image's /_next/image endpoint isn't deployed here (no image
-                // optimizer Lambda) — it 404s on any local src, so static assets use
+                // optimizer Lambda): it 404s on any local src, so static assets use
                 // a plain <img> instead.
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={FALLBACK_PHOTO} alt="Marcelo Gonçalves, fundador e líder técnico da consultoria" width={720} height={960} loading="lazy" decoding="async" />
@@ -236,8 +228,8 @@ export default async function SobrePage() {
             </div>
           </article>
 
-          {/* Experiência, certificações e competências — mesmo macrobloco de
-              autoridade da liderança (§3.3 item 9 da spec), não uma seção à parte. */}
+          {/* Experience, certifications and competencies: same leadership authority
+              macro-block, not a separate section. */}
           <div className={styles.sobreEvidenceGrid} id="experiencia" data-audit="sobre-evidence-grid">
             {AUTHORITY_CARDS.map((c) => {
               let footer;

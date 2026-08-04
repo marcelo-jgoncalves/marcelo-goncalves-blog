@@ -1,8 +1,7 @@
 'use client';
 
-/* frontend/components/ui/Reveal.tsx
-   Animação de entrada disparada uma vez no mount — specs/ESPECIFICACAO-CLOUD-DEVOPS.md §15.
-   Não é scroll-reveal: todos os elementos animam juntos 60ms após o carregamento da página. */
+/* Entrance animation triggered once on mount, specs/ESPECIFICACAO-CLOUD-DEVOPS.md §15.
+   Not a scroll-reveal: all elements animate together 60ms after the page loads. */
 
 import { useEffect, useState, type CSSProperties, type ElementType, type ReactNode } from 'react';
 

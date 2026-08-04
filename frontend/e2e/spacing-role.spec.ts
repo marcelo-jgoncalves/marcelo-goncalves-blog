@@ -1,29 +1,28 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Camada 4 pro eixo de espaçamento (CLAUDE.md §5, "Papel → token mínimo").
- * Mesma lógica de e2e/typography-role.spec.ts, aplicada ao achado real de
- * espaçamento desta sessão (2026-07-23): .sec-desc, .ih-center-desc e
- * .ih-results-desc implementavam o mesmo papel ("eyebrow/título →
- * descrição de seção") com 3 tokens/valores diferentes (24px/14px/16px)
- * — nenhum deles o token semanticamente documentado (--title-gap). Foram
- * convergidos pra --sp-4 (16px, decisão de design, não "o valor certo
- * objetivo" — ver comentário em globals.css/home.css). Este teste verifica
- * o valor RENDERIZADO em computed style, não qual token CSS foi usado —
- * assim ele continua válido mesmo se o token de origem mudar de nome,
- * desde que o resultado visual combinado seja mantido.
+ * Layer 4 for the spacing axis (CLAUDE.md §5, "Role -> minimum token").
+ * Same approach as e2e/typography-role.spec.ts: .sec-desc, .ih-center-desc
+ * and .ih-results-desc implement the same role ("eyebrow/title to section
+ * description") with 3 different tokens/values (24px/14px/16px), none of
+ * them the semantically documented token (--title-gap). They were converged
+ * to --sp-4 (16px, a design decision, not "the objectively correct value",
+ * see comment in globals.css/home.css). This test checks the RENDERED
+ * value from computed style, not which CSS token produced it, so it stays
+ * valid even if the source token is renamed, as long as the combined visual
+ * result is preserved.
  *
- * Se um teste aqui falhar: não assuma que o valor antigo estava certo —
- * confirme se a divergência é uma regressão (alguém reintroduziu um token
- * de papel errado) ou uma decisão de design nova e intencional. Só no
- * segundo caso o número esperado abaixo deve mudar.
+ * If a test here fails: don't assume the old value was correct, confirm
+ * whether the divergence is a regression (someone reintroduced the wrong
+ * role token) or an intentional new design decision. Only in the second
+ * case should the expected number below change.
  */
 
 const MOBILE_VIEWPORT = { width: 375, height: 812 };
 const EXPECTED_MARGIN_TOP = '16px';
 
-// Toda página que usa .sec-desc (globals.css) — base compartilhada do
-// papel "eyebrow/título → descrição".
+// Every page that uses .sec-desc (globals.css): the shared base for the
+// "eyebrow/title to description" role.
 const PAGES_WITH_SEC_DESC = ['/', '/contato', '/o-projeto', '/artigos', '/sobre'];
 
 test.describe('Espaçamento "eyebrow/título → descrição" consistente entre páginas — CLAUDE.md §5', () => {

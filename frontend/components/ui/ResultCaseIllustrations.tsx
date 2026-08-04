@@ -1,6 +1,6 @@
 // SVG illustrations for the 4 cases in the Home's Resultados section. Size
 // is controlled via class (not inline style) to allow a responsive
-// override in home.css — see .ih-illustration.
+// override in home.css: see .ih-illustration.
 
 export function ResultCase1() {
   return (

@@ -1,7 +1,7 @@
 /**
  * compare.ts
- * Diff de dois AuditResult (protótipo vs app) + relatório legível.
- * Referência: specs/VALIDATION-STRATEGY.md
+ * Diffs two AuditResult objects (prototype vs app) and produces a readable report.
+ * Reference: specs/VALIDATION-STRATEGY.md
  */
 import type { AuditResult } from './audit-script';
 
@@ -20,16 +20,16 @@ export interface CompareOutcome {
 const RECT_PROPERTIES = new Set(['width', 'height']);
 const RECT_TOLERANCE_PX = 2;
 
-// height de containers com conteúdo dinâmico (títulos/excertos reais) varia
-// vs. o texto placeholder do protótipo — divergência esperada (ver VALIDATION-STRATEGY.md).
-// Reportada mas não conta como falha.
+// Height of containers with dynamic content (real titles/excerpts) varies
+// against the prototype's placeholder text: an expected divergence (see VALIDATION-STRATEGY.md).
+// Reported but not counted as a failure.
 const SOFT_PROPERTIES = new Set(['height']);
 
 const COLOR_PROPERTIES = new Set(['color', 'backgroundColor', 'borderColor']);
 
 function normalizeColor(value: string): string {
   const trimmed = value.replace(/\s+/g, ' ').trim();
-  // rgba(r, g, b, 1) -> rgb(r, g, b) — alpha 1 é equivalente a opaco
+  // rgba(r, g, b, 1) -> rgb(r, g, b): alpha 1 is equivalent to opaque
   const rgbaMatch = trimmed.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*1\)$/);
   if (rgbaMatch) {
     return `rgb(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]})`;
@@ -56,7 +56,7 @@ function valuesEqual(property: string, proto: string, app: string): boolean {
     return normalizeColor(proto) === normalizeColor(app);
   }
 
-  // next/font injeta fallback metrics no fontFamily — comparar só a 1ª família
+  // next/font injects fallback metrics into fontFamily: compare only the 1st family
   if (property === 'fontFamily') {
     return firstFontFamily(proto) === firstFontFamily(app);
   }
@@ -65,9 +65,9 @@ function valuesEqual(property: string, proto: string, app: string): boolean {
 }
 
 /**
- * Compara os audits de protótipo e app para uma lista de `data-audit` keys.
- * `targets` define quais elementos são esperados na página — chaves ausentes
- * em um dos lados geram diff explícito (elemento faltando).
+ * Compares the prototype and app audits for a list of `data-audit` keys.
+ * `targets` defines which elements are expected on the page: keys missing
+ * from either side generate an explicit diff (missing element).
  */
 export function compareAudits(proto: AuditResult, app: AuditResult, targets: string[]): CompareOutcome {
   const diffs: AuditDiff[] = [];

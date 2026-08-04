@@ -1,6 +1,6 @@
 import { processFullPostContent, normalizeMediaImageSrc } from '@/lib/postUtils';
 
-// Shiki é pesado e irrelevante para estes testes — mock simples que devolve o bloco original
+// Shiki is heavy and irrelevant to these tests: simple mock returning a fixed block
 jest.mock('shiki', () => ({
   createHighlighter: jest.fn().mockResolvedValue({
     codeToHtml: () => '<pre><code>mocked</code></pre>',
@@ -11,7 +11,7 @@ const PLACEHOLDER = '<div id="inject-ads-placeholder"></div>';
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
-/** Gera HTML plano com n seções (h2 + p) precedidas de um parágrafo de intro. */
+/** Generates flat HTML with n sections (h2 + p) preceded by an intro paragraph. */
 function flatHtml(sections: number): string {
   const intro = '<p>Introdução.</p>';
   const body = Array.from({ length: sections }, (_, i) =>
@@ -20,10 +20,10 @@ function flatHtml(sections: number): string {
   return intro + body;
 }
 
-/** Envolve HTML em um único wrapper. */
+/** Wraps HTML in a single wrapper element. */
 const wrap = (tag: string, html: string) => `<${tag}>${html}</${tag}>`;
 
-// ─── injeção de placeholder ───────────────────────────────────────────────────
+// ─── placeholder injection ───────────────────────────────────────────────────
 
 describe('injeção do inject-ads-placeholder', () => {
   it('injeta no HTML plano (múltiplos filhos diretos do body)', async () => {
@@ -59,7 +59,7 @@ describe('injeção do inject-ads-placeholder', () => {
   });
 });
 
-// ─── casos em que NÃO deve injetar ───────────────────────────────────────────
+// ─── cases where it must NOT inject ──────────────────────────────────────────
 
 describe('não injeta quando o conteúdo é insuficiente', () => {
   it('não injeta com apenas 2 elementos (guarda do último elemento)', async () => {
@@ -75,15 +75,15 @@ describe('não injeta quando o conteúdo é insuficiente', () => {
   });
 });
 
-// ─── pula headings e imagens no midpoint ─────────────────────────────────────
+// ─── skips headings and images at the midpoint ───────────────────────────────
 
 describe('pula headings e imagens no midpoint', () => {
   it('pula heading no midpoint e injeta após o próximo elemento elegível', async () => {
-    // 6 elementos: p p h2 p p p → TARGET=3 (h2), pula para p[4]
+    // 6 elements: p p h2 p p p -> TARGET=3 (h2), skips ahead to p[4]
     const html = '<p>a</p><p>b</p><h2>Mid</h2><p>c</p><p>d</p><p>e</p>';
     const { contentHtml } = await processFullPostContent(html);
     expect(contentHtml).toContain(PLACEHOLDER);
-    // O placeholder deve aparecer APÓS o h2, não antes
+    // The placeholder must appear AFTER the h2, not before
     const h2Pos = contentHtml.indexOf('<h2');
     const phPos = contentHtml.indexOf(PLACEHOLDER);
     expect(phPos).toBeGreaterThan(h2Pos);
@@ -102,7 +102,7 @@ describe('pula headings e imagens no midpoint', () => {
   });
 });
 
-// ─── normalização de <img src> de imagens inline ─────────────────────────────
+// ─── normalization of inline <img src> ───────────────────────────────────────
 
 describe('normalizeMediaImageSrc', () => {
   it('adiciona -1280 em URL de /media/ sem sufixo de variante', () => {
@@ -141,7 +141,7 @@ describe('normalizeMediaImageSrc', () => {
   });
 });
 
-// ─── extração de headings ─────────────────────────────────────────────────────
+// ─── heading extraction (TOC) ────────────────────────────────────────────────
 
 describe('extração de headings (TOC)', () => {
   it('extrai texto e id do h2', async () => {

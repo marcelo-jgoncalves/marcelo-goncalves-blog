@@ -146,7 +146,7 @@
 
 /* Also applied as a plain global class by consumer pages that pass raw
    JSX into the `cardBody` prop (e.g. sobre/page.tsx, the 4 pillar
-   landings) — those elements never render through this component, so
+   landings): those elements never render through this component, so
    the selector must reach the un-hashed class name too. */
 .ctaAdvBodyText,
 :global(.cta-adv-body-text) {
@@ -194,7 +194,7 @@
   transform: translateX(3px);
 }
 
-/* Button — uses the global .btn pattern (globals.css); .cta-adv-btn only
+/* Button: uses the global .btn pattern (globals.css); .cta-adv-btn only
    adjusts width (fills the card) and this component's own shadow. */
 .ctaAdvBtn {
   width: 100%;
@@ -207,7 +207,7 @@
   font-family: var(--mono);
 }
 
-/* Meta rows — services variant */
+/* Meta rows: services variant */
 .ctaAdvMeta {
   display: flex;
   flex-direction: column;

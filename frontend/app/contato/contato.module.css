@@ -50,7 +50,7 @@
   scroll-margin-top: 100px;
 }
 
-/* Main block — form (larger) + next steps (smaller), side by side */
+/* Main block: form (larger) + next steps (smaller), side by side */
 .ctMainGrid {
   display: grid;
   grid-template-columns: 1.65fr 1fr;
@@ -86,7 +86,7 @@
   font-size: var(--type-caption);
 }
 
-/* Next steps — side panel */
+/* Next steps: side panel */
 .ctNextSteps {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -236,7 +236,7 @@
   margin-top: var(--sp-1);
 }
 
-/* Discreet link after the FAQ — not a large-scale CTA. */
+/* Discreet link after the FAQ: not a large-scale CTA. */
 .ctFaqFooter {
   display: flex;
   align-items: center;

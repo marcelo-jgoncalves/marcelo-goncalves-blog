@@ -1,5 +1,5 @@
 //
-// Atomic counter of published posts — replaces the `Select: "COUNT"` query
+// Atomic counter of published posts: replaces the `Select: "COUNT"` query
 // that getAllPosts/getProjectPosts fired in parallel on every request,
 // doubling the read cost.
 //
@@ -29,7 +29,7 @@ export async function getPostCounters(): Promise<PostCounters> {
   };
 }
 
-// Minimal post state needed to decide if it counts toward the aggregates —
+// Minimal post state needed to decide if it counts toward the aggregates:
 // accepts undefined to represent "doesn't exist" (new post on create, or
 // already deleted).
 export interface CounterRelevantState {
@@ -64,7 +64,7 @@ export function computeCounterDeltas(
 }
 
 // DynamoDB's ADD creates the attribute (initialized to the delta value) if
-// the item/attribute doesn't exist yet — no need to manually initialize the
+// the item/attribute doesn't exist yet: no need to manually initialize the
 // counters before first use.
 export async function applyCounterDeltas(deltas: CounterDeltas): Promise<void> {
   if (deltas.deltaTotal === 0 && deltas.deltaProjeto === 0) return;
@@ -79,7 +79,7 @@ export async function applyCounterDeltas(deltas: CounterDeltas): Promise<void> {
   );
 }
 
-// Shape usable inside a TransactWriteCommand — lets a write path commit the
+// Shape usable inside a TransactWriteCommand: lets a write path commit the
 // post mutation and the counter ADD in a single atomic transaction, instead
 // of two sequential calls where a crash in between leaves the counters
 // drifted with no detection. Returns null when the write doesn't change the

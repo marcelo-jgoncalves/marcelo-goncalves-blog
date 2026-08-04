@@ -8,7 +8,7 @@ interface PaginationProps {
   totalPages?: number;
   currentPageToken?: string;
   prevTokens?: string;
-  /** Id da seção para onde rolar após trocar de página (sem o "#"). Sem isso, a posição de scroll é preservada como está. */
+  /** Section id to scroll to after changing page (without "#"). Without this, scroll position is preserved as-is. */
   scrollToId?: string;
 }
 
@@ -26,7 +26,6 @@ export default function Pagination({
 
   const hash = scrollToId ? `#${scrollToId}` : '';
 
-  // --- URL da próxima página ---
   let nextUrl: string | null = null;
   if (nextToken) {
     const params = new URLSearchParams({ nextToken, page: String(page + 1) });
@@ -35,7 +34,6 @@ export default function Pagination({
     nextUrl = `${basePath}?${params.toString()}${hash}`;
   }
 
-  // --- URL da página anterior ---
   let prevUrl: string | null = null;
   if (page > 1) {
     if (page === 2) {

@@ -1,4 +1,4 @@
-/* Single recipe for a mono "pill" (tag, category badge) — extracted from
+/* Single recipe for a mono "pill" (tag, category badge), extracted from
    the duplication across FeatureCard.css/PillarCard.css/PostCard.css and
    several page.module.css files. Only text/background/border color varies
    per variant. */

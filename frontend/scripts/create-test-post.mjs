@@ -1,6 +1,6 @@
-// Ferramenta de automação: cria um post de teste completo via admin real (login Cognito + UI),
-// publica, e valida o resultado no frontend público. Não faz parte do test:e2e (CI nunca executa
-// isto sozinho) — é uma ferramenta on-demand: `node frontend/scripts/create-test-post.mjs`.
+// Automation tool: creates a full test post through the real admin (Cognito login + UI),
+// publishes it, and validates the result on the public frontend. Not part of test:e2e (CI never
+// runs this on its own): it's an on-demand tool, `node frontend/scripts/create-test-post.mjs`.
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -24,9 +24,9 @@ if (!USERNAME || !PASSWORD) throw new Error('Não foi possível extrair credenci
 
 const TITLE = '[TESTE] Como Reduzir Custos de Lambda em Produção: 7 Técnicas Práticas';
 
-// Seletores únicos para contagem de nós de conteúdo — usados tanto no HTML recarregado
-// do admin (via DOMParser) quanto no DOM renderizado da página pública (via querySelectorAll),
-// para que as duas contagens sejam diretamente comparáveis.
+// Single set of selectors for content-node counting, used both against the HTML reloaded
+// from the admin (via DOMParser) and the rendered DOM of the public page (via querySelectorAll),
+// so the two counts are directly comparable.
 const NODE_CHECKS = {
   negrito: 'strong',
   italico: 'em',
@@ -68,17 +68,17 @@ async function shot(page, name) {
 }
 
 // Callout/pullQuote/table/closingFlourish are "isolating" nodes (Callout.ts,
-// PullQuote.ts) — clicking inside them, even near the bottom edge, keeps the
+// PullQuote.ts): clicking inside them, even near the bottom edge, keeps the
 // selection TRAPPED there (confirmed live: all the bold/list/link text ended
 // up typed inside the first callout because of this). The correct way to
 // escape is ProseMirror's gap cursor (Gapcursor ships in @tiptap/starter-kit):
 // clicking inside the last block and pressing ArrowDown moves the selection
-// past it when it's the last node in the document — safe to type after that.
+// past it when it's the last node in the document, safe to type after that.
 async function clickDocEnd(page) {
   const editor = page.locator('.tiptap-content .ProseMirror');
   const lastChild = editor.locator('> *').last();
   await lastChild.scrollIntoViewIfNeeded();
-  // Callout has a title+icon (contenteditable="false") at the top — clicking
+  // Callout has a title+icon (contenteditable="false") at the top: clicking
   // near the bottom improves the odds of hitting editable text (paragraph/cell)
   // across every isolating node type used here.
   const box = await lastChild.boundingBox();
@@ -91,8 +91,8 @@ async function clickDocEnd(page) {
   await page.keyboard.press('End');
 }
 
-// Seleciona as últimas `len` posições de caractere digitadas (shift+seta-esquerda),
-// usado para aplicar marks (bold/italic/link) num trecho específico via toolbar/atalho.
+// Selects the last `len` typed characters (shift+left-arrow), used to apply marks
+// (bold/italic/link) to a specific span via toolbar/shortcut.
 async function selectLastChars(page, len) {
   for (let i = 0; i < len; i++) await page.keyboard.press('Shift+ArrowLeft');
 }
@@ -134,7 +134,7 @@ async function run() {
     // Title is a contenteditable div (EditorView.vue), not an <input>.
     // keyboard.type() character-by-character scrambled the text in a real
     // run (accented characters + inter-key delay race against CDP timing on
-    // contenteditable) — setting innerText once and dispatching 'input' is
+    // contenteditable): setting innerText once and dispatching 'input' is
     // atomic and avoids the race.
     await page.locator('.ia-title').click();
     await page.evaluate((text) => {
@@ -143,7 +143,7 @@ async function run() {
       el.dispatchEvent(new Event('input', { bubbles: true }));
     }, TITLE);
 
-    // Slug is only visible in the settings drawer (SettingsDrawer.vue) —
+    // Slug is only visible in the settings drawer (SettingsDrawer.vue),
     // open it to read the generated value.
     await page.locator('button[aria-label="Configurações do post"]').click();
     await page.waitForSelector('.ia-drawer');
@@ -156,7 +156,7 @@ async function run() {
     await page.locator('button[aria-label="Fechar configurações"]').click();
     await page.waitForSelector('.ia-drawer', { state: 'detached' });
 
-    // ---- Conteúdo via editor real (Tiptap), usando input rules estilo markdown ----
+    // ---- Content via the real editor (Tiptap), using markdown-style input rules ----
     const editor = page.locator('.tiptap-content .ProseMirror');
     await editor.click();
 
@@ -185,11 +185,11 @@ async function run() {
     await page.keyboard.press('Enter');
     await page.keyboard.type('Usar ARM/Graviton2 quando o runtime suportar', { delay: 4 });
     await page.keyboard.press('Enter');
-    await page.keyboard.press('Enter'); // sai da lista (liftEmptyBlock)
+    await page.keyboard.press('Enter'); // exits the list (liftEmptyBlock)
 
     await page.keyboard.type('> Medir antes de otimizar: CloudWatch Lambda Insights mostra exatamente onde o tempo (e o dinheiro) está sendo gasto.', { delay: 4 });
     await page.keyboard.press('Enter');
-    await page.keyboard.press('Enter'); // sai do blockquote
+    await page.keyboard.press('Enter'); // exits the blockquote
 
     await page.keyboard.type('```python', { delay: 4 });
     await page.keyboard.press('Enter');
@@ -203,7 +203,7 @@ async function run() {
     await page.keyboard.type('Com essas mudanças aplicadas em conjunto, é comum observar reduções de 30-50% na fatura do Lambda sem qualquer perda perceptível de performance para o usuário final.', { delay: 4 });
     await page.keyboard.press('Enter');
 
-    // ---- Imagem inline via upload real ----
+    // ---- Inline image via real upload ----
     log('Inserindo imagem inline via upload real...');
     await page.locator('.tiptap-toolbar button[title="Inserir Imagem"]').click();
     await page.waitForSelector('.modal-overlay');
@@ -220,9 +220,9 @@ async function run() {
 
     await shot(page, 'editor-content-filled');
 
-    // ---- Callout (testa node customizado do Tiptap) — best-effort, não bloqueia o fluxo ----
+    // ---- Callout (exercises a custom Tiptap node), best-effort, does not block the flow ----
     // Callout.ts (admin/src/components/Callout.ts) special-cases the "tip" type:
-    // wrapperClass = type==='tip' ? 'tip' : `callout ${type}` — only tip skips
+    // wrapperClass = type==='tip' ? 'tip' : `callout ${type}`: only tip skips
     // the "callout" class prefix (the other 4 types keep it). Confirmed by
     // running against the real admin: the node was inserted fine, only the
     // selector was wrong.
@@ -242,7 +242,7 @@ async function run() {
       await page.keyboard.type('Dica de bastidor: o AWS Cost Explorer com filtro por tag de função já é suficiente pra começar — não precisa de ferramenta paga no dia 1.', { delay: 4 });
     }
 
-    // ---- Negrito / itálico via seleção + atalho de teclado ----
+    // ---- Bold / italic via selection + keyboard shortcut ----
     log('Aplicando negrito e itálico...');
     await clickDocEnd(page);
     await page.keyboard.type('Vale reforçar: o ajuste de memória é ', { delay: 4 });
@@ -260,7 +260,7 @@ async function run() {
     await page.keyboard.type(', não só na primeira configuração.', { delay: 4 });
     await page.keyboard.press('Enter');
 
-    // ---- Lista numerada (input rule "1. ") ----
+    // ---- Numbered list (input rule "1. ") ----
     log('Inserindo lista numerada...');
     await page.keyboard.type('Roteiro sugerido para aplicar as técnicas, em ordem:', { delay: 4 });
     await page.keyboard.press('Enter');
@@ -284,11 +284,11 @@ async function run() {
     await page.keyboard.type('.', { delay: 4 });
     await page.keyboard.press('Enter');
 
-    // ---- Divisor horizontal ----
+    // ---- Horizontal divider ----
     log('Inserindo divisor horizontal...');
     await page.locator('.tiptap-toolbar button[title="Divisor Horizontal"]').click();
 
-    // ---- Callouts restantes (info, warn, error, ok) — "tip" já foi exercitado acima ----
+    // ---- Remaining callouts (info, warn, error, ok): "tip" was already exercised above ----
     const remainingCallouts = [
       { type: 'info', title: 'Callout: Saiba mais', text: 'Saiba mais: a documentação da AWS detalha o cálculo exato de GB-segundo usado na cobrança.' },
       { type: 'warn', title: 'Callout: Atenção', text: 'Atenção: reduzir memória sem medir antes pode aumentar a duração da execução e anular a economia.' },
@@ -307,7 +307,7 @@ async function run() {
       }
     }
 
-    // ---- Citação em destaque (pull quote) ----
+    // ---- Pull quote ----
     log('Inserindo citação em destaque (pull quote)...');
     await clickDocEnd(page);
     await page.locator('.tiptap-toolbar button[title="Citação em destaque"]').click();
@@ -320,7 +320,7 @@ async function run() {
       finding('Citação em destaque (pull quote) não produziu um nó ".pull p" clicável em 5s.');
     }
 
-    // ---- Tabela ----
+    // ---- Table ----
     log('Inserindo tabela...');
     await clickDocEnd(page);
     await page.locator('.tiptap-toolbar button[title="Inserir Tabela"]').click();
@@ -337,7 +337,7 @@ async function run() {
       finding('Inserção de Tabela via toolbar não produziu células visíveis em 5s.');
     }
 
-    // ---- Vídeo do YouTube ----
+    // ---- YouTube video ----
     log('Inserindo vídeo do YouTube...');
     await clickDocEnd(page);
     page.once('dialog', (d) => d.accept('https://www.youtube.com/watch?v=dQw4w9WgXcQ'));
@@ -348,7 +348,7 @@ async function run() {
       finding('Inserção de vídeo do YouTube via toolbar não produziu um nó "[data-youtube-video]" em 8s.');
     }
 
-    // ---- Bloco de encerramento (closing flourish) ----
+    // ---- Closing flourish block ----
     log('Inserindo bloco de encerramento...');
     await clickDocEnd(page);
     await page.locator('.tiptap-toolbar button[title="Bloco de encerramento"]').click();
@@ -362,7 +362,7 @@ async function run() {
 
     // ---- Imagem de destaque via upload real ----
     // Cover button lives on the editor sheet (outside the drawer), not in a
-    // "panel" — a new post always starts without a cover, so it's ".ia-add-cover".
+    // "panel": a new post always starts without a cover, so it's ".ia-add-cover".
     log('Inserindo imagem de destaque via upload real...');
     await page.locator('.ia-add-cover').click();
     await page.waitForSelector('.modal-overlay');
@@ -371,7 +371,7 @@ async function run() {
       finding('Upload de imagem de destaque não fechou o modal em 20s.')
     );
 
-    // ---- Remaining form fields — all live in the settings drawer ----
+    // ---- Remaining form fields: all live in the settings drawer ----
     await page.locator('button[aria-label="Configurações do post"]').click();
     await page.waitForSelector('.ia-drawer');
 
@@ -384,7 +384,7 @@ async function run() {
     const metaDesc = page.locator('.ia-rail-card:has-text("SEO") textarea');
     await metaDesc.fill('Guia prático com 7 técnicas testadas para reduzir o custo de execução de funções AWS Lambda em produção sem perder performance.');
 
-    // Categoria — tenta achar "DevOps", senão mantém o default carregado da API
+    // Category: tries to find "DevOps", otherwise keeps the default loaded from the API
     const categoriaSelect = page.locator('.ia-rail-card:has-text("Categoria") select').first();
     const categoriaOptions = await categoriaSelect.locator('option').allTextContents();
     const devopsOption = categoriaOptions.find((t) => /devops/i.test(t));
@@ -402,9 +402,9 @@ async function run() {
     await page.waitForSelector('.ia-drawer', { state: 'detached' });
     await shot(page, 'form-filled-complete');
 
-    // ---- Salvar como Rascunho primeiro (fluxo real de criação) ----
+    // ---- Save as Draft first (real creation flow) ----
     // New post: save() does create() + router.replace (same view, no navigation
-    // to the dashboard) — unlike the old flow, which navigated back.
+    // to the dashboard), unlike the old flow, which navigated back.
     log('Salvando como Rascunho...');
     await page.locator('.ia-btn-save').click();
     const toastOk = await page.waitForSelector('.ia-toast--success', { timeout: 15000 }).then(() => true).catch(() => false);
@@ -424,7 +424,7 @@ async function run() {
       return el && el.textContent && el.textContent.length > 0;
     });
     // Title (form state) and content (Tiptap, initialized separately from the
-    // same onMounted) don't populate on the same tick — reading the HTML too
+    // same onMounted) don't populate on the same tick: reading the HTML too
     // early caught the YouTube video missing in one real run, even though it
     // had actually saved correctly (confirmed by the public-page validation,
     // which didn't flag the same issue). Wait for a heavy, present marker
@@ -466,9 +466,9 @@ async function run() {
       }
     }
 
-    // Contagem de nós via DOMParser sobre o HTML recarregado do servidor — baseline
-    // para comparar com o que a página pública efetivamente renderiza (ver validateRendered).
-    // page.evaluate(fn, arg) only accepts 1 argument — passing (selectors, html)
+    // Node count via DOMParser over the server-reloaded HTML: baseline
+    // to compare against what the public page actually renders (see validateRendered).
+    // page.evaluate(fn, arg) only accepts 1 argument: passing (selectors, html)
     // as 2 positional args never worked ("Too many arguments"), the flow had
     // never actually run far enough to catch it before. Pack into one object.
     adminNodeCounts = await page.evaluate(({ selectors, html }) => {
@@ -483,7 +483,7 @@ async function run() {
     await shot(page, 'before-publish');
 
     // publish() (usePostForm.ts) already forces form.status='Publicado' before
-    // saving (unless it's 'Programado') — no need to open the drawer and click
+    // saving (unless it's 'Programado'), no need to open the drawer and click
     // the radio manually, the "Publicar" button alone already does it.
     log('Publicando...');
     await page.locator('.ia-btn-publish').click();
@@ -494,7 +494,7 @@ async function run() {
     log('Post publicado.');
     await shot(page, 'dashboard-after-publish');
 
-    // Check status in the listing — DashboardView.vue uses divs (.ia-row), not <table>/<tr>.
+    // Check status in the listing: DashboardView.vue uses divs (.ia-row), not <table>/<tr>.
     const statusBadge = page.locator(`.ia-row:has(a[href="/post/${slug}"]) .ia-status-pill`);
     const badgeText = await statusBadge.textContent().catch(() => null);
     if (badgeText?.trim() !== 'Publicado') {
@@ -511,8 +511,8 @@ async function run() {
   return { slug, adminNodeCounts };
 }
 
-// Valida pelo HTTP bruto o que é barato e não depende de renderização: status,
-// cache headers e presença de um trecho. Erros aqui ocorrem antes de qualquer CSS/JS rodar.
+// Validates over raw HTTP what is cheap and doesn't depend on rendering: status,
+// cache headers, and presence of a snippet. Errors here happen before any CSS/JS runs.
 async function validateHttp(slug) {
   const postUrl = `${PUBLIC_URL}/post/${slug}`;
   log(`Validando HTTP ${postUrl} ...`);
@@ -531,10 +531,10 @@ async function validateHttp(slug) {
   }
 }
 
-// Valida o DOM renderizado de verdade (pós-CSS/JS) no browser, no mesmo padrão de
+// Validates the actual rendered DOM (post-CSS/JS) in the browser, same pattern as
 // frontend/scripts/inspect-card-spacing.js: getBoundingClientRect()/getComputedStyle()
-// em vez de string-match no HTML bruto. Pega uma classe de bug que o fetch() não pega —
-// nó presente na marcação mas invisível, vazio, ou com imagem que não decodificou.
+// instead of string-matching raw HTML. Catches a class of bug that fetch() misses:
+// a node present in the markup but invisible, empty, or with an image that failed to decode.
 async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) {
   const postUrl = `${PUBLIC_URL}/post/${slug}`;
   const browser = await chromium.launch({ headless: true });
@@ -571,7 +571,7 @@ async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) 
       })();
 
       out.coverImage = (() => {
-        // postCoverFrame is a CSS Module (post.module.css) — the real class is
+        // postCoverFrame is a CSS Module (post.module.css): the real class is
         // hashed; [data-audit] is the stable hook kept exactly for cases like this.
         const img = document.querySelector('[data-audit="post-cover-frame"] img');
         if (!img) return { found: false };
@@ -652,9 +652,9 @@ async function validateRendered(slug, viewportLabel, viewport, adminNodeCounts) 
         finding(`[${viewportLabel}] Renderização pública: "${label}" está visível mas sem texto — possível nó vazio.`);
       }
 
-      // Compara com a contagem extraída do HTML recarregado no admin (mesma fonte de
-      // verdade, antes do CloudFront/SSR) — isola se a perda aconteceu na transição
-      // admin → público (cache, sanitização, hidratação) em vez de na inserção do editor.
+      // Compares against the count extracted from the HTML reloaded in the admin (same
+      // source of truth, before CloudFront/SSR): isolates whether the loss happened in the
+      // admin-to-public transition (cache, sanitization, hydration) rather than in editor insertion.
       const adminCount = adminNodeCounts?.[label];
       if (adminCount != null && data.count < adminCount) {
         finding(`[${viewportLabel}] "${label}": admin tinha ${adminCount} nó(s) pós-save, público renderizou só ${data.count} — perda entre admin e renderização pública.`);

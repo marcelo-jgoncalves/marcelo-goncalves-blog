@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if POSTS_TABLE/ADMIN_ORIGIN are unset —
+// requireEnv() throws at module load if POSTS_TABLE/ADMIN_ORIGIN are unset:
 // this must run before the `./index` import below, not in beforeAll (too late).
 process.env.POSTS_TABLE = 'test-posts-table';
 process.env.ADMIN_ORIGIN = 'https://test-admin.example.com';
@@ -182,7 +182,7 @@ describe('adminPosts handler', () => {
   describe('POST /admin/posts (create)', () => {
     it('creates a new post and returns 200', async () => {
       mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador (post novo é Publicado → ADD total_publicado :1)
+      mockSend.mockResolvedValueOnce({}); // counter (new post is Publicado, ADD total_publicado :1)
 
       const result = await handler(
         event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
@@ -199,7 +199,7 @@ describe('adminPosts handler', () => {
     });
 
     it('incrementa total_publicado na MESMA transação do Put ao criar um post Publicado', async () => {
-      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + contador)
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Put + counter)
 
       await handler(
         event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
@@ -230,7 +230,7 @@ describe('adminPosts handler', () => {
 
     it('invalida /post/{slug} e "/" ao criar um post já Publicado', async () => {
       mockSend.mockResolvedValueOnce({}); // PutCommand
-      mockSend.mockResolvedValueOnce({}); // contador
+      mockSend.mockResolvedValueOnce({}); // counter
 
       await handler(
         event({ httpMethod: 'POST', body: JSON.stringify(SAMPLE_POST) }),
@@ -395,7 +395,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      // Server always computes version itself on create — never the client-sent value.
+      // Server always computes version itself on create: never the client-sent value.
       expect(writtenItem(mockSend.mock.calls[0][0]).version).toBe(1);
     });
 
@@ -418,7 +418,7 @@ describe('adminPosts handler', () => {
     });
 
     it('normalizes data_publicacao_programada to full UTC ISO 8601 on a scheduled post', async () => {
-      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Programado: zero delta actually — see below)
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Programado: zero delta actually, see below)
       await handler(
         event({
           httpMethod: 'POST',
@@ -472,7 +472,7 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(200);
-      // same status (Publicado → Publicado) and same e_projeto: zero delta, no 3rd call
+      // same status (Publicado to Publicado) and same e_projeto: zero delta, no 3rd call
       expect(mockSend).toHaveBeenCalledTimes(2);
     });
 
@@ -705,7 +705,7 @@ describe('adminPosts handler', () => {
         event({
           httpMethod: 'PATCH',
           pathParameters: { slug: 'meu-post' },
-          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }), // stale — real version is 5
+          body: JSON.stringify({ ...SAMPLE_POST, version: 4 }), // stale, real version is 5
         }),
         ctx,
         jest.fn(),
@@ -847,7 +847,7 @@ describe('adminPosts handler', () => {
         jest.fn(),
       );
 
-      const cmd = mockSend.mock.calls[1][0]; // call[0] agora é o Get prévio
+      const cmd = mockSend.mock.calls[1][0]; // call[0] is now the earlier Get
       expect(cmd.input.Key).toEqual({ slug: 'meu-post' });
     });
 
@@ -861,7 +861,7 @@ describe('adminPosts handler', () => {
       );
 
       expect(result?.statusCode).toBe(404);
-      expect(mockSend).toHaveBeenCalledTimes(1); // só o Get, sem tentativa de Delete
+      expect(mockSend).toHaveBeenCalledTimes(1); // just the Get, no Delete attempted
     });
 
     it('sends a version ConditionExpression on the plain DeleteCommand, checked against the client version', async () => {
@@ -895,7 +895,7 @@ describe('adminPosts handler', () => {
     });
 
     // The real bug this closes: the server used to read the CURRENT version
-    // off DynamoDB and check the delete against that — which always passes,
+    // off DynamoDB and check the delete against that, which always passes,
     // even when the client's own view of the post is stale. Asserting the
     // client's (older) version ends up in the ConditionExpression is what
     // proves the fix, not just that a 409 happens on a DynamoDB-level error.
@@ -949,7 +949,7 @@ describe('adminPosts handler', () => {
 
     it('decrementa o contador (na transação do Delete) ao deletar um post Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 1 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + counter)
 
       await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),
@@ -965,7 +965,7 @@ describe('adminPosts handler', () => {
 
     it('invalida /post/{slug} e "/" ao deletar um post Publicado', async () => {
       mockSend.mockResolvedValueOnce({ Item: { status: 'Publicado', e_projeto: 1, version: 1 } }); // Get (existing)
-      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + contador)
+      mockSend.mockResolvedValueOnce({}); // TransactWriteCommand (Delete + counter)
 
       await handler(
         event({ httpMethod: 'DELETE', pathParameters: { slug: 'meu-post' }, queryStringParameters: { version: '1' } }),

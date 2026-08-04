@@ -9,7 +9,7 @@
   padding-bottom: var(--sp-12);
 }
 
-/* ── Variants — cascading color tokens ─────────────────── */
+/* ── Variants: cascading color tokens ─────────────────── */
 .fwc-section[data-variant="light"] {
   background: rgba(15, 76, 92, 0.08);
   --fwc-title: var(--ink);
@@ -48,7 +48,7 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* ── Radius — for use inside a container (not edge-to-edge) */
+/* ── Radius: for use inside a container (not edge-to-edge) */
 .fwc-section[data-rounded="true"] {
   border-radius: 16px;
   overflow: hidden;
@@ -113,7 +113,7 @@
   margin: 0;
 }
 
-/* ── CTA button — uses the global .btn/.btn-petrol pattern (globals.css);
+/* ── CTA button: uses the global .btn/.btn-petrol pattern (globals.css);
    .fwc-btn only adjusts the font size in this component's context. */
 .fwc-btn {
   font-size: var(--type-body);

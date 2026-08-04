@@ -2,7 +2,7 @@ import { ref, nextTick, watch, type Ref } from 'vue'
 
 export type OutlineItem = { id: string; text: string; level: 2 | 3 }
 
-// Side outline — rebuilt from the H2/H3 actually rendered in Tiptap,
+// Side outline: rebuilt from the H2/H3 actually rendered in Tiptap,
 // assigning sequential ids (iah-0, iah-1…) to enable scroll-to-heading.
 export function useEditorOutline(editorWrapperRef: Ref<HTMLElement | null>, contentHtml: Ref<string>) {
   const outline = ref<OutlineItem[]>([])

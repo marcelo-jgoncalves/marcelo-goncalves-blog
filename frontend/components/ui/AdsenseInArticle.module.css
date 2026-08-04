@@ -27,7 +27,7 @@
   height: 100% !important;
 }
 
-/* Vertical rhythm — symmetric spacing above and below */
+/* Vertical rhythm: symmetric spacing above and below */
 .adsenseSummaryMock {
   margin-top: 0;
   margin-bottom: var(--sp-7);

@@ -5,7 +5,7 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-// autoAddCss injects <style> at runtime — causes an SSR hydration
+// autoAddCss injects <style> at runtime, causing an SSR hydration
 // mismatch. The static styles.css import (a few KB) replaces all.min.css
 // (74KB, every icon in the package for only 19 used in the project).
 config.autoAddCss = false;
@@ -31,7 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const viewport = {
   // Literal hex, not var(--petrol): <meta name="theme-color"> does not
-  // resolve CSS custom properties — browsers ignore the value entirely.
+  // resolve CSS custom properties, browsers ignore the value entirely.
   themeColor: '#0F4C5C',
 };
 
@@ -104,7 +104,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        {/* Google Consent Mode v2 — deve rodar ANTES de qualquer script de ads */}
+        {/* Google Consent Mode v2 must run before any ads script */}
         <Script
           id="consent-init"
           strategy="beforeInteractive"

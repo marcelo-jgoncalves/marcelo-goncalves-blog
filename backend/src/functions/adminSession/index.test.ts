@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if ADMIN_ORIGIN is unset — this must
+// requireEnv() throws at module load if ADMIN_ORIGIN is unset: this must
 // be set before `./index` is required below (TypeScript emits commonjs
 // requires in source order, so this line runs first).
 process.env.ADMIN_ORIGIN = 'https://test-admin.example.com';

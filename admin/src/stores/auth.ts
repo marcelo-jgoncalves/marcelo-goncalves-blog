@@ -3,11 +3,11 @@ import { defineStore } from 'pinia'
 import { signIn, signOut, fetchAuthSession } from 'aws-amplify/auth'
 
 // The password still only goes as far as Cognito via SRP (Amplify
-// client-side, never reaches our backend) — after login, we exchange the
+// client-side, never reaches our backend). After login, we exchange the
 // idToken (kept only in memory, never persisted) for an opaque server
 // session and discard Amplify (signOut()) immediately. From then on, the
 // httpOnly cookie the browser receives is the only source of truth for the
-// session — see backend/src/functions/adminSession and services/api.ts
+// session: see backend/src/functions/adminSession and services/api.ts
 // (credentials: 'include' on every call, no Authorization header).
 export const useAuthStore = defineStore('auth', () => {
   const email = ref<string | null>(null)
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
         body: JSON.stringify({ idToken }),
       })
 
-      // Amplify doesn't need to hold onto anything past this point — the
+      // Amplify doesn't need to hold onto anything past this point: the
       // server session (httpOnly cookie) is the only credential used from now on.
       await signOut().catch(() => {})
 

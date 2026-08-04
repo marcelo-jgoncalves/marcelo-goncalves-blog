@@ -126,7 +126,7 @@
 .site-footer .foot-contact {
   display: block;
   align-self: start;
-  /* .foot-contact is a <section> — resets the global `section { margin-block:
+  /* .foot-contact is a <section>: resets the global `section { margin-block:
      var(--sp-10) }` rule (globals.css), which would otherwise misalign this
      column 64px down relative to the others (<nav>, unaffected by the rule). */
   margin-block: 0;
@@ -312,7 +312,7 @@
   }
 }
 
-/* Global footer hidden when printing — the printed document doesn't
+/* Global footer hidden when printing: the printed document doesn't
    depend on this menu/CTA. */
 @media print {
   .site-footer {

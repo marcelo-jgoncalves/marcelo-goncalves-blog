@@ -8,7 +8,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
-    // DevTools apenas em desenvolvimento — não expõe estado Pinia em produção
+    // Keeps Pinia state inspection out of production builds
     mode === 'development' ? vueDevTools() : null,
   ].filter(Boolean),
   resolve: {

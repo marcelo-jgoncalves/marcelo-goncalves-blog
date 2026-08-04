@@ -27,7 +27,7 @@ const ALLOWED_ATTRIBUTES: sanitizeHtml.IOptions["allowedAttributes"] = {
 
 const ALLOWED_SCHEMES = ["http", "https", "mailto"];
 
-// iframe is only allowed for YouTube embeds — sanitize-html strips any
+// iframe is only allowed for YouTube embeds: sanitize-html strips any
 // <iframe> whose src doesn't resolve to one of these hostnames, even with
 // the tag/attribute allowlisted. Without this, "iframe" in ALLOWED_TAGS
 // would allow <iframe src="anything.html"> (XSS).

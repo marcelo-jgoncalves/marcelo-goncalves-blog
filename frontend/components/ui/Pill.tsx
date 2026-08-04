@@ -1,4 +1,4 @@
-// Reusable mono tag/badge — see Pill.module.css for the rationale.
+// Reusable mono tag/badge: see Pill.module.css for the rationale.
 
 import type { ReactNode } from 'react';
 import styles from './Pill.module.css';

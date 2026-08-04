@@ -34,7 +34,7 @@
 }
 
 /* :focus-within above already indicates focus on the wrapper, but keyboard
-   navigation also needs a visible indicator on the input itself (a11y) —
+   navigation also needs a visible indicator on the input itself (a11y):
    the global :focus-visible rule in globals.css doesn't win here on specificity. */
 .searchBar input:focus-visible {
   outline: 2px solid var(--clay);
@@ -45,7 +45,7 @@
   color: rgba(255, 255, 255, .46);
 }
 
-/* Native clear button (input[type="search"]) — some browsers (Firefox)
+/* Native clear button (input[type="search"]): some browsers (Firefox)
    don't render this button; on WebKit/Blink-based ones (Chrome, Edge,
    Safari), the default icon comes gray from the OS. appearance:none + a
    mask with --clay keeps it consistent with the rest of the project's color system. */

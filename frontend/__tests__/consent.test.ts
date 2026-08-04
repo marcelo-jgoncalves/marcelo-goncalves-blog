@@ -151,7 +151,7 @@ describe('applyConsent', () => {
   });
 
   it('não lança exceção quando window.gtag não está definido', () => {
-    // @ts-expect-error — simula ausência do gtag
+    // @ts-expect-error: simulates gtag being undefined
     delete window.gtag;
     const state = saveConsent({ analytics: false, ads: false });
     expect(() => applyConsent(state)).not.toThrow();

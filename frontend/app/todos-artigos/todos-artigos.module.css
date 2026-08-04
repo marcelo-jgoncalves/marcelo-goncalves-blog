@@ -1,4 +1,4 @@
-/* Sections on this page have their own padding — removes the global 64px rhythm */
+/* Sections on this page have their own padding: removes the global 64px rhythm */
 .artHero,
 .artMasthead,
 .artSearchSection,
@@ -11,7 +11,7 @@
    HERO (dark)
    ========================================================================== */
 .artHero {
-  /* padding-bottom 76px is a custom value (doesn't fall on any --sp-*) —
+  /* padding-bottom 76px is a custom value (doesn't fall on any --sp-*),
      kept as-is to not alter the hero's visual proportion; documented here
      so it doesn't look like an unaudited leak. */
   --ph-pad: 88px 40px 76px;
@@ -36,11 +36,11 @@
   mask-image: radial-gradient(ellipse at 55% 25%, #000 28%, transparent 80%);
 }
 
-/* Search bar — shared component (frontend/components/ui/SearchBar) */
+/* Search bar: shared component (frontend/components/ui/SearchBar) */
 
 /* ==========================================================================
-   SHELL — sections with their own padding
-   Padding reduced to half (var(--sp-11)→var(--sp-9)) and symmetric,
+   SHELL: sections with their own padding
+   Padding reduced to half (var(--sp-11) to var(--sp-9)) and symmetric,
    same pattern as #servicos/#abordagem/#insights in home.css.
    ========================================================================== */
 .artSection {

@@ -6,7 +6,6 @@
   overflow: hidden;
 }
 
-/* Decorative gradient overlay */
 .nlCta::before {
   content: "";
   position: absolute;
@@ -17,7 +16,6 @@
     radial-gradient(45% 80% at 0%  100%,  rgba(12, 32, 39, 0.45),  transparent 70%);
 }
 
-/* ── 2-column grid ────────────────────────────────────── */
 .nlCtaInner {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -26,7 +24,6 @@
   position: relative;
 }
 
-/* ── Left column ───────────────────────────────────── */
 .nlCtaLeft {
   display: flex;
   flex-direction: column;
@@ -102,7 +99,6 @@
   margin-right: var(--sp-2);
 }
 
-/* ── Right column ────────────────────────────────────── */
 .nlCtaRight {
   display: flex;
   flex-direction: column;
@@ -116,7 +112,6 @@
   gap: var(--sp-6);
 }
 
-/* Input + button */
 .nlCtaInputRow {
   display: flex;
   background: #FEF6E6;
@@ -138,7 +133,7 @@
   color: #112637;
 }
 
-/* Visible keyboard focus indicator (a11y) — the global :focus-visible
+/* Visible keyboard focus indicator (a11y): the global :focus-visible
    rule in globals.css doesn't win here on specificity. */
 .nlCtaInput:focus-visible {
   outline: 2px solid var(--clay);
@@ -183,7 +178,6 @@
   font-family: var(--font-mono);
 }
 
-/* Consent checkbox */
 .nlCtaConsent {
   display: flex;
   gap: var(--sp-3);
@@ -256,7 +250,6 @@
   border-bottom-color: var(--clay);
 }
 
-/* Trust row */
 .nlCtaTrust {
   font-family: var(--font-mono);
   font-size: var(--type-caption);
@@ -281,7 +274,6 @@
   color: var(--clay);
 }
 
-/* Success state */
 .nlCtaSuccess {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -294,7 +286,6 @@
   line-height: 1.5;
 }
 
-/* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 820px) {
   .nlCta {
     padding: var(--sp-9) 0;

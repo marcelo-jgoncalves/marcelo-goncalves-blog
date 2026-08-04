@@ -67,7 +67,6 @@ export default async function ArtigosPage() {
 
   return (
     <>
-      {/* Hero */}
       <PageHero
         className={`home-hero ${styles.homeHero}`}
         dataAudit="home-hero"
@@ -90,7 +89,6 @@ export default async function ArtigosPage() {
         }
       />
 
-      {/* Mais Lidos */}
       {popular.length > 0 && (
         <section className={styles.homeSection} id="mais-lidos">
           <div className="wrap">
@@ -165,7 +163,6 @@ export default async function ArtigosPage() {
         </section>
       )}
 
-      {/* Postagens Recentes */}
       <section className={`${styles.homeSection} ${styles.homeSectionSurface}`} id="recentes">
         <div className="wrap">
           <div className="sec-head-row sec-head-row--center">
@@ -186,7 +183,6 @@ export default async function ArtigosPage() {
         </div>
       </section>
 
-      {/* Posts sobre IA */}
       {ia.length > 0 && (
         <section className={styles.homeIaSection} id="ia">
           <div className="wrap">
@@ -251,7 +247,6 @@ export default async function ArtigosPage() {
         </section>
       )}
 
-      {/* O Projeto */}
       {projeto.length > 0 && (
         <section className={`${styles.homeSection} ${styles.homeProjetoSection}`} id="projeto">
           <div className="wrap">

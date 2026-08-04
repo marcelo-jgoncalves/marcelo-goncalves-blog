@@ -1,11 +1,10 @@
 
-# 1. O Bucket de Uploads (Que estava faltando)
 resource "aws_s3_bucket" "uploads" {
   bucket        = "${var.project_name}-${var.environment}-uploads-raw"
   force_destroy = var.environment == "dev" ? true : false
 }
 
-# 2. Bloquear acesso público — uploads-raw só deve ser acessível via Lambda + presigned URLs
+# Block public access: uploads-raw should only be reachable via Lambda + presigned URLs
 resource "aws_s3_bucket_public_access_block" "uploads_public_access" {
   bucket = aws_s3_bucket.uploads.id
 
@@ -15,16 +14,16 @@ resource "aws_s3_bucket_public_access_block" "uploads_public_access" {
   restrict_public_buckets = true
 }
 
-# 3. Configuração de CORS — restritiva (só admin + frontend CloudFront, sem wildcard)
+# CORS config: restrictive, admin + frontend CloudFront only, no wildcard
 resource "aws_s3_bucket_cors_configuration" "uploads_cors" {
   bucket = aws_s3_bucket.uploads.id
 
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["PUT", "POST", "GET"]
-    # Restringido aos domínios CloudFront reais — presigned URLs são emitidas
-    # apenas pelo admin Vue (UploadModal.vue) para CORS preflight no browser.
-    # Frontend nunca faz upload direto a este bucket (só imageProcessor).
+    # Restricted to the real CloudFront domains: presigned URLs are issued
+    # only by the admin Vue app (UploadModal.vue) for browser CORS preflight.
+    # The frontend never uploads directly to this bucket (only imageProcessor).
     allowed_origins = [
       "https://${var.admin_origin}",
       "https://${var.frontend_origin}"
@@ -36,8 +35,7 @@ resource "aws_s3_bucket_cors_configuration" "uploads_cors" {
   depends_on = [aws_s3_bucket_public_access_block.uploads_public_access]
 }
 
-# 3. Notificação S3 → Lambda imageProcessor
-# Extensões normalizadas para minúsculas pelo mediaUpload Lambda (evita duplicação de triggers)
+# Extensions normalized to lowercase by the mediaUpload Lambda (avoids duplicate triggers)
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.uploads.id
 

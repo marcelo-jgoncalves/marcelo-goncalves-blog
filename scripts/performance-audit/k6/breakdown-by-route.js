@@ -1,5 +1,5 @@
-// Breakdown de latência por rota (confirma/refuta a hipótese de PERF4:
-// /busca, por ser Scan completo, deveria ser a rota mais lenta).
+// Per-route latency breakdown: confirms or refutes the hypothesis that
+// /busca, being a full Scan, should be the slowest route.
 import http from "k6/http";
 import { sleep } from "k6";
 

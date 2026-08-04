@@ -145,7 +145,7 @@ export default function InteligenciaArtificialPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
+      {/* Standard project component (frontend/components/ui/PageHero.tsx), only content changes */}
       <PageHero
         singleColumn
         className={styles.aiHero}
@@ -162,7 +162,6 @@ export default function InteligenciaArtificialPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE DESENVOLVEMOS — 3 territórios editoriais, sem grade de cards */}
       <section id="solucoes" className={styles.whatWeDo} data-audit="ai-solucoes">
         <div className={styles.wrap}>
           <div className={styles.sectionHead}>
@@ -197,7 +196,6 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* CASOS DE APLICAÇÃO — composição assimétrica, cabeçalho fixo + catálogo numerado */}
       <section id="aplicacoes" className={styles.useCasesSection} data-audit="ai-aplicacoes">
         <div className={styles.wrap}>
           <div className={styles.applicationsLayout}>
@@ -221,7 +219,6 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* BENEFÍCIOS */}
       <BenefitsSection
         id="beneficios"
         dataAudit="ai-beneficios"
@@ -230,7 +227,6 @@ export default function InteligenciaArtificialPage() {
         items={BENEFICIOS}
       />
 
-      {/* NOSSA ABORDAGEM — cabeçalho fixo + percurso vertical de 5 decisões + manifesto */}
       <section id="abordagem" className={styles.approachSection} data-audit="ai-abordagem">
         <div className={styles.wrap}>
           <div className={styles.approachLayout}>
@@ -260,7 +256,6 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* GOVERNANÇA E CONTROLE — capítulo estrutural, 4 domínios + privacidade integrada */}
       <section id="governanca" className={styles.governance} data-audit="ai-governanca">
         <div className={styles.governanceOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
@@ -292,7 +287,6 @@ export default function InteligenciaArtificialPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <FaqSection
         id="perguntas"
         items={FAQ_ITEMS}
@@ -301,7 +295,7 @@ export default function InteligenciaArtificialPage() {
         title="Dúvidas antes de aplicar IA à operação"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
+      {/* Standard project component (frontend/components/ui/AdvisoryCta.tsx), only content changes */}
       <div data-audit="ai-cta-final">
         <AdvisoryCta
           id="contato"

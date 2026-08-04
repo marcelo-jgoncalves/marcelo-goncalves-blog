@@ -1,5 +1,5 @@
 //
-// Server-side session for the admin panel (BFF) — the httpOnly cookie the
+// Server-side session for the admin panel (BFF): the httpOnly cookie the
 // browser receives carries only the `session_id` (opaque, no meaning of its
 // own); this file is the real source of truth for the session, stored in
 // the admin_sessions table (best-effort TTL, real expiration checked here
@@ -12,7 +12,7 @@ import { dynamo } from "./dynamodb";
 const TABLE_NAME = process.env.ADMIN_SESSIONS_TABLE;
 
 // Same validity window as Cognito's id_token (token_validity_units
-// access/id = 60 minutes, infra/modules/cognito/main.tf) — no silent
+// access/id = 60 minutes, infra/modules/cognito/main.tf): no silent
 // refresh in this version; the session expires along with the token that
 // created it, requiring a new login (SRP) via Amplify on the client.
 export const SESSION_TTL_SECONDS = 60 * 60;

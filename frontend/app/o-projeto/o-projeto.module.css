@@ -1,4 +1,4 @@
-/* Sections on this page have their own padding — removes the global 64px rhythm */
+/* Sections on this page have their own padding: removes the global 64px rhythm */
 .opHero,
 .opSection {
   margin-block: 0;
@@ -28,7 +28,7 @@
 }
 
 /* ==========================================================================
-   WRAP (main content — narrow)
+   WRAP (main content, narrow)
    ========================================================================== */
 .opWrap {
   max-width: var(--wrap-max-narrow);
@@ -37,16 +37,16 @@
 }
 
 /* ==========================================================================
-   SECTIONS — shared header
+   SECTIONS: shared header
    ========================================================================== */
-/* Padding reduced to half (var(--sp-12)→var(--sp-9)) and symmetric
+/* Padding reduced to half (var(--sp-12) to var(--sp-9)) and symmetric
    (top=bottom), same pattern as #servicos/#abordagem/#insights in home.css. */
 .opSection {
   padding-top: var(--sp-9);
   padding-bottom: var(--sp-9);
 }
 
-/* Timeline ends in pagination (Previous/Next) — same pattern as
+/* Timeline ends in pagination (Previous/Next): same pattern as
    .art-section--paginated in artigos.css: sp-4(16px) here + the 32px
    padding-top/bottom already embedded in .op-pagination = 48px total on
    each side (equal to the page's standard --sp-9 breathing room, not more). */
@@ -343,7 +343,7 @@
 }
 
 /* ==========================================================================
-   ROADMAP — groups without dates
+   ROADMAP: groups without dates
    ========================================================================== */
 .opRoadmapGroups {
   margin-top: var(--sp-8);
@@ -384,7 +384,7 @@
 }
 
 /* ==========================================================================
-   FINAL CTA — compact editorial
+   FINAL CTA: compact editorial
    ========================================================================== */
 .opCtaEditorial {
   margin-block: 0;

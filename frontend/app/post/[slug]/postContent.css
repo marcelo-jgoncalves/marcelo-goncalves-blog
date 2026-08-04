@@ -128,7 +128,7 @@
 .post-toc-read-meta span { display: flex; align-items: center; gap: var(--sp-2); }
 .post-toc-read-meta b { color: var(--petrol); font-weight: 600; }
 
-/* TOC removed on mobile/tablet for now — reaffirms the display:none from
+/* TOC removed on mobile/tablet for now: reaffirms the display:none from
    the layout section above, which the base .post-toc{display:flex} rule
    overrode. */
 @media (max-width: 1080px) {
@@ -136,7 +136,7 @@
 }
 
 /* ==========================================================================
-   6. PROSE — .post-content
+   6. PROSE: .post-content
    ========================================================================== */
 .post-content {
   font-size: var(--type-body);
@@ -153,7 +153,7 @@
   margin-bottom: 0;
 }
 
-/* Lead — first paragraph (post.resumo) */
+/* Lead: first paragraph (post.resumo) */
 .post-content > .post-lead {
   font-size: var(--type-lead);
   line-height: 1.55;
@@ -165,7 +165,7 @@
 
 .post-content > .post-lead em { font-style: italic; color: var(--petrol); }
 
-/* Drop cap — first letter of the lead (or the 1st paragraph when there's no resumo) */
+/* Drop cap: first letter of the lead (or the 1st paragraph when there's no resumo) */
 .post-content > .post-lead:first-child::first-letter,
 .post-content > .post-content-part:first-child > p:first-of-type::first-letter {
   float: left;
@@ -587,7 +587,7 @@ pre.code-block,
   color: inherit;
 }
 
-/* Tip — accent clay */
+/* Tip: accent clay */
 .post-content .tip .ic {
   background: var(--clay-soft);
   color: var(--clay-hover);

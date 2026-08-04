@@ -2,16 +2,16 @@
 /**
  * scripts/backfill-post-counters.mjs
  *
- * Seed inicial dos contadores agregados (backend/src/common/postCounters.ts)
- * que substituem a 2ª Query de COUNT em getAllPosts/getProjectPosts (achado
- * real de docs/auditoria-performance/01-perf-load.md). Sem este backfill, o
- * contador começaria do zero e só ficaria correto depois de algumas escritas
+ * Initial seed for the aggregated counters (backend/src/common/postCounters.ts)
+ * that replace the 2nd COUNT Query in getAllPosts/getProjectPosts (real finding
+ * from docs/auditoria-performance/01-perf-load.md). Without this backfill, the
+ * counter would start at zero and only become correct after a few writes
  * via adminPosts/postScheduler.
  *
- * Conta os itens reais (Scan + filtro em memória, só nesta execução única —
- * não é o padrão de leitura em produção) e grava via ADD, igual ao runtime.
+ * Counts the real items (Scan + in-memory filter, only for this one-off run,
+ * not the production read pattern) and writes via ADD, same as runtime.
  *
- * Roda via AWS SDK direto (não AWS CLI) — ver
+ * Runs via the AWS SDK directly (not the AWS CLI), see
  * memory/feedback_aws_cli_windows_encoding.md.
  *
  * Uso (a partir de scripts/, após `npm install` uma vez):

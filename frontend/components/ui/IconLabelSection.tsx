@@ -1,10 +1,10 @@
 // Extracted from 3 pillar landing pages (automacao/plataforma "Especialidades",
-// software "Princípios") — same semantic role ("grid of competencies with icon
+// software "Princípios"): same semantic role ("grid of competencies with icon
 // and label"), only the domain field names differ. `section`/`wrap`/`head`/
 // `eyebrow`/`heading`/`desc` still come from each page's CSS Module (they vary
 // little and weren't the problem); the grid itself (`list`/`item`/`numeral`/
 // `itemTitle`) is fixed, defined in IconLabelSection.module.css matching
-// /plataforma's pattern (2 columns) — previously each page had its own copy,
+// /plataforma's pattern (2 columns): previously each page had its own copy,
 // with /automacao and /software diverging into 4 columns on wide screens for
 // no real reason.
 

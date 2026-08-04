@@ -116,7 +116,7 @@ function toggleFocus() {
   focusMode.value = !focusMode.value
 }
 
-// relativePath = "media/{uuid}-{name}" (no extension — multi-variant format)
+// relativePath = "media/{uuid}-{name}" (no extension, multi-variant format)
 function onImageUploaded(relativePath: string) {
   applyUploadedImage(relativePath, uploadContext.value, (url, alt) => {
     editorRef.value?.insertImage(url, alt)

@@ -19,7 +19,6 @@
   }
 }
 
-/* ── image (gradient) ── */
 .postCard .pcImg {
   aspect-ratio: 16 / 10;
   position: relative;
@@ -55,7 +54,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
 }
 
-/* ── body ── */
 .postCard .pcBody {
   padding: var(--sp-5) var(--gap-grid) var(--eyebrow-gap);
   display: flex;
@@ -95,7 +93,6 @@
   overflow: hidden;
 }
 
-/* ── footer ── */
 .postCard .pcFoot {
   margin-top: auto;
   padding: var(--sp-3) var(--gap-grid) var(--sp-4);

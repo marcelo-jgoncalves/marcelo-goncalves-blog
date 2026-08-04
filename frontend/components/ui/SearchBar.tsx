@@ -1,4 +1,4 @@
-// Reusable search bar (inside a dark hero) — single source of truth, used
+// Reusable search bar (inside a dark hero): single source of truth, used
 // in both /artigos and /busca. Always submits to /busca?q=... Magnifying
 // glass icon sits only on the right, as the submit button (no icon on the
 // left).

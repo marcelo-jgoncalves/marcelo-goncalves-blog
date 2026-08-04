@@ -20,7 +20,7 @@ import styles from './post.module.css';
 
 export const revalidate = 60;
 
-// Without this, the [slug] route never enters Next.js's ISR system — the
+// Without this, the [slug] route never enters Next.js's ISR system:
 // `revalidate` above becomes a silent no-op and every post page renders
 // via pure SSR on every request (CloudFront never caches, Cache-Control
 // becomes no-store). Confirmed in production: dynamicRoutes was empty in
@@ -270,7 +270,7 @@ export default async function PostPage({ params }: Props) {
         />
       </div>
 
-      {/* CTA CONTEXTUAL — editorial compacto */}
+      {/* CONTEXTUAL CTA: compact editorial style */}
       <section className={`wrap ${styles.postCtaEditorial}`} data-audit="post-cta-editorial">
         <div className={styles.postCtaIn}>
           <div className="sec-ey sec-ey--dual">Aplicação prática</div>

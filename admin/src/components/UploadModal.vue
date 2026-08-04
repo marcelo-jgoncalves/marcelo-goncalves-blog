@@ -48,7 +48,7 @@ async function handleUpload(file: File) {
 
     await mediaApi.uploadToS3(url, fields, file)
 
-    // basePath = "media/{uuid}-{name}" (no extension) — imageProcessor
+    // basePath = "media/{uuid}-{name}" (no extension): imageProcessor
     // generates the variants: -480.avif, -480.webp, -768.*, -1280.*
     emit('uploaded', basePath)
     emit('close')

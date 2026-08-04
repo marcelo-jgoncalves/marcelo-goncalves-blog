@@ -194,8 +194,8 @@
   font-weight: 600;
 }
 
-/* "Visão geral dos serviços" (ajuste-07 §5.3) — primeiro item do dropdown,
-   separado dos 4 links individuais por uma borda. */
+/* "Visão geral dos serviços" is the first dropdown item, kept separate
+   from the 4 individual links by a border. */
 .siteHeader .navDropdownPanel a.navDropdownOverview {
   font-weight: 700;
   margin-bottom: var(--sp-1);
@@ -203,10 +203,10 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* ── CTA ── Usa o padrão global .btn (globals.css); classe local só
-   ajusta tamanho (nunca cor/forma) pra caber na altura fixa do nav
-   (--nav-height: 68px) sem ficar colado nas bordas, e não quebrar
-   linha no nav apertado. */
+/* ── CTA ── Uses the global .btn pattern (globals.css); the local class only
+   adjusts size (never color/shape) to fit the nav's fixed height
+   (--nav-height: 68px) without touching the edges or wrapping in a
+   tight nav. */
 .siteHeader .navCta {
   flex-shrink: 0;
   white-space: nowrap;
@@ -300,9 +300,10 @@
   color: var(--petrol);
 }
 
-/* Usa o padrão global .btn (globals.css); classe local só cuida do
-   que é específico deste contexto (altura fixa no menu, separação do
-   item anterior, sem borda inferior herdada dos outros links do menu). */
+/* Uses the global .btn pattern (globals.css); the local class only
+   handles what's specific to this context (fixed height in the menu,
+   spacing from the previous item, no bottom border inherited from the
+   other menu links). */
 .siteHeader .navMobileMenu a.navCtaMobile {
   height: 44px;
   font-size: var(--type-body);

@@ -93,7 +93,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       nextPageToken = data.nextToken;
     }
   } catch {
-    // Doesn't call notFound() — renders empty instead, so infra errors aren't exposed
+    // Doesn't call notFound(): renders empty instead, so infra errors aren't exposed
   }
 
   const meta = CATEGORY_META[slug] || {
@@ -115,14 +115,12 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
-      {/* Hero da Categoria */}
       <PageHero
         singleColumn
         title={<>Artigos na categoria: <span className="highlight">{meta.title}</span></>}
         subtitle={meta.description}
       />
 
-      {/* Layout principal + sidebar */}
       <div className="page-layout container">
         <main>
           <AdSenseBanner />

@@ -1,22 +1,23 @@
 #
-# CloudTrail (log de auditoria de toda chamada de API na conta) + GuardDuty
-# (detecção automatizada de ameaça). Achado da auditoria AppSec (Categoria 6,
-# 🔴): confirmado via AWS CLI que nenhum dos dois existia na conta antes
-# desta correção — sem isso, não havia nenhum rastro para investigar uso
-# anômalo de credenciais (ex: a role assumida via OIDC pelo pipeline).
+# CloudTrail (audit log of every API call in the account) + GuardDuty
+# (automated threat detection). Confirmed via AWS CLI that neither existed
+# in the account before this fix: without them, there was no trail to
+# investigate anomalous credential use (e.g. the role assumed via OIDC by
+# the pipeline).
 #
-# NOTA para quem for deployar `prod` por primeira vez: GuardDuty (1 detector
-# por conta/região) e CloudTrail são recursos de conta, não de aplicação —
-# se dev e prod compartilharem a mesma conta AWS, instanciar este módulo
-# duas vezes faz o segundo `apply` falhar ("detector already exists"). Se
-# forem contas separadas (boa prática), está correto manter em ambas.
+# NOTE for whoever deploys `prod` for the first time: GuardDuty (1 detector
+# per account/region) and CloudTrail are account-level resources, not
+# application-level. If dev and prod share the same AWS account, instantiating
+# this module twice will make the second `apply` fail ("detector already
+# exists"). If they are separate accounts (best practice), keeping it in both
+# is correct.
 #
-# GuardDuty tem custo recorrente real (sem free tier permanente, só 30 dias
-# de trial) — por isso fica atrás de var.enable_guardduty, seguindo o mesmo
-# padrão de enable_xray_tracing/enable_synthetic_canary (infra/variables.tf):
-# desligado em dev, ligado quando o ambiente de produção existir. CloudTrail
-# fica sempre ligado — primeiro trail é gratuito e o valor de auditoria
-# (saber quem fez o quê, mesmo em dev) supera o custo quase zero.
+# GuardDuty has a real recurring cost (no permanent free tier, only a 30-day
+# trial), hence it's gated by var.enable_guardduty, following the same
+# pattern as enable_xray_tracing/enable_synthetic_canary (infra/variables.tf):
+# off in dev, on once the production environment exists. CloudTrail stays
+# always on: the first trail is free and the audit value (knowing who did
+# what, even in dev) outweighs the near-zero cost.
 
 data "aws_caller_identity" "current" {}
 

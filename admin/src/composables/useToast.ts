@@ -5,9 +5,9 @@ export type ToastType = 'success' | 'error' | 'warning'
 const DURATION_MS = 2600
 
 /**
- * Toast compartilhado entre as views do admin. Cada chamador tem seu próprio
- * estado (não é singleton) — só centraliza o timing e evita que um segundo
- * toast dispare o timeout do primeiro e feche a mensagem errada antes da hora.
+ * Toast shared across admin views. Each caller has its own state (not a
+ * singleton): this only centralizes the timing, preventing a second toast
+ * from firing the first one's timeout and closing the wrong message early.
  */
 export function useToast() {
   const toast = ref<{ message: string; type: ToastType } | null>(null)

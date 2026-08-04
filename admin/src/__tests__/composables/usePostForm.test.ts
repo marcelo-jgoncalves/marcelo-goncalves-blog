@@ -41,7 +41,7 @@ vi.mock('aws-amplify/auth', () => ({
 }))
 
 // sanitizeHtml uses DOMPurify, which needs a DOM (vitest.config.ts runs
-// tests under the "node" environment) — irrelevant to this test's concern
+// tests under the "node" environment): irrelevant to this test's concern
 // (the scheduling date field), so it's mocked as a pass-through.
 vi.mock('../../utils/sanitizeHtml', () => ({
   sanitizeHtml: (html: string) => html,
@@ -127,7 +127,7 @@ describe('usePostForm save() — sincronização de estado local após salvar', 
     expect(form.value.version).toBe(1)
 
     // Route hasn't actually changed yet in this test double (router.replace
-    // is mocked as a no-op) — createdInSession is what prevents a second
+    // is mocked as a no-op): createdInSession is what prevents a second
     // create from firing here, not route.params.slug.
     await save()
     expect(create).toHaveBeenCalledTimes(1)

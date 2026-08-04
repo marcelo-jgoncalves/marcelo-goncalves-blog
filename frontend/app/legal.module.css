@@ -1,13 +1,13 @@
 /* Larger spacing between the navbar and the title, only on the 3 legal
-   pages (privacidade/cookies/termos) — local override, doesn't touch the
+   pages (privacidade/cookies/termos): local override, doesn't touch the
    global --hero-top used by the site's other heroes (desktop). Reduced to
-   --sp-10=64px on mobile — 140px was disproportionate on a phone screen. */
+   --sp-10=64px on mobile: 140px was disproportionate on a phone screen. */
 :global(.page-hero).pageHeroLegal {
   --hero-top: 140px;
   --hero-top-mobile: var(--sp-10);
 }
 
-/* Centered title and subtitle — only on these 3 pages. PageHero is used
+/* Centered title and subtitle, only on these 3 pages. PageHero is used
    by several others (Home, Contato, landings etc) with the same
    singleColumn, so the alignment can't change in the base component. */
 :global(.page-hero).pageHeroLegal :global(.page-hero-left) {

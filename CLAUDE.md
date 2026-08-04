@@ -113,6 +113,8 @@ Comentário novo (ou editado) deve explicar **por que** o código existe daquela
 
 Também não marcar no código que uma mudança foi feita por IA (nem comentário `// gerado por IA`, nem assinatura no corpo do arquivo) — a atribuição de autoria de IA fica só na mensagem de commit (`Co-Authored-By: Claude ...`), nunca no código.
 
+**Sem travessão** (ampliado 2026-08-03): comentário novo/editado nunca usa `—`/`–` — trocar por vírgula, dois-pontos ou `|`. Mesma regra que já valia para textos voltados ao usuário/SEO (copy, títulos, meta description/OG/JSON-LD), estendida a comentários de código. Vale a mesma ressalva "retroativo, sessão dedicada" acima: comentário antigo com travessão não é bug a corrigir de passagem.
+
 ---
 
 ## 3. Arquitetura

@@ -2,19 +2,19 @@
 /**
  * scripts/mttr-report.mjs
  *
- * Calcula MTTR (Mean Time To Recovery) a partir do CloudWatch Alarm
- * History — sem infra nova: toda transição de estado de alarme já fica
- * gravada nativamente por 14 meses. MTTR de um incidente = timestamp do
- * OK menos timestamp do ALARM que o originou.
+ * Computes MTTR (Mean Time To Recovery) from the CloudWatch Alarm
+ * History: no new infra needed, every alarm state transition is already
+ * natively retained for 14 months. MTTR of an incident = timestamp of the
+ * OK minus timestamp of the ALARM that triggered it.
  *
- * Requer @aws-sdk/client-cloudwatch (scripts/package.json — node_modules
- * próprio, isolado dos workspaces do app) e credenciais AWS válidas.
+ * Requires @aws-sdk/client-cloudwatch (scripts/package.json, its own
+ * node_modules, isolated from the app's workspaces) and valid AWS credentials.
  *
- * Uso (a partir de scripts/, após `npm install` uma vez):
+ * Usage (from scripts/, after running `npm install` once):
  *   AWS_PROFILE=claude-dev node mttr-report.mjs [--env dev|prod] [--days 30]
  *
- * --env   ambiente — filtra alarmes pelo prefixo do nome. Default: dev.
- * --days  janela de lookback em dias. Default: 30.
+ * --env   environment, filters alarms by name prefix. Default: dev.
+ * --days  lookback window in days. Default: 30.
  */
 
 import {
@@ -67,7 +67,7 @@ async function fetchStateHistory(alarmName, startDate) {
     items.push(...(result.AlarmHistoryItems ?? []));
     token = result.NextToken;
   } while (token);
-  // A API retorna mais recente primeiro — inverter para ordem cronológica.
+  // The API returns most recent first, reverse for chronological order.
   return items.reverse();
 }
 
@@ -79,7 +79,7 @@ function stateOf(item) {
   }
 }
 
-/** Pareia transições ALARM -> OK em incidentes fechados. ALARM ainda aberto no fim da janela é reportado separadamente. */
+/** Pairs ALARM -> OK transitions into closed incidents. An ALARM still open at the end of the window is reported separately. */
 function computeIncidents(history) {
   const incidents = [];
   let openAlarmAt = null;

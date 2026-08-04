@@ -7,7 +7,7 @@ export interface Categoria {
   categoria_slug: string;
   nome: string;
   descricao?: string;
-  macro_areas?: string[]; // agrupamento usado nos filtros de Artigos: ia | devops | cloud | eng | bastidores
-  subcategorias?: Subcategoria[]; // sub-taxonomia fixa, definida no admin por categoria
-  icone_fa?: string; // sem consumidor no frontend público hoje — ver CLAUDE.md §10 item 41
+  macro_areas?: string[]; // grouping used in Articles filters: ia | devops | cloud | eng | bastidores
+  subcategorias?: Subcategoria[]; // fixed sub-taxonomy, defined per category in the admin
+  icone_fa?: string; // no consumer in the public frontend yet
 }

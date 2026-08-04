@@ -22,7 +22,7 @@ const headers = {
 };
 
 // Fields where the merge below treats an explicit `null` in the client
-// payload as "delete this key from the persisted item" — matches
+// payload as "delete this key from the persisted item": matches
 // updatePostInputSchema's nullable fields exactly (packages/contracts/src/post.ts).
 // DynamoDB's marshaller (common/dynamodb.ts, removeUndefinedValues: true)
 // only strips `undefined`, not a literal `null`, so this has to be explicit.
@@ -41,17 +41,14 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
   logger.debug("admin_posts_request", { requestId, httpMethod, slug });
 
   try {
-    // 1. Listar Todos
     if (httpMethod === "GET" && !slug) {
       return await listPosts();
     }
 
-    // 2. Ler Um
     if (httpMethod === "GET" && slug) {
       return await getPost(slug);
     }
 
-    // 3. Criar
     if (httpMethod === "POST") {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
@@ -63,7 +60,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return await savePost(postData, true, requestId);
     }
 
-    // 4. Atualizar (PATCH parcial — savePost() faz merge com o item existente)
+    // Partial PATCH: savePost() merges the payload onto the existing item.
     if (httpMethod === "PATCH" && slug) {
       if (!body) {
         return { statusCode: 400, body: JSON.stringify({ message: "Body is required" }), headers };
@@ -73,7 +70,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
         return { statusCode: 400, body: JSON.stringify({ message: "Invalid JSON body" }), headers };
       }
       // slug is optional on a partial PATCH payload now that
-      // updatePostInputSchema doesn't require it — only reject when the
+      // updatePostInputSchema doesn't require it: only reject when the
       // client actually sent one and it disagrees with the URL's {slug}.
       const bodySlug = (postData as { slug?: string }).slug;
       if (bodySlug !== undefined && bodySlug !== slug) {
@@ -82,9 +79,9 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return await savePost(postData, false, requestId, slug);
     }
 
-    // 5. Deletar (exige a version conhecida pelo cliente via query string —
-    // ver deletePost() para o porquê de não bastar a version lida pelo
-    // próprio backend no momento da requisição)
+    // Requires the version known by the client via query string: see
+    // deletePost() for why the version read by the backend at request time
+    // isn't enough on its own.
     if (httpMethod === "DELETE" && slug) {
       return await deletePost(slug, queryStringParameters?.version);
     }
@@ -92,7 +89,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     return {
       statusCode: 405,
       body: JSON.stringify({ message: "Method Not Allowed" }),
-      headers, // <--- Importante
+      headers,
     };
 
   } catch (error) {
@@ -105,8 +102,6 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
     };
   }
 };
-
-// --- Funções Auxiliares (AGORA COM HEADERS) ---
 
 async function listPosts() {
   const statuses = ["Publicado", "Rascunho", "Programado"];
@@ -142,17 +137,17 @@ async function getPost(slug: string) {
   }));
   
   if (!result.Item) {
-    return { 
-        statusCode: 404, 
-        body: JSON.stringify({ message: "Post not found" }), 
-        headers // <--- ADICIONADO
+    return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "Post not found" }),
+        headers
     };
   }
 
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
-    headers, // <--- ADICIONADO
+    headers,
   };
 }
 
@@ -170,10 +165,8 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   }
   const data = parsed.data;
 
-  // Lido antes do overwrite só para saber o estado anterior (status/e_projeto)
-  // e computar o delta dos contadores agregados (postCounters.ts) — não
-  // existia leitura prévia aqui antes, savePost confiava 100% no body do
-  // client para os campos não recalculados.
+  // Read before the overwrite only to know the prior state (status/e_projeto)
+  // and compute the delta for the aggregated counters (postCounters.ts).
   // urlSlug, not data.slug: slug is optional on updatePostInputSchema now
   // (a genuinely partial PATCH may omit it), and urlSlug is already the only
   // source of truth for which item an update targets (see the comment on
@@ -194,7 +187,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   const now = new Date().toISOString();
 
   // PATCH semantics: an update's payload only overrides what it actually
-  // sends — a field the admin form omits (or a future partial client that
+  // sends: a field the admin form omits (or a future partial client that
   // only sends the diff) keeps its previous value instead of being wiped by
   // spreading `data` alone. On create there's no `existing` to merge onto.
   const merged: Record<string, unknown> = { ...(existing ?? {}), ...(data as Record<string, unknown>) };
@@ -209,24 +202,23 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
 
   const item: Post = {
     ...(merged as unknown as Post),
-    // slug is never taken from the client payload on update — the URL's
+    // slug is never taken from the client payload on update: the URL's
     // {slug} path param is the only source of truth, closing off a PATCH
     // body that tries to rewrite which item it's targeting.
     slug: isNew ? (data as { slug: string }).slug : urlSlug!,
     conteudo_html: sanitizePostHtml((merged.conteudo_html as string) ?? ""),
     data_atualizacao: now,
-    // Nunca gravar string vazia: quando e_popular/e_projeto=1, os GSIs
-    // esparsos (PopularesPorData_v2/ProjetoPorData_v2) usam este campo como
-    // range key, e uma AttributeValue vazia num atributo de chave de índice
-    // é rejeitada pelo DynamoDB (crash observado ao salvar um Rascunho
-    // marcado como "projeto" sem nunca ter tido data de publicação). Cai
-    // para o valor já existente no update, ou "agora" na criação/1ª vez.
+    // Never write an empty string: when e_popular/e_projeto=1, the sparse
+    // GSIs (PopularesPorData_v2/ProjetoPorData_v2) use this field as the
+    // range key, and an empty AttributeValue on an index key attribute is
+    // rejected by DynamoDB. Falls back to the existing value on update, or
+    // "now" on create/first time.
     data_publicacao: (merged.data_publicacao as string) || existing?.data_publicacao || now,
     e_popular: ePopular,
     e_projeto: eProjeto,
-    // undefined é omitido pelo marshaller (removeUndefinedValues: true em
-    // common/dynamodb.ts) — isso é o que torna o índice esparso: o atributo
-    // simplesmente não existe no item quando o flag é 0.
+    // undefined is omitted by the marshaller (removeUndefinedValues: true in
+    // common/dynamodb.ts): this is what makes the index sparse, the attribute
+    // simply doesn't exist on the item when the flag is 0.
     e_popular_marker: ePopular === 1 ? "POP" : undefined,
     e_projeto_marker: eProjeto === 1 ? "PROJ" : undefined,
     tempo_leitura_min: Number(merged.tempo_leitura_min || 5),
@@ -236,7 +228,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   // Put + counter ADD in one transaction: a crash between two sequential
   // writes would leave the aggregated counters drifted with no detection
   // (there is no reconciliation job yet). Falls back to a plain Put when the
-  // write doesn't change the aggregates — cheaper than a transaction.
+  // write doesn't change the aggregates: cheaper than a transaction.
   //
   // The base ConditionExpression is the actual protection against a slug
   // already existing on create (a plain Put with no condition silently
@@ -244,7 +236,7 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
   // and this write (the race the pre-check above can't close). updatePostInputSchema
   // requires `version`, so the match clause below is unconditional on every
   // update, not best-effort: it always rejects a write based on stale data
-  // from a second concurrent editor — see the 409 handling in usePostForm.ts's save().
+  // from a second concurrent editor, see the 409 handling in usePostForm.ts's save().
   let conditionExpression = isNew ? "attribute_not_exists(slug)" : "attribute_exists(slug)";
   let expressionAttributeNames: Record<string, string> | undefined;
   let expressionAttributeValues: Record<string, unknown> | undefined;
@@ -289,9 +281,9 @@ async function savePost(rawData: unknown, isNew: boolean, requestId?: string, ur
     throw error;
   }
 
-  // Post passou a contar como publicado agora (criação já publicada, ou
-  // transição de Rascunho/Programado -> Publicado) -- a home (posts
-  // recentes) também fica stale, não só a página do post.
+  // Post just became publicly countable (created already published, or
+  // transitioned from Rascunho/Programado to Publicado): the home page
+  // (recent posts) goes stale too, not just the post page.
   const ficouPublicado = item.status === "Publicado" && existing?.status !== "Publicado";
   await invalidatePostCache(ficouPublicado ? [`/post/${item.slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"] : [`/post/${item.slug}`]);
 
@@ -313,7 +305,7 @@ async function deletePost(slug: string, clientVersionRaw?: string) {
   // this write, not whether the user actually saw the version they're
   // removing. Without a client-supplied version, a user looking at a stale
   // v5 in their UI can silently delete a post that's really at v6 (edited
-  // from another session/tab since) with no warning — the same staleness
+  // from another session/tab since) with no warning: the same staleness
   // PATCH already rejects with a 409 via its own required `version` field.
   if (clientVersionRaw === undefined) {
     return { statusCode: 400, body: JSON.stringify({ message: "version is required to delete a post" }), headers };
@@ -335,7 +327,7 @@ async function deletePost(slug: string, clientVersionRaw?: string) {
   // let a second concurrent delete slip through and double-decrement the
   // counters. attribute_exists(slug) closes that by requiring the item to
   // still be there. "OR #version = :expectedVersion" still covers posts
-  // saved before the version field existed (never re-saved since) — there's
+  // saved before the version field existed (never re-saved since): there's
   // no real optimistic-lock value to check against those. The clause is
   // checked against the client's own version (not existing.version, read a
   // moment ago by this same request) so a second editor's concurrent update
@@ -383,6 +375,6 @@ async function deletePost(slug: string, clientVersionRaw?: string) {
   return {
     statusCode: 200,
     body: JSON.stringify({ message: "Post deleted" }),
-    headers, // <--- ADICIONADO
+    headers,
   };
 }

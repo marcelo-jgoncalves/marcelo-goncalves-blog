@@ -1,7 +1,7 @@
 /**
  * projeto.audit.spec.ts
- * Audit visual O Projeto: compara computed styles do protótipo (fixtures/projeto.html)
- * com o app renderizado em "/o-projeto". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for O Projeto: compares computed styles of the prototype (fixtures/projeto.html)
+ * against the app rendered at "/o-projeto". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -13,7 +13,7 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/projeto.html').r
 // The page has a different structure than this prototype (new "Por que
 // construir"/"Estado atual"/"Arquitetura"/"Princípios de engenharia"/"Fluxo
 // editorial" sections, roadmap grouped by period instead of status cards,
-// its own final CTA instead of reusing AdvisoryCta) — most fixture sections
+// its own final CTA instead of reusing AdvisoryCta): most fixture sections
 // have no direct structural counterpart left in the app, so comparing
 // differently-shaped content wouldn't be meaningful. op-hero and op-tl-card
 // are the only two points where prototype and app still represent exactly

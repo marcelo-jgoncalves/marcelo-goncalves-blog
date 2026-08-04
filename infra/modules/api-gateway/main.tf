@@ -8,11 +8,11 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
-# Lambda Authorizer (REQUEST) — replaces the old native COGNITO_USER_POOLS
+# Lambda Authorizer (REQUEST): replaces the old native COGNITO_USER_POOLS
 # authorizer (removed after the BFF rollout was validated end to end) on
 # every protected /admin/* route. Supports the opaque session cookie (BFF,
 # new flow) and Authorization Bearer (Amplify client-side, legacy flow kept
-# during the transition) — see backend/src/functions/adminAuthorizer.
+# during the transition), see backend/src/functions/adminAuthorizer.
 # Cache TTL = 0: session revocation (logout, manual deletion) needs to take
 # effect immediately, never serve a cached Allow decision for a session
 # that's already been deleted.
@@ -23,11 +23,11 @@ resource "aws_api_gateway_rest_api" "main" {
 # missing (confirmed via CloudWatch: zero log streams from adminAuthorizer).
 # Attempt 1 (Cookie + Authorization together) failed because the normal flow
 # only sends Cookie. Attempt 2 (just "Host", a header always present on any
-# request) ALSO failed with the same no-invocation 401 — Host is a
+# request) ALSO failed with the same no-invocation 401: Host is a
 # reserved/pseudo-header that API Gateway doesn't accept as a valid identity
 # source (confirmed via curl directly against API Gateway, with no
 # CloudFront in between). An empty identity source is AWS's documented
-# pattern for "always invoke, without requiring any specific header" — the
+# pattern for "always invoke, without requiring any specific header": the
 # Lambda decides internally based on which header (Cookie or Authorization)
 # actually came in.
 resource "aws_api_gateway_authorizer" "admin_cookie_auth" {
@@ -47,9 +47,9 @@ resource "aws_lambda_permission" "apigw_admin_authorizer" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/authorizers/${aws_api_gateway_authorizer.admin_cookie_auth.id}"
 }
 
-# Gateway Responses — when the Cognito authorizer rejects the request
+# Gateway Responses: when the Cognito authorizer rejects the request
 # (expired/invalid/missing token), API Gateway generates the error response
-# itself, without going through the Lambda — and therefore without the CORS
+# itself, without going through the Lambda, and therefore without the CORS
 # headers the Lambda normally returns. Without this, the browser blocks the
 # response and fetch() fails with "TypeError: Failed to fetch" instead of
 # the real 401/403, hiding the expired-session error from the admin's
@@ -127,28 +127,24 @@ resource "aws_api_gateway_gateway_response" "default_5xx_cors" {
 
 # --- 2. Resources (Paths) ---
 
-# /post
 resource "aws_api_gateway_resource" "post" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   path_part   = "post"
 }
 
-# /post/{slug}
 resource "aws_api_gateway_resource" "post_slug" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.post.id
   path_part   = "{slug}"
 }
 
-# /autor
 resource "aws_api_gateway_resource" "autor" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   path_part   = "autor"
 }
 
-# /autor/{id}
 resource "aws_api_gateway_resource" "autor_id" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.autor.id
@@ -157,7 +153,6 @@ resource "aws_api_gateway_resource" "autor_id" {
 
 # --- 3. Methods and Integrations (Lambda wiring) ---
 
-# GET /post/{slug} -> Lambda getPost
 resource "aws_api_gateway_method" "get_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.post_slug.id
@@ -182,7 +177,6 @@ resource "aws_api_gateway_resource" "admin_autor_singular" {
   path_part   = "autor"
 }
 
-# /admin/autor/{id}
 resource "aws_api_gateway_resource" "admin_autor_id" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin_autor_singular.id
@@ -190,14 +184,13 @@ resource "aws_api_gateway_resource" "admin_autor_id" {
 }
 
 
-# /admin
 resource "aws_api_gateway_resource" "admin" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   path_part   = "admin"
 }
 
-# /admin/session — BFF login/me/logout. No authorizer on any method:
+# /admin/session: BFF login/me/logout. No authorizer on any method:
 # POST (login) needs to be reachable without a prior session (it's what
 # creates one); GET (me) and DELETE (logout) do their own cookie check
 # inside the handler (backend/src/functions/adminSession), so an authorizer
@@ -210,7 +203,7 @@ resource "aws_api_gateway_resource" "admin_session" {
 }
 
 # 3 separate methods (not a single ANY): API Gateway's UpdateStage only
-# accepts method_path as "{resourcePath}/{real httpMethod}" or "*/*" — there
+# accepts method_path as "{resourcePath}/{real httpMethod}" or "*/*", there
 # is no "specific resource + all verbs" combination when the method is
 # modeled as ANY. Splitting into GET/POST/DELETE lets us target only POST
 # (login, the verb sensitive to brute force) with the tighter limit, leaving
@@ -271,28 +264,24 @@ resource "aws_lambda_permission" "apigw_admin_session" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# /admin/posts
 resource "aws_api_gateway_resource" "admin_posts" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "posts"
 }
 
-# --- Resource: /admin/post (singular) ---
 resource "aws_api_gateway_resource" "admin_post_singular" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "post"
 }
 
-# --- Resource: /admin/post/{slug} ---
 resource "aws_api_gateway_resource" "admin_post_slug" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin_post_singular.id
   path_part   = "{slug}"
 }
 
-# ANY method on /admin/post/{slug} (protected)
 resource "aws_api_gateway_method" "admin_post_slug_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_post_slug.id
@@ -315,11 +304,6 @@ resource "aws_api_gateway_integration" "admin_post_slug_integration" {
 # /admin/categorias/{slug} -- see local.cors_preflight_endpoints and the 4
 # "cors_preflight" for_each resources right before aws_api_gateway_deployment.main.
 
-# --- Author Resources (Admin) ---
-
-# --- Methods ---
-
-# 1. ANY /admin/autor/{id} (GET to read, PUT to edit) - protected
 resource "aws_api_gateway_method" "admin_autor_id_any" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_autor_id.id
@@ -339,7 +323,6 @@ resource "aws_api_gateway_integration" "admin_autor_id_integration" {
 
 # OPTIONS /admin/autor/{id} (CORS) -- see local.cors_preflight_endpoints
 
-# Permission for the Gateway to invoke the Lambda
 resource "aws_lambda_permission" "apigw_admin_authors" {
   statement_id  = "AllowAPIGatewayInvokeAdminAuthors"
   action        = "lambda:InvokeFunction"
@@ -348,7 +331,6 @@ resource "aws_lambda_permission" "apigw_admin_authors" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# Integration with the getPosts Lambda (reusing the same Lambda)
 resource "aws_api_gateway_integration" "get_populares_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.posts_populares.id
@@ -358,14 +340,12 @@ resource "aws_api_gateway_integration" "get_populares_integration" {
   uri                     = var.get_posts_invoke_arn
 }
 
-# --- NEW RESOURCE: /posts/populares ---
 resource "aws_api_gateway_resource" "posts_populares" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.posts.id
   path_part   = "populares"
 }
 
-# GET method para /posts/populares
 resource "aws_api_gateway_method" "get_populares" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.posts_populares.id
@@ -373,7 +353,6 @@ resource "aws_api_gateway_method" "get_populares" {
   authorization = "NONE"
 }
 
-# ANY method on /admin/posts (protected by Cognito)
 resource "aws_api_gateway_method" "admin_posts_any" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   resource_id = aws_api_gateway_resource.admin_posts.id
@@ -384,7 +363,6 @@ resource "aws_api_gateway_method" "admin_posts_any" {
   authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
-# Integration with the adminPosts Lambda
 resource "aws_api_gateway_integration" "admin_posts_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.admin_posts.id
@@ -413,23 +391,18 @@ resource "aws_api_gateway_integration" "get_post_integration" {
   uri                     = var.get_post_invoke_arn
 }
 
-# --- Media Resources ---
-
-# /admin/media
 resource "aws_api_gateway_resource" "admin_media" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin.id
   path_part   = "media"
 }
 
-# /admin/media/upload-url
 resource "aws_api_gateway_resource" "admin_media_upload" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_resource.admin_media.id
   path_part   = "upload-url"
 }
 
-# POST method (protected)
 resource "aws_api_gateway_method" "media_upload_post" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.admin_media_upload.id
@@ -438,7 +411,6 @@ resource "aws_api_gateway_method" "media_upload_post" {
   authorizer_id = aws_api_gateway_authorizer.admin_cookie_auth.id
 }
 
-# Integration with the mediaUpload Lambda
 resource "aws_api_gateway_integration" "media_upload_integration" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.admin_media_upload.id
@@ -461,7 +433,6 @@ resource "aws_lambda_permission" "apigw_media_upload" {
   source_arn    = "${aws_api_gateway_rest_api.main.execution_arn}/*/*"
 }
 
-# GET /autor/{id} -> Lambda getAuthor
 resource "aws_api_gateway_method" "get_author" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   resource_id   = aws_api_gateway_resource.autor_id.id
@@ -507,7 +478,7 @@ resource "aws_api_gateway_stage" "main" {
 }
 
 # Throttling applied to every method on the stage (*/*), without requiring
-# an API key — this also protects the public read routes, which today have
+# an API key, this also protects the public read routes, which today have
 # no auth layer of their own to enforce that limit otherwise.
 resource "aws_api_gateway_method_settings" "throttle_all" {
   rest_api_id = aws_api_gateway_rest_api.main.id
@@ -520,17 +491,17 @@ resource "aws_api_gateway_method_settings" "throttle_all" {
   }
 }
 
-# Tighter limit only on login (POST /admin/session) — it verifies a JWT and
+# Tighter limit only on login (POST /admin/session): it verifies a JWT and
 # creates a session, making it the natural target for brute force/replay;
 # the global throttle (var.throttle_rate_limit) is sized for public read
 # traffic, far too generous for a single admin auth endpoint.
 #
 # method_path doesn't accept a wildcard verb (neither "*" nor "ANY")
-# combined with a specific resourcePath — only "{resourcePath}/{real
+# combined with a specific resourcePath, only "{resourcePath}/{real
 # httpMethod}" or "*/*" (confirmed via the API's actual error:
 # "'admin/session/*' is not a valid method path"). That's why the
 # /admin/session resource was split into 3 real methods (POST/GET/DELETE,
-# see above) instead of a single ANY — only that way can we target
+# see above) instead of a single ANY, only that way can we target
 # exclusively the POST here. GET (me)/DELETE (logout) stay on the global
 # throttle_all only.
 resource "aws_api_gateway_method_settings" "throttle_admin_session" {
@@ -954,7 +925,7 @@ resource "aws_api_gateway_deployment" "main" {
   # missed resources at least once (documented gap on media_upload preflight
   # before the for_each unification). Any change to any resource in this
   # module lives in this file, so its hash over-approximates "something
-  # changed" — a rare redeploy too many is harmless (create_before_destroy),
+  # changed", a rare redeploy too many is harmless (create_before_destroy),
   # a missing redeploy silently serves the old API.
   triggers = {
     redeployment = filesha1("${path.module}/main.tf")

@@ -38,7 +38,7 @@ onMounted(async () => {
       form.value = { ...form.value, ...data.autor }
     }
   } catch {
-    // Author doesn't exist yet — will be created on save
+    // Author doesn't exist yet: will be created on save
   } finally {
     loading.value = false
   }

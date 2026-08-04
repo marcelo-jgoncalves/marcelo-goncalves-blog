@@ -1,7 +1,7 @@
 /**
  * post.audit.spec.ts
- * Audit visual Post: compara computed styles do protótipo (fixtures/post.html)
- * com o app renderizado em "/post/{slug}". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Post: compares computed styles of the prototype (fixtures/post.html)
+ * against the app rendered at "/post/{slug}". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -13,7 +13,7 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/post.html').repl
 const POST_SLUG = 'como-construir-prompts-poderosos-para-ias-como-gpt-ou-gemini';
 
 // post-cta-adv-in/post-adv-card are excluded: the page no longer reuses
-// AdvisoryCta there — it has its own compact "CTA CONTEXTUAL" section
+// AdvisoryCta there: it has its own compact "CTA CONTEXTUAL" section
 // instead (post-cta-editorial, see app/post/[slug]/page.tsx), so there's no
 // valid visual correspondence to compare pixel-by-pixel against.
 const TARGETS = [
@@ -47,7 +47,7 @@ test('post: audit protótipo vs app', async ({ page }) => {
   // Expected divergences (not CSS bugs):
   // - post-layout/margin: getComputedStyle reports "0px" for auto-centering
   //   margin in nested grid containers (article > main > body), even though
-  //   the boundingClientRect matches the prototype (same left/right/width —
+  //   the boundingClientRect matches the prototype (same left/right/width:
   //   centering is correct).
   // - post-authorbox/gridTemplateColumns: without linkedin/github/
   //   instagram_url set on the author, PostFooter omits .abSocial and the

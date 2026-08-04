@@ -180,7 +180,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }} />
 
-      {/* HERO */}
       <PageHero
         singleColumn
         className={styles.opHero}
@@ -196,7 +195,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         <p className={styles.opHeroMicro}>Projeto próprio · Evolução contínua · Estados publicados com transparência</p>
       </PageHero>
 
-      {/* POR QUE CONSTRUIR */}
       <div className={styles.opWrap}>
         <section className={styles.opSection} data-audit="op-why">
           <div className="sec-head-row sec-head-row--center">
@@ -217,7 +215,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </section>
       </div>
 
-      {/* ESTADO ATUAL */}
       <section className={`${styles.opSection} ${styles.opSectionSurface}`} data-audit="op-status">
         <div className={styles.opWrap}>
           <div className="sec-head-row sec-head-row--center">
@@ -246,7 +243,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* ARQUITETURA */}
       <div className={styles.opWrap}>
         <section className={styles.opSection} id="arquitetura" data-audit="op-arquitetura">
           <div className="sec-head-row sec-head-row--center">
@@ -280,7 +276,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </section>
       </div>
 
-      {/* PRINCÍPIOS DE ENGENHARIA */}
       <section className={`${styles.opSection} ${styles.opSectionSurface}`} data-audit="op-principles">
         <div className={styles.opWrap}>
           <div className="sec-head-row sec-head-row--center">
@@ -304,7 +299,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* FLUXO EDITORIAL E IA */}
       <div className={styles.opWrap}>
         <section className={styles.opSection} data-audit="op-flow">
           <div className="sec-head-row sec-head-row--center">
@@ -334,7 +328,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </section>
       </div>
 
-      {/* EVOLUÇÃO */}
       <section className={`${styles.opSection} ${styles.opSectionSurface}`} data-audit="op-evolution">
         <div className={styles.opWrap}>
           <div className="sec-head-row sec-head-row--center">
@@ -363,7 +356,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* BASTIDORES */}
       <div className={styles.opWrap}>
         <section className={styles.opSection} id="timeline" data-audit="op-backstage">
           <div className="sec-head-row sec-head-row--center">
@@ -435,7 +427,6 @@ export default async function OProjetoPage({ searchParams }: PageProps) {
         </section>
       </div>
 
-      {/* CTA FINAL */}
       <section className={`wrap ${styles.opCtaEditorial}`} data-audit="op-cta-editorial">
         <div className={styles.opCtaIn}>
           <div className="sec-ey sec-ey--dual">Da plataforma à operação</div>

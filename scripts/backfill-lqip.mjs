@@ -2,15 +2,15 @@
 /**
  * scripts/backfill-lqip.mjs
  *
- * Popula o campo imagem_lqip_base64 em todos os posts do DynamoDB que:
- *   1. Possuem imagem_destaque_url
- *   2. Ainda não têm imagem_lqip_base64
+ * Populates the imagem_lqip_base64 field on every DynamoDB post that:
+ *   1. Has imagem_destaque_url
+ *   2. Doesn't yet have imagem_lqip_base64
  *
- * Se o arquivo -lqip.webp não existir no S3, o script o gera a partir do
- * -1280.webp existente usando Sharp, faz o upload e salva o base64.
+ * If the -lqip.webp file doesn't exist in S3, the script generates it from
+ * the existing -1280.webp using Sharp, uploads it, and saves the base64.
  *
- * Requer: AWS_PROFILE=claude-dev (ou credenciais via env vars AWS_*)
- * Executar a partir do diretório backend/ onde Sharp está instalado.
+ * Requires: AWS_PROFILE=claude-dev (or credentials via AWS_* env vars)
+ * Run from the backend/ directory, where Sharp is installed.
  *
  * Uso (a partir de backend/):
  *   AWS_PROFILE=claude-dev node ../scripts/backfill-lqip.mjs [--dry-run]
@@ -23,11 +23,11 @@ import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from "@aws-sdk/lib
 import { S3Client, GetObjectCommand, PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { createRequire } from "module";
 
-// Sharp é um módulo CJS — carregado via createRequire para compatibilidade ESM
+// Sharp is a CJS module, loaded via createRequire for ESM compatibility
 const require = createRequire(import.meta.url);
 const sharp   = require("sharp");
 
-// ── Configuração ────────────────────────────────────────────────────
+// -- Configuration ------------------------------------------------------
 const AWS_REGION    = "us-east-1";
 const POSTS_TABLE   = process.env.POSTS_TABLE   || "marcelo-goncalves-blog-dev-posts";
 const ASSETS_BUCKET = process.env.ASSETS_BUCKET || "marcelo-goncalves-blog-dev-assets";
@@ -36,7 +36,7 @@ const DRY_RUN       = process.argv.includes("--dry-run");
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({ region: AWS_REGION }));
 const s3     = new S3Client({ region: AWS_REGION });
 
-// ── Helpers ─────────────────────────────────────────────────────────
+// -- Helpers --------------------------------------------------------------
 
 function extractBasename(url) {
   if (!url) return null;
@@ -51,7 +51,7 @@ async function streamToBuffer(body) {
   return Buffer.concat(chunks);
 }
 
-/** Verifica se um objeto existe no S3 (sem baixar o conteúdo). */
+/** Checks whether an object exists in S3 (without downloading its content). */
 async function s3Exists(key) {
   try {
     await s3.send(new HeadObjectCommand({ Bucket: ASSETS_BUCKET, Key: key }));
@@ -61,7 +61,7 @@ async function s3Exists(key) {
   }
 }
 
-/** Busca o arquivo existente no S3 assets e retorna como Buffer. */
+/** Fetches the existing file from S3 assets and returns it as a Buffer. */
 async function fetchFromS3(key) {
   const { Body } = await s3.send(new GetObjectCommand({ Bucket: ASSETS_BUCKET, Key: key }));
   if (!Body) return null;
@@ -69,36 +69,36 @@ async function fetchFromS3(key) {
 }
 
 /**
- * Garante que o arquivo lqip.webp existe no S3.
- * Se existir: lê e retorna como base64.
- * Se não existir: gera a partir do -1280.webp via Sharp, faz upload e retorna base64.
+ * Ensures the lqip.webp file exists in S3.
+ * If it exists: reads and returns it as base64.
+ * If not: generates it from -1280.webp via Sharp, uploads it, and returns base64.
  */
 async function ensureLqipBase64(basename, dryRun) {
   const lqipKey   = `media/${basename}-lqip.webp`;
   const source1280 = `media/${basename}-1280.webp`;
 
-  // 1. Verificar se lqip já existe no S3
+  // 1. Check whether lqip already exists in S3
   if (await s3Exists(lqipKey)) {
     const buf = await fetchFromS3(lqipKey);
     if (buf) return `data:image/webp;base64,${buf.toString("base64")}`;
   }
 
-  // 2. Buscar a variante 1280 como fonte para gerar o lqip
+  // 2. Fetch the 1280 variant as the source to generate the lqip
   let sourceBuffer;
   try {
     sourceBuffer = await fetchFromS3(source1280);
   } catch {
-    return null; // imagem fonte não encontrada
+    return null; // source image not found
   }
   if (!sourceBuffer) return null;
 
-  // 3. Gerar lqip: 20px, quality 20, WebP
+  // 3. Generate lqip: 20px, quality 20, WebP
   const lqipBuffer = await sharp(sourceBuffer)
     .resize({ width: 20, withoutEnlargement: true })
     .toFormat("webp", { quality: 20 })
     .toBuffer();
 
-  // 4. Upload para S3 (pular no dry-run)
+  // 4. Upload to S3 (skip on dry-run)
   if (!dryRun) {
     await s3.send(new PutObjectCommand({
       Bucket: ASSETS_BUCKET,
@@ -127,7 +127,7 @@ async function scanAllPosts() {
   return posts;
 }
 
-// ── Main ─────────────────────────────────────────────────────────────
+// -- Main -----------------------------------------------------------------
 
 async function main() {
   console.log(`\n🔍 Backfill LQIP — tabela: ${POSTS_TABLE} | bucket: ${ASSETS_BUCKET}`);

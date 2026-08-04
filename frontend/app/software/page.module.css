@@ -1,5 +1,4 @@
-/* frontend/app/engenharia-de-software/page.module.css
-   specs/ESPECIFICACAO-ENGENHARIA-SOFTWARE.md — breakpoints próprios da página (680/1040) */
+/* Page's own breakpoints (680/1040) */
 
 .wrap {
   max-width: 1240px;
@@ -45,8 +44,8 @@
   line-height: 1.7;
 }
 
-/* Cabeçalhos de seção alinhados à esquerda — identidade própria desta
-   landing, igual à de /inteligencia-artificial. */
+/* Section headers left-aligned: this landing's own identity, same as
+   /inteligencia-artificial. */
 .sectionHead {
   display: flex;
   flex-direction: column;
@@ -56,9 +55,9 @@
   margin-bottom: var(--sp-10);
 }
 
-/* Eyebrow — mesmo padrão de frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
-   traço à esquerda por padrão, gap de 14px até o título; .eyebrowDual centraliza
-   e adiciona o segundo traço (::after) para cabeçalhos de seção centralizados. */
+/* Eyebrow: same pattern as frontend/app/home.css (.ih-eyebrow/.ih-eyebrow--dual):
+   left dash by default, 14px gap to the title; .eyebrowDual centers and adds
+   the second dash (::after) for centered section headers. */
 .eyebrowLight,
 .eyebrowDark {
   font-family: 'JetBrains Mono', monospace;
@@ -95,8 +94,8 @@
   flex: none;
 }
 
-/* Todas as seções desta página são fullwidth com padding próprio (CLAUDE.md §5,
-   exceção obrigatória ao ritmo editorial global "section { margin-block: var(--sp-10) }") */
+/* All sections on this page are fullwidth with their own padding
+   (mandatory exception to the global editorial rhythm "section { margin-block: var(--sp-10) }") */
 .whatWeDo,
 .approachSection,
 .capabilitiesSection,
@@ -104,18 +103,18 @@
   margin-block: 0;
 }
 
-/* ===== HERO — override do componente padrão PageHero (mesmo padrão de app/contato/contato.css) ===== */
+/* ===== HERO: override of the standard PageHero component (same pattern as app/contato/contato.css) ===== */
 .esHero {
   --ph-pad: 88px 40px var(--sp-9);
 }
 
-/* Espaçamento entre seções padronizado com o mesmo tratamento da Home:
-   var(--sp-9) de cada lado de toda transição sem linha divisória real
-   (a maioria é só troca de cor de fundo) — antes cada seção usava o
-   padding "cru" do próprio module.css (64/80/100px por breakpoint),
-   criando gaps de até ~250px entre seções. Sobrescreve via seletor de
-   #id (especificidade maior que .class) para valer em qualquer largura,
-   sem precisar duplicar as 3 media queries de cada seção. */
+/* Spacing between sections standardized with the same treatment as the Home:
+   var(--sp-9) on each side of every transition without a real divider line
+   (most are just a background color change). Before this, each section used
+   its own module.css "raw" padding (64/80/100px per breakpoint), creating
+   gaps of up to ~250px between sections. Overrides via #id selector (higher
+   specificity than .class) so it applies at any width without duplicating
+   each section's 3 media queries. */
 :global(#solucoes),
 :global(#beneficios),
 :global(#abordagem),
@@ -126,8 +125,8 @@
   padding-bottom: var(--sp-9);
 }
 
-/* Ajuste 12 (§38): scroll-margin-top nas âncoras da página, mesmo padrão
-   já usado no projeto (100px — ver frontend/app/post/[slug]/post.css). */
+/* scroll-margin-top on the page's anchors, same pattern already used
+   in the project (100px, see frontend/app/post/[slug]/post.css). */
 :global(#solucoes),
 :global(#beneficios),
 :global(#abordagem),
@@ -138,18 +137,18 @@
   scroll-margin-top: 100px;
 }
 
-/* CTA final (AdvisoryCta, id="contato"): .cta-adv-in usa
-   align-items:center, centralizando a coluna de texto contra o card mais
-   alto ao lado — isso empurra o eyebrow bem além do padding-top sozinho
-   (mesmo problema resolvido na Home, ver home.css #contato.cta-adv). */
+/* Final CTA (AdvisoryCta, id="contato"): .cta-adv-in uses
+   align-items:center, centering the text column against the taller card
+   next to it, which pushes the eyebrow well past the padding-top alone
+   (same problem solved on the Home, see home.css #contato.cta-adv). */
 :global(#contato.cta-adv .cta-adv-in) {
   align-items: flex-start;
   padding-top: var(--sp-9);
 }
 
-/* Botão duplica o CTA do nav no desktop (.nav-cta, sempre visível ali) —
-   só aparece no mobile, onde o CTA do nav vira .nav-cta-mobile e fica
-   escondido atrás do hamburger (mesmo breakpoint de Header.css: 860px). */
+/* Button duplicates the nav's desktop CTA (.nav-cta, always visible there):
+   only appears on mobile, where the nav CTA becomes .nav-cta-mobile and
+   stays hidden behind the hamburger (same breakpoint as Header.css: 860px). */
 .heroCtaRow {
   display: none;
   gap: var(--eyebrow-gap);
@@ -177,8 +176,8 @@
   }
 }
 
-/* ===== O QUE DESENVOLVEMOS — cabeçalho fixo + nota de núcleo + 6 linhas
-   editoriais numeradas (sem grade de cards). ===== */
+/* ===== WHAT WE DEVELOP: sticky header + core note + 6 numbered editorial
+   rows (no card grid). ===== */
 .whatWeDo {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -287,9 +286,9 @@
   .solutionTags { grid-column: auto; margin-top: 0; }
 }
 
-/* ===== QUALIDADE — .benefitsList/.benefitItem reaproveitados pela seção
-   "Qualidade e continuidade" (matriz 2x4). A seção "Benefícios" em si usa o
-   componente compartilhado BenefitsSection (ver components/ui/). ===== */
+/* ===== QUALITY: .benefitsList/.benefitItem reused by the "Qualidade e
+   continuidade" section (2x4 matrix). The "Benefícios" section itself uses
+   the shared BenefitsSection component (see components/ui/). ===== */
 .benefitsList {
   display: grid;
   grid-template-columns: 1fr;
@@ -323,7 +322,7 @@
   min-width: 0;
 }
 
-/* ===== OUR APPROACH — decision panel (use/connect/evolve/build)
+/* ===== OUR APPROACH: decision panel (use/connect/evolve/build)
    + 5-step journey + 3 principles in split columns. ===== */
 .approachSection {
   padding: var(--sp-10) 0;
@@ -333,8 +332,8 @@
 @media (min-width: 680px) { .approachSection { padding: var(--sp-11) 0; } }
 @media (min-width: 1040px) { .approachSection { padding: var(--sp-12) 0; } }
 
-/* Cabeçalho desta seção é centralizado (diferente do padrão esquerda das
-   outras seções da página) — pedido explícito para "Nossa abordagem". */
+/* This section's header is centered (unlike the left-aligned pattern of
+   the page's other sections): explicit request for "Nossa abordagem". */
 .approachHead {
   align-items: center;
   text-align: center;
@@ -589,9 +588,9 @@
   line-height: 1.65;
 }
 
-/* ===== CAPACIDADES DE ENGENHARIA — pilha de 5 camadas técnicas (2
-   capacidades cada), substitui o IconLabelSection compartilhado (também
-   usado em /plataforma) — decisão de divergir só esta página. ===== */
+/* ===== ENGINEERING CAPABILITIES: stack of 5 technical layers (2
+   capabilities each), replacing the shared IconLabelSection (also used
+   in /plataforma): decision to diverge only on this page. ===== */
 .capabilitiesSection {
   padding: var(--sp-10) 0;
   background: var(--ivory);
@@ -715,8 +714,8 @@
   background: var(--clay);
 }
 
-/* ===== QUALIDADE E CONTINUIDADE — matriz 2x4 numerada + 3 contratos
-   (manutenção/propriedade/dívida técnica). ===== */
+/* ===== QUALITY AND CONTINUITY: numbered 2x4 matrix + 3 contracts
+   (maintenance/ownership/technical debt). ===== */
 .quality {
   padding: var(--sp-10) 0;
   background: var(--petrol-deep);

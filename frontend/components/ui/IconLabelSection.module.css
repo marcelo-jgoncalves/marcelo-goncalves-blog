@@ -1,5 +1,5 @@
 /* "Mosaic" grid with hairlines (container: border-top+border-left; each
-   cell: border-right+border-bottom — closes into a perfect rectangle).
+   cell: border-right+border-bottom, closing into a perfect rectangle).
    Previously lived duplicated across 3 page.module.css files
    (automacao/plataforma/software) with a real divergence: automacao/software
    added a 1040px→4-column breakpoint that /plataforma didn't have (always

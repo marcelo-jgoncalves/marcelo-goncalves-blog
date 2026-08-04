@@ -1,7 +1,7 @@
 #
 # IAM roles/policies (one per Lambda, least-privilege) live in lambda-iam.tf.
 
-# --- CloudWatch Log Groups (explicit retention — created before the Lambdas) ---
+# --- CloudWatch Log Groups (explicit retention, created before the Lambdas) ---
 
 resource "aws_cloudwatch_log_group" "media_upload" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-mediaUpload"
@@ -249,7 +249,7 @@ resource "aws_lambda_function" "admin_session" {
 }
 
 # --- adminAuthorizer (REQUEST): replaces the native COGNITO_USER_POOLS on
-# protected /admin/* routes — validates only the opaque session cookie. The
+# protected /admin/* routes: validates only the opaque session cookie. The
 # Authorization Bearer fallback (legacy transition flow) was removed after
 # confirming the cookie flow working end to end in production. ---
 resource "aws_lambda_function" "admin_authorizer" {
@@ -263,7 +263,7 @@ resource "aws_lambda_function" "admin_authorizer" {
   source_code_hash = filebase64sha256("${path.root}/builds/adminAuthorizer.zip")
 
   # COGNITO_USER_POOL_ID/COGNITO_CLIENT_ID removed along with the Bearer
-  # fallback — no longer read by this handler.
+  # fallback, no longer read by this handler.
   environment {
     variables = {
       ADMIN_SESSIONS_TABLE = "${var.project_name}-${var.environment}-admin-sessions"
@@ -304,8 +304,8 @@ resource "aws_lambda_function" "post_scheduler" {
 
 # --- postCounterReconciler ---
 # Individual IAM role/policy in lambda-iam.tf (aws_iam_role.function_role["postCounterReconciler"]).
-# Closes docs/backlog.md item #23: recounts the posts table once a day and
-# self-heals postCounters.ts's aggregates if a write path ever drifts them.
+# Recounts the posts table once a day and self-heals postCounters.ts's
+# aggregates if a write path ever drifts them.
 
 resource "aws_lambda_function" "post_counter_reconciler" {
   function_name = "${var.project_name}-${var.environment}-postCounterReconciler"
@@ -387,7 +387,7 @@ resource "aws_scheduler_schedule" "post_counter_reconciler" {
 
   # Daily, not on the 15-minute cadence of post_scheduler: this is a
   # self-healing safety net for a theoretical drift (docs/backlog.md item
-  # #23), not a time-sensitive publish action — no reason to Scan the whole
+  # #23), not a time-sensitive publish action, no reason to Scan the whole
   # table more often than that at this volume.
   schedule_expression = "rate(1 day)"
 

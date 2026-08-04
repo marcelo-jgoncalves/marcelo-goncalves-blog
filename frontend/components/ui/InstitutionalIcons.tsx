@@ -119,7 +119,7 @@ export function IconPin() {
   );
 }
 
-/* Ícones dos cards "O que fazemos" — specs/ESPECIFICACAO-ENGENHARIA-SOFTWARE.md §7 (26×26 dentro do selo de 54×54) */
+/* "What we do" card icons, specs/ESPECIFICACAO-ENGENHARIA-SOFTWARE.md §7 (26x26 inside the 54x54 badge) */
 const cardIcon = { ...common, width: 26, height: 26 };
 
 export function IconSistemasSobMedida() {
@@ -189,7 +189,7 @@ export function IconPropriedadeAcesso() {
   );
 }
 
-/* Ícones dos cards "O que fazemos" — specs/ESPECIFICACAO-CLOUD-DEVOPS.md §7 */
+/* "What we do" card icons, specs/ESPECIFICACAO-CLOUD-DEVOPS.md §7 */
 export function IconArquiteturaNuvem() {
   return (
     <svg {...cardIcon}>
@@ -244,7 +244,7 @@ export function IconSegurancaCloud() {
   );
 }
 
-/* Ícones dos cards "O que fazemos" — specs/ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md §7 */
+/* "What we do" card icons, specs/ESPECIFICACAO-INTEGRACAO-AUTOMACAO.md §7 */
 export function IconIntegracaoSistemas() {
   return (
     <svg {...cardIcon}>
@@ -292,9 +292,9 @@ export function IconArquiteturasEscalaveis() {
   );
 }
 
-/* Ícones dos cards "O que fazemos" — specs/ESPECIFICACAO-INTELIGENCIA-ARTIFICIAL.md §7
-   (spec descreve os ícones por nome, sem path literal — glifos escolhidos aqui,
-   mesmo estilo stroke-based dos demais). */
+/* "What we do" card icons, specs/ESPECIFICACAO-INTELIGENCIA-ARTIFICIAL.md §7
+   (spec describes the icons by name, no literal path: glyphs chosen here,
+   same stroke-based style as the others). */
 export function IconAssistenteInteligente() {
   return (
     <svg {...cardIcon}>
@@ -323,8 +323,8 @@ export function IconIaIntegrada() {
   );
 }
 
-/* Ícones dos chips das seções "mosaico" (Especialidades, Maturidade técnica,
-   Casos de Aplicação) — 16×16 dentro do selo de 28×28 (sessão 2026-07-18). */
+/* Chip icons for the "mosaic" sections (Especialidades, Maturidade tecnica,
+   Casos de Aplicacao), 16x16 inside the 28x28 badge. */
 const chipIcon = { ...common, width: 20, height: 20 };
 
 export function IconFinOps() {

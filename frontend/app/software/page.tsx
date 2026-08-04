@@ -73,7 +73,7 @@ const jsonLd = {
   },
 };
 
-// §9-14: seis soluções, sem qualidades técnicas (arquitetura/qualidade/sustentação) como entregas comerciais separadas.
+// Technical qualities (architecture/quality/support) are deliberately not listed here as separate commercial offerings.
 const SOLUCOES = [
   { kicker: 'Operação interna', title: 'Sistemas internos', text: 'Ferramentas para organizar processos, regras, cadastros, aprovações, tarefas e informações que hoje dependem de planilhas ou aplicações fragmentadas.', tags: ['Processos', 'Cadastros', 'Operação'] },
   { kicker: 'Experiência e acompanhamento', title: 'Portais operacionais', text: 'Interfaces para clientes, parceiros ou equipes acompanharem solicitações, documentos, etapas e responsabilidades em um fluxo centralizado.', tags: ['Acompanhamento', 'Workflows', 'Perfis de acesso'] },
@@ -83,8 +83,8 @@ const SOLUCOES = [
   { kicker: 'Redução de risco técnico', title: 'Modernização de aplicações', text: 'Evolução gradual de sistemas com arquitetura difícil de manter, baixa cobertura de testes, limitações de integração ou risco elevado a cada mudança.', tags: ['Arquitetura', 'Testes', 'Evolução gradual'] },
 ];
 
-// Painel "antes de construir" — quando usar ferramenta pronta, conectar,
-// evoluir uma base existente ou justificar software próprio.
+// "Before building" panel: when to use a ready-made tool, connect,
+// evolve an existing base, or justify custom software.
 const DECISOES = [
   { Icon: IconSustentacaoEvolucao, opcao: 'Ferramenta pronta', condicao: 'Quando já atende ao processo.', acao: 'usar' },
   { Icon: IconApisIntegracoes, opcao: 'Integração', condicao: 'Quando é preciso conectar o que existe.', acao: 'conectar' },
@@ -92,7 +92,7 @@ const DECISOES = [
   { Icon: IconArquiteturaSoftware, opcao: 'Software próprio', condicao: 'Quando a regra específica justifica construir.', acao: 'construir', accent: true },
 ];
 
-// §15.5: oito benefícios — item 8 usa a formulação neutra (§15.6), condicionada ao contrato.
+// Item 8 uses a neutral phrasing, conditioned on the contract.
 const BENEFICIOS = [
   'Processos centralizados em uma interface adequada à operação',
   'Menor dependência de planilhas e controles paralelos',
@@ -104,7 +104,7 @@ const BENEFICIOS = [
   'Clareza sobre código, documentação e responsabilidades de manutenção',
 ];
 
-// Five steps of the approach — building is a business decision, not just a technical one.
+// Five steps of the approach: building is a business decision, not just a technical one.
 const ETAPAS = [
   { numero: '01', categoria: 'Descoberta', title: 'Entender o processo', text: 'Mapeamos usuários, regras, informações, exceções, sistemas envolvidos e o resultado que a solução precisa produzir.' },
   { numero: '02', categoria: 'Decisão', title: 'Avaliar construir, integrar ou adaptar', text: 'Comparamos ferramentas existentes, possibilidades de integração e desenvolvimento próprio para evitar a criação de um sistema desnecessário.' },
@@ -113,14 +113,12 @@ const ETAPAS = [
   { numero: '05', categoria: 'Operação', title: 'Operar, aprender e evoluir', text: 'Acompanhamos o uso real, corrigimos desvios e priorizamos novas funcionalidades conforme o impacto observado na operação.' },
 ];
 
-// §21.4-21.6: três princípios dentro da mesma seção da abordagem.
 const ABORDAGEM_PRINCIPIOS = [
   { label: 'Escopo', title: 'Decisões visíveis antes de compromissos maiores.', text: 'Funcionalidades, integrações, restrições e critérios de aceite são registrados para reduzir interpretações diferentes durante o projeto.' },
   { label: 'Participação', title: 'O processo precisa ser validado por quem o conhece.', text: 'Responsáveis pelo negócio participam da priorização, esclarecem regras e validam as entregas. A tecnologia não substitui o conhecimento operacional.' },
   { label: 'Evolução', title: 'Arquitetura proporcional ao estágio da solução.', text: 'A base técnica deve suportar o próximo ciclo de crescimento sem antecipar complexidade e custos que ainda não são necessários.' },
 ];
 
-// §22.6: dez capacidades de engenharia, agrupadas em 5 camadas da pilha técnica.
 const CAMADAS = [
   { kicker: 'Fundação', title: 'Domínio e arquitetura', items: ['Arquitetura de software e definição de componentes', 'APIs REST e integração entre serviços'] },
   { kicker: 'Aplicação', title: 'Execução e interfaces', items: ['Backends e processamento assíncrono', 'Aplicações web e interfaces operacionais'] },
@@ -129,7 +127,6 @@ const CAMADAS = [
   { kicker: 'Continuidade', title: 'Entrega e operação', items: ['Observabilidade, logs e rastreabilidade', 'CI/CD e infraestrutura como código'] },
 ];
 
-// §23.6: oito itens do checklist de qualidade, manutenção e evolução.
 const QUALIDADE_ITEMS = [
   'Código versionado e revisado',
   'Testes proporcionais ao risco de cada fluxo',
@@ -141,14 +138,13 @@ const QUALIDADE_ITEMS = [
   'Modelo de manutenção definido antes da entrega',
 ];
 
-// §23.7-23.9: três subblocos da seção de qualidade (sem rótulo, só H3 + texto).
+// Quality section subblocks: no label, just H3 + text.
 const QUALIDADE_SUBBLOCOS = [
   { Icon: IconCycle, title: 'Manutenção após a entrega', text: 'O modelo pode incluir acompanhamento inicial, correções, evolução contínua, observabilidade ou transferência estruturada para a equipe do cliente. Escopo, prazo de atendimento e responsabilidades devem ser definidos contratualmente.' },
   { Icon: IconPropriedadeAcesso, title: 'Propriedade e acesso', text: 'Repositórios, credenciais, ambientes e documentação devem ter responsáveis definidos. A forma de entrega e os direitos sobre o código precisam estar explícitos na proposta e no contrato.' },
   { Icon: IconDividaTecnica, title: 'Dívida técnica', text: 'Atalhos, limitações e decisões temporárias devem ser registrados para que a empresa consiga avaliar riscos e priorizar correções futuras.' },
 ];
 
-// §25-34: dez perguntas frequentes.
 const FAQ_ITEMS = [
   { question: 'Como saber se precisamos de um sistema próprio?', answer: 'Um sistema próprio costuma fazer sentido quando o processo é relevante, possui regras específicas e não é atendido adequadamente por ferramentas existentes. Antes de desenvolver, avaliamos alternativas prontas, integrações e adaptações.' },
   { question: 'Vocês desenvolvem qualquer tipo de software?', answer: 'A atuação é concentrada em sistemas e plataformas ligados à operação, integração de informações, documentos, automação e serviços empresariais. Projetos como sites simples, jogos ou aplicativos de entretenimento não são o foco principal.' },
@@ -167,7 +163,7 @@ export default function SistemasPlataformasPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
-      {/* HERO — componente padrão do projeto (frontend/components/ui/PageHero.tsx), só conteúdo muda */}
+      {/* Standard project component (frontend/components/ui/PageHero.tsx), only content changes */}
       <PageHero
         singleColumn
         className={styles.esHero}
@@ -184,7 +180,6 @@ export default function SistemasPlataformasPage() {
         <p className={styles.heroMicrocopy}>Conversa inicial sem compromisso · Retorno em até um dia útil</p>
       </PageHero>
 
-      {/* O QUE DESENVOLVEMOS — cabeçalho fixo + nota de núcleo + linhas editoriais numeradas */}
       <section id="solucoes" className={styles.whatWeDo} data-audit="esw-solucoes">
         <div className={styles.wrap}>
           <div className={styles.editorialLayout}>
@@ -217,7 +212,6 @@ export default function SistemasPlataformasPage() {
         </div>
       </section>
 
-      {/* BENEFÍCIOS */}
       <BenefitsSection
         id="beneficios"
         dataAudit="esw-beneficios"
@@ -225,7 +219,6 @@ export default function SistemasPlataformasPage() {
         items={BENEFICIOS}
       />
 
-      {/* NOSSA ABORDAGEM — painel "antes de construir" + percurso de 5 etapas + 3 princípios */}
       <section id="abordagem" className={styles.approachSection} data-audit="esw-abordagem">
         <div className={styles.wrap}>
           <div className={`${styles.sectionHead} ${styles.approachHead}`}>
@@ -280,7 +273,6 @@ export default function SistemasPlataformasPage() {
         </div>
       </section>
 
-      {/* CAPACIDADES DE ENGENHARIA — pilha de 5 camadas técnicas */}
       <section id="capacidades" className={styles.capabilitiesSection} data-audit="esw-capacidades">
         <div className={styles.wrap}>
           <div className={styles.capabilitiesLayout}>
@@ -307,7 +299,6 @@ export default function SistemasPlataformasPage() {
         </div>
       </section>
 
-      {/* QUALIDADE E CONTINUIDADE — matriz numerada + 3 contratos */}
       <section id="qualidade" className={styles.quality} data-audit="esw-qualidade">
         <div className={styles.qualityOverlay} aria-hidden="true" />
         <div className={styles.wrap}>
@@ -342,7 +333,6 @@ export default function SistemasPlataformasPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <FaqSection
         id="perguntas"
         items={FAQ_ITEMS}
@@ -351,7 +341,7 @@ export default function SistemasPlataformasPage() {
         title="Dúvidas antes de desenvolver ou modernizar um sistema"
       />
 
-      {/* CTA FINAL — componente padrão do projeto (frontend/components/ui/AdvisoryCta.tsx), só conteúdo muda */}
+      {/* Standard project component (frontend/components/ui/AdvisoryCta.tsx), only content changes */}
       <div data-audit="esw-cta-final">
         <AdvisoryCta
           id="contato"

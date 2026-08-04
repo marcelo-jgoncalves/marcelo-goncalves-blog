@@ -1,7 +1,7 @@
 /**
  * audit-script.ts
- * Extração de computed styles + bounding rects de elementos [data-audit]
- * Referência: specs/VALIDATION-STRATEGY.md
+ * Extracts computed styles and bounding rects of [data-audit] elements.
+ * Reference: specs/VALIDATION-STRATEGY.md
  */
 import type { Page } from '@playwright/test';
 
@@ -27,7 +27,7 @@ export const AUDIT_PROPERTIES = [
 export type AuditEntry = Record<string, string>;
 export type AuditResult = Record<string, AuditEntry>;
 
-/** Viewport fixo para resolver clamp()/vw de forma consistente (specs/VALIDATION-STRATEGY.md) */
+/** Fixed viewport so clamp()/vw values resolve consistently (specs/VALIDATION-STRATEGY.md) */
 export const VIEWPORT = { width: 1280, height: 900 };
 
 export async function captureAudit(page: Page): Promise<AuditResult> {

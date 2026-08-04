@@ -1,6 +1,6 @@
 /* frontend/app/busca/busca.module.css
-   Redesign 2026 (petrol/clay/ivory). Barra de busca vem do componente
-   compartilhado frontend/components/ui/SearchBar. */
+   Redesign (petrol/clay/ivory). Search bar comes from the shared
+   component frontend/components/ui/SearchBar. */
 
 .buscaSection {
   margin-block: 0;

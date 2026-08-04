@@ -1,4 +1,4 @@
-// Integration tests against a REAL DynamoDB (DynamoDB Local in CI — see
+// Integration tests against a REAL DynamoDB (DynamoDB Local in CI, see
 // package.json test:integration and .github/workflows/cd.yml). Unit tests
 // mock dynamo.send entirely, so they can't catch the class of bug that has
 // bitten this project repeatedly: a contract the mock accepts but the real
@@ -8,7 +8,7 @@
 //
 // Env vars (AWS_ENDPOINT_URL, POSTS_TABLE, dummy credentials) are set BEFORE
 // importing the handler modules, since common/dynamodb.ts builds its client
-// at module-load time — importing early would bind it to the wrong endpoint.
+// at module-load time: importing early would bind it to the wrong endpoint.
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand, TransactWriteItemsCommand } from "@aws-sdk/client-dynamodb";
 import { integrationClient, createPostsTable, createCategoriasTable, deleteTable } from "./setup";
@@ -25,7 +25,7 @@ process.env.AWS_ACCESS_KEY_ID = "local";
 process.env.AWS_SECRET_ACCESS_KEY = "local";
 process.env.LOG_LEVEL = "ERROR";
 delete process.env.AWS_PROFILE;
-delete process.env.FRONTEND_DISTRIBUTION_ID; // cacheInvalidation short-circuits without this — no real CloudFront call
+delete process.env.FRONTEND_DISTRIBUTION_ID; // cacheInvalidation short-circuits without this: no real CloudFront call
 delete process.env.XRAY_ENABLED;
 
 const client = integrationClient();
@@ -137,7 +137,7 @@ describe("DynamoDB's own key-attribute validation (not app logic)", () => {
             slug: { S: `post-${Math.random().toString(36).slice(2)}` },
             status: { S: "Rascunho" },
             e_projeto_marker: { S: "PROJ" },
-            data_publicacao: { S: "" }, // range key of ProjetoPorData_v2 — must never be empty
+            data_publicacao: { S: "" }, // range key of ProjetoPorData_v2, must never be empty
           },
         }),
       ),
@@ -149,7 +149,7 @@ describe("postScheduler.handler against real DynamoDB (happy path, real Transact
   it("publishes a due Programado post and atomically increments total_publicado in the same transaction", async () => {
     // createPostInputSchema rejects a past data_publicacao_programada, so the
     // post is created with a future date and then pushed into the past via a
-    // raw UpdateItemCommand — simulating time passing rather than a save that
+    // raw UpdateItemCommand, simulating time passing rather than a save that
     // was already invalid the moment it was made.
     const post = samplePost({
       status: "Programado",
@@ -239,12 +239,12 @@ describe("adminPosts write conflicts against real DynamoDB (ConditionExpression,
 describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not a mock)", () => {
   // deletePost() always re-Gets right before its Delete, so a sequential
   // PUT-then-DELETE through the handler is never actually stale by the time
-  // the Delete runs — there's no window to land an update between deletePost's
+  // the Delete runs, so there's no window to land an update between deletePost's
   // own Get and Delete without controlling DynamoDB's network timing directly.
   // This issues the exact ConditionExpression deletePost builds via a raw
   // DeleteItemCommand carrying a deliberately stale expected version (the
   // value a concurrent request's earlier Get would have captured), proving
-  // the real DynamoDB service enforces it — not just the mocked unit tests.
+  // the real DynamoDB service enforces it, not just the mocked unit tests.
   it("rejects a delete carrying a stale expected version once the real item has moved on, and the item survives", async () => {
     const post = samplePost();
     await adminPostsHandler(apiEvent({ httpMethod: "POST", body: JSON.stringify(post) }), ctx);
@@ -263,7 +263,7 @@ describe("adminPosts DELETE vs concurrent update (real ConditionExpression, not 
 
     // ConditionalCheckFailedException's message is the generic "The
     // conditional request failed" (unlike TransactWriteItems' cancellation
-    // error below, whose message does embed the reason code) — the
+    // error below, whose message does embed the reason code), the
     // exception name, not the message, is what identifies it here.
     await expect(
       client.send(
@@ -291,7 +291,7 @@ describe("adminPosts DELETE vs concurrent DELETE (real ConditionExpression, not 
   // reading the same version before either write lands. The first delete
   // through the handler removes the item; a raw DeleteItemCommand replays
   // the exact ConditionExpression deletePost built from that same stale Get,
-  // proving attribute_exists(slug) is what rejects the second delete now —
+  // proving attribute_exists(slug) is what rejects the second delete now,
   // "attribute_not_exists(version) OR ..." alone would have let it through,
   // since the item is already gone by the time it runs.
   it("rejects a second concurrent delete once the item is already gone, decrementing the counter only once", async () => {
@@ -346,12 +346,12 @@ describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a 
     await client.send(
       new PutItemCommand({
         TableName: TABLE_NAME,
-        Item: { slug: { S: slug }, status: { S: "Publicado" } }, // NOT Programado — condition below will fail
+        Item: { slug: { S: slug }, status: { S: "Publicado" } }, // NOT Programado, condition below will fail
       }),
     );
 
     // The counter item already exists at this point (earlier tests in this
-    // file published posts against the same shared table) — the assertion
+    // file published posts against the same shared table), the assertion
     // below is a before/after comparison, not "does it exist at all".
     const before = await client.send(
       new GetItemCommand({ TableName: TABLE_NAME, Key: { slug: { S: "__METADATA__#posts_counters" } } }),
@@ -388,7 +388,7 @@ describe("TransactWriteItems atomic rollback — real DynamoDB guarantee, not a 
       ),
     ).rejects.toThrow(/TransactionCanceledException|ConditionalCheckFailed/);
 
-    // Unchanged — proves the 2nd Update (which has no condition of its own)
+    // Unchanged: proves the 2nd Update (which has no condition of its own)
     // was never applied, exactly the scenario buildCounterTransactUpdate
     // relies on to keep counters from drifting.
     const after = await client.send(

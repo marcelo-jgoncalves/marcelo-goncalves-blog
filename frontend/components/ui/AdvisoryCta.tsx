@@ -27,8 +27,8 @@ function AdvisoryCard({ styles }: { styles: Record<string, string> }) {
 
 const DEFAULT_CARD_BODY = <AdvisoryCard styles={styles} />;
 
-// Bloco de garantias padrão do diagnóstico gratuito — usado como `cardBody` pelas
-// 4 landings de pilar (software, inteligencia-artificial, automacao, plataforma).
+// Default free-diagnosis assurances block, used as `cardBody` by the
+// 4 pillar landings (software, inteligencia-artificial, automacao, plataforma).
 export const CTA_DIAGNOSIS_META = (
   <div className={`cta-adv-meta ${styles.ctaAdvMeta}`}>
     <div className={`cta-adv-meta-row ${styles.ctaAdvMetaRow}`}>

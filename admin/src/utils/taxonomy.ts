@@ -7,7 +7,7 @@ export const MACRO_AREAS = [
   { value: 'bastidores', label: 'Bastidores' },
 ] as const
 
-/** Visual (gradient) variants of the redesigned PostCard — t-* classes applied via variante_card. */
+/** Visual (gradient) variants of the redesigned PostCard: t-* classes applied via variante_card. */
 export const CARD_VARIANTS = [
   { value: 't-petrol', label: 'Petróleo' },
   { value: 't-deep', label: 'Petróleo Profundo' },

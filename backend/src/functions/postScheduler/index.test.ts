@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if POSTS_TABLE is unset — this must
+// requireEnv() throws at module load if POSTS_TABLE is unset: this must
 // run before the `./index` import below, not in beforeAll (too late).
 process.env.POSTS_TABLE = 'test-posts-table';
 

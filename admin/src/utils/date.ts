@@ -12,7 +12,7 @@ export function localDateTimeToUtcIso(localDateTime: string): string {
   return date.toISOString()
 }
 
-// Inverse of localDateTimeToUtcIso() — used when loading a post for edit, so
+// Inverse of localDateTimeToUtcIso(), used when loading a post for edit, so
 // <input type="datetime-local"> shows the scheduled time in the admin's own
 // local timezone instead of raw UTC.
 export function utcIsoToLocalDateTimeInput(utcIso: string): string {

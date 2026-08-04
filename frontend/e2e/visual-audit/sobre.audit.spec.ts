@@ -1,7 +1,7 @@
 /**
  * sobre.audit.spec.ts
- * Audit visual Sobre: compara computed styles do protótipo (fixtures/sobre.html)
- * com o app renderizado em "/sobre". Referência: specs/VALIDATION-STRATEGY.md
+ * Visual audit for Sobre: compares computed styles of the prototype (fixtures/sobre.html)
+ * against the app rendered at "/sobre". Reference: specs/VALIDATION-STRATEGY.md
  */
 import path from 'path';
 import { test, expect } from '@playwright/test';
@@ -12,9 +12,9 @@ const FIXTURE_URL = `file://${path.resolve(__dirname, 'fixtures/sobre.html').rep
 
 // The page has a different structure than this prototype (hero, "Nossa
 // visão"/"Origem e propósito"/"Princípios de engenharia"/"Como tomamos
-// decisões" sections, leadership block) — several prototype sections (hero
+// decisões" sections, leadership block): several prototype sections (hero
 // stat indicators, career quote, company logos, area cards, certification/
-// academic logos) were never implemented, see CLAUDE.md §10 item #40. The
+// academic logos) were never implemented. The
 // final CTA uses the shared AdvisoryCta component (generic cta-adv-in/
 // cta-adv-card hooks, not page-specific sobre-* ones), so sobre-hero is the
 // only key with a real 1:1 match today.

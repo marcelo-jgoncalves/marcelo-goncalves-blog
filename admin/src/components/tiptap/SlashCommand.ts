@@ -29,7 +29,7 @@ function insertCallout(type: CalloutType) {
 }
 
 // Mirrors the blocks already reachable via the fixed toolbar and the
-// floating-menu (RichTextEditor.vue) — same insertion behavior, just
+// floating-menu (RichTextEditor.vue): same insertion behavior, just
 // reachable by typing "/" instead of clicking. Image upload is the one
 // exception: it needs the parent Vue component's file picker, wired in via
 // the onRequestImage option below rather than duplicated here.

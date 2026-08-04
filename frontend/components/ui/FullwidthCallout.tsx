@@ -5,9 +5,9 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faRocket, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import './FullwidthCallout.css';
 
-// Mapa fechado dos ícones realmente usados pelos 4 callers (FeaturedCallout*) —
-// a prop `icon` continua recebendo a mesma string ("fa-envelope") por
-// compatibilidade, só resolvida aqui pro ícone SVG correspondente.
+// Closed map of the icons actually used by the 4 callers (FeaturedCallout*):
+// the `icon` prop keeps receiving the same string ("fa-envelope") for
+// compatibility, only resolved here to the matching SVG icon.
 const ICON_MAP: Record<string, IconDefinition> = {
   'fa-envelope': faEnvelope,
   'fa-rocket': faRocket,
@@ -19,18 +19,18 @@ type FwcIconVariant = 'light' | 'dark';
 type FwcCtaVariant  = 'accent' | 'white';
 
 interface FullwidthCalloutProps {
-  variant?:     FwcVariant;      // preset de cores, default: 'light'
-  border?:      boolean;         // borda accent topo/base, default: false
-  rounded?:     boolean;         // border-radius 14px, para uso dentro de container, default: false
+  variant?:     FwcVariant;      // color preset, default: 'light'
+  border?:      boolean;         // top/bottom accent border, default: false
+  rounded?:     boolean;         // border-radius 14px, for use inside a container, default: false
   size?:        'md' | 'lg';    // padding: md=space-6, lg=space-7, default: 'md'
-  maxWidth?:    string;          // max-width do inner, default: '680px'
-  icon?:        string;          // classe FA sem prefixo, ex: 'fa-envelope'
+  maxWidth?:    string;          // inner max-width, default: '680px'
+  icon?:        string;          // FA class without prefix, e.g. 'fa-envelope'
   iconVariant?: FwcIconVariant;  // 'light'=accent-light bg, 'dark'=accent bg, default: 'light'
   title:        ReactNode;
   description?: string;
-  href?:        string;          // omitir = sem botão
+  href?:        string;          // omit = no button
   ctaText?:     string;
-  ctaVariant?:  FwcCtaVariant;   // 'accent'=azul, 'white'=branco, default: 'accent'
+  ctaVariant?:  FwcCtaVariant;   // 'accent'=blue, 'white'=white, default: 'accent'
 }
 
 export default function FullwidthCallout({

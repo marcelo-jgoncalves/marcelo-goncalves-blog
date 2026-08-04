@@ -50,8 +50,8 @@ async function fetchScheduledPosts(now: string): Promise<Array<{ slug: string; d
         KeyConditionExpression: "#status = :programado AND data_publicacao_programada <= :now",
         ExpressionAttributeNames: { "#status": "status" },
         ExpressionAttributeValues: { ":programado": "Programado", ":now": now },
-        // e_projeto incluído para computar o delta do contador agregado
-        // (postCounters.ts) sem precisar de uma segunda leitura em publishPost.
+        // e_projeto is included here so the aggregated counter delta
+        // (postCounters.ts) can be computed without a second read in publishPost.
         ProjectionExpression: "slug, data_publicacao_programada, e_projeto",
         ExclusiveStartKey: lastKey,
       }),
@@ -101,8 +101,8 @@ async function publishPost(slug: string, scheduledDate: string, eProjeto: number
     }),
   );
 
-  // Sempre Programado -> Publicado: a home (posts recentes) sempre fica
-  // stale aqui, diferente de savePost onde isso só acontece condicionalmente.
+  // Always Programado -> Publicado: unlike savePost, where this only
+  // happens conditionally, the home page (recent posts) always goes stale here.
   await invalidatePostCache([`/post/${slug}`, "/", "/artigos", "/todos-artigos", "/categoria/*"]);
 
   logger.info("post_published", { slug, scheduledDate });

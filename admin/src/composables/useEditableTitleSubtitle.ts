@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 
-// Title / Subtitle — contenteditable, synced via innerText only when the
+// Title / Subtitle: contenteditable, synced via innerText only when the
 // open post changes (never on every keystroke, to avoid resetting the cursor).
 export function useEditableTitleSubtitle(
   titleRef: Ref<HTMLElement | null>,

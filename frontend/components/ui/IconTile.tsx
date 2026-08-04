@@ -1,4 +1,4 @@
-// Reusable icon badge — visual reference: the Home's pillar cards
+// Reusable icon badge, visual reference: the Home's pillar cards
 // (frontend/app/home.css .ih-pillar-icon, previously duplicated in
 // .feature-card-icon and .svc-icon). Single source of truth for
 // shape/size; only icon, background color variant and size vary per use.

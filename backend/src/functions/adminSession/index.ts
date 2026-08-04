@@ -1,6 +1,6 @@
 //
 // Backend For Frontend (BFF) for the admin session. SRP (login) still
-// happens 100% in the browser via Amplify — the password never reaches
+// happens 100% in the browser via Amplify: the password never reaches
 // this Lambda (ALLOW_USER_SRP_AUTH is kept, see infra/modules/cognito).
 // What this handler does is exchange the idToken already obtained by
 // Amplify (kept only in client memory, never persisted) for a revocable
@@ -19,7 +19,7 @@ import { parseJsonBody } from "../../common/httpBody";
 
 // No "*" fallback here: this endpoint always pairs Allow-Origin with
 // Allow-Credentials: true below, and browsers reject that combination for
-// credentialed requests outright — a missing env var must fail loudly
+// credentialed requests outright: a missing env var must fail loudly
 // (cookie-based login breaks immediately, in an obvious way) rather than
 // silently serve a wildcard the browser will refuse anyway.
 const ADMIN_ORIGIN = requireEnv("ADMIN_ORIGIN");
@@ -32,9 +32,9 @@ const baseHeaders = {
   "Access-Control-Allow-Credentials": "true",
 };
 
-// Secure exige HTTPS (sempre verdadeiro atrás do CloudFront); SameSite=Strict
-// dispensa token CSRF porque app e API são a mesma origem (proxy same-origin
-// via CloudFront do admin, path /admin/*) — ver infra/modules/admin/cloudfront.tf.
+// Secure requires HTTPS (always true behind CloudFront); SameSite=Strict
+// removes the need for a CSRF token because app and API are the same origin
+// (same-origin proxy via the admin's CloudFront, path /admin/*), see infra/modules/admin/cloudfront.tf.
 function cookieHeader(sessionId: string | null, maxAgeSeconds: number): string {
   const value = sessionId ?? "";
   return `${SESSION_COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAgeSeconds}`;

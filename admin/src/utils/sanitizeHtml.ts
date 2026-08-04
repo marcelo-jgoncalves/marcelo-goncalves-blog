@@ -1,9 +1,9 @@
 import DOMPurify from 'dompurify'
 
 // div/span: wrapper for Tiptap's custom nodes (Callout, PullQuote,
-// ClosingFlourish, YouTube embed) — without them DOMPurify "unwraps" those
+// ClosingFlourish, YouTube embed). Without them DOMPurify "unwraps" those
 // nodes, discarding the div and leaving only loose text in the saved HTML.
-// Kept in sync with backend/src/common/sanitizer.ts — ALLOWED_TAGS and
+// Kept in sync with backend/src/common/sanitizer.ts: ALLOWED_TAGS and
 // ALLOWED_ATTR must be identical between admin (DOMPurify) and backend (sanitize-html).
 const ALLOWED_TAGS = [
   // Block

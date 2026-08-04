@@ -1,4 +1,4 @@
-// requireEnv() throws at module load if POSTS_TABLE is unset — this must
+// requireEnv() throws at module load if POSTS_TABLE is unset: this must
 // run before the `./index` import below, not in beforeAll (too late).
 process.env.POSTS_TABLE = 'test-posts-table';
 
@@ -52,7 +52,7 @@ describe('postCounterReconciler handler', () => {
 
     await handler({});
 
-    expect(mockSend).toHaveBeenCalledTimes(2); // real count (1) matches stored (1) — no correction
+    expect(mockSend).toHaveBeenCalledTimes(2); // real count (1) matches stored (1), no correction
   });
 
   it('paginates the Scan across multiple pages', async () => {

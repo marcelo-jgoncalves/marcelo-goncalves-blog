@@ -21,7 +21,7 @@ variable "enable_cloudfront_logging" {
 }
 
 variable "api_gateway_domain_name" {
-  description = "API Gateway domain (no stage), used as the origin of the same-origin /admin/* proxy — avoids cross-origin CORS and allows a SameSite=Strict cookie on the BFF session."
+  description = "API Gateway domain (no stage), used as the origin of the same-origin /admin/* proxy: avoids cross-origin CORS and allows a SameSite=Strict cookie on the BFF session."
   type        = string
 }
 

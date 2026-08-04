@@ -12,9 +12,9 @@ export interface ProcessedPost {
   headings: Heading[];
 }
 
-// Imagens inline antigas foram salvas com a URL "base" (sem sufixo de variante),
-// que nunca existe no bucket de assets — só -480/-768/-1280 existem. Normaliza
-// para a variante desktop (-1280), igual ao que o admin grava em uploads novos.
+// Old inline images were saved with the "base" URL (no variant suffix),
+// which never exists in the assets bucket: only -480/-768/-1280 exist. Normalizes
+// to the desktop variant (-1280), matching what the admin writes for new uploads.
 const MEDIA_IMG_RE = /^(https?:\/\/[^"'?]*\/media\/[^"'?]+?)(-(?:480|768|1280))?\.(avif|webp|jpe?g|png|gif)(\?[^"']*)?$/i;
 
 export function normalizeMediaImageSrc(src: string): string {
@@ -28,28 +28,24 @@ export function normalizeMediaImageSrc(src: string): string {
 export async function processFullPostContent(html: string): Promise<ProcessedPost> {
   const headings: Heading[] = [];
 
-  // --- FASE 1: Syntax Highlighting (String Manipulation) ---
+  // --- PHASE 1: Syntax Highlighting (String Manipulation) ---
   
-  // Inicializa o Shiki com os temas e linguagens necessárias
   const highlighter = await createHighlighter({
     themes: ['dark-plus'],
     langs: ['terraform', 'javascript', 'bash', 'json', 'yaml', 'python', 'typescript', 'go', 'sql', 'docker', 'css', 'html']
   });
 
-  // Limpeza básica inicial (Remove H1 redundante se existir no corpo)
   let preProcessedHtml = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '').trim();
 
-  // Regex para encontrar blocos de código vindos do Tiptap
   const codeBlockRegex = /<pre><code class="language-([^">]+)">([\s\S]*?)<\/code><\/pre>/g;
   
-  // Substitui cada bloco de código pela versão colorida do Shiki
   const matches = Array.from(preProcessedHtml.matchAll(codeBlockRegex));
 
   for (const match of matches) {
     const [fullMatch, lang, code] = match;
     
-    // Decodifica entidades HTML básicas para que o Shiki leia o código corretamente
-    // Ex: &lt; div &gt; vira < div > antes de ser processado
+    // Shiki expects raw code, not HTML-escaped entities (e.g. &lt;div&gt; must
+    // become <div> before highlighting, or the output gets double-escaped).
     const rawCode = code
       .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
       .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
@@ -58,7 +54,7 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
       const highlighted = highlighter.codeToHtml(rawCode, { lang, theme: 'dark-plus' });
       preProcessedHtml = preProcessedHtml.replace(fullMatch, highlighted);
     } catch {
-      // Mantém o bloco original se o Shiki não suportar a linguagem
+      // Language not supported by Shiki: keep the original unhighlighted block
     }
   }
 
@@ -66,18 +62,15 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
     xmlMode: false
   });
 
-  // Corrige <img src> de imagens inline salvas com URL "base" sem variante
   $('img').each((_, elem) => {
     const $el = $(elem);
     const src = $el.attr('src');
     if (src) $el.attr('src', normalizeMediaImageSrc(src));
   });
 
-  // Extração de Headings (TOC) via DOM
   $('h2').each((_, elem) => {
     const $el = $(elem);
     const text = $el.text();
-    // Gera ID amigável para URL (slugify)
     const id = text
       .toLowerCase()
       .normalize('NFD')
@@ -85,15 +78,14 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-');
     
-    $el.attr('id', id); // Injeta o ID no HTML
+    $el.attr('id', id);
     headings.push({ id, text });
   });
 
-  // Injeção Inteligente de Anúncios
   const $body = $('body');
 
-  // Tiptap às vezes envolve o conteúdo em múltiplos <div> aninhados.
-  // Descemos até encontrar um container com mais de 1 filho.
+  // Tiptap sometimes wraps content in multiple nested <div>s. Descend until
+  // a container with more than 1 child is found.
   let $container = $body;
   let depth = 0;
   while (depth < 5) {
@@ -106,7 +98,6 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
   const directChildren = $container.children();
   const totalChildren = directChildren.length;
 
-  // Injeção do AdSense no meio do post
   const TARGET_ADS_INDEX = Math.floor(totalChildren / 2);
   let adsInjected = false;
 
@@ -123,7 +114,6 @@ export async function processFullPostContent(html: string): Promise<ProcessedPos
     }
   });
 
-  // Retorna o HTML final limpo e estruturado
   return {
     contentHtml: $('body').html() || '',
     headings

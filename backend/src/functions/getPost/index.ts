@@ -7,7 +7,6 @@ import { requireEnv } from "../../common/env";
 
 const TABLE_NAME = requireEnv("POSTS_TABLE");
 
-// Headers CORS (Essenciais!)
 const headers = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
@@ -33,7 +32,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
       return { statusCode: 404, body: JSON.stringify({ message: "Post not found" }), headers };
     }
 
-    // Sparse index markers are DynamoDB plumbing (GSI hash keys) — no
+    // Sparse index markers are DynamoDB plumbing (GSI hash keys): no
     // consumer outside savePost/getPosts should ever see them.
     const { e_popular_marker, e_projeto_marker, ...post } = result.Item;
     void e_popular_marker;

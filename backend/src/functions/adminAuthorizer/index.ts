@@ -1,12 +1,12 @@
 //
 // Lambda Authorizer (REQUEST) that replaces the native COGNITO_USER_POOLS
 // authorizer on protected /admin/* routes. Only the opaque session cookie
-// (admin_session) is accepted — the Authorization Bearer fallback (legacy
+// (admin_session) is accepted: the Authorization Bearer fallback (legacy
 // Amplify client-side flow, used during the BFF rollout) was removed after
 // confirming in production that the new flow works end to end. Reduces
 // attack surface: only one authentication mechanism accepted, not two.
 //
-// Returns a Deny policy (doesn't throw) for a missing/invalid credential —
+// Returns a Deny policy (doesn't throw) for a missing/invalid credential:
 // API Gateway responds 403 in that case (not 401); the client treats both
 // as "invalid session" (see admin/src/services/api.ts).
 import { APIGatewayRequestAuthorizerHandler, APIGatewayAuthorizerResult } from "aws-lambda";
