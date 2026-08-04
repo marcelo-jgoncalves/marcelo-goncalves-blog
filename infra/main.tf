@@ -88,6 +88,7 @@ module "frontend" {
   log_retention_days        = var.log_retention_days
   enable_xray_tracing       = var.enable_xray_tracing
   enable_cloudfront_logging = var.enable_cloudfront_logging
+  provisioned_concurrency   = var.provisioned_concurrency
   api_url                   = module.api-gateway.api_url
 }
 

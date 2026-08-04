@@ -44,6 +44,12 @@ variable "enable_xray_tracing" {
   default     = false
 }
 
+variable "provisioned_concurrency" {
+  description = "Pre-warmed instances for the frontend SSR Lambda (0 = off, >=1 = on). Enable in prod to eliminate cold starts."
+  type        = number
+  default     = 0
+}
+
 variable "enable_point_in_time_recovery" {
   description = "Enables Point-in-Time Recovery on the 3 DynamoDB tables (posts/autores/categorias). Disabled in dev due to cost (~$0.20/GB-month); enable in production."
   type        = bool
