@@ -1,0 +1,1 @@
+date,case_id,task_type,approximate_duration_minutes,ai_iterations,hypotheses_generated,hypotheses_rejected,discarded_changes,tests_created,initially_invalid_tests,pipeline_failures,human_interventions,ai_autonomy_level,outcome,notes
