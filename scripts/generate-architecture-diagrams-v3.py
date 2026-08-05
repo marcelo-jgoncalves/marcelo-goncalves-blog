@@ -35,7 +35,7 @@ GRAPH_ATTR = {
     "bgcolor": "white",
     "pad": "0.4",
     "splines": "spline",
-    "nodesep": "0.5",
+    "nodesep": "1.4",
     "ranksep": "0.85",
 }
 NODE_ATTR = {"fontsize": "12"}
