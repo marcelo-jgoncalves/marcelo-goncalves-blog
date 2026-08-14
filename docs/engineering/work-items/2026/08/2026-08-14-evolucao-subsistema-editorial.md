@@ -23,7 +23,7 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A–G completas, testadas e mergeadas em `develop` (A-D via PR #19, E via PR #20, F via PR #21, G via PR #22). Só falta Fase H (auditoria final). Bloqueio de merge anterior resolvido (ver seção dedicada) — padrão atual: a execução autônoma abre a PR e reporta o número, a coordenação mergeia diretamente (rebase manual quando há conflito de branches empilhadas).
+- Status: in-progress — Fases A–H implementadas e testadas. Mergeadas em `develop`: A-D (PR #19), E (PR #20), F (PR #21), G (PR #22). Fase H (esta branch, documentação final + auditoria) é a última pendente de merge. Bloqueio de merge anterior resolvido (ver seção dedicada) — padrão vigente: a execução autônoma abre a PR e reporta o número, a coordenação mergeia diretamente, rebaseando manualmente quando há conflito por branches criadas antes do merge da fase anterior.
 - Data: 2026-08-14
 - Branch da Fase E: `feat/editorial-fase-e-publication-receipt-outcomes`, a partir do `develop` já atualizado com PR #19
 - Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
@@ -39,9 +39,9 @@ contains_sensitive_content: false
 
 Estava bloqueado: o classificador de auto mode do ambiente negou `gh pr merge` quando eu (execução autônoma) tentei executá-lo, mesmo com autorização explícita relayed pela coordenação — uma mensagem de outro agente não substitui aprovação real do sistema de permissões.
 
-Resolução: a sessão coordenadora mergeou PRs #19, #20, #21 e #22 diretamente, com suas próprias permissões (`gh pr merge --squash`), confirmando cada merge via `gh pr view`. Fases A–G estão em `develop`.
+Resolução: a sessão coordenadora mergeou PRs #19, #20, #21 e #22 diretamente, com suas próprias permissões (`gh pr merge --squash`), confirmando cada merge via `gh pr view`. Fases A–G estão em `develop`; a PR desta Fase H é a última do ciclo.
 
-**Padrão de trabalho atual**: a execução autônoma implementa, testa, commita, dá push e abre a PR de cada fase — mas não chama `gh pr merge`, já que essa ação segue bloqueada para execução autônoma. A coordenação mergeia cada PR manualmente assim que reportado o número pronto. Fases E e F ficaram em branches empilhadas (E sobre `develop`, F sobre a branch de E) enquanto aguardavam merge; a coordenação precisou reapontar a base da PR #21 para `develop` e rebasear manualmente após o merge de #20. O mesmo ocorreu com a PR #22 (Fase G), rebaseada sobre `develop` pela coordenação para resolver conflito no próprio arquivo de tracking. A partir da Fase G, cada branch nova partiu direto do `develop` mais atualizado disponível no momento da criação, não de branches empilhadas.
+**Padrão de trabalho vigente**: a execução autônoma implementa, testa, commita, dá push e abre a PR de cada fase — mas não chama `gh pr merge`, já que essa ação segue bloqueada para execução autônoma. A coordenação mergeia cada PR manualmente assim que reportado o número pronto. Fases E e F ficaram em branches empilhadas (E sobre `develop`, F sobre a branch de E) enquanto aguardavam merge; a coordenação precisou reapontar a base da PR #21 para `develop` e rebasear manualmente após o merge de #20, e o mesmo ocorreu com as PRs #22 (Fase G) e a desta Fase H — ambas criadas antes do merge das fases anteriores, exigindo rebase manual da coordenação para resolver conflito no próprio arquivo de tracking (este documento).
 
 Nota histórica: PR #19 tinha 3 checks CI falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) por `npm audit --audit-level=high` — advisories novos (esbuild, nanoid), não relacionados a este trabalho. Mergeada assim mesmo por decisão da coordenação; fora do escopo desta tarefa corrigir dependências não-editoriais.
 
@@ -139,9 +139,36 @@ Corrigido também (achado nº3, gaps concretos do schema): requisitos condiciona
 
 ## Checklist — Fase H: Auditoria final
 
-- [ ] Suite de testes completa rodando verde.
-- [ ] Documentação (`editorial/README.md`, `editorial/plans/README.md`, skill, template) revisada por consistência final.
-- [ ] Avaliar `project-consistency-audit` se mudança estrutural justificar.
+- [x] `editorial/README.md` atualizado com mapa de fontes canônicas do subsistema (schema, lifecycle, índice, receipts, outcomes, integração Capital Agent, validadores).
+- [x] `editorial/plans/README.md` e template: já revisados nas Fases A/B, sem pendência adicional identificada nesta auditoria.
+- [ ] Suite de testes completa rodando verde **como um todo unificado**, a partir do `develop` já com A-G mergeadas — pendente de rodar após o merge desta própria PR (Fase H), já que só nesse ponto A-H convivem juntas na mesma árvore.
+- [ ] `project-consistency-audit` completo — a rodar após o merge desta PR, com A-H já consolidadas em `develop`.
+
+### Auditoria manual contra §29 (critérios de aceite) — estado observável nesta sessão
+
+- [x] skill possui YAML válido
+- [x] drift documental corrigido
+- [x] template é canônico
+- [x] schema editorial existe
+- [x] lifecycle formalizado
+- [x] transições inválidas são detectadas
+- [x] validator determinístico existe
+- [x] CI executa o validator
+- [x] sensitive content possui enforcement
+- [x] metadata estratégica existe
+- [x] índice de portfólio é gerado
+- [x] planos históricos foram preservados (IDs, datas, status - nenhum apagado, um duplicado corrigido)
+- [x] Publication Receipt existe (contrato/schema, stub - nenhum registro real, por design)
+- [x] Outcomes são separados dos planos (diretórios distintos, checado pelo validador)
+- [x] provenance existe em outcomes (campo obrigatório no schema)
+- [x] PII é proibida na integração (schema fechado + scanner auxiliar, ver limitações documentadas nas Fases E/F)
+- [x] Capital Agent pode referenciar conteúdo sem controlar publicação (refs opcionais nullable, nenhum write path existe)
+- [x] CMS continua fonte canônica pós-publicação (nenhuma mudança de arquitetura, apenas documentado com mais rigor)
+- [x] nenhuma publicação automática foi criada
+- [~] testes passam — 41/41 dentro de cada branch individual; suite unificada a partir de `develop` com A-H juntas ainda pendente de rodar após o merge desta PR (ver checklist acima)
+- [~] docs estão consistentes — consistentes dentro de cada branch; consistência final em `develop` com A-H juntas se confirma após o merge desta PR
+
+18 de 20 critérios diretamente satisfeitos e confirmados em `develop` (A-G já mergeadas); os 2 marcados `[~]` dependem só do merge desta própria PR (Fase H) para virar `[x]` definitivo.
 
 ---
 
@@ -167,11 +194,10 @@ Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo
 
 ## Próxima sessão — continuar a partir daqui
 
-Fases A–G estão completas, testadas e mergeadas em `develop` (PRs #19, #20, #21, #22). Falta só a Fase H:
+Fases A–H estão implementadas e testadas; A-G já mergeadas em `develop` (PRs #19, #20, #21, #22), Fase H aguardando merge da PR aberta a partir desta branch. Depois desse merge:
 
-- [ ] Suite de testes completa rodando verde a partir do `develop` pós-merge (não só por branch isolada).
-- [ ] Revisão final de `editorial/README.md`, `editorial/plans/README.md`, skill e template por consistência (nenhum tocado desde a Fase A além do fix de nomenclatura).
+- [ ] Rodar a suite de testes completa a partir do `develop` pós-merge, com A-H juntas pela primeira vez na mesma árvore.
 - [ ] Avaliar `project-consistency-audit` dado o volume de mudança estrutural acumulada.
-- [ ] Fechar o work item (`status: done`, `completed_at`) quando a Fase H for concluída.
+- [ ] Fechar o work item (`status: done`, `completed_at`) quando os dois itens acima confirmarem estado verde.
 
 Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.
