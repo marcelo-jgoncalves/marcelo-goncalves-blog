@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-016
+schema_version: "1.0"
 title: "Hot Partitions Invisíveis — Por que sua GSI com Partition Key de 2 Valores Vai Falhar em Produção"
 created_at: 2026-06-30
 updated_at: 2026-06-30

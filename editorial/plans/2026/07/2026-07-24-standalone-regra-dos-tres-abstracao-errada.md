@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-023
+schema_version: "1.0"
 title: "Dois Cards Que Parecem Gêmeos — e Por Que Não Deveriam Virar Um Componente Só"
 created_at: 2026-07-24
 updated_at: 2026-07-24

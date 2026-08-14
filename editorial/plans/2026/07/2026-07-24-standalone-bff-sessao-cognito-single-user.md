@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-024
+schema_version: "1.0"
 title: "Implementei um Backend de Sessão Para um Painel Admin de Um Usuário Só"
 created_at: 2026-07-24
 updated_at: 2026-07-24

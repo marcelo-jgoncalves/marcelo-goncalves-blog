@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-014
+schema_version: "1.0"
 title: "Post 11 da série: Developer Experience — \"A ferramenta de onboarding com a configuração errada\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

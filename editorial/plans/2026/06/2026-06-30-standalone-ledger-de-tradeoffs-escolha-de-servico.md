@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-017
+schema_version: "1.0"
 title: "O Ledger de Trade-offs — Como a Mesma Escolha de Banco Economiza Dinheiro e Trava sua Paginação"
 created_at: 2026-06-30
 updated_at: 2026-06-30

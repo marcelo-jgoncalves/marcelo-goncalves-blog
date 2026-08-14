@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-025
+schema_version: "1.0"
 title: "Post standalone: \"Testei meu próprio CMS como um usuário real testaria — com um robô\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

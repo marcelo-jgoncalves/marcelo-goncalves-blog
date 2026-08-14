@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-009
+schema_version: "1.0"
 title: "Post 8 da série: Infraestrutura como Código — \"O arquivo de produção que ainda não existe de verdade\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

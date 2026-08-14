@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-012
+schema_version: "1.0"
 title: "Post standalone: \"O deploy que não aconteceu, e ninguém percebeu por uma hora\""
 created_at: 2026-06-27
 updated_at: 2026-06-27
