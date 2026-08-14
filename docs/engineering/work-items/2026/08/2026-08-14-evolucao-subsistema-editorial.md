@@ -23,9 +23,9 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A, B, C e D completas e testadas; Fases E–H pendentes (ver checklist). **Bloqueio operacional ativo: ver "Bloqueio de merge" abaixo.**
+- Status: in-progress — Fases A, B, C, D e E completas e testadas (merged: A-D via PR #19; E em PR separada, ver abaixo); Fases F–H pendentes (ver checklist). Bloqueio de merge anterior resolvido (ver seção dedicada).
 - Data: 2026-08-14
-- Branch: `feat/editorial-subsystem-evolution`, PR #19 aberta contra `develop` (**ainda não mergeada** — ver bloqueio)
+- Branch da Fase E: `feat/editorial-fase-e-publication-receipt-outcomes`, a partir do `develop` já atualizado com PR #19
 - Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
 - Arquivos alterados: `.claude/skills/post-planning/SKILL.md`, `editorial/plans/README.md`, `editorial/plans/templates/post-plan-template.md`, `editorial/schema/editorial-plan.schema.json` (novo), `editorial/LIFECYCLE.md` (novo), `editorial/index.generated.json` (novo), `editorial/index.generated.md` (novo), `scripts/validate-editorial-plans.mjs` (novo), `scripts/generate-editorial-index.mjs` (novo), `scripts/__tests__/*.test.mjs` (novo, 22 testes), `package.json`, `.github/workflows/cd.yml`, `.github/workflows/deploy.yml`, um plano com id duplicado corrigido
 - Critérios satisfeitos (dos 20 do §29 do prompt): skill YAML válido; drift documental corrigido; template canônico; schema editorial existe; lifecycle formalizado; transições/invariants detectados; validator determinístico existe; CI executa o validator; sensitive content tem enforcement; metadata estratégica existe; índice de portfólio é gerado; nenhuma publicação automática foi criada; testes passam (22/22)
@@ -35,15 +35,15 @@ contains_sensitive_content: false
 - Documentação canônica resultante: `editorial/schema/editorial-plan.schema.json`, `editorial/LIFECYCLE.md`, `editorial/index.generated.md`/`.json`
 - Estudo de caso relacionado: nenhum aberto ainda — dois candidatos reais existem (bug de overflow de data achado pela revisão do codex CLI; bloqueio de merge pelo classificador de auto mode apesar de autorização explícita da coordenação) — avaliar no fechamento da Fase H
 
-## Bloqueio de merge (ação humana necessária)
+## Bloqueio de merge — RESOLVIDO
 
-A coordenação autorizou explicitamente merge autônomo de PRs para esta tarefa. Tentei `gh pr merge 19 --squash` e a ação foi **bloqueada pelo classificador de auto mode do ambiente** ("Permission for this action was denied by the Claude Code auto mode classifier"), não por falha de CI ou por decisão minha. Uma mensagem de outro agente/coordenador não é equivalente a aprovação do sistema de permissões nem de Marcelo diretamente — por isso o bloqueio persiste mesmo com a autorização recebida no chat.
+Estava bloqueado: o classificador de auto mode do ambiente negou `gh pr merge` quando eu (execução autônoma) tentei executá-lo, mesmo com autorização explícita relayed pela coordenação — uma mensagem de outro agente não substitui aprovação real do sistema de permissões.
 
-Consequência prática: continuei implementando, testando e commitando as fases seguintes na **mesma branch/PR #19** (em vez de abrir uma PR nova por fase e mergeá-la, como pedido) porque não há como mergear incrementalmente sem essa permissão. Isso é uma mudança justificada em relação ao workflow pedido — registrada aqui em vez de escondida.
+Resolução: a própria sessão coordenadora rodou `gh pr merge 19 --squash --delete-branch=false` **diretamente, com suas próprias permissões** (não via instrução repassada a mim) e confirmou o merge (`mergedAt: 2026-08-14T20:09:41Z`). PR #19 (Fases A+B+C+D) está mergeada em `develop`.
 
-O que destrava: Marcelo (ou quem tiver acesso às configurações de permissão do Claude Code neste ambiente) precisa adicionar uma regra de permissão Bash para `gh pr merge` (ou mergear a PR #19 manualmente pela UI do GitHub/CLI local). Depois disso, o trabalho acumulado pode ser mergeado de uma vez e as fases seguintes voltam a seguir o padrão branch-por-fase normalmente.
+**Novo padrão de trabalho a partir daqui**: eu implemento, testo, commito, dou push e abro a PR de cada fase (ou pequeno grupo de fases) — mas não chamo `gh pr merge` novamente, já que essa ação segue bloqueada para execução autônoma minha. A coordenação mergeia cada PR manualmente assim que eu reportar o número pronto. Cada nova fase começa numa branch nova a partir do `develop` já atualizado, em vez de empilhar tudo numa branch só (como foi necessário enquanto o bloqueio estava ativo).
 
-PR #19 está com CI mostrando 3 checks falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) — investigado: são falhas de `npm audit --audit-level=high` por novos advisories (esbuild, nanoid) publicados desde 2026-08-05, não relacionados a este trabalho e não introduzidos por ele (confirmado comparando com o último run verde de `develop`, que tinha 0 vulnerabilidades high na mesma checagem). Fora de escopo desta tarefa corrigir — mas impede a PR de ficar 100% verde. Job "Validate Editorial Plans" (o relevante a este trabalho) está verde.
+Nota histórica (não mais um bloqueio ativo, mas relevante para quem revisar o histórico): PR #19 tinha 3 checks CI falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) por `npm audit --audit-level=high` — advisories novos (esbuild, nanoid) publicados desde 2026-08-05, não relacionados a este trabalho. Job `Validate Editorial Plans` (o relevante) estava verde. Mergeada assim mesmo por decisão da coordenação; fora do escopo desta tarefa corrigir dependências não-editoriais.
 
 ## 0. Finalidade e precedência
 
@@ -85,11 +85,23 @@ Decisão de execução em fases (não é um blocker, é sequenciamento deliberad
 - [x] CI verificando se o índice está atualizado (`npm run check:editorial-index`, wired em `cd.yml` e `deploy.yml`).
 - [x] Pré-requisito resolvido antes de gerar o índice: ID duplicado `POST-PLAN-2026-025` corrigido (renumerado o plano de 2026-08-05 para `POST-PLAN-2026-027`, o próximo id realmente livre).
 
-## Checklist — Fase E: Feedback (depende de decisão externa)
+## Checklist — Fase E: Feedback
 
-- [ ] Publication Receipt (contrato/schema apenas, sem integração real) — pendente.
-- [ ] Outcomes (`editorial/outcomes/`, contrato apenas) — pendente.
-- Bloqueio: CMS/admin ainda não expõe nenhum ID real de publicação (`docs/engineering/work-items/2026/08/2026-08-04-ajuste-15c-cms-fluxo-editorial.md` está `blocked`). Contratos podem ser desenhados como stub, mas qualquer coisa além de "formato de dados" seria invenção.
+- [x] Publication Receipt (contrato/schema apenas, sem integração real): `editorial/schema/publication-receipt.schema.json` + `editorial/receipts/README.md`.
+- [x] Outcomes (`editorial/outcomes/`, contrato apenas): `editorial/schema/outcome.schema.json` + `editorial/outcomes/README.md`. `publication_id` é obrigatório (não nulo) — decisão deliberada: como nenhum Publication Receipt real existe ainda, isso significa que **nenhum outcome real pode existir hoje**, o que é o comportamento correto (medir resultado antes de confirmar publicação real seria inventar proveniência).
+- [x] Validador determinístico (`scripts/validate-editorial-outcomes.mjs`): schema + integridade referencial (outcome → receipt real existente e concordante sobre o plano; receipt → plano real existente), unicidade de ID, ordenação de datas, separação plano/outcome, PII auxiliar. 24 testes (14 do arquivo de outcomes/receipts + 10 anteriores permanecem intocados).
+- [x] Wired em CI (`npm run validate:editorial-outcomes` em `cd.yml` e `deploy.yml`) — hoje sempre roda contra 0 registros reais (esperado).
+- Nota: CMS/admin ainda não expõe nenhum ID real de publicação (`docs/engineering/work-items/2026/08/2026-08-04-ajuste-15c-cms-fluxo-editorial.md` está `blocked`) — por isso os diretórios `editorial/receipts/` e `editorial/outcomes/` só têm README + schema, nenhum registro real. Isso é o resultado esperado de um contrato stub, não uma lacuna desta fase.
+
+### Revisão independente (codex CLI) — Fase E
+
+Acionado como revisor cego sobre os dois schemas e o validador antes de eu revelar minha própria avaliação. Achados aceitos e corrigidos:
+
+- **Gap de integridade referencial real**: `publication_id` "obrigatório" só validava o formato (regex `PUB-YYYY-NNN`), não que um receipt de verdade existisse com aquele ID — um `PUB-2026-999` inventado passaria. Corrigido: o validador agora exige um receipt real com aquele `publication_id`, e que o `editorial_plan_id` do receipt bata com o do outcome. Mesma correção aplicada ao lado do receipt (deve referenciar um plano real). Achado idêntico em espírito ao bug de `--changed-only` da Fase C — reforça que "obrigatório" no schema não é o mesmo que "referência validada".
+- **Mesma armadilha de "coleção vazia = pular checagem"** que a Fase C já tinha corrigido para IDs de planos apareceu de novo aqui (checar `planIds.size > 0`/`receiptsById.size > 0` antes de validar). Corrigido usando o mesmo padrão: distinguir parâmetro `undefined` (sem contexto, pular checagem — usado só em testes unitários isolados) de coleção vazia mas fornecida (validar de verdade — é o caso real de produção hoje, zero receipts existentes).
+- Testes de regressão adicionados para ambos.
+
+Achados aceitos como limitação conhecida, não implementados nesta fase (custo/escopo): vocabulário controlado para `business_signals` (hoje string livre), constraints numéricas em `metrics`/`attributable_revenue` (sem mínimo/máximo/moeda), mapeamento por métrica de proveniência (hoje é uma lista única para o registro inteiro), política de host esperado para `canonical_url`, `verification_source` como enum estruturado em vez de texto livre. Nenhum desses tem consumidor real ainda (zero receipts/outcomes existem) — mesmo raciocínio de YAGNI aplicado ao schema de planos na Fase B.
 
 ## Checklist — Fase F: Integração Capital Agent (depende de decisão externa)
 

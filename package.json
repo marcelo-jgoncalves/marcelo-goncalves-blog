@@ -27,6 +27,7 @@
     "validate:editorial": "node scripts/validate-editorial-plans.mjs",
     "generate:editorial-index": "node scripts/generate-editorial-index.mjs",
     "check:editorial-index": "node scripts/generate-editorial-index.mjs --check",
+    "validate:editorial-outcomes": "node scripts/validate-editorial-outcomes.mjs",
     "verify": "npm run typecheck && npm run lint && npm test"
   }
 }
