@@ -315,6 +315,9 @@ jobs:
       - name: Check editorial portfolio index is up to date
         run: npm run check:editorial-index
 
+      - name: Validate publication receipts and outcomes
+        run: npm run validate:editorial-outcomes
+
   # ==============================================================
   # JOB 1e: Validate infra (Terraform fmt/validate/TFLint + Trivy config
   # scan) — same checks deploy.yml already runs on PRs against develop, but

@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mgoncalves.dev/schema/outcome.schema.json",
+  "title": "Editorial Outcome",
+  "description": "Post-publication result for one editorial plan, per prompt-evolucao-subsistema-editorial.md §19-20. Deliberately separate from the plan file: the plan is the ex-ante hypothesis, this is the ex-post result, and the two are never merged back into one record (that would erase the hypothesis and invite hindsight bias). Repo is public: no raw PII, no individual lead identities, no message content - aggregate counts and sanitized tags only (§22).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome_id",
+    "editorial_plan_id",
+    "publication_id",
+    "measurement_period",
+    "metrics",
+    "provenance",
+    "data_quality",
+    "schema_version"
+  ],
+  "properties": {
+    "outcome_id": {
+      "type": "string",
+      "pattern": "^OUTCOME-[0-9]{4}-[0-9]{3,}$"
+    },
+    "editorial_plan_id": {
+      "type": "string",
+      "pattern": "^POST-PLAN-[0-9]{4}-[0-9]{3}$",
+      "description": "The plan this outcome measures. Required - an outcome with no plan reference is meaningless (also enforced by the validator, not just this schema)."
+    },
+    "publication_id": {
+      "type": "string",
+      "pattern": "^PUB-[0-9]{4}-[0-9]{3,}$",
+      "description": "Reference to the Publication Receipt that confirmed this content actually went live. Required per the prompt spec (§25: an outcome without a publication reference must fail validation) - in practice this means no outcome record can exist for a plan until a real Publication Receipt does, which is correct: measuring results before confirming the content is even live would be fabricating provenance."
+    },
+    "measurement_period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "type": "string", "format": "date" },
+        "to": { "type": "string", "format": "date" }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Aggregate, non-identifying numeric signals only (e.g. pageviews, avg_time_on_page, scroll_depth_pct). Every value must trace to a source named in provenance - see the 'metrics without provenance fail' test.",
+      "additionalProperties": { "type": "number" }
+    },
+    "business_signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sanitized category tags only (e.g. 'inbound-contact', 'newsletter-signup') - never raw form content, names, or contact details."
+    },
+    "qualified_leads": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Aggregate count only. Never an array of lead records - that would be exactly the raw PII this contract exists to keep out of a public repo."
+    },
+    "attributable_revenue": {
+      "type": ["number", "null"],
+      "description": "Aggregate figure if genuinely known and attributable; null (not zero, not omitted) when unknown - zero would falsely claim a measured absence."
+    },
+    "learnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What this outcome can't tell you - measurement gaps, confounds, small sample size. Required to be non-empty in spirit (enforced by validator as a warning, not a hard schema rule) - an outcome record with zero acknowledged limitations is a red flag, not a clean result."
+    },
+    "data_quality": {
+      "type": "string",
+      "enum": ["measured", "estimated", "partial", "unavailable"],
+      "description": "Honesty flag for the whole record. 'measured' means every metric traces to a real source; anything else means some or all of this outcome is inference, not observation."
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "Where every metric/signal in this record came from (tool name, dashboard, export date). At least one source is required - an outcome with no provenance is an assertion, not evidence."
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    }
+  }
+}
