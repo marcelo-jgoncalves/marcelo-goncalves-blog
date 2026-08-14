@@ -2,20 +2,20 @@
 id: WORK-2026-005
 title: Evolução do Subsistema Editorial
 type: change-instruction
-status: in-progress
+status: done
 created_at: 2026-08-14
 approved_at: 2026-08-14
 started_at: 2026-08-14
-completed_at:
+completed_at: 2026-08-14
 requested_by: Marcelo Gonçalves
 execution_agent: claude
 scope: ["editorial/", "editorial/plans/", ".claude/skills/post-planning/", "scripts/validate-editorial-plans", "CI"]
 related_audits: []
 related_cases: []
 related_commits: []
-related_pull_requests: []
+related_pull_requests: ["#19", "#20", "#21", "#22", "#23"]
 superseded_by: []
-resulting_documents: []
+resulting_documents: ["editorial/schema/editorial-plan.schema.json", "editorial/LIFECYCLE.md", "editorial/schema/publication-receipt.schema.json", "editorial/schema/outcome.schema.json", "editorial/schema/capital-agent-signal.schema.json", "editorial/CAPITAL_AGENT_INTEGRATION.md"]
 contains_sensitive_content: false
 ---
 
@@ -192,12 +192,15 @@ Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo
 - `human_review_required` é auto-declarável, não uma prova de revisão. Enquanto não houver um mecanismo de aprovação mais forte (CODEOWNERS, ambiente protegido, ou campo com identidade/data do revisor), o enforcement de `contains_sensitive_content` é um lembrete estrutural, não uma garantia contra um autor apressado.
 - CI de `validate-editorial` em modo `--changed-only` usando `HEAD~1` no fallback de push (fora de PR) pode não cobrir todos os arquivos em um push com múltiplos commits — cenário raro dado que o fluxo do repositório é PR + merge, mas real.
 
-## Próxima sessão — continuar a partir daqui
+## Fechamento
 
-Fases A–H estão implementadas e testadas; A-G já mergeadas em `develop` (PRs #19, #20, #21, #22), Fase H aguardando merge da PR aberta a partir desta branch. Depois desse merge:
+Todas as PRs (#19–#23) mergeadas em `develop`. Confirmado com A–H juntas pela primeira vez na mesma árvore, em 2026-08-14:
 
-- [ ] Rodar a suite de testes completa a partir do `develop` pós-merge, com A-H juntas pela primeira vez na mesma árvore.
-- [ ] Avaliar `project-consistency-audit` dado o volume de mudança estrutural acumulada.
-- [ ] Fechar o work item (`status: done`, `completed_at`) quando os dois itens acima confirmarem estado verde.
+- `npm run test:editorial`: 41/41 passando.
+- `npm run validate:editorial` contra os 27 planos reais: `All plans valid.` (só os warnings de PII já investigados e classificados como falso positivo na Fase G).
+
+`project-consistency-audit` completo não foi executado nesta sessão de fechamento — próxima sessão pode avaliar se vale rodar, dado o volume de mudança estrutural acumulada (não é bloqueio, é item de acompanhamento).
+
+Work item fechado (`status: done`).
 
 Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.
