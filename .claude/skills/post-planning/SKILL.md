@@ -34,7 +34,7 @@ Quanto mais concreto o que for passado (código real, não resumo do código), m
 - Pasta: `editorial/plans/YYYY/MM/` (dentro do repositório `marcelo-goncalves-blog`, versionada — repositório é público, ver "Segurança" abaixo antes de commitar).
 - Nome do arquivo: `YYYY-MM-DD-{slug-curto}.md`, com `YYYY/MM` a data de criação.
 - Estruturar a partir de `editorial/plans/templates/post-plan-template.md` (front matter de ciclo de vida) + o modelo de 14 seções desta skill (corpo do arquivo).
-- Gerar `id: POST-PLAN-YYYY-NNN` estável (checar o maior `NNN` já usado no ano antes de gerar) e preencher `source_skill: post-planejamento`.
+- Gerar `id: POST-PLAN-YYYY-NNN` estável (checar o maior `NNN` já usado no ano antes de gerar) e preencher `source_skill: post-planning`.
 - Não sobrescrever um planejamento existente; ao atualizar um já criado, atualizar `updated_at`.
 - Não armazenar o texto do post publicado por completo no arquivo — depois de `status: published`, preencher `canonical_content` com slug/URL real e não replicar o conteúdo final aqui.
 

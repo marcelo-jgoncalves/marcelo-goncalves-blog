@@ -1,6 +1,6 @@
 # Plans
 
-Planejamentos de postagem (pauta/outline), um arquivo por post candidato, gerados pela skill `post-planejamento`.
+Planejamentos de postagem (pauta/outline), um arquivo por post candidato, gerados pela skill `post-planning`.
 
 ## Organização
 

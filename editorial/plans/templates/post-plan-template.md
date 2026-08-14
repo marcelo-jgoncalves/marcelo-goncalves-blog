@@ -5,7 +5,7 @@ created_at:
 updated_at:
 status: idea
 channels: []
-source_skill: post-planejamento
+source_skill: post-planning
 planned_publication:
 published_at:
 canonical_content:
@@ -15,4 +15,4 @@ tags: []
 contains_sensitive_content: false
 ---
 
-<!-- Estrutura de conteúdo do planejamento em si (14 seções) definida pela skill `post-planejamento` — ver .claude/skills/post-planejamento/SKILL.md. Este front matter é o metadado de persistência/ciclo de vida; o corpo do arquivo segue o modelo das 14 seções. -->
+<!-- Estrutura de conteúdo do planejamento em si (14 seções) definida pela skill `post-planning` — ver .claude/skills/post-planning/SKILL.md. Este front matter é o metadado de persistência/ciclo de vida; o corpo do arquivo segue o modelo das 14 seções. -->
