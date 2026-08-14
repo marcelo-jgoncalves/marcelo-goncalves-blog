@@ -275,6 +275,44 @@ jobs:
     secrets: inherit
 
   # ==============================================================
+  # JOB 1f: Validate editorial plans (schema + lifecycle invariants,
+  # deterministic, no LLM). Runs in --changed-only mode: the 26 plans that
+  # predate this validator don't carry schema_version yet (migration is
+  # tracked separately, Fase G of
+  # docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md)
+  # — full-repo strict mode would fail this gate for files nobody touched.
+  # New/edited plans are enforced immediately; historical ones get
+  # validated the moment someone next edits them.
+  # ==============================================================
+  validate-editorial:
+    name: 1f. Validate Editorial Plans
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
+
+      - name: Install dependencies (npm workspaces)
+        run: npm ci
+
+      - name: Test validator itself
+        run: npm run test:editorial
+
+      - name: Validate changed editorial plans
+        run: npm run validate:editorial -- --changed-only
+
+  # ==============================================================
   # JOB 1e: Validate infra (Terraform fmt/validate/TFLint + Trivy config
   # scan) — same checks deploy.yml already runs on PRs against develop, but
   # cd.yml triggers on push to develop independent of which PR (if any) ran
@@ -349,7 +387,7 @@ jobs:
   deploy-dev:
     name: 2a. Deploy → Dev
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend, test-admin, test-contracts, test-backend-integration, security-scans, validate-infra]
+    needs: [build-backend, build-frontend, test-admin, test-contracts, test-backend-integration, security-scans, validate-infra, validate-editorial]
     if: github.ref == 'refs/heads/develop'
     environment: dev
 
