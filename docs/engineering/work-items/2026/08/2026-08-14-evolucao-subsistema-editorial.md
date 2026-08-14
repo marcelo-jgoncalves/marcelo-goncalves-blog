@@ -23,17 +23,17 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress (ver checklist abaixo para estado exato por fase)
+- Status: in-progress — Fases A, B e C completas e testadas; Fases D–H pendentes (ver checklist)
 - Data: 2026-08-14
-- Commit: ver `related_commits` (atualizado a cada commit desta branch)
-- Pull request: ver `related_pull_requests`
-- Arquivos alterados: ver seção "Estrutura final" ao fim de cada fase concluída
-- Critérios satisfeitos: ver checklist
-- Critérios não satisfeitos: ver checklist
-- Desvios em relação à instrução original: nenhum registrado ainda
+- Branch: `feat/editorial-subsystem-evolution`, PR aberta contra `develop`
+- Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI
+- Arquivos alterados: `.claude/skills/post-planning/SKILL.md`, `editorial/plans/README.md`, `editorial/plans/templates/post-plan-template.md`, `editorial/schema/editorial-plan.schema.json` (novo), `editorial/LIFECYCLE.md` (novo), `scripts/validate-editorial-plans.mjs` (novo), `scripts/__tests__/validate-editorial-plans.test.mjs` (novo, 17 testes), `package.json`, `.github/workflows/cd.yml`, `.github/workflows/deploy.yml`
+- Critérios satisfeitos (dos 20 do §29 do prompt): skill YAML válido; drift documental corrigido; template canônico; schema editorial existe; lifecycle formalizado; transições/invariants detectados; validator determinístico existe; CI executa o validator; sensitive content tem enforcement; nenhuma publicação automática foi criada; testes passam (17/17)
+- Critérios não satisfeitos ainda: metadata estratégica só no schema, sem portfolio index gerado; planos históricos não migrados (schema_version ausente neles, por design desta fase); Publication Receipt/Outcomes/Capital Agent não iniciados (dependem do CMS); docs não revisadas por completo (README editorial em si não tocado ainda)
+- Desvios em relação à instrução original: nenhum — decisões de escopo (omitir campos especulativos do schema, `--changed-only` em vez de full-repo strict) estão documentadas inline nas seções acima como julgamento de engenharia esperado pela própria instrução
 - Decisões humanas adicionais: nenhuma além da autorização inicial de Marcelo para prosseguir com autonomia total ("continue enquanto for possível")
-- Documentação canônica resultante: `editorial/schema/editorial-plan.schema.json`, `editorial/LIFECYCLE.md` (a criar na Fase B)
-- Estudo de caso relacionado: nenhum aberto ainda (avaliar gatilho de `docs/book/capture-protocol.md` ao final)
+- Documentação canônica resultante: `editorial/schema/editorial-plan.schema.json`, `editorial/LIFECYCLE.md`
+- Estudo de caso relacionado: nenhum aberto ainda — candidato real existe (o bug de overflow de data encontrado pela revisão do codex CLI é o tipo de achado que o protocolo de captura cobre), avaliar no fechamento da Fase H em vez de abrir a meio de uma tarefa multi-sessão ainda em andamento
 
 ## 0. Finalidade e precedência
 
