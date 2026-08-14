@@ -281,10 +281,9 @@ jobs:
 
   # --- JOB 4: Validate Editorial Plans (schema + lifecycle, deterministic) ---
   # Runs in --changed-only mode against the PR's target branch
-  # (GITHUB_BASE_REF), so it enforces the contract on plans this PR
-  # actually touches without failing on the 26 pre-existing plans still
-  # pending Fase G migration (see
-  # docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md).
+  # (GITHUB_BASE_REF), scoping the gate to the plans this PR actually
+  # touches rather than re-validating all 27 real plans on every PR. All of
+  # them already pass full validation (Fase G migration done).
   validate-editorial:
     runs-on: ubuntu-latest
     name: 4. Validate Editorial Plans
