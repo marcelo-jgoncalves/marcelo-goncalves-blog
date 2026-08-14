@@ -47,7 +47,7 @@ Exige:
 
 - `published_at` preenchido;
 - `canonical_content` preenchido (aponta para o slug/URL/ID real no CMS);
-- `publication_receipt` preenchido **ou** ausência justificada — como a integração de Publication Receipt (Fase E) ainda não existe, o validator aceita `publication_receipt: null` para planos publicados nesta fase, mas sinaliza como aviso (warning), não erro. Isso deixa de ser aceitável assim que a Fase E estiver implementada.
+- `publication_receipt` preenchido e apontando para um receipt real existente em `editorial/receipts/` (`editorial/schema/publication-receipt.schema.json`) — erro, não aviso. A Fase E já entregou o contrato de Publication Receipt, então um plano `published` sem receipt real ou com `publication_receipt` inventado (que não bate com nenhum arquivo real) falha a validação.
 
 ### `contains_sensitive_content: true`
 
