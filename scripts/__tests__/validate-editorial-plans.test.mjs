@@ -8,6 +8,7 @@ import {
   loadSchema,
   parseFrontMatter,
   validateFile,
+  resolveDiffRange,
 } from '../validate-editorial-plans.mjs';
 
 function compileSchema() {
@@ -119,7 +120,10 @@ test('lifecycle: published without published_at and canonical_content fails', ()
   }
 });
 
-test('lifecycle: published with all required fields but no receipt only warns', () => {
+test('lifecycle: published without publication_receipt fails (Fase E receipts contract exists now)', () => {
+  // Was a warning while Publication Receipt was unimplemented; now that the
+  // contract and validator ship (editorial/schema/publication-receipt.schema.json),
+  // "published" with no receipt is a real gap, not a pending feature.
   const dir = mkdtempSync(path.join(tmpdir(), 'editorial-test-'));
   try {
     const validate = compileSchema();
@@ -127,9 +131,38 @@ test('lifecycle: published with all required fields but no receipt only warns', 
       VALID_FM.replace('status: idea', 'status: published') +
       '\npublished_at: 2026-07-01\ncanonical_content: https://example.com/post';
     const file = writePlan(dir, 'x.md', fm);
-    const { errors, warnings } = validateFile(file, validate, new Map());
+    const { errors } = validateFile(file, validate, new Map(), new Set());
+    assert.ok(errors.some((e) => e.includes('requires publication_receipt')));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('lifecycle: published with a fabricated publication_receipt fails (not just non-empty)', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'editorial-test-'));
+  try {
+    const validate = compileSchema();
+    const fm =
+      VALID_FM.replace('status: idea', 'status: published') +
+      '\npublished_at: 2026-07-01\ncanonical_content: https://example.com/post\npublication_receipt: PUB-2026-999';
+    const file = writePlan(dir, 'x.md', fm);
+    const { errors } = validateFile(file, validate, new Map(), new Set()); // no known receipts
+    assert.ok(errors.some((e) => e.includes('does not match any known receipt')));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('lifecycle: published with a real, known publication_receipt passes', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'editorial-test-'));
+  try {
+    const validate = compileSchema();
+    const fm =
+      VALID_FM.replace('status: idea', 'status: published') +
+      '\npublished_at: 2026-07-01\ncanonical_content: https://example.com/post\npublication_receipt: PUB-2026-001';
+    const file = writePlan(dir, 'x.md', fm);
+    const { errors } = validateFile(file, validate, new Map(), new Set(['PUB-2026-001']));
     assert.equal(errors.length, 0, JSON.stringify(errors));
-    assert.ok(warnings.some((w) => w.includes('publication_receipt')));
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -202,6 +235,35 @@ test('changed-only id uniqueness: catches a new plan reusing an id from an untou
     assert.ok(errors.some((e) => e.includes('duplicate id')));
   } finally {
     rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('resolveDiffRange: uses GITHUB_BEFORE_SHA on a push run instead of the fragile HEAD~1 guess', () => {
+  // codex CLI review flagged HEAD~1 as unreliable for multi-commit pushes
+  // (cd.yml runs on push to develop, not pull_request). cd.yml now wires
+  // github.event.before into GITHUB_BEFORE_SHA, which covers that case.
+  const prevBase = process.env.GITHUB_BASE_REF;
+  const prevBefore = process.env.GITHUB_BEFORE_SHA;
+  try {
+    delete process.env.GITHUB_BASE_REF;
+    process.env.GITHUB_BEFORE_SHA = 'abc123deadbeef';
+    assert.deepEqual(resolveDiffRange(), { base: 'abc123deadbeef', useMergeBase: false });
+  } finally {
+    if (prevBase === undefined) delete process.env.GITHUB_BASE_REF; else process.env.GITHUB_BASE_REF = prevBase;
+    if (prevBefore === undefined) delete process.env.GITHUB_BEFORE_SHA; else process.env.GITHUB_BEFORE_SHA = prevBefore;
+  }
+});
+
+test('resolveDiffRange: falls back to HEAD~1 when before is the all-zero SHA (new branch)', () => {
+  const prevBase = process.env.GITHUB_BASE_REF;
+  const prevBefore = process.env.GITHUB_BEFORE_SHA;
+  try {
+    delete process.env.GITHUB_BASE_REF;
+    process.env.GITHUB_BEFORE_SHA = '0000000000000000000000000000000000000000';
+    assert.deepEqual(resolveDiffRange(), { base: 'HEAD~1', useMergeBase: false });
+  } finally {
+    if (prevBase === undefined) delete process.env.GITHUB_BASE_REF; else process.env.GITHUB_BASE_REF = prevBase;
+    if (prevBefore === undefined) delete process.env.GITHUB_BEFORE_SHA; else process.env.GITHUB_BEFORE_SHA = prevBefore;
   }
 });
 

@@ -10,14 +10,14 @@
 //   node scripts/validate-editorial-plans.mjs --changed-only # validate only files
 //                                                             # changed vs origin/develop
 //
-// --changed-only exists because the 26 pre-existing plans (migrated before
-// this validator existed) don't carry schema_version yet (Fase G migration,
-// not done in this pass) — running full strict validation in CI today would
-// fail the pipeline for files nobody touched. Scoping CI to changed files
-// lets new/edited plans be enforced immediately while migration happens
-// incrementally, without blocking unrelated work.
+// --changed-only scopes CI to the plans a PR actually touches, instead of
+// re-validating all 27 real plans on every push. All existing plans already
+// carry schema_version (Fase G migration, done) and pass full validation —
+// `npm run validate:editorial` with no flag confirms that at any time — so
+// this mode is a CI performance/focus choice now, not a workaround for
+// unmigrated files.
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,6 +28,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
 const PLANS_DIR = path.join(REPO_ROOT, 'editorial', 'plans');
 const SCHEMA_PATH = path.join(REPO_ROOT, 'editorial', 'schema', 'editorial-plan.schema.json');
+const RECEIPTS_DIR = path.join(REPO_ROOT, 'editorial', 'receipts');
+
+// Real publication_ids from editorial/receipts/*.yml, used to confirm a
+// plan's publication_receipt points at a receipt that actually exists
+// instead of just being a non-empty string (see validateFile below).
+function knownReceiptIds() {
+  const ids = new Set();
+  if (!existsSync(RECEIPTS_DIR)) return ids;
+  for (const entry of readdirSync(RECEIPTS_DIR)) {
+    if (!entry.endsWith('.yml') && !entry.endsWith('.yaml')) continue;
+    const match = readFileSync(path.join(RECEIPTS_DIR, entry), 'utf8').match(/^publication_id:\s*(\S+)/m);
+    if (match) ids.add(match[1]);
+  }
+  return ids;
+}
 
 const VALID_STATUSES = [
   'idea',
@@ -88,15 +103,22 @@ function listPlanFiles(dir) {
   return results;
 }
 
+const ZERO_SHA = '0000000000000000000000000000000000000000';
+
 // On a pull_request run, GITHUB_BASE_REF is the target branch (e.g.
 // "develop") and origin/<base> vs HEAD is the right diff. On a push run
 // (cd.yml, triggered after merge to develop), HEAD *is* origin/develop by
 // the time this runs — diffing against it would always return empty and
-// silently skip validation. HEAD~1 approximates "what this push changed"
-// for the common single-commit-per-push flow (squash-merge PRs).
-function resolveDiffRange() {
+// silently skip validation. GITHUB_BEFORE_SHA (wired from github.event.before
+// in cd.yml) is the real pre-push commit and covers multi-commit pushes
+// correctly; HEAD~1 is only a fallback for local runs or the (rare) case
+// where before is the all-zero SHA (new branch, nothing to diff against).
+export function resolveDiffRange() {
   if (process.env.GITHUB_BASE_REF) {
     return { base: `origin/${process.env.GITHUB_BASE_REF}`, useMergeBase: true };
+  }
+  if (process.env.GITHUB_BEFORE_SHA && process.env.GITHUB_BEFORE_SHA !== ZERO_SHA) {
+    return { base: process.env.GITHUB_BEFORE_SHA, useMergeBase: false };
   }
   return { base: 'HEAD~1', useMergeBase: false };
 }
@@ -159,7 +181,7 @@ function scanForPii(bodyText) {
   return hits;
 }
 
-export function validateFile(filePath, validateSchema, seenIds) {
+export function validateFile(filePath, validateSchema, seenIds, receiptIds) {
   const errors = [];
   const warnings = [];
   const raw = readFileSync(filePath, 'utf8');
@@ -217,10 +239,13 @@ export function validateFile(filePath, validateSchema, seenIds) {
   if (data.status === 'published') {
     if (!data.published_at) errors.push('status "published" requires published_at');
     if (!data.canonical_content) errors.push('status "published" requires canonical_content');
+    // Fase E shipped the Publication Receipt contract (editorial/receipts/),
+    // so "published" without one is now a real gap, not a pending feature —
+    // this used to be a warning while the contract didn't exist yet.
     if (!data.publication_receipt) {
-      warnings.push(
-        'status "published" without publication_receipt — acceptable while Fase E (Publication Receipt) is not implemented, will become an error once it ships'
-      );
+      errors.push('status "published" requires publication_receipt (editorial/schema/publication-receipt.schema.json)');
+    } else if (receiptIds && !receiptIds.has(data.publication_receipt)) {
+      errors.push(`publication_receipt "${data.publication_receipt}" does not match any known receipt in editorial/receipts/`);
     }
   }
   if (data.contains_sensitive_content === true && SENSITIVE_GATED_STATUSES.has(data.status)) {
@@ -277,11 +302,12 @@ export function main() {
       }
     }
   }
+  const receiptIds = knownReceiptIds();
   let hadErrors = false;
 
   for (const file of files.sort()) {
     const relPath = path.relative(REPO_ROOT, file);
-    const { errors, warnings } = validateFile(file, validateSchema, seenIds);
+    const { errors, warnings } = validateFile(file, validateSchema, seenIds, receiptIds);
     if (errors.length > 0) {
       hadErrors = true;
       console.error(`\nFAIL ${relPath}`);
