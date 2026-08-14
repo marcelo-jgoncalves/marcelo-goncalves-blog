@@ -1,5 +1,5 @@
 ---
-id: POST-PLAN-2026-025
+id: POST-PLAN-2026-027
 title: "A Constituição Operacional de 478 Linhas Que Ninguém Tinha Escrito de Propósito"
 created_at: 2026-08-05
 updated_at: 2026-08-05

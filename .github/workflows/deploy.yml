@@ -278,3 +278,36 @@ jobs:
       - name: Skip Terraform steps
         run: echo "No .tf files found, skipping Infra checks."
         if: steps.files.outputs.tf == 'false'
+
+  # --- JOB 4: Validate Editorial Plans (schema + lifecycle, deterministic) ---
+  # Runs in --changed-only mode against the PR's target branch
+  # (GITHUB_BASE_REF), so it enforces the contract on plans this PR
+  # actually touches without failing on the 26 pre-existing plans still
+  # pending Fase G migration (see
+  # docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md).
+  validate-editorial:
+    runs-on: ubuntu-latest
+    name: 4. Validate Editorial Plans
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24
+
+      - name: Install dependencies (npm workspaces)
+        run: npm ci
+
+      - name: Test validator itself
+        run: npm run test:editorial
+
+      - name: Validate changed editorial plans
+        run: npm run validate:editorial -- --changed-only
+
+      - name: Check editorial portfolio index is up to date
+        run: npm run check:editorial-index

@@ -33,8 +33,9 @@ Quanto mais concreto o que for passado (código real, não resumo do código), m
 
 - Pasta: `editorial/plans/YYYY/MM/` (dentro do repositório `marcelo-goncalves-blog`, versionada — repositório é público, ver "Segurança" abaixo antes de commitar).
 - Nome do arquivo: `YYYY-MM-DD-{slug-curto}.md`, com `YYYY/MM` a data de criação.
-- Estruturar a partir de `editorial/plans/templates/post-plan-template.md` (front matter de ciclo de vida) + o modelo de 14 seções desta skill (corpo do arquivo).
-- Gerar `id: POST-PLAN-YYYY-NNN` estável (checar o maior `NNN` já usado no ano antes de gerar) e preencher `source_skill: post-planejamento`.
+- Estruturar a partir de `editorial/plans/templates/post-plan-template.md` — esse template é o contrato canônico único do front matter (todos os campos, ordem, valores permitidos); esta skill não redefine essa estrutura, só instrui como preenchê-la. Contrato formal: `editorial/schema/editorial-plan.schema.json`. Estados e transições: `editorial/LIFECYCLE.md`.
+- Gerar `id: POST-PLAN-YYYY-NNN` estável (checar o maior `NNN` já usado no ano antes de gerar) e preencher `source_skill: post-planning` e `schema_version: "1.0"`.
+- Campos de estratégia (`content_pillar`, `audience`, `intent`, `funnel_stage`, `business_goal`, `series`, `priority`) e `source_type` (`proof-of-work` ou `market-signal`, ver seção 15 do prompt de evolução do subsistema) ficam `null` quando o orquestrador não tiver essa informação com confiança — nunca inventar.
 - Não sobrescrever um planejamento existente; ao atualizar um já criado, atualizar `updated_at`.
 - Não armazenar o texto do post publicado por completo no arquivo — depois de `status: published`, preencher `canonical_content` com slug/URL real e não replicar o conteúdo final aqui.
 

@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mgoncalves.dev/schema/editorial-plan.schema.json",
+  "title": "Editorial Plan",
+  "description": "Front matter contract for a post planning file under editorial/plans/. Validates lifecycle metadata only, not the 14-section body (that structure is owned by the post-planning skill/template, not this schema).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "created_at",
+    "updated_at",
+    "status",
+    "schema_version",
+    "source_skill",
+    "contains_sensitive_content"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^POST-PLAN-[0-9]{4}-[0-9]{3}$",
+      "description": "Stable identifier, POST-PLAN-YYYY-NNN. NNN increments per year, checked against existing files before generation."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "URL slug once known. Historical plans may not have one recorded; use null, not invented."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date",
+      "description": "Must match the YYYY-MM of the file's own path (validated by the script, not by the schema alone)."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "researching",
+        "planned",
+        "drafting",
+        "ready",
+        "scheduled",
+        "published",
+        "cancelled",
+        "archived"
+      ]
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "Schema contract version this document conforms to, e.g. 1.0. Bump on breaking changes; never rewrite historical plans silently."
+    },
+    "channels": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source_skill": {
+      "type": "string",
+      "description": "Which skill/process produced this plan. Not a closed enum on purpose: origin can predate the current skill name or come from a future source_type layer (see source_type)."
+    },
+    "source_type": {
+      "type": ["string", "null"],
+      "enum": ["proof-of-work", "market-signal", null],
+      "description": "Which of the two legitimate editorial origins (prompt spec section 15) this plan came from. Optional: not present in historical plans, do not backfill by guessing."
+    },
+    "source_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Real file paths, case IDs, commits or audit references backing the plan. Never invented examples."
+    },
+    "content_pillar": {
+      "type": ["string", "null"]
+    },
+    "audience": {
+      "type": ["string", "null"]
+    },
+    "intent": {
+      "type": ["string", "null"],
+      "enum": [
+        "education",
+        "thought-leadership",
+        "proof-of-work",
+        "commercial-discovery",
+        "seo",
+        "product-education",
+        null
+      ]
+    },
+    "funnel_stage": {
+      "type": ["string", "null"],
+      "enum": ["awareness", "consideration", "decision", "retention", "none", null]
+    },
+    "business_goal": {
+      "type": ["string", "null"]
+    },
+    "series": {
+      "type": ["string", "null"]
+    },
+    "priority": {
+      "type": ["string", "null"],
+      "enum": ["low", "medium", "high", "critical", null]
+    },
+    "planned_publication": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "published_at": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "canonical_content": {
+      "type": ["string", "null"],
+      "description": "Slug/ID/URL of the published content once canonical_content applies (status published). CMS is the source of truth, this is a pointer, not a copy."
+    },
+    "publication_receipt": {
+      "type": ["string", "null"],
+      "description": "Reference to the Publication Receipt artifact (editorial/outcomes contract), once that layer exists. Null until Fase E ships."
+    },
+    "contains_sensitive_content": {
+      "type": "boolean"
+    },
+    "human_review_required": {
+      "type": "boolean",
+      "description": "Must be true before a plan with contains_sensitive_content: true can advance past researching/planned/drafting."
+    },
+    "related_case": {
+      "type": ["string", "null"]
+    },
+    "related_work_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

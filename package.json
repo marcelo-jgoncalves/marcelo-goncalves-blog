@@ -23,6 +23,10 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:editorial": "node --test scripts/__tests__/*.test.mjs",
+    "validate:editorial": "node scripts/validate-editorial-plans.mjs",
+    "generate:editorial-index": "node scripts/generate-editorial-index.mjs",
+    "check:editorial-index": "node scripts/generate-editorial-index.mjs --check",
     "verify": "npm run typecheck && npm run lint && npm test"
   }
 }
