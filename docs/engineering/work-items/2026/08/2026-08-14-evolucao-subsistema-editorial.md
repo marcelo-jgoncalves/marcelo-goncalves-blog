@@ -23,7 +23,7 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A–H implementadas e testadas. Mergeadas em `develop`: A-D (PR #19), E (PR #20), F (PR #21), G (PR #22). Fase H (esta branch, documentação final + auditoria) é a última pendente de merge. Bloqueio de merge anterior resolvido (ver seção dedicada) — padrão vigente: a execução autônoma abre a PR e reporta o número, a coordenação mergeia diretamente, rebaseando manualmente quando há conflito por branches criadas antes do merge da fase anterior.
+- Status: done — Fases A–H implementadas, testadas e mergeadas em `develop` (PRs #19–#24), mais 3 rodadas de correção pós-avaliação cega do codex CLI (PRs #25, #26, #27 — ver seção "Hardening pós-avaliação" abaixo). Bloqueio de merge anterior resolvido (ver seção dedicada) — padrão adotado: a execução autônoma abre a PR e reporta o número, a coordenação mergeia diretamente, rebaseando manualmente quando há conflito por branches criadas antes do merge da fase anterior.
 - Data: 2026-08-14
 - Branch da Fase E: `feat/editorial-fase-e-publication-receipt-outcomes`, a partir do `develop` já atualizado com PR #19
 - Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
@@ -194,13 +194,23 @@ Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo
 
 ## Fechamento
 
-Todas as PRs (#19–#23) mergeadas em `develop`. Confirmado com A–H juntas pela primeira vez na mesma árvore, em 2026-08-14:
+Todas as PRs (#19–#24) mergeadas em `develop`. Confirmado com A–H juntas pela primeira vez na mesma árvore, em 2026-08-14:
 
-- `npm run test:editorial`: 41/41 passando.
+- `npm run test:editorial`: 41/41 passando (depois subiu para 45/45 com os testes adicionados no hardening).
 - `npm run validate:editorial` contra os 27 planos reais: `All plans valid.` (só os warnings de PII já investigados e classificados como falso positivo na Fase G).
 
-`project-consistency-audit` completo não foi executado nesta sessão de fechamento — próxima sessão pode avaliar se vale rodar, dado o volume de mudança estrutural acumulada (não é bloqueio, é item de acompanhamento).
-
-Work item fechado (`status: done`).
+`project-consistency-audit` completo não foi executado — próxima sessão pode avaliar se vale rodar, dado o volume de mudança estrutural acumulada (não é bloqueio, é item de acompanhamento).
 
 Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.
+
+## Hardening pós-avaliação (PRs #25, #26, #27)
+
+Depois do fechamento inicial, Marcelo pediu duas avaliações independentes contra 7 critérios objetivos (schema, CI, consistência interna, testes, integração real com CMS, documentação viva, rastreabilidade de lifecycle): uma minha, uma cega do `codex` CLI (sem ver a minha). Nota inicial do codex: **6,3/10**. Minha própria nota: 7,8/10 — divergência real, não ruído: eu não tinha conferido se a documentação continuava correta *depois* dos merges finais.
+
+3 rodadas de correção, cada uma com nova avaliação cega do codex para verificar:
+
+1. **PR #25** (6,3 → 6,2, achou 2 gaps novos que a correção da rodada 1 não cobriu): `editorial/README.md` ainda dizia que receipts/outcomes/Capital Agent estavam "pendentes de merge" (já estavam mergeados); comentário stale "26 planos sem schema_version" no validador (Fase G já tinha terminado, eram 27); `published` sem `publication_receipt` era só warning, virou erro real (com checagem de que o receipt referenciado existe de verdade, não só string não-vazia); diff de CI em push multi-commit trocou o `HEAD~1` frágil por `github.event.before` real.
+2. **PR #26** (6,2 → 6,7, achou o mesmo comentário stale duplicado em `deploy.yml`, que eu só tinha corrigido em `cd.yml`; e os 5 campos opcionais que a Fase F adicionou ao schema nunca foram adicionados ao template, quebrando a alegação da skill de que o template tem "todos os campos"): ambos corrigidos.
+3. **PR #27** (achado real: `LIFECYCLE.md` ainda descrevia o antigo comportamento de warning, contradizendo o validador corrigido na rodada 1): sincronizado.
+
+**Teto estrutural identificado e aceito**: dos 7 critérios, "integração real com CMS" (peso 15%) e "rastreabilidade de lifecycle" (peso 5%) — 20% do peso total — estão presos ao CMS real não existir (`docs/engineering/work-items/2026/08/2026-08-04-ajuste-15c-cms-fluxo-editorial.md`, `blocked`). Sem Publication Receipt real, esses dois critérios ficam matematicamente presos a ~1,5/10 e ~3/10, respectivamente, mesmo com todo o resto em nota 10 — teto calculado em ~8,4/10. Marcelo decidiu parar aqui (não construir integração real de CMS agora, que expandiria o escopo desta tarefa para `backend`/`admin`) e retomar quando o ajuste 15C for desbloqueado.
