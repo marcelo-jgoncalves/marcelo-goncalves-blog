@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-002
+schema_version: "1.0"
 title: "Post 1 da série: Arquitetura & Design — \"O mesmo dado, três versões diferentes da verdade\""
 created_at: 2026-06-27
 updated_at: 2026-06-27

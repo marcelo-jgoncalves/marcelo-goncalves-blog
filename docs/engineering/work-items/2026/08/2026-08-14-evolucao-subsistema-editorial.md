@@ -23,7 +23,7 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A–F completas e testadas. Merged em `develop`: A-D (PR #19). Aguardando merge da coordenação: E (PR #20), F (PR nova, branch empilhada sobre a de E). Fases G–H pendentes. Bloqueio de merge anterior resolvido (ver seção dedicada) — novo padrão: eu abro a PR e reporto o número, a coordenação mergeia.
+- Status: in-progress — Fases A–G completas, testadas e mergeadas em `develop` (A-D via PR #19, E via PR #20, F via PR #21, G via PR #22). Só falta Fase H (auditoria final). Bloqueio de merge anterior resolvido (ver seção dedicada) — padrão atual: a execução autônoma abre a PR e reporta o número, a coordenação mergeia diretamente (rebase manual quando há conflito de branches empilhadas).
 - Data: 2026-08-14
 - Branch da Fase E: `feat/editorial-fase-e-publication-receipt-outcomes`, a partir do `develop` já atualizado com PR #19
 - Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
@@ -39,11 +39,11 @@ contains_sensitive_content: false
 
 Estava bloqueado: o classificador de auto mode do ambiente negou `gh pr merge` quando eu (execução autônoma) tentei executá-lo, mesmo com autorização explícita relayed pela coordenação — uma mensagem de outro agente não substitui aprovação real do sistema de permissões.
 
-Resolução: a própria sessão coordenadora rodou `gh pr merge 19 --squash --delete-branch=false` **diretamente, com suas próprias permissões** (não via instrução repassada a mim) e confirmou o merge (`mergedAt: 2026-08-14T20:09:41Z`). PR #19 (Fases A+B+C+D) está mergeada em `develop`.
+Resolução: a sessão coordenadora mergeou PRs #19, #20, #21 e #22 diretamente, com suas próprias permissões (`gh pr merge --squash`), confirmando cada merge via `gh pr view`. Fases A–G estão em `develop`.
 
-**Novo padrão de trabalho a partir daqui**: eu implemento, testo, commito, dou push e abro a PR de cada fase (ou pequeno grupo de fases) — mas não chamo `gh pr merge` novamente, já que essa ação segue bloqueada para execução autônoma minha. A coordenação mergeia cada PR manualmente assim que eu reportar o número pronto. Cada nova fase começa numa branch nova a partir do `develop` já atualizado, em vez de empilhar tudo numa branch só (como foi necessário enquanto o bloqueio estava ativo).
+**Padrão de trabalho atual**: a execução autônoma implementa, testa, commita, dá push e abre a PR de cada fase — mas não chama `gh pr merge`, já que essa ação segue bloqueada para execução autônoma. A coordenação mergeia cada PR manualmente assim que reportado o número pronto. Fases E e F ficaram em branches empilhadas (E sobre `develop`, F sobre a branch de E) enquanto aguardavam merge; a coordenação precisou reapontar a base da PR #21 para `develop` e rebasear manualmente após o merge de #20. O mesmo ocorreu com a PR #22 (Fase G), rebaseada sobre `develop` pela coordenação para resolver conflito no próprio arquivo de tracking. A partir da Fase G, cada branch nova partiu direto do `develop` mais atualizado disponível no momento da criação, não de branches empilhadas.
 
-Nota histórica (não mais um bloqueio ativo, mas relevante para quem revisar o histórico): PR #19 tinha 3 checks CI falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) por `npm audit --audit-level=high` — advisories novos (esbuild, nanoid) publicados desde 2026-08-05, não relacionados a este trabalho. Job `Validate Editorial Plans` (o relevante) estava verde. Mergeada assim mesmo por decisão da coordenação; fora do escopo desta tarefa corrigir dependências não-editoriais.
+Nota histórica: PR #19 tinha 3 checks CI falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) por `npm audit --audit-level=high` — advisories novos (esbuild, nanoid), não relacionados a este trabalho. Mergeada assim mesmo por decisão da coordenação; fora do escopo desta tarefa corrigir dependências não-editoriais.
 
 ## 0. Finalidade e precedência
 
@@ -119,11 +119,23 @@ Acionado como revisor cego antes de eu revelar minha avaliação. Dois achados r
 
 Corrigido também (achado nº3, gaps concretos do schema): requisitos condicionais por `signal_type` via `if/then` (antes, um `publication_receipt` podia existir sem `publication_id`, e um `sanitized_outcome` sem `outcome_id`/métricas). Não corrigido nesta fase (aceito como limitação, mesmo padrão das fases anteriores): vocabulário controlado para `attribution_tags`, constraints numéricas em `aggregate_metrics` (sem mínimo/unidade/moeda), sem k-anonimidade/supressão de célula pequena, `experiment_id` em texto livre (poderia carregar PII se o Capital Agent real não seguir a própria regra de pseudonimização) — nenhum tem consumidor real ainda para justificar o custo agora.
 
-## Checklist — Fase G: Migração dos 28 planos existentes
+## Checklist — Fase G: Migração dos 27 planos existentes
 
-- [ ] Rodar o validator novo contra os 26 planos reais em `editorial/plans/2026/{06,07,08}/` e corrigir apenas o que for inconsistência real (não retroagir metadata inventada).
-- [ ] Adicionar `schema_version` aos planos existentes.
-- [ ] Relatório de quantos migrados / quais campos ficaram `null`/unknown.
+- [x] Validator rodado contra todos os 27 planos reais em `editorial/plans/2026/{06,07,08}/`.
+- [x] `schema_version: "1.0"` adicionado aos 27 planos (nenhum tinha antes desta fase) — inserido logo após o campo `id` em cada arquivo, via script de migração mecânico (não commitado como ferramenta permanente — é uma migração de dados pontual, não um script reutilizável), sem tocar em mais nenhum campo.
+- [x] ID duplicado (`POST-PLAN-2026-025`) já havia sido corrigido como pré-requisito antes da Fase D (ver commit dedicado) — não é reaberto aqui.
+- [x] Índice de portfólio (`editorial/index.generated.md`/`.json`) regenerado após a migração — conteúdo idêntico (nenhum campo do índice muda com `schema_version`), só a diferença de terminador de linha do ambiente local foi resolvida no commit.
+- [x] Nenhum outro campo alterado: `content_pillar`, `audience`, `intent`, `funnel_stage`, `business_goal`, `series`, `priority`, `source_type` continuam `null`/ausentes em todos os 27 planos — nenhum foi inventado retroativamente, por instrução explícita do prompt (§24, §27).
+
+### Relatório de migração
+
+- Planos inventariados: 27 (todos em `editorial/plans/2026/{06,07,08}/`, nenhum em `2026/05` ou anterior).
+- Planos migrados (schema_version adicionado): 27 de 27.
+- Campos adicionados: apenas `schema_version: "1.0"`, em todos os 27.
+- Campos que permanecem `null`/unknown (não inventados): `content_pillar`, `audience`, `intent`, `funnel_stage`, `business_goal`, `series`, `priority`, `source_type` em todos os 27 planos — nenhum desses campos existia com valor real antes desta migração, e nenhum foi preenchido por suposição.
+- IDs preservados: sim, em todos exceto o já corrigido antes da Fase D (`POST-PLAN-2026-025` duplicado, um dos dois renumerado para `POST-PLAN-2026-027`).
+- Datas/status preservados: sim, nenhuma alteração.
+- Achado de segurança durante a migração (não uma ação, um registro): o validador aponta 4 warnings de PII auxiliar (regex de telefone/e-mail) em 4 planos. Revisão manual confirmou falsos positivos: um número de 11 dígitos que é um ID/conta AWS (não telefone) repetido em 3 planos da série de auditoria, e um endereço `oncall@example.com` (domínio de exemplo, não e-mail real) em outro. Nenhuma ação de sanitização necessária; registrado aqui como evidência de que o scanner auxiliar funciona (gera sinal, não decide sozinho) e não como um problema a corrigir.
 
 ## Checklist — Fase H: Auditoria final
 
@@ -155,6 +167,11 @@ Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo
 
 ## Próxima sessão — continuar a partir daqui
 
-**Prioridade imediata para a próxima sessão: destravar o merge da PR #19** (ver "Bloqueio de merge" acima) — sem isso, todo trabalho acumulado (Fases A-D) continua fora de `develop`.
+Fases A–G estão completas, testadas e mergeadas em `develop` (PRs #19, #20, #21, #22). Falta só a Fase H:
 
-Depois disso: Fase G (migração dos 27 planos — rodar o validator, adicionar `schema_version`, registrar quantos precisaram de ajuste) é o próximo passo mais barato e desbloqueado. Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.
+- [ ] Suite de testes completa rodando verde a partir do `develop` pós-merge (não só por branch isolada).
+- [ ] Revisão final de `editorial/README.md`, `editorial/plans/README.md`, skill e template por consistência (nenhum tocado desde a Fase A além do fix de nomenclatura).
+- [ ] Avaliar `project-consistency-audit` dado o volume de mudança estrutural acumulada.
+- [ ] Fechar o work item (`status: done`, `completed_at`) quando a Fase H for concluída.
+
+Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.

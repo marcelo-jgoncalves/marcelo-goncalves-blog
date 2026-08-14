@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-011
+schema_version: "1.0"
 title: "Post standalone: \"O header de segurança que nunca funcionou (e como descobrir isso no seu próprio código em 2 minutos)\""
 created_at: 2026-06-27
 updated_at: 2026-06-27

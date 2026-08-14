@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-022
+schema_version: "1.0"
 title: "Sopa de Letrinhas: um Framework Pra Impedir que Código Gerado por IA Vire Caótico"
 created_at: 2026-07-23
 updated_at: 2026-07-23

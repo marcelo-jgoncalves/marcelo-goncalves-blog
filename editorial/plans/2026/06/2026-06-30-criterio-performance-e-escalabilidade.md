@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-008
+schema_version: "1.0"
 title: "Post 7 da série: Performance & Escalabilidade — \"O índice que não pode crescer, por desenho\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

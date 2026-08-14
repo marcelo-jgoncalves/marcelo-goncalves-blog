@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-021
+schema_version: "1.0"
 title: "O Bug Que Nenhum Screenshot Mostrou (e o Diário de 455 Linhas Que Ninguém Ia Reler)"
 created_at: 2026-07-13
 updated_at: 2026-07-13

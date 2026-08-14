@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-013
+schema_version: "1.0"
 title: "Post 10 da série: Documentação e Governança — \"Dois documentos de regras, discordando entre si\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

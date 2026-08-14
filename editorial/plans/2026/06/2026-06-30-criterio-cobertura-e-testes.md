@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-004
+schema_version: "1.0"
 title: "Post 3 da série: Cobertura e Estratégia de Testes — \"O risco de teste não está onde parece\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

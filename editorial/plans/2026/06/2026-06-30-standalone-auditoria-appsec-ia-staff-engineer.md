@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-018
+schema_version: "1.0"
 title: "Pedi para a IA Auditar a Própria Segurança do Blog — e Ela Recusou Terminar o Trabalho"
 created_at: 2026-06-30
 updated_at: 2026-06-30

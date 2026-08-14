@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-020
+schema_version: "1.0"
 title: "177 Arquivos .css, 2 .module.css — e Nenhuma Regra Escrita Explicando Por Quê"
 created_at: 2026-06-30
 updated_at: 2026-06-30

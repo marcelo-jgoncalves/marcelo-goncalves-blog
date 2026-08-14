@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-001
+schema_version: "1.0"
 title: "Post-âncora: \"Pedi para uma IA auditar minha própria infraestrutura em produção. Isto é o que ela encontrou.\""
 created_at: 2026-06-27
 updated_at: 2026-06-27

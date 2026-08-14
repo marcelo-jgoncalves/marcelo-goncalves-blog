@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-006
+schema_version: "1.0"
 title: "Post 5 da série: Segurança — \"A proteção que existe no código mas não no navegador\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

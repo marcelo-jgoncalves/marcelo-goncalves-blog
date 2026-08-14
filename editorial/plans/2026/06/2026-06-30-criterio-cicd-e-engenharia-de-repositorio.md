@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-005
+schema_version: "1.0"
 title: "Post 4 da série: CI/CD e Engenharia de Repositório — \"O gate mais fraco é o que protege o merge\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

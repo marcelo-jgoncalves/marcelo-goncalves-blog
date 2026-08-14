@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-026
+schema_version: "1.0"
 title: "Post standalone: \"Eu chutei quatro vezes antes de alguém me fazer olhar o navegador\""
 created_at: 2026-06-27
 updated_at: 2026-06-27

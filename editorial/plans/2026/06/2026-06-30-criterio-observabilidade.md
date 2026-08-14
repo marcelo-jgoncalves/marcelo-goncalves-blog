@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-007
+schema_version: "1.0"
 title: "Post 6 da série: Observabilidade — \"O alarme já está construído. Só está desligado.\""
 created_at: 2026-06-30
 updated_at: 2026-06-30

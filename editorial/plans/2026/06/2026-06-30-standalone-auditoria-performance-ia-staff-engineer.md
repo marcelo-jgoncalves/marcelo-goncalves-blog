@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-019
+schema_version: "1.0"
 title: "Pedi para a IA Medir a Performance Real do Próprio Blog — e o Gargalo Não Estava Onde a Leitura de Código Apontava"
 created_at: 2026-06-30
 updated_at: 2026-06-30

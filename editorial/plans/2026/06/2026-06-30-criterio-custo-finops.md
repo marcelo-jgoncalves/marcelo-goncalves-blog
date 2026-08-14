@@ -1,5 +1,6 @@
 ---
 id: POST-PLAN-2026-015
+schema_version: "1.0"
 title: "Post 12 da série: Custo (FinOps) — \"O alarme que falta não é técnico, é financeiro\""
 created_at: 2026-06-30
 updated_at: 2026-06-30
