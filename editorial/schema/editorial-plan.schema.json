@@ -122,7 +122,7 @@
     },
     "publication_receipt": {
       "type": ["string", "null"],
-      "description": "Reference to the Publication Receipt artifact (editorial/outcomes contract), once that layer exists. Null until Fase E ships."
+      "description": "publication_id of the matching editorial/receipts/ record (editorial/schema/publication-receipt.schema.json), once one exists. Null for every plan today - Fase E shipped the contract, but no plan has gone through a real, receipted CMS publication yet."
     },
     "contains_sensitive_content": {
       "type": "boolean"
@@ -141,6 +141,26 @@
     "tags": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "experiment_id": {
+      "type": ["string", "null"],
+      "description": "Fase F (Capital Agent integration, prompt §7/§21). Capital Agent's own experiment identifier - this repo never assigns or interprets it, only carries it through. Null for every plan today: no real Capital Agent integration exists in code yet (design-doc-only), so any non-null value here would be fabricated."
+    },
+    "publication_request_id": {
+      "type": ["string", "null"],
+      "description": "Fase F. Reference to an external Publication Package (prompt §17), when content originates from one. The existence of a request never authorizes publication by itself - editorial authority stays human/platform (prompt §17, §21)."
+    },
+    "business_signal_id": {
+      "type": ["string", "null"],
+      "description": "Fase F. Pseudonymous reference to a BusinessSignal the Capital Agent provided as input to this plan's hypothesis (market-signal origin, source_type). Never a raw signal payload - just an id Capital Agent can correlate on its own side."
+    },
+    "opportunity_id": {
+      "type": ["string", "null"],
+      "description": "Fase F. Pseudonymous reference to an OpportunityCandidate the Capital Agent provided, same rule as business_signal_id."
+    },
+    "outcome_ref": {
+      "type": ["string", "null"],
+      "description": "outcome_id of the matching editorial/outcomes/ record, once one exists for this plan. Null for every plan today, same reason as publication_receipt."
     }
   }
 }
