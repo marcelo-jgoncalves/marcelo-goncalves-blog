@@ -308,3 +308,6 @@ jobs:
 
       - name: Validate changed editorial plans
         run: npm run validate:editorial -- --changed-only
+
+      - name: Check editorial portfolio index is up to date
+        run: npm run check:editorial-index
