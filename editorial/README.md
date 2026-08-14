@@ -17,9 +17,13 @@ Planejamentos editoriais do blog (pauta/outline, não o texto final). Ver `plans
 | Estados e transições de lifecycle | `LIFECYCLE.md` |
 | Índice de todos os planos (gerado, não editar à mão) | `index.generated.md` / `index.generated.json` |
 | Como gerar um planejamento novo | skill `post-planning` (`.claude/skills/post-planning/SKILL.md`) |
-| Validação determinística (CI) | `../scripts/validate-editorial-plans.mjs`, `../scripts/generate-editorial-index.mjs` |
+| Validação determinística de planos (CI) | `../scripts/validate-editorial-plans.mjs`, `../scripts/generate-editorial-index.mjs` |
+| Rastreabilidade pós-publicação (contrato, sem registros reais ainda) | `receipts/README.md`, `schema/publication-receipt.schema.json` |
+| Resultado pós-publicação (contrato, sem registros reais ainda) | `outcomes/README.md`, `schema/outcome.schema.json` |
+| Integração com o Capital Agent (contrato) | `CAPITAL_AGENT_INTEGRATION.md`, `schema/capital-agent-signal.schema.json` |
+| Validação determinística de receipts/outcomes (CI) | `../scripts/validate-editorial-outcomes.mjs` |
 
-Pendente de merge no momento em que esta versão do README foi escrita (branches separadas, aguardando merge da coordenação — ver `docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md` para o estado atual das PRs): contrato de rastreabilidade pós-publicação (`receipts/`, `schema/publication-receipt.schema.json`), contrato de resultado pós-publicação (`outcomes/`, `schema/outcome.schema.json`), contrato de integração com o Capital Agent (`CAPITAL_AGENT_INTEGRATION.md`, `schema/capital-agent-signal.schema.json`), validador de outcomes/receipts (`../scripts/validate-editorial-outcomes.mjs`). Atualizar esta tabela quando essas PRs mergearem.
+Todos os artefatos acima estão mergeados em `develop` (histórico completo em `docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md`). `receipts/` e `outcomes/` têm contrato e validador reais, mas nenhum registro ainda — depende da integração real do CMS (`docs/engineering/work-items/2026/08/2026-08-04-ajuste-15c-cms-fluxo-editorial.md`, status `blocked`), não é uma pendência desta evolução.
 
 ## O que este subsistema não é
 

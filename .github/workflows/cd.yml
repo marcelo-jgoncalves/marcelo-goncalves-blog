@@ -276,13 +276,10 @@ jobs:
 
   # ==============================================================
   # JOB 1f: Validate editorial plans (schema + lifecycle invariants,
-  # deterministic, no LLM). Runs in --changed-only mode: the 26 plans that
-  # predate this validator don't carry schema_version yet (migration is
-  # tracked separately, Fase G of
-  # docs/engineering/work-items/2026/08/2026-08-14-evolucao-subsistema-editorial.md)
-  # — full-repo strict mode would fail this gate for files nobody touched.
-  # New/edited plans are enforced immediately; historical ones get
-  # validated the moment someone next edits them.
+  # deterministic, no LLM). Runs in --changed-only mode to scope CI to the
+  # plans this push actually touches rather than re-checking all 27 real
+  # plans every time (all of them already pass full validation — Fase G
+  # migration is done, `npm run validate:editorial` with no flag confirms it).
   # ==============================================================
   validate-editorial:
     name: 1f. Validate Editorial Plans
@@ -310,6 +307,12 @@ jobs:
         run: npm run test:editorial
 
       - name: Validate changed editorial plans
+        # GITHUB_BEFORE_SHA is the real pre-push commit (github.event.before)
+        # for this cd.yml push trigger, so multi-commit pushes are diffed
+        # correctly instead of the script's HEAD~1 guess, which only covers
+        # the single-commit case (e.g. a squash-merged PR).
+        env:
+          GITHUB_BEFORE_SHA: ${{ github.event.before }}
         run: npm run validate:editorial -- --changed-only
 
       - name: Check editorial portfolio index is up to date
