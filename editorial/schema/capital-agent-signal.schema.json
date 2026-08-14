@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mgoncalves.dev/schema/capital-agent-signal.schema.json",
+  "title": "Capital Agent Sanitized Signal",
+  "description": "Shape of data the Editorial Platform is allowed to hand back to the Capital Agent (prompt-evolucao-subsistema-editorial.md §21-22). This is an export contract, not a database - nothing here implies shared storage or a runtime dependency. Every field is either a pseudonymous id, an aggregate number, or a controlled category tag. No name, email, phone, raw message, or any other individually-identifying data has a place in this schema by design; the closed additionalProperties list is the enforcement, not just documentation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_id", "signal_type", "editorial_plan_id", "generated_at", "schema_version"],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "pattern": "^SIGNAL-[0-9]{4}-[0-9]{3,}$",
+      "description": "Pseudonymous id for this export event. Never a lead id, session id, or anything traceable back to an individual on the Capital Agent side."
+    },
+    "signal_type": {
+      "type": "string",
+      "enum": ["publication_receipt", "sanitized_outcome", "attribution_summary"],
+      "description": "Which of the three things §21 says the Editorial Platform may return. Nothing else is in scope for this export - no draft content, no plan internals, no CMS credentials."
+    },
+    "editorial_plan_id": {
+      "type": "string",
+      "pattern": "^POST-PLAN-[0-9]{4}-[0-9]{3}$"
+    },
+    "publication_id": {
+      "type": ["string", "null"],
+      "pattern": "^PUB-[0-9]{4}-[0-9]{3,}$"
+    },
+    "outcome_id": {
+      "type": ["string", "null"],
+      "pattern": "^OUTCOME-[0-9]{4}-[0-9]{3,}$"
+    },
+    "experiment_id": {
+      "type": ["string", "null"],
+      "description": "Capital Agent's own experiment identifier, echoed back so it can correlate - this repo never assigns or interprets it, only carries it through."
+    },
+    "attribution_tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Controlled category tags only (e.g. 'organic-search', 'referral-linkedin') - never a raw referrer URL with query parameters, never a user agent string."
+    },
+    "aggregate_metrics": {
+      "type": "object",
+      "additionalProperties": { "type": "number" },
+      "description": "Same aggregate-only rule as editorial/schema/outcome.schema.json#/properties/metrics. A count small enough to identify an individual (e.g. qualified_leads: 1 for a niche page) is a real re-identification risk even though the field itself is 'just a number' - see the accepted-limitation note in the work item; no k-anonymity threshold is enforced yet."
+    },
+    "funnel_stage": {
+      "type": ["string", "null"],
+      "enum": ["awareness", "consideration", "decision", "retention", "none", null]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "signal_type": { "const": "publication_receipt" } } },
+      "then": { "required": ["publication_id"] }
+    },
+    {
+      "if": { "properties": { "signal_type": { "const": "sanitized_outcome" } } },
+      "then": { "required": ["outcome_id", "aggregate_metrics"] }
+    }
+  ]
+}

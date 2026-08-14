@@ -23,7 +23,7 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A, B, C, D e E completas e testadas (merged: A-D via PR #19; E em PR separada, ver abaixo); Fases F–H pendentes (ver checklist). Bloqueio de merge anterior resolvido (ver seção dedicada).
+- Status: in-progress — Fases A–F completas e testadas. Merged em `develop`: A-D (PR #19). Aguardando merge da coordenação: E (PR #20), F (PR nova, branch empilhada sobre a de E). Fases G–H pendentes. Bloqueio de merge anterior resolvido (ver seção dedicada) — novo padrão: eu abro a PR e reporto o número, a coordenação mergeia.
 - Data: 2026-08-14
 - Branch da Fase E: `feat/editorial-fase-e-publication-receipt-outcomes`, a partir do `develop` já atualizado com PR #19
 - Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
@@ -103,10 +103,21 @@ Acionado como revisor cego sobre os dois schemas e o validador antes de eu revel
 
 Achados aceitos como limitação conhecida, não implementados nesta fase (custo/escopo): vocabulário controlado para `business_signals` (hoje string livre), constraints numéricas em `metrics`/`attributable_revenue` (sem mínimo/máximo/moeda), mapeamento por métrica de proveniência (hoje é uma lista única para o registro inteiro), política de host esperado para `canonical_url`, `verification_source` como enum estruturado em vez de texto livre. Nenhum desses tem consumidor real ainda (zero receipts/outcomes existem) — mesmo raciocínio de YAGNI aplicado ao schema de planos na Fase B.
 
-## Checklist — Fase F: Integração Capital Agent (depende de decisão externa)
+## Checklist — Fase F: Integração Capital Agent
 
-- [ ] Contratos de referência opcionais (`experiment_id` etc.) — pendente, depende da Fase E.
-- [ ] Regras de sanitização/PII para dados devolvidos ao Capital Agent — pendente.
+- [x] Refs opcionais adicionadas ao schema de planos (`experiment_id`, `publication_request_id`, `business_signal_id`, `opportunity_id`, `outcome_ref`) — todas nullable, todas `null` em todos os planos reais hoje (nenhum consumidor real ainda).
+- [x] Schema de sinal sanitizado para o Capital Agent: `editorial/schema/capital-agent-signal.schema.json` (3 tipos: `publication_receipt`, `sanitized_outcome`, `attribution_summary`; `additionalProperties: false`; requisitos condicionais por `signal_type` via `if/then`).
+- [x] Documento de contrato: `editorial/CAPITAL_AGENT_INTEGRATION.md` — não escreve write access, não compartilha banco, não authoriza publicação por sinal externo, sanitização por IDs pseudônimos + métricas agregadas + tags controladas.
+- [x] Testes: 5 novos (`scripts/__tests__/capital-agent-signal-schema.test.mjs`), suite completa em 41/41.
+
+### Revisão independente (codex CLI) — Fase F
+
+Acionado como revisor cego antes de eu revelar minha avaliação. Dois achados relevantes, ambos aceitos sem meia-medida:
+
+1. **Enforcement é hoje só prosa, não runtime.** `additionalProperties: false` só protege quando algo de fato valida contra o schema — e não existe validador/CI/IAM/API real para sinais do Capital Agent (diferente de planos/receipts/outcomes, que têm validador wired). Corrigi o documento (`editorial/CAPITAL_AGENT_INTEGRATION.md`) para dizer isso explicitamente em vez de deixar a leitura implícita de que os "non-negotiables" já são garantidos — são hoje verdadeiros só porque nada existe para violá-los, não porque algo impede a violação.
+2. **Tensão real com a decisão de YAGNI da Fase B**, não resolvida por eu simplesmente chamar isso de "Fase F chegou": a Fase B disse explicitamente que os campos especulativos esperariam "um consumidor real do lado do Capital Agent" — que continua não existindo. Documentei essa tensão como decisão consciente (contract-first: definir o formato antes da implementação, não uma satisfação literal do critério da Fase B) em vez de esconder — se uma sessão futura julgar prematuro, reverter é barato (campos opcionais, nada depende deles ainda).
+
+Corrigido também (achado nº3, gaps concretos do schema): requisitos condicionais por `signal_type` via `if/then` (antes, um `publication_receipt` podia existir sem `publication_id`, e um `sanitized_outcome` sem `outcome_id`/métricas). Não corrigido nesta fase (aceito como limitação, mesmo padrão das fases anteriores): vocabulário controlado para `attribution_tags`, constraints numéricas em `aggregate_metrics` (sem mínimo/unidade/moeda), sem k-anonimidade/supressão de célula pequena, `experiment_id` em texto livre (poderia carregar PII se o Capital Agent real não seguir a própria regra de pseudonimização) — nenhum tem consumidor real ainda para justificar o custo agora.
 
 ## Checklist — Fase G: Migração dos 28 planos existentes
 
