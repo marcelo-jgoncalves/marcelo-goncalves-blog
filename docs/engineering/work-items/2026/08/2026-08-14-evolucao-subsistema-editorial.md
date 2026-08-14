@@ -99,6 +99,26 @@ Decisão de execução em fases (não é um blocker, é sequenciamento deliberad
 
 ---
 
+## Revisão independente (codex CLI)
+
+Acionado `codex exec --sandbox read-only` como revisor cego (sem revelar antes o próprio julgamento) sobre `editorial/schema/editorial-plan.schema.json`, `scripts/validate-editorial-plans.mjs` e `editorial/LIFECYCLE.md`.
+
+Achados aceitos e corrigidos nesta sessão:
+
+- **Bug real de unicidade de ID em modo `--changed-only`**: `seenIds` era populado só com os arquivos do diff, então um plano novo podia duplicar o ID de um plano histórico não tocado sem ser detectado. Corrigido: o índice de IDs agora é semeado a partir de todos os planos do repositório (exceto os do próprio diff, para não gerar falso positivo "duplicado de si mesmo"). Teste de regressão adicionado.
+- **Datas com overflow silencioso**: a primeira versão deixava `js-yaml` fazer parse automático de datas não citadas (`created_at: 2026-06-27`) para objetos `Date`; para uma data calendarmente inválida como `2026-99-99`, o overflow do próprio `Date` "corrigia" silenciosamente para `2034-06-07`, que passava no schema. Corrigido trocando para `yaml.JSON_SCHEMA` (sem o tipo timestamp do YAML 1.1) — datas ficam como string bruta, e o `format: date` customizado do Ajv agora rejeita datas calendarmente inválidas de verdade. Teste de regressão adicionado.
+
+Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo/escopo não justificam agora):
+
+- `human_review_required: true` registra que a revisão é exigida, não que ela de fato ocorreu — um autor pode marcar os dois campos (`contains_sensitive_content` e `human_review_required`) no mesmo commit sem revisão humana real acontecer. Um controle mais forte exigiria identidade do revisor/data e possivelmente CODEOWNERS ou aprovação de ambiente protegido — infraestrutura de aprovação que não existe hoje no repo para este fluxo. Registrado aqui como risco real conhecido (ver seção "Riscos" abaixo), não escondido.
+- PII regex é deliberadamente auxiliar e estreito (só e-mail e telefone) — não cobre CPF/CNPJ, endereços, nomes, ou PII ofuscada. Consistente com o prompt (§12: "não use regex como única defesa") — o controle primário de segredos/credenciais continua sendo o Gitleaks já existente em `security.yml`, que escaneia o repositório inteiro.
+- Schema não valida coerência temporal entre campos (`updated_at >= created_at`) nem se `schema_version` é uma versão que o validator de fato suporta — adiado por não ter causado nenhum problema real nos 27 planos existentes; reavaliar se aparecer um caso real.
+
+## Riscos
+
+- `human_review_required` é auto-declarável, não uma prova de revisão. Enquanto não houver um mecanismo de aprovação mais forte (CODEOWNERS, ambiente protegido, ou campo com identidade/data do revisor), o enforcement de `contains_sensitive_content` é um lembrete estrutural, não uma garantia contra um autor apressado.
+- CI de `validate-editorial` em modo `--changed-only` usando `HEAD~1` no fallback de push (fora de PR) pode não cobrir todos os arquivos em um push com múltiplos commits — cenário raro dado que o fluxo do repositório é PR + merge, mas real.
+
 ## Próxima sessão — continuar a partir daqui
 
 Se a sessão atual parar antes de completar Fase D/G/H: o próximo passo concreto é gerar `editorial/index.generated.md`/`.json` (Fase D) a partir dos planos já validados, depois rodar o validator contra os 26 planos reais (Fase G) e registrar aqui quantos passaram sem alteração vs. quantos precisaram de `schema_version` adicionado.

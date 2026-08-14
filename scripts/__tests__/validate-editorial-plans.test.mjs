@@ -175,6 +175,36 @@ test('ids: format validated by schema pattern', () => {
   assert.equal(validate(data), false);
 });
 
+test('schema: calendar-impossible date is rejected, not just shape-checked', () => {
+  const validate = compileSchema();
+  const fmBadDate = VALID_FM.replace('created_at: 2026-06-27', 'created_at: 2026-99-99');
+  const { data } = parseFrontMatter(`---\n${fmBadDate}\n---\n`);
+  assert.equal(validate(data), false);
+});
+
+test('changed-only id uniqueness: catches a new plan reusing an id from an untouched plan', async () => {
+  // Regression test for a gap found during codex CLI review: seenIds used
+  // to be seeded only from the files being validated, so --changed-only
+  // mode could miss a duplicate against a historical plan nobody touched.
+  const dir = mkdtempSync(path.join(tmpdir(), 'editorial-test-'));
+  try {
+    const validate = compileSchema();
+    const untouched = writePlan(dir, 'plans/2026/06/untouched.md', VALID_FM);
+
+    // Simulate main()'s seeding step: index every plan in the repo except
+    // the ones being validated in this diff.
+    const seenIds = new Map();
+    const { data } = parseFrontMatter(`---\n${VALID_FM}\n---\n`);
+    seenIds.set(data.id, path.relative(process.cwd(), untouched));
+
+    const newFile = writePlan(dir, 'plans/2026/07/new-plan.md', VALID_FM); // same id
+    const { errors } = validateFile(newFile, validate, seenIds);
+    assert.ok(errors.some((e) => e.includes('duplicate id')));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('missing schema_version is reported as an actionable error', () => {
   const dir = mkdtempSync(path.join(tmpdir(), 'editorial-test-'));
   try {

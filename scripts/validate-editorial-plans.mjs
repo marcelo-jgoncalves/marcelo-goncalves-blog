@@ -56,7 +56,16 @@ export function ajvInstance() {
   // No ajv-formats dependency in this repo; only the two formats the
   // schema actually uses are needed, so define them inline rather than
   // adding a new dependency for two regexes.
-  ajv.addFormat('date', /^\d{4}-\d{2}-\d{2}$/);
+  // A regex alone accepts calendar-impossible dates like 2026-99-99 (flagged
+  // in codex CLI review); parse and round-trip through Date to catch those
+  // too, without pulling in a date library for one check.
+  ajv.addFormat('date', {
+    validate: (value) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+      const d = new Date(`${value}T00:00:00Z`);
+      return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
+    },
+  });
   return ajv;
 }
 
@@ -120,26 +129,16 @@ export function parseFrontMatter(raw, filePath) {
     return { error: 'missing front matter block (expected leading --- ... ---)' };
   }
   try {
-    const data = yaml.load(match[1]) ?? {};
-    normalizeDateFields(data);
+    // JSON_SCHEMA (not js-yaml's default) has no YAML 1.1 timestamp type,
+    // so unquoted YYYY-MM-DD scalars stay plain strings instead of being
+    // parsed into JS Date objects. That parsing was tried first and
+    // reverted: Date's own overflow semantics silently "fix" an invalid
+    // calendar date like 2026-99-99 into a valid one (2034-06-07) before
+    // the schema's format check ever sees it — worse than rejecting it.
+    const data = yaml.load(match[1], { schema: yaml.JSON_SCHEMA }) ?? {};
     return { data };
   } catch (err) {
     return { error: `invalid YAML: ${err.message}` };
-  }
-}
-
-const DATE_FIELDS = ['created_at', 'updated_at', 'planned_publication', 'published_at'];
-
-// js-yaml auto-parses unquoted YYYY-MM-DD scalars into JS Date objects
-// (YAML 1.1 timestamp type). The schema expects ISO date strings, and every
-// existing plan in this repo writes dates unquoted, so normalize here
-// rather than forcing a rewrite of 27 files just to add quotes.
-function normalizeDateFields(data) {
-  for (const field of DATE_FIELDS) {
-    const value = data[field];
-    if (value instanceof Date) {
-      data[field] = value.toISOString().slice(0, 10);
-    }
   }
 }
 
@@ -262,7 +261,22 @@ export function main() {
     process.exit(0);
   }
 
+  // Seed the ID index from every plan in the repo not part of this diff —
+  // otherwise --changed-only mode can't catch a new plan reusing an id
+  // already used by an untouched historical plan (duplicate id is a
+  // whole-repo property, not a per-diff one). Excluding the changed files
+  // themselves avoids a false "duplicate of itself" positive.
   const seenIds = new Map();
+  if (changedOnly) {
+    const changedSet = new Set(files.map((f) => path.resolve(f)));
+    for (const file of listPlanFiles(PLANS_DIR)) {
+      if (changedSet.has(path.resolve(file))) continue;
+      const { data } = parseFrontMatter(readFileSync(file, 'utf8'));
+      if (data && data.id && !seenIds.has(data.id)) {
+        seenIds.set(data.id, path.relative(REPO_ROOT, file));
+      }
+    }
+  }
   let hadErrors = false;
 
   for (const file of files.sort()) {
