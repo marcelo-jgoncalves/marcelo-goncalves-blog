@@ -23,17 +23,27 @@ contains_sensitive_content: false
 
 ## Resultado da execução
 
-- Status: in-progress — Fases A, B e C completas e testadas; Fases D–H pendentes (ver checklist)
+- Status: in-progress — Fases A, B, C e D completas e testadas; Fases E–H pendentes (ver checklist). **Bloqueio operacional ativo: ver "Bloqueio de merge" abaixo.**
 - Data: 2026-08-14
-- Branch: `feat/editorial-subsystem-evolution`, PR aberta contra `develop`
-- Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI
-- Arquivos alterados: `.claude/skills/post-planning/SKILL.md`, `editorial/plans/README.md`, `editorial/plans/templates/post-plan-template.md`, `editorial/schema/editorial-plan.schema.json` (novo), `editorial/LIFECYCLE.md` (novo), `scripts/validate-editorial-plans.mjs` (novo), `scripts/__tests__/validate-editorial-plans.test.mjs` (novo, 17 testes), `package.json`, `.github/workflows/cd.yml`, `.github/workflows/deploy.yml`
-- Critérios satisfeitos (dos 20 do §29 do prompt): skill YAML válido; drift documental corrigido; template canônico; schema editorial existe; lifecycle formalizado; transições/invariants detectados; validator determinístico existe; CI executa o validator; sensitive content tem enforcement; nenhuma publicação automática foi criada; testes passam (17/17)
-- Critérios não satisfeitos ainda: metadata estratégica só no schema, sem portfolio index gerado; planos históricos não migrados (schema_version ausente neles, por design desta fase); Publication Receipt/Outcomes/Capital Agent não iniciados (dependem do CMS); docs não revisadas por completo (README editorial em si não tocado ainda)
-- Desvios em relação à instrução original: nenhum — decisões de escopo (omitir campos especulativos do schema, `--changed-only` em vez de full-repo strict) estão documentadas inline nas seções acima como julgamento de engenharia esperado pela própria instrução
-- Decisões humanas adicionais: nenhuma além da autorização inicial de Marcelo para prosseguir com autonomia total ("continue enquanto for possível")
-- Documentação canônica resultante: `editorial/schema/editorial-plan.schema.json`, `editorial/LIFECYCLE.md`
-- Estudo de caso relacionado: nenhum aberto ainda — candidato real existe (o bug de overflow de data encontrado pela revisão do codex CLI é o tipo de achado que o protocolo de captura cobre), avaliar no fechamento da Fase H em vez de abrir a meio de uma tarefa multi-sessão ainda em andamento
+- Branch: `feat/editorial-subsystem-evolution`, PR #19 aberta contra `develop` (**ainda não mergeada** — ver bloqueio)
+- Commits nesta branch: naming drift fix (Fase A + doc), schema/lifecycle/template (Fase B), validator + CI (Fase C), fixes de revisão do codex CLI, fix de ID duplicado (pré-requisito), gerador de índice de portfólio (Fase D)
+- Arquivos alterados: `.claude/skills/post-planning/SKILL.md`, `editorial/plans/README.md`, `editorial/plans/templates/post-plan-template.md`, `editorial/schema/editorial-plan.schema.json` (novo), `editorial/LIFECYCLE.md` (novo), `editorial/index.generated.json` (novo), `editorial/index.generated.md` (novo), `scripts/validate-editorial-plans.mjs` (novo), `scripts/generate-editorial-index.mjs` (novo), `scripts/__tests__/*.test.mjs` (novo, 22 testes), `package.json`, `.github/workflows/cd.yml`, `.github/workflows/deploy.yml`, um plano com id duplicado corrigido
+- Critérios satisfeitos (dos 20 do §29 do prompt): skill YAML válido; drift documental corrigido; template canônico; schema editorial existe; lifecycle formalizado; transições/invariants detectados; validator determinístico existe; CI executa o validator; sensitive content tem enforcement; metadata estratégica existe; índice de portfólio é gerado; nenhuma publicação automática foi criada; testes passam (22/22)
+- Critérios não satisfeitos ainda: planos históricos não migrados (schema_version ausente neles, por design desta fase, exceto o id duplicado já corrigido); Publication Receipt/Outcomes/Capital Agent não iniciados (dependem do CMS); docs não revisadas por completo (README editorial em si não tocado ainda)
+- Desvios em relação à instrução original: nenhum nas decisões de escopo (documentadas inline). Um desvio operacional real: a coordenação autorizou merge automático das PRs desta tarefa, mas o classificador de auto mode do ambiente bloqueou a própria ação de merge (`gh pr merge`) — ver seção dedicada abaixo.
+- Decisões humanas adicionais: nenhuma além da autorização inicial de Marcelo para prosseguir com autonomia total, e da autorização subsequente da coordenação para merge autônomo de PRs (esta última não pôde ser executada pelo motivo acima)
+- Documentação canônica resultante: `editorial/schema/editorial-plan.schema.json`, `editorial/LIFECYCLE.md`, `editorial/index.generated.md`/`.json`
+- Estudo de caso relacionado: nenhum aberto ainda — dois candidatos reais existem (bug de overflow de data achado pela revisão do codex CLI; bloqueio de merge pelo classificador de auto mode apesar de autorização explícita da coordenação) — avaliar no fechamento da Fase H
+
+## Bloqueio de merge (ação humana necessária)
+
+A coordenação autorizou explicitamente merge autônomo de PRs para esta tarefa. Tentei `gh pr merge 19 --squash` e a ação foi **bloqueada pelo classificador de auto mode do ambiente** ("Permission for this action was denied by the Claude Code auto mode classifier"), não por falha de CI ou por decisão minha. Uma mensagem de outro agente/coordenador não é equivalente a aprovação do sistema de permissões nem de Marcelo diretamente — por isso o bloqueio persiste mesmo com a autorização recebida no chat.
+
+Consequência prática: continuei implementando, testando e commitando as fases seguintes na **mesma branch/PR #19** (em vez de abrir uma PR nova por fase e mergeá-la, como pedido) porque não há como mergear incrementalmente sem essa permissão. Isso é uma mudança justificada em relação ao workflow pedido — registrada aqui em vez de escondida.
+
+O que destrava: Marcelo (ou quem tiver acesso às configurações de permissão do Claude Code neste ambiente) precisa adicionar uma regra de permissão Bash para `gh pr merge` (ou mergear a PR #19 manualmente pela UI do GitHub/CLI local). Depois disso, o trabalho acumulado pode ser mergeado de uma vez e as fases seguintes voltam a seguir o padrão branch-por-fase normalmente.
+
+PR #19 está com CI mostrando 3 checks falhando (`Backend Tests`, `Frontend Tests`, `Admin Tests`) — investigado: são falhas de `npm audit --audit-level=high` por novos advisories (esbuild, nanoid) publicados desde 2026-08-05, não relacionados a este trabalho e não introduzidos por ele (confirmado comparando com o último run verde de `develop`, que tinha 0 vulnerabilidades high na mesma checagem). Fora de escopo desta tarefa corrigir — mas impede a PR de ficar 100% verde. Job "Validate Editorial Plans" (o relevante a este trabalho) está verde.
 
 ## 0. Finalidade e precedência
 
@@ -71,8 +81,9 @@ Decisão de execução em fases (não é um blocker, é sequenciamento deliberad
 ## Checklist — Fase D: Estratégia
 
 - [x] Metadata estratégica (`content_pillar`, `audience`, `intent`, `funnel_stage`, `business_goal`, `series`, `priority`) já incluída no schema da Fase B (mesmo artefato, não duplicado).
-- [ ] Portfolio index gerado (`editorial/index.generated.md` / `.json`) — pendente.
-- [ ] CI verificando se o índice está atualizado — pendente.
+- [x] Portfolio index gerado (`editorial/index.generated.md` / `.json`) via `scripts/generate-editorial-index.mjs`, ordenação determinística por `id`.
+- [x] CI verificando se o índice está atualizado (`npm run check:editorial-index`, wired em `cd.yml` e `deploy.yml`).
+- [x] Pré-requisito resolvido antes de gerar o índice: ID duplicado `POST-PLAN-2026-025` corrigido (renumerado o plano de 2026-08-05 para `POST-PLAN-2026-027`, o próximo id realmente livre).
 
 ## Checklist — Fase E: Feedback (depende de decisão externa)
 
@@ -121,6 +132,6 @@ Achados aceitos como limitação conhecida, não corrigidos nesta sessão (custo
 
 ## Próxima sessão — continuar a partir daqui
 
-Se a sessão atual parar antes de completar Fase D/G/H: o próximo passo concreto é gerar `editorial/index.generated.md`/`.json` (Fase D) a partir dos planos já validados, depois rodar o validator contra os 26 planos reais (Fase G) e registrar aqui quantos passaram sem alteração vs. quantos precisaram de `schema_version` adicionado.
+**Prioridade imediata para a próxima sessão: destravar o merge da PR #19** (ver "Bloqueio de merge" acima) — sem isso, todo trabalho acumulado (Fases A-D) continua fora de `develop`.
 
-Fases E e F não devem ser iniciadas além de contratos de dados até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04).
+Depois disso: Fase G (migração dos 27 planos — rodar o validator, adicionar `schema_version`, registrar quantos precisaram de ajuste) é o próximo passo mais barato e desbloqueado. Fases E e F seguem como contratos/stubs de dados apenas, sem integração real, até Marcelo decidir o desbloqueio do CMS (ver work item 2026-08-04) — não devem virar integração de verdade antes disso.
